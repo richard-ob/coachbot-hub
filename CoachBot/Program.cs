@@ -9,6 +9,9 @@ using System;
 using System.Threading.Tasks;
 using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
+using Newtonsoft.Json;
+using CoachBot.Model;
+using System.IO;
 
 namespace CoachBot
 {

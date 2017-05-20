@@ -50,7 +50,10 @@ namespace CoachBot
                 await message.AddReactionAsync(EmojiExtensions.FromText(":mag_right:"));
             }
             else if (result is PreconditionResult precondition && !precondition.IsSuccess)
+            {
+                await message.Channel.SendMessageAsync(precondition.ErrorReason);
                 await message.AddReactionAsync(EmojiExtensions.FromText(":no_entry:"));
+            }
             else if (result is ParseResult parse && !parse.IsSuccess)
                 await message.Channel.SendMessageAsync($"**Parse Error:** {parse.ErrorReason}");
             else if (result is TypeReaderResult reader && !reader.IsSuccess)

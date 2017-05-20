@@ -1,5 +1,4 @@
-﻿using Discord;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CoachBot.Model
 {
@@ -9,7 +8,7 @@ namespace CoachBot.Model
 
         public bool IsMix { get; set; }
 
-        public Dictionary<IUser, string> Players { get; set; }
+        public Dictionary<Player, string> Players { get; set; }
 
     }
 }

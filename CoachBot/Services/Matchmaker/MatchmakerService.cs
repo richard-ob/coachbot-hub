@@ -9,11 +9,14 @@ namespace CoachBot.Services.Matchmaker
 {
     public class MatchmakerService
     {
+        private readonly ConfigService _configService;
+
         public List<Channel> Channels { get; set; }
 
-        public MatchmakerService()
+        public MatchmakerService(ConfigService configService)
         {
-            Channels = new List<Channel>();
+            _configService = configService;
+            Channels = configService.config.Channels;
         }
 
         public string ConfigureChannel(ulong channelId, string teamName, List<string> positions, bool isMixChannel = false)
@@ -42,6 +45,7 @@ namespace CoachBot.Services.Matchmaker
                 }
             };
             Channels.Add(channel);
+            _configService.UpdateChannelConfiguration(channel);
             return "Channel successfully configured";
         }
 
@@ -138,18 +142,9 @@ namespace CoachBot.Services.Matchmaker
 
         public void ResetMatch(ulong channelId)
         {
-            Channels.First(c => c.Id == channelId).Team1 = new Team()
-            {
-                Name = "newbies",
-                IsMix = false,
-                Players = new Dictionary<Player, string>()
-            };
-            Channels.First(c => c.Id == channelId).Team2 = new Team()
-            {
-                Name = "Mix",
-                IsMix = true,
-                Players = new Dictionary<Player, string>()
-            };
+            var channelConfig = _configService.ReadChannelConfiguration(channelId);
+            Channels.FirstOrDefault(c => c.Id == channelId).Team1 = channelConfig.Team1;
+            Channels.FirstOrDefault(c => c.Id == channelId).Team2 = channelConfig.Team2;
         }
 
         public string ReadyMatch(ulong channelId, int? serverId = null)
@@ -179,7 +174,7 @@ namespace CoachBot.Services.Matchmaker
             {
                 var player = channel.Team1.Players.FirstOrDefault(p => p.Value == position).Key;
                 var playerName = player != null ? player.Name : "";
-                teamList.AppendFormat("{0}: {1} ", position, playerName);
+                teamList.AppendFormat("{0}:{1} ", position, playerName);
             }
             teamList.Append("```");
 
@@ -191,7 +186,7 @@ namespace CoachBot.Services.Matchmaker
                 {
                     var player = channel.Team2.Players.FirstOrDefault(p => p.Value == position).Key;
                     var playerName = player != null ? player.Name : "";
-                    teamList.AppendFormat("{0}: {1} ", position, playerName);
+                    teamList.AppendFormat("{0}:{1} ", position, playerName);
                 }
                 teamList.Append("```");
             }

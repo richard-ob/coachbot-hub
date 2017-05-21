@@ -9,9 +9,7 @@ using System;
 using System.Threading.Tasks;
 using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
-using Newtonsoft.Json;
-using CoachBot.Model;
-using System.IO;
+using System.Linq;
 
 namespace CoachBot
 {
@@ -27,15 +25,45 @@ namespace CoachBot
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                LogLevel = LogSeverity.Debug,
+                LogLevel = LogSeverity.Debug
             });
 
             var serviceProvider = ConfigureServices();
 
             var configService = serviceProvider.GetService<ConfigService>();
-
+            var matchmakerService = serviceProvider.GetService<MatchmakerService>();
+            Console.WriteLine("Connecting..");
             await _client.LoginAsync(TokenType.Bot, configService.config.BotToken);
             await _client.StartAsync();
+            _client.Connected += () =>
+            {
+                Console.WriteLine("Connected!");
+                return Task.CompletedTask;
+            };
+            _client.Ready += () => 
+            {
+                Console.WriteLine("Ready!");
+                foreach (var server in _client.Guilds)
+                {
+                    foreach (var channel in server.Channels)
+                    {
+                        var textChannel = _client.GetChannel(channel.Id) as ITextChannel;
+                        if (textChannel != null && configService.config.Channels.Any(c => c.Id == channel.Id))
+                        {
+                            textChannel.SendMessageAsync("If you aren't putting in a shift in training, you aren't going to make the team! Sign up for a match!");
+                            textChannel.SendMessageAsync(matchmakerService.GenerateTeamList(channel.Id));
+                        }
+                    }
+                }
+                return Task.CompletedTask;
+            };
+
+            _client.UserLeft += (SocketGuildUser user) =>
+            {
+                Console.WriteLine(user.Nickname);
+                Console.WriteLine(user.Username);
+                return Task.CompletedTask;
+            };
 
             _handler = new CommandHandler(serviceProvider);
             await _handler.ConfigureAsync();
@@ -62,6 +90,7 @@ namespace CoachBot
 
             // Autowire and create these dependencies now
             provider.GetService<LogAdaptor>();
+            provider.GetService<ConfigService>();
 
             return provider;
         }

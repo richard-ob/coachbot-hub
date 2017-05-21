@@ -8,5 +8,7 @@ namespace CoachBot.Model
 
         public List<Server> Servers { get; set; }
 
+        public List<Channel> Channels { get; set; }
+
     }
 }

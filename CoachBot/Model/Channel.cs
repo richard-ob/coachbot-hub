@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CoachBot.Model
@@ -13,6 +14,7 @@ namespace CoachBot.Model
 
         public Team Team2 { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<Player> SignedPlayers
         {
             get

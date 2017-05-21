@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Text;
 using System;
+using System.Linq;
 
 namespace CoachBot.Services.Matchmaker
 {
@@ -15,6 +16,7 @@ namespace CoachBot.Services.Matchmaker
         {
             config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
             if (config.Servers == null) config.Servers = new List<Server>();
+            if (config.Channels == null) config.Channels = new List<Channel>();
         }
 
         internal void Save()
@@ -40,14 +42,27 @@ namespace CoachBot.Services.Matchmaker
         {
             var sb = new StringBuilder();
             var serverId = 1;
-
+            sb.Append("Servers");
             foreach(var server in config.Servers)
             {
-                sb.Append($"```#{serverId} {server.Name} {server.Address}``` steam://connect/{server.Address}");
+                sb.Append($"#*{serverId}* {server.Name} {server.Address} steam://connect/{server.Address}");
                 sb.Append(Environment.NewLine);
                 serverId++;
             }
             return sb.ToString();
+        }
+
+        public Channel ReadChannelConfiguration(ulong channelId)
+        {
+            return config.Channels.FirstOrDefault(c => c.Id.Equals(channelId));
+        }
+
+        public void UpdateChannelConfiguration(Channel channel)
+        {
+            var existingChannelConfig = config.Channels.FirstOrDefault(c => c.Id.Equals(channel.Id));
+            if (existingChannelConfig != null) config.Channels.Remove(existingChannelConfig);
+            config.Channels.Add(channel);
+            Save();
         }
 
     }

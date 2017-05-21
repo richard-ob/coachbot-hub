@@ -134,7 +134,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!configure")]
         [Priority(1000)]
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
-        public async Task ConfigureChannelAsync(string teamName, bool isMixChannel, params string[] positions)
+        public async Task ConfigureChannelAsync(string teamName, bool isMixChannel = false, params string[] positions)
         {
             await ReplyAsync(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.ToList(), isMixChannel));
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));

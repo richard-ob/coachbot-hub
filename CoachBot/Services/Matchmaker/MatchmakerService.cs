@@ -27,7 +27,7 @@ namespace CoachBot.Services.Matchmaker
             var channel = new Channel()
             {
                 Id = channelId,
-                Positions = positions,
+                Positions = positions.Select(p => p.ToUpper()).ToList(),
                 Team1 = new Team()
                 {
                     IsMix = true,
@@ -45,22 +45,27 @@ namespace CoachBot.Services.Matchmaker
             return "Channel successfully configured";
         }
 
-        public string AddPlayer(ulong channelId, IUser user, string position = null)
+        public string AddPlayer(ulong channelId, IUser user, string position = null, Teams team = Teams.Team1)
         {
             var channel = Channels.First(c => c.Id == channelId);
             var player = new Player()
             {
                 DiscordUserId = user.Id,
-                Name = user.Username
+                Name = user.Username,
+                DiscordUserMention = user.Mention
             };
-            if (channel.Team1.Players.Any(p => p.Key.DiscordUserId == user.Id)) return $"You are already signed, {user.Mention}";
+            if (channel.SignedPlayers.Any(p => p.DiscordUserId == user.Id)) return $"You are already signed, {user.Mention}";
             if (position == null)
             {
                 position = channel.Positions.FirstOrDefault(p => !channel.Team1.Players.Any(pl => pl.Value == p) || !channel.Team2.Players.Any(pl => pl.Value == p));
             }
+            else
+            {
+                position = position.ToUpper();
+            }
             var positionAvailableTeam1 = !channel.Team1.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
             var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position) && channel.Team2.IsMix;
-            if (positionAvailableTeam1)
+            if (positionAvailableTeam1 && team == Teams.Team1)
             {
                 channel.Team1.Players.Add(player, position);
                 return $"Signed {player.Name} to {position} for {channel.Team1.Name}";
@@ -76,22 +81,23 @@ namespace CoachBot.Services.Matchmaker
             }
         }
 
-        public string AddPlayer(ulong channelId, string playerName, string position)
+        public string AddPlayer(ulong channelId, string playerName, string position, Teams team = Teams.Team1)
         {
             var channel = Channels.First(c => c.Id == channelId);
             var player = new Player()
             {
                 Name = playerName
             };
-            if (channel.Team1.Players.Any(p => p.Key.Name == playerName)) return $"{playerName} is already signed.";
+            position = position.ToUpper();
+            if (channel.SignedPlayers.Any(p => p.Name == playerName)) return $"{playerName} is already signed.";
             var positionAvailableTeam1 = !channel.Team1.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
-            var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position) && channel.Team2.IsMix;
-            if (positionAvailableTeam1)
+            var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
+            if (positionAvailableTeam1 && team == Teams.Team1)
             {
                 channel.Team1.Players.Add(player, position);
                 return $"Signed {player.Name} to {position} for {channel.Team1.Name}";
             }
-            else if (positionAvailableTeam2)
+            else if (positionAvailableTeam2 && channel.Team2.IsMix)
             {
                 channel.Team2.Players.Add(player, position);
                 return $"Signed {player.Name} to {position} for {channel.Team2.Name}";
@@ -105,7 +111,7 @@ namespace CoachBot.Services.Matchmaker
         public void RemovePlayer(ulong channelId, IUser user)
         {
             var player = Channels.First(c => c.Id == channelId).Team1.Players.FirstOrDefault(p => p.Key.DiscordUserId == user.Id);
-            if (player.Key == null) Channels.FirstOrDefault(c => c.Id == channelId).Team2.Players.First(p => p.Key.DiscordUserId == user.Id);
+            if (player.Key == null) player = Channels.FirstOrDefault(c => c.Id == channelId).Team2.Players.First(p => p.Key.DiscordUserId == user.Id);
             if (player.Key != null)
             {
                 Channels.First(c => c.Id == channelId).Team1.Players.Remove(player.Key);
@@ -146,25 +152,19 @@ namespace CoachBot.Services.Matchmaker
             };
         }
 
-        public string ReadyMatch(ulong channelId)
-        {            
+        public string ReadyMatch(ulong channelId, int? serverId = null)
+        {
             var channel = Channels.First(c => c.Id == channelId);
-            if ((channel.Positions.Count() * 2) != (channel.Team1.Players.Count() + channel.Team2.Players.Count())) return "All positions must be filled";
+            if ((channel.Positions.Count() * 2) != (channel.SignedPlayers.Count())) return "All positions must be filled";
 
             var sb = new StringBuilder();
-            sb.Append("Match Ready! Join the server asap!");
+            sb.Append($"Match Ready! Join the server ASAP!");
             sb.Append(Environment.NewLine);
-            foreach (var player in channel.Team1.Players)
+            foreach (var player in channel.SignedPlayers)
             {
-                sb.Append($"{player.Key.Name} ");
+                sb.Append($"{player.DiscordUserMention ?? player.Name} ");
             }
-            if (channel.Team2.IsMix)
-            {
-                foreach (var player in channel.Team1.Players)
-                {
-                    sb.Append($"{player.Key.Name} ");
-                }
-            }
+            sb.AppendLine(GenerateTeamList(channelId));
             ResetMatch(channelId);
             return sb.ToString();
         }
@@ -182,7 +182,7 @@ namespace CoachBot.Services.Matchmaker
                 teamList.AppendFormat("{0}: {1} ", position, playerName);
             }
             teamList.Append("```");
-            
+
             if (channel.Team2.IsMix)
             {
                 teamList.Append($"***Team {channel.Team2.Name}***");
@@ -197,7 +197,7 @@ namespace CoachBot.Services.Matchmaker
             }
             else if (channel.Team2.Name != null && !string.IsNullOrEmpty(channel.Team2.Name))
             {
-                teamList.Append($"***Vs {channel.Team2.Name}***");
+                teamList.Append($"***Vs Team {channel.Team2.Name}***");
             }
             return teamList.ToString();
         }

@@ -14,7 +14,7 @@ namespace CoachBot.Preconditions
             var matchmakerService = map.GetService<MatchmakerService>();
 
             if (!matchmakerService.Channels.Any(c => c.Id == context.Channel.Id))
-                return Task.FromResult(PreconditionResult.FromError("This channel is not yet configured. To configure the channel, please use the !configure command in the following format: !configure <TeamName> <Is A Mix Channel> <Positions>, e.g. !configure BB false GK LB RB CB CM LW RW CF"));
+                return Task.FromResult(PreconditionResult.FromError($"This channel is not yet configured. To configure the channel, please use the !configure command in the following format: {Environment.NewLine} **!configure <TeamName> <Is A Mix Channel> <Positions>** {Environment.NewLine} *e.g. !configure BB false GK LB RB CB CM LW RW CF*"));
 
             return Task.FromResult(PreconditionResult.FromSuccess());
         }

@@ -46,7 +46,7 @@ namespace CoachBot.Services.Logging
         {
             if (message.Exception != null && message.Exception is CommandException cmd)
             {
-                await cmd.Context.Channel.SendMessageAsync(cmd.ToString());
+                Console.WriteLine(cmd.ToString());
             }
             await LogAsync(message);
         }

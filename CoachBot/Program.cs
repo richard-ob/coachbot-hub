@@ -31,9 +31,10 @@ namespace CoachBot
             });
 
             var serviceProvider = ConfigureServices();
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
 
-            await _client.LoginAsync(TokenType.Bot, config.BotToken);
+            var configService = serviceProvider.GetService<ConfigService>();
+
+            await _client.LoginAsync(TokenType.Bot, configService.config.BotToken);
             await _client.StartAsync();
 
             _handler = new CommandHandler(serviceProvider);
@@ -55,6 +56,7 @@ namespace CoachBot
                 .AddSingleton(logger)
                 .AddSingleton<LogAdaptor>()
                 .AddSingleton<InteractiveService>()
+                .AddSingleton<ConfigService>()
                 .AddSingleton<MatchmakerService>();
             var provider = services.BuildServiceProvider();
 

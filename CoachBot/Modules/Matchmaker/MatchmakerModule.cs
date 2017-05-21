@@ -5,20 +5,23 @@ using CoachBot.Services.Matchmaker;
 using CoachBot.Model;
 using CoachBot.Preconditions;
 using System.Collections.Generic;
+using System.Text;
 
 namespace CoachBot.Modules.Matchmaker
 {
     public class MatchmakerModule : ModuleBase
     {
         private readonly MatchmakerService _service;
+        private readonly ConfigService _configService;
 
-        public MatchmakerModule(MatchmakerService service)
+        public MatchmakerModule(MatchmakerService service, ConfigService configService)
         {
             _service = service;
+            _configService = configService;
         }
 
-        [Command("sign")]
-        [Alias("s")]
+        [Command("!sign")]
+        [Alias("!s")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task SignAsync()
@@ -27,8 +30,8 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
-        [Command("sign")]
-        [Alias("s")]
+        [Command("!sign")]
+        [Alias("!s")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task SignAsync(string position)
@@ -37,8 +40,8 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
-        [Command("sign")]
-        [Alias("s")]
+        [Command("!sign")]
+        [Alias("!s")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task CounterSignAsync(string position, [Remainder]string name)
@@ -47,8 +50,38 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
-        [Command("unsign")]
-        [Alias("us", "u", "r", "remove")]
+        [Command("!sign2")]
+        [Alias("!s2")]
+        [Priority(1000)]
+        [RequireChannelConfigured]
+        public async Task SignTeam2Async()
+        {
+            await ReplyAsync(_service.AddPlayer(Context.Channel.Id, Context.Message.Author, null, Teams.Team2));
+            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+        }
+
+        [Command("!sign2")]
+        [Alias("!s2")]
+        [Priority(1000)]
+        [RequireChannelConfigured]
+        public async Task SignTeam2Async(string position)
+        {
+            await ReplyAsync(_service.AddPlayer(Context.Channel.Id, Context.Message.Author, position, Teams.Team2));
+            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+        }
+
+        [Command("!sign2")]
+        [Alias("!s2")]
+        [Priority(1000)]
+        [RequireChannelConfigured]
+        public async Task CounterSignTeam2Async(string position, [Remainder]string name)
+        {
+            await ReplyAsync(_service.AddPlayer(Context.Channel.Id, name, position, Teams.Team2));
+            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+        }
+
+        [Command("!unsign")]
+        [Alias("!us", "!u", "!r", "!remove")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task UnsignAsync()
@@ -58,8 +91,8 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
-        [Command("unsign")]
-        [Alias("us", "u", "r", "remove")]
+        [Command("!unsign")]
+        [Alias("!us", "!u", "!r", "!remove")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task UnsignAsync(string name)
@@ -69,8 +102,7 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
-        [Command("vsmix")]
-        [Alias("s")]
+        [Command("!vsmix")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task VsMixAsync()
@@ -85,8 +117,7 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
-        [Command("vs")]
-        [Alias("s")]
+        [Command("!vs")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task VsAsync(string teamName)
@@ -100,15 +131,16 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
-        [Command("configure")]
+        [Command("!configure")]
         [Priority(1000)]
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
         public async Task ConfigureChannelAsync(string teamName, bool isMixChannel, params string[] positions)
         {
             await ReplyAsync(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.ToList(), isMixChannel));
+            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
-        [Command("reset")]
+        [Command("!reset")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task ResetChannelAsync(params string[] positions)
@@ -118,7 +150,7 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
-        [Command("ready")]
+        [Command("!ready")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task ReadyAsync()
@@ -126,13 +158,79 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.ReadyMatch(Context.Message.Channel.Id));
         }
 
-        [Command("list")]
+        [Command("!ready")]
+        [Priority(1000)]
+        [RequireChannelConfigured]
+        public async Task ReadyAsync(int serverId)
+        {
+            await ReplyAsync(_service.ReadyMatch(Context.Message.Channel.Id, serverId));
+        }
+
+        [Command("!list")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task ListAsync(params string[] positions)
         {
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+        }
+
+        [Command("!servers")]
+        [Priority(1000)]
+        public async Task ServersAsync()
+        {
+            await ReplyAsync(_configService.ReadServerList());
+        }
+
+        [Command("!addserver")]
+        [Alias("!addsv")]
+        [Priority(1000)]
+        public async Task AddServerAsync(string ip, [Remainder]string name)
+        {
+            var server = new Server()
+            {
+                Address = ip,
+                Name = name
+            };
+            await ReplyAsync(_configService.AddServer(server));
+        }
+
+        [Command("!removeserver")]
+        [Alias("!rmsv")]
+        [Priority(1000)]
+        public async Task RemoveServerAsync(string ip, [Remainder]string name)
+        {
+            var server = new Server()
+            {
+                Address = ip,
+                Name = name
+            };
+            await ReplyAsync(_configService.RemoveServer(server));
+        }
+
+        [Command("!help")]
+        [Priority(1000)]
+        public async Task HelpAsync()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("**Commands**");
+            sb.AppendLine("**!sign** - *Sign yourself in the first available position*");
+            sb.AppendLine("**!sign <position>** - *Sign yourself in the specified position*");
+            sb.AppendLine("**!sign <position> <name>** - *Sign on behalf of someone not in Discord*");
+            sb.AppendLine("**!sign2** - *Sign yourself in the first available position to Team 2*");
+            sb.AppendLine("**!sign2 <position>** - *Sign in specified position to Team 2*");
+            sb.AppendLine("**!sign2 <position> <name>** - *Sign on behalf of someone not in Discord to Team 2*");
+            sb.AppendLine("**!unsign** - *Unsign from the match*");
+            sb.AppendLine("**!unsign <name>** - *Unsign the person specified from the match*");
+            sb.AppendLine("**!vs <team>** - *Set the opposition team for the current match*");
+            sb.AppendLine("**!vsmix** - *Set the opposition team to a managed mix for the current match*");
+            sb.AppendLine("**!ready** - *Send all players to server and reset the match*");
+            sb.AppendLine("**!reset** - *Manually reset the match*");
+            sb.AppendLine("**!servers** - *See the full available server list*");
+            sb.AppendLine("**!addserver <ip:port> <name>** - *Add a server to the server list*");
+            sb.AppendLine("**!removeserver <ip:port> <name>** - *Remove specified server to the server list*");
+            sb.AppendLine("**!configure <TeamName> <Is A Mix Channel> <Positions>** ***e.g. !configure BB false GK LB RB CB CM LW RW CF*** - *Configure the current channel's matchmaking settings*");
+            await ReplyAsync(sb.ToString());
+
         }
     }
 }

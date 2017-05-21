@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
+using System.Linq;
 
 namespace CoachBot
 {
@@ -18,6 +19,7 @@ namespace CoachBot
         private readonly CommandService _commands;
         private readonly DiscordSocketClient _client;
         private readonly ILogger _logger;
+        private readonly ConfigService _configService;
         private readonly MatchmakerService _matchmakerService;
 
         public CommandHandler(IServiceProvider provider)
@@ -29,6 +31,7 @@ namespace CoachBot
             var log = _provider.GetService<LogAdaptor>();
             _commands.Log += log.LogCommand;
             _logger = _provider.GetService<Logger>().ForContext<CommandService>();
+            _configService = _provider.GetService<ConfigService>();
             _matchmakerService = _provider.GetService<MatchmakerService>();            
         }
 
@@ -48,6 +51,15 @@ namespace CoachBot
 
             var context = new SocketCommandContext(_client, message);
             var result = await _commands.ExecuteAsync(context, argPos, _provider);
+            var matchmakerChannel = _matchmakerService.Channels.FirstOrDefault(c => c.Id == context.Channel.Id);
+            try
+            {
+                await message.DeleteAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Bot doesn't have have manage channel privileges in {message.Channel.Name} ({context.Guild.Name})");
+            }
             if (result is PreconditionResult precondition && !precondition.IsSuccess)
             {
                 await message.Channel.SendMessageAsync(precondition.ErrorReason);
@@ -60,17 +72,23 @@ namespace CoachBot
             }
             else if (result is TypeReaderResult reader && !reader.IsSuccess)
             {
-                await message.Channel.SendMessageAsync($"**Read Error:** {reader.ErrorReason}");
+                await message.Channel.SendMessageAsync($"Read Error: {reader.ErrorReason}");
+            }
+            else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand && matchmakerChannel.Positions.Any(p => context.Message.Content.Substring(2).ToUpper().Contains(p)))
+            {
+                await message.Channel.SendMessageAsync(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content));
+                await message.Channel.SendMessageAsync(_matchmakerService.GenerateTeamList(matchmakerChannel.Id));
             }
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
             {
-                await message.Channel.SendMessageAsync(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content));
+                await message.Channel.SendMessageAsync($"Unknown command, {context.Message.Author.Mention}");
             }
             else if (!result.IsSuccess)
             {
                 await message.Channel.SendMessageAsync(result.ErrorReason);
                 await message.AddReactionAsync(EmojiExtensions.FromText(":rage:"));
             }
+
             _logger.Debug("Invoked {Command} in {Context} with {Result}", message, context.Channel, result);
         }
 

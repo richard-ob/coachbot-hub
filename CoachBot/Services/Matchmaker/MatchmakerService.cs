@@ -18,7 +18,9 @@ namespace CoachBot.Services.Matchmaker
 
         public string ConfigureChannel(ulong channelId, string teamName, List<string> positions, bool isMixChannel = false)
         {
-            if (positions.Count() <= 1) return "You must add at least two positions"; 
+            if (positions.Count() <= 1) return "You must add at least two positions";
+            if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return "All positions must be unique";
+
             var existingChannelConfig = Channels.FirstOrDefault(c => c.Id.Equals(channelId));
             if (existingChannelConfig != null) Channels.Remove(existingChannelConfig);
 
@@ -43,7 +45,7 @@ namespace CoachBot.Services.Matchmaker
             return "Channel successfully configured";
         }
 
-        public string AddPlayer(ulong channelId, IUser user, string position)
+        public string AddPlayer(ulong channelId, IUser user, string position = null)
         {
             var channel = Channels.First(c => c.Id == channelId);
             var player = new Player()
@@ -52,6 +54,10 @@ namespace CoachBot.Services.Matchmaker
                 Name = user.Username
             };
             if (channel.Team1.Players.Any(p => p.Key.DiscordUserId == user.Id)) return $"You are already signed, {user.Mention}";
+            if (position == null)
+            {
+                position = channel.Positions.FirstOrDefault(p => !channel.Team1.Players.Any(pl => pl.Value == p) || !channel.Team2.Players.Any(pl => pl.Value == p));
+            }
             var positionAvailableTeam1 = !channel.Team1.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
             var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position) && channel.Team2.IsMix;
             if (positionAvailableTeam1)
@@ -92,7 +98,7 @@ namespace CoachBot.Services.Matchmaker
             }
             else
             {
-                return $"Position unavailable. Please try again.";
+                return "Position unavailable. Please try again.";
             }
         }
 
@@ -141,9 +147,11 @@ namespace CoachBot.Services.Matchmaker
         }
 
         public string ReadyMatch(ulong channelId)
-        {
-            var sb = new StringBuilder();
+        {            
             var channel = Channels.First(c => c.Id == channelId);
+            if ((channel.Positions.Count() * 2) != (channel.Team1.Players.Count() + channel.Team2.Players.Count())) return "All positions must be filled";
+
+            var sb = new StringBuilder();
             sb.Append("Match Ready! Join the server asap!");
             sb.Append(Environment.NewLine);
             foreach (var player in channel.Team1.Players)

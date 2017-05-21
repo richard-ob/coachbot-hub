@@ -8,6 +8,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using CoachBot.Services.Logging;
+using CoachBot.Services.Matchmaker;
 
 namespace CoachBot
 {
@@ -17,6 +18,7 @@ namespace CoachBot
         private readonly CommandService _commands;
         private readonly DiscordSocketClient _client;
         private readonly ILogger _logger;
+        private readonly MatchmakerService _matchmakerService;
 
         public CommandHandler(IServiceProvider provider)
         {
@@ -27,6 +29,7 @@ namespace CoachBot
             var log = _provider.GetService<LogAdaptor>();
             _commands.Log += log.LogCommand;
             _logger = _provider.GetService<Logger>().ForContext<CommandService>();
+            _matchmakerService = _provider.GetService<MatchmakerService>();            
         }
 
         public async Task ConfigureAsync()
@@ -45,21 +48,29 @@ namespace CoachBot
 
             var context = new SocketCommandContext(_client, message);
             var result = await _commands.ExecuteAsync(context, argPos, _provider);
-            if (result is SearchResult search && !search.IsSuccess)
-            {
-                await message.AddReactionAsync(EmojiExtensions.FromText(":mag_right:"));
-            }
-            else if (result is PreconditionResult precondition && !precondition.IsSuccess)
+            if (result is PreconditionResult precondition && !precondition.IsSuccess)
             {
                 await message.Channel.SendMessageAsync(precondition.ErrorReason);
                 await message.AddReactionAsync(EmojiExtensions.FromText(":no_entry:"));
             }
             else if (result is ParseResult parse && !parse.IsSuccess)
-                await message.Channel.SendMessageAsync($"**Parse Error:** {parse.ErrorReason}");
+            {
+                await message.Channel.SendMessageAsync(parse.ErrorReason);
+                await message.AddReactionAsync(EmojiExtensions.FromText(":x:"));                
+            }
             else if (result is TypeReaderResult reader && !reader.IsSuccess)
+            {
                 await message.Channel.SendMessageAsync($"**Read Error:** {reader.ErrorReason}");
+            }
+            else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
+            {
+                await message.Channel.SendMessageAsync(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content));
+            }
             else if (!result.IsSuccess)
+            {
+                await message.Channel.SendMessageAsync(result.ErrorReason);
                 await message.AddReactionAsync(EmojiExtensions.FromText(":rage:"));
+            }
             _logger.Debug("Invoked {Command} in {Context} with {Result}", message, context.Channel, result);
         }
 

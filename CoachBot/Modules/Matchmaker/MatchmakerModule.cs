@@ -21,6 +21,16 @@ namespace CoachBot.Modules.Matchmaker
         [Alias("s")]
         [Priority(1000)]
         [RequireChannelConfigured]
+        public async Task SignAsync()
+        {
+            await ReplyAsync(_service.AddPlayer(Context.Channel.Id, Context.Message.Author));
+            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+        }
+
+        [Command("sign")]
+        [Alias("s")]
+        [Priority(1000)]
+        [RequireChannelConfigured]
         public async Task SignAsync(string position)
         {
             await ReplyAsync(_service.AddPlayer(Context.Channel.Id, Context.Message.Author, position));
@@ -121,6 +131,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task ListAsync(params string[] positions)
         {
+            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
     }

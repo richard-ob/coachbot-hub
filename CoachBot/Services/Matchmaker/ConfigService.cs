@@ -14,7 +14,9 @@ namespace CoachBot.Services.Matchmaker
 
         public ConfigService()
         {
+
             config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            if (string.IsNullOrEmpty(config.BotToken)) throw new Exception("No valid bot token provided");
             if (config.Servers == null) config.Servers = new List<Server>();
             if (config.Channels == null) config.Channels = new List<Channel>();
         }

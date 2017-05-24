@@ -44,7 +44,7 @@ namespace CoachBot
         {
             var message = pMsg as SocketUserMessage;
             if (message == null) return;
-            if (message.Content.StartsWith("##")) return;
+            if (!message.Content.StartsWith("!")) return;
 
             int argPos = 0;
             if (!ParseTriggers(message)) return;
@@ -56,7 +56,7 @@ namespace CoachBot
             {
                 await message.DeleteAsync();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine($"Bot doesn't have have manage channel privileges in {message.Channel.Name} ({context.Guild.Name})");
             }

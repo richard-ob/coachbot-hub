@@ -10,32 +10,31 @@ namespace CoachBot.Services.Matchmaker
 {
     public class ConfigService
     {
-        public Config config;
+        public Config Config;
 
         public ConfigService()
         {
-
-            config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
-            if (string.IsNullOrEmpty(config.BotToken)) throw new Exception("No valid bot token provided");
-            if (config.Servers == null) config.Servers = new List<Server>();
-            if (config.Channels == null) config.Channels = new List<Channel>();
+            Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            if (string.IsNullOrEmpty(Config.BotToken)) throw new Exception("No valid bot token provided");
+            if (Config.Servers == null) Config.Servers = new List<Server>();
+            if (Config.Channels == null) Config.Channels = new List<Channel>();
         }
 
         internal void Save()
         {
-            File.WriteAllText(@"config.json", JsonConvert.SerializeObject(config));
+            File.WriteAllText(@"config.json", JsonConvert.SerializeObject(Config));
         }
 
         public string AddServer(Server server)
         {
-            config.Servers.Add(server);
+            Config.Servers.Add(server);
             Save();
             return $"{server.Name} added to the server list";
         }
 
         public string RemoveServer(Server server)
         {
-            config.Servers.Remove(server);
+            Config.Servers.Remove(server);
             Save();
             return $"{server.Name} removed from the server list";
         }
@@ -44,11 +43,10 @@ namespace CoachBot.Services.Matchmaker
         {
             var sb = new StringBuilder();
             var serverId = 1;
-            sb.Append("Servers");
-            foreach(var server in config.Servers)
+            sb.AppendLine("Servers:");
+            foreach(var server in Config.Servers)
             {
-                sb.Append($"#*{serverId}* {server.Name} {server.Address} steam://connect/{server.Address}");
-                sb.Append(Environment.NewLine);
+                sb.AppendLine($"**#{serverId}** {server.Name} - {server.Address} - steam://connect/{server.Address}");
                 serverId++;
             }
             return sb.ToString();
@@ -56,14 +54,14 @@ namespace CoachBot.Services.Matchmaker
 
         public Channel ReadChannelConfiguration(ulong channelId)
         {
-            return config.Channels.FirstOrDefault(c => c.Id.Equals(channelId));
+            return Config.Channels.FirstOrDefault(c => c.Id.Equals(channelId));
         }
 
         public void UpdateChannelConfiguration(Channel channel)
         {
-            var existingChannelConfig = config.Channels.FirstOrDefault(c => c.Id.Equals(channel.Id));
-            if (existingChannelConfig != null) config.Channels.Remove(existingChannelConfig);
-            config.Channels.Add(channel);
+            var existingChannelConfig = Config.Channels.FirstOrDefault(c => c.Id.Equals(channel.Id));
+            if (existingChannelConfig != null) Config.Channels.Remove(existingChannelConfig);
+            Config.Channels.Add(channel);
             Save();
         }
 

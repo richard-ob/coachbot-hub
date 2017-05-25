@@ -10,13 +10,35 @@ namespace CoachBot.Services.Matchmaker
     public class MatchmakerService
     {
         private readonly ConfigService _configService;
+        private readonly StatisticsService _statisticsService;
 
-        public List<Channel> Channels { get; set; }
+        private Channel _lastMatch;
 
-        public MatchmakerService(ConfigService configService)
+        public List<Channel> Channels = new List<Channel>();
+
+        public MatchmakerService(ConfigService configService, StatisticsService statisticsService)
         {
             _configService = configService;
-            Channels = configService.config.Channels;
+            _statisticsService = statisticsService;
+            foreach(var channel in _configService.Config.Channels)
+            {
+                Channels.Add(new Channel()
+                {
+                    Id = channel.Id,
+                    Team1 = new Team()
+                    {
+                        IsMix = channel.Team1.IsMix,
+                        Name = channel.Team1.Name,
+                        Players = new Dictionary<Player, string>()
+                    },
+                    Positions = channel.Positions.Select(p => new string(p.ToCharArray())).ToList(),
+                    Team2 = new Team()
+                    {
+                        IsMix = channel.Team2.IsMix,
+                        Players = new Dictionary<Player, string>()
+                    }
+                });
+            } 
         }
 
         public string ConfigureChannel(ulong channelId, string teamName, List<string> positions, bool isMixChannel = false)
@@ -72,12 +94,12 @@ namespace CoachBot.Services.Matchmaker
             if (positionAvailableTeam1 && team == Teams.Team1)
             {
                 channel.Team1.Players.Add(player, position);
-                return $"Signed {player.Name} to {position} for {channel.Team1.Name}";
+                return $"Signed **{player.Name}** to **{position}** for **{channel.Team1.Name}**";
             }
             else if (positionAvailableTeam2)
             {
                 channel.Team2.Players.Add(player, position);
-                return $"Signed {player.Name} to {position} for {channel.Team2.Name}";
+                return $"Signed **{player.Name}** to **{position}** for **{channel.Team2.Name}**";
             }
             else
             {
@@ -93,18 +115,18 @@ namespace CoachBot.Services.Matchmaker
                 Name = playerName
             };
             position = position.ToUpper();
-            if (channel.SignedPlayers.Any(p => p.Name == playerName)) return $"{playerName} is already signed.";
+            if (channel.SignedPlayers.Any(p => p.Name == playerName)) return $"*{playerName}* is already signed.";
             var positionAvailableTeam1 = !channel.Team1.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
             var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
             if (positionAvailableTeam1 && team == Teams.Team1)
             {
                 channel.Team1.Players.Add(player, position);
-                return $"Signed {player.Name} to {position} for {channel.Team1.Name}";
+                return $"Signed **{player.Name}** to **{position}** for **{channel.Team1.Name}**";
             }
             else if (positionAvailableTeam2 && channel.Team2.IsMix)
             {
                 channel.Team2.Players.Add(player, position);
-                return $"Signed {player.Name} to {position} for {channel.Team2.Name}";
+                return $"Signed **{player.Name}** to **{position}** for **{channel.Team2.Name}**";
             }
             else
             {
@@ -136,39 +158,75 @@ namespace CoachBot.Services.Matchmaker
 
         public string ChangeOpposition(ulong channelId, Team team)
         {
+            var previousOpposition = Channels.First(c => c.Id == channelId).Team2;
             Channels.First(c => c.Id == channelId).Team2 = team;
-            return $"{team.Name} is challenging";
+            if (team.Name == null && previousOpposition.Name != null) return $"Opposition removed";
+            return $"**{team.Name}** are challenging";
         }
 
         public void ResetMatch(ulong channelId)
         {
             var channelConfig = _configService.ReadChannelConfiguration(channelId);
-            Channels.FirstOrDefault(c => c.Id == channelId).Team1 = channelConfig.Team1;
-            Channels.FirstOrDefault(c => c.Id == channelId).Team2 = channelConfig.Team2;
+            Channels.FirstOrDefault(c => c.Id == channelId).Team1 = new Team()
+            {
+                IsMix = channelConfig.Team1.IsMix,
+                Name = channelConfig.Team1.Name,
+                Players = new Dictionary<Player, string>()
+            };
+            Channels.FirstOrDefault(c => c.Id == channelId).Team2 = new Team()
+            {
+                IsMix = channelConfig.Team2.IsMix,
+                Name = null,
+                Players = new Dictionary<Player, string>()
+            };
         }
 
         public string ReadyMatch(ulong channelId, int? serverId = null)
         {
             var channel = Channels.First(c => c.Id == channelId);
-            if ((channel.Positions.Count() * 2) != (channel.SignedPlayers.Count())) return "All positions must be filled";
+            // Need to work out logic for Single GK to make this work properly
+            if (channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count())) return "All positions must be filled";
+            if (channel.Team2.IsMix == false && (channel.Positions.Count()) - 1 > (channel.SignedPlayers.Count())) return "All positions must be filled";
+            if (channel.Team2.Name == null) return "You must set a team to face";
 
             var sb = new StringBuilder();
-            sb.Append($"Match Ready! Join the server ASAP!");
-            sb.Append(Environment.NewLine);
+            var servers = _configService.Config.Servers;
+            if (serverId != null && servers.Any() && serverId > 0 && serverId <= servers.Count())
+            {
+                var server = _configService.Config.Servers[(int)serverId - 1];
+                sb.Append($"Match Ready! Join {server.Name} steam://connect/{server.Address} ");
+            }
+            else
+            {
+                sb.Append($"Match Ready! Join the server ASAP! ");
+            }
             foreach (var player in channel.SignedPlayers)
             {
                 sb.Append($"{player.DiscordUserMention ?? player.Name} ");
             }
+            sb.AppendLine();
             sb.AppendLine(GenerateTeamList(channelId));
-            ResetMatch(channelId);
+            _statisticsService.AddMatch(channel);
+            //ResetMatch(channelId);
             return sb.ToString();
+        }
+
+        public string UnreadyMatch(ulong channelId)
+        {
+            if (_lastMatch == null) return "No previous line-up available to revert to";
+            if (_lastMatch.Id != channelId) return "No previous line-up available to revert to";
+
+            Channels.First(c => c.Id == channelId).Positions = _lastMatch.Positions;
+            Channels.First(c => c.Id == channelId).Team1 = _lastMatch.Team1;
+            Channels.First(c => c.Id == channelId).Team2 = _lastMatch.Team2;
+            return "Previous line-up restored";
         }
 
         public string GenerateTeamList(ulong channelId)
         {
             var teamList = new StringBuilder();
             var channel = Channels.First(c => c.Id == channelId);
-            teamList.Append($"***Team {channel.Team1.Name}***");
+            teamList.AppendLine($"***{channel.Team1.Name}***");
             teamList.Append("```");
             foreach (var position in channel.Positions)
             {
@@ -180,7 +238,7 @@ namespace CoachBot.Services.Matchmaker
 
             if (channel.Team2.IsMix)
             {
-                teamList.Append($"***Team {channel.Team2.Name}***");
+                teamList.Append($"***vs Mix***");
                 teamList.Append("```");
                 foreach (var position in channel.Positions)
                 {
@@ -192,8 +250,9 @@ namespace CoachBot.Services.Matchmaker
             }
             else if (channel.Team2.Name != null && !string.IsNullOrEmpty(channel.Team2.Name))
             {
-                teamList.Append($"***Vs Team {channel.Team2.Name}***");
+                teamList.AppendLine($"***vs {channel.Team2.Name}***");
             }
+            teamList.AppendLine();
             return teamList.ToString();
         }
     }

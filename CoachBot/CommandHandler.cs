@@ -74,7 +74,8 @@ namespace CoachBot
             {
                 await message.Channel.SendMessageAsync($"Read Error: {reader.ErrorReason}");
             }
-            else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand && matchmakerChannel.Positions.Any(p => context.Message.Content.Substring(1).ToUpper().Contains(p)))
+            else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand 
+                     && matchmakerChannel.Positions.Any(p => context.Message.Content.Substring(1).ToUpper().Contains(p)))
             {
                 await message.Channel.SendMessageAsync(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content.Substring(1))); // Allows wildcard commands for positions
                 await message.Channel.SendMessageAsync(_matchmakerService.GenerateTeamList(matchmakerChannel.Id));

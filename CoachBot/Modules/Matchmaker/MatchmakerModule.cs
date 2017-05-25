@@ -13,11 +13,13 @@ namespace CoachBot.Modules.Matchmaker
     {
         private readonly MatchmakerService _service;
         private readonly ConfigService _configService;
+        private readonly StatisticsService _statisticsService;
 
-        public MatchmakerModule(MatchmakerService service, ConfigService configService)
+        public MatchmakerModule(MatchmakerService service, ConfigService configService, StatisticsService statisticsService)
         {
             _service = service;
             _configService = configService;
+            _statisticsService = statisticsService;
         }
 
         [Command("!sign")]
@@ -46,7 +48,15 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task CounterSignAsync(string position, [Remainder]string name)
         {
-            await ReplyAsync(_service.AddPlayer(Context.Channel.Id, name, position));
+            if (name.StartsWith("<@") && name.EndsWith(">"))
+            {
+                var user = await Context.Guild.GetUserAsync(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
+                await ReplyAsync(_service.AddPlayer(Context.Channel.Id, user, position));
+            }
+            else
+            {
+                await ReplyAsync(_service.AddPlayer(Context.Channel.Id, name, position));
+            }
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
         }
 
@@ -120,12 +130,13 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!vs")]
         [Priority(1000)]
         [RequireChannelConfigured]
-        public async Task VsAsync(string teamName)
+        public async Task VsAsync(string teamName = null)
         {
             var team = new Team()
             {
                 Name = teamName,
-                IsMix = false
+                IsMix = false,
+                Players = new Dictionary<Player, string>()
             };
             await ReplyAsync(_service.ChangeOpposition(Context.Channel.Id, team));
             await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
@@ -156,6 +167,14 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ReadyAsync()
         {
             await ReplyAsync(_service.ReadyMatch(Context.Message.Channel.Id));
+        }
+
+        [Command("!unready")]
+        [Priority(1000)]
+        [RequireChannelConfigured]
+        public async Task UnreadyAsync()
+        {
+            await ReplyAsync(_service.UnreadyMatch(Context.Message.Channel.Id));
         }
 
         [Command("!ready")]
@@ -207,12 +226,26 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_configService.RemoveServer(server));
         }
 
+        [Command("!recentmatches")]
+        [Priority(1000)]
+        public async Task RecentMatchesAsync()
+        {
+            await ReplyAsync(_statisticsService.RecentMatches(Context.Channel.Id));
+        }
+
+        [Command("!leaderboard")]
+        [Priority(1000)]
+        public async Task AppearanceLeaderboardAsync()
+        {
+            await ReplyAsync(_statisticsService.AppearanceLeaderboard(Context.Channel.Id));
+        }
+
         [Command("!help")]
         [Priority(1000)]
         public async Task HelpAsync()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("**Commands**");
+            sb.AppendLine("Commands:");
             sb.AppendLine("**!sign** - *Sign yourself in the first available position*");
             sb.AppendLine("**!sign <position>** - *Sign yourself in the specified position*");
             sb.AppendLine("**!sign <position> <name>** - *Sign on behalf of someone not in Discord*");
@@ -223,12 +256,15 @@ namespace CoachBot.Modules.Matchmaker
             sb.AppendLine("**!unsign <name>** - *Unsign the person specified from the match*");
             sb.AppendLine("**!vs <team>** - *Set the opposition team for the current match*");
             sb.AppendLine("**!vsmix** - *Set the opposition team to a managed mix for the current match*");
-            sb.AppendLine("**!ready** - *Send all players to server and reset the match*");
+            sb.AppendLine("**!ready** - *Send all players to server*");
+            sb.AppendLine("**!ready <server id>** - *Send all players to the server provided*");
             sb.AppendLine("**!reset** - *Manually reset the match*");
             sb.AppendLine("**!servers** - *See the full available server list*");
             sb.AppendLine("**!addserver <ip:port> <name>** - *Add a server to the server list*");
             sb.AppendLine("**!removeserver <ip:port> <name>** - *Remove specified server to the server list*");
-            sb.AppendLine("**!configure <TeamName> <Is A Mix Channel> <Positions>** ***e.g. !configure BB false GK LB RB CB CM LW RW CF*** - *Configure the current channel's matchmaking settings*");
+            sb.AppendLine("**!recentmatches** - *See a list of recent matches played*");
+            sb.AppendLine("**!leaderboard** - *See the appearance rankings for this channel*");
+            sb.AppendLine("**!configure <team name> <is a mix channel> <positions>** ***e.g. !configure BB false GK LB RB CB CM LW RW CF*** - *Configure the current channel's matchmaking settings*");
             await ReplyAsync(sb.ToString());
 
         }

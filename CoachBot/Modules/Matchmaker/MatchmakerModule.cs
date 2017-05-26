@@ -29,7 +29,11 @@ namespace CoachBot.Modules.Matchmaker
         public async Task SignAsync()
         {
             await ReplyAsync(_service.AddPlayer(Context.Channel.Id, Context.Message.Author));
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!sign")]
@@ -39,7 +43,11 @@ namespace CoachBot.Modules.Matchmaker
         public async Task SignAsync(string position)
         {
             await ReplyAsync(_service.AddPlayer(Context.Channel.Id, Context.Message.Author, position));
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!sign")]
@@ -57,7 +65,11 @@ namespace CoachBot.Modules.Matchmaker
             {
                 await ReplyAsync(_service.AddPlayer(Context.Channel.Id, name, position));
             }
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!sign2")]
@@ -67,7 +79,11 @@ namespace CoachBot.Modules.Matchmaker
         public async Task SignTeam2Async()
         {
             await ReplyAsync(_service.AddPlayer(Context.Channel.Id, Context.Message.Author, null, Teams.Team2));
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!sign2")]
@@ -77,7 +93,11 @@ namespace CoachBot.Modules.Matchmaker
         public async Task SignTeam2Async(string position)
         {
             await ReplyAsync(_service.AddPlayer(Context.Channel.Id, Context.Message.Author, position, Teams.Team2));
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!sign2")]
@@ -87,7 +107,11 @@ namespace CoachBot.Modules.Matchmaker
         public async Task CounterSignTeam2Async(string position, [Remainder]string name)
         {
             await ReplyAsync(_service.AddPlayer(Context.Channel.Id, name, position, Teams.Team2));
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!unsign")]
@@ -97,8 +121,12 @@ namespace CoachBot.Modules.Matchmaker
         public async Task UnsignAsync()
         {
             _service.RemovePlayer(Context.Channel.Id, Context.Message.Author);
-            await ReplyAsync($"Unsigned {Context.Message.Author.Username}");
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync($":heavy_minus_sign: Unsigned {Context.Message.Author.Username}");
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!unsign")]
@@ -108,8 +136,12 @@ namespace CoachBot.Modules.Matchmaker
         public async Task UnsignAsync(string name)
         {
             _service.RemovePlayer(Context.Channel.Id, name);
-            await ReplyAsync($"Unsigned {Context.Message.Author.Username}");
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync($":heavy_minus_sign: Unsigned {Context.Message.Author.Username}");
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!vsmix")]
@@ -119,12 +151,16 @@ namespace CoachBot.Modules.Matchmaker
         {
             var team = new Team()
             {
-                Name = "Mix",
+                Name = _service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team1.Name == "Mix" ? "Mix #2" : "Mix",
                 IsMix = true,
                 Players = new Dictionary<Player, string>()
             };
             await ReplyAsync(_service.ChangeOpposition(Context.Channel.Id, team));
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!vs")]
@@ -139,7 +175,11 @@ namespace CoachBot.Modules.Matchmaker
                 Players = new Dictionary<Player, string>()
             };
             await ReplyAsync(_service.ChangeOpposition(Context.Channel.Id, team));
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!configure")]
@@ -148,7 +188,11 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ConfigureChannelAsync(string teamName, bool isMixChannel = false, params string[] positions)
         {
             await ReplyAsync(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.ToList(), isMixChannel));
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!reset")]
@@ -158,7 +202,11 @@ namespace CoachBot.Modules.Matchmaker
         {
             _service.ResetMatch(Context.Message.Channel.Id);
             await ReplyAsync("Match reset..");
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!ready")]
@@ -186,11 +234,16 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!list")]
+        [Alias("!teamlist", "!teamsheet", "!teamlists", "!teamsheets", "!lineup!")]
         [Priority(1000)]
         [RequireChannelConfigured]
         public async Task ListAsync(params string[] positions)
         {
-            await ReplyAsync(_service.GenerateTeamList(Context.Channel.Id));
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
 
         [Command("!servers")]
@@ -245,7 +298,7 @@ namespace CoachBot.Modules.Matchmaker
         public async Task HelpAsync()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("Commands:");
+            sb.AppendLine(":keyboard: Commands:");
             sb.AppendLine("**!sign** - *Sign yourself in the first available position*");
             sb.AppendLine("**!sign <position>** - *Sign yourself in the specified position*");
             sb.AppendLine("**!sign <position> <name>** - *Sign on behalf of someone not in Discord*");
@@ -264,7 +317,7 @@ namespace CoachBot.Modules.Matchmaker
             sb.AppendLine("**!removeserver <ip:port> <name>** - *Remove specified server to the server list*");
             sb.AppendLine("**!recentmatches** - *See a list of recent matches played*");
             sb.AppendLine("**!leaderboard** - *See the appearance rankings for this channel*");
-            sb.AppendLine("**!configure <team name> <is a mix channel> <positions>** ***e.g. !configure BB false GK LB RB CB CM LW RW CF*** - *Configure the current channel's matchmaking settings*");
+            sb.AppendLine("**!configure <team name> <is a mix channel> <positions>** ***e.g. !configure BB false GK RB CB LB RW CM LW CF*** - *Configure the current channel's matchmaking settings*");
             await ReplyAsync(sb.ToString());
 
         }

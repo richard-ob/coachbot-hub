@@ -35,7 +35,7 @@ namespace CoachBot.Services.Matchmaker
             {
                 ChannelId = channel.Id,
                 Team1Name = channel.Team1.Name,
-                Team2Name = channel.Team2.Name,
+                Team2Name = channel.Team2.Name ?? "Mix",
                 MatchDate = DateTime.Now,
                 Players = channel.SignedPlayers.ToList()
             };
@@ -48,10 +48,23 @@ namespace CoachBot.Services.Matchmaker
             var recentMatches = MatchHistory.Where(m => m.ChannelId == channelId).OrderByDescending(d => d.MatchDate).Take(10);
             var sb = new StringBuilder();
             if (recentMatches == null || !recentMatches.Any()) return "No matches have been played yet. Chill.";
-            sb.AppendLine("Recent Matches:");
+            sb.AppendLine(":calendar_spiral: Recent Matches:");
             foreach (var recentMatch in recentMatches)
             {
-                sb.AppendLine($"[{recentMatch.MatchDate.ToString()}] - **{recentMatch.Team1Name}** vs **{recentMatch.Team2Name}**");
+                sb.Append($"**{recentMatch.Team1Name}** vs **{recentMatch.Team2Name}** - {recentMatch.MatchDate.ToString()} - ");
+                foreach (var player in recentMatch.Players)
+                {
+                    if (recentMatch.Players.Last() != player)
+                    {
+                        sb.Append($"{player.Name}, ");
+                    }
+                    else
+                    {
+                        sb.Append($"{player.Name}");
+                    }
+                    
+                }
+                sb.AppendLine();
             }
             return sb.ToString();
         }
@@ -76,7 +89,7 @@ namespace CoachBot.Services.Matchmaker
             }
             var top10 = leaderboard.OrderByDescending(p => p.Item2).Take(10);
             var sb = new StringBuilder();
-            sb.AppendLine("Leaderboard:");
+            sb.AppendLine(":trophy: Leaderboard:");
             var rank = 1;
             foreach(var player in top10)
             {

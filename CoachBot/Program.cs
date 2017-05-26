@@ -82,7 +82,7 @@ namespace CoachBot
                     if (textChannel != null && _configService.Config.Channels.Any(c => c.Id == channel.Id))
                     {
                         textChannel.SendMessageAsync("If you aren't putting in a shift in training, you aren't going to make the team! Sign up for a match!");
-                        textChannel.SendMessageAsync(_matchmakerService.GenerateTeamList(channel.Id));
+                        textChannel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(channel.Id));
                         Console.WriteLine($"{channel.Name} on {server.Name}");
                     }
                 }

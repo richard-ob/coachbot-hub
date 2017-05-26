@@ -43,7 +43,7 @@ namespace CoachBot.Services.Matchmaker
         {
             var sb = new StringBuilder();
             var serverId = 1;
-            sb.AppendLine("Servers:");
+            sb.AppendLine(":desktop: Servers:");
             foreach(var server in Config.Servers)
             {
                 sb.AppendLine($"**#{serverId}** {server.Name} - {server.Address} - steam://connect/{server.Address}");

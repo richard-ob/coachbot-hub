@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CoachBot.Model;
 using System;
+using Discord.Addons.EmojiTools;
 
 namespace CoachBot.Services.Matchmaker
 {
@@ -35,6 +36,7 @@ namespace CoachBot.Services.Matchmaker
                     Team2 = new Team()
                     {
                         IsMix = channel.Team2.IsMix,
+                        Name = channel.Team2.IsMix && channel.Team1.Name.ToLower() == "mix" ? "Mix #2" : channel.Team2.IsMix ? "Mix" : null,
                         Players = new Dictionary<Player, string>()
                     },
                     UseFormation = channel.UseFormation
@@ -44,8 +46,8 @@ namespace CoachBot.Services.Matchmaker
 
         public string ConfigureChannel(ulong channelId, string teamName, List<string> positions, bool isMixChannel = false, bool useFormation = true)
         {
-            if (positions.Count() <= 1) return ":exclamation: You must add at least two positions";
-            if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":exclamation: All positions must be unique";
+            if (positions.Count() <= 1) return ":no_entry: You must add at least two positions";
+            if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":no_entry: All positions must be unique";
 
             var existingChannelConfig = Channels.FirstOrDefault(c => c.Id.Equals(channelId));
             if (existingChannelConfig != null) Channels.Remove(existingChannelConfig);
@@ -63,7 +65,7 @@ namespace CoachBot.Services.Matchmaker
                 Team2 = new Team()
                 {
                     IsMix = isMixChannel,
-                    Name = isMixChannel ? "Mix" : null,
+                    Name = isMixChannel && teamName.ToLower() == "mix" ? "Mix #2" : isMixChannel ? "Mix" : null,
                     Players = new Dictionary<Player, string>()
                 },
                 UseFormation = useFormation
@@ -83,7 +85,7 @@ namespace CoachBot.Services.Matchmaker
                 Name = user.Username,
                 DiscordUserMention = user.Mention
             };
-            if (channel.SignedPlayers.Any(p => p.DiscordUserId == user.Id)) return $":exclamation: You are already signed, {user.Mention}";
+            if (channel.SignedPlayers.Any(p => p.DiscordUserId == user.Id)) return $":no_entry: You are already signed, {user.Mention}";
             if (position == null)
             {
                 position = channel.Positions.FirstOrDefault(p => !channel.Team1.Players.Any(pl => pl.Value == p) || !channel.Team2.Players.Any(pl => pl.Value == p));
@@ -97,16 +99,16 @@ namespace CoachBot.Services.Matchmaker
             if (positionAvailableTeam1 && team == Teams.Team1)
             {
                 channel.Team1.Players.Add(player, position);
-                return $":heavy_plus_sign: Signed **{player.Name}** to **{position}** for **{channel.Team1.Name}**";
+                return $":white_check_mark:  Signed **{player.Name}** to **{position}** for **{channel.Team1.Name}**";
             }
             else if (positionAvailableTeam2)
             {
                 channel.Team2.Players.Add(player, position);
-                return $":heavy_plus_sign: Signed **{player.Name}** to **{position}** for **{channel.Team2.Name ?? "Mix"}**";
+                return $":white_check_mark:  Signed **{player.Name}** to **{position}** for **{channel.Team2.Name ?? "Mix"}**";
             }
             else
             {
-                return $":exclamation: Position unavailable. Please try again, {user.Mention}.";
+                return $":no_entry: Position unavailable. Please try again, {user.Mention}.";
             }
         }
 
@@ -119,57 +121,63 @@ namespace CoachBot.Services.Matchmaker
                 Name = playerName
             };
             position = position.ToUpper();
-            if (channel.SignedPlayers.Any(p => p.Name == playerName)) return $":exclamation: **{playerName}** is already signed.";
+            if (channel.SignedPlayers.Any(p => p.Name == playerName)) return $":no_entry: **{playerName}** is already signed.";
             var positionAvailableTeam1 = !channel.Team1.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
             var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
             if (positionAvailableTeam1 && team == Teams.Team1)
             {
                 channel.Team1.Players.Add(player, position);
-                return $":heavy_plus_sign: Signed **{player.Name}** to **{position}** for **{channel.Team1.Name}**";
+                return $":white_check_mark:  Signed **{player.Name}** to **{position}** for **{channel.Team1.Name}**";
             }
             else if (positionAvailableTeam2 && channel.Team2.IsMix)
             {
                 channel.Team2.Players.Add(player, position);
-                return $":heavy_plus_sign: Signed **{player.Name}** to **{position}** for **{channel.Team2.Name ?? "Mix"}**";
+                return $":white_check_mark:  Signed **{player.Name}** to **{position}** for **{channel.Team2.Name ?? "Mix"}**";
             }
             else
             {
-                return ":exclamation: Position unavailable. Please try again.";
+                return ":no_entry: Position unavailable. Please try again.";
             }
         }
 
         public string RemovePlayer(ulong channelId, IUser user)
         {
-            var player = Channels.First(c => c.Id == channelId).Team1.Players.FirstOrDefault(p => p.Key.DiscordUserId == user.Id);
-            if (player.Key == null) player = Channels.FirstOrDefault(c => c.Id == channelId).Team2.Players.First(p => p.Key.DiscordUserId == user.Id);
-            if (player.Key != null)
+            var channel = Channels.FirstOrDefault(c => c.Id == channelId);
+            if (channel.Team1.Players.Any(p => p.Key.DiscordUserId == user.Id))
             {
-                Channels.First(c => c.Id == channelId).Team1.Players.Remove(player.Key);
-                Channels.First(c => c.Id == channelId).Team2.Players.Remove(player.Key);
-                return $":heavy_minus_sign: Unsigned **{user.Username}**";
+                channel.Team1.Players.Remove(channel.Team1.Players.First(p => p.Key.DiscordUserId == user.Id).Key);
+                return $":negative_squared_cross_mark: Unsigned **{user.Username}**";
             }
-            return $":exclamation: You are not signed {user.Mention}";
+            if (channel.Team2.Players.Any(p => p.Key.DiscordUserId == user.Id))
+            {
+                channel.Team2.Players.Remove(channel.Team2.Players.First(p => p.Key.DiscordUserId == user.Id).Key);
+                return $":negative_squared_cross_mark: Unsigned **{user.Username}**";
+            }
+            return $":no_entry: You are not signed {user.Mention}";
         }
 
         public string RemovePlayer(ulong channelId, string playerName)
         {
-            var player = Channels.FirstOrDefault(c => c.Id == channelId).Team1.Players.First(p => p.Key.Name == playerName);
-            if (player.Key == null) Channels.FirstOrDefault(c => c.Id == channelId).Team2.Players.First(p => p.Key.Name == playerName);
-            if (player.Key != null)
+            var channel = Channels.FirstOrDefault(c => c.Id == channelId);
+            if (channel.Team1.Players.Any(p => p.Key.Name == playerName))
             {
-                Channels.First(c => c.Id == channelId).Team1.Players.Remove(player.Key);
-                Channels.First(c => c.Id == channelId).Team2.Players.Remove(player.Key);
-                return $":heavy_minus_sign: Unsigned **{playerName}**";
+                channel.Team1.Players.Remove(channel.Team1.Players.First(p => p.Key.Name == playerName).Key);
+                return $":negative_squared_cross_mark: Unsigned **{playerName}**";
             }
-            return $":exclamation: **{playerName}** is not signed";
+            if (channel.Team2.Players.Any(p => p.Key.Name == playerName))
+            {
+                channel.Team2.Players.Remove(channel.Team2.Players.First(p => p.Key.Name == playerName).Key);
+                return $":negative_squared_cross_mark: Unsigned **{playerName}**";
+            }
+            return $":no_entry: **{playerName}** is not signed";
         }
 
         public string ChangeOpposition(ulong channelId, Team team)
         {
             var previousOpposition = Channels.First(c => c.Id == channelId).Team2;
             Channels.First(c => c.Id == channelId).Team2 = team;
-            if (team.Name == null && previousOpposition.Name != null) return $":heavy_minus_sign: Opposition removed";
-            if (team.Name == null && previousOpposition.Name == null) return $":exclamation: You must provide a team name to face";
+            if (team.Name == null && previousOpposition.Name != null) return $":negative_squared_cross_mark: Opposition removed";
+            if (team.Name == null && previousOpposition.Name == null) return $":no_entry: You must provide a team name to face";
             return $":busts_in_silhouette: **{team.Name}** are challenging";
         }
 
@@ -185,7 +193,7 @@ namespace CoachBot.Services.Matchmaker
             Channels.FirstOrDefault(c => c.Id == channelId).Team2 = new Team()
             {
                 IsMix = channelConfig.Team2.IsMix,
-                Name = null,
+                Name = channelConfig.Team2.IsMix && channelConfig.Team1.Name.ToLower() == "mix" ? "Mix #2" : channelConfig.Team2.IsMix ? "Mix" : null,
                 Players = new Dictionary<Player, string>()
             };
         }
@@ -194,9 +202,9 @@ namespace CoachBot.Services.Matchmaker
         {
             var channel = Channels.First(c => c.Id == channelId);
             // Need to work out logic for Single GK to make this work properly
-            if (channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count())) return ":exclamation: All positions must be filled";
-            if (channel.Team2.IsMix == false && (channel.Positions.Count()) - 1 > (channel.SignedPlayers.Count())) return ":exclamation: All positions must be filled";
-            if (channel.Team2.Name == null) return ":exclamation: You must set a team to face";
+            if (channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
+            if (channel.Team2.IsMix == false && (channel.Positions.Count()) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
+            if (channel.Team2.Name == null) return ":no_entry: You must set a team to face";
 
             var sb = new StringBuilder();
             var servers = _configService.Config.Servers;
@@ -221,8 +229,8 @@ namespace CoachBot.Services.Matchmaker
 
         public string UnreadyMatch(ulong channelId)
         {
-            if (_lastMatch == null) return ":exclamation: No previous line-up available to revert to";
-            if (_lastMatch.Id != channelId) return ":exclamation: No previous line-up available to revert to";
+            if (_lastMatch == null) return ":no_entry: No previous line-up available to revert to";
+            if (_lastMatch.Id != channelId) return ":no_entry: No previous line-up available to revert to";
 
             Channels.First(c => c.Id == channelId).Positions = _lastMatch.Positions;
             Channels.First(c => c.Id == channelId).Team1 = _lastMatch.Team1;
@@ -236,6 +244,8 @@ namespace CoachBot.Services.Matchmaker
             var embedFooterBuilder = new EmbedFooterBuilder();
             var channel = Channels.First(c => c.Id == channelId);
             var availablePlaceholderText = ":shirt:";
+            if (teamType == Teams.Team2 && (channelId == 252113301004222465 || channelId == 295580567649648641)) availablePlaceholderText = "<:redshirt:318130493755228160>";
+            if (teamType == Teams.Team2 && channelId == 310829524277395457) availablePlaceholderText = "<:redshirt:318114878063902720>";
             var team = teamType == Teams.Team1 ? channel.Team1 : channel.Team2;
             var oppositionTeam = teamType == Teams.Team1 ? channel.Team2 : channel.Team1;
             var builder = new EmbedBuilder().WithTitle($"{team.Name} Team Sheet")
@@ -243,11 +253,11 @@ namespace CoachBot.Services.Matchmaker
                                             .WithCurrentTimestamp();
             if (teamType == Teams.Team1)
             {
-                builder.WithColor(new Color(0x31b610));
+                builder.WithColor(new Color(0x2463b0));
             }
             else
             {
-                builder.WithColor(new Color(0xff0606));
+                builder.WithColor(new Color(0xd60e0e));
             }
 
             if (channel.Positions.Count() == 8 && channel.UseFormation)
@@ -291,7 +301,7 @@ namespace CoachBot.Services.Matchmaker
             }
             else
             {
-                foreach(var position in channel.Positions)
+                foreach (var position in channel.Positions)
                 {
                     var player = team.Players.FirstOrDefault(p => p.Value == position).Key;
                     builder.AddInlineField(player != null ? player.Name : availablePlaceholderText, AddPrefix(position));

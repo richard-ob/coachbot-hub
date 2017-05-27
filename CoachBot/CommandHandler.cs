@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using System.Linq;
+using CoachBot.Model;
 
 namespace CoachBot
 {
@@ -79,6 +80,10 @@ namespace CoachBot
             {
                 await message.Channel.SendMessageAsync(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content.Substring(1))); // Allows wildcard commands for positions
                 await message.Channel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(matchmakerChannel.Id));
+                if (_matchmakerService.Channels.First(c => c.Id == message.Channel.Id).Team2.IsMix)
+                {
+                    await message.Channel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(message.Channel.Id, Teams.Team2));
+                }
             }
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
             {

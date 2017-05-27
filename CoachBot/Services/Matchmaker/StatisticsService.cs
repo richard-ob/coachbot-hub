@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System;
 using System.Linq;
+using Discord;
 
 namespace CoachBot.Services.Matchmaker
 {
@@ -43,15 +44,14 @@ namespace CoachBot.Services.Matchmaker
             Save();
         }
 
-        public string RecentMatches(ulong channelId)
+        public Embed RecentMatches(ulong channelId)
         {
             var recentMatches = MatchHistory.Where(m => m.ChannelId == channelId).OrderByDescending(d => d.MatchDate).Take(10);
-            var sb = new StringBuilder();
-            if (recentMatches == null || !recentMatches.Any()) return "No matches have been played yet. Chill.";
-            sb.AppendLine(":calendar_spiral: Recent Matches:");
+            var embedBuilder = new EmbedBuilder().WithTitle(":calendar_spiral: Recent Matches:");
+            if (recentMatches == null || !recentMatches.Any()) return new EmbedBuilder().WithTitle("No matches have been played yet. Chill.").Build();
             foreach (var recentMatch in recentMatches)
             {
-                sb.Append($"**{recentMatch.Team1Name}** vs **{recentMatch.Team2Name}** - {recentMatch.MatchDate.ToString()} - ");
+                var sb = new StringBuilder();
                 foreach (var player in recentMatch.Players)
                 {
                     if (recentMatch.Players.Last() != player)
@@ -64,9 +64,9 @@ namespace CoachBot.Services.Matchmaker
                     }
                     
                 }
-                sb.AppendLine();
+                embedBuilder.AddField($"**{recentMatch.Team1Name}** vs **{recentMatch.Team2Name}** - {recentMatch.MatchDate.ToString()}", sb.ToString());
             }
-            return sb.ToString();
+            return embedBuilder.Build();
         }
 
         public string AppearanceLeaderboard(ulong channelId)

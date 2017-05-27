@@ -64,7 +64,7 @@ namespace CoachBot
             }
             if (result is PreconditionResult precondition && !precondition.IsSuccess)
             {
-                await message.Channel.SendMessageAsync(precondition.ErrorReason);
+                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(precondition.ErrorReason).WithCurrentTimestamp());
                 await message.AddReactionAsync(EmojiExtensions.FromText(":no_entry:"));
             }
             else if (result is ParseResult parse && !parse.IsSuccess)
@@ -88,7 +88,7 @@ namespace CoachBot
             }
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
             {
-                await message.Channel.SendMessageAsync($"Unknown command, {context.Message.Author.Mention}");
+                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($"Unknown command, {context.Message.Author.Mention}").WithCurrentTimestamp());
             }
             else if (!result.IsSuccess)
             {

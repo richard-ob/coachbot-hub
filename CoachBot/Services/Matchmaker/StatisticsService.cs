@@ -48,7 +48,7 @@ namespace CoachBot.Services.Matchmaker
         {
             var recentMatches = MatchHistory.Where(m => m.ChannelId == channelId).OrderByDescending(d => d.MatchDate).Take(10);
             var embedBuilder = new EmbedBuilder().WithTitle(":calendar_spiral: Recent Matches:");
-            if (recentMatches == null || !recentMatches.Any()) return new EmbedBuilder().WithDescription("No matches have been played yet. Chill.").Build();
+            if (recentMatches == null || !recentMatches.Any()) return new EmbedBuilder().WithDescription(":information_source: No matches have been played yet. Chill.").Build();
             foreach (var recentMatch in recentMatches)
             {
                 var sb = new StringBuilder();
@@ -72,7 +72,7 @@ namespace CoachBot.Services.Matchmaker
         public string AppearanceLeaderboard(ulong channelId)
         {
             var recentMatches = MatchHistory.Where(m => m.ChannelId == channelId);
-            if (recentMatches == null || !recentMatches.Any()) return "No matches have been played yet. Chill.";
+            if (recentMatches == null || !recentMatches.Any()) return ":information_source: No matches have been played yet. Chill.";
             var appearances = new List<Player>();
             foreach (var match in recentMatches)
             {

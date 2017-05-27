@@ -200,7 +200,7 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ResetChannelAsync(params string[] positions)
         {
             _service.ResetMatch(Context.Message.Channel.Id);
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(":negative_squared_cross_mark: Match reset..").WithCurrentTimestamp().Build());
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(":negative_squared_cross_mark: Team sheet reset").WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
             if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {

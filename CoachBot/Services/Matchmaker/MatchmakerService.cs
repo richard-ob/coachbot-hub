@@ -363,14 +363,17 @@ namespace CoachBot.Services.Matchmaker
             {
                 var player = team.Players.FirstOrDefault(p => p.Value == position).Key;
                 var playerName = player != null ? player.Name : "";
-                sb.Append($"{position}: {playerName}");
+                sb.Append($"**{position}**:{playerName} ");
             }
-            if (!string.IsNullOrEmpty(channel.Team2.Name) && teamType == Teams.Team1)
+            if (!string.IsNullOrEmpty(channel.Team2.Name) && teamType == Teams.Team1 && !channel.Team2.IsMix)
             {
-                sb.AppendLine($"vs {channel.Team2.Name}");
+                //var embedFooterBuilder = new EmbedFooterBuilder().WithText($"vs {channel.Team2.Name}");
+                //embedBuilder.AddField($"vs **{channel.Team2.Name}**", "\u200B") ;
+                sb.Append('\n');
+                sb.Append($"vs {channel.Team2.Name}");
             }
 
-            return embedBuilder.WithColor(teamColor).WithDescription(sb.ToString()).Build();
+            return embedBuilder.WithColor(teamColor).WithDescription(sb.ToString()).WithCurrentTimestamp().Build();
         }
 
         public static string AddPrefix(string position)

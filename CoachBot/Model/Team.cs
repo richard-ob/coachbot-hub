@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace CoachBot.Model
 {
@@ -8,6 +9,7 @@ namespace CoachBot.Model
 
         public bool IsMix { get; set; }
 
+        [JsonIgnore]
         public Dictionary<Player, string> Players { get; set; }
 
     }

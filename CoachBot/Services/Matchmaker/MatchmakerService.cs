@@ -36,12 +36,13 @@ namespace CoachBot.Services.Matchmaker
                     {
                         IsMix = channel.Team2.IsMix,
                         Players = new Dictionary<Player, string>()
-                    }
+                    },
+                    UseFormation = channel.UseFormation
                 });
             } 
         }
 
-        public string ConfigureChannel(ulong channelId, string teamName, List<string> positions, bool isMixChannel = false)
+        public string ConfigureChannel(ulong channelId, string teamName, List<string> positions, bool isMixChannel = false, bool useFormation = true)
         {
             if (positions.Count() <= 1) return ":exclamation: You must add at least two positions";
             if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":exclamation: All positions must be unique";
@@ -64,7 +65,8 @@ namespace CoachBot.Services.Matchmaker
                     IsMix = isMixChannel,
                     Name = isMixChannel ? "Mix" : null,
                     Players = new Dictionary<Player, string>()
-                }
+                },
+                UseFormation = useFormation
             };
             Channels.Add(channel);
             _configService.UpdateChannelConfiguration(channel);
@@ -136,7 +138,7 @@ namespace CoachBot.Services.Matchmaker
             }
         }
 
-        public void RemovePlayer(ulong channelId, IUser user)
+        public string RemovePlayer(ulong channelId, IUser user)
         {
             var player = Channels.First(c => c.Id == channelId).Team1.Players.FirstOrDefault(p => p.Key.DiscordUserId == user.Id);
             if (player.Key == null) player = Channels.FirstOrDefault(c => c.Id == channelId).Team2.Players.First(p => p.Key.DiscordUserId == user.Id);
@@ -144,10 +146,12 @@ namespace CoachBot.Services.Matchmaker
             {
                 Channels.First(c => c.Id == channelId).Team1.Players.Remove(player.Key);
                 Channels.First(c => c.Id == channelId).Team2.Players.Remove(player.Key);
+                return $":heavy_minus_sign: Unsigned **{user.Username}**";
             }
+            return $":exclamation: You are not signed {user.Mention}";
         }
 
-        public void RemovePlayer(ulong channelId, string playerName)
+        public string RemovePlayer(ulong channelId, string playerName)
         {
             var player = Channels.FirstOrDefault(c => c.Id == channelId).Team1.Players.First(p => p.Key.Name == playerName);
             if (player.Key == null) Channels.FirstOrDefault(c => c.Id == channelId).Team2.Players.First(p => p.Key.Name == playerName);
@@ -155,7 +159,9 @@ namespace CoachBot.Services.Matchmaker
             {
                 Channels.First(c => c.Id == channelId).Team1.Players.Remove(player.Key);
                 Channels.First(c => c.Id == channelId).Team2.Players.Remove(player.Key);
+                return $":heavy_minus_sign: Unsigned **{playerName}**";
             }
+            return $":exclamation: **{playerName}** is not signed";
         }
 
         public string ChangeOpposition(ulong channelId, Team team)
@@ -224,47 +230,17 @@ namespace CoachBot.Services.Matchmaker
             return ":white_check_mark: Previous line-up restored";
         }
 
-        public Embed GenerateTeamListClassic(ulong channelId)
-        {
-            var teamList = new StringBuilder();
-            var embedFooterBuilder = new EmbedFooterBuilder();
-            var channel = Channels.First(c => c.Id == channelId);
-            foreach (var position in channel.Positions)
-            {
-                var player = channel.Team1.Players.FirstOrDefault(p => p.Value == position).Key;
-                var playerName = player != null ? player.Name : "";
-                teamList.AppendFormat("**{0}**:{1} ", position, playerName);
-            }
-
-            if (channel.Team2.IsMix)
-            {
-                teamList.AppendLine("");
-                foreach (var position in channel.Positions)
-                {
-                    var player = channel.Team2.Players.FirstOrDefault(p => p.Value == position).Key;
-                    var playerName = player != null ? player.Name : "";
-                    teamList.AppendFormat("**{0}**:{1} ", position, playerName);
-                }
-            }
-            else if (channel.Team2.Name != null && !string.IsNullOrEmpty(channel.Team2.Name))
-            {
-                embedFooterBuilder.WithText($"vs {channel.Team2.Name}");
-            }
-            teamList.AppendLine();
-            var builder = new EmbedBuilder().WithTitle($"{channel.Team1.Name} Team List").WithDescription(teamList.ToString()).WithFooter(embedFooterBuilder);
-            return builder.Build();
-        }
-
         public Embed GenerateTeamList(ulong channelId, Teams teamType = Teams.Team1)
         {
             var teamList = new StringBuilder();
             var embedFooterBuilder = new EmbedFooterBuilder();
             var channel = Channels.First(c => c.Id == channelId);
-            var availablePlaceholderText = ":grey_question:";
+            var availablePlaceholderText = ":shirt:";
             var team = teamType == Teams.Team1 ? channel.Team1 : channel.Team2;
             var oppositionTeam = teamType == Teams.Team1 ? channel.Team2 : channel.Team1;
-            var builder = new EmbedBuilder().WithTitle($"{team.Name} Team List")
-                                            .WithDescription(oppositionTeam.Name != null ? $"vs {oppositionTeam.Name}" : "");
+            var builder = new EmbedBuilder().WithTitle($"{team.Name} Team Sheet")
+                                            .WithDescription(oppositionTeam.Name != null ? $"vs {oppositionTeam.Name}" : "")
+                                            .WithCurrentTimestamp();
             if (teamType == Teams.Team1)
             {
                 builder.WithColor(new Color(0x31b610));
@@ -274,7 +250,7 @@ namespace CoachBot.Services.Matchmaker
                 builder.WithColor(new Color(0xff0606));
             }
 
-            if (channel.Positions.Count() == 8)
+            if (channel.Positions.Count() == 8 && channel.UseFormation)
             {
                 builder.AddInlineField("\u200B", "\u200B");
                 var player8 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[7]).Key;
@@ -297,7 +273,7 @@ namespace CoachBot.Services.Matchmaker
                 builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0]));
                 builder.AddInlineField("\u200B", "\u200B");
             }
-            else if (channel.Positions.Count() == 4)
+            else if (channel.Positions.Count() == 4 && channel.UseFormation)
             {
                 builder.AddInlineField("\u200B", "\u200B");
                 var player4 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[3]).Key;
@@ -315,7 +291,15 @@ namespace CoachBot.Services.Matchmaker
             }
             else
             {
-                return GenerateTeamListClassic(channelId);
+                foreach(var position in channel.Positions)
+                {
+                    var player = team.Players.FirstOrDefault(p => p.Value == position).Key;
+                    builder.AddInlineField(player != null ? player.Name : availablePlaceholderText, AddPrefix(position));
+                }
+                if (channel.Positions.Count() % 3 == 2) // Ensure that two-column fields are three-columns to ugly alignment
+                {
+                    builder.AddInlineField("\u200B", "\u200B");
+                }
             }
             return builder.Build();
         }

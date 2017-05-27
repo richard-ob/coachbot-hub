@@ -14,6 +14,8 @@ namespace CoachBot.Model
 
         public Team Team2 { get; set; }
 
+        public bool UseFormation { get; set; }
+
         [JsonIgnore]
         public IEnumerable<Player> SignedPlayers
         {

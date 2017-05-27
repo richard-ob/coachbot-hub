@@ -120,8 +120,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task UnsignAsync()
         {
-            _service.RemovePlayer(Context.Channel.Id, Context.Message.Author);
-            await ReplyAsync($":heavy_minus_sign: Unsigned {Context.Message.Author.Username}");
+            await ReplyAsync(_service.RemovePlayer(Context.Channel.Id, Context.Message.Author));
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
             if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
@@ -135,8 +134,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task UnsignAsync(string name)
         {
-            _service.RemovePlayer(Context.Channel.Id, name);
-            await ReplyAsync($":heavy_minus_sign: Unsigned {Context.Message.Author.Username}");
+            await ReplyAsync(_service.RemovePlayer(Context.Channel.Id, name));
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
             if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
@@ -185,7 +183,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!configure")]
         [Priority(1000)]
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
-        public async Task ConfigureChannelAsync(string teamName, bool isMixChannel = false, params string[] positions)
+        public async Task ConfigureChannelAsync(string teamName, bool isMixChannel = false, bool useFormation = true, params string[] positions)
         {
             await ReplyAsync(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.ToList(), isMixChannel));
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
@@ -317,7 +315,7 @@ namespace CoachBot.Modules.Matchmaker
             sb.AppendLine("**!removeserver <ip:port> <name>** - *Remove specified server to the server list*");
             sb.AppendLine("**!recentmatches** - *See a list of recent matches played*");
             sb.AppendLine("**!leaderboard** - *See the appearance rankings for this channel*");
-            sb.AppendLine("**!configure <team name> <is a mix channel> <positions>** ***e.g. !configure BB false GK RB CB LB RW CM LW CF*** - *Configure the current channel's matchmaking settings*");
+            sb.AppendLine("**!configure <team name> <is a mix channel> <use formation on team sheet> <positions>** ***e.g. !configure BB false true GK RB CB LB RW CM LW CF*** - *Configure the current channel's matchmaking settings*");
             await ReplyAsync(sb.ToString());
 
         }

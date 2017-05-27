@@ -48,7 +48,7 @@ namespace CoachBot.Services.Matchmaker
         {
             var recentMatches = MatchHistory.Where(m => m.ChannelId == channelId).OrderByDescending(d => d.MatchDate).Take(10);
             var embedBuilder = new EmbedBuilder().WithTitle(":calendar_spiral: Recent Matches:");
-            if (recentMatches == null || !recentMatches.Any()) return new EmbedBuilder().WithTitle("No matches have been played yet. Chill.").Build();
+            if (recentMatches == null || !recentMatches.Any()) return new EmbedBuilder().WithDescription("No matches have been played yet. Chill.").Build();
             foreach (var recentMatch in recentMatches)
             {
                 var sb = new StringBuilder();

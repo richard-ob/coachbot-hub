@@ -16,6 +16,8 @@ namespace CoachBot.Model
 
         public bool UseFormation { get; set; }
 
+        public bool ClassicLineup { get; set; }
+
         [JsonIgnore]
         public IEnumerable<Player> SignedPlayers
         {

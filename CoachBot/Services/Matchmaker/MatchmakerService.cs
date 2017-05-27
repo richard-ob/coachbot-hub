@@ -39,12 +39,13 @@ namespace CoachBot.Services.Matchmaker
                         Name = channel.Team2.IsMix && channel.Team1.Name.ToLower() == "mix" ? "Mix #2" : channel.Team2.IsMix ? "Mix" : null,
                         Players = new Dictionary<Player, string>()
                     },
-                    UseFormation = channel.UseFormation
+                    UseFormation = channel.UseFormation,
+                    ClassicLineup = channel.ClassicLineup
                 });
             } 
         }
 
-        public string ConfigureChannel(ulong channelId, string teamName, List<string> positions, bool isMixChannel = false, bool useFormation = true)
+        public string ConfigureChannel(ulong channelId, string teamName, List<string> positions, bool isMixChannel = false, bool useFormation = true, bool classicLineup = true)
         {
             if (positions.Count() <= 1) return ":no_entry: You must add at least two positions";
             if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":no_entry: All positions must be unique";
@@ -68,7 +69,8 @@ namespace CoachBot.Services.Matchmaker
                     Name = isMixChannel && teamName.ToLower() == "mix" ? "Mix #2" : isMixChannel ? "Mix" : null,
                     Players = new Dictionary<Player, string>()
                 },
-                UseFormation = useFormation
+                UseFormation = useFormation,
+                ClassicLineup = classicLineup
             };
             Channels.Add(channel);
             _configService.UpdateChannelConfiguration(channel);
@@ -243,6 +245,7 @@ namespace CoachBot.Services.Matchmaker
             var teamList = new StringBuilder();
             var embedFooterBuilder = new EmbedFooterBuilder();
             var channel = Channels.First(c => c.Id == channelId);
+            if (channel.ClassicLineup) return GenerateTeamListVintage(channelId, teamType);
             var availablePlaceholderText = ":shirt:";
             if (teamType == Teams.Team2 && (channelId == 252113301004222465 || channelId == 295580567649648641)) availablePlaceholderText = "<:redshirt:318130493755228160>";
             if (teamType == Teams.Team2 && channelId == 310829524277395457) availablePlaceholderText = "<:redshirt:318114878063902720>";
@@ -312,6 +315,62 @@ namespace CoachBot.Services.Matchmaker
                 }
             }
             return builder.Build();
+        }
+
+        public Embed GenerateTeamListClassic(ulong channelId, Teams teamType = Teams.Team1)
+        {
+            var teamList = new StringBuilder();
+            var embedBuilder = new EmbedBuilder();
+            var channel = Channels.First(c => c.Id == channelId);
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"{channel.Team1.Name} Team List");
+            foreach (var position in channel.Positions)
+            {
+                var player = channel.Team1.Players.FirstOrDefault(p => p.Value == position).Key;
+                var playerName = player != null ? player.Name : "";
+                sb.Append($"{position}: {playerName}");
+            }
+            if (channel.Team2.IsMix)
+            {
+                var team2Name = channel.Team2.Name ?? "Mix #2";
+                sb.AppendLine($"{channel.Team2.Name} Team List");
+                foreach (var position in channel.Positions)
+                {
+                    var player = channel.Team2.Players.FirstOrDefault(p => p.Value == position).Key;
+                    var playerName = player != null ? player.Name : "";
+                    sb.Append($"{position}: {playerName}");
+                }
+            }
+            else if (!string.IsNullOrEmpty(channel.Team2.Name))
+            {
+                sb.AppendLine($"vs {channel.Team2.Name}");
+            }
+
+            return embedBuilder.WithDescription(sb.ToString()).Build();
+        }
+
+        public Embed GenerateTeamListVintage(ulong channelId, Teams teamType = Teams.Team1)
+        {
+            var teamList = new StringBuilder();
+            var channel = Channels.First(c => c.Id == channelId);
+            var team = teamType == Teams.Team1 ? channel.Team1 : channel.Team2; 
+            var sb = new StringBuilder();
+            var teamColor = new Color(teamType == Teams.Team1 ? (uint)0x2463b0 : (uint)0xd60e0e);
+
+            var embedBuilder = new EmbedBuilder().WithTitle($"{team.Name} Team List");
+            foreach(var position in channel.Positions)
+            {
+                var player = team.Players.FirstOrDefault(p => p.Value == position).Key;
+                var playerName = player != null ? player.Name : "";
+                sb.Append($"{position}: {playerName}");
+            }
+            if (!string.IsNullOrEmpty(channel.Team2.Name) && teamType == Teams.Team1)
+            {
+                sb.AppendLine($"vs {channel.Team2.Name}");
+            }
+
+            return embedBuilder.WithColor(teamColor).WithDescription(sb.ToString()).Build();
         }
 
         public static string AddPrefix(string position)

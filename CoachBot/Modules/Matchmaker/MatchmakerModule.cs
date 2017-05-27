@@ -184,9 +184,9 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!configure")]
         [Priority(1000)]
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
-        public async Task ConfigureChannelAsync(string teamName, bool isMixChannel = false, bool useFormation = true, params string[] positions)
+        public async Task ConfigureChannelAsync(string teamName, bool isMixChannel = false, bool useFormation = true, bool classicLineup = true, params string[] positions)
         {
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.ToList(), isMixChannel)).WithCurrentTimestamp().Build());
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.ToList(), isMixChannel, useFormation, classicLineup)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
             if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {

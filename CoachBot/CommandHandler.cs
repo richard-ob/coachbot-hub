@@ -11,6 +11,7 @@ using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using System.Linq;
 using CoachBot.Model;
+using Discord;
 
 namespace CoachBot
 {
@@ -78,7 +79,7 @@ namespace CoachBot
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand 
                      && matchmakerChannel.Positions.Any(p => context.Message.Content.Substring(1).ToUpper().Contains(p)))
             {
-                await message.Channel.SendMessageAsync(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content.Substring(1))); // Allows wildcard commands for positions
+                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content.Substring(1))).WithCurrentTimestamp().Build()); // Allows wildcard commands for positions
                 await message.Channel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(matchmakerChannel.Id));
                 if (_matchmakerService.Channels.First(c => c.Id == message.Channel.Id).Team2.IsMix)
                 {

@@ -74,7 +74,7 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!recentmatches", "See a list of recent matches played");
             embedBuilder.AddField("!leaderboard", "See the appearance rankings for this channel");
             embedBuilder.AddField("!configure <team name> <positions> (e.g. !configure BB GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings");
-            embedBuilder.AddField("!configure <team name> <is a mix channel> <use formation on team sheet> <positions> (e.g. !configure BB false true GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings");
+            embedBuilder.AddField("!configure <team name> <is a mix channel> <use formation on team sheet> <use classic team sheet view> <positions> (e.g. !configure BB false true false GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings");
             return embedBuilder.Build();
         }
 

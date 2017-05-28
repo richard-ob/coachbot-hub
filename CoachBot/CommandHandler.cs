@@ -69,12 +69,12 @@ namespace CoachBot
             }
             else if (result is ParseResult parse && !parse.IsSuccess)
             {
-                await message.Channel.SendMessageAsync(parse.ErrorReason);
+                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: {parse.ErrorReason}").WithCurrentTimestamp().Build());
                 await message.AddReactionAsync(EmojiExtensions.FromText(":x:"));                
             }
             else if (result is TypeReaderResult reader && !reader.IsSuccess)
             {
-                await message.Channel.SendMessageAsync($"Read Error: {reader.ErrorReason}");
+                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: Read Error: {reader.ErrorReason}").WithCurrentTimestamp().Build());
             }
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand 
                      && matchmakerChannel.Positions.Any(p => context.Message.Content.Substring(1).ToUpper().Contains(p)))
@@ -88,11 +88,11 @@ namespace CoachBot
             }
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
             {
-                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($"Unknown command, {context.Message.Author.Mention}").WithCurrentTimestamp());
+                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: Unknown command, {context.Message.Author.Mention}").WithCurrentTimestamp());
             }
             else if (!result.IsSuccess)
             {
-                await message.Channel.SendMessageAsync(result.ErrorReason);
+                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: {result.ErrorReason}").WithCurrentTimestamp().Build());
                 await message.AddReactionAsync(EmojiExtensions.FromText(":rage:"));
             }
 

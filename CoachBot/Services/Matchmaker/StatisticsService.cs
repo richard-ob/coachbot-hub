@@ -47,7 +47,7 @@ namespace CoachBot.Services.Matchmaker
         public Embed RecentMatches(ulong channelId)
         {
             var recentMatches = MatchHistory.Where(m => m.ChannelId == channelId).OrderByDescending(d => d.MatchDate).Take(10);
-            var embedBuilder = new EmbedBuilder().WithTitle(":calendar_spiral: Recent Matches:");
+            var embedBuilder = new EmbedBuilder().WithTitle(":calendar_spiral: Recent Matches");
             if (recentMatches == null || !recentMatches.Any()) return new EmbedBuilder().WithDescription(":information_source: No matches have been played yet. Chill.").Build();
             foreach (var recentMatch in recentMatches)
             {
@@ -89,7 +89,7 @@ namespace CoachBot.Services.Matchmaker
             }
             var top10 = leaderboard.OrderByDescending(p => p.Item2).Take(10);
             var sb = new StringBuilder();
-            sb.AppendLine(":trophy: Leaderboard:");
+            sb.AppendLine(":trophy: **Leaderboard**");
             var rank = 1;
             foreach(var player in top10)
             {

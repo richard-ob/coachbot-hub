@@ -323,12 +323,13 @@ namespace CoachBot.Services.Matchmaker
             var embedBuilder = new EmbedBuilder();
             var channel = Channels.First(c => c.Id == channelId);
             var sb = new StringBuilder();
+            var emptyPos = ":grey_question:";
 
             sb.AppendLine($"{channel.Team1.Name} Team List");
             foreach (var position in channel.Positions)
             {
                 var player = channel.Team1.Players.FirstOrDefault(p => p.Value == position).Key;
-                var playerName = player != null ? player.Name : "";
+                var playerName = player != null ? player.Name : emptyPos;
                 sb.Append($"{position}: {playerName}");
             }
             if (channel.Team2.IsMix)
@@ -338,7 +339,7 @@ namespace CoachBot.Services.Matchmaker
                 foreach (var position in channel.Positions)
                 {
                     var player = channel.Team2.Players.FirstOrDefault(p => p.Value == position).Key;
-                    var playerName = player != null ? player.Name : "";
+                    var playerName = player != null ? player.Name : emptyPos;
                     sb.Append($"{position}: {playerName}");
                 }
             }
@@ -357,13 +358,14 @@ namespace CoachBot.Services.Matchmaker
             var team = teamType == Teams.Team1 ? channel.Team1 : channel.Team2; 
             var sb = new StringBuilder();
             var teamColor = new Color(teamType == Teams.Team1 ? (uint)0x2463b0 : (uint)0xd60e0e);
+            var emptyPos = ":grey_question:";
 
             var embedBuilder = new EmbedBuilder().WithTitle($"{team.Name} Team List");
             foreach(var position in channel.Positions)
             {
                 var player = team.Players.FirstOrDefault(p => p.Value == position).Key;
-                var playerName = player != null ? player.Name : "";
-                sb.Append($"**{position}**:{playerName} ");
+                var playerName = player != null ? $"**{player.Name}**" : emptyPos;
+                sb.Append($"{position}:{playerName} ");
             }
             if (!string.IsNullOrEmpty(channel.Team2.Name) && teamType == Teams.Team1 && !channel.Team2.IsMix)
             {

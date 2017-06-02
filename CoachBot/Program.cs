@@ -76,7 +76,41 @@ namespace CoachBot
             _handler = new CommandHandler(serviceProvider);
             await _handler.ConfigureAsync();
 
-            await Task.Delay(-1);
+            var command = "";
+            while (command != "exit")
+            {
+                command = Console.ReadLine();
+                if (command.StartsWith("say "))
+                {
+                    SendGlobalMessage(command.Substring(4), ":speech_balloon:");
+                }
+                if (command.StartsWith("changelog "))
+                {
+                    SendGlobalMessage(command.Substring(10), ":notepad_spiral: **Changelog**");
+                }
+                if (command.Equals("help"))
+                {
+                    Console.WriteLine("Commands:");
+                    Console.WriteLine("---------");
+                    Console.WriteLine("say <message> [sends a global message to all channels where matchmaking is enabled]");
+                    Console.WriteLine("changelog <change> [sends a global message notifying of a change]");
+                }
+            }
+        }
+
+        private void SendGlobalMessage(string message, string prefix = "")
+        {
+            foreach (var server in _client.Guilds)
+            {
+                foreach (var channel in server.Channels)
+                {
+                    var textChannel = _client.GetChannel(channel.Id) as ITextChannel;
+                    if (textChannel != null && _configService.Config.Channels.Any(c => c.Id == channel.Id))
+                    {
+                        textChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($"{prefix} {message}").WithCurrentTimestamp().Build());
+                    }
+                }
+            }
         }
 
         private Task BotReady()

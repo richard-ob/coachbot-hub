@@ -25,7 +25,6 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!sign")]
         [Alias("!s")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task SignAsync()
         {
@@ -39,7 +38,6 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!sign")]
         [Alias("!s")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task SignAsync(string position)
         {
@@ -53,7 +51,6 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!sign")]
         [Alias("!s")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task CounterSignAsync(string position, [Remainder]string name)
         {
@@ -75,7 +72,6 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!sign2")]
         [Alias("!s2")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task SignTeam2Async()
         {
@@ -89,7 +85,6 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!sign2")]
         [Alias("!s2")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task SignTeam2Async(string position)
         {
@@ -103,7 +98,6 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!sign2")]
         [Alias("!s2")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task CounterSignTeam2Async(string position, [Remainder]string name)
         {
@@ -117,7 +111,6 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!unsign")]
         [Alias("!us", "!u", "!r", "!remove")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task UnsignAsync()
         {
@@ -131,9 +124,8 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!unsign")]
         [Alias("!us", "!u", "!r", "!remove")]
-        [Priority(1000)]
         [RequireChannelConfigured]
-        public async Task UnsignAsync(string name)
+        public async Task UnsignAsync([Remainder]string name)
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.RemovePlayer(Context.Channel.Id, name)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
@@ -144,7 +136,6 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!vsmix")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task VsMixAsync()
         {
@@ -163,9 +154,9 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!vs")]
-        [Priority(1000)]
+        [Alias("!removevs", "!vsremove")]
         [RequireChannelConfigured]
-        public async Task VsAsync(string teamName = null)
+        public async Task VsAsync([Remainder]string teamName = null)
         {
             var team = new Team()
             {
@@ -182,11 +173,22 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!configure")]
-        [Priority(1000)]
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
-        public async Task ConfigureChannelAsync(string teamName, bool isMixChannel = false, bool useFormation = true, bool classicLineup = true, params string[] positions)
+        public async Task ConfigureChannelAsync(string teamName, string kitEmote, string color, Formation formation, bool isMixChannel, params string[] positions)
         {
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.ToList(), isMixChannel, useFormation, classicLineup)).WithCurrentTimestamp().Build());
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.ToList(), kitEmote, color, isMixChannel, formation, false)).WithCurrentTimestamp().Build());
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
+        }
+
+        [Command("!configurebasic")]
+        [RequireUserPermission(Discord.GuildPermission.Administrator)]
+        public async Task ConfigureChannelAsync(string teamName, params string[] positions)
+        {
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.ToList(), null, null, false, Formation.None, true)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
             if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
@@ -195,7 +197,6 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!reset")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task ResetChannelAsync(params string[] positions)
         {
@@ -209,7 +210,6 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!ready")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task ReadyAsync()
         {
@@ -217,7 +217,6 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!unready")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task UnreadyAsync()
         {
@@ -225,16 +224,14 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!ready")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task ReadyAsync(int serverId)
         {
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ReadyMatch(Context.Message.Channel.Id, serverId)).WithCurrentTimestamp().Build());
+            await ReplyAsync(_service.ReadyMatch(Context.Message.Channel.Id, serverId));
         }
 
         [Command("!list")]
         [Alias("!teamlist", "!teamsheet", "!teamlists", "!teamsheets", "!lineup!")]
-        [Priority(1000)]
         [RequireChannelConfigured]
         public async Task ListAsync(params string[] positions)
         {
@@ -246,7 +243,6 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!servers")]
-        [Priority(1000)]
         public async Task ServersAsync()
         {
             await ReplyAsync("", embed: _configService.ReadServerList());
@@ -254,7 +250,6 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!addserver")]
         [Alias("!addsv")]
-        [Priority(1000)]
         public async Task AddServerAsync(string ip, [Remainder]string name)
         {
             var server = new Server()
@@ -267,7 +262,6 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!removeserver")]
         [Alias("!rmsv")]
-        [Priority(1000)]
         public async Task RemoveServerAsync(string ip, [Remainder]string name)
         {
             var server = new Server()
@@ -279,24 +273,67 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!recentmatches")]
-        [Priority(1000)]
         public async Task RecentMatchesAsync()
         {
             await ReplyAsync("", embed: _statisticsService.RecentMatches(Context.Channel.Id));
         }
 
         [Command("!leaderboard")]
-        [Priority(1000)]
         public async Task AppearanceLeaderboardAsync()
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_statisticsService.AppearanceLeaderboard(Context.Channel.Id)).Build());
         }
 
+        [Command("!formations")]
+        public async Task FormationsAsync()
+        {
+            await ReplyAsync("", embed: _configService.ListFormations());
+        }
+
+        [Command("!colours")]
+        public async Task ColoursAsync()
+        {
+            await ReplyAsync("", embed: _configService.ListColours());
+        }
+
         [Command("!help")]
-        [Priority(1000)]
         public async Task HelpAsync()
         {
-            await ReplyAsync("", embed: _configService.ListCommands());
+            IDMChannel dmChannel = await Context.Message.Author.CreateDMChannelAsync();
+            await dmChannel.SendMessageAsync("", embed: _configService.ListCommands());
+        }
+
+        [Command("!sub")]
+        public async Task SubAsync()
+        {
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.AddSub(Context.Channel.Id, Context.Message.Author)).WithCurrentTimestamp().Build());
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
+        }
+
+        [Command("!unsub")]
+        public async Task UnsubAsync()
+        {
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.RemoveSub(Context.Channel.Id, Context.Message.Author)).WithCurrentTimestamp().Build());
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
+        }
+
+        [Command("!unsub")]
+        public async Task UnsubAsync([Remainder]string playerName)
+        {
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.RemoveSub(Context.Channel.Id, playerName)).WithCurrentTimestamp().Build());
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
         }
     }
 }

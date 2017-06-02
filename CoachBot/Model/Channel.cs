@@ -14,7 +14,7 @@ namespace CoachBot.Model
 
         public Team Team2 { get; set; }
 
-        public bool UseFormation { get; set; }
+        public Formation Formation { get; set; }
 
         public bool ClassicLineup { get; set; }
 

@@ -54,6 +54,7 @@ namespace CoachBot
             var context = new SocketCommandContext(_client, message);
             var result = await _commands.ExecuteAsync(context, argPos, _provider);
             var matchmakerChannel = _matchmakerService.Channels.FirstOrDefault(c => c.Id == context.Channel.Id);
+            Console.WriteLine($"[{message.Channel.Name} ({context.Guild.Name})] {message.Timestamp.ToString()}: @{message.Author.Username} {message.Content}");
             try
             {
                 await message.DeleteAsync();

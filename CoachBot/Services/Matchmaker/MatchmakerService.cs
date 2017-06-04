@@ -291,7 +291,7 @@ namespace CoachBot.Services.Matchmaker
             }
             else
             {
-               return ":no_entry: Please supply a server id (e.g. !server 3). Type !servers for the server list.";
+               return ":no_entry: Please supply a server number (e.g. !ready 3). Type !servers for the server list.";
             }
             sb.AppendLine();
             ResetMatch(channelId);

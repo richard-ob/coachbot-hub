@@ -33,8 +33,13 @@ namespace CoachBot.Services.Matchmaker
             return $"{server.Name} added to the server list";
         }
 
-        public string RemoveServer(Server server)
+        public string RemoveServer(int id)
         {
+            if (id > Config.Servers.Count)
+            {
+                return $"Server #{id} is not a valid server id";
+            }
+            var server = Config.Servers[id - 1];
             Config.Servers.Remove(server);
             Save();
             return $"{server.Name} removed from the server list";
@@ -73,10 +78,10 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!reset", "Manually reset the match");
             embedBuilder.AddField("!servers", "See the full available server list");
             embedBuilder.AddField("!addserver <ip:port> <name>", "Add a server to the server list");
-            embedBuilder.AddField("!removeserver <ip:port> <name>", "Remove specified server to the server list");
+            embedBuilder.AddField("!removeserver <server id>", "Remove specified server to the server list");
             embedBuilder.AddField("!recentmatches", "See a list of recent matches played");
             embedBuilder.AddField("!leaderboard", "See the appearance rankings for this channel");
-            embedBuilder.AddField("!configurebasic <team name> <positions> (e.g. !configure BB GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings (classic team list view and not a mix channel)");
+            embedBuilder.AddField("!configurebasic <team name> <positions> (e.g. !configurebasic BB GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings (classic team list view and not a mix channel)");
             embedBuilder.AddField("!configure <team name/team emote> <kit emote> <colour> <formation id> <is a mix channel> <positions> (e.g. !configure :bb: :bbshirt: blue 1 false GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with customised team sheet view. Type !formations for a list of formations.");
             embedBuilder.AddField("!formations", "See the list of possible formations for the team sheet view");
             embedBuilder.AddField("!colours", "See a list of colours available for the teamsheet border");

@@ -262,14 +262,10 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!removeserver")]
         [Alias("!rmsv")]
-        public async Task RemoveServerAsync(string ip, [Remainder]string name)
+        [RequireUserPermission(Discord.GuildPermission.Administrator)]
+        public async Task RemoveServerAsync(int id)
         {
-            var server = new Server()
-            {
-                Address = ip,
-                Name = name
-            };
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_configService.RemoveServer(server)).Build());
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_configService.RemoveServer(id)).Build());
         }
 
         [Command("!recentmatches")]

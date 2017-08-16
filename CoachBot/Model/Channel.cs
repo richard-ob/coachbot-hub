@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,9 @@ namespace CoachBot.Model
         public Formation Formation { get; set; }
 
         public bool ClassicLineup { get; set; }
+
+        [JsonIgnore]
+        public DateTime? LastHereMention { get; set; }
 
         [JsonIgnore]
         public IEnumerable<Player> SignedPlayers

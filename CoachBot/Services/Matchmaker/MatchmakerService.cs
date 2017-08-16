@@ -267,6 +267,7 @@ namespace CoachBot.Services.Matchmaker
                 Name = channelConfig.Team2.IsMix && channelConfig.Team1.Name.ToLower() == "mix" ? "Mix #2" : channelConfig.Team2.IsMix ? "Mix" : null,
                 Players = new Dictionary<Player, string>()
             };
+            Channels.FirstOrDefault(c => c.Id == channelId).LastHereMention = null;
         }
 
         public string ReadyMatch(ulong channelId, int? serverId = null)
@@ -307,6 +308,20 @@ namespace CoachBot.Services.Matchmaker
             Channels.First(c => c.Id == channelId).Team1 = _lastMatch.Team1;
             Channels.First(c => c.Id == channelId).Team2 = _lastMatch.Team2;
             return ":white_check_mark: Previous line-up restored";
+        }
+
+        public string MentionHere(ulong channelId)
+        {
+            var channel = Channels.First(c => c.Id == channelId);
+            if (channel.LastHereMention == null || channel.LastHereMention < DateTime.Now.AddMinutes(-15))
+            {
+                channel.LastHereMention = DateTime.Now;
+                return "@here";
+            }
+            else
+            {
+                return $"The last channel highlight was less than 15 minutes ago ({String.Format("{0:T}", channel.LastHereMention)})";
+            }
         }
 
         public Embed GenerateTeamList(ulong channelId, Teams teamType = Teams.Team1)

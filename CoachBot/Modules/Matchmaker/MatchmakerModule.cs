@@ -242,6 +242,14 @@ namespace CoachBot.Modules.Matchmaker
             }
         }
 
+        [Command("!here")]
+        [Alias("!highlight")]
+        [RequireChannelConfigured]
+        public async Task MentionHereAsync()
+        {
+            await ReplyAsync(_service.MentionHere(Context.Message.Channel.Id));
+        }
+
         [Command("!servers")]
         public async Task ServersAsync()
         {

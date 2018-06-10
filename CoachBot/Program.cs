@@ -157,8 +157,8 @@ namespace CoachBot
                     }
                     if (player.DiscordUserId != null)
                     {
-                        //var dmChannel = _client.GetUser((ulong)player.DiscordUserId).CreateDMChannelAsync() as IDMChannel;
-                        //dmChannel.SendMessageAsync($"You've been unsigned from the line-up in {textChannel.Name} as you have gone offline. Sorry champ.");
+                        var dmChannel = _client.GetUser((ulong)player.DiscordUserId).GetOrCreateDMChannelAsync() as IDMChannel;
+                        dmChannel.SendMessageAsync($"You've been unsigned from the line-up in {textChannel.Name} as you have gone offline. Sorry champ.");
                     }
                 }
                 var sub = channel.Team1.Substitutes.FirstOrDefault(p => p.DiscordUserId == userPost.Id);

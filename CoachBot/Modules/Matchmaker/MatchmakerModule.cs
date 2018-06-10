@@ -303,8 +303,8 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!help")]
         public async Task HelpAsync()
         {
-            //IDMChannel dmChannel = await Context.Message.Author.CreateDMChannelAsync();
-            //await dmChannel.SendMessageAsync("", embed: _configService.ListCommands());
+            IDMChannel dmChannel = await Context.Message.Author.GetOrCreateDMChannelAsync();
+            await dmChannel.SendMessageAsync("", embed: _configService.ListCommands());
         }
 
         [Command("!sub")]

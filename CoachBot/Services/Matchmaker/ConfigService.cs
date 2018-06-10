@@ -81,8 +81,9 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!removeserver <server id>", "Remove specified server to the server list");
             embedBuilder.AddField("!recentmatches", "See a list of recent matches played");
             embedBuilder.AddField("!leaderboard", "See the appearance rankings for this channel");
-            embedBuilder.AddField("!configurebasic <team name> <positions> (e.g. !configurebasic BB GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings (classic team list view and not a mix channel)");
-            embedBuilder.AddField("!configure <team name/team emote> <kit emote> <colour> <formation id> <is a mix channel> <positions> (e.g. !configure :bb: :bbshirt: blue 1 false GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with customised team sheet view. Type !formations for a list of formations.");
+            embedBuilder.AddField("!configure <team name> <positions> (e.g. !configurebasic BB GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings (classic team list view and isn't a mix)");
+            embedBuilder.AddField("!configuremix <positions> (e.g. !configurebasic GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings for a mix channel (classic team list view and is a mix)");
+            embedBuilder.AddField("!configureadvanced <team name/team emote> <kit emote> <colour> <formation id> <is a mix channel> <positions> (e.g. !configure :bb: :bbshirt: blue 1 false GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with customised team sheet view. Type !formations for a list of formations.");
             embedBuilder.AddField("!formations", "See the list of possible formations for the team sheet view");
             embedBuilder.AddField("!colours", "See a list of colours available for the teamsheet border");
             return embedBuilder.Build();

@@ -172,7 +172,7 @@ namespace CoachBot.Modules.Matchmaker
             }
         }
 
-        [Command("!configure")]
+        [Command("!configureadvanced")]
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
         public async Task ConfigureChannelAsync(string teamName, string kitEmote, string color, Formation formation, bool isMixChannel, params string[] positions)
         {
@@ -184,7 +184,19 @@ namespace CoachBot.Modules.Matchmaker
             }
         }
 
-        [Command("!configurebasic")]
+        [Command("!configuremix")]
+        [RequireUserPermission(Discord.GuildPermission.Administrator)]
+        public async Task ConfigureChannelAsync(params string[] positions)
+        {
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, "Mix", positions.ToList(), null, null, true, Formation.None, true)).WithCurrentTimestamp().Build());
+            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
+            if (_service.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            {
+                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
+        }
+
+        [Command("!configure")]
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
         public async Task ConfigureChannelAsync(string teamName, params string[] positions)
         {

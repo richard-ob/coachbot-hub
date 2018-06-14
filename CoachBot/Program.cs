@@ -11,6 +11,10 @@ using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using System.Linq;
 using CoachBot.Model;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore;
 
 namespace CoachBot
 {
@@ -23,20 +27,25 @@ namespace CoachBot
         private CommandHandler _handler;
         private MatchmakerService _matchmakerService;
         private ConfigService _configService;
+        public IServiceProvider serviceProvider;
 
         private ulong _lastAfkCheckUser = 0;
 
         private async Task RunAsync()
-        {
-            _client = new DiscordSocketClient(new DiscordSocketConfig
-            {
-                LogLevel = LogSeverity.Debug
-            });
+        {            
+            var host = WebHost
+              .CreateDefaultBuilder()
+              .UseKestrel()
+              .UseStartup<WebStartup>()
+              .UseUrls("http://*:5006")
+              .Build();
+            host.Start();
 
-            var serviceProvider = ConfigureServices();
+            _configService = host.Services.GetService<ConfigService>();
+            _matchmakerService = host.Services.GetService<MatchmakerService>();
+            _client = host.Services.GetService<DiscordSocketClient>();
 
-            _configService = serviceProvider.GetService<ConfigService>();
-            _matchmakerService = serviceProvider.GetService<MatchmakerService>();
+
             Console.WriteLine("Connecting..");
             await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
             await _client.StartAsync();
@@ -46,7 +55,8 @@ namespace CoachBot
                 return Task.CompletedTask;
             };
             _client.Ready += BotReady;
-            _client.GuildMemberUpdated += (userPre, userPost) => {
+            _client.GuildMemberUpdated += (userPre, userPost) =>
+            {
                 if (_lastAfkCheckUser == userPost.Id) return Task.CompletedTask;
                 _lastAfkCheckUser = userPost.Id;
                 if (userPost.Status.Equals(UserStatus.Online)) return Task.CompletedTask;
@@ -73,7 +83,7 @@ namespace CoachBot
                 return Task.CompletedTask;
             };
 
-            _handler = new CommandHandler(serviceProvider);
+            _handler = new CommandHandler(host.Services);
             await _handler.ConfigureAsync();
 
             var command = "";
@@ -194,7 +204,7 @@ namespace CoachBot
             return Task.CompletedTask;
         }
 
-        private IServiceProvider ConfigureServices()
+        private IServiceProvider ConfigureServices(IServiceProvider serviceProvider)
         {
             // Configure logging
             var logger = LogAdaptor.CreateLogger();
@@ -203,7 +213,7 @@ namespace CoachBot
             // Configure services
             var services = new ServiceCollection()
                 .AddSingleton(_client)
-                .AddSingleton(new CommandService(new CommandServiceConfig { CaseSensitiveCommands = false, ThrowOnError = false}))
+                .AddSingleton(new CommandService(new CommandServiceConfig { CaseSensitiveCommands = false, ThrowOnError = false }))
                 .AddSingleton(logger)
                 .AddSingleton<LogAdaptor>()
                 .AddSingleton<InteractiveService>()
@@ -218,5 +228,5 @@ namespace CoachBot
 
             return provider;
         }
-    }
+    }        
 }

@@ -1,0 +1,23 @@
+<h1>Channels</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Positions</th>
+      <th>Team 1</th>
+      <th>Team 2</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let channel of channels">
+      <td>{{channel.id}}</td>
+      <td>
+        <span *ngFor="let position of channel.positions">{{position}}</span>
+      </td>
+      <td>{{channel.team1.name}}</td>
+      <td>{{channel.team2.name}}</td>
+      <td><a routerLink="/channel/{{channel.id}}">Details</a></td>
+    </tr>
+  </tbody>
+</table>

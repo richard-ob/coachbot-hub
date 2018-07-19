@@ -44,8 +44,7 @@ namespace CoachBot
 
         private async Task ProcessCommandAsync(SocketMessage pMsg)
         {
-            var message = pMsg as SocketUserMessage;
-            if (message == null) return;
+            if (!(pMsg is SocketUserMessage message)) return;
             if (!message.Content.StartsWith("!")) return;
 
             int argPos = 0;
@@ -78,7 +77,7 @@ namespace CoachBot
                 await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: Read Error: {reader.ErrorReason}").WithCurrentTimestamp().Build());
             }
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand 
-                     && matchmakerChannel.Positions.Any(p => context.Message.Content.Substring(1).ToUpper().Contains(p)))
+                     && matchmakerChannel.Positions.Any(p => context.Message.Content.Substring(1).ToUpper().Contains(p.PositionName)))
             {
                 await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content.Substring(1))).WithCurrentTimestamp().Build()); // Allows wildcard commands for positions
                 await message.Channel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(matchmakerChannel.Id));

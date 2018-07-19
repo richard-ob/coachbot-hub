@@ -31,15 +31,15 @@ namespace CoachBot.Services.Matchmaker
                         Name = channel.Team1.Name,
                         KitEmote = channel.Team1.KitEmote,
                         Color = channel.Team1.Color,
-                        Players = new Dictionary<Player, string>(),
+                        Players = new List<Player>(),
                         Substitutes = new List<Player>()
                     },
-                    Positions = channel.Positions.Select(p => new string(p.ToCharArray())).ToList(),
+                    Positions = channel.Positions.Select(p => new Position() { PositionName = p.PositionName }).ToList(),
                     Team2 = new Team()
                     {
                         IsMix = channel.Team2.IsMix,
                         Name = channel.Team2.IsMix && channel.Team1.Name.ToLower() == "mix" ? "Mix #2" : channel.Team2.IsMix ? "Mix" : null,
-                        Players = new Dictionary<Player, string>()
+                        Players = new List<Player>(),
                     },
                     Formation = channel.Formation,
                     ClassicLineup = channel.ClassicLineup
@@ -47,7 +47,7 @@ namespace CoachBot.Services.Matchmaker
             } 
         }
 
-        public string ConfigureChannel(ulong channelId, string teamName, List<string> positions, string kitEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false)
+        public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, string kitEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false)
         {
             if (positions.Count() <= 1) return ":no_entry: You must add at least two positions";
             if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":no_entry: All positions must be unique";
@@ -58,21 +58,21 @@ namespace CoachBot.Services.Matchmaker
             var channel = new Channel()
             {
                 Id = channelId,
-                Positions = positions.Select(p => p.ToUpper()).ToList(),
+                Positions = positions.Select(p => new Position() { PositionName = p.PositionName.ToUpper() }).ToList(),
                 Team1 = new Team()
                 {
                     IsMix = true,
                     Name = teamName,
                     KitEmote = kitEmote,
                     Color = color,
-                    Players = new Dictionary<Player, string>(),
+                    Players = new List<Player>(),
                     Substitutes = new List<Player>()
                 },
                 Team2 = new Team()
                 {
                     IsMix = isMixChannel,
                     Name = isMixChannel && teamName.ToLower() == "mix" ? "Mix #2" : isMixChannel ? "Mix" : null,
-                    Players = new Dictionary<Player, string>()
+                    Players = new List<Player>(),
                 },
                 Formation = formation,
                 ClassicLineup = classicLineup
@@ -100,22 +100,24 @@ namespace CoachBot.Services.Matchmaker
             }
             if (position == null)
             {
-                position = channel.Positions.FirstOrDefault(p => !channel.Team1.Players.Any(pl => pl.Value == p) || !channel.Team2.Players.Any(pl => pl.Value == p));
+                position = channel.Positions.FirstOrDefault(p => !channel.Team1.Players.Any(pl => pl.Position.PositionName == p.PositionName) || !channel.Team2.Players.Any(pl => pl.Position.PositionName == p.PositionName)).PositionName;
             }
             else
             {
                 position = position.ToUpper();
             }
-            var positionAvailableTeam1 = !channel.Team1.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
-            var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position) && channel.Team2.IsMix;
+            var positionAvailableTeam1 = !channel.Team1.Players.Any(p => p.Position.PositionName == position) && channel.Positions.Any(p => p.PositionName == position);
+            var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Position.PositionName == position) && channel.Positions.Any(p => p.PositionName == position) && channel.Team2.IsMix;
             if (positionAvailableTeam1 && team == Teams.Team1)
             {
-                channel.Team1.Players.Add(player, position);
+                player.Position = new Position(position);
+                channel.Team1.Players.Add(player);
                 return $":white_check_mark:  Signed **{player.Name}** to **{position}** for **{channel.Team1.Name}**";
             }
             else if (positionAvailableTeam2)
             {
-                channel.Team2.Players.Add(player, position);
+                player.Position = new Position(position);
+                channel.Team2.Players.Add(player);
                 return $":white_check_mark:  Signed **{player.Name}** to **{position}** for **{channel.Team2.Name ?? "Mix"}**";
             }
             else
@@ -134,16 +136,18 @@ namespace CoachBot.Services.Matchmaker
             };
             position = position.ToUpper();
             if (channel.SignedPlayers.Any(p => p.Name == playerName)) return $":no_entry: **{playerName}** is already signed.";
-            var positionAvailableTeam1 = !channel.Team1.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
-            var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Value == position) && channel.Positions.Any(p => p == position);
+            var positionAvailableTeam1 = !channel.Team1.Players.Any(p => p.Position.PositionName == position) && channel.Positions.Any(p => p.PositionName == position);
+            var positionAvailableTeam2 = !channel.Team2.Players.Any(p => p.Position.PositionName == position) && channel.Positions.Any(p => p.PositionName == position);
             if (positionAvailableTeam1 && team == Teams.Team1)
             {
-                channel.Team1.Players.Add(player, position);
+                player.Position.PositionName = position;
+                channel.Team1.Players.Add(player);
                 return $":white_check_mark:  Signed **{player.Name}** to **{position}** for **{channel.Team1.Name}**";
             }
             else if (positionAvailableTeam2 && channel.Team2.IsMix)
             {
-                channel.Team2.Players.Add(player, position);
+                player.Position.PositionName = position;
+                channel.Team2.Players.Add(player);
                 return $":white_check_mark:  Signed **{player.Name}** to **{position}** for **{channel.Team2.Name ?? "Mix"}**";
             }
             else
@@ -155,22 +159,23 @@ namespace CoachBot.Services.Matchmaker
         public string RemovePlayer(ulong channelId, IUser user)
         {
             var channel = Channels.FirstOrDefault(c => c.Id == channelId);
-            if (channel.Team1.Players.Any(p => p.Key.DiscordUserId == user.Id))
+            if (channel.Team1.Players.Any(p => p.DiscordUserId == user.Id))
             {
-                var player = channel.Team1.Players.First(p => p.Key.DiscordUserId == user.Id);
-                channel.Team1.Players.Remove(player.Key);
-                if (channel.Team1.Substitutes.Any() && player.Value.ToLower() != "gk")
+                var player = channel.Team1.Players.First(p => p.DiscordUserId == user.Id);
+                channel.Team1.Players.Remove(player);
+                if (channel.Team1.Substitutes.Any() && player.Position.PositionName.ToLower() != "gk")
                 {
                     var sub = channel.Team1.Substitutes.FirstOrDefault();
-                    channel.Team1.Players.Add(sub, player.Value);
+                    player.Position.PositionName = "sub";
+                    channel.Team1.Players.Add(player);
                     channel.Team1.Substitutes.Remove(sub);
                     return $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {sub.DiscordUserMention} comes off the bench to replace **{user.Username}**";
                 }
                 return $":negative_squared_cross_mark: Unsigned **{user.Username}**";
             }
-            if (channel.Team2.Players.Any(p => p.Key.DiscordUserId == user.Id))
+            if (channel.Team2.Players.Any(p => p.DiscordUserId == user.Id))
             {
-                channel.Team2.Players.Remove(channel.Team2.Players.First(p => p.Key.DiscordUserId == user.Id).Key);
+                channel.Team2.Players.Remove(channel.Team2.Players.First(p => p.DiscordUserId == user.Id));
                 return $":negative_squared_cross_mark: Unsigned **{user.Username}**";
             }
             return $":no_entry: You are not signed {user.Mention}";
@@ -179,22 +184,23 @@ namespace CoachBot.Services.Matchmaker
         public string RemovePlayer(ulong channelId, string playerName)
         {
             var channel = Channels.FirstOrDefault(c => c.Id == channelId);
-            if (channel.Team1.Players.Any(p => p.Key.Name == playerName))
+            if (channel.Team1.Players.Any(p => p.Name == playerName))
             {
-                var player = channel.Team1.Players.First(p => p.Key.Name == playerName);
-                channel.Team1.Players.Remove(player.Key);
-                if (channel.Team1.Substitutes.Any() && player.Value.ToLower() != "gk")
+                var player = channel.Team1.Players.First(p => p.Name == playerName);
+                channel.Team1.Players.Remove(player);
+                if (channel.Team1.Substitutes.Any() && player.Position.PositionName.ToLower() != "gk")
                 {
                     var sub = channel.Team1.Substitutes.FirstOrDefault();
-                    channel.Team1.Players.Add(sub, player.Value);
+                    player.Position.PositionName = "sub";
+                    channel.Team1.Players.Add(player);
                     channel.Team1.Substitutes.Remove(sub);
                     return $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {sub.DiscordUserMention} comes off the bench to replace **{playerName}**";
                 }
                 return $":negative_squared_cross_mark: Unsigned **{playerName}**";
             }
-            if (channel.Team2.Players.Any(p => p.Key.Name == playerName))
+            if (channel.Team2.Players.Any(p => p.Name == playerName))
             {
-                channel.Team2.Players.Remove(channel.Team2.Players.First(p => p.Key.Name == playerName).Key);
+                channel.Team2.Players.Remove(channel.Team2.Players.First(p => p.Name == playerName));
                 return $":negative_squared_cross_mark: Unsigned **{playerName}**";
             }
             return $":no_entry: **{playerName}** is not signed";
@@ -210,7 +216,7 @@ namespace CoachBot.Services.Matchmaker
                 DiscordUserMention = user.Mention
             };
             if (channel.Team1.Substitutes.Any(p => p.DiscordUserId == user.Id)) return $":no_entry: You are already signed as a sub, {user.Mention}";
-            if (channel.Team1.Players.Any(p => p.Key.DiscordUserId == user.Id)) return $":no_entry: You are already signed, {user.Mention}";
+            if (channel.Team1.Players.Any(p => p.DiscordUserId == user.Id)) return $":no_entry: You are already signed, {user.Mention}";
 
             channel.Team1.Substitutes.Add(player);
             return $":white_check_mark:  Added **{player.Name}** to subs bench for **{channel.Team1.Name ?? "Mix"}**";
@@ -258,14 +264,14 @@ namespace CoachBot.Services.Matchmaker
                 Name = channelConfig.Team1.Name,
                 KitEmote = channelConfig.Team1.KitEmote,
                 Color = channelConfig.Team1.Color,
-                Players = new Dictionary<Player, string>(),
+                Players = new List<Player>(),
                 Substitutes = new List<Player>()
             };
             Channels.FirstOrDefault(c => c.Id == channelId).Team2 = new Team()
             {
                 IsMix = channelConfig.Team2.IsMix,
                 Name = channelConfig.Team2.IsMix && channelConfig.Team1.Name.ToLower() == "mix" ? "Mix #2" : channelConfig.Team2.IsMix ? "Mix" : null,
-                Players = new Dictionary<Player, string>()
+                Players = new List<Player>()
             };
             Channels.FirstOrDefault(c => c.Id == channelId).LastHereMention = null;
         }
@@ -388,120 +394,120 @@ namespace CoachBot.Services.Matchmaker
             if (channel.Positions.Count() == 8 && channel.Formation == Formation.ThreeThreeOne)
             {
                 builder.AddInlineField("\u200B", "\u200B");
-                var player8 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[7]).Key;
-                builder.AddInlineField(player8 != null ? player8.Name : availablePlaceholderText, AddPrefix(channel.Positions[7]));
+                var player8 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[7].PositionName);
+                builder.AddInlineField(player8 != null ? player8.Name : availablePlaceholderText, AddPrefix(channel.Positions[7].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player7 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[6]).Key;
-                builder.AddInlineField(player7 != null ? player7.Name : availablePlaceholderText, AddPrefix(channel.Positions[6]));
-                var player6 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[5]).Key;
-                builder.AddInlineField(player6 != null ? player6.Name : availablePlaceholderText, AddPrefix(channel.Positions[5]));
-                var player5 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[4]).Key;
-                builder.AddInlineField(player5 != null ? player5.Name : availablePlaceholderText, AddPrefix(channel.Positions[4]));
-                var player4 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[3]).Key;
-                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3]));
-                var player3 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[2]).Key;
-                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2]));
-                var player2 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[1]).Key;
-                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1]));
+                var player7 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[6].PositionName);
+                builder.AddInlineField(player7 != null ? player7.Name : availablePlaceholderText, AddPrefix(channel.Positions[6].PositionName));
+                var player6 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[5].PositionName);
+                builder.AddInlineField(player6 != null ? player6.Name : availablePlaceholderText, AddPrefix(channel.Positions[5].PositionName));
+                var player5 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[4].PositionName);
+                builder.AddInlineField(player5 != null ? player5.Name : availablePlaceholderText, AddPrefix(channel.Positions[4].PositionName));
+                var player4 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[3].PositionName);
+                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3].PositionName));
+                var player3 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[2].PositionName);
+                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2].PositionName));
+                var player2 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[1].PositionName);
+                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player1 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[0]).Key;
-                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0]));
+                var player1 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[0].PositionName);
+                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
             }
             else if (channel.Positions.Count() == 8 && channel.Formation == Formation.ThreeTwoTwo)
             {
-                var player8 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[7]).Key;
-                builder.AddInlineField(player8 != null ? player8.Name : availablePlaceholderText, AddPrefix(channel.Positions[7]));
+                var player8 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[7].PositionName);
+                builder.AddInlineField(player8 != null ? player8.Name : availablePlaceholderText, AddPrefix(channel.Positions[7].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player7 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[6]).Key;
-                builder.AddInlineField(player7 != null ? player7.Name : availablePlaceholderText, AddPrefix(channel.Positions[6]));
-                var player6 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[5]).Key;
-                builder.AddInlineField(player6 != null ? player6.Name : availablePlaceholderText, AddPrefix(channel.Positions[5]));
+                var player7 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[6].PositionName);
+                builder.AddInlineField(player7 != null ? player7.Name : availablePlaceholderText, AddPrefix(channel.Positions[6].PositionName));
+                var player6 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[5].PositionName);
+                builder.AddInlineField(player6 != null ? player6.Name : availablePlaceholderText, AddPrefix(channel.Positions[5].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player5 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[4]).Key;
-                builder.AddInlineField(player5 != null ? player5.Name : availablePlaceholderText, AddPrefix(channel.Positions[4]));
-                var player4 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[3]).Key;
-                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3]));
-                var player3 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[2]).Key;
-                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2]));
-                var player2 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[1]).Key;
-                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1]));
+                var player5 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[4].PositionName);
+                builder.AddInlineField(player5 != null ? player5.Name : availablePlaceholderText, AddPrefix(channel.Positions[4].PositionName));
+                var player4 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[3].PositionName);
+                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3].PositionName));
+                var player3 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[2].PositionName);
+                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2].PositionName));
+                var player2 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[1].PositionName);
+                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player1 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[0]).Key;
-                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0]));
+                var player1 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[0].PositionName);
+                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
             }
             else if (channel.Positions.Count() == 8 && channel.Formation == Formation.ThreeOneTwoOne)
             {
                 builder.AddInlineField("\u200B", "\u200B");
-                var player8 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[7]).Key;
-                builder.AddInlineField(player8 != null ? player8.Name : availablePlaceholderText, AddPrefix(channel.Positions[7]));
+                var player8 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[7].PositionName);
+                builder.AddInlineField(player8 != null ? player8.Name : availablePlaceholderText, AddPrefix(channel.Positions[7].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player7 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[6]).Key;
-                builder.AddInlineField(player7 != null ? player7.Name : availablePlaceholderText, AddPrefix(channel.Positions[6]));
+                var player7 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[6].PositionName);
+                builder.AddInlineField(player7 != null ? player7.Name : availablePlaceholderText, AddPrefix(channel.Positions[6].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player6 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[5]).Key;
-                builder.AddInlineField(player6 != null ? player6.Name : availablePlaceholderText, AddPrefix(channel.Positions[5]));
+                var player6 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[5].PositionName);
+                builder.AddInlineField(player6 != null ? player6.Name : availablePlaceholderText, AddPrefix(channel.Positions[5].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player5 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[4]).Key;
-                builder.AddInlineField(player5 != null ? player5.Name : availablePlaceholderText, AddPrefix(channel.Positions[4]));
+                var player5 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[4].PositionName);
+                builder.AddInlineField(player5 != null ? player5.Name : availablePlaceholderText, AddPrefix(channel.Positions[4].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player4 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[3]).Key;
-                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3]));
-                var player3 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[2]).Key;
-                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2]));
-                var player2 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[1]).Key;
-                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1]));
+                var player4 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[3].PositionName);
+                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3].PositionName));
+                var player3 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[2].PositionName);
+                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2].PositionName));
+                var player2 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[1].PositionName);
+                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player1 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[0]).Key;
-                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0]));
+                var player1 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[0].PositionName);
+                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
             }
             else if (channel.Positions.Count() == 8 && channel.Formation == Formation.ThreeOneThree)
             {
-                var player8 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[7]).Key;
-                builder.AddInlineField(player8 != null ? player8.Name : availablePlaceholderText, AddPrefix(channel.Positions[7]));
-                var player7 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[6]).Key;
-                builder.AddInlineField(player7 != null ? player7.Name : availablePlaceholderText, AddPrefix(channel.Positions[6]));
-                var player6 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[5]).Key;
-                builder.AddInlineField(player6 != null ? player6.Name : availablePlaceholderText, AddPrefix(channel.Positions[5]));
+                var player8 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[7].PositionName);
+                builder.AddInlineField(player8 != null ? player8.Name : availablePlaceholderText, AddPrefix(channel.Positions[7].PositionName));
+                var player7 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[6].PositionName);
+                builder.AddInlineField(player7 != null ? player7.Name : availablePlaceholderText, AddPrefix(channel.Positions[6].PositionName));
+                var player6 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[5].PositionName);
+                builder.AddInlineField(player6 != null ? player6.Name : availablePlaceholderText, AddPrefix(channel.Positions[5].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player5 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[4]).Key;
-                builder.AddInlineField(player5 != null ? player5.Name : availablePlaceholderText, AddPrefix(channel.Positions[4]));
+                var player5 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[4].PositionName);
+                builder.AddInlineField(player5 != null ? player5.Name : availablePlaceholderText, AddPrefix(channel.Positions[4].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player4 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[3]).Key;
-                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3]));
-                var player3 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[2]).Key;
-                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2]));
-                var player2 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[1]).Key;
-                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1]));
+                var player4 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[3].PositionName);
+                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3].PositionName));
+                var player3 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[2].PositionName);
+                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2].PositionName));
+                var player2 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[1].PositionName);
+                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player1 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[0]).Key;
-                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0]));
+                var player1 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[0].PositionName);
+                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
             }
             else if (channel.Positions.Count() == 4 && channel.Formation == Formation.TwoOne)
             {
                 builder.AddInlineField("\u200B", "\u200B");
-                var player4 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[3]).Key;
-                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3]));
+                var player4 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[3].PositionName);
+                builder.AddInlineField(player4 != null ? player4.Name : availablePlaceholderText, AddPrefix(channel.Positions[3].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player3 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[2]).Key;
-                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2]));
+                var player3 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[2].PositionName);
+                builder.AddInlineField(player3 != null ? player3.Name : availablePlaceholderText, AddPrefix(channel.Positions[2].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player2 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[1]).Key;
-                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1]));
+                var player2 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[1].PositionName);
+                builder.AddInlineField(player2 != null ? player2.Name : availablePlaceholderText, AddPrefix(channel.Positions[1].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
-                var player1 = team.Players.FirstOrDefault(p => p.Value == channel.Positions[0]).Key;
-                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0]));
+                var player1 = team.Players.FirstOrDefault(p => p.Position.PositionName == channel.Positions[0].PositionName);
+                builder.AddInlineField(player1 != null ? player1.Name : availablePlaceholderText, AddPrefix(channel.Positions[0].PositionName));
                 builder.AddInlineField("\u200B", "\u200B");
             }
             else
             {
                 foreach (var position in channel.Positions)
                 {
-                    var player = team.Players.FirstOrDefault(p => p.Value == position).Key;
-                    builder.AddInlineField(player != null ? player.Name : availablePlaceholderText, AddPrefix(position));
+                    var player = team.Players.FirstOrDefault(p => p.Position.PositionName == position.PositionName);
+                    builder.AddInlineField(player != null ? player.Name : availablePlaceholderText, AddPrefix(position.PositionName));
                 }
                 if (channel.Positions.Count() % 3 == 2) // Ensure that two-column fields are three-columns to ugly alignment
                 {
@@ -539,9 +545,9 @@ namespace CoachBot.Services.Matchmaker
             var embedBuilder = new EmbedBuilder().WithTitle($"{team.Name} Team List");
             foreach(var position in channel.Positions)
             {
-                var player = team.Players.FirstOrDefault(p => p.Value == position).Key;
+                var player = team.Players.FirstOrDefault(p => p.Position.PositionName == position.PositionName);
                 var playerName = player != null ? $"**{player.Name}**" : emptyPos;
-                sb.Append($"{position}:{playerName} ");
+                sb.Append($"{position.PositionName}:{playerName} ");
             }
             if (teamType == Teams.Team1 && team.Substitutes.Any())
             {

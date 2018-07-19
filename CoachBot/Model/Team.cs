@@ -1,10 +1,15 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoachBot.Model
 {
     public class Team
     {
+        [Key]
+        public Guid Id { get; set; }
+
         public string Name { get; set; }
 
         public string KitEmote { get; set; }
@@ -13,11 +18,9 @@ namespace CoachBot.Model
 
         public bool IsMix { get; set; }
 
-        [JsonIgnore]
         public List<Player> Substitutes { get; set; }
 
-        [JsonIgnore]
-        public Dictionary<Player, string> Players { get; set; }
+        public List<Player> Players { get; set; }
 
     }
 }

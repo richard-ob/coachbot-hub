@@ -1,4 +1,5 @@
-﻿using CoachBot.Services.Logging;
+﻿using CoachBot.Model;
+using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using Discord;
 using Discord.Addons.InteractiveCommands;
@@ -6,6 +7,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -55,7 +57,9 @@ namespace CoachBot
                 .AddSingleton<ConfigService>()
                 .AddSingleton<MatchmakerService>()
                 .AddSingleton<StatisticsService>()
-                .AddSingleton<ChatService>();
+                .AddSingleton<ChatService>()
+                .AddDbContext<BotContext>(options =>
+                  options.UseSqlite("Data Source=CoachBot.db"));
                 
             var provider = services.BuildServiceProvider();
 

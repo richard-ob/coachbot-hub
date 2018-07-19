@@ -1,15 +1,17 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace CoachBot.Model
 {
     public class Channel
     {
+        [Key]
         public ulong Id { get; set; }
 
-        public List<string> Positions { get; set; }
+        public List<Position> Positions { get; set; }
 
         public Team Team1 { get; set; }
 
@@ -29,15 +31,15 @@ namespace CoachBot.Model
             {
                 if (Team1.Players.Any() && Team2.Players.Any())
                 {
-                    return Team1.Players.Keys.Concat(Team2.Players.Keys);
+                    return Team1.Players.Concat(Team2.Players);
                 }
                 else if (Team1.Players.Any())
                 {
-                    return Team1.Players.Keys;
+                    return Team1.Players;
                 }
                 else
                 {
-                    return Team2.Players.Keys;
+                    return Team2.Players;
                 }
             }
         }

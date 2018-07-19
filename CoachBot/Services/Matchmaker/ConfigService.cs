@@ -17,7 +17,7 @@ namespace CoachBot.Services.Matchmaker
         {
             Config = new Config()
             {
-                BotToken = "MzE4MTU4MDQzMTM1MjEzNTY5.Df6YQA.ao0CvP7zRMA1Snl2tjCzni0g9U4"
+                BotToken = "MzE4MTU4MDQzMTM1MjEzNTY5.Div5dQ.R-8P0yjRJTtdYtY-hJPuave9a4s"
             };
             if (string.IsNullOrEmpty(Config.BotToken)) throw new Exception("No valid bot token provided");
             if (Config.Servers == null) Config.Servers = new List<Server>();

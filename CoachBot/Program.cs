@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoachBot
 {
@@ -45,6 +46,17 @@ namespace CoachBot
             _matchmakerService = host.Services.GetService<MatchmakerService>();
             _client = host.Services.GetService<DiscordSocketClient>();
 
+            /*try
+            {
+                var context = host.Services.GetRequiredService<BotContext>();
+                context.Database.Migrate();
+                SeedData.Initialize(host.Services);
+            }
+            catch (Exception ex)
+            {
+                var logger = host.Services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred seeding the DB.");
+            }         */   
 
             Console.WriteLine("Connecting..");
             await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
@@ -202,31 +214,6 @@ namespace CoachBot
                 }
             }
             return Task.CompletedTask;
-        }
-
-        private IServiceProvider ConfigureServices(IServiceProvider serviceProvider)
-        {
-            // Configure logging
-            var logger = LogAdaptor.CreateLogger();
-            var loggerFactory = new LoggerFactory();
-            loggerFactory.AddProvider(new SerilogLoggerProvider(logger));
-            // Configure services
-            var services = new ServiceCollection()
-                .AddSingleton(_client)
-                .AddSingleton(new CommandService(new CommandServiceConfig { CaseSensitiveCommands = false, ThrowOnError = false }))
-                .AddSingleton(logger)
-                .AddSingleton<LogAdaptor>()
-                .AddSingleton<InteractiveService>()
-                .AddSingleton<ConfigService>()
-                .AddSingleton<MatchmakerService>()
-                .AddSingleton<StatisticsService>();
-            var provider = services.BuildServiceProvider();
-
-            // Autowire and create these dependencies now
-            provider.GetService<LogAdaptor>();
-            provider.GetService<ConfigService>();
-
-            return provider;
         }
     }        
 }

@@ -6,5 +6,7 @@
 
         public ulong DiscordUserId { get; set; }
 
+        public bool IsAdministrator { get; set; }
+
     }
 }

@@ -1,5 +1,7 @@
 ﻿using CoachBot.Model;
+using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -9,17 +11,22 @@ namespace CoachBot.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        public UserController()
+        private readonly BotService _botService;
+
+        public UserController(BotService botService)
         {
+            _botService = botService;
         }
 
         [HttpGet]
+        [Authorize]
         public User Get()
         {
             var user = new User();
             if(User.Claims.Any())
             {
                 user.Name = User.Identity.Name;
+                user.IsAdministrator = _botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value));
             }
             return user;
         }

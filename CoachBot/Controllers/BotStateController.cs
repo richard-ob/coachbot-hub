@@ -3,6 +3,8 @@ using CoachBot.Services.Matchmaker;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace CoachBot.Controllers
 {
@@ -11,9 +13,9 @@ namespace CoachBot.Controllers
     [Authorize]
     public class BotStateController : Controller
     {
-        private readonly BotStateService _botService;
+        private readonly BotService _botService;
 
-        public BotStateController(BotStateService botService)
+        public BotStateController(BotService botService)
         {
             _botService = botService;
         }
@@ -21,12 +23,20 @@ namespace CoachBot.Controllers
         [HttpGet]
         public BotState Get()
         {
+            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            {
+                throw new Exception();
+            }
             return _botService.GetCurrentBotState();
         }
 
         [HttpPost("reconnect")]
         public void Reconnect()
         {
+            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            {
+                throw new Exception();
+            }
             _botService.Reconnect();
         }
     }

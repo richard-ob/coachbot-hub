@@ -2,7 +2,9 @@
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoachBot.Controllers
 {
@@ -11,17 +13,21 @@ namespace CoachBot.Controllers
     [Authorize]
     public class GuildController : Controller
     {
-        private readonly BotStateService _botStateService;
+        private readonly BotService _botService;
 
-        public GuildController(BotStateService botStateService)
+        public GuildController(BotService botService)
         {
-            _botStateService = botStateService;
+            _botService = botService;
         }
 
         [HttpDelete("{id}")]
         public void Leave(string id)
         {
-            _botStateService.LeaveGuild(id);
+            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            {
+                throw new Exception();
+            }
+            _botService.LeaveGuild(id);
         }
     }
 }

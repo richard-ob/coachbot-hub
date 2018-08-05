@@ -62,7 +62,7 @@ namespace CoachBot
                 .AddSingleton<ConfigService>()
                 .AddSingleton<MatchmakerService>()
                 .AddSingleton<StatisticsService>()
-                .AddSingleton<BotStateService>()
+                .AddSingleton<BotService>()
                 .AddSingleton<AnnouncementService>()
                 .AddDbContext<BotContext>(options =>
                   options.UseSqlite("Data Source=CoachBot.db"));

@@ -2,7 +2,9 @@
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoachBot.Controllers
 {
@@ -12,16 +14,26 @@ namespace CoachBot.Controllers
     public class ChannelController : Controller
     {
         private readonly MatchmakerService _matchmakerService;
+        private readonly BotService _botService;
 
-        public ChannelController(MatchmakerService matchmakerService)
+        public ChannelController(MatchmakerService matchmakerService, BotService botService)
         {
             _matchmakerService = matchmakerService;
+            _botService = botService;
         }
 
         [HttpGet]
         public IList<Channel> Get()
         {
-            return _matchmakerService._config.Channels;
+            var userId = ulong.Parse(User.Claims.ToList().First().Value);
+            return _botService.GetChannelsForUser(userId, false); 
+        }
+
+        [HttpGet("unconfigured")]
+        public IList<Channel> GetUnconfiguredChannels()
+        {
+            var userId = ulong.Parse(User.Claims.ToList().First().Value);
+            return _botService.GetChannelsForUser(userId, true);
         }
 
         [HttpPost]

@@ -48,7 +48,7 @@
       <div class="form-group">
         <label>Channel</label>
         <select class="form-control">
-          <option>Channel Name</option>
+          <option *ngFor="let channel of unconfiguredChannels">{{channel.id}}</option>
         </select>
       </div>
       <div class="alert alert-primary" role="alert">

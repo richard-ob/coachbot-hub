@@ -15,6 +15,11 @@ export class MatchmakerService {
       .pipe();
   }
 
+  getUnconfiguredChannels(): Observable<Channel[]> {
+    return this.http.get<Channel[]>('http://localhost:5006/api/channel/unconfigured')
+      .pipe();
+  }
+
   updateChannel(channel: Channel) {
     return this.http.post('http://localhost:5006/api/channel', channel).subscribe();
   }

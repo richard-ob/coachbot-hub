@@ -10,9 +10,12 @@ import { Channel } from '../model/channel';
 export class ChannelsComponent {
 
     channels: Channel[];
+    unconfiguredChannels: Channel[];
 
     constructor(private configurationService: ConfigurationService, private matchmakerService: MatchmakerService) {
         this.matchmakerService.getChannels().subscribe(channels => this.channels = channels);
+        this.matchmakerService.getUnconfiguredChannels()
+            .subscribe(unconfiguredChannels => this.unconfiguredChannels = unconfiguredChannels);
     }
 
 }

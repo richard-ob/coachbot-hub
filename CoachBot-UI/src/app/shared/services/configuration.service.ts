@@ -11,7 +11,10 @@ export class ConfigurationService {
   constructor(private http: HttpClient) { }
 
   getConfiguration(): Observable<Configuration> {
-    return this.http.get<Configuration>("http://localhost:5006/api/config")
-    .pipe();
+    return this.http.get<Configuration>('http://localhost:5006/api/config').pipe();
+  }
+
+  updateConfiguration(config: Configuration) {
+    return this.http.post('http://localhost:5006/api/config', config).pipe();
   }
 }

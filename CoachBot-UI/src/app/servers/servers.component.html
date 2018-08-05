@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="card-header" style="height: 55px;">
+        <h4 class="card-title">
+            <i class="fa fa-server text-muted"></i> Servers</h4>
+    </div>
+    <div class="card-body">
+        <div *ngIf="!servers" class="text-center">
+            <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+        </div>
+        <div *ngIf="servers">
+            <table class="table table-striped">
+                <thead>
+                    <th>Server Name</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let server of servers; let i = index" [attr.data-index]="i">
+                        <td>{{server.name}}</td>
+                        <td>{{server.address}}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" (click)="removeServer(i)">
+                                <i class="fa fa-times"></i> Remove</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">
+            <i class="fa fa-plus"></i> Add Server</h4>
+        <form>
+            <div class="form-group">
+                <label for="lblServerName">Server Name</label>
+                <input type="text" class="form-control" id="txtServerName" name="txtServerName" [(ngModel)]="newServer.name">
+            </div>
+            <div class="form-group">
+                <label for="lblIpAddress">IP Address</label>
+                <input type="text" class="form-control" id="txtIpAddress" name="txtIpAddress" [(ngModel)]="newServer.address">
+            </div>
+            <button type="submit" class="btn btn-success float-right" (click)="addServer()">
+                <i class="fa fa-check"></i> Submit</button>
+        </form>
+    </div>
+</div>

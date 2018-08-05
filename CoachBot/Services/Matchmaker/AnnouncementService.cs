@@ -3,11 +3,11 @@ using Discord.WebSocket;
 
 namespace CoachBot.Services.Matchmaker
 {
-    public class ChatService
+    public class AnnouncementService
     {
         private DiscordSocketClient _client;
 
-        public ChatService(DiscordSocketClient client)
+        public AnnouncementService(DiscordSocketClient client)
         {
             _client = client;
         }

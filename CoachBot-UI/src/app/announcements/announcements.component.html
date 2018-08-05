@@ -1,0 +1,20 @@
+<div class="card">
+    <div class="card-header" style="height: 55px;">
+        <h4 class="card-title">
+            <i class="fa fa-server text-muted"></i> Announcements</h4>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning" role="alert">
+            This functionality will send a message to all channels that CoachBot has permission to talk in. Use sparingly!
+        </div>
+        <form>
+            <div class="form-group">
+                <textarea class="form-control" cols="3" rows="3" [(ngModel)]="message.message" name="message"></textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-warning float-right" (click)="sendAnnouncement()">
+                    <i class="fa fa-commenting"></i> Announce</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,16 +1,12 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">CoachBot</a>
+<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+  <a class="navbar-brand" style="border-right: none;" href="#">CoachBot</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <ul class="navbar-nav mr-auto">
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <span *ngIf="user && user.name != null" class="badge badge-secondary">{{user.name}}</span>
+    <a *ngIf="!user || user.name == null" href="http://localhost:5006/login">Sign-in</a>
   </div>
 </nav>
 <div id="wrapper" class="toggled">
@@ -22,13 +18,16 @@
         </a>
       </li>
       <li>
-        <a href="#">Channels</a>
+        <a routerLink="/channels">Channels</a>
       </li>
       <li>
-        <a href="#">Settings</a>
+        <a routerLink="/servers">Servers</a>
       </li>
       <li>
-        <a href="#">Announcements</a>
+        <a routerLink="/announcements">Announcements</a>
+      </li>
+      <li>
+        <a routerLink="/bot">Bot</a>
       </li>
     </ul>
   </div>

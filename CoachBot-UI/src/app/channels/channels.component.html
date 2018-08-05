@@ -1,23 +1,63 @@
-<h1>Channels</h1>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Positions</th>
-      <th>Team 1</th>
-      <th>Team 2</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let channel of channels">
-      <td>{{channel.id}}</td>
-      <td>
-        <span *ngFor="let position of channel.positions">{{position}}</span>
-      </td>
-      <td>{{channel.team1.name}}</td>
-      <td>{{channel.team2.name}}</td>
-      <td><a routerLink="/channel/{{channel.id}}">Details</a></td>
-    </tr>
-  </tbody>
-</table>
+<div class="card border-primary">
+  <div class="card-header" style="height: 55px;">
+    <h4 class="card-title">
+      <i class="fa fa-list text-muted"></i> Channels</h4>
+  </div>
+  <div class="card-body">
+    <div *ngIf="!channels" class="text-center">
+      <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+    </div>
+    <table *ngIf="channels" class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Positions</th>
+          <th>Team Name</th>
+          <th>Team Color</th>
+          <th>Is Mix Channel</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let channel of channels">
+          <td>{{channel.id}}</td>
+          <td>
+            <span *ngFor="let position of channel.positions">{{position.positionName}} </span>
+          </td>
+          <td>{{channel.team1.name}}</td>
+          <td>{{channel.team1.color}}</td>
+          <td>
+            <i *ngIf="channel.team1.isMix" class="text-success fa fa-check"></i>
+            <i *ngIf="!channel.team1.isMix" class="text-danger fa fa-times"></i>
+          </td>
+          <td>
+            <a class="btn btn-primary btn-sm" routerLink="/channel/{{channel.id}}">
+              <i class="fa fa-wrench"></i> Edit</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br/>
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">
+      <i class="fa fa-plus text-muted"></i> Add Channel</h4>
+    <form>
+      <div class="form-group">
+        <label>Channel</label>
+        <select class="form-control">
+          <option>Channel Name</option>
+        </select>
+      </div>
+      <div class="alert alert-primary" role="alert">
+        To add a channel, you must have invited CoachBot to your Discord server, and he must have access to your channel
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-success float-right">
+          <i class="fa fa-check"></i> Add</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,6 +1,9 @@
-import { Routes } from "@angular/router";
-import { ChannelsComponent } from "./channels/channels.component";
-import { ChannelComponent } from "./channel/channel.component";
+import { Routes } from '@angular/router';
+import { ChannelsComponent } from './channels/channels.component';
+import { ChannelComponent } from './channel/channel.component';
+import { ServersComponent } from './servers/servers.component';
+import { AnnouncementsComponent } from './announcements/announcements.component';
+import { BotComponent } from './bot/bot.component';
 
 export const appRoutes: Routes = [
     {
@@ -9,5 +12,8 @@ export const appRoutes: Routes = [
         pathMatch: 'full'
     },
     { path: 'channels', component: ChannelsComponent },
-    { path: 'channel/:id', component: ChannelComponent }
+    { path: 'channel/:id', component: ChannelComponent },
+    { path: 'servers', component: ServersComponent },
+    { path: 'bot', component: BotComponent },
+    { path: 'announcements', component: AnnouncementsComponent }
 ];

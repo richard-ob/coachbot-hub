@@ -11,10 +11,11 @@ export class MatchmakerService {
   constructor(private http: HttpClient) { }
 
   getChannels(): Observable<Channel[]> {
-    return this.http.get<Channel[]>("http://localhost:5006/api/channel/")
+    return this.http.get<Channel[]>('http://localhost:5006/api/channel/')
       .pipe();
   }
+
   updateChannel(channel: Channel) {
-    return this.http.post("http://localhost:5006/api/channel", channel).subscribe();
+    return this.http.post('http://localhost:5006/api/channel', channel).subscribe();
   }
 }

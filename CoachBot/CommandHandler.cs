@@ -52,7 +52,7 @@ namespace CoachBot
 
             var context = new SocketCommandContext(_client, message);
             var result = await _commands.ExecuteAsync(context, argPos, _provider);
-            var matchmakerChannel = _matchmakerService.Channels.FirstOrDefault(c => c.Id == context.Channel.Id);
+            var matchmakerChannel = _matchmakerService._config.Channels.FirstOrDefault(c => c.Id == context.Channel.Id);
             Console.WriteLine($"[{message.Channel.Name} ({context.Guild.Name})] {message.Timestamp.ToString()}: @{message.Author.Username} {message.Content}");
             try
             {
@@ -81,7 +81,7 @@ namespace CoachBot
             {
                 await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content.Substring(1))).WithCurrentTimestamp().Build()); // Allows wildcard commands for positions
                 await message.Channel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(matchmakerChannel.Id));
-                if (_matchmakerService.Channels.First(c => c.Id == message.Channel.Id).Team2.IsMix)
+                if (_matchmakerService._config.Channels.First(c => c.Id == message.Channel.Id).Team2.IsMix)
                 {
                     await message.Channel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(message.Channel.Id, Teams.Team2));
                 }

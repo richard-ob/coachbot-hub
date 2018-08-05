@@ -1,50 +1,42 @@
-<div *ngIf="channel" class="card">
-    <div class="card-header">
-        Channel Configuration
+<div class="card">
+    <div class="card-header" style="height: 55px;">
+        <h4 class="card-title">
+            <i class="fa fa-cog text-muted"></i> Channel Configuration</h4>
     </div>
     <div class="card-body">
-        <div class="form-group">
-            <label>Channel ID</label>
-            <span class="form-control-static">{{channel.id}}</span>
-        </div>
-        <div class="form-group">
-            <label>Classic Line-up?</label>
-            <input type="checkbox" [(ngModel)]="channel.classicLineup" />
-        </div>
-        <div class="form-group">
-            <label>Positions</label>
-
-            <span *ngFor="let position of channel.positions">
-
-                <div class="form-group">
-                    <input class="form-control" type="text" value="{{position}}" />
-                </div>
-            </span>
-        </div>
-        <div class="row">
-            <div class="col-sm-5">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Team 1</h5>
-                        <input class="form-control" type="text" [(ngModel)]="channel.team1.name" />
-                        <input class="form-control" type="text" [(ngModel)]="channel.team1.color" />
-                        <a href="#" class="btn btn-success">Save</a>
-                    </div>
+        <form *ngIf="channel">
+            <div class="form-group row">
+                <label class="col-sm-2">Channel ID</label>
+                <span class="col-sm-10 form-control-static">{{channel.id}}</span>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2">Classic Line-up?</label>
+                <div class="col-sm-10">
+                    <input type="checkbox" [(ngModel)]="channel.classicLineup" name="classicLineup" />
                 </div>
             </div>
-            <div class="col-sm-2 text-center">
-                <h3>vs</h3>
-            </div>
-            <div class="col-sm-5">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Team 2</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-success">Save</a>
-                    </div>
+            <div class="form-group row">
+                <label class="col-sm-2">Team Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" [(ngModel)]="channel.team1.name" name="teamName" />
                 </div>
             </div>
-        </div>
-        <button class="btn-success btn" (click)="saveChannel()">Save</button>
+            <div class="form-group row">
+                <label class="col-sm-2">Team Colour</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" [(ngModel)]="channel.team1.color" name="teamColor" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2">Positions</label>
+                <div class="col-sm-6">
+                    <select class="form-control" multiple>
+                        <option *ngFor="let position of channel.positions" value="{{position.positionName}}">{{position.positionName}}</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-success btn float-right" (click)="saveChannel()">
+                <i class="fa fa-check"></i> Save</button>
+        </form>
     </div>
 </div>

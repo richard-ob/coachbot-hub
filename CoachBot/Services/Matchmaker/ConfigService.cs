@@ -15,10 +15,7 @@ namespace CoachBot.Services.Matchmaker
 
         public ConfigService()
         {
-            Config = new Config()
-            {
-                BotToken = "MzE4MTU4MDQzMTM1MjEzNTY5.Div5dQ.R-8P0yjRJTtdYtY-hJPuave9a4s"
-            };
+            Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
             if (string.IsNullOrEmpty(Config.BotToken)) throw new Exception("No valid bot token provided");
             if (Config.Servers == null) Config.Servers = new List<Server>();
             if (Config.Channels == null) Config.Channels = new List<Channel>();
@@ -27,6 +24,19 @@ namespace CoachBot.Services.Matchmaker
         internal void Save()
         {
             File.WriteAllText(@"config.json", JsonConvert.SerializeObject(Config));
+        }
+
+        public void UpdateBotToken(string botToken)
+        {
+            Config.BotToken = botToken;
+            Save();
+        }
+
+        public void UpdateOAuthTokens(string appId, string appSecret)
+        {
+            Config.OAuth2Id = appId;
+            Config.OAuth2Secret = appSecret;
+            Save();
         }
 
         public string AddServer(Server server)

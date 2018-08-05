@@ -4,6 +4,7 @@ import { ChannelComponent } from './channel/channel.component';
 import { ServersComponent } from './servers/servers.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
 import { BotComponent } from './bot/bot.component';
+import { LoginComponent } from './login/login.component';
 
 export const appRoutes: Routes = [
     {
@@ -15,5 +16,6 @@ export const appRoutes: Routes = [
     { path: 'channel/:id', component: ChannelComponent },
     { path: 'servers', component: ServersComponent },
     { path: 'bot', component: BotComponent },
-    { path: 'announcements', component: AnnouncementsComponent }
+    { path: 'announcements', component: AnnouncementsComponent },
+    { path: 'login', component: LoginComponent }
 ];

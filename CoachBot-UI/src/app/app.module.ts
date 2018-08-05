@@ -18,6 +18,8 @@ import { AnnouncementService } from './shared/services/announcement.service';
 import { AnnouncementsComponent } from './announcements/announcements.component';
 import { BotComponent } from './bot/bot.component';
 import { BotService } from './shared/services/bot.service';
+import { UnauthorizedInterceptor } from './shared/interceptors/unauthorized.interceptor';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { BotService } from './shared/services/bot.service';
     BotComponent,
     ChannelComponent,
     ChannelsComponent,
+    LoginComponent,
     ServersComponent
   ],
   imports: [
@@ -43,6 +46,11 @@ import { BotService } from './shared/services/bot.service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestOptionsInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
       multi: true
     }
   ],

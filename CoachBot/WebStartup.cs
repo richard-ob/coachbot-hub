@@ -12,6 +12,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace CoachBot
 {
@@ -30,7 +35,7 @@ namespace CoachBot
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            // Configure logging
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
             var logger = LogAdaptor.CreateLogger();
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider(logger));
@@ -48,8 +53,8 @@ namespace CoachBot
                     });
             });
             services.AddMvc();
-            services.AddSingleton<ConfigService>();
-            services.AddSingleton(_client)
+            services.AddSingleton<ConfigService>()
+                .AddSingleton(_client)
                 .AddSingleton(new CommandService(new CommandServiceConfig { CaseSensitiveCommands = false, ThrowOnError = false }))
                 .AddSingleton(logger)
                 .AddSingleton<LogAdaptor>()
@@ -57,18 +62,27 @@ namespace CoachBot
                 .AddSingleton<ConfigService>()
                 .AddSingleton<MatchmakerService>()
                 .AddSingleton<StatisticsService>()
-                .AddSingleton<ChatService>()
+                .AddSingleton<BotStateService>()
+                .AddSingleton<AnnouncementService>()
                 .AddDbContext<BotContext>(options =>
                   options.UseSqlite("Data Source=CoachBot.db"));
-                
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => 
+                {
+                    options.ExpireTimeSpan = new TimeSpan(7, 0, 0, 0);
+                    options.LoginPath = "/unauthorized";
+                })
+                .AddDiscord(x =>
+                {
+                    x.AppId = config.OAuth2Id;
+                    x.AppSecret = config.OAuth2Secret;
+                });
+
             var provider = services.BuildServiceProvider();
 
-            // Autowire and create these dependencies now
             provider.GetService<LogAdaptor>();
             provider.GetService<ConfigService>();
-
-            //return provider;
-
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -78,8 +92,8 @@ namespace CoachBot
             }
 
             app.UseCors("AllowAll");
+            app.UseAuthentication();
             app.UseMvc();
-
         }
     }
 }

@@ -20,6 +20,7 @@ import { BotComponent } from './bot/bot.component';
 import { BotService } from './shared/services/bot.service';
 import { UnauthorizedInterceptor } from './shared/interceptors/unauthorized.interceptor';
 import { LoginComponent } from './login/login.component';
+import { DiscordCommandsComponent } from './discord-commands/discord-commands.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { LoginComponent } from './login/login.component';
     BotComponent,
     ChannelComponent,
     ChannelsComponent,
+    DiscordCommandsComponent,
     LoginComponent,
     ServersComponent
   ],

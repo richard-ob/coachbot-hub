@@ -5,6 +5,7 @@ import { ServersComponent } from './servers/servers.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
 import { BotComponent } from './bot/bot.component';
 import { LoginComponent } from './login/login.component';
+import { DiscordCommandsComponent } from './discord-commands/discord-commands.component';
 
 export const appRoutes: Routes = [
     {
@@ -17,5 +18,6 @@ export const appRoutes: Routes = [
     { path: 'servers', component: ServersComponent },
     { path: 'bot', component: BotComponent },
     { path: 'announcements', component: AnnouncementsComponent },
-    { path: 'login', component: LoginComponent }
+    { path: 'login', component: LoginComponent },
+    { path: 'discord-commands', component: DiscordCommandsComponent }
 ];

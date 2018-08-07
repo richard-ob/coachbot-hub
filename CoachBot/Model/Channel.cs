@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CoachBot.Extensions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +12,11 @@ namespace CoachBot.Model
         [Key]
         public ulong Id { get; set; }
 
+        public string IdString { get { return Id.ToString(); } }
+
         public List<Position> Positions { get; set; }
+
+        public string Name { get; set; }
 
         public Team Team1 { get; set; }
 

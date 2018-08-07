@@ -13,9 +13,16 @@ export class ChannelsComponent {
     unconfiguredChannels: Channel[];
 
     constructor(private configurationService: ConfigurationService, private matchmakerService: MatchmakerService) {
-        this.matchmakerService.getChannels().subscribe(channels => this.channels = channels);
+        this.matchmakerService.getChannels()
+            .subscribe(channels => {
+                this.channels = channels;
+                this.channels.forEach(c => c.id = c.idString);
+            });
         this.matchmakerService.getUnconfiguredChannels()
-            .subscribe(unconfiguredChannels => this.unconfiguredChannels = unconfiguredChannels);
+            .subscribe(unconfiguredChannels => {
+                this.unconfiguredChannels = unconfiguredChannels;
+                this.unconfiguredChannels.forEach(u => u.id = u.idString);
+            });
     }
 
 }

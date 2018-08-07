@@ -21,6 +21,7 @@ export class ChannelComponent {
                     .getChannels()
                     .subscribe(channels => {
                         this.channel = channels[0];
+                        this.channel.id = this.channel.idString;
                     });
             });
     }

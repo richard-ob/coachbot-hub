@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 import { AppComponent } from './app.component';
 import { ConfigurationService } from './shared/services/configuration.service';
@@ -35,6 +36,7 @@ import { DiscordCommandsComponent } from './discord-commands/discord-commands.co
   ],
   imports: [
     BrowserModule,
+    ColorPickerModule,
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot(appRoutes)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CoachBot.Model;
 using System;
+using CoachBot.Extensions;
 
 namespace CoachBot.Services.Matchmaker
 {
@@ -11,13 +12,11 @@ namespace CoachBot.Services.Matchmaker
     {
         private readonly ConfigService _configService;
         private readonly StatisticsService _statisticsService;
-        internal readonly Config _config;
 
         public MatchmakerService(ConfigService configService, StatisticsService statisticsService)
         {
             _configService = configService;
             _statisticsService = statisticsService;
-            _config = _configService.Config;
         }
 
         public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, string kitEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false)
@@ -25,8 +24,8 @@ namespace CoachBot.Services.Matchmaker
             if (positions.Count() <= 1) return ":no_entry: You must add at least two positions";
             if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":no_entry: All positions must be unique";
 
-            var existingChannelConfig = _config.Channels.FirstOrDefault(c => c.Id.Equals(channelId));
-            if (existingChannelConfig != null) _config.Channels.Remove(existingChannelConfig);
+            var existingChannelConfig = _configService.Config.Channels.FirstOrDefault(c => c.Id.Equals(channelId));
+            if (existingChannelConfig != null) _configService.Config.Channels.Remove(existingChannelConfig);
 
             var channel = new Channel()
             {
@@ -50,7 +49,6 @@ namespace CoachBot.Services.Matchmaker
                 Formation = formation,
                 ClassicLineup = classicLineup
             };
-            _config.Channels.Add(channel);
             _configService.UpdateChannelConfiguration(channel);
             return ":white_check_mark: Channel successfully configured";
         }
@@ -58,7 +56,7 @@ namespace CoachBot.Services.Matchmaker
         public string AddPlayer(ulong channelId, IUser user, string position = null, Teams team = Teams.Team1)
         {
             if(position != null) position = position.Replace("#", string.Empty);
-            var channel = _config.Channels.First(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var player = new Player()
             {
                 DiscordUserId = user.Id,
@@ -105,7 +103,7 @@ namespace CoachBot.Services.Matchmaker
         public string AddPlayer(ulong channelId, string playerName, string position, Teams team = Teams.Team1)
         {
             position = position.Replace("#", string.Empty);
-            var channel = _config.Channels.First(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var player = new Player()
             {
                 Name = playerName
@@ -134,7 +132,7 @@ namespace CoachBot.Services.Matchmaker
 
         public string RemovePlayer(ulong channelId, IUser user)
         {
-            var channel = _config.Channels.FirstOrDefault(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId);
             if (channel.Team1.Players.Any(p => p.DiscordUserId == user.Id))
             {
                 var player = channel.Team1.Players.First(p => p.DiscordUserId == user.Id);
@@ -159,7 +157,7 @@ namespace CoachBot.Services.Matchmaker
 
         public string RemovePlayer(ulong channelId, string playerName)
         {
-            var channel = _config.Channels.FirstOrDefault(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId);
             if (channel.Team1.Players.Any(p => p.Name == playerName))
             {
                 var player = channel.Team1.Players.First(p => p.Name == playerName);
@@ -184,7 +182,7 @@ namespace CoachBot.Services.Matchmaker
 
         public string AddSub(ulong channelId, IUser user)
         {
-            var channel = _config.Channels.First(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var player = new Player()
             {
                 DiscordUserId = user.Id,
@@ -200,7 +198,7 @@ namespace CoachBot.Services.Matchmaker
 
         public string RemoveSub(ulong channelId, IUser user)
         {
-            var channel = _config.Channels.First(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var player = channel.Team1.Substitutes.FirstOrDefault(s => s.DiscordUserId == user.Id);
             if (player != null)
             {
@@ -212,7 +210,7 @@ namespace CoachBot.Services.Matchmaker
 
         public string RemoveSub(ulong channelId, string playerName)
         {
-            var channel = _config.Channels.First(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var player = channel.Team1.Substitutes.FirstOrDefault(s => s.Name == playerName);
             if (player != null)
             {
@@ -224,8 +222,8 @@ namespace CoachBot.Services.Matchmaker
 
         public string ChangeOpposition(ulong channelId, Team team)
         {
-            var previousOpposition = _config.Channels.First(c => c.Id == channelId).Team2;
-            _config.Channels.First(c => c.Id == channelId).Team2 = team;
+            var previousOpposition = _configService.Config.Channels.First(c => c.Id == channelId).Team2;
+            _configService.Config.Channels.First(c => c.Id == channelId).Team2 = team;
             if (team.Name == null && previousOpposition.Name != null) return $":negative_squared_cross_mark: Opposition removed";
             if (team.Name == null && previousOpposition.Name == null) return $":no_entry: You must provide a team name to face";
             return $":busts_in_silhouette: **{team.Name}** are challenging";
@@ -234,7 +232,7 @@ namespace CoachBot.Services.Matchmaker
         public void ResetMatch(ulong channelId)
         {
             var channelConfig = _configService.ReadChannelConfiguration(channelId);
-            _config.Channels.FirstOrDefault(c => c.Id == channelId).Team1 = new Team()
+            _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId).Team1 = new Team()
             {
                 IsMix = channelConfig.Team1.IsMix,
                 Name = channelConfig.Team1.Name,
@@ -243,18 +241,18 @@ namespace CoachBot.Services.Matchmaker
                 Players = new List<Player>(),
                 Substitutes = new List<Player>()
             };
-            _config.Channels.FirstOrDefault(c => c.Id == channelId).Team2 = new Team()
+            _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId).Team2 = new Team()
             {
                 IsMix = channelConfig.Team2.IsMix,
                 Name = channelConfig.Team2.IsMix && channelConfig.Team1.Name.ToLower() == "mix" ? "Mix #2" : channelConfig.Team2.IsMix ? "Mix" : null,
                 Players = new List<Player>()
             };
-            _config.Channels.FirstOrDefault(c => c.Id == channelId).LastHereMention = null;
+            _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId).LastHereMention = null;
         }
 
         public string ReadyMatch(ulong channelId, int? serverId = null)
         {
-            var channel = _config.Channels.First(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             // Need to work out logic for Single GK to make this work properly
             if (channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
             if (channel.Team2.IsMix == false && (channel.Positions.Count()) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
@@ -294,7 +292,7 @@ namespace CoachBot.Services.Matchmaker
 
         public string MentionHere(ulong channelId)
         {
-            var channel = _config.Channels.First(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             if (channel.LastHereMention == null || channel.LastHereMention < DateTime.Now.AddMinutes(-5))
             {
                 channel.LastHereMention = DateTime.Now;
@@ -310,7 +308,7 @@ namespace CoachBot.Services.Matchmaker
         {
             var teamList = new StringBuilder();
             var embedFooterBuilder = new EmbedFooterBuilder();
-            var channel = _config.Channels.First(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             if (channel.ClassicLineup) return GenerateTeamListVintage(channelId, teamType);
             var availablePlaceholderText = !string.IsNullOrEmpty(channel.Team1.KitEmote) && teamType == Teams.Team1 ? channel.Team1.KitEmote : ":shirt:";
             if (teamType == Teams.Team2 && (channelId == 252113301004222465 || channelId == 295580567649648641)) availablePlaceholderText = "<:redshirt:318130493755228160>";
@@ -322,40 +320,9 @@ namespace CoachBot.Services.Matchmaker
                                             .WithCurrentTimestamp();
             if (teamType == Teams.Team1)
             {
-                if (team.Color != null)
+                if (team.Color != null && team.Color[0] == '#')
                 {
-                    switch (team.Color)
-                    {
-                        case "yellow":
-                        case "gold":
-                            builder.WithColor(new Color(255, 215, 0));
-                            break;
-                        case "red":
-                            builder.WithColor(new Color(255, 0, 0));
-                            break;
-                        case "blue":
-                            builder.WithColor(new Color(0, 0, 139));
-                            break;
-                        case "green":
-                            builder.WithColor(new Color(0, 128, 0));
-                            break;
-                        case "orange":
-                            builder.WithColor(new Color(255, 165, 0));
-                            break;
-                        case "black":
-                            builder.WithColor(new Color(0, 0, 0));
-                            break;
-                        case "grey":
-                        case "gray":
-                            builder.WithColor(new Color(128, 128, 128));
-                            break;
-                        case "white":
-                            builder.WithColor(new Color(255, 255, 255));
-                            break;
-                        default:
-                            builder.WithColor(new Color(0x2463b0));
-                            break;
-                    }
+                    builder.WithColor(new Color(ColorExtensions.FromHex(team.Color).R, ColorExtensions.FromHex(team.Color).G, ColorExtensions.FromHex(team.Color).B));
                 }
                 else
                 {
@@ -512,11 +479,16 @@ namespace CoachBot.Services.Matchmaker
         public Embed GenerateTeamListVintage(ulong channelId, Teams teamType = Teams.Team1)
         {
             var teamList = new StringBuilder();
-            var channel = _config.Channels.First(c => c.Id == channelId);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var team = teamType == Teams.Team1 ? channel.Team1 : channel.Team2; 
             var sb = new StringBuilder();
             var teamColor = new Color(teamType == Teams.Team1 ? (uint)0x2463b0 : (uint)0xd60e0e);
             var emptyPos = ":grey_question:";
+
+            if (team.Color != null && teamType == Teams.Team1 && team.Color[0] == '#')
+            {
+                teamColor = new Color(ColorExtensions.FromHex(team.Color).R, ColorExtensions.FromHex(team.Color).G, ColorExtensions.FromHex(team.Color).B);
+            }
 
             var embedBuilder = new EmbedBuilder().WithTitle($"{team.Name} Team List");
             foreach(var position in channel.Positions)

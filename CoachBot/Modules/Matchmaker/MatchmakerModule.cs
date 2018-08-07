@@ -30,7 +30,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.AddPlayer(Context.Channel.Id, Context.Message.Author)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -43,7 +43,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.AddPlayer(Context.Channel.Id, Context.Message.Author, position)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -64,7 +64,7 @@ namespace CoachBot.Modules.Matchmaker
                 await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.AddPlayer(Context.Channel.Id, name, position)).WithCurrentTimestamp().Build());
             }
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -77,7 +77,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.AddPlayer(Context.Channel.Id, Context.Message.Author, null, Teams.Team2)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -90,7 +90,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.AddPlayer(Context.Channel.Id, Context.Message.Author, position, Teams.Team2)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -103,7 +103,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.AddPlayer(Context.Channel.Id, name, position, Teams.Team2)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -116,7 +116,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.RemovePlayer(Context.Channel.Id, Context.Message.Author)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -129,7 +129,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.RemovePlayer(Context.Channel.Id, name)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -141,13 +141,13 @@ namespace CoachBot.Modules.Matchmaker
         {
             var team = new Team()
             {
-                Name = _service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team1.Name == "Mix" ? "Mix #2" : "Mix",
+                Name = _configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team1.Name == "Mix" ? "Mix #2" : "Mix",
                 IsMix = true,
                 Players = new List<Player>(),
             };
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ChangeOpposition(Context.Channel.Id, team)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -166,7 +166,7 @@ namespace CoachBot.Modules.Matchmaker
             };
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ChangeOpposition(Context.Channel.Id, team)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -178,7 +178,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.Select(p => new Position() { PositionName = p }).ToList(), kitEmote, color, isMixChannel, formation, false)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -190,7 +190,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, "Mix", positions.Select(p => new Position() { PositionName = p }).ToList(), null, null, true, Formation.None, true)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -202,7 +202,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.Select(p => new Position() { PositionName = p }).ToList(), null, null, false, Formation.None, true)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -215,7 +215,7 @@ namespace CoachBot.Modules.Matchmaker
             _service.ResetMatch(Context.Message.Channel.Id);
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(":negative_squared_cross_mark: Team sheet reset").WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -227,7 +227,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ReadyMatch(Context.Message.Channel.Id)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -246,7 +246,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync(_service.ReadyMatch(Context.Message.Channel.Id, serverId));
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -258,7 +258,7 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ListAsync(params string[] positions)
         {
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -341,7 +341,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.AddSub(Context.Channel.Id, Context.Message.Author)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -352,7 +352,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.RemoveSub(Context.Channel.Id, Context.Message.Author)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
@@ -363,7 +363,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.RemoveSub(Context.Channel.Id, playerName)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_service._config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }

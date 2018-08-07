@@ -11,9 +11,9 @@ namespace CoachBot.Preconditions
     {
         public override Task<PreconditionResult> CheckPermissions(ICommandContext context, CommandInfo command, IServiceProvider map)
         {
-            var matchmakerService = map.GetService<MatchmakerService>();
+            var configService = map.GetService<ConfigService>();
 
-            if (!matchmakerService._config.Channels.Any(c => c.Id == context.Channel.Id))
+            if (!configService.Config.Channels.Any(c => c.Id == context.Channel.Id))
                 return Task.FromResult(PreconditionResult.FromError($":wrench: This channel is not yet configured. To configure the channel, please use the !configure command in the following format: {Environment.NewLine} **!configure <team name> <positions>** {Environment.NewLine} *e.g. !configure BB GK RB CB LB RW CM LW CF* {Environment.NewLine} For more advanced configuration (such as using the teamsheet view) please type !help for further information."));
 
             return Task.FromResult(PreconditionResult.FromSuccess());

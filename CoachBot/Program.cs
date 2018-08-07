@@ -73,7 +73,7 @@ namespace CoachBot
                 _lastAfkCheckUser = userPost.Id;
                 if (userPost.Status.Equals(UserStatus.Online)) return Task.CompletedTask;
                 var playerSigned = false;
-                foreach (var channel in _matchmakerService._config.Channels)
+                foreach (var channel in _configService.Config.Channels)
                 {
                     var player = channel.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                     if (player == null) player = channel.Team1.Substitutes.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
@@ -133,7 +133,7 @@ namespace CoachBot
                     {
                         textChannel.SendMessageAsync("If you aren't putting in a shift in during the week, you aren't going to make the team this weekend! Sign up for a match!");
                         textChannel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(channel.Id));
-                        if (_matchmakerService._config.Channels.First(c => c.Id == textChannel.Id).Team2.IsMix)
+                        if (_configService.Config.Channels.First(c => c.Id == textChannel.Id).Team2.IsMix)
                         {
                             textChannel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(textChannel.Id, Teams.Team2));
                         }
@@ -149,7 +149,7 @@ namespace CoachBot
             Task.Delay(TimeSpan.FromMinutes(10)).Wait();
             var currentState = _client.GetUser(userPre.Id);
             if (!currentState.Status.Equals(UserStatus.Offline)) return Task.CompletedTask; // User is no longer offline
-            foreach (var channel in _matchmakerService._config.Channels)
+            foreach (var channel in _configService.Config.Channels)
             {
                 var player = channel.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                 var textChannel = _client.GetChannel(channel.Id) as ITextChannel;
@@ -158,7 +158,7 @@ namespace CoachBot
                     textChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":warning: Removed {player.DiscordUserMention ?? player.Name} from the line-up as they have gone offline").WithCurrentTimestamp().Build());
                     textChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(_matchmakerService.RemovePlayer(channel.Id, userPre)).WithCurrentTimestamp().Build());
                     textChannel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(channel.Id));
-                    if (_matchmakerService._config.Channels.First(c => c.Id == channel.Id).Team2.IsMix)
+                    if (_configService.Config.Channels.First(c => c.Id == channel.Id).Team2.IsMix)
                     {
                         textChannel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(channel.Id, Teams.Team2));
                     }
@@ -183,7 +183,7 @@ namespace CoachBot
             Task.Delay(TimeSpan.FromMinutes(15)).Wait();
             var currentState = _client.GetUser(userPre.Id);
             if (currentState.Status.Equals(UserStatus.Online)) return Task.CompletedTask; // User is no longer AFK/Idle
-            foreach (var channel in _matchmakerService._config.Channels)
+            foreach (var channel in _configService.Config.Channels)
             {
                 var player = channel.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                 var sub = channel.Team1.Substitutes.FirstOrDefault(p => p.DiscordUserId == userPost.Id);

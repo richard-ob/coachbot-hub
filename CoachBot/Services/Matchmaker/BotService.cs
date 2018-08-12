@@ -41,20 +41,22 @@ namespace CoachBot.Services.Matchmaker
             _client.GetGuild(parsedId).LeaveAsync();
         }
 
-        public List<Channel> GetChannelsForUser(ulong userId, bool unconfiguredChannels)
+        public List<Channel> GetChannelsForUser(ulong userId, bool unconfiguredChannels, bool hasAdmin = true)
         {
             var channels = new List<Channel>();
             foreach(var guild in _client.Guilds.Where(g => g.Users.Any(u => u.Id == userId)))
             {
                 var userIsAdmin = guild.Users.FirstOrDefault(u => u.Id == userId).GuildPermissions.Administrator;
-                if (userIsAdmin)
+                if (userIsAdmin || (!hasAdmin && guild.Users.Any(u => u.Id == userId)))
                 {
                     foreach (var channel in guild.Channels)
                     {
                         var channelIsConfigured = _configService.Config.Channels.Any(c => c.Id == channel.Id);
                         if (channelIsConfigured && !unconfiguredChannels)
                         {
-                            channels.Add(_configService.Config.Channels.FirstOrDefault(c => c.Id == channel.Id));
+                            var tmpChannel = _configService.Config.Channels.FirstOrDefault(c => c.Id == channel.Id);
+                            tmpChannel.Name = channel.Name;
+                            channels.Add(tmpChannel);
                         }
                         if (!channelIsConfigured && unconfiguredChannels)
                         {

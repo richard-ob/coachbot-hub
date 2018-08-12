@@ -10,9 +10,9 @@
     <table *ngIf="channels" class="table table-striped">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Positions</th>
+          <th>Name</th>
           <th>Team Name</th>
+          <th>Positions</th>
           <th>Team Color</th>
           <th>Is Mix Channel</th>
           <th></th>
@@ -20,12 +20,14 @@
       </thead>
       <tbody>
         <tr *ngFor="let channel of channels">
-          <td>{{channel.id}}</td>
+          <td>{{channel.name}}</td>
+          <td>{{channel.team1.name}}</td>
           <td>
             <span *ngFor="let position of channel.positions">{{position.positionName}} </span>
           </td>
-          <td>{{channel.team1.name}}</td>
-          <td>{{channel.team1.color}}</td>
+          <td>
+            <div style="width: 25px; height: 25px; position: relative; border-radius: 15px;" [style.background]="channel.team1.color"></div>
+          </td>
           <td>
             <i *ngIf="channel.team1.isMix" class="text-success fa fa-check"></i>
             <i *ngIf="!channel.team1.isMix" class="text-danger fa fa-times"></i>

@@ -31,15 +31,12 @@ namespace CoachBot.Controllers
         {
             var userId = ulong.Parse(User.Claims.ToList().First().Value);
             var channels = _botService.GetChannelsForUser(userId, false);
-            foreach(var guild in _client.Guilds)
+            foreach (var channel in channels)
             {
-                foreach (var channel in channels)
+                var guildChannel = (SocketGuildChannel)_client.GetChannel(channel.Id);
+                if (guildChannel != null)
                 {
-                    var guildChannel = guild.GetChannel(channel.Id);
-                    if (guildChannel != null)
-                    {
-                        channel.Name = guildChannel.Name;
-                    }
+                    channel.Name = guildChannel.Name;
                 }
             }
             return channels;
@@ -55,7 +52,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Update([FromBody]Channel channel)
         {
-            _matchmakerService.ConfigureChannel(channel.Id, channel.Team1.Name, channel.Positions, null, channel.Team1.Color, false, Formation.None, channel.ClassicLineup);
+            _matchmakerService.ConfigureChannel(channel.Id, channel.Team1.Name, channel.Positions, "", channel.Team1.Color, false, channel.Formation, channel.ClassicLineup);
         }
     }
 }

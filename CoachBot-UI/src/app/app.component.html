@@ -23,6 +23,12 @@
         <a routerLink="/channels">Channels</a>
       </li>
       <li *ngIf="user">
+        <a routerLink="/match-history">Match History</a>
+      </li>
+      <li *ngIf="user">
+        <a routerLink="/player-leaderboards">Player Leaderboards</a>
+      </li>
+      <li *ngIf="user && user.isAdministrator">
         <a routerLink="/servers">Servers</a>
       </li>
       <li *ngIf="user && user.isAdministrator">
@@ -30,9 +36,6 @@
       </li>
       <li *ngIf="user && user.isAdministrator">
         <a routerLink="/bot">Bot</a>
-      </li>
-      <li>
-        <a routerLink="/discord-commands">Discord Commands</a>
       </li>
     </ul>
   </div>

@@ -4,6 +4,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppComponent } from './app.component';
 import { ConfigurationService } from './shared/services/configuration.service';
@@ -22,6 +24,11 @@ import { BotService } from './shared/services/bot.service';
 import { UnauthorizedInterceptor } from './shared/interceptors/unauthorized.interceptor';
 import { LoginComponent } from './login/login.component';
 import { DiscordCommandsComponent } from './discord-commands/discord-commands.component';
+import { KitComponent } from './kit/kit.component';
+import { MatchService } from './shared/services/match.service';
+import { MatchHistoryComponent } from './match-history/match-history.component';
+import { LeaderboardService } from './shared/services/leaderboard.service';
+import { PlayerLeaderboardsComponent } from './player-leaderboards/player-leaderboards.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +38,10 @@ import { DiscordCommandsComponent } from './discord-commands/discord-commands.co
     ChannelComponent,
     ChannelsComponent,
     DiscordCommandsComponent,
+    PlayerLeaderboardsComponent,
     LoginComponent,
+    KitComponent,
+    MatchHistoryComponent,
     ServersComponent
   ],
   imports: [
@@ -39,13 +49,17 @@ import { DiscordCommandsComponent } from './discord-commands/discord-commands.co
     ColorPickerModule,
     HttpClientModule,
     FormsModule,
+    NgxPaginationModule,
+    ModalModule.forRoot(),
     RouterModule.forRoot(appRoutes)
   ],
   providers: [
     ConfigurationService,
     AnnouncementService,
     BotService,
+    LeaderboardService,
     MatchmakerService,
+    MatchService,
     UserService,
     {
       provide: HTTP_INTERCEPTORS,

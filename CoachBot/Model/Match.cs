@@ -7,6 +7,8 @@ namespace CoachBot.Model
     {
         public ulong ChannelId { get; set; }
 
+        public string ChannelName { get; set; }
+
         public List<Player> Players { get; set; }
 
         public string Team1Name { get; set; }

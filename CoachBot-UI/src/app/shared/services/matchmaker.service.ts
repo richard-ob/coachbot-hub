@@ -21,6 +21,6 @@ export class MatchmakerService {
   }
 
   updateChannel(channel: Channel) {
-    return this.http.post('http://localhost:5006/api/channel', channel).subscribe();
+    return this.http.post('http://localhost:5006/api/channel', channel).pipe();
   }
 }

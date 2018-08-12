@@ -3,6 +3,9 @@ using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System.Linq;
 
 namespace CoachBot.Controllers
@@ -27,6 +30,7 @@ namespace CoachBot.Controllers
             {
                 user.Name = User.Identity.Name;
                 user.IsAdministrator = _botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value));
+                user.Channels = _botService.GetChannelsForUser(ulong.Parse(User.Claims.First().Value), false, false);
             }
             return user;
         }

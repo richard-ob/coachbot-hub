@@ -65,6 +65,7 @@ namespace CoachBot.Services.Matchmaker
                     }
                 }
             }
+            channels.Reverse();
             return channels;
         }
 

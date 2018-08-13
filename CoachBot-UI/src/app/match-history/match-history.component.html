@@ -1,17 +1,16 @@
 <div *ngIf="user" class="card">
     <div class="card-header" style="height: 55px;">
         <h4 class="card-title">
-            <i class="fa fa-cog text-muted"></i> Match History - #{{currentChannel.name}}
+            <i class="fa fa-cog text-muted"></i> Match History - #{{currentChannel.name}} ({{currentChannel.guildName}})
         </h4>
     </div>
     <div class="card-body">
-        <select [(ngModel)]="currentChannel.idString" class="form-control" (ngModelChange)="loadMatchHistory()">
-            <option *ngFor="let channel of user.channels" [ngValue]="channel.idString">
-                {{channel.name}}
+        <select [(ngModel)]="currentChannel" class="form-control" (ngModelChange)="loadMatchHistory()">
+            <option *ngFor="let channel of user.channels" [ngValue]="channel">
+                {{channel.name}} ({{channel.guildName}})
             </option>
         </select>
         <br/>
-
         <div *ngIf="matchHistory && matchHistory.length === 0" class="alert alert-primary" role="alert">
             No matches have been played yet!
         </div>

@@ -37,12 +37,15 @@
                 </h4>
             </div>
             <div class="card-body">
-                <select [(ngModel)]="currentChannel.idString" class="form-control" (ngModelChange)="loadChannelLeaderboard()">
-                    <option *ngFor="let channel of user.channels" [ngValue]="channel.idString">
+                <select [(ngModel)]="currentChannel" class="form-control" (ngModelChange)="loadChannelLeaderboard()">
+                    <option *ngFor="let channel of user.channels" [ngValue]="channel">
                         {{channel.name}}
                     </option>
                 </select>
-                <div class="table-responsive">
+                <div *ngIf="channelLeaderboard && channelLeaderboard.length === 0" class="alert alert-primary" role="alert">
+                    No matches have been played yet!
+                </div>
+                <div *ngIf="channelLeaderboard && channelLeaderboard.length > 0" class="table-responsive">
                     <table class="table table-striped table-condensed">
                         <thead>
                             <tr>

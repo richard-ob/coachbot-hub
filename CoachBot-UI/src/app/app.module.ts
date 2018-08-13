@@ -29,6 +29,7 @@ import { MatchService } from './shared/services/match.service';
 import { MatchHistoryComponent } from './match-history/match-history.component';
 import { LeaderboardService } from './shared/services/leaderboard.service';
 import { PlayerLeaderboardsComponent } from './player-leaderboards/player-leaderboards.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { PlayerLeaderboardsComponent } from './player-leaderboards/player-leader
     LoginComponent,
     KitComponent,
     MatchHistoryComponent,
-    ServersComponent
+    ServersComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

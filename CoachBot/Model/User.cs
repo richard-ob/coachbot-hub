@@ -8,6 +8,8 @@ namespace CoachBot.Model
 
         public ulong DiscordUserId { get; set; }
 
+        public string DiscordUserIdString { get { return DiscordUserId.ToString(); } }
+
         public bool IsAdministrator { get; set; }
 
         public IEnumerable<Channel> Channels { get; set; }

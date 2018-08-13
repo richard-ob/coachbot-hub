@@ -14,4 +14,8 @@ export class UserService {
     getUser(): Observable<any> {
         return this.http.get('http://localhost:5006/api/user').pipe();
     }
+
+    getUserStatistics(): Observable<any> {
+        return this.http.get('http://localhost:5006/api/user/statistics').pipe();
+    }
 }

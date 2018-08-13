@@ -82,11 +82,12 @@ namespace CoachBot.Controllers
             foreach (var match in matches)
             {
                 var channel = (SocketGuildChannel)_client.GetChannel(match.Key);
-                var channelName = channel != null ? $"#{channel.Name} ({channel.Guild.Name})" : "Unknown";
-                var matchWithChannelName = new KeyValuePair<string, int>(channelName, match.Value);
-                matchesWithChannelName.Add(matchWithChannelName);
+                if (channel != null)
+                {
+                    matchesWithChannelName.Add(new KeyValuePair<string, int>(channel.Name, match.Value));
+                }
             }
-            return matchesWithChannelName;
+            return matchesWithChannelName.OrderByDescending(x => x.Value).ToList();
         }
     }
 }

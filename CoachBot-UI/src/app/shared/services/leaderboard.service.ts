@@ -18,4 +18,8 @@ export class LeaderboardService {
     getPlayerLeaderboardForChannel(channelId: string): Observable<Player[]> {
         return this.http.get<Player[]>(`http://localhost:5006/api/leaderboard/channel/${channelId}`).pipe();
     }
+
+    getLeaderboardForPlayer(userId: string): Observable<any[]> {
+        return this.http.get<Player[]>(`http://localhost:5006/api/leaderboard/player/${userId}`).pipe();
+    }
 }

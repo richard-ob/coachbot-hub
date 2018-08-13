@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { DiscordCommandsComponent } from './discord-commands/discord-commands.component';
 import { MatchHistoryComponent } from './match-history/match-history.component';
 import { PlayerLeaderboardsComponent } from './player-leaderboards/player-leaderboards.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const appRoutes: Routes = [
     {
@@ -21,6 +22,7 @@ export const appRoutes: Routes = [
     { path: 'match-history', component: MatchHistoryComponent },
     { path: 'player-leaderboards', component: PlayerLeaderboardsComponent },
     { path: 'bot', component: BotComponent },
+    { path: 'profile', component: ProfileComponent },
     { path: 'announcements', component: AnnouncementsComponent },
     { path: 'login', component: LoginComponent },
     { path: 'discord-commands', component: DiscordCommandsComponent }

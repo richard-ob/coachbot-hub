@@ -3,4 +3,5 @@ export class Team {
     kitEmote: string;
     color: string;
     isMix: boolean;
+    players: Player[];
 }

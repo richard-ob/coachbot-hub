@@ -37,6 +37,7 @@ namespace CoachBot.Controllers
                 if (guildChannel != null)
                 {
                     channel.Name = guildChannel.Name;
+                    channel.GuildName = guildChannel.Guild.Name;
                 }
             }
             return channels;
@@ -46,7 +47,17 @@ namespace CoachBot.Controllers
         public IList<Channel> GetUnconfiguredChannels()
         {
             var userId = ulong.Parse(User.Claims.ToList().First().Value);
-            return _botService.GetChannelsForUser(userId, true);
+            var channels = _botService.GetChannelsForUser(userId, true);
+            foreach (var channel in channels)
+            {
+                var guildChannel = (SocketGuildChannel)_client.GetChannel(channel.Id);
+                if (guildChannel != null)
+                {
+                    channel.Name = guildChannel.Name;
+                    channel.GuildName = guildChannel.Guild.Name;
+                }
+            }
+            return channels;
         }
 
         [HttpPost]

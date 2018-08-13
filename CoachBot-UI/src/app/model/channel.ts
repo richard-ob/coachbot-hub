@@ -10,4 +10,6 @@ export class Channel {
     team2: Team;
     formation: Formation;
     classicLineup: boolean;
+    name: string;
+    guildName: string;
 }

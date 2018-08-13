@@ -7,9 +7,13 @@
     <div *ngIf="!channels" class="text-center">
       <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
     </div>
-    <table *ngIf="channels" class="table table-striped">
+    <div *ngIf="channels && channels.length === 0" class="alert alert-primary" role="alert">
+      No channels configured yet!
+    </div>
+    <table *ngIf="channels && channels.length > 0" class="table table-striped">
       <thead>
         <tr>
+          <th>Server</th>
           <th>Name</th>
           <th>Team Name</th>
           <th>Positions</th>
@@ -20,6 +24,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let channel of channels">
+          <td>{{channel.guildName}}</td>
           <td>{{channel.name}}</td>
           <td>{{channel.team1.name}}</td>
           <td>
@@ -49,15 +54,15 @@
     <form>
       <div class="form-group">
         <label>Channel</label>
-        <select class="form-control">
-          <option *ngFor="let channel of unconfiguredChannels">{{channel.id}}</option>
+        <select class="form-control" [(ngModel)]="unconfiguredChannel" name="unconfiguredChannel">
+          <option *ngFor="let channel of unconfiguredChannels" [ngValue]="channel">{{channel.name}} ({{channel.guildName}}) </option>
         </select>
       </div>
       <div class="alert alert-primary" role="alert">
         To add a channel, you must have invited CoachBot to your Discord server, and he must have access to your channel
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-success float-right">
+        <button type="submit" class="btn btn-success float-right" (click)="addChannel()" [disabled]="isSaving">
           <i class="fa fa-check"></i> Add</button>
       </div>
     </form>

@@ -15,10 +15,12 @@ namespace CoachBot.Controllers
     public class UserController : Controller
     {
         private readonly BotService _botService;
+        private readonly StatisticsService _statisticsService;
 
-        public UserController(BotService botService)
+        public UserController(BotService botService, StatisticsService statisticsService)
         {
             _botService = botService;
+            _statisticsService = statisticsService;
         }
 
         [HttpGet]
@@ -29,9 +31,25 @@ namespace CoachBot.Controllers
             if(User.Claims.Any())
             {
                 user.Name = User.Identity.Name;
+                user.DiscordUserId = ulong.Parse(User.Claims.First().Value);
                 user.IsAdministrator = _botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value));
                 user.Channels = _botService.GetChannelsForUser(ulong.Parse(User.Claims.First().Value), false, false);
             }
+            return user;
+        }
+
+        [HttpGet("statistics")]
+        [Authorize]
+        public UserStatistics GetUserStatistics()
+        {
+            var userId = ulong.Parse(User.Claims.First().Value);
+            var user = new UserStatistics() {
+                Appearances = _statisticsService.MatchHistory.Count(a => a.Players.Any(p => p.DiscordUserId == userId)),
+                FirstAppearance = _statisticsService.MatchHistory.Where(a => a.Players.Any(p => p.DiscordUserId == userId)).OrderBy(m => m.MatchDate).FirstOrDefault().MatchDate,
+                LastAppearance = _statisticsService.MatchHistory.Where(a => a.Players.Any(p => p.DiscordUserId == userId)).OrderByDescending(m => m.MatchDate).FirstOrDefault().MatchDate,
+                Rank = 10
+            };
+
             return user;
         }
 

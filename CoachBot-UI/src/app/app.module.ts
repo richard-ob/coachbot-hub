@@ -30,6 +30,7 @@ import { MatchHistoryComponent } from './match-history/match-history.component';
 import { LeaderboardService } from './shared/services/leaderboard.service';
 import { PlayerLeaderboardsComponent } from './player-leaderboards/player-leaderboards.component';
 import { ProfileComponent } from './profile/profile.component';
+import { LogService } from './shared/services/log.service';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { ProfileComponent } from './profile/profile.component';
     AnnouncementService,
     BotService,
     LeaderboardService,
+    LogService,
     MatchmakerService,
     MatchService,
     UserService,

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using System;
 using System.Linq;
 
 namespace CoachBot.Controllers
@@ -16,11 +17,13 @@ namespace CoachBot.Controllers
     {
         private readonly BotService _botService;
         private readonly StatisticsService _statisticsService;
+        private readonly LeaderboardService _leaderboardService;
 
-        public UserController(BotService botService, StatisticsService statisticsService)
+        public UserController(BotService botService, StatisticsService statisticsService, LeaderboardService leaderboardService)
         {
             _botService = botService;
             _statisticsService = statisticsService;
+            _leaderboardService = leaderboardService;
         }
 
         [HttpGet]
@@ -47,7 +50,7 @@ namespace CoachBot.Controllers
                 Appearances = _statisticsService.MatchHistory.Count(a => a.Players.Any(p => p.DiscordUserId == userId)),
                 FirstAppearance = _statisticsService.MatchHistory.Where(a => a.Players.Any(p => p.DiscordUserId == userId)).OrderBy(m => m.MatchDate).FirstOrDefault().MatchDate,
                 LastAppearance = _statisticsService.MatchHistory.Where(a => a.Players.Any(p => p.DiscordUserId == userId)).OrderByDescending(m => m.MatchDate).FirstOrDefault().MatchDate,
-                Rank = 10
+                Rank = _leaderboardService.GetLeaderboardForPlayers().ToList().FindIndex(p => p.Key == User.Identity.Name)
             };
 
             return user;

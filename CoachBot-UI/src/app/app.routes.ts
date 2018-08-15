@@ -13,7 +13,7 @@ import { ProfileComponent } from './profile/profile.component';
 export const appRoutes: Routes = [
     {
         path: '',
-        redirectTo: '/channels',
+        redirectTo: '/profile',
         pathMatch: 'full'
     },
     { path: 'channels', component: ChannelsComponent },

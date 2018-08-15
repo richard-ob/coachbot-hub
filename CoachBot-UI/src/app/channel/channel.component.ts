@@ -24,9 +24,9 @@ export class ChannelComponent {
             .pipe(map(params => params['id']))
             .subscribe((id) => {
                 this.matchmakerService
-                    .getChannels()
-                    .subscribe(channels => {
-                        this.channel = channels[0];
+                    .getChannel(id)
+                    .subscribe(channel => {
+                        this.channel = channel;
                         this.channel.id = this.channel.idString;
                     });
             });

@@ -43,6 +43,19 @@ namespace CoachBot.Controllers
             return channels;
         }
 
+        [HttpGet("{id}")]
+        public Channel Get(ulong id)
+        {
+            var userId = ulong.Parse(User.Claims.ToList().First().Value);
+            var channel = _botService.GetChannelsForUser(userId, false).First(c => c.Id == id);
+            var guildChannel = (SocketGuildChannel)_client.GetChannel(id);
+            channel.Name = guildChannel.Name;
+            channel.GuildName = guildChannel.Guild.Name;
+
+            return channel;
+        }
+
+
         [HttpGet("unconfigured")]
         public IList<Channel> GetUnconfiguredChannels()
         {

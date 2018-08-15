@@ -12,6 +12,7 @@ export class ProfileComponent {
     user: User;
     channelLeaderboard: any[];
     userStats: any;
+    playerLeaderboard: any[];
 
     constructor(private leaderboardService: LeaderboardService, private userService: UserService) {
         this.userService.getUser().subscribe(user => {
@@ -20,5 +21,6 @@ export class ProfileComponent {
                 .subscribe(channelLeaderboard => this.channelLeaderboard = channelLeaderboard);
         });
         this.userService.getUserStatistics().subscribe(userStats => this.userStats = userStats);
+        this.leaderboardService.getPlayerLeaderboard().subscribe(playerLeaderboard => this.playerLeaderboard = playerLeaderboard);
     }
 }

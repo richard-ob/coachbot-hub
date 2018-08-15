@@ -8,7 +8,7 @@
         <div *ngIf="!user || !userStats" class="text-center">
             <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
         </div>
-        <div *ngIf="user && userStats" class="row">
+        <div *ngIf="user && userStats && playerLeaderboard" class="row">
             <div class="col-sm-6">
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -21,7 +21,7 @@
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Overall Rank
-                        <span class="badge badge-primary badge-pill">{{userStats.rank}}</span>
+                        <span class="badge badge-primary badge-pill">{{userStats.rank}} of {{playerLeaderboard.length}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         First Appearance

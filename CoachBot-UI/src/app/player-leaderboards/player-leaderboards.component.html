@@ -3,7 +3,7 @@
         <div *ngIf="user" class="card">
             <div class="card-header" style="height: 55px;">
                 <h4 class="card-title">
-                    <i class="fa fa-cog text-muted"></i> Overall Player Leaderboard
+                    <i class="fa fa-trophy text-muted"></i> Overall Player Leaderboard
                 </h4>
             </div>
             <div class="card-body">
@@ -19,14 +19,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let player of playerLeaderboard | paginate: { itemsPerPage: 10, currentPage: currentPage }">
+                            <tr *ngFor="let player of playerLeaderboard | paginate: { itemsPerPage: 10, currentPage: currentPage, id: 'playerLeaderboard' }">
                                 <td>{{player.key}}</td>
                                 <td>{{player.value}}</td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="text-center">
-                        <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+                        <pagination-controls (pageChange)="currentPage = $event" id="playerLeaderboard"></pagination-controls>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
         <div *ngIf="user" class="card">
             <div class="card-header" style="height: 55px;">
                 <h4 class="card-title">
-                    <i class="fa fa-cog text-muted"></i> Channel Leaderboards
+                    <i class="fa fa-sort-numeric-desc text-muted"></i> Channel Leaderboards
                 </h4>
             </div>
             <div class="card-body">
@@ -60,14 +60,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let players of channelLeaderboard | paginate: { itemsPerPage: 10, currentPage: channelLeaderboardCurrentPage }">
+                            <tr *ngFor="let players of channelLeaderboard | paginate: { itemsPerPage: 10, currentPage: channelLeaderboardCurrentPage,  id: 'channelLeaderboard'}">
                                 <td>{{players.key}}</td>
                                 <td>{{players.value}}</td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="text-center">
-                        <pagination-controls (pageChange)="channelLeaderboardCurrentPage = $event"></pagination-controls>
+                        <pagination-controls (pageChange)="channelLeaderboardCurrentPage = $event" id="channelLeaderboard"></pagination-controls>
                     </div>
                 </div>
             </div>

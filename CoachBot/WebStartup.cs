@@ -62,6 +62,7 @@ namespace CoachBot
                 .AddSingleton<ConfigService>()
                 .AddSingleton<MatchmakerService>()
                 .AddSingleton<StatisticsService>()
+                .AddSingleton<LeaderboardService>()
                 .AddSingleton<BotService>()
                 .AddSingleton<AnnouncementService>()
                 .AddDbContext<BotContext>(options =>

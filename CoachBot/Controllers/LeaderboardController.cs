@@ -15,11 +15,13 @@ namespace CoachBot.Controllers
     public class LeaderboardController : Controller
     {
         private readonly StatisticsService _statisticsService;
+        private readonly LeaderboardService _leaderboardService;
         private readonly DiscordSocketClient _client;
 
-        public LeaderboardController(StatisticsService statisticsService, DiscordSocketClient client)
+        public LeaderboardController(StatisticsService statisticsService, LeaderboardService leaderboardService, DiscordSocketClient client)
         {
             _statisticsService = statisticsService;
+            _leaderboardService = leaderboardService;
             _client = client;
         }
 
@@ -59,19 +61,7 @@ namespace CoachBot.Controllers
         [HttpGet("players")]
         public IEnumerable<KeyValuePair<string, int>> GetLeaderboardForPlayers()
         {
-            var recentMatches = _statisticsService.MatchHistory;
-            var appearances = new List<Player>();
-            foreach (var match in recentMatches)
-            {
-                appearances.AddRange(match.Players.Where(p => p.DiscordUserId > 0 && p.DiscordUserId != null));
-            }
-            var leaderboard = new List<KeyValuePair<string, int>>();
-            foreach (var player in appearances.Select(s => s.DiscordUserId).Distinct())
-            {
-                var playerAppearances = appearances.Where(a => a.DiscordUserId == player).Count();
-                leaderboard.Add(new KeyValuePair<string, int>(appearances.Last(a => a.DiscordUserId == player).Name, playerAppearances));
-            }
-            return leaderboard.OrderByDescending(p => p.Value);
+            return _leaderboardService.GetLeaderboardForPlayers();
         }
 
         [HttpGet("player/{id}")]

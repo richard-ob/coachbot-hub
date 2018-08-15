@@ -19,11 +19,25 @@ export class PlayerLeaderboardsComponent {
     constructor(private leaderboardService: LeaderboardService, private userService: UserService) {
         this.userService.getUser().subscribe(user => {
             this.user = user;
-            this.leaderboardService.getPlayerLeaderboard().subscribe(playerLeaderboard => this.playerLeaderboard = playerLeaderboard);
+            this.leaderboardService.getPlayerLeaderboard().subscribe(playerLeaderboard => {
+                this.playerLeaderboard = playerLeaderboard;
+                let i = 1;
+                for (const player of this.playerLeaderboard) {
+                    player.rank = i;
+                    i++;
+                }
+            });
             if (this.user.channels.length > 0) {
                 this.currentChannel = this.user.channels[0];
                 this.leaderboardService.getPlayerLeaderboardForChannel(this.currentChannel.idString)
-                    .subscribe(channelLeaderboard => this.channelLeaderboard = channelLeaderboard);
+                    .subscribe(channelLeaderboard => {
+                        this.channelLeaderboard = channelLeaderboard;
+                        let i = 1;
+                        for (const channel of this.channelLeaderboard) {
+                            channel.rank = i;
+                            i++;
+                        }
+                    });
             }
         });
     }

@@ -76,7 +76,9 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Update([FromBody]Channel channel)
         {
-            _matchmakerService.ConfigureChannel(channel.Id, channel.Team1.Name, channel.Positions, "", channel.Team1.Color, false, channel.Formation, channel.ClassicLineup);
+            _matchmakerService.ConfigureChannel(channel.Id, channel.Team1.Name, channel.Positions, "", channel.Team1.Color, channel.Team1.IsMix, channel.Formation, channel.ClassicLineup);
+            var discordChannel = (SocketTextChannel)_client.Guilds.FirstOrDefault(g => g.Channels.Any(c => c.Id == channel.Id)).Channels.First( c => c.Id == channel.Id);
+            discordChannel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(channel.Id));
         }
     }
 }

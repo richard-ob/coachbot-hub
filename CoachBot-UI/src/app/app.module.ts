@@ -31,6 +31,8 @@ import { LeaderboardService } from './shared/services/leaderboard.service';
 import { PlayerLeaderboardsComponent } from './player-leaderboards/player-leaderboards.component';
 import { ProfileComponent } from './profile/profile.component';
 import { LogService } from './shared/services/log.service';
+import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
+import { ErrorComponent } from './shared/components/error.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { LogService } from './shared/services/log.service';
     ChannelComponent,
     ChannelsComponent,
     DiscordCommandsComponent,
+    ErrorComponent,
     PlayerLeaderboardsComponent,
     LoginComponent,
     KitComponent,
@@ -73,6 +76,11 @@ import { LogService } from './shared/services/log.service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     }
   ],

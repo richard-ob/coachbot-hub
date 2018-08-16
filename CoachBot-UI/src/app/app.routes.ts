@@ -9,6 +9,7 @@ import { DiscordCommandsComponent } from './discord-commands/discord-commands.co
 import { MatchHistoryComponent } from './match-history/match-history.component';
 import { PlayerLeaderboardsComponent } from './player-leaderboards/player-leaderboards.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ErrorComponent } from './shared/components/error.component';
 
 export const appRoutes: Routes = [
     {
@@ -25,5 +26,6 @@ export const appRoutes: Routes = [
     { path: 'profile', component: ProfileComponent },
     { path: 'announcements', component: AnnouncementsComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'error', component: ErrorComponent },
     { path: 'discord-commands', component: DiscordCommandsComponent }
 ];

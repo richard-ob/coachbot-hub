@@ -20,6 +20,8 @@ namespace CoachBot.Model
 
         public string GuildName { get; set; }
 
+        public IEnumerable<KeyValuePair<string, string>> Emotes { get; set; }
+
         public Team Team1 { get; set; }
 
         public Team Team2 { get; set; }

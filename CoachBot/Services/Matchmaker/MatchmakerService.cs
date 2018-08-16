@@ -19,7 +19,7 @@ namespace CoachBot.Services.Matchmaker
             _statisticsService = statisticsService;
         }
 
-        public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, string kitEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false)
+        public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, string kitEmote = null, string badgeEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false)
         {
             if (positions.Count() <= 1) return ":no_entry: You must add at least two positions";
             if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":no_entry: All positions must be unique";
@@ -36,6 +36,7 @@ namespace CoachBot.Services.Matchmaker
                     IsMix = true,
                     Name = teamName,
                     KitEmote = kitEmote,
+                    BadgeEmote = badgeEmote,
                     Color = color,
                     Players = new List<Player>(),
                     Substitutes = new List<Player>()

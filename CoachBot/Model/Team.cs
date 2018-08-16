@@ -14,6 +14,8 @@ namespace CoachBot.Model
 
         public string KitEmote { get; set; }
 
+        public string BadgeEmote { get; set; }
+
         public string Color { get; set; }
 
         public bool IsMix { get; set; }

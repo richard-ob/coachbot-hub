@@ -51,6 +51,7 @@ namespace CoachBot.Controllers
             var guildChannel = (SocketGuildChannel)_client.GetChannel(id);
             channel.Name = guildChannel.Name;
             channel.GuildName = guildChannel.Guild.Name;
+            channel.Emotes = guildChannel.Guild.Emotes.Select(e => new KeyValuePair<string, string>($"<:{e.Name}:{e.Id}>", e.Url));
 
             return channel;
         }
@@ -76,8 +77,9 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Update([FromBody]Channel channel)
         {
-            _matchmakerService.ConfigureChannel(channel.Id, channel.Team1.Name, channel.Positions, "", channel.Team1.Color, channel.Team1.IsMix, channel.Formation, channel.ClassicLineup);
-            var discordChannel = (SocketTextChannel)_client.Guilds.FirstOrDefault(g => g.Channels.Any(c => c.Id == channel.Id)).Channels.First( c => c.Id == channel.Id);
+            var discordChannel = (SocketTextChannel)_client.GetChannel(channel.Id);
+            _matchmakerService.ConfigureChannel(channel.Id, channel.Team1.Name, channel.Positions, channel.Team1.KitEmote, channel.Team1.BadgeEmote, channel.Team1.Color, channel.Team1.IsMix, channel.Formation, channel.ClassicLineup);
+
             discordChannel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(channel.Id));
         }
     }

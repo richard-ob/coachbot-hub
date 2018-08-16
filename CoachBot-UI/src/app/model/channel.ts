@@ -12,4 +12,5 @@ export class Channel {
     classicLineup: boolean;
     name: string;
     guildName: string;
+    emotes: any[];
 }

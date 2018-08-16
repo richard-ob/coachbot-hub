@@ -55,4 +55,22 @@ export class ChannelComponent {
     savePositionName() {
         this.channel.positions[this.currentPositionId].positionName = this.editPositionName;
     }
+
+    getKitUrl(): string {
+        const emote = this.channel.emotes.find(e => e.key === this.channel.team1.kitEmote);
+        if (emote) {
+            return emote.value;
+        } else {
+            return null;
+        }
+    }
+
+    getBadgeUrl(): string {
+        const emote = this.channel.emotes.find(e => e.key === this.channel.team1.badgeEmote);
+        if (emote) {
+            return emote.value;
+        } else {
+            return null;
+        }
+    }
 }

@@ -58,7 +58,7 @@
             </div>
             <h4>Bot Log</h4>
             <br/>
-            <textarea class="form-control" rows="8">{{log}}</textarea>
+            <textarea class="form-control" rows="8" [disabled]="!log">{{log}}</textarea>
             <button class="btn btn-primary pull-right" [disabled]="refreshingLog" (click)="refreshLog()" style="margin-top: 10px">
                 <i class="fa fa-refresh" [class.fa-spin]="refreshingLog"></i> Refresh Log</button>
         </form>

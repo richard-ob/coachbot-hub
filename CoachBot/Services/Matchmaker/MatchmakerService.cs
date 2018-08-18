@@ -6,6 +6,8 @@ using CoachBot.Model;
 using System;
 using CoachBot.Extensions;
 using Discord.WebSocket;
+using System.Timers;
+using System.Threading.Tasks;
 
 namespace CoachBot.Services.Matchmaker
 {
@@ -298,9 +300,9 @@ namespace CoachBot.Services.Matchmaker
         public string Search(ulong channelId, string challengerMention)
         {
             var challenger = _configService.Config.Channels.First(c => c.Id == channelId);
-            if (challenger.Positions.Count() -1 > challenger.SignedPlayers.Count()) {
-                return ":no_entry: All outfield positions must be filled";
-            }
+            if (challenger.Positions.Count() -1 > challenger.SignedPlayers.Count()) return ":no_entry: All outfield positions must be filled";
+            if (challenger.IsSearching) return ":no_entry: You're already searching for a match. Type !stopsearch to cancel the previous search.";
+
             var embed = new EmbedBuilder()
                 .WithTitle($":mag: {challenger.Team1.Name} are searching for a team to face")
                 .WithDescription($"To challenge {challenger.Team1.Name} type !challenge {challenger.Id} and contact {challengerMention} for more information")
@@ -318,8 +320,23 @@ namespace CoachBot.Services.Matchmaker
             {
                 (_client.GetChannel(channel.Id) as SocketTextChannel)?.SendMessageAsync("", embed: embed.Build());
             }
+            var timeout = TimeoutSearch(channelId);
+            timeout.ConfigureAwait(false);
+
             return ":white_check_mark: Searching for opposition.. To cancel, type !stopsearch";
         }
+
+        public async Task TimeoutSearch(ulong channelId)
+        {
+            await Task.Delay(900000);
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
+            if (channel.IsSearching)
+            {
+                (_client.GetChannel(channelId) as SocketTextChannel)?.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":timer: Your search for an opponent has timed out after 15 minutes. Please try again if you are still searching").WithCurrentTimestamp().Build());
+                channel.IsSearching = false;
+            }
+        }
+
         public string StopSearch(ulong channelId)
         {
             var challenger = _configService.Config.Channels.First(c => c.Id == channelId);
@@ -336,11 +353,14 @@ namespace CoachBot.Services.Matchmaker
             var challenger = _configService.Config.Channels.First(c => c.Id == challengerChannelId);
             var opposition = _configService.Config.Channels.First(c => c.Id == oppositionId);
             if (!opposition.IsSearching) return $":no_entry: {opposition.Team1.Name} are no longer search for a team to face";
+            if (challengerChannelId == oppositionId) return $":no_entry: You can't face yourself. Don't waste my time.";
+            if (challenger.Positions.Count() != opposition.Positions.Count()) return $":no_entry: Sorry, {opposition.Team1.Name} are looking for an {opposition.Positions.Count()}v{opposition.Positions.Count()}";
+            if (Math.Round(challenger.Positions.Count() * 0.6) > challenger.SignedPlayers.Count()) return $":no_entry: At least {Math.Round(challenger.Positions.Count() * 0.6)} positions must be filled";
             challenger.IsSearching = false;
             var acceptMsg = $":handshake: {challenger.Team1.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
             (_client.GetChannel(opposition.Id) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithDescription(acceptMsg).WithCurrentTimestamp().Build());
             opposition.Team2.Name = challenger.Team1.Name;
-            challenger.Team2.Name = opposition.Team1.Name;            
+            challenger.Team2.Name = opposition.Team1.Name;
             (_client.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId, Teams.Team1));
             (_client.GetChannel(oppositionId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(oppositionId, Teams.Team1));
             return $":handshake: You have successfully challenged {opposition.Team1.Name}";

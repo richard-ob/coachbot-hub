@@ -89,6 +89,9 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!ready", "Send all players to server");
             embedBuilder.AddField("!ready <server id>", "Send all players to the server provided");
             embedBuilder.AddField("!reset", "Manually reset the match");
+            embedBuilder.AddField("!search", "Search for an opponent to face");
+            embedBuilder.AddField("!stopsearch", "Cancel an opponent search");
+            embedBuilder.AddField("!challenge <team id>", "Challenge a specific team who are currently searching for opposition");
             embedBuilder.AddField("!servers", "See the full available server list");
             embedBuilder.AddField("!addserver <ip:port> <name>", "Add a server to the server list");
             embedBuilder.AddField("!removeserver <server id>", "Remove specified server to the server list");
@@ -96,7 +99,7 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!leaderboard", "See the appearance rankings for this channel");
             embedBuilder.AddField("!configure <team name> <positions> (e.g. !configurebasic BB GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings (classic team list view and isn't a mix)");
             embedBuilder.AddField("!configuremix <positions> (e.g. !configurebasic GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings for a mix channel (classic team list view and is a mix)");
-            embedBuilder.AddField("!configureadvanced <team name/team emote> <kit emote> <colour> <formation id> <is a mix channel> <positions> (e.g. !configure :bb: :bbshirt: blue 1 false GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with customised team sheet view. Type !formations for a list of formations.");
+            embedBuilder.AddField("!configureadvanced <team name> <team badge emote> <kit emote> <colour> <formation id> <is a mix channel> <positions> (e.g. !configure BB :bb: :bbshirt: #ffffff 1 false GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with customised team sheet view. Type !formations for a list of formations.");
             embedBuilder.AddField("!formations", "See the list of possible formations for the team sheet view");
             embedBuilder.AddField("!colours", "See a list of colours available for the teamsheet border");
             return embedBuilder.Build();
@@ -116,17 +119,10 @@ namespace CoachBot.Services.Matchmaker
 
         public Embed ListColours()
         {
-            var embedBuilder = new EmbedBuilder().WithTitle(":art: Colours");
-            var sb = new StringBuilder();
-            sb.AppendLine("yellow");
-            sb.AppendLine("blue");
-            sb.AppendLine("red");
-            sb.AppendLine("green");
-            sb.AppendLine("orange");
-            sb.AppendLine("white");
-            sb.AppendLine("grey");
-            sb.AppendLine("black");
-            return embedBuilder.WithDescription(sb.ToString()).Build();
+            return new EmbedBuilder()
+                .WithTitle(":art: Colours")
+                .WithDescription("Hex colours are now accepted. Use https://htmlcolorcodes.com/ as a reference. Format is ***#ffffff***")
+                .Build();
         }
 
         public Channel ReadChannelConfiguration(ulong channelId)

@@ -5,6 +5,7 @@ using System.Text;
 using CoachBot.Model;
 using System;
 using CoachBot.Extensions;
+using Discord.WebSocket;
 
 namespace CoachBot.Services.Matchmaker
 {
@@ -12,11 +13,13 @@ namespace CoachBot.Services.Matchmaker
     {
         private readonly ConfigService _configService;
         private readonly StatisticsService _statisticsService;
+        private DiscordSocketClient _client;
 
-        public MatchmakerService(ConfigService configService, StatisticsService statisticsService)
+        public MatchmakerService(ConfigService configService, StatisticsService statisticsService, DiscordSocketClient client)
         {
             _configService = configService;
             _statisticsService = statisticsService;
+            _client = client;
         }
 
         public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, string kitEmote = null, string badgeEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false)
@@ -107,7 +110,8 @@ namespace CoachBot.Services.Matchmaker
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var player = new Player()
             {
-                Name = playerName
+                Name = playerName,
+                Position = new Position()
             };
             position = position.ToUpper();
             if (channel.SignedPlayers.Any(p => p.Name == playerName)) return $":no_entry: **{playerName}** is already signed.";
@@ -291,6 +295,57 @@ namespace CoachBot.Services.Matchmaker
             return ":white_check_mark: Previous line-up restored";
         }
 
+        public string Search(ulong channelId, string challengerMention)
+        {
+            var challenger = _configService.Config.Channels.First(c => c.Id == channelId);
+            if (challenger.Positions.Count() -1 > challenger.SignedPlayers.Count()) {
+                return ":no_entry: All outfield positions must be filled";
+            }
+            var embed = new EmbedBuilder()
+                .WithTitle($":mag: {challenger.Team1.Name} are searching for a team to face")
+                .WithDescription($"To challenge {challenger.Team1.Name} type !challenge {challenger.Id} and contact {challengerMention} for more information")
+                .WithCurrentTimestamp();
+            if (challenger.Team1.Color != null && challenger.Team1.Color[0] == '#')
+            {
+                embed.WithColor(new Color(ColorExtensions.FromHex(challenger.Team1.Color).R, ColorExtensions.FromHex(challenger.Team1.Color).G, ColorExtensions.FromHex(challenger.Team1.Color).B));
+            }
+            else
+            {
+                embed.WithColor(new Color(0xFFFFFF));
+            }
+            challenger.IsSearching = true;
+            foreach (var channel in _configService.Config.Channels.Where(c => c.Positions.Count == challenger.Positions.Count))
+            {
+                (_client.GetChannel(channel.Id) as SocketTextChannel)?.SendMessageAsync("", embed: embed.Build());
+            }
+            return ":white_check_mark: Searching for opposition.. To cancel, type !stopsearch";
+        }
+        public string StopSearch(ulong channelId)
+        {
+            var challenger = _configService.Config.Channels.First(c => c.Id == channelId);
+            if (!challenger.IsSearching)
+            {
+                return ":no_entry: Your team is not currently searching for a match.";
+            }
+            challenger.IsSearching = false;
+            return ":end: Cancelled search for opposition";
+        }
+
+        public string Challenge(ulong challengerChannelId, ulong oppositionId, string challengerMention)
+        {
+            var challenger = _configService.Config.Channels.First(c => c.Id == challengerChannelId);
+            var opposition = _configService.Config.Channels.First(c => c.Id == oppositionId);
+            if (!opposition.IsSearching) return $":no_entry: {opposition.Team1.Name} are no longer search for a team to face";
+            challenger.IsSearching = false;
+            var acceptMsg = $":handshake: {challenger.Team1.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
+            (_client.GetChannel(opposition.Id) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithDescription(acceptMsg).WithCurrentTimestamp().Build());
+            opposition.Team2.Name = challenger.Team1.Name;
+            challenger.Team2.Name = opposition.Team1.Name;            
+            (_client.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId, Teams.Team1));
+            (_client.GetChannel(oppositionId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(oppositionId, Teams.Team1));
+            return $":handshake: You have successfully challenged {opposition.Team1.Name}";
+        }
+
         public string MentionHere(ulong channelId)
         {
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
@@ -316,7 +371,7 @@ namespace CoachBot.Services.Matchmaker
             if (teamType == Teams.Team2 && channelId == 310829524277395457) availablePlaceholderText = "<:redshirt:318114878063902720>";
             var team = teamType == Teams.Team1 ? channel.Team1 : channel.Team2;
             var oppositionTeam = teamType == Teams.Team1 ? channel.Team2 : channel.Team1;
-            var builder = new EmbedBuilder().WithTitle($"{team.Name} Team Sheet")
+            var builder = new EmbedBuilder().WithTitle($"{team.BadgeEmote ?? team.Name} Team Sheet")
                                             .WithDescription(oppositionTeam.Name != null ? $"vs {oppositionTeam.Name}" : "")
                                             .WithCurrentTimestamp();
             if (teamType == Teams.Team1)
@@ -491,7 +546,7 @@ namespace CoachBot.Services.Matchmaker
                 teamColor = new Color(ColorExtensions.FromHex(team.Color).R, ColorExtensions.FromHex(team.Color).G, ColorExtensions.FromHex(team.Color).B);
             }
 
-            var embedBuilder = new EmbedBuilder().WithTitle($"{team.Name} Team List");
+            var embedBuilder = new EmbedBuilder().WithTitle($"{team.BadgeEmote ?? team.Name} Team List");
             foreach(var position in channel.Positions)
             {
                 var player = team.Players.FirstOrDefault(p => p.Position.PositionName == position.PositionName);

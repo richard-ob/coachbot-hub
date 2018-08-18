@@ -264,6 +264,27 @@ namespace CoachBot.Modules.Matchmaker
             }
         }
 
+        [Command("!search")]
+        [RequireChannelConfigured]
+        public async Task SearchOppositionAsync()
+        {            
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.Search(Context.Channel.Id, Context.User.Mention)).Build());
+        }
+
+        [Command("!challenge")]
+        [RequireChannelConfigured]
+        public async Task ChallengeAsync(ulong oppositionId)
+        {
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.Challenge(Context.Channel.Id, oppositionId, Context.User.Mention)).Build());
+        }
+
+        [Command("!stopsearch")]
+        [RequireChannelConfigured]
+        public async Task StopSearchOppositionAsync()
+        {
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.StopSearch(Context.Channel.Id)).Build());
+        }
+
         [Command("!here")]
         [Alias("!highlight")]
         [RequireChannelConfigured]

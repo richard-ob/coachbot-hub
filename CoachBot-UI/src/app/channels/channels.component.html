@@ -60,7 +60,10 @@
         </select>
       </div>
       <div class="alert alert-primary" role="alert">
-        To add a channel, you must have invited CoachBot to your Discord server, and he must have access to your channel
+        To add a channel, you must have invited CoachBot to your Discord server, and he must have access to your channel&nbsp;
+        <a class="btn btn-sm" href="https://discordapp.com/oauth2/authorize?client_id=310871748562386954&scope=bot" role="button"
+          style="background-color: #7289da; text-decoration: none;">
+          <img src="/assets/discord_icon.png"> Invite CoachBot</a>
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-success float-right" (click)="addChannel()" [disabled]="isSaving || !unconfiguredChannel">

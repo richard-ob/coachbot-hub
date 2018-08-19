@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChatMessage } from '../../model/chat-message';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,6 @@ export class AnnouncementService {
   }
 
   sendAnnouncement(message: ChatMessage) {
-    return this.http.post('http://localhost:5006/api/announcement/', message).pipe();
+    return this.http.post(`${environment.apiUrl}/api/announcement/`, message).pipe();
   }
 }

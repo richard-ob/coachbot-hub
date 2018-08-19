@@ -2,6 +2,7 @@
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -15,12 +16,22 @@ namespace CoachBot.Controllers
         private readonly BotService _botService;
         private readonly StatisticsService _statisticsService;
         private readonly LeaderboardService _leaderboardService;
+        private readonly ConfigService _configService;
+        private readonly string _aplicationUrl;
 
-        public UserController(BotService botService, StatisticsService statisticsService, LeaderboardService leaderboardService)
+        public UserController(BotService botService, StatisticsService statisticsService, LeaderboardService leaderboardService, IHostingEnvironment env)
         {
             _botService = botService;
             _statisticsService = statisticsService;
             _leaderboardService = leaderboardService;
+            if (env.IsDevelopment())
+            {
+                _aplicationUrl = "http://localhost:4200";
+            }
+            else
+            {
+                _aplicationUrl = "http://coachbot.iosoccer.com";            
+            }
         }
 
         [HttpGet]
@@ -56,14 +67,14 @@ namespace CoachBot.Controllers
         [HttpGet("/login")]
         public IActionResult LogIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "http://localhost:4200" }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
+            return Challenge(new AuthenticationProperties { RedirectUri = _aplicationUrl }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
         }
 
         [HttpGet("/logout")]
         public IActionResult LogOut()
         {
             HttpContext.SignOutAsync("Cookies").Wait();
-            return new RedirectResult("http://localhost:4200");
+            return new RedirectResult(_aplicationUrl);
         }
 
         [HttpGet("/unauthorized")]

@@ -7,7 +7,7 @@
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <span *ngIf="user && user.name != null" class="badge badge-secondary">{{user.name}}</span>
 
-    <a *ngIf="!user || user.name == null" class="btn btn-sm" href="http://localhost:5006/login" role="button" style="background-color: #7289da;">
+    <a *ngIf="!user || user.name == null" class="btn btn-sm" href="{{apiUrl}}/login" role="button" style="background-color: #7289da;">
       <img src="/assets/discord_icon.png">&nbsp;Login With Discord</a>
   </div>
 </nav>

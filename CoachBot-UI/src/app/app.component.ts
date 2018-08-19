@@ -7,6 +7,7 @@ import { Channel } from './model/channel';
 import { UserService } from './shared/services/user.service';
 import { ServerService } from './shared/services/server.service';
 import { AnnouncementService } from './shared/services/announcement.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent {
   message: ChatMessage = new ChatMessage();
   channels: Channel[];
   user: any;
+  apiUrl = environment.apiUrl;
 
   constructor(private configurationService: ConfigurationService,
     private announcementService: AnnouncementService,

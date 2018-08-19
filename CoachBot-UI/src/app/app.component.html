@@ -1,5 +1,6 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
-  <a class="navbar-brand" style="border-right: none;" href="#">
+<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+  <img (click)="stayOnYourFeet()" src="/assets/nav_coach.png">
+  <a class="navbar-brand" style="border-right: none; margin-left: -25px; margin-top: " href="#">
     Coach<span class="text-muted">Bot</span>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
@@ -37,12 +38,16 @@
         <a class="nav-link" routerLink="/bot">
           <i class="fa fa-wrench"></i> Bot Settings</a>
       </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="user">
+        <a class="nav-link" href="{{apiUrl}}/logout">
+          <i class="fa fa-sign-out"></i> Log Out</a>
+      </li>
     </ul>
-    <a *ngIf="user" class="btn btn-primary btn-sm ml-auto" href="{{apiUrl}}/logout">
+    <a *ngIf="user" class="btn btn-primary btn-sm ml-auto d-none d-md-block" href="{{apiUrl}}/logout">
       <i class="fa fa-sign-out"></i> Log Out</a>
   </div>
 </nav>
-<div id="wrapper" class="toggled">
+<div id="wrapper" class="toggled" style="padding-top: 54px;">
   <div id="sidebar-wrapper" class="hidden-xs" *ngIf="user">
     <ul class="sidebar-nav">
       <li routerLinkActive="active">
@@ -78,6 +83,9 @@
 
   <div id="page-content-wrapper">
     <div class="container-fluid">
+      <div *ngIf="onFeet" class="coach-head">
+        <img src="/assets/coach_head.png">
+      </div>
       <main role="main" class="container">
         <router-outlet></router-outlet>
       </main>

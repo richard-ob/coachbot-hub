@@ -6,3 +6,55 @@ select {
 .ngx-pagination a {
     color: #ffffff !important;
 }
+
+body {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 0.75rem !important;
+}
+
+h4 {
+    font-size: 1.2rem !important;
+}
+
+/* Super important CSS for making Coach's head fly around the screen */
+
+.coach-head {
+    margin: 0 auto;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    overflow: fixed;
+  }
+  .coach-head img {
+    display: block;
+    position: absolute;
+    -webkit-animation: moveX 7s linear 0s infinite alternate, moveY 3.4s linear 0s infinite alternate;
+    -moz-animation: moveX 75s linear 0s infinite alternate, moveY 3.4s linear 0s infinite alternate;
+    -o-animation: moveX 7s linear 0s infinite alternate, moveY 3.4s linear 0s infinite alternate;
+    animation: moveX 7s linear 0s infinite alternate, moveY 3.4s linear 0s infinite alternate;
+  }
+  
+  @-webkit-keyframes moveX {
+    from { left: 0; } to { left: 1500px; }
+  }
+  @-moz-keyframes moveX {
+    from { left: 0; } to { left: 1500px; }
+  }
+  @-o-keyframes moveX {
+    from { left: 0; } to { left: 1500px; }
+  }
+  @keyframes moveX {
+    from { left: 0; } to { left: 1500px; }
+  }
+  @-webkit-keyframes moveY {
+    from { top: 0; } to { top: 800px; }
+  }
+  @-moz-keyframes moveY {
+    from { top: 0; } to { top: 800px; }
+  }
+  @-o-keyframes moveY {
+    from { top: 0; } to { top: 800px; }
+  }
+  @keyframes moveY {
+    from { top: 0; } to { top: 800px; }
+  }

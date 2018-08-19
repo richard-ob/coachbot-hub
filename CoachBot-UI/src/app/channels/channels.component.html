@@ -10,40 +10,42 @@
     <div *ngIf="channels && channels.length === 0" class="alert alert-primary" role="alert">
       No channels configured yet!
     </div>
-    <table *ngIf="channels && channels.length > 0" class="table table-hover table-striped">
-      <thead>
-        <tr>
-          <th>Server</th>
-          <th>Name</th>
-          <th>Team Name</th>
-          <th>Positions</th>
-          <th>Team Color</th>
-          <th>Is Mix Channel</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let channel of channels">
-          <td>{{channel.guildName}}</td>
-          <td>{{channel.name}}</td>
-          <td>{{channel.team1.name}}</td>
-          <td>
-            <span *ngFor="let position of channel.positions">{{position.positionName}} </span>
-          </td>
-          <td>
-            <div style="width: 25px; height: 25px; position: relative; border-radius: 15px;" [style.background]="channel.team1.color"></div>
-          </td>
-          <td>
-            <i *ngIf="channel.team2.isMix" class="text-success fa fa-check"></i>
-            <i *ngIf="!channel.team2.isMix" class="text-danger fa fa-times"></i>
-          </td>
-          <td>
-            <a class="btn btn-primary btn-sm" routerLink="/channel/{{channel.id}}">
-              <i class="fa fa-wrench"></i> Edit</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table *ngIf="channels && channels.length > 0" class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Server</th>
+            <th>Name</th>
+            <th>Team Name</th>
+            <th>Positions</th>
+            <th>Team Color</th>
+            <th>Is Mix Channel</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let channel of channels">
+            <td>{{channel.guildName}}</td>
+            <td>{{channel.name}}</td>
+            <td>{{channel.team1.name}}</td>
+            <td>
+              <span *ngFor="let position of channel.positions">{{position.positionName}} </span>
+            </td>
+            <td>
+              <div style="width: 25px; height: 25px; position: relative; border-radius: 15px;" [style.background]="channel.team1.color"></div>
+            </td>
+            <td>
+              <i *ngIf="channel.team2.isMix" class="text-success fa fa-check"></i>
+              <i *ngIf="!channel.team2.isMix" class="text-danger fa fa-times"></i>
+            </td>
+            <td>
+              <a class="btn btn-primary btn-sm" routerLink="/channel/{{channel.id}}">
+                <i class="fa fa-wrench"></i> Edit</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <br/>
@@ -66,7 +68,7 @@
           <img src="/assets/discord_icon.png"> Invite CoachBot</a>
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-success float-right" (click)="addChannel()" [disabled]="isLoading || !unconfiguredChannel">
+        <button *ngIf="unconfiguredChannel" type="submit" class="btn btn-success float-right" (click)="addChannel()" [disabled]="isLoading || !unconfiguredChannel">
           <i class="fa fa-check"></i> Add</button>
       </div>
     </form>

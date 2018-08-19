@@ -43,8 +43,16 @@ export class PlayerLeaderboardsComponent {
     }
 
     loadChannelLeaderboard() {
+        this.channelLeaderboard = null;
         this.leaderboardService.getPlayerLeaderboardForChannel(this.currentChannel.idString)
-            .subscribe(channelLeaderboard => this.channelLeaderboard = channelLeaderboard);
+            .subscribe(channelLeaderboard => {
+                this.channelLeaderboard = channelLeaderboard;
+                let i = 1;
+                for (const channel of this.channelLeaderboard) {
+                    channel.rank = i;
+                    i++;
+                }
+            });
     }
 
 }

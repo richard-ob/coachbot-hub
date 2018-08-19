@@ -293,6 +293,14 @@ namespace CoachBot.Modules.Matchmaker
             await ReplyAsync(_service.MentionHere(Context.Message.Channel.Id));
         }
 
+        [Command("!requestsub")]
+        [RequireChannelConfigured]
+        public async Task CallSubAsync(int serverId, string positionName)
+        {
+            var server = _configService.Config.Servers[serverId];
+            await ReplyAsync($":sos: @here {positionName} needed urgently on {server.Name} steam://connect/{server.Address}");
+        }
+
         [Command("!servers")]
         public async Task ServersAsync()
         {
@@ -351,6 +359,7 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!saveconfig")]
+        [RequireUserPermission(Discord.GuildPermission.Administrator)]
         public async Task SaveAsync()
         {
             _configService.Save();

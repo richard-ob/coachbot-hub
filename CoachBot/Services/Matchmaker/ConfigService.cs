@@ -84,6 +84,7 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!sub", "Sign yourself as a sub. You will be allocated to next first available outfield position");
             embedBuilder.AddField("!unsub", "Unsign yourself from the subs bench");
             embedBuilder.AddField("!unsub <name>", "Unsign the person specified from the subs bench");
+            embedBuilder.AddField("!requestsub <server id> <position>", "Highlights everyone in the channel and requests a sub to join the server");
             embedBuilder.AddField("!vs <team>", "Set the opposition team for the current match");
             embedBuilder.AddField("!vsmix", "Set the opposition team to a managed mix for the current match");
             embedBuilder.AddField("!ready", "Send all players to server");

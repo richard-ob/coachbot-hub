@@ -20,6 +20,7 @@ export class AppComponent {
   channels: Channel[];
   user: any;
   apiUrl = environment.apiUrl;
+  onFeet = false;
 
   constructor(private configurationService: ConfigurationService,
     private matchmakerService: MatchmakerService,
@@ -27,5 +28,11 @@ export class AppComponent {
     this.configurationService.getConfiguration().subscribe(configuration => this.configuration = configuration);
     this.matchmakerService.getChannels().subscribe(channels => this.channels = channels);
     this.userService.getUser().subscribe(user => this.user = user);
+  }
+
+  // Super important method for making Coach's head fly around the screen
+  stayOnYourFeet() {
+    this.onFeet = !this.onFeet;
+    console.log('Stay on your feet!');
   }
 }

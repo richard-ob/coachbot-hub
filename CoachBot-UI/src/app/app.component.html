@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
   <img (click)="stayOnYourFeet()" src="/assets/nav_coach.png">
-  <a class="navbar-brand" style="border-right: none; margin-left: -25px; margin-top: " href="#">
+  <a class="navbar-brand" style="border-right: none; margin-left: -25px;" href="#">
     Coach<span class="text-muted">Bot</span>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
@@ -8,7 +8,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <span *ngIf="user && user.name != null" class="d-none d-sm-block d-xs-block badge badge-secondary">{{user.name}}</span>
+    <span *ngIf="user && user.name != null" class="d-block badge badge-secondary">{{user.name}}</span>
     <ul class="navbar-nav mr-auto d-block d-md-none">
       <li class="nav-item" routerLinkActive="active" *ngIf="user">
         <a class="nav-link" routerLink="/profile">
@@ -43,13 +43,13 @@
           <i class="fa fa-sign-out"></i> Log Out</a>
       </li>
     </ul>
-    <a *ngIf="user" class="btn btn-primary btn-sm ml-auto d-none d-md-block" href="{{apiUrl}}/logout">
+    <a *ngIf="user" class="btn btn-outline btn-sm ml-auto d-none d-md-block" href="{{apiUrl}}/logout">
       <i class="fa fa-sign-out"></i> Log Out</a>
   </div>
 </nav>
 <div id="wrapper" class="toggled" style="padding-top: 54px;">
   <div id="sidebar-wrapper" class="hidden-xs" *ngIf="user">
-    <ul class="sidebar-nav">
+    <ul class="sidebar-nav" style="padding-top: 20px;">
       <li routerLinkActive="active">
         <a routerLink="/profile">
           <i class="fa fa-user"></i> Profile</a>

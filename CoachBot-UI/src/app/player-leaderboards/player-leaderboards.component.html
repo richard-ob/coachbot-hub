@@ -47,7 +47,7 @@
                         {{channel.name}}
                     </option>
                 </select>
-                <div *ngIf="!channelLeaderboard" class="text-center">
+                <div *ngIf="!channelLeaderboard" class="text-center" style="margin-top: 15px">
                     <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
                 </div>
                 <div *ngIf="channelLeaderboard && channelLeaderboard.length === 0" class="alert alert-primary" role="alert">

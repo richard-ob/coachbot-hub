@@ -15,7 +15,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control" [(ngModel)]="config.botToken" name="token">
                 </div>
-                <button class="btn btn-success" (click)="saveConfig()">
+                <button class="btn btn-outline-success" (click)="saveConfig()">
                     <i class="fa fa-check"></i> Save All</button>
             </div>
             <div class="form-group row">
@@ -38,7 +38,7 @@
                 <div class="col-sm-4">
                     <input type="text" readonly class="form-control" [(ngModel)]="botState.connectionStatus" name="connectionStatus">
                 </div>
-                <button class="btn btn-warning" (click)="reconnectBot()">
+                <button class="btn btn-outline-warning" (click)="reconnectBot()">
                     <i class="fa fa-power-off"></i> Reconnect</button>
             </div>
             <div class="form-group row">
@@ -59,7 +59,7 @@
             <h4>Bot Log</h4>
             <br/>
             <textarea class="form-control" rows="8" [disabled]="!log">{{log}}</textarea>
-            <button class="btn btn-primary pull-right" [disabled]="refreshingLog" (click)="refreshLog()" style="margin-top: 10px">
+            <button class="btn btn-outline-secondary pull-right" [disabled]="refreshingLog" (click)="refreshLog()" style="margin-top: 10px">
                 <i class="fa fa-refresh" [class.fa-spin]="refreshingLog"></i> Refresh Log</button>
         </form>
     </div>

@@ -39,7 +39,7 @@
               <i *ngIf="!channel.team2.isMix" class="text-danger fa fa-times"></i>
             </td>
             <td>
-              <a class="btn btn-primary btn-sm" routerLink="/channel/{{channel.id}}">
+              <a class="btn btn-outline-secondary btn-sm" routerLink="/channel/{{channel.id}}">
                 <i class="fa fa-wrench"></i> Edit</a>
             </td>
           </tr>
@@ -68,7 +68,7 @@
           <img src="/assets/discord_icon.png"> Invite CoachBot</a>
       </div>
       <div class="form-group">
-        <button *ngIf="unconfiguredChannel" type="submit" class="btn btn-success float-right" (click)="addChannel()" [disabled]="isLoading || !unconfiguredChannel">
+        <button *ngIf="unconfiguredChannel" type="submit" class="btn btn-outline-success float-right" (click)="addChannel()" [disabled]="isLoading || !unconfiguredChannel">
           <i class="fa fa-check"></i> Add</button>
       </div>
     </form>

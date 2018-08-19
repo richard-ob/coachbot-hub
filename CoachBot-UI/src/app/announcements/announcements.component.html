@@ -12,7 +12,7 @@
                 <textarea class="form-control" cols="3" rows="3" [(ngModel)]="message.message" name="message"></textarea>
             </div>
             <div class="form-group">
-                <button class="btn btn-warning float-right" (click)="sendAnnouncement()">
+                <button class="btn btn-outline-warning float-right" (click)="sendAnnouncement()" [disabled]="!message.message || message.message.length < 10">
                     <i class="fa fa-commenting"></i> Announce</button>
             </div>
         </form>

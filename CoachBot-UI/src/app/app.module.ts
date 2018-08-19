@@ -57,7 +57,7 @@ import { ErrorComponent } from './shared/components/error.component';
     FormsModule,
     NgxPaginationModule,
     ModalModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes, { useHash: true })
   ],
   providers: [
     ConfigurationService,

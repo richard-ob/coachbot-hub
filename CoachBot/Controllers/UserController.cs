@@ -3,9 +3,6 @@ using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 using System;
 using System.Linq;
 
@@ -60,6 +57,13 @@ namespace CoachBot.Controllers
         public IActionResult LogIn()
         {
             return Challenge(new AuthenticationProperties { RedirectUri = "http://localhost:4200" }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet("/logout")]
+        public IActionResult LogOut()
+        {
+            HttpContext.SignOutAsync("Cookies").Wait();
+            return new RedirectResult("http://localhost:4200");
         }
 
         [HttpGet("/unauthorized")]

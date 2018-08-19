@@ -1,5 +1,4 @@
 ﻿using Discord;
-using Discord.Addons.InteractiveCommands;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +37,7 @@ namespace CoachBot
               .CreateDefaultBuilder()
               .UseKestrel()
               .UseStartup<WebStartup>()
-              .UseUrls("http://*:5006")
+              .UseUrls("http://*:80")
               .Build();
             host.Start();
 

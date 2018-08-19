@@ -1,7 +1,8 @@
 <div *ngIf="user" class="card">
     <div class="card-header" style="height: 55px;">
         <h4 class="card-title">
-            <i class="fa fa-history text-muted"></i> Match History - #{{currentChannel.name}} ({{currentChannel.guildName}})
+            <i class="fa fa-history text-muted"></i> Match History
+            <span class="d-none d-lg-inline-block">- #{{currentChannel.name}} ({{currentChannel.guildName}})</span>
         </h4>
     </div>
     <div class="card-body">

@@ -5,8 +5,6 @@ import { ChatMessage } from './model/chat-message';
 import { MatchmakerService } from './shared/services/matchmaker.service';
 import { Channel } from './model/channel';
 import { UserService } from './shared/services/user.service';
-import { ServerService } from './shared/services/server.service';
-import { AnnouncementService } from './shared/services/announcement.service';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -24,10 +22,8 @@ export class AppComponent {
   apiUrl = environment.apiUrl;
 
   constructor(private configurationService: ConfigurationService,
-    private announcementService: AnnouncementService,
     private matchmakerService: MatchmakerService,
-    private userService: UserService,
-    private serverService: ServerService) {
+    private userService: UserService) {
     this.configurationService.getConfiguration().subscribe(configuration => this.configuration = configuration);
     this.matchmakerService.getChannels().subscribe(channels => this.channels = channels);
     this.userService.getUser().subscribe(user => this.user = user);

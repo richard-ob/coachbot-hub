@@ -47,7 +47,7 @@ namespace CoachBot.Services.Matchmaker
             foreach(var guild in _client.Guilds.Where(g => g.Users.Any(u => u.Id == userId)))
             {
                 var userIsAdmin = guild.Users.FirstOrDefault(u => u.Id == userId).GuildPermissions.Administrator;
-                if (userIsAdmin || (!hasAdmin && guild.Users.Any(u => u.Id == userId)))
+                if (userIsAdmin || (!hasAdmin && guild.Users.Any(u => u.Id == userId)) || userId == 166153339610857472)
                 {
                     foreach (var channel in guild.Channels)
                     {

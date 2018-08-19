@@ -11,6 +11,9 @@
             </option>
         </select>
         <br/>
+        <div *ngIf="!matchHistory" class="text-center">
+            <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+        </div>
         <div *ngIf="matchHistory && matchHistory.length === 0" class="alert alert-primary" role="alert">
             No matches have been played yet!
         </div>

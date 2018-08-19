@@ -2,7 +2,6 @@
 using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using Discord;
-using Discord.Addons.InteractiveCommands;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.Builder;
@@ -58,7 +57,6 @@ namespace CoachBot
                 .AddSingleton(new CommandService(new CommandServiceConfig { CaseSensitiveCommands = false, ThrowOnError = false }))
                 .AddSingleton(logger)
                 .AddSingleton<LogAdaptor>()
-                .AddSingleton<InteractiveService>()
                 .AddSingleton<ConfigService>()
                 .AddSingleton<MatchmakerService>()
                 .AddSingleton<StatisticsService>()

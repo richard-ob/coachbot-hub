@@ -2,3 +2,7 @@
 select {
     height: 50px !important;
 }
+
+.ngx-pagination a {
+    color: #ffffff !important;
+}

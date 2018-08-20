@@ -316,7 +316,7 @@ namespace CoachBot.Services.Matchmaker
             if (challenger.IsSearching) return ":no_entry: You're already searching for a match. Type **!stopsearch** to cancel the previous search.";
 
             var embed = new EmbedBuilder()
-                .WithTitle($":mag: {challenger.Team1.Name} are searching for a team to face")
+                .WithTitle($":mag: {challenger.Team1.BadgeEmote ?? challenger.Team1.Name} are searching for a team to face")
                 .WithDescription($"To challenge {challenger.Team1.Name} type **!challenge {challenger.Id}** and contact {challengerMention} for more information")
                 .WithCurrentTimestamp();
             if (challenger.Team1.Color != null && challenger.Team1.Color[0] == '#')

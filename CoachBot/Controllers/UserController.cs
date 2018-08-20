@@ -24,14 +24,7 @@ namespace CoachBot.Controllers
             _botService = botService;
             _statisticsService = statisticsService;
             _leaderboardService = leaderboardService;
-            if (env.IsDevelopment())
-            {
-                _aplicationUrl = "http://localhost:4200";
-            }
-            else
-            {
-                _aplicationUrl = "http://coachbot.iosoccer.com";            
-            }
+            _aplicationUrl = "http://coachbot.iosoccer.com";
         }
 
         [HttpGet]
@@ -58,7 +51,7 @@ namespace CoachBot.Controllers
                 Appearances = _statisticsService.MatchHistory.Count(a => a.Players.Any(p => p.DiscordUserId == userId)),
                 FirstAppearance = _statisticsService.MatchHistory.Where(a => a.Players.Any(p => p.DiscordUserId == userId)).OrderBy(m => m.MatchDate).FirstOrDefault().MatchDate,
                 LastAppearance = _statisticsService.MatchHistory.Where(a => a.Players.Any(p => p.DiscordUserId == userId)).OrderByDescending(m => m.MatchDate).FirstOrDefault().MatchDate,
-                Rank = _leaderboardService.GetLeaderboardForPlayers().ToList().FindIndex(p => p.Key == User.Identity.Name)
+                Rank = _leaderboardService.GetLeaderboardForPlayers().ToList().FindIndex(p => p.Key == User.Identity.Name) + 1
             };
 
             return user;

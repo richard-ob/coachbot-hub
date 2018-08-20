@@ -21,7 +21,7 @@ namespace CoachBot.Services.Matchmaker
                     var textChannel = _client.GetChannel(channel.Id) as ITextChannel;
                     if (textChannel != null)
                     {
-                        textChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(message).WithCurrentTimestamp().Build());
+                        textChannel.SendMessageAsync("", embed: new EmbedBuilder().WithAuthor("Coach", "http://coachbot.iosoccer.com/assets/coach_head.png", "http://coachbot.iosoccer.com").WithDescription(message).WithCurrentTimestamp().Build());
                     }
                 }
             }

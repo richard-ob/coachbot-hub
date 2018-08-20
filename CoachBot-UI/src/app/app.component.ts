@@ -15,17 +15,14 @@ import { environment } from '../environments/environment';
 export class AppComponent {
 
   title = 'app';
-  configuration: Configuration;
   message: ChatMessage = new ChatMessage();
   channels: Channel[];
   user: any;
   apiUrl = environment.apiUrl;
   onFeet = false;
 
-  constructor(private configurationService: ConfigurationService,
-    private matchmakerService: MatchmakerService,
+  constructor(private matchmakerService: MatchmakerService,
     private userService: UserService) {
-    this.configurationService.getConfiguration().subscribe(configuration => this.configuration = configuration);
     this.matchmakerService.getChannels().subscribe(channels => this.channels = channels);
     this.userService.getUser().subscribe(user => this.user = user);
   }

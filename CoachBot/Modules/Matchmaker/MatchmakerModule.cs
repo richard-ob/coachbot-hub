@@ -310,6 +310,13 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!requestsub")]
         [RequireChannelConfigured]
+        public async Task CallSubAsync()
+        {
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: Please provider a server id & required position, e.g. **!requestsub 3 LW**").WithCurrentTimestamp().Build());
+        }
+
+        [Command("!requestsub")]
+        [RequireChannelConfigured]
         public async Task CallSubAsync(int serverId, string positionName)
         {
             var server = _configService.Config.Servers[serverId];

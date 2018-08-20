@@ -147,9 +147,9 @@ namespace CoachBot.Services.Matchmaker
                 if (channel.Team1.Substitutes.Any() && player.Position.PositionName.ToLower() != "gk")
                 {
                     var sub = channel.Team1.Substitutes.FirstOrDefault();
-                    player.Position.PositionName = "sub";
-                    channel.Team1.Players.Add(player);
                     channel.Team1.Substitutes.Remove(sub);
+                    sub.Position.PositionName = player.Position.PositionName;
+                    channel.Team1.Players.Add(sub);
                     return $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {sub.DiscordUserMention} comes off the bench to replace **{user.Username}**";
                 }
                 return $":negative_squared_cross_mark: Unsigned **{user.Username}**";
@@ -172,9 +172,9 @@ namespace CoachBot.Services.Matchmaker
                 if (channel.Team1.Substitutes.Any() && player.Position.PositionName.ToLower() != "gk")
                 {
                     var sub = channel.Team1.Substitutes.FirstOrDefault();
-                    player.Position.PositionName = "sub";
-                    channel.Team1.Players.Add(player);
                     channel.Team1.Substitutes.Remove(sub);
+                    sub.Position.PositionName = player.Position.PositionName;
+                    channel.Team1.Players.Add(sub);
                     return $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {sub.DiscordUserMention} comes off the bench to replace **{playerName}**";
                 }
                 return $":negative_squared_cross_mark: Unsigned **{playerName}**";

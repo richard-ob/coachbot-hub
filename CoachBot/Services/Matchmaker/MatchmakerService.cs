@@ -257,33 +257,43 @@ namespace CoachBot.Services.Matchmaker
             _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId).LastHereMention = null;
         }
 
-        public string ReadyMatch(ulong channelId, int? serverId = null, bool ignorePlayerCounts = false)
+        public void ReadyMatch(ulong channelId, int? serverId = null, bool ignorePlayerCounts = false)
         {
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
-            // Need to work out logic for Single GK to make this work properly
-            if (!ignorePlayerCounts && channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
-            if (!ignorePlayerCounts && channel.Team2.IsMix == false && (channel.Positions.Count()) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
-            if (channel.Team2.Name == null) return ":no_entry: You must set a team to face";
+            var socketChannel = (SocketTextChannel)_client.GetChannel(channel.Id);
+
+            if (!ignorePlayerCounts && channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count()))
+            {
+                socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: All positions must be filled").Build());
+                return;
+            }
+            if (!ignorePlayerCounts && channel.Team2.IsMix == false && (channel.Positions.Count()) - 1 > (channel.SignedPlayers.Count()))
+            {
+                socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: All positions must be filled").Build());
+                return;
+            }
+            if (channel.Team2.Name == null)
+            {
+                socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: You must set a team to face").Build());
+                return;
+            }
+            if (serverId == null || serverId == 0 || serverId > _configService.Config.Servers.Count())
+            {
+                socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: Please supply a server number (e.g. !ready 3). Type !servers for the server list.").Build());
+                return;
+            }
 
             var sb = new StringBuilder();
-            var servers = _configService.Config.Servers;
-            if (serverId != null && servers.Any() && serverId > 0 && serverId <= servers.Count())
+            var server = _configService.Config.Servers[(int)serverId - 1];
+            sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");
+            foreach (var player in channel.SignedPlayers)
             {
-                var server = _configService.Config.Servers[(int)serverId - 1];
-                sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");
-                foreach (var player in channel.SignedPlayers)
-                {
-                    sb.Append($"{player.DiscordUserMention ?? player.Name} ");
-                }
-                _statisticsService.AddMatch(channel);
+                sb.Append($"{player.DiscordUserMention ?? player.Name} ");
             }
-            else
-            {
-               return ":no_entry: Please supply a server number (e.g. !ready 3). Type !servers for the server list.";
-            }
+            _statisticsService.AddMatch(channel);
             sb.AppendLine();
             ResetMatch(channelId);
-            return sb.ToString();
+            socketChannel.SendMessageAsync(sb.ToString());
         }
 
         public string UnreadyMatch(ulong channelId)
@@ -301,11 +311,11 @@ namespace CoachBot.Services.Matchmaker
         {
             var challenger = _configService.Config.Channels.First(c => c.Id == channelId);
             if (challenger.Positions.Count() -1 > challenger.SignedPlayers.Count()) return ":no_entry: All outfield positions must be filled";
-            if (challenger.IsSearching) return ":no_entry: You're already searching for a match. Type !stopsearch to cancel the previous search.";
+            if (challenger.IsSearching) return ":no_entry: You're already searching for a match. Type **!stopsearch** to cancel the previous search.";
 
             var embed = new EmbedBuilder()
                 .WithTitle($":mag: {challenger.Team1.Name} are searching for a team to face")
-                .WithDescription($"To challenge {challenger.Team1.Name} type !challenge {challenger.Id} and contact {challengerMention} for more information")
+                .WithDescription($"To challenge {challenger.Team1.Name} type **!challenge {challenger.Id}** and contact {challengerMention} for more information")
                 .WithCurrentTimestamp();
             if (challenger.Team1.Color != null && challenger.Team1.Color[0] == '#')
             {
@@ -316,14 +326,14 @@ namespace CoachBot.Services.Matchmaker
                 embed.WithColor(new Color(0xFFFFFF));
             }
             challenger.IsSearching = true;
-            foreach (var channel in _configService.Config.Channels.Where(c => c.Positions.Count == challenger.Positions.Count))
+            foreach (var channel in _configService.Config.Channels.Where(c => c.Positions.Count == challenger.Positions.Count && c.Id != channelId))
             {
                 (_client.GetChannel(channel.Id) as SocketTextChannel)?.SendMessageAsync("", embed: embed.Build());
             }
             var timeout = TimeoutSearch(channelId);
             timeout.ConfigureAwait(false);
 
-            return ":white_check_mark: Searching for opposition.. To cancel, type !stopsearch";
+            return ":white_check_mark: Searching for opposition.. To cancel, type **!stopsearch**";
         }
 
         public async Task TimeoutSearch(ulong channelId)
@@ -359,10 +369,20 @@ namespace CoachBot.Services.Matchmaker
             challenger.IsSearching = false;
             var acceptMsg = $":handshake: {challenger.Team1.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
             (_client.GetChannel(opposition.Id) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithDescription(acceptMsg).WithCurrentTimestamp().Build());
-            opposition.Team2.Name = challenger.Team1.Name;
-            opposition.Team2.ChannelId = challenger.Id; 
-            challenger.Team2.Name = opposition.Team1.Name;
-            challenger.Team2.ChannelId = opposition.Id;
+            opposition.Team2 = new Team()
+            {
+                Name = challenger.Team1.Name,
+                IsMix = false,
+                ChannelId = challenger.Id,
+                Players = new List<Player>()
+            };
+            challenger.Team2 = new Team()
+            {
+                Name = opposition.Team1.Name,
+                IsMix = false,
+                ChannelId = opposition.Id,
+                Players = new List<Player>()
+            };
             (_client.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId, Teams.Team1));
             (_client.GetChannel(oppositionId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(oppositionId, Teams.Team1));
             return $":handshake: You have successfully challenged {opposition.Team1.Name}. !ready will send both teams to the server";

@@ -229,8 +229,10 @@ namespace CoachBot.Services.Matchmaker
 
         public string ChangeOpposition(ulong channelId, Team team)
         {
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var previousOpposition = _configService.Config.Channels.First(c => c.Id == channelId).Team2;
-            _configService.Config.Channels.First(c => c.Id == channelId).Team2 = team;
+            channel.Team2 = team;
+            if (channel.IsSearching) return $":no_entry: You are currently searching for opposition. Please type **!stopsearch** if you have found an opponent.";
             if (team.Name == null && previousOpposition.Name != null) return $":negative_squared_cross_mark: Opposition removed";
             if (team.Name == null && previousOpposition.Name == null) return $":no_entry: You must provide a team name to face";
             return $":busts_in_silhouette: **{team.Name}** are challenging";

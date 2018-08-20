@@ -257,12 +257,12 @@ namespace CoachBot.Services.Matchmaker
             _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId).LastHereMention = null;
         }
 
-        public string ReadyMatch(ulong channelId, int? serverId = null)
+        public string ReadyMatch(ulong channelId, int? serverId = null, bool ignorePlayerCounts = false)
         {
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             // Need to work out logic for Single GK to make this work properly
-            if (channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
-            if (channel.Team2.IsMix == false && (channel.Positions.Count()) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
+            if (!ignorePlayerCounts && channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
+            if (!ignorePlayerCounts && channel.Team2.IsMix == false && (channel.Positions.Count()) - 1 > (channel.SignedPlayers.Count())) return ":no_entry: All positions must be filled";
             if (channel.Team2.Name == null) return ":no_entry: You must set a team to face";
 
             var sb = new StringBuilder();
@@ -355,15 +355,34 @@ namespace CoachBot.Services.Matchmaker
             if (!opposition.IsSearching) return $":no_entry: {opposition.Team1.Name} are no longer search for a team to face";
             if (challengerChannelId == oppositionId) return $":no_entry: You can't face yourself. Don't waste my time.";
             if (challenger.Positions.Count() != opposition.Positions.Count()) return $":no_entry: Sorry, {opposition.Team1.Name} are looking for an {opposition.Positions.Count()}v{opposition.Positions.Count()}";
-            if (Math.Round(challenger.Positions.Count() * 0.6) > challenger.SignedPlayers.Count()) return $":no_entry: At least {Math.Round(challenger.Positions.Count() * 0.6)} positions must be filled";
+            if (Math.Round(challenger.Positions.Count() * 0.7) > challenger.SignedPlayers.Count()) return $":no_entry: At least {Math.Round(challenger.Positions.Count() * 0.7)} positions must be filled";
             challenger.IsSearching = false;
             var acceptMsg = $":handshake: {challenger.Team1.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
             (_client.GetChannel(opposition.Id) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithDescription(acceptMsg).WithCurrentTimestamp().Build());
             opposition.Team2.Name = challenger.Team1.Name;
+            opposition.Team2.ChannelId = challenger.Id; 
             challenger.Team2.Name = opposition.Team1.Name;
+            challenger.Team2.ChannelId = opposition.Id;
             (_client.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId, Teams.Team1));
             (_client.GetChannel(oppositionId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(oppositionId, Teams.Team1));
-            return $":handshake: You have successfully challenged {opposition.Team1.Name}";
+            return $":handshake: You have successfully challenged {opposition.Team1.Name}. !ready will send both teams to the server";
+        }
+
+        public string Unchallenge(ulong challengerChannelId, string unchallenger)
+        {
+            var challenger = _configService.Config.Channels.First(c => c.Id == challengerChannelId);
+            var opposition = _configService.Config.Channels.First(c => c.Id == challenger.Team2.ChannelId);
+            if (opposition == null) return $":no_entry: You don't have any active accepted challenges to cancel. Maybe !ready has already been called?";
+            var unchallengeMsg = $"The game between {challenger.Team1.Name} & {opposition.Team1.Name} has been called off by {unchallenger}";
+            (_client.GetChannel(opposition.Id) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithTitle(":thunder_cloud_rain: Match Abandoned!").WithDescription(unchallengeMsg).WithCurrentTimestamp().Build());
+            (_client.GetChannel(challenger.Id) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithTitle(":thunder_cloud_rain: Match Abandoned!").WithDescription(unchallengeMsg).WithCurrentTimestamp().Build());
+            opposition.Team2.Name = null;
+            opposition.Team2.ChannelId = null;
+            challenger.Team2.Name = null;
+            challenger.Team2.ChannelId = null;
+            (_client.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId, Teams.Team1));
+            (_client.GetChannel(opposition.Id) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(opposition.Id, Teams.Team1));
+            return $":negative_squared_cross_mark: You have successfully unchallenged {opposition.Team1.Name}";
         }
 
         public string MentionHere(ulong channelId)

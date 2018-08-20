@@ -244,11 +244,16 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task ReadyAsync(int serverId)
         {
+            var challengerId = _configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.ChannelId; // Search/Challenge functionality only
             await ReplyAsync(_service.ReadyMatch(Context.Message.Channel.Id, serverId));
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
             if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
+            }
+            if (challengerId != null)
+            {
+                await ReplyAsync(_service.ReadyMatch((ulong)challengerId, serverId, true));
             }
         }
 
@@ -276,6 +281,13 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ChallengeAsync(ulong oppositionId)
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.Challenge(Context.Channel.Id, oppositionId, Context.User.Mention)).Build());
+        }
+
+        [Command("!challenge")]
+        [RequireChannelConfigured]
+        public async Task UnchallengeAsync()
+        {
+            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.Unchallenge(Context.Channel.Id, Context.User.Mention)).Build());
         }
 
         [Command("!stopsearch")]

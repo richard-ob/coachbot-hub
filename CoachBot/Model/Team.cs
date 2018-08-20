@@ -10,6 +10,8 @@ namespace CoachBot.Model
         [Key]
         public Guid Id { get; set; }
 
+        public ulong? ChannelId { get; set; }
+
         public string Name { get; set; }
 
         public string KitEmote { get; set; }

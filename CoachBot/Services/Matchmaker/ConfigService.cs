@@ -93,6 +93,7 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!search", "Search for an opponent to face");
             embedBuilder.AddField("!stopsearch", "Cancel an opponent search");
             embedBuilder.AddField("!challenge <team id>", "Challenge a specific team who are currently searching for opposition");
+            embedBuilder.AddField("!unchallenge", "Cancel a challenge before !ready has been called");
             embedBuilder.AddField("!servers", "See the full available server list");
             embedBuilder.AddField("!addserver <ip:port> <name>", "Add a server to the server list");
             embedBuilder.AddField("!removeserver <server id>", "Remove specified server to the server list");

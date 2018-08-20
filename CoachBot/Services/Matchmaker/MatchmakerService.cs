@@ -357,7 +357,7 @@ namespace CoachBot.Services.Matchmaker
                 return ":no_entry: Your team is not currently searching for a match.";
             }
             challenger.IsSearching = false;
-            return ":x: Cancelled search for opposition";
+            return ":negative_squared_cross_mark: Cancelled search for opposition";
         }
 
         public string Challenge(ulong challengerChannelId, ulong oppositionId, string challengerMention)

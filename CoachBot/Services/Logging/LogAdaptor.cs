@@ -16,7 +16,7 @@ namespace CoachBot.Services.Logging
         public static Logger CreateLogger()
         {
            return new LoggerConfiguration()
-                .MinimumLevel.Verbose()
+                .MinimumLevel.Debug()
                 .WriteTo.RollingFile("log-{Date}.txt")
                 .CreateLogger();
         }

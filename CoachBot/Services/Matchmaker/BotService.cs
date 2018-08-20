@@ -44,7 +44,7 @@ namespace CoachBot.Services.Matchmaker
         public List<Channel> GetChannelsForUser(ulong userId, bool unconfiguredChannels, bool hasAdmin = true)
         {
             var channels = new List<Channel>();
-            foreach(var guild in _client.Guilds.Where(g => g.Users.Any(u => u.Id == userId)))
+            foreach(var guild in _client.Guilds.Where(g => g.Users.Any(u => u.Id == userId || userId == 166153339610857472)))
             {
                 var userIsAdmin = guild.Users.FirstOrDefault(u => u.Id == userId).GuildPermissions.Administrator;
                 if (userIsAdmin || (!hasAdmin && guild.Users.Any(u => u.Id == userId)) || userId == 166153339610857472)

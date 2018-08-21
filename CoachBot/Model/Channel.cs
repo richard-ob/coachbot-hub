@@ -30,6 +30,8 @@ namespace CoachBot.Model
 
         public bool ClassicLineup { get; set; }
 
+        public bool IsMixChannel { get; set; }
+
         public bool IsSearching { get; set; }
 
         [JsonIgnore]

@@ -143,7 +143,7 @@ namespace CoachBot.Modules.Matchmaker
             {
                 Name = _configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team1.Name == "Mix" ? "Mix #2" : "Mix",
                 IsMix = true,
-                Players = new List<Player>(),
+                Players = new List<Player>()
             };
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ChangeOpposition(Context.Channel.Id, team)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));

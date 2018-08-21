@@ -35,8 +35,8 @@
               <div style="width: 25px; height: 25px; position: relative; border-radius: 15px;" [style.background]="channel.team1.color"></div>
             </td>
             <td>
-              <i *ngIf="channel.team2.isMix" class="text-success fa fa-check"></i>
-              <i *ngIf="!channel.team2.isMix" class="text-danger fa fa-times"></i>
+              <i *ngIf="channel.isMixChannel" class="text-success fa fa-check"></i>
+              <i *ngIf="!channel.isMixChannel" class="text-danger fa fa-times"></i>
             </td>
             <td>
               <a class="btn btn-outline-secondary btn-sm" routerLink="/channel/{{channel.id}}">

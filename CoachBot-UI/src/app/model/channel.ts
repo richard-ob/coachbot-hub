@@ -13,4 +13,5 @@ export class Channel {
     name: string;
     guildName: string;
     emotes: any[];
+    isMixChannel: boolean;
 }

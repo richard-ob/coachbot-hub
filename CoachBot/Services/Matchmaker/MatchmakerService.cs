@@ -49,7 +49,7 @@ namespace CoachBot.Services.Matchmaker
                 Team2 = new Team()
                 {
                     IsMix = isMixChannel,
-                    Name = isMixChannel && teamName.ToLower() == "mix" ? "Mix #2" : isMixChannel ? "Mix" : null,
+                    Name = isMixChannel ? "Mix #2" : null,
                     Players = new List<Player>(),
                 },
                 Formation = formation,
@@ -233,7 +233,19 @@ namespace CoachBot.Services.Matchmaker
             var previousOpposition = _configService.Config.Channels.First(c => c.Id == channelId).Team2;
             channel.Team2 = team;
             if (channel.IsSearching) return $":no_entry: You are currently searching for opposition. Please type **!stopsearch** if you have found an opponent.";
-            if (team.Name == null && previousOpposition.Name != null) return $":negative_squared_cross_mark: Opposition removed";
+            if (team.Name == null && previousOpposition.Name != null)
+            {
+                if (channel.IsMixChannel)
+                {
+                    channel.Team2 = new Team()
+                    {
+                        Name = "Mix #2",
+                        IsMix = true,
+                        Players = new List<Player>()
+                    };
+                }
+                return $":negative_squared_cross_mark: Opposition removed";
+            }
             if (team.Name == null && previousOpposition.Name == null) return $":no_entry: You must provide a team name to face";
             return $":busts_in_silhouette: **{team.Name}** are challenging";
         }
@@ -252,8 +264,8 @@ namespace CoachBot.Services.Matchmaker
             };
             _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId).Team2 = new Team()
             {
-                IsMix = channelConfig.Team2.IsMix,
-                Name = channelConfig.Team2.IsMix && channelConfig.Team1.Name.ToLower() == "mix" ? "Mix #2" : channelConfig.Team2.IsMix ? "Mix" : null,
+                IsMix = channelConfig.IsMixChannel,
+                Name = channelConfig.IsMixChannel ? "Mix #2" : null,
                 Players = new List<Player>()
             };
             _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId).LastHereMention = null;
@@ -312,6 +324,7 @@ namespace CoachBot.Services.Matchmaker
         public string Search(ulong channelId, string challengerMention)
         {
             var challenger = _configService.Config.Channels.First(c => c.Id == channelId);
+            if (challenger.IsMixChannel) return ":no_entry: Mix channels cannot search for opposition";
             if (challenger.Positions.Count() -1 > challenger.SignedPlayers.Count()) return ":no_entry: All outfield positions must be filled";
             if (challenger.IsSearching) return ":no_entry: You're already searching for a match. Type **!stopsearch** to cancel the previous search.";
 
@@ -328,7 +341,7 @@ namespace CoachBot.Services.Matchmaker
                 embed.WithColor(new Color(0xFFFFFF));
             }
             challenger.IsSearching = true;
-            foreach (var channel in _configService.Config.Channels.Where(c => c.Positions.Count == challenger.Positions.Count && c.Id != channelId))
+            foreach (var channel in _configService.Config.Channels.Where(c => c.Positions.Count == challenger.Positions.Count && c.Id != channelId && c.IsMixChannel == false))
             {
                 (_client.GetChannel(channel.Id) as SocketTextChannel)?.SendMessageAsync("", embed: embed.Build());
             }
@@ -364,6 +377,7 @@ namespace CoachBot.Services.Matchmaker
         {
             var challenger = _configService.Config.Channels.First(c => c.Id == challengerChannelId);
             var opposition = _configService.Config.Channels.First(c => c.Id == oppositionId);
+            if (challenger.IsMixChannel) return ":no_entry: Mix channels cannot challenge teams";
             if (!opposition.IsSearching) return $":no_entry: {opposition.Team1.Name} are no longer search for a team to face";
             if (challengerChannelId == oppositionId) return $":no_entry: You can't face yourself. Don't waste my time.";
             if (challenger.Positions.Count() != opposition.Positions.Count()) return $":no_entry: Sorry, {opposition.Team1.Name} are looking for an {opposition.Positions.Count()}v{opposition.Positions.Count()}";

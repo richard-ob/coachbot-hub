@@ -127,15 +127,8 @@ namespace CoachBot
             {
                 foreach (var channel in server.Channels)
                 {
-                    var textChannel = _client.GetChannel(channel.Id) as ITextChannel;
-                    if (textChannel != null && _configService.Config.Channels.Any(c => c.Id == channel.Id))
+                    if (_configService.Config.Channels.Any(c => c.Id == channel.Id))
                     {
-                        textChannel.SendMessageAsync("If you aren't putting in a shift in during the week, you aren't going to make the team this weekend! Sign up for a match!");
-                        textChannel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(channel.Id));
-                        if (_configService.Config.Channels.First(c => c.Id == textChannel.Id).Team2.IsMix)
-                        {
-                            textChannel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(textChannel.Id, Teams.Team2));
-                        }
                         Console.WriteLine($"{channel.Name} on {server.Name}");
                     }
                 }

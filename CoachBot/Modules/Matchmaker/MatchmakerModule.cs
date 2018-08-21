@@ -311,7 +311,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task CallSubAsync(int serverId, string positionName)
         {
-            var server = _configService.Config.Servers[serverId];
+            var server = _configService.Config.Servers[serverId - 1];
             await ReplyAsync($":sos: @here {positionName} needed urgently on {server.Name} steam://connect/{server.Address}");
         }
 

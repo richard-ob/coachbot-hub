@@ -327,7 +327,7 @@ namespace CoachBot.Services.Matchmaker
         public string Search(ulong channelId, string challengerMention)
         {
             var challenger = _configService.Config.Channels.First(c => c.Id == channelId);
-            if (challenger.LastSearch != null && challenger.LastSearch > DateTime.Now.AddMinutes(-10)) return $":no_entry: Your last search started less than 10 minutes ago. Please wait until {challenger.LastSearch.Value.AddMinutes(10)} before seraching again.";
+            if (challenger.LastSearch != null && challenger.LastSearch > DateTime.Now.AddMinutes(-10)) return $":no_entry: Your last search started less than 10 minutes ago. Please wait until {String.Format("{0:T}", challenger.LastSearch.Value.AddMinutes(10))} before searching again.";
             if (challenger.IsMixChannel) return ":no_entry: Mix channels cannot search for opposition";
             if (challenger.Positions.Count() -1 > challenger.SignedPlayers.Count()) return ":no_entry: All outfield positions must be filled";
             if (challenger.IsSearching) return ":no_entry: You're already searching for a match. Type **!stopsearch** to cancel the previous search.";

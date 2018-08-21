@@ -53,9 +53,12 @@ namespace CoachBot.Services.Matchmaker
                     Players = new List<Player>(),
                 },
                 Formation = formation,
-                ClassicLineup = classicLineup
+                ClassicLineup = classicLineup,
+                IsMixChannel = isMixChannel
             };
             _configService.UpdateChannelConfiguration(channel);
+            (_client.GetChannel(channelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(channelId, Teams.Team1));
+            if (channel.IsMixChannel) (_client.GetChannel(channelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(channelId, Teams.Team2));
             return ":white_check_mark: Channel successfully configured";
         }
 

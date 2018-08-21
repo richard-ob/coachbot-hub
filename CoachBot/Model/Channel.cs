@@ -34,6 +34,8 @@ namespace CoachBot.Model
 
         public bool IsSearching { get; set; }
 
+        public DateTime? LastSearch { get; set; }
+
         [JsonIgnore]
         public DateTime? LastHereMention { get; set; }
 

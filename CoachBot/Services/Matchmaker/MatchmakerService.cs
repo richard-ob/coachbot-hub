@@ -24,7 +24,7 @@ namespace CoachBot.Services.Matchmaker
             _client = client;
         }
 
-        public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, string kitEmote = null, string badgeEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false)
+        public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, string kitEmote = null, string badgeEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false, bool disableSearchNotifications = false)
         {
             if (positions.Count() <= 1) return ":no_entry: You must add at least two positions";
             if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":no_entry: All positions must be unique";
@@ -54,7 +54,8 @@ namespace CoachBot.Services.Matchmaker
                 },
                 Formation = formation,
                 ClassicLineup = classicLineup,
-                IsMixChannel = isMixChannel
+                IsMixChannel = isMixChannel,
+                DisableSearchNotifications = disableSearchNotifications
             };
             _configService.UpdateChannelConfiguration(channel);
             (_client.GetChannel(channelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(channelId, Teams.Team1));
@@ -346,7 +347,7 @@ namespace CoachBot.Services.Matchmaker
                 embed.WithColor(new Color(0xFFFFFF));
             }
             challenger.IsSearching = true;
-            foreach (var channel in _configService.Config.Channels.Where(c => c.Positions.Count == challenger.Positions.Count && c.Id != channelId && c.IsMixChannel == false))
+            foreach (var channel in _configService.Config.Channels.Where(c => c.Positions.Count == challenger.Positions.Count && c.Id != channelId && c.IsMixChannel == false && !c.DisableSearchNotifications))
             {
                 (_client.GetChannel(channel.Id) as SocketTextChannel)?.SendMessageAsync("", embed: embed.Build());
             }

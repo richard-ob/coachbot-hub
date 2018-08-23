@@ -261,6 +261,7 @@ namespace CoachBot.Services.Matchmaker
                 IsMix = channelConfig.Team1.IsMix,
                 Name = channelConfig.Team1.Name,
                 KitEmote = channelConfig.Team1.KitEmote,
+                BadgeEmote = channelConfig.Team1.BadgeEmote,
                 Color = channelConfig.Team1.Color,
                 Players = new List<Player>(),
                 Substitutes = new List<Player>()

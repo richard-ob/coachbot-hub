@@ -430,14 +430,14 @@ namespace CoachBot.Services.Matchmaker
         public string MentionHere(ulong channelId)
         {
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
-            if (channel.LastHereMention == null || channel.LastHereMention < DateTime.Now.AddMinutes(-5))
+            if (channel.LastHereMention == null || channel.LastHereMention < DateTime.Now.AddMinutes(-10))
             {
                 channel.LastHereMention = DateTime.Now;
                 return "@here";
             }
             else
             {
-                return $"The last channel highlight was less than 5 minutes ago ({String.Format("{0:T}", channel.LastHereMention)})";
+                return $"The last channel highlight was less than 10 minutes ago ({String.Format("{0:T}", channel.LastHereMention)})";
             }
         }
 

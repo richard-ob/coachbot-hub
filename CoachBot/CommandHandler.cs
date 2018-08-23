@@ -63,7 +63,7 @@ namespace CoachBot
             }
             catch (Exception)
             {
-                Console.WriteLine($"Bot doesn't have have manage channel privileges in {message.Channel.Name} ({context.Guild.Name})");
+                Console.WriteLine($"Bot doesn't have have manage messages privileges in {message.Channel.Name} ({context.Guild.Name})");
             }
             if (result is PreconditionResult precondition && !precondition.IsSuccess)
             {

@@ -172,42 +172,6 @@ namespace CoachBot.Modules.Matchmaker
             }
         }
 
-        [Command("!configureadvanced")]
-        [RequireUserPermission(Discord.GuildPermission.Administrator)]
-        public async Task ConfigureChannelAsync(string teamName, string kitEmote, string badgeEmote, string color, Formation formation, bool isMixChannel, params string[] positions)
-        {
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.Select(p => new Position() { PositionName = p }).ToList(), kitEmote, badgeEmote, color, isMixChannel, formation, false)).WithCurrentTimestamp().Build());
-            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
-            {
-                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
-            }
-        }
-
-        [Command("!configuremix")]
-        [RequireUserPermission(Discord.GuildPermission.Administrator)]
-        public async Task ConfigureChannelAsync(params string[] positions)
-        {
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, "Mix", positions.Select(p => new Position() { PositionName = p }).ToList(), null, null, null, true, Formation.None, true)).WithCurrentTimestamp().Build());
-            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
-            {
-                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
-            }
-        }
-
-        [Command("!configure")]
-        [RequireUserPermission(Discord.GuildPermission.Administrator)]
-        public async Task ConfigureChannelAsync(string teamName, params string[] positions)
-        {
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ConfigureChannel(Context.Message.Channel.Id, teamName, positions.Select(p => new Position() { PositionName = p }).ToList(), null, null, null, false, Formation.None, true)).WithCurrentTimestamp().Build());
-            await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
-            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
-            {
-                await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
-            }
-        }
-
         [Command("!reset")]
         [RequireChannelConfigured]
         public async Task ResetChannelAsync(params string[] positions)

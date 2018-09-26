@@ -217,7 +217,7 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!list")]
-        [Alias("!teamlist", "!teamsheet", "!teamlists", "!teamsheets", "!lineup!")]
+        [Alias("!lineup")]
         [RequireChannelConfigured]
         public async Task ListAsync(params string[] positions)
         {
@@ -283,26 +283,6 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ServersAsync()
         {
             await ReplyAsync("", embed: _configService.ReadServerList());
-        }
-
-        [Command("!addserver")]
-        [Alias("!addsv")]
-        public async Task AddServerAsync(string ip, [Remainder]string name)
-        {
-            var server = new Server()
-            {
-                Address = ip,
-                Name = name
-            };
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_configService.AddServer(server)).Build());
-        }
-
-        [Command("!removeserver")]
-        [Alias("!rmsv")]
-        [RequireUserPermission(Discord.GuildPermission.Administrator)]
-        public async Task RemoveServerAsync(int id)
-        {
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_configService.RemoveServer(id)).Build());
         }
 
         [Command("!recentmatches")]

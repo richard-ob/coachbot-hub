@@ -219,7 +219,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!list")]
         [Alias("!lineup")]
         [RequireChannelConfigured]
-        public async Task ListAsync(params string[] positions)
+        public async Task ListAsync()
         {
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
             if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)

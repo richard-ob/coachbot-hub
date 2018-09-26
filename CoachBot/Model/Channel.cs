@@ -12,6 +12,7 @@ namespace CoachBot.Model
         [Key]
         public ulong Id { get; set; }
 
+        // TODO: Create custom serializer to serialize ulong's as strings, as Javascript cannot handle large ulong values
         public string IdString { get { return Id.ToString(); } }
 
         public List<Position> Positions { get; set; }
@@ -19,6 +20,8 @@ namespace CoachBot.Model
         public string Name { get; set; }
 
         public string GuildName { get; set; }
+
+        public int RegionId { get; set; }
 
         public IEnumerable<KeyValuePair<string, string>> Emotes { get; set; }
 

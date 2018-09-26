@@ -5,7 +5,6 @@ using CoachBot.Services.Matchmaker;
 using CoachBot.Model;
 using CoachBot.Preconditions;
 using System.Collections.Generic;
-using System.Text;
 using Discord;
 
 namespace CoachBot.Modules.Matchmaker
@@ -295,18 +294,6 @@ namespace CoachBot.Modules.Matchmaker
         public async Task AppearanceLeaderboardAsync()
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_statisticsService.AppearanceLeaderboard(Context.Channel.Id)).Build());
-        }
-
-        [Command("!formations")]
-        public async Task FormationsAsync()
-        {
-            await ReplyAsync("", embed: _configService.ListFormations());
-        }
-
-        [Command("!colours")]
-        public async Task ColoursAsync()
-        {
-            await ReplyAsync("", embed: _configService.ListColours());
         }
 
         [Command("!help")]

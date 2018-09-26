@@ -19,6 +19,7 @@ namespace CoachBot.Services.Matchmaker
             if (string.IsNullOrEmpty(Config.BotToken)) throw new Exception("No valid bot token provided");
             if (Config.Servers == null) Config.Servers = new List<Server>();
             if (Config.Channels == null) Config.Channels = new List<Channel>();
+            if (Config.Regions == null) Config.Regions = new List<Region>();
         }
 
         internal void Save()
@@ -105,26 +106,6 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!formations", "See the list of possible formations for the team sheet view");
             embedBuilder.AddField("!colours", "See a list of colours available for the teamsheet border");
             return embedBuilder.Build();
-        }
-
-        public Embed ListFormations()
-        {
-            var embedBuilder = new EmbedBuilder().WithTitle(":1234: Formations");
-            embedBuilder.AddField("0", "No formation - will place three positions per row");
-            embedBuilder.AddField("1", "3-3-1 (8v8 only)");
-            embedBuilder.AddField("2", "3-2-2 (8v8 only)");
-            embedBuilder.AddField("3", "3-1-2-1 (8v8 only)");
-            embedBuilder.AddField("4", "3-1-3 (8v8 only)");
-            embedBuilder.AddField("5", "2-1 (4v4 only)");
-            return embedBuilder.Build();
-        }
-
-        public Embed ListColours()
-        {
-            return new EmbedBuilder()
-                .WithTitle(":art: Colours")
-                .WithDescription("Hex colours are now accepted. Use https://htmlcolorcodes.com/ as a reference. Format is ***#ffffff***")
-                .Build();
         }
 
         public Channel ReadChannelConfiguration(ulong channelId)

@@ -16,5 +16,7 @@ namespace CoachBot.Model
 
         public List<Channel> Channels { get; set; }
 
+        public List<Region> Regions { get; set; }
+
     }
 }

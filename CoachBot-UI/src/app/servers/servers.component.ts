@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Server } from '../model/server';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ServerService } from '../shared/services/server.service';
 
 @Component({
@@ -12,7 +11,7 @@ export class ServersComponent {
     newServer: Server = new Server();
     servers: Server[];
 
-    constructor(private route: ActivatedRoute, private serverService: ServerService) {
+    constructor(private serverService: ServerService) {
         this.serverService.getServers().subscribe(servers => this.servers = servers);
     }
 

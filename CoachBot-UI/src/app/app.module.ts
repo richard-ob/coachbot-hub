@@ -33,6 +33,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { LogService } from './shared/services/log.service';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { ErrorComponent } from './shared/components/error.component';
+import { RegionsComponent } from './regions/regions.component';
+import { RegionService } from './shared/services/region.service';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,8 @@ import { ErrorComponent } from './shared/components/error.component';
     KitComponent,
     MatchHistoryComponent,
     ServersComponent,
-    ProfileComponent
+    ProfileComponent,
+    RegionsComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +70,7 @@ import { ErrorComponent } from './shared/components/error.component';
     LogService,
     MatchmakerService,
     MatchService,
+    RegionService,
     UserService,
     {
       provide: HTTP_INTERCEPTORS,

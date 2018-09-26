@@ -3,8 +3,8 @@
   <a class="navbar-brand" style="border-right: none; margin-left: -25px;" href="#">
     Coach<span class="text-muted">Bot</span>
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
-    aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
@@ -25,6 +25,10 @@
       <li class="nav-item" routerLinkActive="active" *ngIf="user">
         <a class="nav-link" routerLink="/player-leaderboards">
           <i class="fa fa-trophy"></i> Player Leaderboards</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="user && user.isAdministrator">
+        <a class="nav-link" routerLink="/regions">
+          <i class="fa fa-globe"></i> Regions</a>
       </li>
       <li class="nav-item" routerLinkActive="active" *ngIf="user && user.isAdministrator">
         <a class="nav-link" routerLink="/servers">
@@ -65,6 +69,10 @@
       <li routerLinkActive="active">
         <a routerLink="/player-leaderboards">
           <i class="fa fa-trophy"></i> Player Leaderboards</a>
+      </li>
+      <li routerLinkActive="active" *ngIf="user.isAdministrator">
+        <a routerLink="/regions">
+          <i class="fa fa-globe"></i> Regions</a>
       </li>
       <li routerLinkActive="active" *ngIf="user.isAdministrator">
         <a routerLink="/servers">

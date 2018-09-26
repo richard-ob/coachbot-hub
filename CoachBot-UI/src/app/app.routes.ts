@@ -10,6 +10,7 @@ import { MatchHistoryComponent } from './match-history/match-history.component';
 import { PlayerLeaderboardsComponent } from './player-leaderboards/player-leaderboards.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ErrorComponent } from './shared/components/error.component';
+import { RegionsComponent } from './regions/regions.component';
 
 export const appRoutes: Routes = [
     {
@@ -20,6 +21,7 @@ export const appRoutes: Routes = [
     { path: 'channels', component: ChannelsComponent },
     { path: 'channel/:id', component: ChannelComponent },
     { path: 'servers', component: ServersComponent },
+    { path: 'regions', component: RegionsComponent },
     { path: 'match-history', component: MatchHistoryComponent },
     { path: 'player-leaderboards', component: PlayerLeaderboardsComponent },
     { path: 'bot', component: BotComponent },

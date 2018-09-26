@@ -59,16 +59,28 @@ namespace CoachBot.Services.Matchmaker
             return $"{server.Name} removed from the server list";
         }
 
-        public Embed ReadServerList()
+        public Embed ReadServerList(ulong channelId)
         {
             var serverId = 1;
             var embedBuilder = new EmbedBuilder().WithTitle(":desktop: Servers");
-            foreach(var server in Config.Servers)
+            var channelRegionId = Config.Channels.First(c => c.Id == channelId).RegionId;
+            foreach (var server in Config.Servers.Where(s => s.RegionId == channelRegionId))
             {
                 embedBuilder.AddField($"#{serverId} {server.Name}", $"steam://connect/{server.Address}");
                 serverId++;
             }
             return embedBuilder.Build();
+        }
+
+        public void AddRegion(Region region)
+        {
+            Config.Regions.Add(region);
+            Save();
+        }
+
+        public void RemoveRegion(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public Embed ListCommands()

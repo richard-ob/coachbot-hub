@@ -280,6 +280,7 @@ namespace CoachBot.Services.Matchmaker
         {
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var socketChannel = (SocketTextChannel)_client.GetChannel(channel.Id);
+            var regionServers = _configService.Config.Servers.Where(s => s.RegionId == channel.RegionId).ToList();
 
             if (!ignorePlayerCounts && channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count()))
             {
@@ -296,14 +297,14 @@ namespace CoachBot.Services.Matchmaker
                 socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: You must set a team to face").Build());
                 return;
             }
-            if (serverId == null || serverId == 0 || serverId > _configService.Config.Servers.Count())
+            if (serverId == null || serverId == 0 || serverId > regionServers.Count())
             {
                 socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: Please supply a server number (e.g. !ready 3). Type !servers for the server list.").Build());
                 return;
             }
 
+            var server = regionServers[(int)serverId - 1];
             var sb = new StringBuilder();
-            var server = _configService.Config.Servers[(int)serverId - 1];
             sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");
             foreach (var player in channel.SignedPlayers)
             {

@@ -281,7 +281,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!servers")]
         public async Task ServersAsync()
         {
-            await ReplyAsync("", embed: _configService.ReadServerList());
+            await ReplyAsync("", embed: _configService.ReadServerList(Context.Channel.Id));
         }
 
         [Command("!recentmatches")]

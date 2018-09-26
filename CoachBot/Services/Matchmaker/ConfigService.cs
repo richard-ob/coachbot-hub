@@ -96,15 +96,8 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!challenge <team id>", "Challenge a specific team who are currently searching for opposition");
             embedBuilder.AddField("!unchallenge", "Cancel a challenge before !ready has been called");
             embedBuilder.AddField("!servers", "See the full available server list");
-            embedBuilder.AddField("!addserver <ip:port> <name>", "Add a server to the server list");
-            embedBuilder.AddField("!removeserver <server id>", "Remove specified server to the server list");
             embedBuilder.AddField("!recentmatches", "See a list of recent matches played");
             embedBuilder.AddField("!leaderboard", "See the appearance rankings for this channel");
-            embedBuilder.AddField("!configure <team name> <positions> (e.g. !configurebasic BB GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings (classic team list view and isn't a mix)");
-            embedBuilder.AddField("!configuremix <positions> (e.g. !configurebasic GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with default settings for a mix channel (classic team list view and is a mix)");
-            embedBuilder.AddField("!configureadvanced <team name> <team badge emote> <kit emote> <colour> <formation id> <is a mix channel> <positions> (e.g. !configure BB :bb: :bbshirt: #ffffff 1 false GK RB CB LB RW CM LW CF)", "Configure the current channel's matchmaking settings with customised team sheet view. Type !formations for a list of formations.");
-            embedBuilder.AddField("!formations", "See the list of possible formations for the team sheet view");
-            embedBuilder.AddField("!colours", "See a list of colours available for the teamsheet border");
             return embedBuilder.Build();
         }
 

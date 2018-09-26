@@ -317,13 +317,7 @@ namespace CoachBot.Services.Matchmaker
 
         public string UnreadyMatch(ulong channelId)
         {
-            /*if (_lastMatch == null) return ":no_entry: No previous line-up available to revert to";
-            if (_lastMatch.Id != channelId) return ":no_entry: No previous line-up available to revert to";
-
-            _config.Channels.First(c => c.Id == channelId).Positions = _lastMatch.Positions;
-            _config.Channels.First(c => c.Id == channelId).Team1 = _lastMatch.Team1;
-            _config.Channels.First(c => c.Id == channelId).Team2 = _lastMatch.Team2;*/
-            return ":white_check_mark: Previous line-up restored";
+            return ":no entry: This functionality has not yet been implemented";
         }
 
         public string Search(ulong channelId, string challengerMention)

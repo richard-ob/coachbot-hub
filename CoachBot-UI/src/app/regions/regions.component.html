@@ -13,12 +13,16 @@
                     <table class="table table-striped">
                         <thead>
                             <th>Region Name</th>
+                            <th>Server Count</th>
                             <th>Actions</th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let region of regions; let i = index" [attr.data-index]="i">
                                 <td>
                                     {{region.regionName}}
+                                </td>
+                                <td>
+                                    {{region.serverCount}}
                                 </td>
                                 <td>
                                     <button class="btn btn-outline-danger btn-sm" (click)="removeRegion(i)">

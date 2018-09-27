@@ -79,6 +79,13 @@ namespace CoachBot.Services.Matchmaker
             return embedBuilder.Build();
         }
 
+        public List<Region> GetRegions()
+        {
+            var regions = Config.Regions;
+            regions.ForEach(r => r.ServerCount = Config.Servers.Count(s => s.RegionId == r.RegionId));
+            return regions;
+        }
+
         public void AddRegion(Region region)
         {
             region.RegionId = (Config.Regions?.Max(r => r.RegionId) + 1) ?? 1;

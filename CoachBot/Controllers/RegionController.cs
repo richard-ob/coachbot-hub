@@ -24,7 +24,7 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IEnumerable<Region> Get()
         {
-            return _configService.Config.Regions;
+            return _configService.GetRegions();
         }
 
         [HttpPost]

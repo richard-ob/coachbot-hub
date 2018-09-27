@@ -24,7 +24,7 @@ namespace CoachBot.Controllers
             _botService = botService;
             _statisticsService = statisticsService;
             _leaderboardService = leaderboardService;
-            _aplicationUrl = "http://coachbot.iosoccer.com";
+            _aplicationUrl = "http://localhost:4200";
         }
 
         [HttpGet]

@@ -34,13 +34,21 @@
         <h4 class="card-title">
             <i class="fa fa-plus"></i> Add Server</h4>
         <form class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label for="lblServerName">Server Name</label>
                 <input type="text" class="form-control" id="txtServerName" name="txtServerName" [(ngModel)]="newServer.name">
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label for="lblIpAddress">IP Address</label>
                 <input type="text" class="form-control" id="txtIpAddress" name="txtIpAddress" [(ngModel)]="newServer.address">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="txtRegionId">Region</label>
+                <select class="form-control" [(ngModel)]="newServer.regionId" name="txtRegionId" id="txtRegionId">
+                    <option *ngFor="let region of regions" [ngValue]="region.regionId">
+                        {{region.regionName}}
+                    </option>
+                </select>
             </div>
             <div class="form-group col-md-12">
                 <button type="submit" class="btn btn-outline-success float-right" (click)="addServer()">

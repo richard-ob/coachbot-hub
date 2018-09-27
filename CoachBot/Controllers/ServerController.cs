@@ -28,7 +28,7 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IEnumerable<Server> GetAll()
         {
-            return _configService.Config.Servers;
+            return _configService.GetServers();
         }
 
         [HttpDelete("{id}")]

@@ -40,6 +40,13 @@ namespace CoachBot.Services.Matchmaker
             Save();
         }
 
+        public List<Server> GetServers()
+        {
+            var servers = Config.Servers;
+            servers.ForEach(s => s.Region = Config.Regions.FirstOrDefault(r => r.RegionId == s.RegionId));
+            return servers;
+        }
+
         public string AddServer(Server server)
         {
             Config.Servers.Add(server);

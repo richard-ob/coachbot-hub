@@ -21,4 +21,10 @@ export class RegionsComponent {
             this.newRegion = new Region();
         });
     }
+
+    removeRegion(regionId: number) {
+        this.regionService.removeRegion(regionId).subscribe(() => {
+            this.regionService.getRegions().subscribe(regions => this.regions = regions);
+        });
+    }
 }

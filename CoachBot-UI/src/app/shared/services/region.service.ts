@@ -18,4 +18,8 @@ export class RegionService {
     addRegion(region: Region) {
         return this.http.post(`${environment.apiUrl}/api/region`, region).pipe();
     }
+
+    removeRegion(regionId: number) {
+        return this.http.delete(`${environment.apiUrl}/api/region/${regionId}`).pipe();
+    }
 }

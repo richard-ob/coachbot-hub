@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoachBot.Controllers
 {
@@ -23,7 +24,9 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IEnumerable<Region> Get()
         {
-            return _configService.Config.Regions;
+            var regions = _configService.Config.Regions;
+            regions.ForEach(r => r.ServerCount = _configService.Config.Servers.Count(s => s.RegionId == r.RegionId));
+            return regions;
         }
 
         [HttpPost]

@@ -14,7 +14,10 @@ namespace CoachBot.Preconditions
             var configService = map.GetService<ConfigService>();
 
             if (!configService.Config.Channels.Any(c => c.Id == context.Channel.Id))
-                return Task.FromResult(PreconditionResult.FromError($":wrench: This channel is not yet configured. To configure the channel, please use the !configure command in the following format: {Environment.NewLine} **!configure <team name> <positions>** {Environment.NewLine} *e.g. !configure BB GK RB CB LB RW CM LW CF* {Environment.NewLine} For more advanced configuration (such as using the teamsheet view) please type !help for further information."));
+                return Task.FromResult(PreconditionResult.FromError($":wrench: This channel is not yet configured. To configure the channel, please visit http://coachbot.iosoccer.com"));
+
+            if (configService.Config.Channels.First(c => c.Id == context.Channel.Id).RegionId == 0)
+                return Task.FromResult(PreconditionResult.FromError($":earth_asia: This channel does not have a region set. To configure the channel, please visit http://coachbot.iosoccer.com"));
 
             return Task.FromResult(PreconditionResult.FromSuccess());
         }

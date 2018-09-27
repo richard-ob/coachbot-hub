@@ -74,6 +74,7 @@ namespace CoachBot.Services.Matchmaker
 
         public void AddRegion(Region region)
         {
+            region.RegionId = (Config.Regions?.Max(r => r.RegionId) + 1) ?? 1;
             Config.Regions.Add(region);
             Save();
         }
@@ -82,7 +83,7 @@ namespace CoachBot.Services.Matchmaker
         {
             if (!Config.Servers.Any(s => s.RegionId == id))
             {
-                var region = Config.Regions[id];
+                var region = Config.Regions.FirstOrDefault(r => r.RegionId == id);
                 Config.Regions.Remove(region);
                 Save();
             }

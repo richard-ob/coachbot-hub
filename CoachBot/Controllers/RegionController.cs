@@ -24,9 +24,7 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IEnumerable<Region> Get()
         {
-            var regions = _configService.Config.Regions;
-            regions.ForEach(r => r.ServerCount = _configService.Config.Servers.Count(s => s.RegionId == r.RegionId));
-            return regions;
+            return _configService.Config.Regions;
         }
 
         [HttpPost]

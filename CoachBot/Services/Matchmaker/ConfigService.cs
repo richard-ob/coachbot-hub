@@ -131,6 +131,7 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!servers", "See the full available server list");
             embedBuilder.AddField("!recentmatches", "See a list of recent matches played");
             embedBuilder.AddField("!leaderboard", "See the appearance rankings for this channel");
+            embedBuilder.WithFooter("If you wish to configure CoachBot for your channel, please visit http://coachbot.iosoccer.com");
             return embedBuilder.Build();
         }
 

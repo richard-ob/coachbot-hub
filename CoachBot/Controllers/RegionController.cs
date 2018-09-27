@@ -38,7 +38,7 @@ namespace CoachBot.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost("{id}")]
+        [HttpDelete("{id}")]
         public void Delete(int id)
         {
             _configService.RemoveRegion(id);

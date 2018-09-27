@@ -88,7 +88,8 @@ namespace CoachBot.Services.Matchmaker
 
         public void AddRegion(Region region)
         {
-            region.RegionId = (Config.Regions?.Max(r => r.RegionId) + 1) ?? 1;
+            region.RegionId = 1;
+            if (Config.Regions.Count() > 0) region.RegionId = Config.Regions.Max(r => r.RegionId) + 1;
             Config.Regions.Add(region);
             Save();
         }

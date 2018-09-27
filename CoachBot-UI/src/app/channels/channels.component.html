@@ -17,6 +17,7 @@
             <th>Server</th>
             <th>Name</th>
             <th>Team Name</th>
+            <th>Region</th>
             <th>Positions</th>
             <th>Team Color</th>
             <th>Is Mix Channel</th>
@@ -28,6 +29,7 @@
             <td>{{channel.guildName}}</td>
             <td>{{channel.name}}</td>
             <td>{{channel.team1.name}}</td>
+            <td>{{channel.region?.regionName}}</td>
             <td>
               <span *ngFor="let position of channel.positions">{{position.positionName}} </span>
             </td>
@@ -48,7 +50,7 @@
     </div>
   </div>
 </div>
-<br/>
+<br />
 <div class="card">
   <div class="card-body">
     <h4 class="card-title">
@@ -57,18 +59,22 @@
       <div class="form-group">
         <label>Channel</label>
         <select class="form-control" [(ngModel)]="unconfiguredChannel" name="unconfiguredChannel" [disabled]="unconfiguredChannels && unconfiguredChannels.length === 0">
-          <option *ngFor="let channel of unconfiguredChannels" [ngValue]="channel">{{channel.name}} ({{channel.guildName}}) </option>
-          <option *ngIf="unconfiguredChannels && unconfiguredChannels.length === 0">You have no channels available to configure</option>
+          <option *ngFor="let channel of unconfiguredChannels" [ngValue]="channel">{{channel.name}}
+            ({{channel.guildName}}) </option>
+          <option *ngIf="unconfiguredChannels && unconfiguredChannels.length === 0">You have no channels available to
+            configure</option>
         </select>
       </div>
       <div class="alert alert-primary" role="alert">
-        To add a channel, you must have invited CoachBot to your Discord server, and he must have access to your channel&nbsp;
-        <a class="btn btn-sm" href="https://discordapp.com/oauth2/authorize?client_id=310871748562386954&scope=bot" role="button"
-          style="background-color: #7289da; text-decoration: none;">
+        To add a channel, you must have invited CoachBot to your Discord server, and he must have access to your
+        channel&nbsp;
+        <a class="btn btn-sm" href="https://discordapp.com/oauth2/authorize?client_id=310871748562386954&scope=bot"
+          role="button" style="background-color: #7289da; text-decoration: none;">
           <img src="/assets/discord_icon.png"> Invite CoachBot</a>
       </div>
       <div class="form-group">
-        <button *ngIf="unconfiguredChannel" type="submit" class="btn btn-outline-success float-right" (click)="addChannel()" [disabled]="isLoading || !unconfiguredChannel">
+        <button *ngIf="unconfiguredChannel" type="submit" class="btn btn-outline-success float-right" (click)="addChannel()"
+          [disabled]="isLoading || !unconfiguredChannel">
           <i class="fa fa-check"></i> Add</button>
       </div>
     </form>

@@ -77,7 +77,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Update([FromBody]Channel channel)
         {
-            _matchmakerService.ConfigureChannel(channel.Id, channel.Team1.Name, channel.Positions, channel.Team1.KitEmote, channel.Team1.BadgeEmote, channel.Team1.Color, channel.IsMixChannel, channel.Formation, channel.ClassicLineup, channel.DisableSearchNotifications);
+            _matchmakerService.ConfigureChannel(channel.Id, channel.Team1.Name, channel.Positions, channel.RegionId, channel.Team1.KitEmote, channel.Team1.BadgeEmote, channel.Team1.Color, channel.IsMixChannel, channel.Formation, channel.ClassicLineup, channel.DisableSearchNotifications);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace CoachBot.Services.Matchmaker
             _client = client;
         }
 
-        public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, string kitEmote = null, string badgeEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false, bool disableSearchNotifications = false)
+        public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, int regionId, string kitEmote = null, string badgeEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false, bool disableSearchNotifications = false)
         {
             if (positions.Count() <= 1) return ":no_entry: You must add at least two positions";
             if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":no_entry: All positions must be unique";
@@ -55,7 +55,8 @@ namespace CoachBot.Services.Matchmaker
                 Formation = formation,
                 ClassicLineup = classicLineup,
                 IsMixChannel = isMixChannel,
-                DisableSearchNotifications = disableSearchNotifications
+                DisableSearchNotifications = disableSearchNotifications,
+                RegionId = regionId
             };
             _configService.UpdateChannelConfiguration(channel);
             (_client.GetChannel(channelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(channelId, Teams.Team1));

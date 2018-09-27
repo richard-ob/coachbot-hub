@@ -5,6 +5,8 @@ import { Position } from '../model/position';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Region } from '../model/region';
+import { RegionService } from '../shared/services/region.service';
 
 @Component({
     selector: 'app-channel',
@@ -13,13 +15,16 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ChannelComponent {
 
     channel: Channel;
+    regions: Region[];
     svgKitColor: string;
     editPositionName: string;
     currentPositionId: number;
     isSaving = false;
 
     constructor(private route: ActivatedRoute,
-        private matchmakerService: MatchmakerService, private _sanitizer: DomSanitizer) {
+        private matchmakerService: MatchmakerService,
+        private regionService: RegionService) {
+        this.regionService.getRegions().subscribe(regions => this.regions = regions);
         this.route.params
             .pipe(map(params => params['id']))
             .subscribe((id) => {

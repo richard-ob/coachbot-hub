@@ -1,6 +1,7 @@
 import { Team } from "./team";
 import { Formation } from "./formation";
 import { Position } from "./position";
+import { Region } from "./region";
 
 export class Channel {
     id: any;
@@ -14,4 +15,5 @@ export class Channel {
     guildName: string;
     emotes: any[];
     isMixChannel: boolean;
+    region: Region;
 }

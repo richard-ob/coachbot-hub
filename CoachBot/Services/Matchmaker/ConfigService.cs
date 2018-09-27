@@ -80,7 +80,9 @@ namespace CoachBot.Services.Matchmaker
 
         public void RemoveRegion(int id)
         {
-            throw new NotImplementedException();
+            var region = Config.Regions[id - 1];
+            Config.Regions.Remove(region);
+            Save();
         }
 
         public Embed ListCommands()

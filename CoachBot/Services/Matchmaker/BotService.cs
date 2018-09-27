@@ -56,6 +56,7 @@ namespace CoachBot.Services.Matchmaker
                         {
                             var tmpChannel = _configService.Config.Channels.FirstOrDefault(c => c.Id == channel.Id);
                             tmpChannel.Name = channel.Name;
+                            tmpChannel.Region = _configService.Config.Regions.FirstOrDefault(r => r.RegionId == tmpChannel.RegionId);
                             channels.Add(tmpChannel);
                         }
                         if (!channelIsConfigured && unconfiguredChannels)

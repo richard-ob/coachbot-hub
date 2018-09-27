@@ -12,12 +12,14 @@
                 <thead>
                     <th>Server Name</th>
                     <th>Address</th>
+                    <th>Region</th>
                     <th>Actions</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let server of servers; let i = index" [attr.data-index]="i">
                         <td>{{server.name}}</td>
                         <td>{{server.address}}</td>
+                        <td>{{server.region?.regionName}}</td>
                         <td>
                             <button class="btn btn-outline-danger btn-sm" (click)="removeServer(i)">
                                 <i class="fa fa-times"></i> Remove</button>

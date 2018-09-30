@@ -26,4 +26,19 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('.container-fluid')).toBeTruthy();
   }));
+  it('should hide moving coach head on page load', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('.coach-head')).toBeFalsy();
+  }));
+  it('should display moving coach head when coach icon clicked', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    const coachIcon = compiled.querySelector('nav img');
+    coachIcon.click();
+    fixture.detectChanges();
+    expect(compiled.querySelector('.coach-head')).toBeTruthy();
+  }));
 });

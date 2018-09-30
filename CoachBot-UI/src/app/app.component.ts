@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { ConfigurationService } from './shared/services/configuration.service';
-import { Configuration } from './model/configuration';
-import { ChatMessage } from './model/chat-message';
 import { MatchmakerService } from './shared/services/matchmaker.service';
 import { Channel } from './model/channel';
 import { UserService } from './shared/services/user.service';
 import { environment } from '../environments/environment';
+import { User } from './model/user';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +12,8 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent {
 
-  title = 'app';
-  message: ChatMessage = new ChatMessage();
   channels: Channel[];
-  user: any;
+  user: User;
   apiUrl = environment.apiUrl;
   onFeet = false;
 

@@ -10,6 +10,8 @@ namespace CoachBot.Model
 
         public string OAuth2Secret { get; set; }
 
+        public string ClientUrl { get; set; }
+
         public ulong OwnerGuildId { get; set; }
 
         public List<Server> Servers { get; set; }

@@ -17,14 +17,13 @@ namespace CoachBot.Controllers
         private readonly StatisticsService _statisticsService;
         private readonly LeaderboardService _leaderboardService;
         private readonly ConfigService _configService;
-        private readonly string _aplicationUrl;
 
-        public UserController(BotService botService, StatisticsService statisticsService, LeaderboardService leaderboardService, IHostingEnvironment env)
+        public UserController(BotService botService, StatisticsService statisticsService, LeaderboardService leaderboardService, ConfigService configService)
         {
             _botService = botService;
             _statisticsService = statisticsService;
             _leaderboardService = leaderboardService;
-            _aplicationUrl = "http://localhost:4200";
+            _configService = configService;
         }
 
         [HttpGet]
@@ -60,14 +59,14 @@ namespace CoachBot.Controllers
         [HttpGet("/login")]
         public IActionResult LogIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = _aplicationUrl }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
+            return Challenge(new AuthenticationProperties { RedirectUri = _configService.Config.ClientUrl }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
         }
 
         [HttpGet("/logout")]
         public IActionResult LogOut()
         {
             HttpContext.SignOutAsync("Cookies").Wait();
-            return new RedirectResult(_aplicationUrl);
+            return new RedirectResult(_configService.Config.ClientUrl);
         }
 
         [HttpGet("/unauthorized")]

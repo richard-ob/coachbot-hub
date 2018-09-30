@@ -2,5 +2,6 @@
   "BotToken": "your_bot_token_here",
   "OAuth2Id": "your_oauth2_app_id_here",
   "OAuth2Secret": "your_oauth2_app_secret_here",
-  "OwnerGuildId":  "your_primary_guildid"
+  "OwnerGuildId": "your_primary_guildid",
+  "ClientUrl":  "http://your_client_url_here"
 }

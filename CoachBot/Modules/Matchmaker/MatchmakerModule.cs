@@ -281,7 +281,15 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!servers")]
         public async Task ServersAsync()
         {
-            await ReplyAsync("", embed: _configService.ReadServerList(Context.Channel.Id));
+            if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).RegionId == 0)
+            {
+                await ReplyAsync(":flag_white: This region has no channels configured");
+            }
+            else
+            {
+
+                await ReplyAsync("", embed: _configService.ReadServerList(Context.Channel.Id));
+            }
         }
 
         [Command("!recentmatches")]

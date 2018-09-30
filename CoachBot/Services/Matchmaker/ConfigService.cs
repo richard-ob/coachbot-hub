@@ -69,12 +69,16 @@ namespace CoachBot.Services.Matchmaker
         public Embed ReadServerList(ulong channelId)
         {
             var serverId = 1;
-            var embedBuilder = new EmbedBuilder().WithTitle(":desktop: Servers");
             var channelRegionId = Config.Channels.First(c => c.Id == channelId).RegionId;
+            var embedBuilder = new EmbedBuilder().WithTitle(":desktop: Servers");
             foreach (var server in Config.Servers.Where(s => s.RegionId == channelRegionId))
             {
                 embedBuilder.AddField($"#{serverId} {server.Name}", $"steam://connect/{server.Address}");
                 serverId++;
+            }
+            if (!Config.Servers.Any(s => s.RegionId == channelRegionId))
+            {
+                embedBuilder.AddField("Oh dear..", "No servers available for this region. Please message an IOSoccer administrator.");
             }
             return embedBuilder.Build();
         }

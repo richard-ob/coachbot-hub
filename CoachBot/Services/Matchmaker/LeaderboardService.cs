@@ -1,5 +1,4 @@
 ﻿using CoachBot.Model;
-using Discord;
 using Discord.WebSocket;
 using System.Collections.Generic;
 using System.Linq;

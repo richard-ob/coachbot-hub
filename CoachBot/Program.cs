@@ -1,20 +1,13 @@
 ﻿using Discord;
-using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Serilog.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using System.Linq;
 using CoachBot.Model;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
-using Microsoft.EntityFrameworkCore;
 
 namespace CoachBot
 {

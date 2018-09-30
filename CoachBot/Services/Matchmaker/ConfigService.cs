@@ -2,7 +2,6 @@
 using CoachBot.Model;
 using Newtonsoft.Json;
 using System.IO;
-using System.Text;
 using System;
 using System.Linq;
 using Discord;

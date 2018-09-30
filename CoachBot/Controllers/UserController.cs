@@ -2,9 +2,7 @@
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 
 namespace CoachBot.Controllers

@@ -12,7 +12,6 @@ using CoachBot.Services.Matchmaker;
 using System.Linq;
 using CoachBot.Model;
 using Discord;
-using Serilog.Events;
 
 namespace CoachBot
 {

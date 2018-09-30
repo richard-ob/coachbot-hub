@@ -1,6 +1,5 @@
 ﻿using CoachBot.Model;
 using CoachBot.Services.Matchmaker;
-using Discord.WebSocket;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

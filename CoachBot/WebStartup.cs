@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Serilog.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Newtonsoft.Json;
 using System.IO;
 

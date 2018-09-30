@@ -6,7 +6,6 @@ using CoachBot.Model;
 using System;
 using CoachBot.Extensions;
 using Discord.WebSocket;
-using System.Timers;
 using System.Threading.Tasks;
 
 namespace CoachBot.Services.Matchmaker

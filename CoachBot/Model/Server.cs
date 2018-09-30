@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace CoachBot.Model
+﻿namespace CoachBot.Model
 {
     public class Server
     {

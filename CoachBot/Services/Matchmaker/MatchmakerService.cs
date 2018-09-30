@@ -343,7 +343,9 @@ namespace CoachBot.Services.Matchmaker
                 embed.WithColor(new Color(0xFFFFFF));
             }
             challenger.IsSearching = true;
-            foreach (var channel in _configService.Config.Channels.Where(c => c.Positions.Count == challenger.Positions.Count && c.Id != channelId && c.IsMixChannel == false && !c.DisableSearchNotifications))
+            var oppositionServers = _configService.Config.Channels.Where(c =>
+                c.Positions.Count == challenger.Positions.Count && c.Id != channelId && c.IsMixChannel == false && !c.DisableSearchNotifications && c.RegionId == challenger.RegionId);
+            foreach (var channel in oppositionServers)
             {
                 (_client.GetChannel(channel.Id) as SocketTextChannel)?.SendMessageAsync("", embed: embed.Build());
             }
@@ -385,6 +387,7 @@ namespace CoachBot.Services.Matchmaker
             if (challengerChannelId == oppositionId) return $":no_entry: You can't face yourself. Don't waste my time.";
             if (challenger.Positions.Count() != opposition.Positions.Count()) return $":no_entry: Sorry, {opposition.Team1.Name} are looking for an {opposition.Positions.Count()}v{opposition.Positions.Count()}";
             if (Math.Round(challenger.Positions.Count() * 0.7) > challenger.SignedPlayers.Count()) return $":no_entry: At least {Math.Round(challenger.Positions.Count() * 0.7)} positions must be filled";
+            if (challenger.RegionId != opposition.RegionId) return $":no_entry: You can't challenge opponents from other regions";
             challenger.IsSearching = false;
             var acceptMsg = $":handshake: {challenger.Team1.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
             (_client.GetChannel(opposition.Id) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithDescription(acceptMsg).WithCurrentTimestamp().Build());

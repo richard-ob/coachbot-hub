@@ -12,7 +12,7 @@ describe('UserService', () => {
         userService = new UserService(<any>httpClientSpy);
     });
 
-    it('should return current user & call httpClient only once', () => {
+    it('#getUser should return current user & call httpClient only once', () => {
         const expectedUser: User = { id: 1, name: 'A', IsAdministrator: false, discordUserIdString: '1', channels: [] };
         httpClientSpy.get.and.returnValue(asyncData(expectedUser));
 
@@ -21,7 +21,7 @@ describe('UserService', () => {
         expect(httpClientSpy.get.calls.count()).toBe(1, 'one call');
     });
 
-    it('should return array of players & call httpClient only once', () => {
+    it('#getUserStatistics should return array of players & call httpClient only once', () => {
         const expectedPlayers: Player[] = [
             { name: 'Test Player', discordUserId: 1, discordUserMention: '@1', position: null },
             { name: 'Test Player 2', discordUserId: 2, discordUserMention: '@2', position: null }

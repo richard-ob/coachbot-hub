@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class MatchmakerService {
+export class ChannelService {
 
   constructor(private http: HttpClient) { }
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatchmakerService } from './shared/services/matchmaker.service';
+import { ChannelService } from './shared/services/channel.service';
 import { Channel } from './model/channel';
 import { UserService } from './shared/services/user.service';
 import { environment } from '../environments/environment';
@@ -17,9 +17,9 @@ export class AppComponent {
   apiUrl = environment.apiUrl;
   onFeet = false;
 
-  constructor(private matchmakerService: MatchmakerService,
+  constructor(private channelService: ChannelService,
     private userService: UserService) {
-    this.matchmakerService.getChannels().subscribe(channels => this.channels = channels);
+    this.channelService.getChannels().subscribe(channels => this.channels = channels);
     this.userService.getUser().subscribe(user => this.user = user);
   }
 

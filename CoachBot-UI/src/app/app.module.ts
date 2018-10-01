@@ -9,7 +9,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppComponent } from './app.component';
 import { ConfigurationService } from './shared/services/configuration.service';
-import { MatchmakerService } from './shared/services/matchmaker.service';
+import { ChannelService } from './shared/services/channel.service';
 import { ChannelComponent } from './channel/channel.component';
 
 import { appRoutes } from './app.routes';
@@ -63,12 +63,12 @@ import { RegionService } from './shared/services/region.service';
     RouterModule.forRoot(appRoutes, { useHash: true })
   ],
   providers: [
+    ChannelService,
     ConfigurationService,
     AnnouncementService,
     BotService,
     LeaderboardService,
     LogService,
-    MatchmakerService,
     MatchService,
     RegionService,
     UserService,

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatchmakerService } from '../shared/services/matchmaker.service';
+import { ChannelService } from '../shared/services/channel.service';
 import { Channel } from '../model/channel';
 import { Team } from '../model/team';
 
@@ -14,16 +14,16 @@ export class ChannelsComponent {
     unconfiguredChannel: Channel;
     isLoading = true;
 
-    constructor(private matchmakerService: MatchmakerService) {
+    constructor(private channelService: ChannelService) {
         this.loadChannels();
     }
 
     loadChannels() {
-        this.matchmakerService.getChannels()
+        this.channelService.getChannels()
             .subscribe(channels => {
                 this.channels = channels;
                 this.channels.forEach(c => c.id = c.idString);
-                this.matchmakerService.getUnconfiguredChannels()
+                this.channelService.getUnconfiguredChannels()
                     .subscribe(unconfiguredChannels => {
                         this.unconfiguredChannels = unconfiguredChannels;
                         this.unconfiguredChannels.forEach(u => u.id = u.idString);
@@ -45,7 +45,7 @@ export class ChannelsComponent {
         this.unconfiguredChannel.team1.players = [];
         this.unconfiguredChannel.team2 = new Team();
         this.unconfiguredChannel.team2.players = [];
-        this.matchmakerService.updateChannel(this.unconfiguredChannel)
+        this.channelService.updateChannel(this.unconfiguredChannel)
             .subscribe(complete => this.loadChannels());
     }
 

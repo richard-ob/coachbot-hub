@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { MatchmakerService } from '../shared/services/matchmaker.service';
+import { ChannelService, } from '../shared/services/channel.service';
 import { Channel } from '../model/channel';
 import { Position } from '../model/position';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Region } from '../model/region';
 import { RegionService } from '../shared/services/region.service';
 
@@ -22,13 +21,13 @@ export class ChannelComponent {
     isSaving = false;
 
     constructor(private route: ActivatedRoute,
-        private matchmakerService: MatchmakerService,
+        private channelService: ChannelService,
         private regionService: RegionService) {
         this.regionService.getRegions().subscribe(regions => this.regions = regions);
         this.route.params
             .pipe(map(params => params['id']))
             .subscribe((id) => {
-                this.matchmakerService
+                this.channelService
                     .getChannel(id)
                     .subscribe(channel => {
                         this.channel = channel;
@@ -39,7 +38,7 @@ export class ChannelComponent {
 
     saveChannel() {
         this.isSaving = true;
-        this.matchmakerService.updateChannel(this.channel).subscribe(complete => this.isSaving = false);
+        this.channelService.updateChannel(this.channel).subscribe(complete => this.isSaving = false);
     }
 
     addPosition() {

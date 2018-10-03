@@ -10,7 +10,7 @@ describe('RegionsComponent', () => {
 
     let component: RegionsComponent;
     let fixture: ComponentFixture<RegionsComponent>;
-    let getRegionsSpy;
+    let getRegionsSpy: jasmine.Spy;
     beforeEach(() => {
 
         const testRegions: Region[] = [

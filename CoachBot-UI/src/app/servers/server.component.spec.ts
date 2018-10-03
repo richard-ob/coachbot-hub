@@ -10,8 +10,8 @@ describe('ServerComponent', () => {
 
     let component: ServersComponent;
     let fixture: ComponentFixture<ServersComponent>;
-    let getServersSpy: { getServers: jasmine.Spy };
-    let getRegionsSpy: { getRegions: jasmine.Spy };
+    let getServersSpy: jasmine.Spy;
+    let getRegionsSpy: jasmine.Spy;
     beforeEach(() => {
 
         const testServers = [
@@ -55,5 +55,13 @@ describe('ServerComponent', () => {
     it('should display select list of regions from mocked data passed in', async(() => {
         const tbody = fixture.nativeElement.querySelector('#regionId');
         expect(tbody.childElementCount).toEqual(3);
+    }));
+
+    it('should call getServers in serverService at least once', async(() => {
+        expect(getServersSpy).toHaveBeenCalled();
+    }));
+
+    it('should call getRegions in regionService at least once', async(() => {
+        expect(getRegionsSpy).toHaveBeenCalled();
     }));
 });

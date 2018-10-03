@@ -1,7 +1,7 @@
-import { Team } from "./team";
-import { Formation } from "./formation";
-import { Position } from "./position";
-import { Region } from "./region";
+import { Team } from './team';
+import { Formation } from './formation';
+import { Position } from './position';
+import { Region } from './region';
 
 export class Channel {
     id: any;

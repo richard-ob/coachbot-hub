@@ -1,5 +1,4 @@
-﻿using Discord.Addons.EmojiTools;
-using Discord.Commands;
+﻿using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -67,12 +66,10 @@ namespace CoachBot
             if (result is PreconditionResult precondition && !precondition.IsSuccess)
             {
                 await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(precondition.ErrorReason).WithCurrentTimestamp());
-                await message.AddReactionAsync(EmojiExtensions.FromText(":no_entry:"));
             }
             else if (result is ParseResult parse && !parse.IsSuccess)
             {
-                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: {parse.ErrorReason}").WithCurrentTimestamp().Build());
-                await message.AddReactionAsync(EmojiExtensions.FromText(":x:"));                
+                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: {parse.ErrorReason}").WithCurrentTimestamp().Build());             
             }
             else if (result is TypeReaderResult reader && !reader.IsSuccess)
             {
@@ -95,7 +92,6 @@ namespace CoachBot
             else if (!result.IsSuccess)
             {
                 await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: {result.ErrorReason}").WithCurrentTimestamp().Build());
-                await message.AddReactionAsync(EmojiExtensions.FromText(":rage:"));
             }
 
             _logger.Debug("Invoked {Command} in {Context} with {Result}", message, context.Channel, result);

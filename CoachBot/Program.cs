@@ -38,18 +38,6 @@ namespace CoachBot
             _matchmakerService = host.Services.GetService<MatchmakerService>();
             _client = host.Services.GetService<DiscordSocketClient>();
 
-            /*try
-            {
-                var context = host.Services.GetRequiredService<BotContext>();
-                context.Database.Migrate();
-                SeedData.Initialize(host.Services);
-            }
-            catch (Exception ex)
-            {
-                var logger = host.Services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occurred seeding the DB.");
-            }*/
-
             Console.WriteLine("Connecting..");
             await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
             await _client.StartAsync();

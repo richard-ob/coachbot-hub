@@ -61,9 +61,7 @@ namespace CoachBot
                 .AddSingleton<StatisticsService>()
                 .AddSingleton<LeaderboardService>()
                 .AddSingleton<BotService>()
-                .AddSingleton<AnnouncementService>()
-                .AddDbContext<BotContext>(options =>
-                  options.UseSqlite("Data Source=CoachBot.db"));
+                .AddSingleton<AnnouncementService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 

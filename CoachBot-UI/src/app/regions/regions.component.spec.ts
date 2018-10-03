@@ -10,7 +10,7 @@ describe('RegionsComponent', () => {
 
     let component: RegionsComponent;
     let fixture: ComponentFixture<RegionsComponent>;
-    let getRegionsSpy: { getRegions: jasmine.Spy };
+    let getRegionsSpy;
     beforeEach(() => {
 
         const testRegions: Region[] = [
@@ -55,5 +55,9 @@ describe('RegionsComponent', () => {
     it('should enable remove region button when region has serverCount equal to 0', async(() => {
         const buttons = fixture.nativeElement.querySelectorAll('td button');
         expect(buttons[1].disabled).toEqual(false);
+    }));
+
+    it('should call getRegions in regionService at least once', async(() => {
+        expect(getRegionsSpy).toHaveBeenCalled();
     }));
 });

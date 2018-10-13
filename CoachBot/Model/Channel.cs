@@ -46,13 +46,13 @@ namespace CoachBot.Model
         public DateTime? LastHereMention { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<Player> SignedPlayers
+        public List<Player> SignedPlayers
         {
             get
             {
                 if (Team1.Players.Any() && Team2.Players.Any())
                 {
-                    return Team1.Players.Concat(Team2.Players);
+                    return Team1.Players.Concat(Team2.Players).ToList();
                 }
                 else if (Team1.Players.Any())
                 {

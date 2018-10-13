@@ -303,6 +303,24 @@ namespace CoachBot.Services.Matchmaker
                 return;
             }
 
+            foreach (var otherChannel in _configService.Config.Channels.Where(c => c.Id != channel.Id))
+            {
+                var playersToRemove = otherChannel.SignedPlayers.Where(p => channel.SignedPlayers.Any(x => x.DiscordUserId == p.DiscordUserId || x.Name == p.Name)).ToList();
+                foreach(var player in playersToRemove)
+                {
+                    var otherSocketChannel = (SocketTextChannel)_client.GetChannel(otherChannel.Id) as SocketTextChannel;
+                    if (socketChannel.Guild.Id == otherSocketChannel.Guild.Id)
+                    {
+                        otherSocketChannel?.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(RemovePlayer(otherChannel.Id, player.Name)).Build());
+                        otherSocketChannel?.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":stadium: {player.DiscordUserMention ?? player.Name} has gone to play another match with {socketChannel.Mention}").Build());
+                    }
+                    else
+                    {
+                        otherSocketChannel?.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":stadium: {player.DiscordUserMention ?? player.Name} has gone to play another match with {channel.Name} ({socketChannel.Guild.Name})").Build());
+                    }
+                }
+            }
+
             var server = regionServers[(int)serverId - 1];
             var sb = new StringBuilder();
             sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");

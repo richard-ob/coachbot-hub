@@ -6,6 +6,9 @@ using CoachBot.Model;
 using CoachBot.Preconditions;
 using System.Collections.Generic;
 using Discord;
+using CoreRCON;
+using System.Net;
+using CoreRCON.Parsers.Standard;
 
 namespace CoachBot.Modules.Matchmaker
 {
@@ -142,7 +145,7 @@ namespace CoachBot.Modules.Matchmaker
             {
                 Name = _configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team1.Name == "Mix" ? "Mix #2" : "Mix",
                 IsMix = true,
-                Players = new List<Player>()
+                Players = new List<Model.Player>()
             };
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ChangeOpposition(Context.Channel.Id, team)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
@@ -161,7 +164,7 @@ namespace CoachBot.Modules.Matchmaker
             {
                 Name = teamName,
                 IsMix = false,
-                Players = new List<Player>()
+                Players = new List<Model.Player>()
             };
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.ChangeOpposition(Context.Channel.Id, team)).WithCurrentTimestamp().Build());
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
@@ -194,6 +197,10 @@ namespace CoachBot.Modules.Matchmaker
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
+            var rcon = new RCON(IPAddress.Parse("172.107.97.234"), 27095, "thingerox");
+            
+            Status status = await rcon.SendCommandAsync<Status>("status");
+            await ReplyAsync(status.Humans.ToString());
         }
 
         [Command("!unready")]
@@ -274,7 +281,8 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task CallSubAsync(int serverId, string positionName)
         {
-            var server = _configService.Config.Servers[serverId - 1];
+            var channel = _configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id);
+            var server = _configService.Config.Servers.Where(s => s.RegionId == channel.RegionId).ToArray()[serverId - 1];
             await ReplyAsync($":sos: @here {positionName} needed urgently on {server.Name} steam://connect/{server.Address}");
         }
 

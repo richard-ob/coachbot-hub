@@ -7,6 +7,7 @@ using System;
 using CoachBot.Extensions;
 using Discord.WebSocket;
 using System.Threading.Tasks;
+using RconSharp;
 
 namespace CoachBot.Services.Matchmaker
 {
@@ -152,7 +153,7 @@ namespace CoachBot.Services.Matchmaker
                 {
                     var sub = channel.Team1.Substitutes.FirstOrDefault();
                     channel.Team1.Substitutes.Remove(sub);
-                    sub.Position.PositionName = player.Position.PositionName;
+                    sub.Position = player.Position;
                     channel.Team1.Players.Add(sub);
                     return $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {sub.DiscordUserMention} comes off the bench to replace **{user.Username}**";
                 }
@@ -177,7 +178,7 @@ namespace CoachBot.Services.Matchmaker
                 {
                     var sub = channel.Team1.Substitutes.FirstOrDefault();
                     channel.Team1.Substitutes.Remove(sub);
-                    sub.Position.PositionName = player.Position.PositionName;
+                    sub.Position = player.Position;
                     channel.Team1.Players.Add(sub);
                     return $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {sub.DiscordUserMention} comes off the bench to replace **{playerName}**";
                 }
@@ -276,7 +277,7 @@ namespace CoachBot.Services.Matchmaker
             _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId).LastHereMention = null;
         }
 
-        public void ReadyMatch(ulong channelId, int? serverId = null, bool ignorePlayerCounts = false)
+        public async Task ReadyMatchAsync(ulong channelId, int? serverId = null, bool ignorePlayerCounts = false)
         {
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var socketChannel = (SocketTextChannel)_client.GetChannel(channel.Id);
@@ -284,22 +285,22 @@ namespace CoachBot.Services.Matchmaker
 
             if (!ignorePlayerCounts && channel.Team2.IsMix == true && (channel.Positions.Count() * 2) - 1 > (channel.SignedPlayers.Count()))
             {
-                socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: All positions must be filled").Build());
+                await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: All positions must be filled").Build());
                 return;
             }
             if (!ignorePlayerCounts && channel.Team2.IsMix == false && (channel.Positions.Count()) - 1 > (channel.SignedPlayers.Count()))
             {
-                socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: All positions must be filled").Build());
+                await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: All positions must be filled").Build());
                 return;
             }
             if (channel.Team2.Name == null)
             {
-                socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: You must set a team to face").Build());
+                await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: You must set a team to face").Build());
                 return;
             }
             if (serverId == null || serverId == 0 || serverId > regionServers.Count())
             {
-                socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: Please supply a server number (e.g. !ready 3). Type !servers for the server list.").Build());
+                await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: Please supply a server number (e.g. !ready 3). Type !servers for the server list.").Build());
                 return;
             }
 
@@ -331,7 +332,7 @@ namespace CoachBot.Services.Matchmaker
             _statisticsService.AddMatch(channel);
             sb.AppendLine();
             ResetMatch(channelId);
-            socketChannel.SendMessageAsync(sb.ToString());
+            await socketChannel.SendMessageAsync(sb.ToString());
         }
 
         public string UnreadyMatch(ulong channelId)

@@ -191,7 +191,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task ReadyAsync()
         {
-            _service.ReadyMatch(Context.Message.Channel.Id);
+            _service.ReadyMatchAsync(Context.Message.Channel.Id);
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
             if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
@@ -215,10 +215,10 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ReadyAsync(int serverId)
         {
             var challengerId = _configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.ChannelId; // Search/Challenge functionality only
-            _service.ReadyMatch(Context.Message.Channel.Id, serverId);
+            _service.ReadyMatchAsync(Context.Message.Channel.Id, serverId);
             if (challengerId != null)
             {
-                _service.ReadyMatch((ulong)challengerId, serverId, true);
+                _service.ReadyMatchAsync((ulong)challengerId, serverId, true);
             }
         }
 

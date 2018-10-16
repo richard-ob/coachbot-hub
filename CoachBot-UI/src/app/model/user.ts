@@ -4,6 +4,6 @@ export class User {
     public name: string;
     public discordUserIdString: string;
     public id: number;
-    public IsAdministrator: boolean;
+    public isAdministrator: boolean;
     public channels: Channel[];
 }

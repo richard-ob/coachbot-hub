@@ -66,7 +66,7 @@ namespace CoachBot.Services.Matchmaker
 
         public string AddPlayer(ulong channelId, IUser user, string position = null, Teams team = Teams.Team1)
         {
-            if(position != null) position = position.Replace("#", string.Empty);
+            if (position != null) position = position.Replace("#", string.Empty);
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var player = new Player()
             {
@@ -307,7 +307,7 @@ namespace CoachBot.Services.Matchmaker
             foreach (var otherChannel in _configService.Config.Channels.Where(c => c.Id != channel.Id))
             {
                 var playersToRemove = otherChannel.SignedPlayers.Where(p => channel.SignedPlayers.Any(x => x.DiscordUserId == p.DiscordUserId || x.Name == p.Name)).ToList();
-                foreach(var player in playersToRemove)
+                foreach (var player in playersToRemove)
                 {
                     var otherSocketChannel = (SocketTextChannel)_client.GetChannel(otherChannel.Id) as SocketTextChannel;
                     if (socketChannel.Guild.Id == otherSocketChannel.Guild.Id)
@@ -323,6 +323,39 @@ namespace CoachBot.Services.Matchmaker
             }
 
             var server = regionServers[(int)serverId - 1];
+
+            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            {
+                INetworkSocket socket = new Extensions.RconSocket();
+                RconMessenger messenger = new RconMessenger(socket);
+                bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                if (authenticated)
+                {
+                    var status = await messenger.ExecuteCommandAsync("status");
+                    await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(status).Build());
+                    if (int.Parse(status.Split("players :")[1].Split('(')[0]) < channel.Positions.Count())
+                    {
+                        await messenger.ExecuteCommandAsync($"exec {channel.Positions.Count()}v{channel.Positions.Count()}.cfg");
+                        if (channel.Team1.Players.Any(p => p.Position.PositionName.ToUpper() == "GK"))
+                        {
+                            await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
+                        }
+                        else
+                        {
+                            await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
+                        }
+                        await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training.");
+                        await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":stadium: The stadium has successfully been automatically set up").Build());
+                    }
+                    else
+                    {
+                        await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The selected server seems to be in use, as there are more than {channel.Positions.Count()} on the server.").Build());
+                        return;
+                    }
+                }
+            }
+
             var sb = new StringBuilder();
             sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");
             foreach (var player in channel.SignedPlayers)
@@ -332,7 +365,7 @@ namespace CoachBot.Services.Matchmaker
             _statisticsService.AddMatch(channel);
             sb.AppendLine();
             ResetMatch(channelId);
-            await socketChannel.SendMessageAsync(sb.ToString());
+            await socketChannel.SendMessageAsync(sb.ToString());           
         }
 
         public string UnreadyMatch(ulong channelId)
@@ -340,12 +373,35 @@ namespace CoachBot.Services.Matchmaker
             return ":no entry: This functionality has not yet been implemented";
         }
 
+        public async Task SingleKeeperAsync(ulong channelId, int serverId, bool enable)
+        {
+            var channel = _configService.Config.Channels.First(c => c.Id == channelId);
+            var socketChannel = (SocketTextChannel)_client.GetChannel(channel.Id);
+            var regionServers = _configService.Config.Servers.Where(s => s.RegionId == channel.RegionId).ToList();
+            var server = regionServers[serverId - 1];
+            if (string.IsNullOrEmpty(server.RconPassword) || !server.Address.Contains(":"))
+            {
+                await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: This server is not set up for auto configuration").Build());
+            }
+            await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($"Single keeper {(enable ? "enabled" : "disabled")}").Build());
+            INetworkSocket socket = new Extensions.RconSocket();
+            RconMessenger messenger = new RconMessenger(socket);
+            bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+            bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+            if (authenticated)
+            {
+                await messenger.ExecuteCommandAsync($"sv_singlekeeper {(enable ? 1 : 0)}");
+                await messenger.ExecuteCommandAsync($"Single keeper {(enable ? "enabled" : "disabled")} by Coach");
+            }
+            await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($"Single keeper {(enable ? "enabled" : "disabled")}").Build());
+        }
+
         public string Search(ulong channelId, string challengerMention)
         {
             var challenger = _configService.Config.Channels.First(c => c.Id == channelId);
             if (challenger.LastSearch != null && challenger.LastSearch > DateTime.Now.AddMinutes(-10)) return $":no_entry: Your last search started less than 10 minutes ago. Please wait until {String.Format("{0:T}", challenger.LastSearch.Value.AddMinutes(10))} before searching again.";
             if (challenger.IsMixChannel) return ":no_entry: Mix channels cannot search for opposition";
-            if (challenger.Positions.Count() -1 > challenger.SignedPlayers.Count()) return ":no_entry: All outfield positions must be filled";
+            if (challenger.Positions.Count() - 1 > challenger.SignedPlayers.Count()) return ":no_entry: All outfield positions must be filled";
             if (challenger.IsSearching) return ":no_entry: You're already searching for a match. Type **!stopsearch** to cancel the previous search.";
 
             var embed = new EmbedBuilder()
@@ -635,7 +691,7 @@ namespace CoachBot.Services.Matchmaker
         {
             var teamList = new StringBuilder();
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
-            var team = teamType == Teams.Team1 ? channel.Team1 : channel.Team2; 
+            var team = teamType == Teams.Team1 ? channel.Team1 : channel.Team2;
             var sb = new StringBuilder();
             var teamColor = new Color(teamType == Teams.Team1 ? (uint)0x2463b0 : (uint)0xd60e0e);
             var emptyPos = ":grey_question:";
@@ -646,7 +702,7 @@ namespace CoachBot.Services.Matchmaker
             }
 
             var embedBuilder = new EmbedBuilder().WithTitle($"{team.BadgeEmote ?? team.Name} Team List");
-            foreach(var position in channel.Positions)
+            foreach (var position in channel.Positions)
             {
                 var player = team.Players.FirstOrDefault(p => p.Position.PositionName == position.PositionName);
                 var playerName = player != null ? $"**{player.Name}**" : emptyPos;

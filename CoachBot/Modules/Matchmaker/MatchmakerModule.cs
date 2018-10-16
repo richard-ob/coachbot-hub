@@ -6,9 +6,6 @@ using CoachBot.Model;
 using CoachBot.Preconditions;
 using System.Collections.Generic;
 using Discord;
-using CoreRCON;
-using System.Net;
-using CoreRCON.Parsers.Standard;
 
 namespace CoachBot.Modules.Matchmaker
 {
@@ -191,16 +188,12 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task ReadyAsync()
         {
-            _service.ReadyMatchAsync(Context.Message.Channel.Id);
+            await _service.ReadyMatchAsync(Context.Message.Channel.Id);
             await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id));
             if (_configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.IsMix)
             {
                 await ReplyAsync("", embed: _service.GenerateTeamList(Context.Channel.Id, Teams.Team2));
             }
-            var rcon = new RCON(IPAddress.Parse("172.107.97.234"), 27095, "thingerox");
-            
-            Status status = await rcon.SendCommandAsync<Status>("status");
-            await ReplyAsync(status.Humans.ToString());
         }
 
         [Command("!unready")]
@@ -215,12 +208,27 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ReadyAsync(int serverId)
         {
             var challengerId = _configService.Config.Channels.First(c => c.Id == Context.Message.Channel.Id).Team2.ChannelId; // Search/Challenge functionality only
-            _service.ReadyMatchAsync(Context.Message.Channel.Id, serverId);
+            await _service.ReadyMatchAsync(Context.Message.Channel.Id, serverId);
             if (challengerId != null)
             {
-                _service.ReadyMatchAsync((ulong)challengerId, serverId, true);
+                await _service.ReadyMatchAsync((ulong)challengerId, serverId, true);
             }
         }
+
+        [Command("!enablesinglekeeper")]
+        [RequireChannelConfigured]
+        public async Task EnableSingleKeeperAsync(int serverId)
+        {
+            await _service.SingleKeeperAsync(Context.Channel.Id, serverId, true);
+        }
+
+        [Command("!disablesinglekeeper")]
+        [RequireChannelConfigured]
+        public async Task DisableSingleKeeperAsync(int serverId)
+        {
+            await _service.SingleKeeperAsync(Context.Channel.Id, serverId, false);
+        }
+
 
         [Command("!list")]
         [Alias("!lineup")]

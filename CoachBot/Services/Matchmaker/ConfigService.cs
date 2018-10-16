@@ -72,7 +72,8 @@ namespace CoachBot.Services.Matchmaker
             var embedBuilder = new EmbedBuilder().WithTitle(":desktop: Servers");
             foreach (var server in Config.Servers.Where(s => s.RegionId == channelRegionId))
             {
-                embedBuilder.AddField($"#{serverId} {server.Name}", $"steam://connect/{server.Address}");
+                var autoSetup = !string.IsNullOrEmpty(server.RconPassword) ? "**[Auto Setup]**" : "";
+                embedBuilder.AddField($"#{serverId} {server.Name} {autoSetup}", $"steam://connect/{server.Address}");
                 serverId++;
             }
             if (!Config.Servers.Any(s => s.RegionId == channelRegionId))
@@ -126,6 +127,8 @@ namespace CoachBot.Services.Matchmaker
             embedBuilder.AddField("!vsmix", "Set the opposition team to a managed mix for the current match");
             embedBuilder.AddField("!ready", "Send all players to server");
             embedBuilder.AddField("!ready <server id>", "Send all players to the server provided");
+            embedBuilder.AddField("!enablesinglekeeper <server id>", "Enable the singlekeeper feature on the selected server");
+            embedBuilder.AddField("!disablesinglekeper <server id>", "Disable singlekeeper feature on the selected server");
             embedBuilder.AddField("!reset", "Manually reset the match");
             embedBuilder.AddField("!search", "Search for an opponent to face");
             embedBuilder.AddField("!stopsearch", "Cancel an opponent search");

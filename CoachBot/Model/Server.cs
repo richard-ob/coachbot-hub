@@ -10,5 +10,7 @@
 
         public Region Region { get; set; }
 
+        public string RconPassword { get; set; }
+
     }
 }

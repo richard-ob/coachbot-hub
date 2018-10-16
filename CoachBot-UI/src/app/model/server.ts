@@ -3,4 +3,5 @@ export class Server {
     address: string;
     regionId: number;
     serverCount: number;
+    rconPassword: string;
 }

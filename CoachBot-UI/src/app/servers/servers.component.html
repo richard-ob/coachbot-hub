@@ -13,6 +13,7 @@
                     <th>Server Name</th>
                     <th>Address</th>
                     <th>Region</th>
+                    <th>RCON Password</th>
                     <th>Actions</th>
                 </thead>
                 <tbody>
@@ -20,6 +21,7 @@
                         <td>{{server.name}}</td>
                         <td>{{server.address}}</td>
                         <td>{{server.region?.regionName}}</td>
+                        <td>{{server.rconPassword}}</td>
                         <td>
                             <button class="btn btn-outline-danger btn-sm" (click)="removeServer(i)">
                                 <i class="fa fa-times"></i> Remove</button>
@@ -36,15 +38,20 @@
         <h4 class="card-title">
             <i class="fa fa-plus"></i> Add Server</h4>
         <form class="row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label for="serverName">Server Name</label>
                 <input type="text" class="form-control" id="serverName" name="serverName" [(ngModel)]="newServer.name">
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label for="ipAddress">IP Address</label>
                 <input type="text" class="form-control" id="ipAddress" name="ipAddress" [(ngModel)]="newServer.address">
             </div>
-            <div class="form-group col-md-4">
+
+            <div class="form-group col-md-3">
+                <label for="rconPassword">RCON Passowrd</label>
+                <input type="text" class="form-control" id="rconPassword" name="rconPassword" [(ngModel)]="newServer.rconPassword">
+            </div>
+            <div class="form-group col-md-3">
                 <label for="regionId">Region</label>
                 <select class="form-control" [(ngModel)]="newServer.regionId" name="regionId" id="regionId">
                     <option *ngFor="let region of regions" [ngValue]="region.regionId">

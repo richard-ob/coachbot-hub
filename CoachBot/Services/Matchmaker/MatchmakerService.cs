@@ -307,11 +307,14 @@ namespace CoachBot.Services.Matchmaker
             foreach (var otherChannel in _configService.Config.Channels.Where(c => c.Id != channel.Id))
             {
                 var playersToRemove = otherChannel.SignedPlayers.Where(p => channel.SignedPlayers.Any(x => x.DiscordUserId != null && x.DiscordUserId > 0 && x.DiscordUserId == p.DiscordUserId)).ToList();
-                foreach (var player in playersToRemove)
+                if (playersToRemove != null)
                 {
-                    if (_client.GetChannel(otherChannel.Id) is SocketTextChannel otherSocketChannel)
+                    foreach (var player in playersToRemove)
                     {
-                        await otherSocketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":stadium: {player.DiscordUserMention ?? player.Name} has gone to play another match with {channel.Name} ({socketChannel.Guild.Name})").Build());
+                        if (_client.GetChannel(otherChannel.Id) is SocketTextChannel otherSocketChannel)
+                        {
+                            await otherSocketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":stadium: {player.DiscordUserMention ?? player.Name} has gone to play another match with {channel.Name} ({socketChannel.Guild.Name})").Build());
+                        }
                     }
                 }
             }

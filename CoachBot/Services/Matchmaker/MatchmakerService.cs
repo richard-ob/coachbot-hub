@@ -330,7 +330,6 @@ namespace CoachBot.Services.Matchmaker
                 if (authenticated)
                 {
                     var status = await messenger.ExecuteCommandAsync("status");
-                    await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(status).Build());
                     if (int.Parse(status.Split("players :")[1].Split('(')[0]) < channel.Positions.Count())
                     {
                         await messenger.ExecuteCommandAsync($"exec {channel.Positions.Count()}v{channel.Positions.Count()}.cfg");

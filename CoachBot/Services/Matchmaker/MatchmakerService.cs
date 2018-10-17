@@ -309,7 +309,7 @@ namespace CoachBot.Services.Matchmaker
                 var playersToRemove = otherChannel.SignedPlayers.Where(p => channel.SignedPlayers.Any(x => x.DiscordUserId == p.DiscordUserId || x.Name == p.Name)).ToList();
                 foreach (var player in playersToRemove)
                 {
-                    if ((SocketTextChannel)_client.GetChannel(otherChannel.Id) is SocketTextChannel otherSocketChannel)
+                    if (_client.GetChannel(otherChannel.Id) is SocketTextChannel otherSocketChannel)
                     {
                         if (socketChannel.Guild.Id == otherSocketChannel.Guild.Id)
                         {

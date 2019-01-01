@@ -458,6 +458,7 @@ namespace CoachBot.Services.Matchmaker
             if (challenger.Positions.Count() != opposition.Positions.Count()) return $":no_entry: Sorry, {opposition.Team1.Name} are looking for an {opposition.Positions.Count()}v{opposition.Positions.Count()}";
             if (Math.Round(challenger.Positions.Count() * 0.7) > challenger.SignedPlayers.Count()) return $":no_entry: At least {Math.Round(challenger.Positions.Count() * 0.7)} positions must be filled";
             if (challenger.RegionId != opposition.RegionId) return $":no_entry: You can't challenge opponents from other regions";
+            opposition.IsSearching = false;
             challenger.IsSearching = false;
             var acceptMsg = $":handshake: {challenger.Team1.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
             (_client.GetChannel(opposition.Id) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithDescription(acceptMsg).WithCurrentTimestamp().Build());

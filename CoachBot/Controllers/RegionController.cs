@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoachBot.Controllers
 {
@@ -14,21 +15,31 @@ namespace CoachBot.Controllers
     public class RegionController : Controller
     {
         private readonly ConfigService _configService;
+        private readonly BotService _botService;
 
-        public RegionController(ConfigService configService)
+        public RegionController(ConfigService configService, BotService botService)
         {
             _configService = configService;
+            _botService = botService;
         }
 
         [HttpGet]
         public IEnumerable<Region> Get()
         {
+            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            {
+                throw new Exception();
+            }
             return _configService.GetRegions();
         }
 
         [HttpPost]
         public void Add(Region region)
         {
+            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            {
+                throw new Exception();
+            }
             _configService.AddRegion(region);
         }
 
@@ -41,6 +52,10 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            {
+                throw new Exception();
+            }
             _configService.RemoveRegion(id);
         }
     }

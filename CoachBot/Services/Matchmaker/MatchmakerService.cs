@@ -323,32 +323,40 @@ namespace CoachBot.Services.Matchmaker
 
             if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
             {
-                INetworkSocket socket = new Extensions.RconSocket();
-                RconMessenger messenger = new RconMessenger(socket);
-                bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
-                bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
-                if (authenticated)
+                try
                 {
-                    var status = await messenger.ExecuteCommandAsync("status");
-                    if (int.Parse(status.Split("players :")[1].Split('(')[0]) < channel.Positions.Count())
+                    INetworkSocket socket = new Extensions.RconSocket();
+                    RconMessenger messenger = new RconMessenger(socket);
+                    bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                    bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                    if (authenticated)
                     {
-                        await messenger.ExecuteCommandAsync($"exec {channel.Positions.Count()}v{channel.Positions.Count()}.cfg");
-                        if (channel.Team1.Players.Any(p => p.Position.PositionName.ToUpper() == "GK"))
+                        var status = await messenger.ExecuteCommandAsync("status");
+                        if (int.Parse(status.Split("players :")[1].Split('(')[0]) < channel.Positions.Count())
                         {
-                            await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
+                            await messenger.ExecuteCommandAsync($"exec {channel.Positions.Count()}v{channel.Positions.Count()}.cfg");
+                            if (channel.Team1.Players.Any(p => p.Position.PositionName.ToUpper() == "GK"))
+                            {
+                                await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
+                            }
+                            else
+                            {
+                                await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
+                            }
+                            await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training.");
+                            await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":stadium: The stadium has successfully been automatically set up").Build());
                         }
                         else
                         {
-                            await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
+                            await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The selected server seems to be in use, as there are more than {channel.Positions.Count()} on the server.").Build());
+                            return;
                         }
-                        await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training.");
-                        await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":stadium: The stadium has successfully been automatically set up").Build());
                     }
-                    else
-                    {
-                        await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The selected server seems to be in use, as there are more than {channel.Positions.Count()} on the server.").Build());
-                        return;
-                    }
+                }
+                catch
+                {
+                    await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The server seems to be offline. Please choose another server and use the !ready command again.").Build());
+                    return;
                 }
             }
 

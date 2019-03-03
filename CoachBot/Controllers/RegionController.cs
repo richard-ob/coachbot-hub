@@ -1,4 +1,5 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Domain.Services;
+using CoachBot.Model;
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,12 @@ namespace CoachBot.Controllers
     [Authorize]
     public class RegionController : Controller
     {
-        private readonly ConfigService _configService;
+        private readonly RegionService _regionService;
         private readonly BotService _botService;
 
-        public RegionController(ConfigService configService, BotService botService)
+        public RegionController(RegionService regionService, BotService botService)
         {
-            _configService = configService;
+            _regionService = regionService;
             _botService = botService;
         }
 
@@ -30,7 +31,7 @@ namespace CoachBot.Controllers
             {
                 throw new Exception();
             }
-            return _configService.GetRegions();
+            return _regionService.GetRegions();
         }
 
         [HttpPost]
@@ -40,7 +41,7 @@ namespace CoachBot.Controllers
             {
                 throw new Exception();
             }
-            _configService.AddRegion(region);
+            _regionService.AddRegion(region);
         }
 
         [HttpPost("{id}")]
@@ -56,7 +57,7 @@ namespace CoachBot.Controllers
             {
                 throw new Exception();
             }
-            _configService.RemoveRegion(id);
+            _regionService.RemoveRegion(id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Domain.Services;
+using CoachBot.Model;
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,5 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Domain.Services;
+using CoachBot.Model;
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,12 @@ namespace CoachBot.Controllers
     [Authorize]
     public class ServerController : Controller
     {
-        private readonly ConfigService _configService;
+        private readonly ServerService _serverService;
         private readonly BotService _botService;
 
-        public ServerController(ConfigService configService, BotService botService)
+        public ServerController(ServerService serverService, BotService botService)
         {
-            _configService = configService;
+            _serverService = serverService;
             _botService = botService;
         }
 
@@ -30,7 +31,7 @@ namespace CoachBot.Controllers
             {
                 throw new Exception();
             }
-            return _configService.Config.Servers[id];
+            return _serverService.GetServer(id);
         }
 
         [HttpGet]
@@ -40,7 +41,7 @@ namespace CoachBot.Controllers
             {
                 throw new Exception();
             }
-            return _configService.GetServers();
+            return _serverService.GetServers();
         }
 
         [HttpDelete("{id}")]
@@ -50,7 +51,17 @@ namespace CoachBot.Controllers
             {
                 throw new Exception();
             }
-            _configService.RemoveServer(id);
+            _serverService.RemoveServer(id);
+        }
+
+        [HttpPut]
+        public void Update(Server server)
+        {
+            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            {
+                throw new Exception();
+            }
+            _serverService.UpdateServer(server);
         }
 
         [HttpPost]
@@ -60,7 +71,7 @@ namespace CoachBot.Controllers
             {
                 throw new Exception();
             }
-            _configService.AddServer(server);
+            _serverService.AddServer(server);
         }
     }
 }

@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+  <img (click)="stayOnYourFeet()" src="/assets/nav_coach.png">
+  <a class="navbar-brand" style="border-right: none; margin-left: -25px;" href="#">
+    Coach<span class="text-muted">Bot</span>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <span *ngIf="user && user.name != null" class="d-block badge badge-secondary">{{user.name}}</span>
+    <ul class="navbar-nav mr-auto d-block d-md-none">
+      <li class="nav-item" routerLinkActive="active" *ngIf="user">
+        <a class="nav-link" routerLink="/profile">
+          <i class="fa fa-user"></i> Profile</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="user">
+        <a class="nav-link" routerLink="/channels">
+          <i class="fa fa-list"></i> Channels</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="user">
+        <a class="nav-link" routerLink="/match-history">
+          <i class="fa fa-history"></i> Match History</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="user">
+        <a class="nav-link" routerLink="/player-leaderboards">
+          <i class="fa fa-trophy"></i> Player Leaderboards</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="user && user.isAdministrator">
+        <a class="nav-link" routerLink="/regions">
+          <i class="fa fa-globe"></i> Regions</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="user && user.isAdministrator">
+        <a class="nav-link" routerLink="/servers">
+          <i class="fa fa-server"></i> Servers</a>
+      </li>
+      <li class="nav-iteme" routerLinkActive="active" *ngIf="user && user.isAdministrator">
+        <a class="nav-link" routerLink="/announcements">
+          <i class="fa fa-comment"></i> Announcements</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="user && user.isAdministrator">
+        <a class="nav-link" routerLink="/bot">
+          <i class="fa fa-wrench"></i> Bot Settings</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="user">
+        <a class="nav-link" href="{{apiUrl}}/logout">
+          <i class="fa fa-sign-out"></i> Log Out</a>
+      </li>
+    </ul>
+    <a *ngIf="user" class="btn btn-outline btn-sm ml-auto d-none d-md-block" href="{{apiUrl}}/logout">
+      <i class="fa fa-sign-out"></i> Log Out</a>
+  </div>
+</nav>
+<div id="wrapper" class="toggled" style="padding-top: 54px;">
+  <div id="sidebar-wrapper" class="hidden-xs" *ngIf="user">
+    <ul class="sidebar-nav" style="padding-top: 20px;">
+      <li routerLinkActive="active">
+        <a routerLink="/profile">
+          <i class="fa fa-user"></i> Profile</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="/channels">
+          <i class="fa fa-list"></i> Channels</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="/match-history">
+          <i class="fa fa-history"></i> Match History</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="/player-leaderboards">
+          <i class="fa fa-trophy"></i> Player Leaderboards</a>
+      </li>
+      <li routerLinkActive="active" *ngIf="user.isAdministrator">
+        <a routerLink="/regions">
+          <i class="fa fa-globe"></i> Regions</a>
+      </li>
+      <li routerLinkActive="active" *ngIf="user.isAdministrator">
+        <a routerLink="/servers">
+          <i class="fa fa-server"></i> Servers</a>
+      </li>
+      <li routerLinkActive="active" *ngIf="user.isAdministrator">
+        <a routerLink="/announcements">
+          <i class="fa fa-comment"></i> Announcements</a>
+      </li>
+      <li routerLinkActive="active" *ngIf="user.isAdministrator">
+        <a routerLink="/bot">
+          <i class="fa fa-wrench"></i> Bot Settings</a>
+      </li>
+    </ul>
+  </div>
+
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
+      <div *ngIf="onFeet" class="coach-head">
+        <img src="/assets/coach_head.png">
+      </div>
+      <main role="main" class="container">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>

@@ -15,6 +15,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using Newtonsoft.Json;
 using System.IO;
+using CoachBot.Database;
+using CoachBot.Domain.Services;
+using CoachBot.Domain.Repositories;
+using CoachBot.Bot;
 
 namespace CoachBot
 {
@@ -31,6 +35,7 @@ namespace CoachBot
                 LogLevel = LogSeverity.Debug
             });
         }
+
         public void ConfigureServices(IServiceCollection services)
         {
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
@@ -57,11 +62,17 @@ namespace CoachBot
                 .AddSingleton(logger)
                 .AddSingleton<LogAdaptor>()
                 .AddSingleton<ConfigService>()
-                .AddSingleton<MatchmakerService>()
-                .AddSingleton<StatisticsService>()
-                .AddSingleton<LeaderboardService>()
-                .AddSingleton<BotService>()
-                .AddSingleton<AnnouncementService>();
+                .AddScoped<MatchmakerService>()
+                .AddScoped<StatisticsService>()
+                .AddScoped<LeaderboardService>()
+                .AddScoped<BotService>()
+                .AddScoped<AnnouncementService>()
+                .AddScoped<RegionRepository>()
+                .AddScoped<RegionService>()
+                .AddScoped<ServerRepository>()
+                .AddScoped<ServerService>();
+            services.AddSingleton<BotInstance>();
+            services.AddDbContext<CoachBotContext>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 
@@ -79,7 +90,9 @@ namespace CoachBot
 
             provider.GetService<LogAdaptor>();
             provider.GetService<ConfigService>();
+            provider.GetService<BotInstance>();
         }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

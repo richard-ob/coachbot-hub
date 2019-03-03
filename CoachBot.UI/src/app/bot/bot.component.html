@@ -1,0 +1,66 @@
+<div class="card border-primary">
+    <div class="card-header" style="height: 55px;">
+        <h4 class="card-title">
+            <i class="fa fa-wrench text-muted"></i> CoachBot</h4>
+    </div>
+    <div class="card-body">
+        <div *ngIf="!botState || !config" class="text-center">
+            <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+        </div>
+        <form *ngIf="botState && config">
+            <h4>Discord Auth</h4>
+            <br/>
+            <div class="form-group row">
+                <label class="col-sm-2">Bot Token</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" [(ngModel)]="config.botToken" name="token">
+                </div>
+                <button class="btn btn-outline-success" (click)="saveConfig()">
+                    <i class="fa fa-check"></i> Save All</button>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2">OAuth2 App ID</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" [(ngModel)]="config.oAuth2Id" name="appid">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2">OAuth2 Secret</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" [(ngModel)]="config.oAuth2Secret" name="secret">
+                </div>
+            </div>
+            <h4>Bot Presence</h4>
+            <br/>
+            <div class="form-group row">
+                <label class="col-sm-2">Connection Status</label>
+                <div class="col-sm-4">
+                    <input type="text" readonly class="form-control" [(ngModel)]="botState.connectionStatus" name="connectionStatus">
+                </div>
+                <button class="btn btn-outline-warning" (click)="reconnectBot()">
+                    <i class="fa fa-power-off"></i> Reconnect</button>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2">Login Status</label>
+                <div class="col-sm-4">
+                    <input type="text" readonly class="form-control" [(ngModel)]="botState.loginStatus" name="loginStatus">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2">Guilds</label>
+                <ul class="list-group" style="margin-left: 12px">
+                    <li *ngFor="let guild of botState.guilds" class="list-group-item d-flex justify-content-between align-items-center">
+                        {{guild.name}}&nbsp;
+                        <span class="badge badge-primary badge-pill" style="cursor: pointer;" (click)="leaveGuild(guild.id)">Leave</span>
+                    </li>
+                </ul>
+            </div>
+            <h4>Bot Log</h4>
+            <br/>
+            <textarea class="form-control" rows="8" [disabled]="!log">{{log}}</textarea>
+            <button class="btn btn-outline-secondary pull-right" [disabled]="refreshingLog" (click)="refreshLog()" style="margin-top: 10px">
+                <i class="fa fa-refresh" [class.fa-spin]="refreshingLog"></i> Refresh Log</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CoachBot": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "UI_Url": "http://coachbot.iosoccer.com",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

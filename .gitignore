@@ -261,6 +261,7 @@ __pycache__/
 *.pyc
 
 # config files
-*.json
+config.json
+history.json
 
 Migrations/

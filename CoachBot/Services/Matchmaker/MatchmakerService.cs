@@ -319,7 +319,19 @@ namespace CoachBot.Services.Matchmaker
                     {
                         if (_client.GetChannel(otherChannel.Id) is SocketTextChannel otherSocketChannel)
                         {
-                            await otherSocketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":stadium: {player.DiscordUserMention ?? player.Name} has gone to play another match with {channel.Name} ({socketChannel.Guild.Name})").Build());
+                            try
+                            {
+                                var otherMatchmakingChannel = _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId);
+                                if (otherMatchmakingChannel != null)
+                                {
+                                    await otherSocketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(RemovePlayer(otherChannel.Id, player.Name)).Build());
+                                }
+                                await otherSocketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":stadium: {player.DiscordUserMention ?? player.Name} has gone to play another match with {channel.Name} ({socketChannel.Guild.Name})").Build());
+                            }
+                            catch
+                            {
+                                await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription("<:coach:578653739766906883> I've picked up a niggle. Can you let the physio know?"));
+                            }                            
                         }
                     }
                 }

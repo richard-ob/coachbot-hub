@@ -232,7 +232,7 @@ namespace CoachBot.Services.Matchmaker
             return $":no_entry: {playerName} is not on the subs bench";
         }
 
-        public string ChangeOpposition(ulong channelId, Team team)
+        public string ChangeOpposition(ulong channelId, Team team, string userMention = null)
         {
             var channel = _configService.Config.Channels.First(c => c.Id == channelId);
             var previousOpposition = _configService.Config.Channels.First(c => c.Id == channelId).Team2;
@@ -252,7 +252,13 @@ namespace CoachBot.Services.Matchmaker
                 return $":negative_squared_cross_mark: Opposition removed";
             }
             if (team.Name == null && previousOpposition.Name == null) return $":no_entry: You must provide a team name to face";
-            return $":busts_in_silhouette: **{team.Name}** are challenging";
+            string confirmationMessage = $":busts_in_silhouette: **{team.Name}** are challenging! ";
+            if (!string.IsNullOrEmpty(userMention))
+            {
+                confirmationMessage += $"Contact {userMention} for more information";
+            }
+
+            return confirmationMessage;
         }
 
         public void ResetMatch(ulong channelId)
@@ -343,7 +349,7 @@ namespace CoachBot.Services.Matchmaker
                             {
                                 await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
                             }
-                            await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training.");
+                            await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
                             await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":stadium: The stadium has successfully been automatically set up").Build());
                         }
                         else

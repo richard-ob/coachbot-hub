@@ -415,7 +415,7 @@ namespace CoachBot.Services.Matchmaker
                 await messenger.ExecuteCommandAsync($"sv_singlekeeper {(enable ? 1 : 0)}");
                 await messenger.ExecuteCommandAsync($"say \"Single keeper {(enable ? "enabled" : "disabled")} by Coach\"");
             }
-            await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($"Single keeper {(enable ? "enabled" : "disabled")}").Build());
+            await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($"Single keeper {(enable ? "enabled" : "disabled")} on {server.Name}").Build());
         }
 
         public string Search(ulong channelId, string challengerMention)

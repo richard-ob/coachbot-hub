@@ -24,7 +24,7 @@ namespace CoachBot.Services.Matchmaker
             _client = client;
         }
 
-        public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, int regionId, string kitEmote = null, string badgeEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false, bool disableSearchNotifications = false)
+        public string ConfigureChannel(ulong channelId, string teamName, List<Position> positions, int regionId, string kitEmote = null, string badgeEmote = null, string color = null, bool isMixChannel = false, Formation formation = 0, bool classicLineup = false, bool disableSearchNotifications = false, bool enableUnsignWhenPlayerStartsOtherGame = false)
         {
             if (positions.Count() <= 1) return ":no_entry: You must add at least two positions";
             if (positions.GroupBy(p => p).Where(g => g.Count() > 1).Any()) return ":no_entry: All positions must be unique";
@@ -56,6 +56,7 @@ namespace CoachBot.Services.Matchmaker
                 ClassicLineup = classicLineup,
                 IsMixChannel = isMixChannel,
                 DisableSearchNotifications = disableSearchNotifications,
+                EnableUnsignWhenPlayerStartsOtherGame = enableUnsignWhenPlayerStartsOtherGame,
                 RegionId = regionId
             };
             _configService.UpdateChannelConfiguration(channel);
@@ -322,7 +323,7 @@ namespace CoachBot.Services.Matchmaker
                             try
                             {
                                 var otherMatchmakingChannel = _configService.Config.Channels.FirstOrDefault(c => c.Id == channelId);
-                                if (otherMatchmakingChannel != null)
+                                if (otherMatchmakingChannel != null && otherMatchmakingChannel.EnableUnsignWhenPlayerStartsOtherGame)
                                 {
                                     await otherSocketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(RemovePlayer(otherChannel.Id, player.Name)).Build());
                                 }

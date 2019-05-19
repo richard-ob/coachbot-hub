@@ -40,6 +40,8 @@ namespace CoachBot.Model
 
         public bool DisableSearchNotifications { get; set; }
 
+        public bool EnableUnsignWhenPlayerStartsOtherGame { get; set; }
+
         public Region Region { get; set; }
 
         [JsonIgnore]

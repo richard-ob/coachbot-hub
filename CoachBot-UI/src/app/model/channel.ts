@@ -15,5 +15,7 @@ export class Channel {
     guildName: string;
     emotes: any[];
     isMixChannel: boolean;
+    disableSearchNotifications: boolean;
+    enableUnsignWhenPlayerStartsOtherGame: boolean;
     region: Region;
 }

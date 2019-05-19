@@ -406,7 +406,6 @@ namespace CoachBot.Services.Matchmaker
             {
                 await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":no_entry: This server is not set up for auto configuration").Build());
             }
-            await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($"Single keeper {(enable ? "enabled" : "disabled")}").Build());
             INetworkSocket socket = new Extensions.RconSocket();
             RconMessenger messenger = new RconMessenger(socket);
             bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
@@ -414,7 +413,7 @@ namespace CoachBot.Services.Matchmaker
             if (authenticated)
             {
                 await messenger.ExecuteCommandAsync($"sv_singlekeeper {(enable ? 1 : 0)}");
-                await messenger.ExecuteCommandAsync($"Single keeper {(enable ? "enabled" : "disabled")} by Coach");
+                await messenger.ExecuteCommandAsync($"say \"Single keeper {(enable ? "enabled" : "disabled")} by Coach\"");
             }
             await socketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($"Single keeper {(enable ? "enabled" : "disabled")}").Build());
         }

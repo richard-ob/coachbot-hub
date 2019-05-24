@@ -322,7 +322,7 @@ namespace CoachBot.Services.Matchmaker
                         {
                             try
                             {
-                                var otherMatchmakingChannel = _configService.Config.Channels.FirstOrDefault(c => c.Id == otherChannel?.Id);
+                                var otherMatchmakingChannel = _configService.Config.Channels.FirstOrDefault(c => c.Id == otherChannel.Id);
                                 if (otherMatchmakingChannel != null && otherMatchmakingChannel.EnableUnsignWhenPlayerStartsOtherGame)
                                 {
                                     await otherSocketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(RemovePlayer(otherChannel.Id, player.Name)).Build());

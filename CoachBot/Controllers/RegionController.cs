@@ -26,10 +26,6 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IEnumerable<Region> Get()
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
-            {
-                throw new Exception();
-            }
             return _configService.GetRegions();
         }
 

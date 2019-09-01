@@ -35,6 +35,7 @@ namespace CoachBot.Bot
             _client.Connected += Connected;
             _client.Ready += BotReady;
             _client.GuildMemberUpdated += UserStatusUpdated;
+            _client.ChannelDestroyed += ChannelDestroyed;
 
             _handler = new CommandHandler(_serviceProvider);
             await _handler.ConfigureAsync();
@@ -59,6 +60,16 @@ namespace CoachBot.Bot
                         Console.WriteLine($"{channel.Name} on {server.Name}");
                     }
                 }
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task ChannelDestroyed(SocketChannel channel)
+        {
+            var textChannel = channel as SocketTextChannel;
+            if (textChannel != null)
+            {
+                Console.WriteLine($"Channel has been destroyed: {textChannel.Name} on {textChannel.Guild.Name}");
             }
             return Task.CompletedTask;
         }

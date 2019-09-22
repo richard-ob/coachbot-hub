@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Model
 {
     public class Team
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public ulong? ChannelId { get; set; }
 
         public string Name { get; set; }
+
+        public TeamType TeamType { get; set; }
 
         public string KitEmote { get; set; }
 

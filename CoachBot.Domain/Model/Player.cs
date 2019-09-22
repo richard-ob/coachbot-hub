@@ -1,11 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Model
 {
     public class Player
     {
-        /*[Key]
-        public int Id { get; set; }*/
+        [Key]
+        [JsonIgnore]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

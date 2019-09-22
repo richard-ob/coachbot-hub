@@ -1,10 +1,16 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Model
 {
     public class Position
     {
+        [Key]
+        [JsonIgnore]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
         public Position() {}
 
         public Position(string position)
@@ -12,8 +18,10 @@ namespace CoachBot.Model
             PositionName = position;
         }
 
-        /*[Key]
-        public int Id { get; set; }*/
         public string PositionName { get; set; }
+
+        public ulong ChannelId { get; set; }
+
+        public Channel Channel { get; set; }
     }
 }

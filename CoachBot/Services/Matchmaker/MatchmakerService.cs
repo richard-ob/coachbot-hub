@@ -374,7 +374,7 @@ namespace CoachBot.Services.Matchmaker
                     {
                         if (_client.GetChannel(otherChannel.Id) is SocketTextChannel otherSocketChannel)
                         {
-                            await otherSocketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":stadium: {player.DiscordUserMention ?? player.Name} has gone to play another match with {channel.Name} ({socketChannel.Guild.Name})").Build());
+                            await otherSocketChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":stadium: {player.DiscordUserMention ?? player.Name} has gone to play another match with {channel.Name} ({channel.GuildName})").Build());
                         }
                     }
                 }

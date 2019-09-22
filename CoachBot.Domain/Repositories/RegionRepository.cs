@@ -17,14 +17,14 @@ namespace CoachBot.Domain.Repositories
         public List<Region> GetAll()
         {
             var regions = _coachBotContext.Regions.ToList();
-            regions.ForEach(r => r.ServerCount = _coachBotContext.Servers.Count(s => s.RegionId == r.Id));
+            regions.ForEach(r => r.ServerCount = _coachBotContext.Servers.Count(s => s.RegionId == r.RegionId));
 
             return regions;
         }
 
         public Region Get(int id)
         {
-            return _coachBotContext.Regions.FirstOrDefault(s => s.Id == id);
+            return _coachBotContext.Regions.FirstOrDefault(s => s.RegionId == id);
         }
 
         public void Add(Region region)
@@ -41,7 +41,7 @@ namespace CoachBot.Domain.Repositories
 
         public void Delete(int id)
         {
-            var region = _coachBotContext.Regions.First(s => s.Id == id);
+            var region = _coachBotContext.Regions.First(s => s.RegionId == id);
             _coachBotContext.Regions.Remove(region);
             _coachBotContext.SaveChanges();
         }

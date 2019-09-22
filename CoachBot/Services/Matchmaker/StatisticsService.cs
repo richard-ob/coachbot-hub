@@ -6,6 +6,7 @@ using System.Text;
 using System;
 using System.Linq;
 using Discord;
+using CoachBot.Domain.Repositories;
 
 namespace CoachBot.Services.Matchmaker
 {

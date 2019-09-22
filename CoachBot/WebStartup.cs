@@ -69,7 +69,9 @@ namespace CoachBot
                 .AddScoped<RegionRepository>()
                 .AddScoped<RegionService>()
                 .AddScoped<ServerRepository>()
-                .AddScoped<ServerService>();
+                .AddScoped<ServerService>()
+                .AddScoped<ChannelRepository>()
+                .AddScoped<MatchRepository>();
             services.AddSingleton<BotInstance>();
             services.AddDbContext<CoachBotContext>();
 

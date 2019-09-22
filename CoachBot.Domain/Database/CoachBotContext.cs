@@ -1,7 +1,6 @@
 ﻿using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Newtonsoft.Json;
 using System.IO;
 
@@ -19,6 +18,7 @@ namespace CoachBot.Database
         public DbSet<Player> Players { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<Team> Teams { get; set; }
+        //public DbSet<Match> Matches { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,4 +1,5 @@
-﻿using CoachBot.Domain.Repositories;
+﻿using CoachBot.Domain.Model.Dtos;
+using CoachBot.Domain.Repositories;
 using CoachBot.Model;
 using System.Collections.Generic;
 
@@ -13,7 +14,7 @@ namespace CoachBot.Domain.Services
             _regionRepository = regionRepository;
         }
 
-        public List<Region> GetRegions()
+        public List<RegionDto> GetRegions()
         {
             return _regionRepository.GetAll();
         }

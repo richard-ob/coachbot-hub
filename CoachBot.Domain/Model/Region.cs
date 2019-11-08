@@ -7,11 +7,12 @@ namespace CoachBot.Model
     public class Region
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RegionId { get; set; }
 
         public string RegionName { get; set; }
 
-        [JsonIgnore]
-        public int ServerCount { get; set; }
+        public string RegionCode { get; set; }
+
     }
 }

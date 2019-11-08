@@ -1,6 +1,8 @@
-﻿using CoachBot.Domain.Repositories;
+﻿using CoachBot.Database;
+using CoachBot.Domain.Repositories;
 using CoachBot.Model;
 using Discord;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,57 +10,47 @@ namespace CoachBot.Domain.Services
 {
     public class ServerService
     {
-        private readonly ServerRepository _serverRepository;
+        private readonly CoachBotContext _coachBotContext;
 
-        public ServerService(ServerRepository serverRepository)
+        public ServerService(CoachBotContext coachBotContext)
         {
-            _serverRepository = serverRepository;
+            _coachBotContext = coachBotContext;
         }
 
         public List<Server> GetServers()
         {
-            return _serverRepository.GetAll();
+            return _coachBotContext.Servers.Include(s => s.Region).ToList();
         }
 
         public List<Server> GetServersByRegion(int regionId)
         {
-            return _serverRepository.GetAll().Where(s => s.RegionId == regionId).ToList();
+            return _coachBotContext.Servers.Where(s => s.RegionId == regionId).ToList();
         }
 
         public Server GetServer(int id)
         {
-            return _serverRepository.Get(id);
+            return _coachBotContext.Servers
+                .Include(r => r.Region)
+                .FirstOrDefault(s => s.Id == id);
         }
 
         public void AddServer(Server server)
         {
-            _serverRepository.Add(server);
+            _coachBotContext.Servers.Add(server);
+            _coachBotContext.SaveChanges();
         }
 
         public void UpdateServer(Server server)
         {
-            _serverRepository.Update(server);
+            _coachBotContext.Servers.Update(server);
+            _coachBotContext.SaveChanges();
         }
 
         public void RemoveServer(int id)
         {
-            _serverRepository.Delete(id);
-        }
-
-        public Embed GenerateServerListEmbed(int regionId)
-        {
-            var serverId = 1;
-            var embedBuilder = new EmbedBuilder().WithTitle(":desktop: Servers");
-            var servers = GetServersByRegion(regionId);
-
-            foreach (var server in servers)
-            {
-                var autoSetup = !string.IsNullOrEmpty(server.RconPassword) ? "**[Auto Setup]**" : "";
-                embedBuilder.AddField($"#{serverId} {server.Name} {autoSetup}", $"steam://connect/{server.Address}");
-                serverId++;
-            }
-
-            return embedBuilder.Build();
+            var server = _coachBotContext.Servers.First(s => s.Id == id);
+            _coachBotContext.Servers.Remove(server);
+            _coachBotContext.SaveChanges();
         }
     }
 }

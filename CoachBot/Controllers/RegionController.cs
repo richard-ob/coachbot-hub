@@ -1,6 +1,6 @@
-﻿using CoachBot.Domain.Services;
+﻿using CoachBot.Domain.Model.Dtos;
+using CoachBot.Domain.Services;
 using CoachBot.Model;
-using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,18 +16,18 @@ namespace CoachBot.Controllers
     public class RegionController : Controller
     {
         private readonly RegionService _regionService;
-        private readonly BotService _botService;
+        private readonly ChannelService _channelService;
 
-        public RegionController(RegionService regionService, BotService botService)
+        public RegionController(RegionService regionService, ChannelService channelService)
         {
             _regionService = regionService;
-            _botService = botService;
+            _channelService = channelService;
         }
 
         [HttpGet]
-        public IEnumerable<Region> Get()
+        public IEnumerable<RegionDto> Get()
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
             {
                 throw new Exception();
             }
@@ -37,7 +37,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Add(Region region)
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
             {
                 throw new Exception();
             }
@@ -53,7 +53,7 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
             {
                 throw new Exception();
             }

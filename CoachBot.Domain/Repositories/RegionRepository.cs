@@ -1,4 +1,5 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Model.Dtos;
 using CoachBot.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,16 @@ namespace CoachBot.Domain.Repositories
             _coachBotContext = coachBotContext;
         }
 
-        public List<Region> GetAll()
+        public List<RegionDto> GetAll()
         {
-            var regions = _coachBotContext.Regions.ToList();
-            regions.ForEach(r => r.ServerCount = _coachBotContext.Servers.Count(s => s.RegionId == r.RegionId));
-
-            return regions;
+            return _coachBotContext.Regions.Select(r =>
+                new RegionDto()
+                {
+                    RegionId = r.RegionId,
+                    RegionName = r.RegionName,
+                    ServerCount = _coachBotContext.Servers.Count(s => s.RegionId == r.RegionId)
+                }
+            ).ToList();
         }
 
         public Region Get(int id)

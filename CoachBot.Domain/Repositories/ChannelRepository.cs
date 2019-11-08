@@ -1,5 +1,7 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Model;
 using CoachBot.Model;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,9 +23,10 @@ namespace CoachBot.Domain.Repositories
             return channels;
         }
 
-        public Channel Get(int id)
+        public Channel Get(ulong id)
         {
-            return _coachBotContext.Channels.FirstOrDefault(s => s.RegionId == id);
+            return _coachBotContext.Channels
+                .FirstOrDefault(s => s.DiscordChannelId == id);
         }
 
         public void Add(Channel channel)
@@ -40,7 +43,7 @@ namespace CoachBot.Domain.Repositories
 
         public void Delete(ulong id)
         {
-            var channel = _coachBotContext.Channels.First(c => c.Id == id);
+            var channel = _coachBotContext.Channels.First(c => c.DiscordChannelId == id);
             _coachBotContext.Channels.Remove(channel);
             _coachBotContext.SaveChanges();
         }

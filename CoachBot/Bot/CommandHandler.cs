@@ -8,9 +8,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
-using System.Linq;
-using CoachBot.Model;
 using Discord;
+using CoachBot.Services;
+using CoachBot.Domain.Services;
+using System.Linq;
+using CoachBot.Modules.Matchmaker;
 
 namespace CoachBot
 {
@@ -20,8 +22,8 @@ namespace CoachBot
         private readonly CommandService _commands;
         private readonly DiscordSocketClient _client;
         private readonly ILogger _logger;
-        private readonly ConfigService _configService;
-        private readonly MatchmakerService _matchmakerService;
+        private readonly ChannelService _channelService;
+        private readonly DiscordMatchService _discordMatchService;
 
         public CommandHandler(IServiceProvider provider)
         {
@@ -32,8 +34,8 @@ namespace CoachBot
             var log = _provider.GetService<LogAdaptor>();
             _commands.Log += log.LogCommand;
             _logger = _provider.GetService<Logger>().ForContext<CommandService>();
-            _configService = _provider.GetService<ConfigService>();
-            _matchmakerService = _provider.GetService<MatchmakerService>();            
+            _channelService = _provider.GetService<ChannelService>();
+            _discordMatchService = _provider.GetService<DiscordMatchService>();
         }
 
         public async Task ConfigureAsync()
@@ -51,18 +53,11 @@ namespace CoachBot
 
             var context = new SocketCommandContext(_client, message);
             var result = await _commands.ExecuteAsync(context, argPos, _provider);
-            var matchmakerChannel = _configService.Config.Channels.FirstOrDefault(c => c.Id == context.Channel.Id);
             var logMsg = $"[{message.Channel.Name} ({context.Guild.Name})] {message.Timestamp.ToString()}: @{message.Author.Username} {message.Content}";
+            var matchmakingChannel = _channelService.GetChannelByDiscordId(context.Channel.Id);
             Console.WriteLine(logMsg);
             _logger.Information(logMsg);
-            try
-            {
-                await message.DeleteAsync();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine($"Bot doesn't have have manage messages privileges in {message.Channel.Name} ({context.Guild.Name})");
-            }
+
             if (result is PreconditionResult precondition && !precondition.IsSuccess)
             {
                 await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(precondition.ErrorReason).WithCurrentTimestamp());
@@ -75,15 +70,10 @@ namespace CoachBot
             {
                 await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: Read Error: {reader.ErrorReason}").WithCurrentTimestamp().Build());
             }
-            else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand 
-                     && matchmakerChannel.Positions.Any(p => context.Message.Content.Substring(1).ToUpper().Contains(p.PositionName)))
+            else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand
+                     && matchmakingChannel.ChannelPositions.Any(cp => context.Message.Content.Substring(1).ToUpper().Contains(cp.Position.Name)))
             {
-                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(_matchmakerService.AddPlayer(message.Channel.Id, message.Author, context.Message.Content.Substring(1))).WithCurrentTimestamp().Build()); // Allows wildcard commands for positions
-                await message.Channel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(matchmakerChannel.Id));
-                if (_configService.Config.Channels.First(c => c.Id == message.Channel.Id).Team2.IsMix)
-                {
-                    await message.Channel.SendMessageAsync("", embed: _matchmakerService.GenerateTeamList(message.Channel.Id, Teams.Team2));
-                }
+                _discordMatchService.AddPlayer(context.Message.Channel.Id, context.Message.Author, context.Message.Content.Substring(1).ToUpper());
             }
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
             {

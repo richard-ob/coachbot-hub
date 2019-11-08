@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using CoachBot.Domain.Model;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace CoachBot.Model
 {
@@ -10,23 +13,32 @@ namespace CoachBot.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public ulong? ChannelId { get; set; }
+        public int? ChannelId { get; set; }
 
-        public string Name { get; set; }
+        public Channel Channel { get; set; }
 
         public TeamType TeamType { get; set; }
 
-        public string KitEmote { get; set; }
+        public ICollection<PlayerTeamPosition> PlayerTeamPositions { get; set; }
 
-        public string BadgeEmote { get; set; }
+        public ICollection<PlayerTeamSubstitute> PlayerSubstitutes { get; set; }
 
-        public string Color { get; set; }
-
-        public bool IsMix { get; set; }
-
-        public List<Player> Substitutes { get; set; }
-
-        public List<Player> Players { get; set; }
+        [JsonIgnore]
+        [NotMapped]
+        public List<Position> OccupiedPositions
+        {
+            get
+            {
+                if (PlayerTeamPositions != null)
+                {
+                    return PlayerTeamPositions.Select(ptp => ptp.Position).ToList();
+                }
+                else
+                {
+                    return new List<Position>();
+                }
+            }
+        }
 
     }
 }

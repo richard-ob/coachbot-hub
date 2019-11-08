@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CoachBot.Model
+﻿namespace CoachBot.Model
 {
     public class Config
     {
@@ -19,12 +17,6 @@ namespace CoachBot.Model
         public string SqlConnectionString { get; set; }
 
         public int ApiPort { get; set; }
-
-        public List<Server> Servers { get; set; }
-
-        public List<Channel> Channels { get; set; }
-
-        public List<Region> Regions { get; set; }
 
     }
 }

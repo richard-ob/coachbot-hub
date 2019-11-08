@@ -1,78 +1,52 @@
-﻿using Newtonsoft.Json;
+﻿using CoachBot.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
-namespace CoachBot.Model
+namespace CoachBot.Domain.Model
 {
     public class Channel
     {
         [Key]
-        public ulong Id { get; set; }
-
-        public List<Position> Positions { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public string GuildName { get; set; }
+        public ulong DiscordChannelId { get; set; }
 
-        public int? TeamId1 { get; set; }
+        public string DiscordChannelName { get; set; }
 
-        public int? TeamId2 { get; set; }
-
-        [ForeignKey("TeamId1")]
-        public Team Team1 { get; set; }
-
-        [ForeignKey("TeamId2")]
-        public Team Team2 { get; set; }
+        public string TeamCode { get; set; }
 
         public Formation Formation { get; set; }
 
-        public bool ClassicLineup { get; set; }
+        public string KitEmote { get; set; }
+
+        public string BadgeEmote { get; set; }
+
+        public string Color { get; set; }
+
+        public bool UseClassicLineup { get; set; }
 
         public bool IsMixChannel { get; set; }
 
-        public bool IsSearching { get; set; }
-
-        public DateTime? LastSearch { get; set; }
-
         public bool DisableSearchNotifications { get; set; }
 
-        public int RegionId { get; set; }
+        public bool Inactive { get; set; }
+
+        public int GuildId { get; set; }
+
+        public Guild Guild { get; set; }
+
+        public int? RegionId { get; set; }
 
         public Region Region { get; set; }
 
-        // TODO: Create custom serializer to serialize ulong's as strings, as Javascript cannot handle large ulong values
-        [NotMapped]
-        public string IdString { get { return Id.ToString(); } }
+        public ICollection<ChannelPosition> ChannelPositions { get; set; }
 
-        [NotMapped]
-        public IEnumerable<KeyValuePair<string, string>> Emotes { get; set; }
+        public DateTime CreatedDate { get; set; }
 
-        [JsonIgnore]
-        [NotMapped]
-        public DateTime? LastHereMention { get; set; }
+        public DateTime UpdatedDate { get; set; }
 
-        [JsonIgnore]
-        public List<Player> SignedPlayers
-        {
-            get
-            {
-                if (Team1.Players.Any() && Team2.Players.Any())
-                {
-                    return Team1.Players.Concat(Team2.Players).ToList();
-                }
-                else if (Team1.Players.Any())
-                {
-                    return Team1.Players;
-                }
-                else
-                {
-                    return Team2.Players;
-                }
-            }
-        }
     }
 }

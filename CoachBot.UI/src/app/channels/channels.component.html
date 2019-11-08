@@ -8,7 +8,7 @@
       <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
     </div>
     <div *ngIf="channels && channels.length === 0" class="alert alert-primary" role="alert">
-      No channels configured yet! You can only configure channels you are administartor access for.
+      No channels configured yet! You can only configure channels you are administator access for.
     </div>
     <div class="table-responsive">
       <table *ngIf="channels && channels.length > 0" class="table table-hover table-striped">
@@ -26,22 +26,22 @@
         </thead>
         <tbody>
           <tr *ngFor="let channel of channels">
-            <td>{{channel.guildName}}</td>
+            <td>{{channel.guild.name}}</td>
+            <td>{{channel.discordChannelName}}</td>
             <td>{{channel.name}}</td>
-            <td>{{channel.team1.name}}</td>
             <td>{{channel.region?.regionName}}</td>
             <td>
               <span *ngFor="let position of channel.positions">{{position.positionName}} </span>
             </td>
             <td>
-              <div style="width: 25px; height: 25px; position: relative; border-radius: 15px;" [style.background]="channel.team1.color"></div>
+              <div style="width: 25px; height: 25px; position: relative; border-radius: 15px;" [style.background]="channel.color"></div>
             </td>
             <td>
               <i *ngIf="channel.isMixChannel" class="text-success fa fa-check"></i>
               <i *ngIf="!channel.isMixChannel" class="text-danger fa fa-times"></i>
             </td>
             <td>
-              <a class="btn btn-outline-secondary btn-sm" routerLink="/channel/{{channel.id}}">
+              <a class="btn btn-outline-secondary btn-sm" routerLink="/channel/{{channel.discordChannelId}}">
                 <i class="fa fa-wrench"></i> Edit</a>
             </td>
           </tr>
@@ -59,8 +59,8 @@
       <div class="form-group">
         <label>Channel</label>
         <select class="form-control" [(ngModel)]="unconfiguredChannel" name="unconfiguredChannel" [disabled]="unconfiguredChannels && unconfiguredChannels.length === 0">
-          <option *ngFor="let channel of unconfiguredChannels" [ngValue]="channel">{{channel.name}}
-            ({{channel.guildName}}) </option>
+          <option *ngFor="let channel of unconfiguredChannels" [ngValue]="channel">{{channel.discordChannelName}}
+            ({{channel.guild.name}}) </option>
           <option *ngIf="unconfiguredChannels && unconfiguredChannels.length === 0">You have no channels available to
             configure</option>
         </select>

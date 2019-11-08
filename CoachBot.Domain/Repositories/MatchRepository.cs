@@ -1,5 +1,5 @@
 ﻿using CoachBot.Database;
-using CoachBot.Model;
+using CoachBot.Domain.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,17 +14,33 @@ namespace CoachBot.Domain.Repositories
             _coachBotContext = coachBotContext;
         }
 
-      /*  public List<Match> GetAll()
+        public Match Get(int id)
         {
-            var matches = _coachBotContext.Matches.ToList();
+            return _coachBotContext.Matches.FirstOrDefault(m => m.Id == id);
+        }
 
-            return matches;
+        public List<Match> GetAll()
+        {
+            return _coachBotContext.Matches.ToList();
         }
 
         public void Add(Match match)
         {
             _coachBotContext.Matches.Add(match);
             _coachBotContext.SaveChanges();
-        }*/
+        }
+
+        public void Update(Match match)
+        {
+            _coachBotContext.Matches.Update(match);
+            _coachBotContext.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var match = _coachBotContext.Matches.First(m => m.Id == id);
+            _coachBotContext.Matches.Remove(match);
+            _coachBotContext.SaveChanges();
+        }
     }
 }

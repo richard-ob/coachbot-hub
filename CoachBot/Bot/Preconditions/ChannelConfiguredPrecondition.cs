@@ -1,8 +1,8 @@
-﻿using CoachBot.Services.Matchmaker;
+﻿using CoachBot.Domain.Services;
+using CoachBot.Services;
 using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoachBot.Preconditions
@@ -11,13 +11,14 @@ namespace CoachBot.Preconditions
     {
         public override Task<PreconditionResult> CheckPermissions(ICommandContext context, CommandInfo command, IServiceProvider map)
         {
+            var channelService = map.GetService<ChannelService>();
             var configService = map.GetService<ConfigService>();
 
-            if (!configService.Config.Channels.Any(c => c.Id == context.Channel.Id))
-                return Task.FromResult(PreconditionResult.FromError($":wrench: This channel is not yet configured. To configure the channel, please visit http://coachbot.iosoccer.com"));
+            if (channelService.GetChannelByDiscordId(context.Channel.Id) is null)
+                return Task.FromResult(PreconditionResult.FromError($":wrench: This channel is not yet configured. To configure the channel, please visit {configService.Config.ClientUrl}"));
 
-            if (configService.Config.Channels.First(c => c.Id == context.Channel.Id).RegionId == 0)
-                return Task.FromResult(PreconditionResult.FromError($":earth_asia: This channel does not have a region set. To configure the channel, please visit http://coachbot.iosoccer.com"));
+            if (channelService.GetChannelByDiscordId(context.Channel.Id).Region is null)
+                return Task.FromResult(PreconditionResult.FromError($":earth_asia: This channel does not have a region set. To configure the channel, please visit {configService.Config.ClientUrl}"));
 
             return Task.FromResult(PreconditionResult.FromSuccess());
         }

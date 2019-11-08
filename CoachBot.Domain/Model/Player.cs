@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CoachBot.Domain.Model;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,7 +8,6 @@ namespace CoachBot.Model
     public class Player
     {
         [Key]
-        [JsonIgnore]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -17,7 +17,16 @@ namespace CoachBot.Model
 
         public string DiscordUserMention { get; set; }
 
-        public Position Position { get; set; }
+        public string SteamID { get; set; }
+
+        public ICollection<PlayerTeamPosition> PlayerTeamPositions { get; set; }
+
+        public ICollection<PlayerTeamSubstitute> PlayerSubstitutes { get; set; }
+
+        public string DisplayName
+        {
+            get { return DiscordUserMention ?? Name ?? "Unknown"; }
+        }
 
     }
 }

@@ -18,6 +18,9 @@ using CoachBot.Database;
 using CoachBot.Domain.Services;
 using CoachBot.Domain.Repositories;
 using CoachBot.Bot;
+using CoachBot.Extensions;
+using CoachBot.Services;
+using Discord.Addons.Interactive;
 
 namespace CoachBot
 {
@@ -54,26 +57,35 @@ namespace CoachBot
                         .AllowCredentials();
                     });
             });
-            services.AddMvc();
+
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new UlongToStringConverter());
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
+
             services.AddSingleton<ConfigService>()
                 .AddSingleton(_client)
                 .AddSingleton(new CommandService(new CommandServiceConfig { CaseSensitiveCommands = false, ThrowOnError = false }))
                 .AddSingleton(logger)
+                .AddSingleton(config)
                 .AddSingleton<LogAdaptor>()
                 .AddSingleton<ConfigService>()
-                .AddScoped<MatchmakerService>()
-                .AddScoped<StatisticsService>()
-                .AddScoped<LeaderboardService>()
                 .AddScoped<BotService>()
-                .AddScoped<AnnouncementService>()
                 .AddScoped<RegionRepository>()
                 .AddScoped<RegionService>()
                 .AddScoped<ServerRepository>()
                 .AddScoped<ServerService>()
-                .AddScoped<ChannelRepository>()
-                .AddScoped<MatchRepository>();
-            services.AddSingleton<BotInstance>();
-            services.AddDbContext<CoachBotContext>();
+                .AddScoped<ChannelService>()
+                .AddScoped<DiscordMatchService>()
+                .AddScoped<DiscordServerService>()
+                .AddScoped<MatchService>()
+                .AddScoped<SearchService>()
+                .AddScoped<PlayerService>()
+                .AddScoped<InteractiveService>()
+                .AddSingleton<BotInstance>()
+                .AddDbContext<CoachBotContext>(ServiceLifetime.Scoped);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 

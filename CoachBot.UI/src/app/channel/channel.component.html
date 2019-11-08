@@ -7,22 +7,28 @@
         <form *ngIf="channel" name="channelForm" #channelForm="ngForm">
             <div class="form-group row">
                 <label class="col-sm-2">Channel Name</label>
-                <span class="col-sm-10 form-control-static">{{channel.name}}</span>
+                <span class="col-sm-10 form-control-static">{{channel.discordChannelName}}</span>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2">Channel ID</label>
-                <span class="col-sm-10 form-control-static">{{channel.id}}</span>
+                <span class="col-sm-10 form-control-static">{{channel.discordChannelId}}</span>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2">Team Name</label>
                 <div class="col-sm-4 col-sm-3">
-                    <input type="text" required class="form-control" [(ngModel)]="channel.team1.name" name="teamName" />
+                    <input type="text" required class="form-control" [(ngModel)]="channel.name" name="teamName" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2">Team Code</label>
+                <div class="col-sm-4 col-sm-3">
+                    <input type="text" maxlength="3" required class="form-control" [(ngModel)]="channel.teamCode" name="teamCode" />
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2">Team Badge Emote</label>
                 <div class="col-sm-6 col-md-4">
-                    <select [(ngModel)]="channel.team1.badgeEmote" name="badgeEmote" class="form-control">
+                    <select [(ngModel)]="channel.badgeEmote" name="badgeEmote" class="form-control">
                         <option [ngValue]="null">None</option>
                         <option *ngFor="let emote of channel.emotes" [ngValue]="emote.key">{{emote.key}}</option>
                     </select>
@@ -34,7 +40,7 @@
             <div class="form-group row">
                 <label class="col-sm-2">Team Colour</label>
                 <div class="col-sm-10">
-                    <input class="form-control" [(colorPicker)]="channel.team1.color" [style.background]="channel.team1.color"
+                    <input class="form-control" [(colorPicker)]="channel.color" [style.background]="channel.color"
                         [cpPosition]="'bottom'" />
                 </div>
             </div>
@@ -42,8 +48,9 @@
                 <label class="col-sm-2">Positions</label>
                 <div class="col-sm-10">
                     <i class="fa fa-minus-circle" (click)="removePosition()" style="cursor: pointer"></i>
-                    <app-kit *ngFor="let position of channel.positions; let i = index" [attr.data-index]="i" [color]="channel.team1.color"
-                        [text]="position.positionName" (click)="editPosition(i); staticModal.show()" style="cursor: pointer"></app-kit>
+                    <app-kit *ngFor="let channelPosition of channel.channelPositions; let i = index" [attr.data-index]="i"
+                        [color]="channel.color" [text]="channelPosition.position.name" (click)="editPosition(i); staticModal.show()"
+                        style="cursor: pointer"></app-kit>
                     <i class="fa fa-plus-circle" (click)="addPosition()" style="cursor: pointer"></i>
                 </div>
             </div>
@@ -77,7 +84,7 @@
             <div class="form-group row">
                 <label class="col-sm-2">Classic Line-up?</label>
                 <div class="col-sm-10">
-                    <input type="checkbox" [(ngModel)]="channel.classicLineup" name="classicLineup" />&nbsp;
+                    <input type="checkbox" [(ngModel)]="channel.useClassicLineup" name="classicLineup" />&nbsp;
                     <small>Shows the team list in Discord in a single line, without kits or formations</small>
                 </div>
             </div>
@@ -86,18 +93,18 @@
                 <div class="col-sm-4 col-sm-3">
                     <select [(ngModel)]="channel.formation" name="formation" class="form-control">
                         <option [ngValue]="0">None</option>
-                        <option *ngIf="channel.positions.length === 8" [ngValue]="1">3-3-1</option>
-                        <option *ngIf="channel.positions.length === 8" [ngValue]="2">3-2-2</option>
-                        <option *ngIf="channel.positions.length === 8" [ngValue]="3">3-1-2-1</option>
-                        <option *ngIf="channel.positions.length === 8" [ngValue]="4">3-1-3</option>
-                        <option *ngIf="channel.positions.length === 4" [ngValue]="5">2-1</option>
+                        <option [ngValue]="1">3-3-1</option>
+                        <option [ngValue]="2">3-2-2</option>
+                        <option [ngValue]="3">3-1-2-1</option>
+                        <option [ngValue]="4">3-1-3</option>
+                        <option [ngValue]="5">2-1</option>
                     </select>
                 </div>
             </div>
             <div class="form-group row" *ngIf="!channel.classicLineup">
                 <label class="col-sm-2">Kit Emote</label>
                 <div class="col-sm-6 col-md-4">
-                    <select [(ngModel)]="channel.team1.kitEmote" name="kitEmote" class="form-control">
+                    <select [(ngModel)]="channel.kitEmote" name="kitEmote" class="form-control">
                         <option [ngValue]="null">Default</option>
                         <option *ngFor="let emote of channel.emotes" [ngValue]="emote.key">{{emote.key}}</option>
                     </select>

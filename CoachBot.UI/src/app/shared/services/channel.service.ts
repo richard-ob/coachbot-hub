@@ -27,6 +27,10 @@ export class ChannelService {
   }
 
   updateChannel(channel: Channel) {
+    return this.http.put(`${environment.apiUrl}/api/channel`, channel).pipe();
+  }
+
+  createChannel(channel: Channel) {
     return this.http.post(`${environment.apiUrl}/api/channel`, channel).pipe();
   }
 }

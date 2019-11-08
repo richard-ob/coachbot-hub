@@ -6,7 +6,7 @@ namespace CoachBot.Bot.Tools
 {
     public static class FormationEmbed
     {
-        public static Embed Generate(EmbedBuilder builder, string availablePlaceholderText, Team team, Channel channel)
+        public static Embed Generate(EmbedBuilder builder, string availablePlaceholderText, Team team, ChannelOld channel)
         {
             var positionCount = channel.Positions.Count();
             if (positionCount == 8 && channel.Formation == Formation.ThreeThreeOne)

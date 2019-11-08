@@ -1,6 +1,5 @@
 ﻿using CoachBot.Domain.Services;
 using CoachBot.Model;
-using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,18 +15,18 @@ namespace CoachBot.Controllers
     public class ServerController : Controller
     {
         private readonly ServerService _serverService;
-        private readonly BotService _botService;
+        private readonly ChannelService _channelService;
 
-        public ServerController(ServerService serverService, BotService botService)
+        public ServerController(ServerService serverService, ChannelService channelService)
         {
             _serverService = serverService;
-            _botService = botService;
+            _channelService = channelService;
         }
 
         [HttpGet("{id}")]
         public Server Get(int id)
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
             {
                 throw new Exception();
             }
@@ -37,7 +36,7 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IEnumerable<Server> GetAll()
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
             {
                 throw new Exception();
             }
@@ -47,7 +46,7 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
             {
                 throw new Exception();
             }
@@ -57,7 +56,7 @@ namespace CoachBot.Controllers
         [HttpPut]
         public void Update(Server server)
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
             {
                 throw new Exception();
             }
@@ -67,10 +66,11 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Add(Server server)
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
             {
                 throw new Exception();
             }
+            server.Name = server.Name.Trim();
             _serverService.AddServer(server);
         }
     }

@@ -11,7 +11,7 @@ namespace CoachBot.Database
         {
             try
             {
-                JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+               // JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
             }
             catch
             {

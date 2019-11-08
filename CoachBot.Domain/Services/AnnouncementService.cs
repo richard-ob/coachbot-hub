@@ -18,8 +18,7 @@ namespace CoachBot.Domain.Services
             {
                 foreach (var channel in server.Channels)
                 {
-                    var textChannel = _client.GetChannel(channel.Id) as ITextChannel;
-                    if (textChannel != null)
+                    if (_client.GetChannel(channel.Id) is ITextChannel textChannel)
                     {
                         textChannel.SendMessageAsync("", embed: new EmbedBuilder().WithAuthor("Coach", "http://coachbot.iosoccer.com/assets/coach_head.png", "http://coachbot.iosoccer.com").WithDescription(message).WithCurrentTimestamp().Build());
                     }

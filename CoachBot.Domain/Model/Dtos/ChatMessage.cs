@@ -5,6 +5,5 @@
         public string Message;
 
         public string Sender;
-
     }
 }

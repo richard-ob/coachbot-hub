@@ -1,4 +1,6 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
+using CoachBot.Model;
 using CoachBot.Services.Matchmaker;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.Authorization;
@@ -13,14 +15,14 @@ namespace CoachBot.Controllers
     [Authorize]
     public class ChannelController : Controller
     {
-        private readonly MatchmakerService _matchmakerService;
         private readonly BotService _botService;
-        private DiscordSocketClient _client;
+        private readonly ChannelService _channelService;
+        private readonly DiscordSocketClient _client;
 
-        public ChannelController(MatchmakerService matchmakerService, BotService botService, DiscordSocketClient client)
+        public ChannelController(BotService botService, ChannelService channelService, DiscordSocketClient client)
         {
-            _matchmakerService = matchmakerService;
             _botService = botService;
+            _channelService = channelService;
             _client = client;
         }
 
@@ -28,14 +30,14 @@ namespace CoachBot.Controllers
         public IList<Channel> Get()
         {
             var userId = ulong.Parse(User.Claims.ToList().First().Value);
-            var channels = _botService.GetChannelsForUser(userId, false);
+            var channels = _channelService.GetChannelsForUser(userId, false);
             foreach (var channel in channels)
             {
-                var guildChannel = (SocketGuildChannel)_client.GetChannel(channel.Id);
+                var guildChannel = (SocketGuildChannel)_client.GetChannel(channel.DiscordChannelId);
                 if (guildChannel != null)
                 {
-                    channel.Name = guildChannel.Name;
-                    channel.GuildName = guildChannel.Guild.Name;
+                    channel.DiscordChannelName = guildChannel.Name;
+                    channel.Guild = new Guild() { Name = guildChannel.Guild.Name, DiscordGuildId = guildChannel.Guild.Id };
                 }
             }
             return channels;
@@ -45,11 +47,10 @@ namespace CoachBot.Controllers
         public Channel Get(ulong id)
         {
             var userId = ulong.Parse(User.Claims.ToList().First().Value);
-            var channel = _botService.GetChannelsForUser(userId, false).First(c => c.Id == id);
+            var channel = _channelService.GetChannelsForUser(userId, false).First(c => c.DiscordChannelId == id);
             var guildChannel = (SocketGuildChannel)_client.GetChannel(id);
-            channel.Name = guildChannel.Name;
-            channel.GuildName = guildChannel.Guild.Name;
-            channel.Emotes = guildChannel.Guild.Emotes.Select(e => new KeyValuePair<string, string>($"<:{e.Name}:{e.Id}>", e.Url));
+            channel.DiscordChannelName = guildChannel.Name;
+            channel.Guild = new Guild() { Name = guildChannel.Guild.Name, DiscordGuildId = guildChannel.Guild.Id };
 
             return channel;
         }
@@ -59,23 +60,30 @@ namespace CoachBot.Controllers
         public IList<Channel> GetUnconfiguredChannels()
         {
             var userId = ulong.Parse(User.Claims.ToList().First().Value);
-            var channels = _botService.GetChannelsForUser(userId, true);
+            var channels = _channelService.GetChannelsForUser(userId, true);
             foreach (var channel in channels)
             {
-                var guildChannel = (SocketGuildChannel)_client.GetChannel(channel.Id);
+                var guildChannel = (SocketGuildChannel)_client.GetChannel(channel.DiscordChannelId);
                 if (guildChannel != null)
                 {
-                    channel.Name = guildChannel.Name;
-                    channel.GuildName = guildChannel.Guild.Name;
+                    channel.DiscordChannelName = guildChannel.Name;
+                    channel.Guild = new Guild() { Name = guildChannel.Guild.Name, DiscordGuildId = guildChannel.Guild.Id };
                 }
             }
+
             return channels;
         }
 
-        [HttpPost]
+        [HttpPut]
         public void Update([FromBody]Channel channel)
         {
-            _matchmakerService.ConfigureChannel(channel.Id, channel.Team1.Name, channel.Positions, channel.RegionId, channel.Team1.KitEmote, channel.Team1.BadgeEmote, channel.Team1.Color, channel.IsMixChannel, channel.Formation, channel.ClassicLineup, channel.DisableSearchNotifications);
+            _channelService.Update(channel);
+        }
+
+        [HttpPost]
+        public void Create([FromBody]Channel channel)
+        {
+            _channelService.Create(channel);
         }
     }
 }

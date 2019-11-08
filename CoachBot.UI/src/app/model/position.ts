@@ -1,3 +1,4 @@
 export class Position {
-    positionName: string;
+    id?: number;
+    name: string;
 }

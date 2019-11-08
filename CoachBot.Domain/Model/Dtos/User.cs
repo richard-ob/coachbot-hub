@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Model
 {
+    [NotMapped]
     public class User
     {
-        [Key]
         public ulong DiscordUserId { get; set; }
 
         public string Name { get; set; }
@@ -13,8 +14,6 @@ namespace CoachBot.Model
         public string DiscordUserIdString { get { return DiscordUserId.ToString(); } }
 
         public bool IsAdministrator { get; set; }
-
-        public IEnumerable<Channel> Channels { get; set; }
 
     }
 }

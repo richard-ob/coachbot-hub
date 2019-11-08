@@ -8,6 +8,35 @@
     <RuntimeFrameworkVersion>2.1.0</RuntimeFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="bkconfig\**" />
+    <Compile Remove="Bot\Tools\**" />
+    <Compile Remove="Controllers\**" />
+    <Compile Remove="Modules\Matchmaker\**" />
+    <Compile Remove="Services\Logging\**" />
+    <Compile Remove="Services\Matchmaker\**" />
+    <EmbeddedResource Remove="bkconfig\**" />
+    <EmbeddedResource Remove="Bot\Tools\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="Modules\Matchmaker\**" />
+    <EmbeddedResource Remove="Services\Logging\**" />
+    <EmbeddedResource Remove="Services\Matchmaker\**" />
+    <None Remove="bkconfig\**" />
+    <None Remove="Bot\Tools\**" />
+    <None Remove="Controllers\**" />
+    <None Remove="Modules\Matchmaker\**" />
+    <None Remove="Services\Logging\**" />
+    <None Remove="Services\Matchmaker\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\ChannelController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\RegionController.cs" />
+    <Compile Include="Controllers\ServerController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Discord.Addons.Interactive" Version="1.0.1" />
+    <PackageReference Include="Discord.Addons.InteractiveCommands" Version="1.2.4" />
     <PackageReference Include="Discord.OAuth2" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.1" />

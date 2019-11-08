@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { ChannelService, } from '../shared/services/channel.service';
 import { Channel } from '../model/channel';
-import { Position } from '../model/position';
+import { ChannelPosition } from '../model/channel-position';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Region } from '../model/region';
 import { RegionService } from '../shared/services/region.service';
+import { Position } from '../model/position';
 
 @Component({
     selector: 'app-channel',
@@ -31,50 +32,54 @@ export class ChannelComponent {
                     .getChannel(id)
                     .subscribe(channel => {
                         this.channel = channel;
-                        this.channel.id = this.channel.idString;
+                        this.channel.channelPositions = this.channel.channelPositions || [];
                     });
             });
     }
 
     saveChannel() {
         this.isSaving = true;
-        this.channelService.updateChannel(this.channel).subscribe(complete => this.isSaving = false);
+        this.channelService.updateChannel(this.channel).subscribe(() => this.isSaving = false);
     }
 
     addPosition() {
-        const position = new Position();
-        position.positionName = (this.channel.positions.length + 1).toString();
-        this.channel.positions.push(position);
+        const position = new ChannelPosition();
+        position.position = new Position();
+        this.channel.channelPositions.push(position);
     }
 
     removePosition() {
-        this.channel.positions.pop();
+        this.channel.channelPositions.pop();
     }
 
     editPosition(positionId: number) {
-        this.editPositionName = this.channel.positions[positionId].positionName;
+        this.editPositionName = this.channel.channelPositions[positionId].position.name;
         this.currentPositionId = positionId;
     }
 
     savePositionName() {
-        this.channel.positions[this.currentPositionId].positionName = this.editPositionName;
+        this.channel.channelPositions[this.currentPositionId].position.name = this.editPositionName;
     }
 
     getKitUrl(): string {
-        const emote = this.channel.emotes.find(e => e.key === this.channel.team1.kitEmote);
-        if (emote) {
-            return emote.value;
-        } else {
-            return null;
+        if (this.channel.emotes) {
+            const emote = this.channel.emotes.find(e => e.key === this.channel.team1.kitEmote);
+            if (emote) {
+                return emote.value;
+            } else {
+                return null;
+            }
         }
     }
 
     getBadgeUrl(): string {
-        const emote = this.channel.emotes.find(e => e.key === this.channel.team1.badgeEmote);
-        if (emote) {
-            return emote.value;
-        } else {
-            return null;
+        if (this.channel.emotes) {
+            const emote = this.channel.emotes.find(e => e.key === this.channel.team1.badgeEmote);
+            if (emote) {
+                return emote.value;
+            } else {
+                return null;
+            }
         }
     }
 }

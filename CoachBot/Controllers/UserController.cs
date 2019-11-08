@@ -1,4 +1,6 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Domain.Services;
+using CoachBot.Model;
+using CoachBot.Services;
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -11,16 +13,12 @@ namespace CoachBot.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly BotService _botService;
-        private readonly StatisticsService _statisticsService;
-        private readonly LeaderboardService _leaderboardService;
+        private readonly ChannelService _channelService;
         private readonly ConfigService _configService;
 
-        public UserController(BotService botService, StatisticsService statisticsService, LeaderboardService leaderboardService, ConfigService configService)
+        public UserController(ChannelService channelService, ConfigService configService)
         {
-            _botService = botService;
-            _statisticsService = statisticsService;
-            _leaderboardService = leaderboardService;
+            _channelService = channelService;
             _configService = configService;
         }
 
@@ -33,24 +31,9 @@ namespace CoachBot.Controllers
             {
                 user.Name = User.Identity.Name;
                 user.DiscordUserId = ulong.Parse(User.Claims.First().Value);
-                user.IsAdministrator = _botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value));
-                user.Channels = _botService.GetChannelsForUser(ulong.Parse(User.Claims.First().Value), false, false);
+                user.IsAdministrator = _channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value));
+                //user.Channels = _botService.GetChannelsForUser(ulong.Parse(User.Claims.First().Value), false, false);
             }
-            return user;
-        }
-
-        [HttpGet("statistics")]
-        [Authorize]
-        public UserStatistics GetUserStatistics()
-        {
-            var userId = ulong.Parse(User.Claims.First().Value);
-            var user = new UserStatistics() {
-                Appearances = _statisticsService.MatchHistory.Count(a => a.Players.Any(p => p.DiscordUserId == userId)),
-                FirstAppearance = _statisticsService.MatchHistory.Where(a => a.Players.Any(p => p.DiscordUserId == userId)).OrderBy(m => m.MatchDate).FirstOrDefault().MatchDate,
-                LastAppearance = _statisticsService.MatchHistory.Where(a => a.Players.Any(p => p.DiscordUserId == userId)).OrderByDescending(m => m.MatchDate).FirstOrDefault().MatchDate,
-                Rank = _leaderboardService.GetLeaderboardForPlayers().ToList().FindIndex(p => p.Key == User.Identity.Name) + 1
-            };
-
             return user;
         }
 

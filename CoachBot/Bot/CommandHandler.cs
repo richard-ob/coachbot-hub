@@ -23,7 +23,7 @@ namespace CoachBot
         private readonly DiscordSocketClient _client;
         private readonly ILogger _logger;
         private readonly ChannelService _channelService;
-        private readonly DiscordMatchService _discordMatchService;
+        private readonly MatchmakingService _MatchmakingService;
 
         public CommandHandler(IServiceProvider provider)
         {
@@ -35,7 +35,7 @@ namespace CoachBot
             _commands.Log += log.LogCommand;
             _logger = _provider.GetService<Logger>().ForContext<CommandService>();
             _channelService = _provider.GetService<ChannelService>();
-            _discordMatchService = _provider.GetService<DiscordMatchService>();
+            _MatchmakingService = _provider.GetService<MatchmakingService>();
         }
 
         public async Task ConfigureAsync()
@@ -73,7 +73,7 @@ namespace CoachBot
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand
                      && matchmakingChannel.ChannelPositions.Any(cp => context.Message.Content.Substring(1).ToUpper().Contains(cp.Position.Name)))
             {
-                _discordMatchService.AddPlayer(context.Message.Channel.Id, context.Message.Author, context.Message.Content.Substring(1).ToUpper());
+                _MatchmakingService.AddPlayer(context.Message.Channel.Id, context.Message.Author, context.Message.Content.Substring(1).ToUpper());
             }
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
             {

@@ -25,13 +25,15 @@ namespace CoachBot.Database
         public DbSet<ChannelPosition> ChannelPositions { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<SubstitutionRequest> SubstitutionRequests { get; set; }
         public DbSet<Search> Searches { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));               
+                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+                optionsBuilder.UseSqlServer(config.SqlConnectionString);
             }
         }
 

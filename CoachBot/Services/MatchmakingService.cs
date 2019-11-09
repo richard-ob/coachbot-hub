@@ -12,22 +12,31 @@ using System.Text;
 
 namespace CoachBot.Services
 {
-    public class DiscordMatchService
+    public class MatchmakingService
     {
         private readonly MatchService _matchService;
         private readonly ChannelService _channelService;
         private readonly ServerService _serverService;
         private readonly SearchService _searchService;
         private readonly PlayerService _playerService;
+        private readonly SubstitutionService _substitutionService;
         private readonly DiscordSocketClient _discordClient;
 
-        public DiscordMatchService(ChannelService channelService, MatchService matchService, ServerService serverService, SearchService searchService, PlayerService playerService, DiscordSocketClient discordClient)
+        public MatchmakingService(
+            ChannelService channelService,
+            MatchService matchService,
+            ServerService serverService,
+            SearchService searchService,
+            PlayerService playerService,
+            SubstitutionService substitutionService,
+            DiscordSocketClient discordClient)
         {
             _matchService = matchService;
             _channelService = channelService;
             _serverService = serverService;
             _searchService = searchService;
             _playerService = playerService;
+            _substitutionService = substitutionService;
             _discordClient = discordClient;
         }
 
@@ -274,12 +283,32 @@ namespace CoachBot.Services
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
-        public Embed MakeSub(ulong channelId, int serverListItemId, IUser user)
+        public Embed RequestSub(ulong channelId, int serverListItemId, string positionName, IUser user)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var server = _serverService.GetServersByRegion((int)channel.RegionId)[serverListItemId - 1];
 
-            return EmbedTools.GenerateSimpleEmbed($":repeat: {user.Mention} comes off the bench on {server.Name} (steam://{server.Address})");
+            var response = _substitutionService.CreateRequest(channel.Id, server.Id, positionName);
+
+            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+        }
+
+        public Embed AcceptSubRequest(string requestToken, IUser user)
+        {
+            var player = _playerService.GetPlayer(user);
+
+            var response = _substitutionService.AcceptSubstitution(requestToken, player);
+
+            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+        }
+
+        public Embed CancelSubRequest(string requestToken, IUser user)
+        {
+            var player = _playerService.GetPlayer(user);
+
+            var response = _substitutionService.CancelSubstitution(requestToken, player);
+
+            return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
     }
 }

@@ -14,12 +14,12 @@ namespace CoachBot.Modules.Matchmaker
 {
     public class MatchmakingModule : InteractiveBase
     {
-        private readonly DiscordMatchService _channelMatchService;
-        private readonly DiscordServerService _channelServerService;
+        private readonly MatchmakingService _channelMatchService;
+        private readonly ServerManagementService _channelServerService;
         private readonly InteractiveService _interactiveService;
         private bool sendUpdatedTeams = true;
 
-        public MatchmakingModule(DiscordMatchService channelMatchService, DiscordServerService channelServerService, InteractiveService interactiveService)
+        public MatchmakingModule(MatchmakingService channelMatchService, ServerManagementService channelServerService, InteractiveService interactiveService)
         {
             _channelMatchService = channelMatchService;
             _channelServerService = channelServerService;
@@ -266,43 +266,58 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!requestsub")]
         [RequireChannelConfigured]
-        public async Task CallSubAsync()
+        public async Task RequestSubAsync()
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: Please provide a server id & required position, e.g. **!requestsub 3 LW**").WithCurrentTimestamp().Build());
             this.sendUpdatedTeams = false;
         }
 
-        [Command("!requestsub", RunMode = RunMode.Async)]
+        [Command("!requestsub")]
         [RequireChannelConfigured]
-        public async Task VsAsync(int serverId, [Remainder]string positionName = null)
-        {
-            
+        public async Task RequestSubAsync(int serverId, [Remainder]string positionName = null)
+        {            
             if (_channelServerService.ValidateServer(Context.Channel.Id, serverId))
             {
-                var ticks = DateTime.Now.Ticks.ToString().GetHashCode().ToString("x");
-                await ReplyAsync("@here");
-                var messageContents = $"A substitute{(string.IsNullOrEmpty(positionName) ? "" : " **" + positionName + "**")} is required urgently. Type **!acceptsub {ticks}** to sub in.";
-                var message = await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed(":bell: " + messageContents));
-
-                var acceptSubCriterion = new EnsureMatchCommandCriterion($"!acceptsub {ticks}") as ICriterion<SocketMessage>;
-                var subResponse = await NextMessageAsync(acceptSubCriterion, timeout: new TimeSpan(0, 10, 0));
-                if (subResponse != null)
-                {
-                    var response = _channelMatchService.MakeSub(Context.Message.Channel.Id, serverId, subResponse.Author);
-                    await ReplyAsync("", embed: response);
-                    //await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed($":repeat: {subResponse.Author.Mention} comes off the bench on {"));
-                    await message.ModifyAsync(m => m.Embed = EmbedTools.GenerateSimpleEmbed($":no_bell: ~~{messageContents}~~"));
-                }
-                else
-                {
-                    await ReplyAsync($":timer: Your substitution search has timed out, {message.Author.Mention}");
-                }
-            } 
+                await ReplyAsync("", embed: _channelMatchService.RequestSub(Context.Channel.Id, serverId, positionName, Context.Message.Author));
+            }
             else
             {
-                await ReplyAsync($":no_entry: Please provide a valid server");
+                await ReplyAsync($":no_entry: Please provide a valid server, {Context.Message.Author.Mention}");
             }
             
+            this.sendUpdatedTeams = false;
+        }
+
+        [Command("!acceptsub")]
+        [RequireChannelConfigured]
+        public async Task AcceptSubRequestAsync(string subToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(subToken))
+            {
+                await ReplyAsync($":no_entry: Please provide the sub request token, e.g. `!acceptsub dea53af`");
+            }
+            else
+            {
+                await ReplyAsync("", embed: _channelMatchService.AcceptSubRequest(subToken, Context.Message.Author));
+            }
+
+            this.sendUpdatedTeams = false;
+        }
+
+        [Command("!cancelsub")]
+        [Alias("!cancelrequestsub", "!cancelsubrequest")]
+        [RequireChannelConfigured]
+        public async Task CancelSubRequestAsync(string subToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(subToken))
+            {
+                await ReplyAsync($":no_entry: Please provide the sub request token, e.g. `!acceptsub dea53af`");
+            }
+            else
+            {
+                await ReplyAsync("", embed: _channelMatchService.CancelSubRequest(subToken, Context.Message.Author));
+            }
+
             this.sendUpdatedTeams = false;
         }
     }

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace CoachBot.Services
 {
-    public class DiscordServerService
+    public class ServerManagementService
     {
         private readonly ServerService _serverService;
         private readonly ChannelService _channelService;
         private readonly DiscordSocketClient _discordClient;
 
-        public DiscordServerService(ServerService serverService, ChannelService channelService, DiscordSocketClient discordClient)
+        public ServerManagementService(ServerService serverService, ChannelService channelService, DiscordSocketClient discordClient)
         {
             _serverService = serverService;
             _channelService = channelService;

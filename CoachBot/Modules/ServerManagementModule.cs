@@ -10,9 +10,9 @@ namespace CoachBot.Modules
     {
         private readonly ServerService _serverService;
         private readonly ChannelService _channelService;
-        private readonly DiscordServerService _discordServerService;
+        private readonly ServerManagementService _discordServerService;
 
-        public ServerManagementModule(ServerService serverService, ChannelService channelService, DiscordServerService discordServerService)
+        public ServerManagementModule(ServerService serverService, ChannelService channelService, ServerManagementService discordServerService)
         {
             _serverService = serverService;
             _channelService = channelService;

@@ -46,19 +46,45 @@ namespace CoachBot.Domain.Model
                 if (TeamHome != null && TeamHome.PlayerTeamPositions != null)
                 {
                     players.AddRange(TeamHome.PlayerTeamPositions.Select(ptp => ptp.Player));
-                    if (TeamHome.PlayerSubstitutes != null)
-                    {
-                        players.AddRange(TeamHome.PlayerSubstitutes.Select(ps => ps.Player));
-                    }
                 }
                 if (TeamAway != null && TeamAway.PlayerTeamPositions != null)
                 {
                     players.AddRange(TeamAway.PlayerTeamPositions.Select(ptp => ptp.Player));
-                    if (TeamAway.PlayerSubstitutes != null)
-                    {
-                        players.AddRange(TeamAway.PlayerSubstitutes.Select(ps => ps.Player));
-                    }
                 }
+
+                return players;
+            }
+        }
+
+        [JsonIgnore]
+        [NotMapped]
+        public List<Player> SignedSubstitutes
+        {
+            get
+            {
+                var players = new List<Player>();
+                if (TeamHome != null && TeamHome.PlayerSubstitutes != null)
+                {
+                    players.AddRange(TeamHome.PlayerSubstitutes.Select(ps => ps.Player));
+                }
+                if (TeamAway != null && TeamAway.PlayerSubstitutes != null)
+                {
+                    players.AddRange(TeamAway.PlayerSubstitutes.Select(ps => ps.Player));
+                }
+
+                return players;
+            }
+        }
+
+        [JsonIgnore]
+        [NotMapped]
+        public List<Player> SignedPlayersAndSubs
+        {
+            get
+            {
+                var players = new List<Player>();
+                players.AddRange(SignedPlayers);
+                players.AddRange(SignedSubstitutes);
 
                 return players;
             }

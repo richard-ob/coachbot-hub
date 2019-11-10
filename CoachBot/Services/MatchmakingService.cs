@@ -20,6 +20,7 @@ namespace CoachBot.Services
         private readonly SearchService _searchService;
         private readonly PlayerService _playerService;
         private readonly SubstitutionService _substitutionService;
+        private readonly CacheService _cacheService;
         private readonly DiscordSocketClient _discordClient;
 
         public MatchmakingService(
@@ -29,6 +30,7 @@ namespace CoachBot.Services
             SearchService searchService,
             PlayerService playerService,
             SubstitutionService substitutionService,
+            CacheService cacheService,
             DiscordSocketClient discordClient)
         {
             _matchService = matchService;
@@ -37,6 +39,7 @@ namespace CoachBot.Services
             _searchService = searchService;
             _playerService = playerService;
             _substitutionService = substitutionService;
+            _cacheService = cacheService;
             _discordClient = discordClient;
         }
 
@@ -44,6 +47,8 @@ namespace CoachBot.Services
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var response = _matchService.Create(channel.Id);
+
+            ResetLastMentionTime(channelId);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
@@ -94,6 +99,8 @@ namespace CoachBot.Services
         {
             var response = _matchService.RemoveTeamFromMatch(channelId);
 
+            ResetLastMentionTime(channelId);
+
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
@@ -105,6 +112,8 @@ namespace CoachBot.Services
                 TeamType = TeamType.Away
             };
             var response = _matchService.AddTeamToMatch(channelId, team);
+
+            ResetLastMentionTime(channelId);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
@@ -129,7 +138,9 @@ namespace CoachBot.Services
 
             _matchService.ReadyMatch(channelId, server.Id);
             var discordChannel = _discordClient.GetChannel(channelId) as ITextChannel;
-            discordChannel.SendMessageAsync(sb.ToString());            
+            discordChannel.SendMessageAsync(sb.ToString());
+
+            ResetLastMentionTime(channelId);
         }
 
         public List<Embed> GenerateTeamList(ulong channelId)
@@ -241,7 +252,7 @@ namespace CoachBot.Services
             foreach(var mix in mixChallenges)
             {
                 var match = _matchService.GetCurrentMatchForChannel(mix.DiscordChannelId);
-                embedBuilder.AddField($"{mix.BadgeEmote ?? ":busts_in_silhouette:"} {mix.Name} [{mix.TeamCode}]", $"*Always searching - {match.SignedPlayers.Count} players currently signed*");
+                embedBuilder.AddField($"{mix.BadgeEmote ?? ":busts_in_silhouette:"} {mix.Name} [{mix.TeamCode}]", $"*Always searching - {match.SignedPlayersAndSubs.Count} players currently signed*");
             }
 
             if (!searches.Any() && !mixChallenges.Any()) embedBuilder.AddField(":zzz: There are no teams currently available to challenge.", "*To start a search for your team, type `!search`*");
@@ -309,6 +320,37 @@ namespace CoachBot.Services
             var response = _substitutionService.CancelSubstitution(requestToken, player);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
+        }
+
+        public Embed GenerateRecentMatchList(ulong channelId)
+        {
+            var recentMatches = _matchService.GetMatchesForChannel(channelId, true, 10);
+            var embedBuilder = new EmbedBuilder().WithTitle(":calendar_spiral: Recent Matches");
+            if (recentMatches == null || !recentMatches.Any()) return new EmbedBuilder().WithDescription(":information_source: No matches have been played yet. Chill.").Build();
+            foreach (var recentMatch in recentMatches)
+            {
+                var sb = new StringBuilder();
+                foreach (var player in recentMatch.SignedPlayers)
+                {
+                    if (recentMatch.SignedPlayers.Last() != player)
+                    {
+                        sb.Append($"{player.Name}, ");
+                    }
+                    else
+                    {
+                        sb.Append($"{player.Name}");
+                    }
+
+                }
+                embedBuilder.AddField($"**{recentMatch.TeamHome.Channel.TeamCode}** vs **{recentMatch.TeamAway.Channel.TeamCode}** - {recentMatch.ReadiedDate.ToString()}", sb.ToString());
+            }
+
+            return embedBuilder.Build();
+        }
+
+        private void ResetLastMentionTime(ulong channelId)
+        {
+            _cacheService.Remove(CacheService.CacheItemType.LastMention, channelId.ToString());
         }
     }
 }

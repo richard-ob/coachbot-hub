@@ -70,8 +70,8 @@ namespace CoachBot.Domain.Services
                 position = channel.ChannelPositions.Select(cp => cp.Position).FirstOrDefault(p => p.Name.ToUpper() == positionName.ToUpper());
             }
 
-            if (player.DiscordUserId != null && match.SignedPlayers.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{player.DisplayName} is already signed");
-            if (match.SignedPlayers.Any(sp => sp.Name == player.Name)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{player.DisplayName} is already signed");
+            if (player.DiscordUserId != null && match.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{player.DisplayName} is already signed");
+            if (match.SignedPlayersAndSubs.Any(sp => sp.Name == player.Name)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{player.DisplayName} is already signed");
             if (position is null && positionName != null) return new ServiceResponse(ServiceResponseStatus.Failure, $"{positionName} is already filled");
             if (team != null && team.OccupiedPositions.Any(op => op == position)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{positionName} is already filled");
             if (position is null && positionName == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There are no outfield positions available");
@@ -92,8 +92,8 @@ namespace CoachBot.Domain.Services
         {
             var match = GetCurrentMatchForChannel(channelId);
             if (match.TeamHome.PlayerSubstitutes is null) match.TeamHome.PlayerSubstitutes = new List<PlayerTeamSubstitute>();
-            if (match.SignedPlayers.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{player.DisplayName} is already signed");
-            if (!match.SignedPlayers.Any()) return new ServiceResponse(ServiceResponseStatus.Failure, $"All outfield positions are still available");
+            if (match.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{player.DisplayName} is already signed");
+            if (!match.SignedPlayersAndSubs.Any()) return new ServiceResponse(ServiceResponseStatus.Failure, $"All outfield positions are still available");
 
             var playerTeamSubstitute = new PlayerTeamSubstitute()
             {
@@ -174,7 +174,7 @@ namespace CoachBot.Domain.Services
         public ServiceResponse RemovePlayerFromMatch(ulong channelId, Player player)
         {
             var match = GetCurrentMatchForChannel(channelId);
-            if (match.SignedPlayers.Any(sp => sp.DiscordUserId == player.DiscordUserId))
+            if (match.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId))
             {
                 RemovePlayerFromTeam(match.TeamHome, player);
                 RemovePlayerFromTeam(match.TeamAway, player);
@@ -190,7 +190,7 @@ namespace CoachBot.Domain.Services
             var server = _serverService.GetServer(serverId);
 
             if (match.TeamAway == null || match.TeamHome == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There is no opposition set");
-            if (match.SignedPlayers.Count < channel.ChannelPositions.Count) return new ServiceResponse(ServiceResponseStatus.Failure, $"All positions must be filled"); ;
+            if (match.SignedPlayersAndSubs.Count < channel.ChannelPositions.Count) return new ServiceResponse(ServiceResponseStatus.Failure, $"All positions must be filled"); ;
             if (server == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"A valid server must be provided");
             if (server.RegionId != channel.RegionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server is not in this channels region");
 
@@ -265,6 +265,35 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(ps => ps.Player)
                 .OrderByDescending(m => m.CreatedDate)
                 .First(m => m.TeamHome.Channel.DiscordChannelId == channelId);
+        }
+
+        public List<Match> GetMatchesForChannel(ulong channelId, bool readiedMatchesOnly = false, int limit = 10)
+        {
+            return _coachBotContext.Matches
+               .Include(m => m.TeamHome)
+                   .ThenInclude(th => th.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Player)
+               .Include(m => m.TeamHome)
+                   .ThenInclude(th => th.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Position)
+               .Include(m => m.TeamHome)
+                   .ThenInclude(ta => ta.PlayerSubstitutes)
+                   .ThenInclude(ps => ps.Player)
+               .Include(m => m.TeamAway)
+                   .ThenInclude(ta => ta.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Player)
+               .Include(m => m.TeamAway)
+                   .ThenInclude(ta => ta.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Position)
+               .Include(m => m.TeamAway)
+                   .ThenInclude(ta => ta.PlayerSubstitutes)
+                   .ThenInclude(ps => ps.Player)
+               .Where(m => m.TeamHome.Channel.DiscordChannelId == channelId || m.TeamAway.Channel.DiscordChannelId == channelId)
+               .Where(m => !readiedMatchesOnly || m.ReadiedDate != null)
+               .Where(m => m.TeamAway.Channel != null)
+               .OrderByDescending(m => m.CreatedDate)
+               .Take(limit)
+               .ToList();
         }
 
         private void RemovePlayerFromTeam(Team team, Player player)

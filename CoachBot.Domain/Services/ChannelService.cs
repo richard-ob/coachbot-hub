@@ -84,6 +84,13 @@ namespace CoachBot.Domain.Services
             return owningGuild.Users.FirstOrDefault(u => u.Id == userId).GuildPermissions.Administrator;
         }
 
+        public bool ChannelHasPosition(ulong channelId, string position)
+        {
+            var channel = GetChannelByDiscordId(channelId);
+
+            return channel != null && channel.ChannelPositions.Any(cp => position.ToUpper().StartsWith(cp.Position.Name.ToUpper()));
+        }
+
         public Channel GetChannelByDiscordId(ulong id, bool withForeignKeys = true)
         {
             if (!withForeignKeys) return _dbContext.Channels.FirstOrDefault(c => c.DiscordChannelId == id);

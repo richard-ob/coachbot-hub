@@ -3,12 +3,10 @@ using System.Threading.Tasks;
 using CoachBot.Preconditions;
 using CoachBot.Services;
 using CoachBot.Model;
-using CoachBot.Tools;
 using Discord;
 using Discord.Addons.Interactive;
 using System;
-using CoachBot.Bot.Criteria;
-using Discord.WebSocket;
+using CoachBot.Tools;
 
 namespace CoachBot.Modules.Matchmaker
 {
@@ -16,14 +14,14 @@ namespace CoachBot.Modules.Matchmaker
     {
         private readonly MatchmakingService _channelMatchService;
         private readonly ServerManagementService _channelServerService;
-        private readonly InteractiveService _interactiveService;
+        private readonly CacheService _cacheService;
         private bool sendUpdatedTeams = true;
 
-        public MatchmakingModule(MatchmakingService channelMatchService, ServerManagementService channelServerService, InteractiveService interactiveService)
+        public MatchmakingModule(MatchmakingService channelMatchService, ServerManagementService channelServerService, CacheService cacheService)
         {
             _channelMatchService = channelMatchService;
             _channelServerService = channelServerService;
-            _interactiveService = interactiveService;
+            _cacheService = cacheService;
         }
 
         protected override void BeforeExecute(CommandInfo command)
@@ -195,7 +193,25 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task MentionHereAsync()
         {
-            await ReplyAsync("@here");
+            const int HERE_INTERVAL = 10;
+            var lastMention = _cacheService.Get(CacheService.CacheItemType.LastMention, Context.Channel.Id.ToString()) as DateTime?;
+            if (lastMention != null && lastMention.Value.AddMinutes(HERE_INTERVAL) > DateTime.Now)
+            {
+                var timeRemaining = lastMention.Value.AddMinutes(HERE_INTERVAL).Subtract(DateTime.Now).TotalMinutes;
+                if (timeRemaining >= 1)
+                {
+                    await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in {timeRemaining.ToString("0")} minutes."));
+                }
+                else
+                {
+                    await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in 1 minute."));
+                }
+            }
+            else
+            {
+                await ReplyAsync("@here");
+                _cacheService.Set(CacheService.CacheItemType.LastMention, Context.Channel.Id.ToString(), DateTime.Now);
+            }
         }
 
         [Command("!search")]
@@ -317,6 +333,14 @@ namespace CoachBot.Modules.Matchmaker
             {
                 await ReplyAsync("", embed: _channelMatchService.CancelSubRequest(subToken, Context.Message.Author));
             }
+
+            this.sendUpdatedTeams = false;
+        }
+
+        [Command("!recentmatches")]
+        public async Task RecentMatchesAsync()
+        {
+            await ReplyAsync("", embed: _channelMatchService.GenerateRecentMatchList(Context.Channel.Id));
 
             this.sendUpdatedTeams = false;
         }

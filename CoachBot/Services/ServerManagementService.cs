@@ -74,10 +74,8 @@ namespace CoachBot.Services
         public async Task ToggleSingleKeeper(int serverId, bool enable)
         {
             var server = _serverService.GetServer(serverId);
-            if (string.IsNullOrEmpty(server.RconPassword) || !server.Address.Contains(":"))
-            {
-                return;
-            }
+            if (server == null || string.IsNullOrEmpty(server.RconPassword) || !server.Address.Contains(":")) return;
+
             INetworkSocket socket = new RconSocket();
             RconMessenger messenger = new RconMessenger(socket);
             bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
@@ -89,6 +87,31 @@ namespace CoachBot.Services
             }
 
             return;
+        }
+
+        public Embed GetServerInfo(int serverId)
+        {
+            var server = _serverService.GetServer(serverId);
+            var gameServer = new GameServerQuery(server.Address);
+
+            if (gameServer != null)
+            {
+                var embedBuilder = new EmbedBuilder();
+                embedBuilder.AddField("Name", gameServer.Name);
+                embedBuilder.AddField("Address", $"steam://{server.Address}");
+                embedBuilder.AddField("Type", gameServer.ServerType);
+                embedBuilder.AddField("Players", $"{gameServer.Players}/{gameServer.MaxPlayers}");
+                embedBuilder.AddField("Map", gameServer.Map);
+                embedBuilder.AddField("OS", gameServer.Environment.ToString() == "Windows" ? "<:windows:642830761732341771>" : "<:linux:642830761891987497>");
+                embedBuilder.AddField("VAC", gameServer.VAC);
+                embedBuilder.AddField("Game", gameServer.Game);
+
+                return embedBuilder.Build();
+            }
+            else
+            {
+                return EmbedTools.GenerateSimpleEmbed("");
+            }
         }
     }
 }

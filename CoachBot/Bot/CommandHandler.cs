@@ -7,12 +7,9 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using CoachBot.Services.Logging;
-using CoachBot.Services.Matchmaker;
 using Discord;
 using CoachBot.Services;
 using CoachBot.Domain.Services;
-using System.Linq;
-using CoachBot.Modules.Matchmaker;
 
 namespace CoachBot
 {
@@ -23,7 +20,8 @@ namespace CoachBot
         private readonly DiscordSocketClient _client;
         private readonly ILogger _logger;
         private readonly ChannelService _channelService;
-        private readonly MatchmakingService _MatchmakingService;
+        private readonly MatchmakingService _matchmakingService;
+        private readonly ConfigService _configService;
 
         public CommandHandler(IServiceProvider provider)
         {
@@ -35,7 +33,8 @@ namespace CoachBot
             _commands.Log += log.LogCommand;
             _logger = _provider.GetService<Logger>().ForContext<CommandService>();
             _channelService = _provider.GetService<ChannelService>();
-            _MatchmakingService = _provider.GetService<MatchmakingService>();
+            _matchmakingService = _provider.GetService<MatchmakingService>();
+            _configService = _provider.GetService<ConfigService>();
         }
 
         public async Task ConfigureAsync()
@@ -54,7 +53,6 @@ namespace CoachBot
             var context = new SocketCommandContext(_client, message);
             var result = await _commands.ExecuteAsync(context, argPos, _provider);
             var logMsg = $"[{message.Channel.Name} ({context.Guild.Name})] {message.Timestamp.ToString()}: @{message.Author.Username} {message.Content}";
-            var matchmakingChannel = _channelService.GetChannelByDiscordId(context.Channel.Id);
             Console.WriteLine(logMsg);
             _logger.Information(logMsg);
 
@@ -70,10 +68,13 @@ namespace CoachBot
             {
                 await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: Read Error: {reader.ErrorReason}").WithCurrentTimestamp().Build());
             }
-            else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand
-                     && matchmakingChannel.ChannelPositions.Any(cp => context.Message.Content.Substring(1).ToUpper().Contains(cp.Position.Name)))
+            else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand && _channelService.ChannelHasPosition(context.Channel.Id, context.Message.Content.Substring(1)))
             {
-                _MatchmakingService.AddPlayer(context.Message.Channel.Id, context.Message.Author, context.Message.Content.Substring(1).ToUpper());
+                await context.Channel.SendMessageAsync("", embed: _matchmakingService.AddPlayer(context.Message.Channel.Id, context.Message.Author, context.Message.Content.Substring(1).ToUpper()));
+                foreach (var teamEmbed in _matchmakingService.GenerateTeamList(context.Channel.Id))
+                {
+                    await context.Channel.SendMessageAsync("", embed: teamEmbed);
+                }
             }
             else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
             {
@@ -81,7 +82,13 @@ namespace CoachBot
             }
             else if (!result.IsSuccess)
             {
-                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: {result.ErrorReason}").WithCurrentTimestamp().Build());
+                var errorId = DateTime.Now.Ticks.ToString();
+                if (_client.GetChannel(_configService.Config.AuditChannelId) is ITextChannel auditChannel)
+                {
+                    await auditChannel.SendMessageAsync("", embed: new EmbedBuilder().WithTitle($"Error - {message.Channel.Name} [REF:{errorId}]").WithDescription($":exclamation: {result.ErrorReason} (`{context.Message.Author.Username}: {context.Message.Content}`)").WithCurrentTimestamp().Build());
+                }
+
+                await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: An error occurred. Please contact an admin, {context.Message.Author.Mention}. [REF:{errorId}]").WithCurrentTimestamp().Build());
             }
 
             _logger.Debug("Invoked {Command} in {Context} with {Result}", message, context.Channel, result);

@@ -14,6 +14,8 @@
 
         public ulong OwnerGuildId { get; set; }
 
+        public ulong AuditChannelId { get; set; } = 642879369366339635;
+
         public string SqlConnectionString { get; set; }
 
         public int ApiPort { get; set; }

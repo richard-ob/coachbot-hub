@@ -177,7 +177,16 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task ReadyAsync(int serverListItemId)
         {
-            _channelMatchService.ReadyMatch(Context.Message.Channel.Id, serverListItemId);
+            if (_channelServerService.ValidateServer(Context.Channel.Id, serverListItemId))
+            {
+                var success = _channelMatchService.ReadyMatch(Context.Message.Channel.Id, serverListItemId);
+                if (success) _channelServerService.SetupServer(serverListItemId, Context.Channel.Id);
+            }
+            else
+            {
+                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed(":no_entry: Invalid server ID provided"));
+            }
+
             this.sendUpdatedTeams = false;
         }
 

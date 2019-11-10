@@ -4,6 +4,7 @@ using CoachBot.Tools;
 using Discord;
 using Discord.WebSocket;
 using RconSharp;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,12 +14,14 @@ namespace CoachBot.Services
     {
         private readonly ServerService _serverService;
         private readonly ChannelService _channelService;
+        private readonly MatchService _matchService;
         private readonly DiscordSocketClient _discordClient;
 
-        public ServerManagementService(ServerService serverService, ChannelService channelService, DiscordSocketClient discordClient)
+        public ServerManagementService(ServerService serverService, ChannelService channelService, MatchService matchService, DiscordSocketClient discordClient)
         {
             _serverService = serverService;
             _channelService = channelService;
+            _matchService = matchService;
             _discordClient = discordClient;
         }
 
@@ -111,6 +114,53 @@ namespace CoachBot.Services
             else
             {
                 return EmbedTools.GenerateSimpleEmbed("");
+            }
+        }
+
+        public async void SetupServer(int serverId, ulong channelId)
+        {
+            var server = _serverService.GetServer(serverId);
+            var channel = _channelService.GetChannelByDiscordId(channelId);
+            var match = _matchService.GetCurrentMatchForChannel(channelId);
+            var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
+
+            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            {
+                try
+                {
+                    INetworkSocket socket = new Extensions.RconSocket();
+                    RconMessenger messenger = new RconMessenger(socket);
+                    bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                    bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                    if (authenticated)
+                    {
+                        var status = await messenger.ExecuteCommandAsync("status");
+                        if (int.Parse(status.Split("players :")[1].Split('(')[0]) < channel.ChannelPositions.Count)
+                        {
+                            await messenger.ExecuteCommandAsync($"exec {channel.ChannelPositions.Count}v{channel.ChannelPositions.Count}.cfg");
+                            if (match.TeamHome.PlayerTeamPositions.Any(p => p.Position.Name.ToUpper() == "GK"))
+                            {
+                                await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
+                            }
+                            else
+                            {
+                                await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
+                            }
+                            await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
+                            await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":stadium: The stadium has successfully been automatically set up").Build());
+                        }
+                        else
+                        {
+                            await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The selected server seems to be in use, as there are more than {channel.ChannelPositions.Count} on the server.").Build());
+                            return;
+                        }
+                    }
+                }
+                catch
+                {
+                    await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The server seems to be offline. Please choose another server and use the !ready command again.").Build());
+                    return;
+                }
             }
         }
     }

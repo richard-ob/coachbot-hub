@@ -1,4 +1,5 @@
-﻿using CoachBot.Domain.Services;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Factories;
 using CoachBot.Model;
@@ -118,29 +119,37 @@ namespace CoachBot.Services
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
-        public void ReadyMatch(ulong channelId, int serverListItemId)
+        public bool ReadyMatch(ulong channelId, int serverListItemId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var servers = _serverService.GetServersByRegion((int)channel.RegionId);
             var match = _matchService.GetCurrentMatchForChannel(channelId);
-
-            if (serverListItemId > servers.Count || serverListItemId < 1) return;
-
             var server = servers[serverListItemId];
-
-            var sb = new StringBuilder();
-            sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");
-            foreach (var playerTeamPosition in match.TeamHome.PlayerTeamPositions)
-            {
-                sb.Append($"{playerTeamPosition.Player.DiscordUserMention ?? playerTeamPosition.Player.Name} ");
-            }
-            sb.AppendLine();
-
-            _matchService.ReadyMatch(channelId, server.Id);
             var discordChannel = _discordClient.GetChannel(channelId) as ITextChannel;
-            discordChannel.SendMessageAsync(sb.ToString());
 
-            ResetLastMentionTime(channelId);
+            var serviceResponse = _matchService.ReadyMatch(channelId, server.Id);
+
+            if (serviceResponse.Status != ServiceResponseStatus.Success)
+            {
+                discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbedFromServiceResponse(serviceResponse));
+
+                return false;
+            }
+            else
+            {
+                var sb = new StringBuilder();
+
+                sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");
+                foreach (var playerTeamPosition in match.TeamHome.PlayerTeamPositions)
+                {
+                    sb.Append($"{playerTeamPosition.Player.DiscordUserMention ?? playerTeamPosition.Player.Name} ");
+                }
+                sb.AppendLine();
+
+                discordChannel.SendMessageAsync(sb.ToString());
+
+                return true;
+            }
         }
 
         public List<Embed> GenerateTeamList(ulong channelId)

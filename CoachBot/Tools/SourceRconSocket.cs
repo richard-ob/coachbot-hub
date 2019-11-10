@@ -89,6 +89,5 @@ namespace CoachBot.Extensions
                 _client = null;
             }
         }
-
     }
 }

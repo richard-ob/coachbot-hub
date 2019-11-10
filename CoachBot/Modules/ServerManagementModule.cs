@@ -73,5 +73,37 @@ namespace CoachBot.Modules
                 await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID provided"));
             }
         }
+
+        [Command("!maps")]
+        public async Task ListMapsAsync(int serverListItemId = 0)
+        {            
+            if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
+            {
+                var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
+                var server = _serverService.GetServersByRegion((int)channel.RegionId)[serverListItemId - 1];
+                var response = await _discordServerService.GenerateMapListAsync(server.Id);
+                await ReplyAsync("", embed: response);
+            }
+            else
+            {
+                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID provided. Use `!servers` to see the full server list."));
+            }
+        }
+
+        [Command("!changemap")]
+        public async Task ChangeMapsAsync(int serverListItemId = 0, string mapName = "")
+        {
+            if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId) && !string.IsNullOrWhiteSpace(mapName))
+            {
+                var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
+                var server = _serverService.GetServersByRegion((int)channel.RegionId)[serverListItemId - 1];
+                var response = await _discordServerService.ChangeMapAsync(server.Id, mapName);
+                await ReplyAsync("", embed: response);
+            }
+            else
+            {
+                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID or map name provided. Use `!servers` to see the full server list or `!maps <server id>` for the full map list."));
+            }
+        }
     }
 }

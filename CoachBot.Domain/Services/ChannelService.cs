@@ -58,7 +58,7 @@ namespace CoachBot.Domain.Services
                 var userIsAdmin = guild.Users.FirstOrDefault(u => u.Id == userId)?.GuildPermissions.Administrator ?? false;
                 if (userIsAdmin || (!hasAdmin && guild.Users.Any(u => u.Id == userId)) || userId == 166153339610857472)
                 {
-                    foreach (var channel in guild.Channels)
+                    foreach (var channel in guild.TextChannels)
                     {
                         var existingChannel = GetChannelByDiscordId(channel.Id);
                         if (existingChannel != null && !unconfiguredChannels)
@@ -69,7 +69,18 @@ namespace CoachBot.Domain.Services
                         }
                         if (existingChannel is null && unconfiguredChannels)
                         {
-                            channels.Add(new Channel() { DiscordChannelId = channel.Id });
+                            var unconfiguredChannel = 
+                                new Channel()
+                                {
+                                    DiscordChannelId = channel.Id,
+                                    Name = channel.Name,
+                                    Guild = new Guild()
+                                    {
+                                        Name = channel.Guild.Name,
+                                        DiscordGuildId = channel.Guild.Id
+                                    }
+                                };
+                            channels.Add(unconfiguredChannel);
                         }
                     }
                 }

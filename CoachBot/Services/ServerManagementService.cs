@@ -99,7 +99,7 @@ namespace CoachBot.Services
             var server = _serverService.GetServer(serverId);
             var gameServer = new GameServerQuery(server.Address);
 
-            if (gameServer != null)
+            if (gameServer != null && gameServer.Game != null)
             {
                 var embedBuilder = new EmbedBuilder();
                 embedBuilder.AddField("Name", gameServer.Name);
@@ -137,9 +137,9 @@ namespace CoachBot.Services
             }
         }
 
-        public async Task<Embed> ChangeMapAsync(int serverId, string mapName)
+        public async Task<Embed> ChangeMapAsync(int serverListItemId, ulong channelId, string mapName)
         {
-            var server = _serverService.GetServer(serverId);
+            var server = GetServerFromServerListItemId(serverListItemId, channelId);
             string maps = await GetMapListAsync(server);
 
             if (!maps.Contains(mapName) || mapName.Length < 6)
@@ -198,16 +198,15 @@ namespace CoachBot.Services
             return "";
         }
 
-        public async Task<bool> SetupServer(int serverId, ulong channelId)
+        public async Task<bool> ValidateServerAvailability(int serverListItemId, ulong channelId)
         {
-            var server = _serverService.GetServer(serverId);
+            var server = GetServerFromServerListItemId(serverListItemId, channelId);
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var match = _matchService.GetCurrentMatchForChannel(channelId);
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
             var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
-            
             var gameServerQuery = new GameServerQuery(server.Address);
-            if (gameServerQuery == null)
+
+            if (gameServerQuery == null || gameServerQuery.Game == null)
             {
                 await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The server seems to be offline. Please choose another server and use the !ready command again.").Build());
 
@@ -229,6 +228,17 @@ namespace CoachBot.Services
 
                 return false;
             }
+
+            return true;
+        }
+
+        public async void PrepareServer(int serverListItemId, ulong channelId)
+        {
+            var server = GetServerFromServerListItemId(serverListItemId, channelId);
+            var channel = _channelService.GetChannelByDiscordId(channelId);
+            var match = _matchService.GetCurrentMatchForChannel(channelId);
+            var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
+            var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
 
             if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
             {
@@ -256,13 +266,17 @@ namespace CoachBot.Services
                 }
                 catch
                 {
-                    await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The server seems to be offline. Please choose another server and use the !ready command again.").Build());
-
-                    return false;
+                    await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The server could not be auto-configured. You may need to set the server up manually.").Build());
                 }
             }
+        }
 
-            return true;
+        public Server GetServerFromServerListItemId(int serverListItemId, ulong channelId)
+        {
+            var channel = _channelService.GetChannelByDiscordId(channelId, false);
+            var servers = _serverService.GetServersByRegion((int)channel.RegionId);
+
+            return servers[serverListItemId - 1];
         }
     }
 }

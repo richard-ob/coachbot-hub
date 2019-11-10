@@ -179,8 +179,15 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (_channelServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
-                var success = _channelMatchService.ReadyMatch(Context.Message.Channel.Id, serverListItemId);
-                if (success) _channelServerService.SetupServer(serverListItemId, Context.Channel.Id);
+                var serverAvailable = await _channelServerService.ValidateServerAvailability(serverListItemId, Context.Message.Channel.Id);
+                if (serverAvailable)
+                {
+                    var success = _channelMatchService.ReadyMatch(Context.Message.Channel.Id, serverListItemId);
+                    if (success)
+                    {
+                        _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id);
+                    }
+                }
             }
             else
             {
@@ -240,6 +247,7 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!challenge")]
+        [Alias("!vs")]
         [RequireChannelConfigured]
         public async Task ChallengeAsync()
         {
@@ -248,6 +256,7 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!challenge")]
+        [Alias("!vs")]
         [RequireChannelConfigured]
         public async Task ChallengeAsync(string teamCode)
         {

@@ -79,8 +79,7 @@ namespace CoachBot.Modules
         {            
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
-                var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
-                var server = _serverService.GetServersByRegion((int)channel.RegionId)[serverListItemId - 1];
+                var server = _discordServerService.GetServerFromServerListItemId(serverListItemId, Context.Message.Channel.Id);
                 var response = await _discordServerService.GenerateMapListAsync(server.Id);
                 await ReplyAsync("", embed: response);
             }
@@ -95,9 +94,7 @@ namespace CoachBot.Modules
         {
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId) && !string.IsNullOrWhiteSpace(mapName))
             {
-                var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
-                var server = _serverService.GetServersByRegion((int)channel.RegionId)[serverListItemId - 1];
-                var response = await _discordServerService.ChangeMapAsync(server.Id, mapName);
+                var response = await _discordServerService.ChangeMapAsync(serverListItemId, Context.Channel.Id, mapName);
                 await ReplyAsync("", embed: response);
             }
             else

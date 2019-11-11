@@ -13,6 +13,14 @@ namespace CoachBot.Tools
                 .Build(); 
         }
 
+        public static Embed GenerateSimpleEmbed(string content, string title)
+        {
+            return new EmbedBuilder()
+                .WithDescription(content)
+                .WithTitle(title)
+                .Build();
+        }
+
         public static Embed GenerateEmbedFromServiceResponse(ServiceResponse serviceResponse)
         {
             var message = new StringBuilder();

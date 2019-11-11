@@ -7,6 +7,7 @@ using Discord.WebSocket;
 using RconSharp;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CoachBot.Services
@@ -198,6 +199,76 @@ namespace CoachBot.Services
             return "";
         }
 
+        public async Task<Embed> GenerateKitListAsync(int serverListItemId, ulong channelId)
+        {
+            var server = GetServerFromServerListItemId(serverListItemId, channelId);
+
+            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            {
+                try
+                {
+                    string kits = "";
+                    INetworkSocket socket = new Extensions.RconSocket();
+                    RconMessenger messenger = new RconMessenger(socket);
+                    bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                    bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                    if (authenticated)
+                    {
+                        kits = await messenger.ExecuteCommandAsync("mp_teamkits");
+                    }
+                    messenger.CloseConnection();
+
+                    Regex regex = new Regex(@"[\d]+   [A-Za-z]+");
+                    StringBuilder sb = new StringBuilder();
+
+                    foreach (var match in regex.Matches(kits))
+                    {
+                        sb.AppendLine("`" + match.ToString()).Replace("   ", "` ");
+                    }
+
+                    return EmbedTools.GenerateSimpleEmbed(sb.ToString(), ":shirt: Kits (" + server.Name + ")");
+                }
+                catch
+                {
+                    return EmbedTools.GenerateSimpleEmbed("An error occurred");
+                }
+            }
+            else
+            {
+                return EmbedTools.GenerateSimpleEmbed("This server is not configured for server management");
+            }
+        }
+
+        public async void ChangeKitsAsync(int serverListItemId, ulong channelId, IUser user, int homeKitId, int awayKitId)
+        {
+            var server = GetServerFromServerListItemId(serverListItemId, channelId);
+            var channel = _channelService.GetChannelByDiscordId(channelId);
+            var match = _matchService.GetCurrentMatchForChannel(channelId);
+            var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
+
+            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            {
+                try
+                {
+                    INetworkSocket socket = new Extensions.RconSocket();
+                    RconMessenger messenger = new RconMessenger(socket);
+                    bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                    bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                    if (authenticated)
+                    {
+                        await messenger.ExecuteCommandAsync($"exec mp_teamkits {homeKitId} {awayKitId}");
+                        await messenger.ExecuteCommandAsync($"say [Coach] Kits set from Discord by {user.Username}");
+                        await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":stadium: The kits have been changed successfully").Build());
+                    }
+                    messenger.CloseConnection();
+                }
+                catch
+                {
+                    await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The kits could not be set, {user.Mention}").Build());
+                }
+            }
+        }
+
         public async Task<bool> ValidateServerAvailability(int serverListItemId, ulong channelId)
         {
             var server = GetServerFromServerListItemId(serverListItemId, channelId);
@@ -267,6 +338,37 @@ namespace CoachBot.Services
                 catch
                 {
                     await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The server could not be auto-configured. You may need to set the server up manually.").Build());
+                }
+            }
+        }
+
+        public async void ExecConfigAsync(int serverListItemId, ulong channelId, IUser user)
+        {
+            var server = GetServerFromServerListItemId(serverListItemId, channelId);
+            var channel = _channelService.GetChannelByDiscordId(channelId);
+            var match = _matchService.GetCurrentMatchForChannel(channelId);
+            var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
+            var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
+
+            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            {
+                try
+                {
+                    INetworkSocket socket = new Extensions.RconSocket();
+                    RconMessenger messenger = new RconMessenger(socket);
+                    bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                    bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                    if (authenticated)
+                    {
+                        await messenger.ExecuteCommandAsync($"exec {channel.ChannelPositions.Count}v{channel.ChannelPositions.Count}.cfg");
+                        await messenger.ExecuteCommandAsync($"say [Coach] match config execution triggered from Discord by {user.Username}");
+                        await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":stadium: The stadium has successfully been automatically set up").Build());
+                    }
+                    messenger.CloseConnection();
+                }
+                catch
+                {
+                    await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: The server config could not be executed.").Build());
                 }
             }
         }

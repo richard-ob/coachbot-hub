@@ -89,6 +89,20 @@ namespace CoachBot.Modules
             }
         }
 
+        [Command("!kits")]
+        public async Task ListKitsAsync(int serverListItemId = 0)
+        {
+            if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
+            {
+                var response = await _discordServerService.GenerateKitListAsync(serverListItemId, Context.Channel.Id);
+                await ReplyAsync("", embed: response);
+            }
+            else
+            {
+                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID provided. Use `!servers` to see the full server list."));
+            }
+        }
+
         [Command("!changemap")]
         public async Task ChangeMapsAsync(int serverListItemId = 0, string mapName = "")
         {
@@ -100,6 +114,32 @@ namespace CoachBot.Modules
             else
             {
                 await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID or map name provided. Use `!servers` to see the full server list or `!maps <server id>` for the full map list."));
+            }
+        }
+
+        [Command("!execconfig")]
+        public async Task ExecConfigAsync(int serverListItemId = 0)
+        {
+            if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
+            {
+                _discordServerService.ExecConfigAsync(serverListItemId, Context.Channel.Id, Context.Message.Author);
+            }
+            else
+            {
+                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID or map name provided. Use `!servers` to see the full server list or `!maps <server id>` for the full map list."));
+            }
+        }
+
+        [Command("!changekits")]
+        public async Task ChangeKitsAsync(int serverListItemId = 0, int homeKitId = 0, int awayKitId = 0)
+        {
+            if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId) && homeKitId > 0 && awayKitId > 0)
+            {
+                _discordServerService.ChangeKitsAsync(serverListItemId, Context.Channel.Id, Context.Message.Author, homeKitId, awayKitId);
+            }
+            else
+            {
+                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID or kit ID provided. Use `!servers` to see the full server list or `!kits <server id>` for the full kit list."));
             }
         }
     }

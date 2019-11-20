@@ -3,11 +3,7 @@ using CoachBot.Domain.Model;
 using CoachBot.Model;
 using Discord;
 using Discord.WebSocket;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CoachBot.Domain.Services
 {

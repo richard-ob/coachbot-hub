@@ -174,13 +174,31 @@ namespace CoachBot.Domain.Services
         public ServiceResponse RemovePlayerFromMatch(ulong channelId, Player player)
         {
             var match = GetCurrentMatchForChannel(channelId);
-            if (match.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId))
+
+            if (match.TeamHome.PlayerTeamPositions.Any(ptp => ptp.Player.DiscordUserId == player.DiscordUserId))
             {
-                RemovePlayerFromTeam(match.TeamHome, player);
-                RemovePlayerFromTeam(match.TeamAway, player);
+                var removedPlayer = RemovePlayerFromTeam(match.TeamHome, player);
+                if (match.TeamHome.PlayerSubstitutes.Any())
+                {
+                    var substitute = ReplaceWithSubstitute(removedPlayer.Position, match.TeamHome);
+                    return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Substituted **{player.DisplayName}** with **{substitute.DisplayName}**");
+                }
+            }
+            else if (match.TeamAway.PlayerTeamPositions.Any(ptp => ptp.Player.DiscordUserId == player.DiscordUserId))
+            {
+                var removedPlayer = RemovePlayerFromTeam(match.TeamHome, player);
+                if (match.TeamAway.PlayerSubstitutes.Any())
+                {
+                    var substitute = ReplaceWithSubstitute(removedPlayer.Position, match.TeamAway);
+                    return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Substituted **{player.DisplayName}** with **{substitute.DisplayName}**");
+                }
+            }
+            else
+            {
+                return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is not signed");
             }
 
-            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed {player.DisplayName}");
+            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed **{player.DisplayName}**");
         }
 
         public ServiceResponse ReadyMatch(ulong channelId, int serverId)
@@ -252,6 +270,9 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(th => th.PlayerTeamPositions)
                     .ThenInclude(ptp => ptp.Position)
                 .Include(m => m.TeamHome)
+                   .ThenInclude(th => th.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Team)
+                .Include(m => m.TeamHome)
                     .ThenInclude(ta => ta.PlayerSubstitutes)
                     .ThenInclude(ps => ps.Player)
                 .Include(m => m.TeamAway)
@@ -260,6 +281,9 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.TeamAway)
                     .ThenInclude(ta => ta.PlayerTeamPositions)
                     .ThenInclude(ptp => ptp.Position)
+                .Include(m => m.TeamAway)
+                   .ThenInclude(th => th.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Team)
                 .Include(m => m.TeamAway)
                     .ThenInclude(ta => ta.PlayerSubstitutes)
                     .ThenInclude(ps => ps.Player)
@@ -296,16 +320,16 @@ namespace CoachBot.Domain.Services
                .ToList();
         }
 
-        private void RemovePlayerFromTeam(Team team, Player player)
+        private PlayerTeamPosition RemovePlayerFromTeam(Team team, Player player)
         {
-            if (team == null) return;
-
-            var playerTeamPosition = team.PlayerTeamPositions.FirstOrDefault(ptp => ptp.Player.DiscordUserId == player.DiscordUserId);
+            var playerTeamPosition = team?.PlayerTeamPositions.FirstOrDefault(ptp => ptp.Player.DiscordUserId == player.DiscordUserId);
             if (playerTeamPosition != null)
             {
                 team.PlayerTeamPositions.Remove(playerTeamPosition);
                 _coachBotContext.SaveChanges();
             }
+
+            return playerTeamPosition;
         }
 
         private void RemovePlayerSubstituteFromTeam(Team team, Player player)
@@ -320,5 +344,17 @@ namespace CoachBot.Domain.Services
             }
         }
 
+        private Player ReplaceWithSubstitute(Position position, Team team)
+        {
+            var sub = team.PlayerSubstitutes.Select(p => p.Player).FirstOrDefault();
+
+            if (sub != null)
+            {
+                RemovePlayerSubstituteFromTeam(team, sub);
+                AddPlayerToTeam(team.Channel.DiscordChannelId, sub, position.Name, team.TeamType);
+            }
+
+            return sub;
+        }
     }
 }

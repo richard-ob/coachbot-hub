@@ -176,16 +176,16 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!ready")]
         [RequireChannelConfigured]
         public async Task ReadyAsync(int serverListItemId)
-        {
+        {            
             if (_channelServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var serverAvailable = await _channelServerService.ValidateServerAvailability(serverListItemId, Context.Message.Channel.Id);
                 if (serverAvailable)
                 {
-                    var success = _channelMatchService.ReadyMatch(Context.Message.Channel.Id, serverListItemId);
+                    var success = _channelMatchService.ReadyMatch(Context.Message.Channel.Id, serverListItemId, out int readiedMatchId);
                     if (success)
                     {
-                        _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id);
+                        _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id, readiedMatchId);
                     }
                 }
             }

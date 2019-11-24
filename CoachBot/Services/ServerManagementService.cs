@@ -303,7 +303,7 @@ namespace CoachBot.Services
             return true;
         }
 
-        public async void PrepareServer(int serverListItemId, ulong channelId)
+        public async void PrepareServer(int serverListItemId, ulong channelId, int matchId)
         {
             var server = GetServerFromServerListItemId(serverListItemId, channelId);
             var channel = _channelService.GetChannelByDiscordId(channelId);
@@ -330,6 +330,9 @@ namespace CoachBot.Services
                         {
                             await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
                         }
+                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url " + "http://localhost/api/matchstatistic");
+                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_enabled 1");
+                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchId));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
                         await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(":stadium: The stadium has successfully been automatically set up").Build());
                     }
@@ -379,6 +382,13 @@ namespace CoachBot.Services
             var servers = _serverService.GetServersByRegion((int)channel.RegionId);
 
             return servers[serverListItemId - 1];
+        }
+
+        private string GenerateMatchDataAuthToken(Server server, int matchId)
+        {
+            var token = $"{server.Address}_{matchId}";
+            var encodedToken = System.Text.Encoding.UTF8.GetBytes(token);
+            return System.Convert.ToBase64String(encodedToken);
         }
     }
 }

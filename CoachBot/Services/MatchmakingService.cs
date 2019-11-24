@@ -119,15 +119,16 @@ namespace CoachBot.Services
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
-        public bool ReadyMatch(ulong channelId, int serverListItemId)
+        public bool ReadyMatch(ulong channelId, int serverListItemId, out int readiedMatchId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var servers = _serverService.GetServersByRegion((int)channel.RegionId);
             var match = _matchService.GetCurrentMatchForChannel(channelId);
-            var server = servers[serverListItemId];
+            var server = GetServerFromServerListItemId(serverListItemId, channelId);
             var discordChannel = _discordClient.GetChannel(channelId) as ITextChannel;
 
-            var serviceResponse = _matchService.ReadyMatch(channelId, server.Id);
+            var serviceResponse = _matchService.ReadyMatch(channelId, server.Id, out int matchId);
+            readiedMatchId = matchId;
 
             if (serviceResponse.Status != ServiceResponseStatus.Success)
             {
@@ -360,6 +361,14 @@ namespace CoachBot.Services
         private void ResetLastMentionTime(ulong channelId)
         {
             _cacheService.Remove(CacheService.CacheItemType.LastMention, channelId.ToString());
+        }
+
+        private Server GetServerFromServerListItemId(int serverListItemId, ulong channelId)
+        {
+            var channel = _channelService.GetChannelByDiscordId(channelId, false);
+            var servers = _serverService.GetServersByRegion((int)channel.RegionId);
+
+            return servers[serverListItemId - 1];
         }
     }
 }

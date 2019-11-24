@@ -201,11 +201,12 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed **{player.DisplayName}**");
         }
 
-        public ServiceResponse ReadyMatch(ulong channelId, int serverId)
+        public ServiceResponse ReadyMatch(ulong channelId, int serverId, out int matchId)
         {
             var match = GetCurrentMatchForChannel(channelId);
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var server = _serverService.GetServer(serverId);
+            matchId = match.Id;
 
             if (match.TeamAway == null || match.TeamHome == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There is no opposition set");
             if (match.SignedPlayersAndSubs.Count < channel.ChannelPositions.Count) return new ServiceResponse(ServiceResponseStatus.Failure, $"All positions must be filled"); ;

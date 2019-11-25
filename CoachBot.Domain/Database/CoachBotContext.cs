@@ -27,6 +27,7 @@ namespace CoachBot.Database
         public DbSet<Match> Matches { get; set; }
         public DbSet<SubstitutionRequest> SubstitutionRequests { get; set; }
         public DbSet<Search> Searches { get; set; }
+        public DbSet<MatchStatistics> MatchStatistics { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -52,6 +53,7 @@ namespace CoachBot.Database
 
             // Conversions
             modelBuilder.Entity<Search>().Property(p => p.DiscordMessageIds).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<ulong>>(v));
+            modelBuilder.Entity<MatchStatistics>().Property(p => p.MatchData).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<MatchData>(v));
         }
     }
 

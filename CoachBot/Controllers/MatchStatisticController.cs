@@ -1,9 +1,8 @@
-﻿using CoachBot.Models.Dto;
+﻿using CoachBot.Domain.Services;
+using CoachBot.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace CoachBot.Controllers
@@ -14,17 +13,42 @@ namespace CoachBot.Controllers
     [AllowAnonymous]
     public class MatchStatisticController : Controller
     {
-        public MatchStatisticController()
+        private readonly MatchService _matchService;
+        private readonly MatchStatisticsService _matchStatisticsService;
+
+        public MatchStatisticController(MatchService matchService, MatchStatisticsService matchStatisticsService)
         {
+            _matchService = matchService;
+            _matchStatisticsService = matchStatisticsService;
         }
 
         [HttpPost]
-        public void Submit(MatchStatisticsDto matchStatisticsDto)
-        {            
-            var bodyStream = new StreamReader(HttpContext.Request.Body);
-            bodyStream.BaseStream.Seek(0, SeekOrigin.Begin);
-            var bodyText = bodyStream.ReadToEnd();
-            int tmpint = 2;
+        public IActionResult Submit(MatchStatisticsDto matchStatisticsDto)
+        {
+            var base64EncodedBytes = Convert.FromBase64String(matchStatisticsDto.Access_Token);
+            var token = Encoding.UTF8.GetString(base64EncodedBytes);
+            var serverAddress = token.Split("_")[0];
+            var matchId = int.Parse(token.Split("_")[1]);
+            var match = _matchService.GetMatch(matchId);
+
+            if (match.Server.Address != serverAddress)
+            {
+                return BadRequest();
+            }
+
+            if (_matchStatisticsService.GetMatchStatistics(matchId) != null)
+            {
+                return BadRequest();
+            }
+
+            if (serverAddress.Split(":")[0] != Request.HttpContext.Connection.RemoteIpAddress.ToString())
+            {
+                return Unauthorized();
+            }
+
+            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchId);
+
+            return Ok();
         }
     }
 }

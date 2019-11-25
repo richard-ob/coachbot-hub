@@ -261,6 +261,37 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Team successfully unchallenged");
         }
 
+        public Match GetMatch(int matchId)
+        {
+            return _coachBotContext.Matches
+                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Player)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Position)
+                .Include(m => m.TeamHome)
+                   .ThenInclude(th => th.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Team)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(ta => ta.PlayerSubstitutes)
+                    .ThenInclude(ps => ps.Player)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Player)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Position)
+                .Include(m => m.TeamAway)
+                   .ThenInclude(th => th.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Team)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.PlayerSubstitutes)
+                    .ThenInclude(ps => ps.Player)
+                .Include(m => m.Server)
+                .Single(m => m.Id == matchId);
+        }
+
         public Match GetCurrentMatchForChannel(ulong channelId)
         {
             return _coachBotContext.Matches

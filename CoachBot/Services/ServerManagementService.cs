@@ -330,7 +330,7 @@ namespace CoachBot.Services
                         {
                             await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
                         }
-                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url " + "http://localhost/api/matchstatistic");
+                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + "http://localhost/api/matchstatistic" + "\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_enabled 1");
                         await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchId));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");

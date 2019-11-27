@@ -49,6 +49,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<Channel>().HasIndex(c => new { c.DiscordChannelId }).IsUnique(true);
             modelBuilder.Entity<Server>().HasIndex(s => new { s.Address }).IsUnique(true);
             modelBuilder.Entity<Region>().HasIndex(r => new { r.RegionName }).IsUnique(true);
+            modelBuilder.Entity<MatchStatistics>().HasIndex(ms => new { ms.MatchId }).IsUnique(true);
             modelBuilder.Entity<PlayerTeamPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.TeamId }).IsUnique();
 
             // Conversions

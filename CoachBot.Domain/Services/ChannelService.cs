@@ -27,7 +27,9 @@ namespace CoachBot.Domain.Services
             channel.UpdatedDate = DateTime.UtcNow;
             _dbContext.Update(channel);
 
-            var deletedPositions = _dbContext.ChannelPositions.Where(cp => !channel.ChannelPositions.Any(cpt => cpt.PositionId == cp.PositionId));
+            var deletedPositions = _dbContext.ChannelPositions
+                .Where(c => c.ChannelId == channel.Id)
+                .Where(cp => !channel.ChannelPositions.Any(cpt => cpt.PositionId == cp.PositionId));
             if (deletedPositions.Any()) _dbContext.ChannelPositions.RemoveRange(deletedPositions);
 
             _dbContext.SaveChanges();

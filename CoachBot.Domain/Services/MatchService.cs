@@ -14,13 +14,15 @@ namespace CoachBot.Domain.Services
         private readonly ChannelService _channelService;
         private readonly ServerService _serverService;
         private readonly SearchService _searchService;
+        private readonly DiscordNotificationService _discordNotificationService;
 
-        public MatchService(CoachBotContext coachBotContext, ChannelService channelService, ServerService serverService, SearchService searchService)
+        public MatchService(CoachBotContext coachBotContext, ChannelService channelService, ServerService serverService, SearchService searchService, DiscordNotificationService discordNotificationService)
         {
             _coachBotContext = coachBotContext;
             _channelService = channelService;
             _serverService = serverService;
             _searchService = searchService;
+            _discordNotificationService = discordNotificationService;
         }
 
         public ServiceResponse Create(int channelId, Team existingTeam = null)
@@ -216,8 +218,18 @@ namespace CoachBot.Domain.Services
             match.ServerId = server.Id;
             match.ReadiedDate = DateTime.UtcNow;
             _coachBotContext.SaveChanges();
-
             Create(channel.Id);
+
+            var otherPlayerSignings = _coachBotContext.PlayerTeamPositions
+                .Where(ptp => ptp.Team.Channel.DuplicityProtection == true)
+                .Where(ptp => match.SignedPlayers.Any(sp => sp.Id == ptp.PlayerId) && match.ReadiedDate == null);
+            _coachBotContext.PlayerTeamPositions.RemoveRange(otherPlayerSignings);         
+            _coachBotContext.SaveChanges();
+            foreach(var otherPlayerSigning in otherPlayerSignings)
+            {
+                var message = $":stadium: **{otherPlayerSigning.Player.DisplayName} has gone to play another match with {channel.DiscordChannelName} ({channel.Guild.Name})**";
+                _discordNotificationService.SendChannelMessage(otherPlayerSigning.Team.Channel.DiscordChannelId, message);
+            }            
 
             return new ServiceResponse(ServiceResponseStatus.Success, $"Match successfully readied");
         }

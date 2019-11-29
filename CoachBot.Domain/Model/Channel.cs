@@ -32,6 +32,8 @@ namespace CoachBot.Domain.Model
 
         public bool DisableSearchNotifications { get; set; }
 
+        public bool DuplicityProtection { get; set; }
+
         public bool Inactive { get; set; }
 
         public int GuildId { get; set; }

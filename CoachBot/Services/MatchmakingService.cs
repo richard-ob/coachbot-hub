@@ -22,6 +22,7 @@ namespace CoachBot.Services
         private readonly PlayerService _playerService;
         private readonly SubstitutionService _substitutionService;
         private readonly CacheService _cacheService;
+        private readonly DiscordNotificationService _discordNotificationService;
         private readonly DiscordSocketClient _discordClient;
 
         public MatchmakingService(
@@ -32,7 +33,8 @@ namespace CoachBot.Services
             PlayerService playerService,
             SubstitutionService substitutionService,
             CacheService cacheService,
-            DiscordSocketClient discordClient)
+            DiscordSocketClient discordClient,
+            DiscordNotificationService discordNotificationService)
         {
             _matchService = matchService;
             _channelService = channelService;
@@ -41,6 +43,7 @@ namespace CoachBot.Services
             _playerService = playerService;
             _substitutionService = substitutionService;
             _cacheService = cacheService;
+            _discordNotificationService = discordNotificationService;
             _discordClient = discordClient;
         }
 
@@ -144,6 +147,11 @@ namespace CoachBot.Services
                 foreach (var playerTeamPosition in match.TeamHome.PlayerTeamPositions)
                 {
                     sb.Append($"{playerTeamPosition.Player.DiscordUserMention ?? playerTeamPosition.Player.Name} ");
+                    if (playerTeamPosition.Player.DiscordUserId != null)
+                    {
+                        var message = $":stadium: Match ready! {match.TeamHome.Channel.Name} vs {match.TeamAway.Channel.Name} - Please join {server.Name} (steam://connect/{server.Address}) as soon as possible.";
+                        _discordNotificationService.SendUserMessage((ulong)playerTeamPosition.Player.DiscordUserId, message);
+                    }
                 }
                 sb.AppendLine();
 

@@ -22,6 +22,20 @@ namespace CoachBot.Controllers
             _matchStatisticsService = matchStatisticsService;
         }
 
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult Get(int matchId)
+        {
+            var matchStatistics = _matchStatisticsService.GetMatchStatistics(matchId);
+
+            if (matchStatistics == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(matchStatistics);
+        }
+
         [HttpPost]
         public IActionResult Submit(MatchStatisticsDto matchStatisticsDto)
         {
@@ -44,6 +58,31 @@ namespace CoachBot.Controllers
             if (serverAddress.Split(":")[0] != Request.HttpContext.Connection.RemoteIpAddress.ToString())
             {
                 return Unauthorized();
+            }
+
+            // Validate match has correct player counts
+            
+            // Validate match took place within an hour of the match ready time (ensure UTC)
+
+            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchId);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("{id}")]
+        public IActionResult ManualSubmit([FromBody]MatchStatisticsDto matchStatisticsDto, int matchId)
+        {
+            var match = _matchService.GetMatch(matchId);
+
+            if (match == null)
+            {
+                return BadRequest();
+            }
+
+            if(_matchStatisticsService.GetMatchStatistics(matchId) != null)
+            {
+                return BadRequest();
             }
 
             _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchId);

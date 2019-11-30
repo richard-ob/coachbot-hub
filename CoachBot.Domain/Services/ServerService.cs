@@ -1,7 +1,5 @@
 ﻿using CoachBot.Database;
-using CoachBot.Domain.Repositories;
 using CoachBot.Model;
-using Discord;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

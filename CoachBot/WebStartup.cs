@@ -85,6 +85,7 @@ namespace CoachBot
                 .AddScoped<PlayerService>()
                 .AddScoped<SubstitutionService>()
                 .AddScoped<MatchStatisticsService>()
+                .AddScoped<DiscordNotificationService>()
                 .AddSingleton<CacheService>()
                 .AddSingleton<BotInstance>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Scoped);

@@ -4,13 +4,12 @@ using CoachBot.Preconditions;
 using CoachBot.Services;
 using CoachBot.Model;
 using Discord;
-using Discord.Addons.Interactive;
 using System;
 using CoachBot.Tools;
 
 namespace CoachBot.Modules.Matchmaker
 {
-    public class MatchmakingModule : InteractiveBase
+    public class MatchmakingModule : ModuleBase
     {
         private readonly MatchmakingService _channelMatchService;
         private readonly ServerManagementService _channelServerService;
@@ -73,7 +72,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (name.StartsWith("<@") && name.EndsWith(">"))
             {
-                var user = Context.Guild.GetUser(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
+                var user = await Context.Guild.GetUserAsync(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
                 var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, positionName);
                 await ReplyAsync("", embed: response);
             }
@@ -109,7 +108,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (name.StartsWith("<@") && name.EndsWith(">"))
             {
-                var user = Context.Guild.GetUser(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
+                var user = await Context.Guild.GetUserAsync(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
                 var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, null, TeamType.Away);
                 await ReplyAsync("", embed: response);
             }
@@ -136,7 +135,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (name.StartsWith("<@") && name.EndsWith(">"))
             {
-                var user = Context.Guild.GetUser(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
+                var user = await Context.Guild.GetUserAsync(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
                 var response = _channelMatchService.RemovePlayer(Context.Message.Channel.Id, user);
                 await ReplyAsync("", embed: response);
             }

@@ -27,6 +27,9 @@ namespace CoachBot.Domain.Services
             channel.UpdatedDate = DateTime.UtcNow;
             _dbContext.Update(channel);
 
+            if (channel.ChannelPositions.Any(cp => channel.ChannelPositions.Any(cpd => cp.Position.Name == cpd.Position.Name && cp.PositionId != cpd.PositionId)))
+                throw new Exception("Positions must be unique");
+
             var deletedPositions = _dbContext.ChannelPositions
                 .Where(c => c.ChannelId == channel.Id)
                 .Where(cp => !channel.ChannelPositions.Any(cpt => cpt.PositionId == cp.PositionId));

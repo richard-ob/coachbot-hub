@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CoachBot.Domain.Model;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Model
@@ -18,6 +19,10 @@ namespace CoachBot.Model
         public int RegionId { get; set; }
 
         public Region Region { get; set; }
+
+        public int CountryId { get; set; }
+
+        public Country Country { get; set; }
 
     }
 }

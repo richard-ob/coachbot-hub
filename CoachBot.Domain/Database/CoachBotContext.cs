@@ -17,6 +17,7 @@ namespace CoachBot.Database
         public DbSet<Server> Servers { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Channel> Channels { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<Guild> Guilds { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Position> Positions { get; set; }

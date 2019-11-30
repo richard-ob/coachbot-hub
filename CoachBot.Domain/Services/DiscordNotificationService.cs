@@ -13,10 +13,25 @@ namespace CoachBot.Domain.Services
             _discordSocketClient = discordSocketClient;
         }
 
+        public void SendChannelMessage(ulong discordChannelId, Embed embed)
+        {
+            if (_discordSocketClient.GetChannel(discordChannelId) is ITextChannel channel)
+            {
+                channel.SendMessageAsync("", embed: embed);
+            }
+        }
+
         public void SendChannelMessage(ulong discordChannelId, string message)
         {
-            var channel = _discordSocketClient.GetChannel(discordChannelId) as ITextChannel;
-            channel.SendMessageAsync(message);
+            SendChannelMessage(discordChannelId, new EmbedBuilder().WithDescription(message).Build());
+        }
+
+        public void SendChannelMessage(List<ulong> discordChannelIds, Embed embed)
+        {
+            foreach (var discordChannelId in discordChannelIds)
+            {
+                SendChannelMessage(discordChannelId, embed);
+            }
         }
 
         public void SendChannelMessage(List<ulong> discordChannelIds, string message)
@@ -29,8 +44,10 @@ namespace CoachBot.Domain.Services
 
         public void SendUserMessage(ulong discordUserId, string message)
         {
-            var dmChannel = _discordSocketClient.GetUser(discordUserId).GetOrCreateDMChannelAsync() as IDMChannel;
-            dmChannel.SendMessageAsync(message);
+            if (_discordSocketClient.GetUser(discordUserId).GetOrCreateDMChannelAsync() is IDMChannel dmChannel)
+            {
+                dmChannel.SendMessageAsync(message);
+            }
         }
     }
 }

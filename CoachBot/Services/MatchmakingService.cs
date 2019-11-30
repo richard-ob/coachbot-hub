@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CoachBot.Services
 {
@@ -219,6 +220,9 @@ namespace CoachBot.Services
             {
                 embed.WithColor(new Color(0xFFFFFF));
             }
+
+            var regionChannels = _channelService.GetChannelsByRegion((int)challenger.RegionId).Where(c => !c.DisableSearchNotifications).Select(c => c.DiscordChannelId).ToList();
+            _discordNotificationService.SendChannelMessage(regionChannels, embed);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }

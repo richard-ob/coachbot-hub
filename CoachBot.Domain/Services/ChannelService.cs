@@ -52,6 +52,11 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
+        public List<Channel> GetChannelsByRegion(int regionId)
+        {
+            return GetChannels().Where(c => c.RegionId == regionId).ToList();
+        }
+
         public List<Channel> GetChannelsForUser(ulong userId, bool unconfiguredChannels, bool hasAdmin = true)
         {
             var channels = new List<Channel>();

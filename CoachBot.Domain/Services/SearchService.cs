@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoachBot.Domain.Services
 {
@@ -13,11 +14,13 @@ namespace CoachBot.Domain.Services
     {
         private readonly CoachBotContext _coachBotContext;
         private readonly DiscordSocketClient _discordSocketClient;
+        private readonly DiscordNotificationService _discordNotificationService;
 
-        public SearchService(CoachBotContext coachBotContext, DiscordSocketClient discordSocketClient)
+        public SearchService(CoachBotContext coachBotContext, DiscordSocketClient discordSocketClient, DiscordNotificationService discordNotificationService)
         {
             _coachBotContext = coachBotContext;
             _discordSocketClient = discordSocketClient;
+            _discordNotificationService = discordNotificationService;
         }
 
         public List<Search> GetSearches()
@@ -41,8 +44,20 @@ namespace CoachBot.Domain.Services
 
             _coachBotContext.Searches.Add(search);
             _coachBotContext.SaveChanges();
+            TimeoutSearch(channelId).ConfigureAwait(false);
 
             return new ServiceResponse(ServiceResponseStatus.Success, $"Search successfully started");
+        }
+
+        public async Task TimeoutSearch(int channelId)
+        {
+            await Task.Delay(15 * 60 * 1000);
+            if (_coachBotContext.Searches.Any(s => s.ChannelId == channelId))
+            {
+                var channel =_coachBotContext.Channels.Find(channelId);
+                _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, ":timer: Your search for an opponent has timed out after 15 minutes.Please try again if you are still searching");
+                StopSearch(channelId);
+            }
         }
 
         public ServiceResponse StopSearch(int channelId)

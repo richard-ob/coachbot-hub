@@ -16,10 +16,19 @@ namespace CoachBot.Bot
         private readonly MatchmakingService _matchmakingService;
         private readonly ChannelService _channelService;
         private readonly MatchService _matchService;
+        private readonly DiscordNotificationService _discordNotificationService;
         private CommandHandler _handler;
         private ulong _lastAfkCheckUser = 0;
 
-        public BotInstance(IServiceProvider serviceProvider, DiscordSocketClient client, ConfigService configService, MatchmakingService matchmakingService, ChannelService channelService, MatchService matchService)
+        public BotInstance(
+            IServiceProvider serviceProvider,
+            DiscordSocketClient client,
+            ConfigService configService,
+            MatchmakingService matchmakingService,
+            ChannelService channelService,
+            MatchService matchService,
+            DiscordNotificationService discordNotificationService
+        )
         {
             _serviceProvider = serviceProvider;
             _client = client;
@@ -27,6 +36,7 @@ namespace CoachBot.Bot
             _matchmakingService = matchmakingService;
             _channelService = channelService;
             _matchService = matchService;
+            _discordNotificationService = discordNotificationService;
             Startup();
         }
 
@@ -170,16 +180,15 @@ namespace CoachBot.Bot
                         }
                         if (player.DiscordUserId != null)
                         {
-                            var dmChannel = _client.GetUser((ulong)player.DiscordUserId).GetOrCreateDMChannelAsync() as IDMChannel;
-                            dmChannel.SendMessageAsync($"You've been unsigned from the line-up in {discordChannel.Name} as you have gone offline. Sorry champ.");
+                            _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, $"You've been unsigned from the line-up in {discordChannel.Name} as you have gone offline. Sorry champ.");
                         }
                     }
 
                     var sub = match.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
                     if (sub != null)
                     {
-                        discordChannel.SendMessageAsync("", embed: _matchmakingService.RemoveSub(channel.DiscordChannelId, userPre));
-                        discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":warning: Removed {sub.DisplayName} from the subs bench as they have gone offline").WithCurrentTimestamp().Build());
+                        _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, _matchmakingService.RemoveSub(channel.DiscordChannelId, userPre));
+                        _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, $":warning: Removed {sub.DisplayName} from the subs bench as they have gone offline");
                     }
                 }
             }

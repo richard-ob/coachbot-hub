@@ -30,6 +30,7 @@ namespace CoachBot.Domain.Model
 
         public DateTime? ReadiedDate { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 
         public bool IsMixMatch {

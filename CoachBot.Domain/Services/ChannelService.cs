@@ -30,6 +30,9 @@ namespace CoachBot.Domain.Services
             if (channel.ChannelPositions.Any(cp => channel.ChannelPositions.Any(cpd => cp.Position.Name == cpd.Position.Name && cp.PositionId != cpd.PositionId)))
                 throw new Exception("Positions must be unique");
 
+            if (!channel.ChannelPositions.Any())
+                throw new Exception("No positions provided");
+
             var deletedPositions = _dbContext.ChannelPositions
                 .Where(c => c.ChannelId == channel.Id)
                 .Where(cp => !channel.ChannelPositions.Any(cpt => cpt.PositionId == cp.PositionId));
@@ -109,7 +112,7 @@ namespace CoachBot.Domain.Services
         {
             var channel = GetChannelByDiscordId(channelId);
 
-            return channel != null && channel.ChannelPositions.Any(cp => position.ToUpper().StartsWith(cp.Position.Name.ToUpper()));
+            return channel != null && channel.ChannelPositions.Any(cp => position.ToUpper().Equals(cp.Position.Name.ToUpper()));
         }
 
         public Channel GetChannelByDiscordId(ulong id, bool withForeignKeys = true)

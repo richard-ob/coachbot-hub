@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace CoachBot.Domain.Model
 {
@@ -68,5 +66,40 @@ namespace CoachBot.Domain.Model
     {
         public MatchDataPlayerInfo Info { get; set; }
         public List<MatchDataMatchPeriodData> MatchPeriodData { get; set; }
+    }
+
+    public enum MatchDataTeamType
+    {
+        Home,
+        Away
+    }
+
+    public enum MatchDataStatisticType
+    {
+        RedCards = 0,
+        YellowCards,
+        Fouls,
+        FoulsSuffered,
+        SlidingTackles,
+        SlidingTacklesCompleted,
+        GoalsConceded,
+        Shots,
+        ShotsOnGoal,
+        PassesCompleted,
+        Interceptions,
+        Offsides,
+        Goals,
+        OwnGoals,
+        Assists,
+        Passes,
+        FreeKicks,
+        Penalties,
+        Corners,
+        ThrowIns,
+        KeeperSaves,
+        GoalKicks,
+        Possession,
+        DistanceCovered,
+        KeeperSavesCaught
     }
 }

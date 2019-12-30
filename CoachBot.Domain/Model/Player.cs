@@ -1,4 +1,5 @@
 ﻿using CoachBot.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,6 +28,9 @@ namespace CoachBot.Model
         {
             get { return DiscordUserMention ?? Name ?? "Unknown"; }
         }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedDate { get; set; }
 
     }
 }

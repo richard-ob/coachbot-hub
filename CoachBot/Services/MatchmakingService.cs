@@ -221,7 +221,9 @@ namespace CoachBot.Services
                 embed.WithColor(new Color(0xFFFFFF));
             }
 
-            var regionChannels = _channelService.GetChannelsByRegion((int)challenger.RegionId).Where(c => !c.DisableSearchNotifications).Select(c => c.DiscordChannelId).ToList();
+            var regionChannels = _channelService.GetChannelsByRegion((int)challenger.RegionId)
+                .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
+                .Select(c => c.DiscordChannelId).ToList();
             _discordNotificationService.SendChannelMessage(regionChannels, embed);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
@@ -264,20 +266,38 @@ namespace CoachBot.Services
 
             var regionName = channel.Region.RegionName + (channel.Region.RegionName[channel.Region.RegionName.Length - 1] == 'e' ? "an" : "n");
             embedBuilder.WithTitle($":flag_eu: Available {regionName} Challenges ");
-            embedBuilder.WithDescription("To accept the challenge of any teams below, use the `!challenge <team code>` command, e.g. `!challenge BB`");
-
-            foreach(var search in searches)
+            if (searches.Any())
             {
-                embedBuilder.AddField($"{search.Channel.BadgeEmote ?? ":busts_in_silhouette:"} {search.Channel.Name} [{search.Channel.TeamCode}]", $"*Searching since {search.CreatedDate}*");
+                var teamList = new StringBuilder();
+                foreach (var search in searches)
+                {
+                    teamList.AppendLine($"• { search.Channel.BadgeEmote ?? search.Channel.Name} [{search.Channel.TeamCode}] - *searching since {search.CreatedDate}*");
+                }
+                embedBuilder.AddField("**Teams**", teamList.ToString());
+            }
+            else
+            {
+                embedBuilder.AddField("**Teams**", "*There are no teams currently searching*");
             }
 
-            foreach(var mix in mixChallenges)
+            if (mixChallenges.Any())
             {
-                var match = _matchService.GetCurrentMatchForChannel(mix.DiscordChannelId);
-                embedBuilder.AddField($"{mix.BadgeEmote ?? ":busts_in_silhouette:"} {mix.Name} [{mix.TeamCode}]", $"*Always searching - {match.SignedPlayersAndSubs.Count} players currently signed*");
+                var mixTeamList = new StringBuilder();
+                foreach (var mix in mixChallenges)
+                {
+                    var match = _matchService.GetCurrentMatchForChannel(mix.DiscordChannelId);
+                    mixTeamList.AppendLine($"• {mix.BadgeEmote} {mix.Name} [{mix.TeamCode}] - *{match.SignedPlayersAndSubs.Count} players currently signed*");
+                }
+                embedBuilder.AddField("**Mixes**", mixTeamList.ToString());
+            }
+            else
+            {
+                embedBuilder.AddField("**Mixes**", "*There are no mix teams currently searching*");
             }
 
             if (!searches.Any() && !mixChallenges.Any()) embedBuilder.AddField(":zzz: There are no teams currently available to challenge.", "*To start a search for your team, type `!search`*");
+
+            embedBuilder.WithFooter(new EmbedFooterBuilder().WithText("To accept the challenge of any teams below, use the !challenge <team code> command, e.g. !challenge BB"));
 
             return embedBuilder.Build();
         }

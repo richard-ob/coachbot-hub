@@ -1,17 +1,13 @@
-﻿using CoachBot.Model;
-using Newtonsoft.Json;
-using System.IO;
-using System.Linq;
-
-namespace CoachBot.Database
+﻿namespace CoachBot.Database
 {
-    public class DbInitializer
+    public static class CoachBotContextExtensions
     {
-        public static void Initialize(CoachBotContext context)
+        public static void Initialize(this CoachBotContext context)
         {
             try
             {
-               // JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+                context.Searches.RemoveRange(context.Searches);
+                context.SaveChanges();
             }
             catch
             {

@@ -26,7 +26,7 @@ namespace CoachBot
               .UseUrls($"http://*:{(config.ApiPort > 0 ? config.ApiPort.ToString() : "80")}")
               .Build();
             host.Start();
-
+            
             while (true) { }
         }
     }        

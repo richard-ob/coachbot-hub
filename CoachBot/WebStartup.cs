@@ -107,6 +107,8 @@ namespace CoachBot
             provider.GetService<LogAdaptor>();
             provider.GetService<ConfigService>();
             provider.GetService<BotInstance>();
+
+            provider.GetService<CoachBotContext>().Initialize();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

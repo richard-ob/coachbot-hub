@@ -1,4 +1,5 @@
-﻿using CoachBot.Domain.Model;
+﻿using CoachBot.Domain.Database;
+using CoachBot.Domain.Model;
 using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -53,9 +54,20 @@ namespace CoachBot.Database
             modelBuilder.Entity<MatchStatistics>().HasIndex(ms => new { ms.MatchId }).IsUnique(true);
             modelBuilder.Entity<PlayerTeamPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.TeamId }).IsUnique();
 
+            // Defaults
+            modelBuilder.Entity<Channel>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Match>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Server>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Player>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<MatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PlayerTeamPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+
             // Conversions
             modelBuilder.Entity<Search>().Property(p => p.DiscordMessageIds).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<ulong>>(v));
             modelBuilder.Entity<MatchStatistics>().Property(p => p.MatchData).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<MatchData>(v));
+
+            // Seed data
+            modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
         }
     }
 

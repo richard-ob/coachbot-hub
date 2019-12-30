@@ -1,4 +1,5 @@
 ﻿using CoachBot.Domain.Model;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,6 +24,9 @@ namespace CoachBot.Model
         public int CountryId { get; set; }
 
         public Country Country { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedDate { get; set; }
 
     }
 }

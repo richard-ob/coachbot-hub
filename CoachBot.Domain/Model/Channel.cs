@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
@@ -46,6 +47,7 @@ namespace CoachBot.Domain.Model
 
         public ICollection<ChannelPosition> ChannelPositions { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }

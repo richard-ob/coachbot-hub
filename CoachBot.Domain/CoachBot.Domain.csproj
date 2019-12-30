@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations1\**" />
+    <EmbeddedResource Remove="Migrations1\**" />
+    <None Remove="Migrations1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Services\AnnouncementService.cs" />
   </ItemGroup>
 

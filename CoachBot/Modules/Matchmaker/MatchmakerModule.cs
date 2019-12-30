@@ -53,9 +53,9 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task CounterSignAsync(string position, [Remainder]string name)
         {
-            if (name.StartsWith("<@") && name.EndsWith(">"))
+            if (name.StartsWith("<@!") && name.EndsWith(">"))
             {
-                var user = await Context.Guild.GetUserAsync(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
+                var user = await Context.Guild.GetUserAsync(ulong.Parse(name.Replace("<@!", string.Empty).Replace(">", string.Empty)));
                 await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_service.AddPlayer(Context.Channel.Id, user, position)).WithCurrentTimestamp().Build());
             }
             else

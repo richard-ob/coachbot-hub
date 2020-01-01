@@ -70,9 +70,9 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task CounterSignAsync(string positionName, [Remainder]string name)
         {
-            if (name.StartsWith("<@") && name.EndsWith(">"))
+            if (DiscordTools.IsMention(name))
             {
-                var user = await Context.Guild.GetUserAsync(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
+                var user = await Context.Guild.GetUserAsync(DiscordTools.ConvertMentionToUserID(name));
                 var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, positionName);
                 await ReplyAsync("", embed: response);
             }
@@ -106,9 +106,9 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task CounterSignTeam2Async(string position, [Remainder]string name)
         {
-            if (name.StartsWith("<@") && name.EndsWith(">"))
+            if (DiscordTools.IsMention(name))
             {
-                var user = await Context.Guild.GetUserAsync(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
+                var user = await Context.Guild.GetUserAsync(DiscordTools.ConvertMentionToUserID(name));
                 var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, null, TeamType.Away);
                 await ReplyAsync("", embed: response);
             }
@@ -133,9 +133,9 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task UnsignAsync([Remainder]string name)
         {
-            if (name.StartsWith("<@") && name.EndsWith(">"))
+            if (DiscordTools.IsMention(name))
             {
-                var user = await Context.Guild.GetUserAsync(ulong.Parse(name.Replace("<", string.Empty).Replace("@", string.Empty).Replace(">", string.Empty)));
+                var user = await Context.Guild.GetUserAsync(DiscordTools.ConvertMentionToUserID(name));
                 var response = _channelMatchService.RemovePlayer(Context.Message.Channel.Id, user);
                 await ReplyAsync("", embed: response);
             }

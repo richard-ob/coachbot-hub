@@ -30,6 +30,9 @@ namespace CoachBot.Database
         public DbSet<SubstitutionRequest> SubstitutionRequests { get; set; }
         public DbSet<Search> Searches { get; set; }
         public DbSet<MatchStatistics> MatchStatistics { get; set; }
+        public DbSet<StatisticTotals> StatisticTotals { get; set; }
+        public DbSet<PlayerStatisticTotals> PlayerStatisticTotals { get; set; }
+        public DbSet<TeamStatisticTotals> TeamStatisticTotals { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

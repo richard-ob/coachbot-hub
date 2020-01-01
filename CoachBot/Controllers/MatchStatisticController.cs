@@ -1,4 +1,6 @@
-﻿using CoachBot.Domain.Services;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
+using CoachBot.Model;
 using CoachBot.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -87,6 +89,18 @@ namespace CoachBot.Controllers
 
             _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchId);
 
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetPlayerLeaderboard(MatchDataStatisticType orderByMatchDataStatisticType, int regionId = 1)
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetTeamLeaderboard(MatchDataStatisticType orderByMatchDataStatisticType, int regionId = 1)
+        {
             return Ok();
         }
     }

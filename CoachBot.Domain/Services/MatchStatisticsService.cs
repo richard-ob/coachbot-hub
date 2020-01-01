@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CoachBot.Domain.Services
@@ -27,6 +28,16 @@ namespace CoachBot.Domain.Services
         public MatchStatistics GetMatchStatistics(int matchId)
         {
             return _coachBotContext.MatchStatistics.FirstOrDefault(m => m.MatchId == matchId);
+        }
+
+        public List<TeamStatisticTotals> GetTeamStatistics()
+        {
+            return null;
+        }
+
+        public List<PlayerStatisticTotals> GetPlayerStatistics()
+        {
+            return null;
         }
     }
 }

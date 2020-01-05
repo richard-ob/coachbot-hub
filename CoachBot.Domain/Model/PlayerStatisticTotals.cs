@@ -8,7 +8,7 @@ namespace CoachBot.Domain.Model
 
         public Player Player { get; set; }
 
-        public StatisticTotals StatisticTotals { get; set; }
+        public StatisticTotals StatisticTotals { get; set; } = new StatisticTotals();
 
     }
 }

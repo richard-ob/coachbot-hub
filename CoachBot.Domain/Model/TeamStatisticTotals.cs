@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoachBot.Domain.Model
+﻿namespace CoachBot.Domain.Model
 {
     public class TeamStatisticTotals
     {
@@ -10,6 +6,7 @@ namespace CoachBot.Domain.Model
 
         public Channel Channel { get; set; }
 
-        public StatisticTotals StatisticTotals { get; set; }
+        public StatisticTotals StatisticTotals { get; set; } = new StatisticTotals();
+
     }
 }

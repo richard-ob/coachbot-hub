@@ -2,12 +2,6 @@
 {
     public class StatisticTotals
     {
-        public int Wins { get; set; }
-
-        public int Draws { get; set; }
-
-        public int Losses { get; set; }
-
         public int RedCards { get; set; }
 
         public int YellowCards { get; set; }
@@ -57,5 +51,13 @@
         public int DistanceCovered { get; set; }
 
         public int KeeperSavesCaught { get; set; }
+
+        public int Matches { get; set; }
+
+        public int Wins { get; set; }
+
+        public int Draws { get; set; }
+
+        public int Losses { get; set; }
     }
 }

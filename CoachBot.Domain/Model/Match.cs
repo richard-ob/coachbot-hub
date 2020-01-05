@@ -28,6 +28,10 @@ namespace CoachBot.Domain.Model
 
         public Server Server { get; set; }
 
+        public int? MatchStatisticsId { get; set; }
+
+        public MatchStatistics MatchStatistics { get; set; }
+
         public DateTime? ReadiedDate { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

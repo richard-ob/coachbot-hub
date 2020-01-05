@@ -62,10 +62,6 @@ namespace CoachBot.Controllers
                 return Unauthorized();
             }
 
-            // Validate match has correct player counts
-            
-            // Validate match took place within an hour of the match ready time (ensure UTC)
-
             _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchId);
 
             return Ok();
@@ -82,12 +78,12 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            if(_matchStatisticsService.GetMatchStatistics(matchId) != null)
+            if (_matchStatisticsService.GetMatchStatistics(matchId) != null)
             {
                 return BadRequest();
             }
 
-            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchId);
+            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchId, true);
 
             return Ok();
         }

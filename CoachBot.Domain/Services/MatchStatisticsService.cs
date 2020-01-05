@@ -27,10 +27,13 @@ namespace CoachBot.Domain.Services
                 MatchId = match.Id,
                 MatchData = matchData
             };
+
             ValidateMatchData(matchData, match, manualSave);
             _coachBotContext.MatchStatistics.Add(matchStatistics);
-            GenerateTeamStatisticTotals();
+
+            GenerateTeamStatisticTotals(match);
             GeneratePlayerStatisticTotals(match);
+
             _coachBotContext.SaveChanges();
         }
 
@@ -67,36 +70,29 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        private void GenerateTeamStatisticTotals()
+        private void GenerateTeamStatisticTotals(Match match)
         {
-            var teamStatisticTotals = new List<TeamStatisticTotals>();
-            foreach(var match in _coachBotContext.Matches.Where(m => m.MatchStatistics != null && m.MatchStatistics.MatchData != null))
+            var homeTeamStatisticTotals = _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.TeamHome.ChannelId);
+            if (homeTeamStatisticTotals == null)
             {
-                var homeTeamStatisticTotals = teamStatisticTotals.FirstOrDefault(t => t.ChannelId == (int)match.TeamHome.ChannelId);
-                if (homeTeamStatisticTotals == null)
+                homeTeamStatisticTotals = new TeamStatisticTotals
                 {
-                    homeTeamStatisticTotals = new TeamStatisticTotals
-                    {
-                        ChannelId = (int)match.TeamHome.ChannelId
-                    };
-                    teamStatisticTotals.Add(homeTeamStatisticTotals);
-                }
-                AddMatchDataTotalsToTeamStatisticTotals(ref homeTeamStatisticTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Home);
-
-                var awayTeamStatisticsTotals = teamStatisticTotals.FirstOrDefault(t => t.ChannelId == (int)match.TeamAway.ChannelId);
-                if (awayTeamStatisticsTotals == null)
-                {
-                    awayTeamStatisticsTotals = new TeamStatisticTotals
-                    {
-                        ChannelId = (int)match.TeamAway.ChannelId
-                    };
-                    teamStatisticTotals.Add(awayTeamStatisticsTotals);
-                }
-                AddMatchDataTotalsToTeamStatisticTotals(ref awayTeamStatisticsTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Away);
-
+                    ChannelId = (int)match.TeamHome.ChannelId
+                };
+                _coachBotContext.TeamStatisticTotals.Add(homeTeamStatisticTotals);
             }
+            AddMatchDataTotalsToTeamStatisticTotals(ref homeTeamStatisticTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Home);
 
-            _coachBotContext.TeamStatisticTotals.AddRange(teamStatisticTotals);
+            var awayTeamStatisticsTotals = _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.TeamAway.ChannelId);
+            if (awayTeamStatisticsTotals == null)
+            {
+                awayTeamStatisticsTotals = new TeamStatisticTotals
+                {
+                    ChannelId = (int)match.TeamAway.ChannelId
+                };
+                _coachBotContext.TeamStatisticTotals.Add(awayTeamStatisticsTotals);
+            }
+            AddMatchDataTotalsToTeamStatisticTotals(ref awayTeamStatisticsTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Away);
         }
 
         private void AddMatchDataTotalsToTeamStatisticTotals(ref TeamStatisticTotals teamStatisticTotals, MatchData matchData, MatchDataTeamType matchDataTeamType)
@@ -143,7 +139,6 @@ namespace CoachBot.Domain.Services
                 }
                 AddMatchDataTotalsToPlayerStatisticTotals(ref playerStatisticTotals, match.MatchStatistics.MatchData, player.SteamID);
             }
-
         }
 
         private void AddMatchDataTotalsToPlayerStatisticTotals(ref PlayerStatisticTotals playerStatisticTotals, MatchData matchData, string steamId)
@@ -165,6 +160,7 @@ namespace CoachBot.Domain.Services
             }
 
             // Custom statistics
+            // TODO: work out what the JSON output uses for Team name string, so can figure out which team the player is on
             playerStatisticTotals.StatisticTotals.Matches++;
             var teamGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Home);
             var opponentGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Away);

@@ -1,19 +1,15 @@
 ﻿using CoachBot.Database;
-using CoachBot.Domain.Attributes;
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace CoachBot.Domain.Services
 {
     public class MatchStatisticsService
     {
         private readonly CoachBotContext _coachBotContext;
-        private const double EXPECTED_PLAYERCOUNT_THRESHOLD_MULTIPLIER = 0.75;
 
         public MatchStatisticsService(CoachBotContext coachBotContext)
         {
@@ -29,13 +25,13 @@ namespace CoachBot.Domain.Services
                 MatchData = matchData
             };
 
-            ValidateMatchData(matchData, match, manualSave);
-            _coachBotContext.MatchStatistics.Add(matchStatistics);
-
-            GenerateTeamStatisticTotals(match);
-            GeneratePlayerStatisticTotals(match);
-
-            _coachBotContext.SaveChanges();
+            if (matchData.IsValid(match, manualSave))
+            {
+                _coachBotContext.MatchStatistics.Add(matchStatistics);
+                GenerateTeamStatisticTotals(match);
+                GeneratePlayerStatisticTotals(match);
+                _coachBotContext.SaveChanges();
+            }
         }
 
         public MatchStatistics GetMatchStatistics(int matchId)
@@ -54,22 +50,6 @@ namespace CoachBot.Domain.Services
         }
 
         #region Private Methods
-        private void ValidateMatchData(MatchData matchData, Match match, bool manualSave)
-        {
-            // Validate match has correct player counts
-            var expectedPlayerCount = match.SignedPlayers.Count();
-            var actualPlayerCount = matchData.Players.Count();
-            if (expectedPlayerCount * EXPECTED_PLAYERCOUNT_THRESHOLD_MULTIPLIER > actualPlayerCount)
-            {
-                throw new Exception($"Too few players present in match data. Expected at least {expectedPlayerCount}, found {actualPlayerCount}.");
-            }
-
-            // Validate match took place within an hour of the match ready time
-            if (DateTime.Now.AddHours(-2) > match.ReadiedDate && !manualSave)
-            {
-                throw new Exception($"The match should finish no later than two hours after being readied.");
-            }
-        }
 
         private void GenerateTeamStatisticTotals(Match match)
         {
@@ -99,25 +79,8 @@ namespace CoachBot.Domain.Services
         private void AddMatchDataTotalsToTeamStatisticTotals(ref TeamStatisticTotals teamStatisticTotals, MatchData matchData, MatchDataTeamType matchDataTeamType)
         {
             // Game-generated statistics
-            PropertyInfo[] properties = typeof(StatisticTotals).GetProperties();
             var matchDataTeamMatchTotal = matchData.Teams[(int)matchDataTeamType].MatchTotal;
-            foreach (PropertyInfo property in properties.Where(p => p.GetCustomAttribute(typeof(MatchDataStatistic)) != null))
-            {
-                var matchDataAttribute = (MatchDataStatistic)property.GetCustomAttribute(typeof(MatchDataStatistic));
-                var existingValue = (int)property.GetValue(teamStatisticTotals.StatisticTotals);
-                var valueToAdd = matchDataTeamMatchTotal.Statistics[(int)matchDataAttribute.MatchDataStatisticType];
-                switch (matchDataAttribute.MatchDataTotalsType)
-                {
-                    case MatchDataTotalsType.Aggregate:
-                        property.SetValue(teamStatisticTotals.StatisticTotals, existingValue + valueToAdd);
-                        break;
-                    case MatchDataTotalsType.Average:
-                        var newAggregateValue = (existingValue * teamStatisticTotals.StatisticTotals.Matches) + valueToAdd;
-                        var newAverage = newAggregateValue / (teamStatisticTotals.StatisticTotals.Matches + 1);
-                        property.SetValue(teamStatisticTotals.StatisticTotals, newAverage);
-                        break;
-                };
-            }
+            teamStatisticTotals.StatisticTotals.AddMatchDataStatistics(matchDataTeamMatchTotal.Statistics);
 
             // Custom statistics
             teamStatisticTotals.StatisticTotals.Matches++;
@@ -152,27 +115,14 @@ namespace CoachBot.Domain.Services
         private void AddMatchDataTotalsToPlayerStatisticTotals(ref PlayerStatisticTotals playerStatisticTotals, MatchData matchData, string steamId)
         {
             // Game-generated statistics
-            PropertyInfo[] properties = typeof(StatisticTotals).GetProperties();
-            var playerMatchPeriodData = matchData.Players.First(p => p.Info.SteamId == steamId).MatchPeriodData;
-            foreach (var matchPeriod in playerMatchPeriodData)
-            {
-                var matchDataStatisticType = 0;
-                foreach (PropertyInfo property in properties)
-                {
-                    property.SetValue(playerStatisticTotals.StatisticTotals, (int)property.GetValue(playerStatisticTotals.StatisticTotals) + matchPeriod.Statistics[matchDataStatisticType]);
-                    matchDataStatisticType++;
-                    if (matchDataStatisticType > typeof(MatchDataStatisticType).GetEnumNames().Count() - 1)
-                    {
-                        break;
-                    }
-                }
-            }
+            var playerTotalMatchStatistics = matchData.Players.First(p => p.Info.SteamId == steamId).GetMatchStatisticsPlayerTotal();
+            playerStatisticTotals.StatisticTotals.AddMatchDataStatistics(playerTotalMatchStatistics);
 
             // Custom statistics
             playerStatisticTotals.StatisticTotals.Matches++;
             var homeGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Home);
             var awayGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Away);
-            var firstPeriod = playerMatchPeriodData.First();
+            var firstPeriod = matchData.Players.First(p => p.Info.SteamId == steamId).MatchPeriodData.First();
             if ((homeGoals > awayGoals && firstPeriod.Info.IsHomeTeam) || (awayGoals > homeGoals && firstPeriod.Info.IsAwayTeam)) playerStatisticTotals.StatisticTotals.Wins++;
             if (homeGoals == awayGoals) playerStatisticTotals.StatisticTotals.Draws++;
             if ((awayGoals > homeGoals && firstPeriod.Info.IsHomeTeam) || (homeGoals > awayGoals && firstPeriod.Info.IsAwayTeam)) playerStatisticTotals.StatisticTotals.Losses++;

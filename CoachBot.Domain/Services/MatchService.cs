@@ -243,7 +243,7 @@ namespace CoachBot.Domain.Services
 
             if (challenger.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"Mix channels cannot challenge teams");
             if (opposition.IsMixChannel && !oppositionMatch.IsMixMatch) return new ServiceResponse(ServiceResponseStatus.Failure, $"{opposition.Name} already has opposition challenging");
-            if (!_searchService.GetSearches().Any(s => s.Id == opposition.Id) && !opposition.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"{opposition.Name} are no longer search for a team to face");
+            if (!_searchService.GetSearches().Any(s => s.Id == opposition.Id) && !opposition.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"{opposition.Name} are no longer searching for a team to face");
             if (challengerChannelId == oppositionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"You can't face yourself. Don't waste my time.");
             if (challenger.ChannelPositions.Count() != opposition.ChannelPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"Sorry, {opposition.Name} are looking for an {opposition.ChannelPositions.Count()}v{opposition.ChannelPositions.Count()}");
             if (Math.Round(challenger.ChannelPositions.Count() * 0.7) > GetCurrentMatchForChannel(challengerChannelId).TeamHome.OccupiedPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"At least {Math.Round(challenger.ChannelPositions.Count() * 0.7)} positions must be filled");
@@ -306,6 +306,12 @@ namespace CoachBot.Domain.Services
 
         public Match GetCurrentMatchForChannel(ulong channelId)
         {
+            if (!_coachBotContext.Matches.Any(m => m.TeamHome.Channel.DiscordChannelId == channelId || (m.TeamAway != null && m.TeamAway.Channel.DiscordChannelId == channelId)))
+            {
+                var channel = _coachBotContext.Channels.First(c => c.DiscordChannelId == channelId);
+                Create(channel.Id);
+            }
+
             return _coachBotContext.Matches
                 .Include(m => m.TeamHome)
                     .ThenInclude(th => th.PlayerTeamPositions)
@@ -332,7 +338,7 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(ta => ta.PlayerSubstitutes)
                     .ThenInclude(ps => ps.Player)
                 .OrderByDescending(m => m.CreatedDate)
-                .First(m => m.TeamHome.Channel.DiscordChannelId == channelId);
+                .First(m => m.TeamHome.Channel.DiscordChannelId == channelId || (m.TeamAway != null && m.TeamAway.Channel.DiscordChannelId == channelId));
         }
 
         public List<Match> GetMatchesForChannel(ulong channelId, bool readiedMatchesOnly = false, int limit = 10)

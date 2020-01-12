@@ -30,6 +30,7 @@ namespace CoachBot.Domain.Model
 
         public int? MatchStatisticsId { get; set; }
 
+        [ForeignKey("MatchStatisticsId")]
         public MatchStatistics MatchStatistics { get; set; }
 
         public DateTime? ReadiedDate { get; set; }

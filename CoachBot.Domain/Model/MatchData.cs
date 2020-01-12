@@ -54,6 +54,8 @@ namespace CoachBot.Domain.Model
         public int EndSecond { get; set; }
         public string Team { get; set; }
         public string Position { get; set; }
+        public bool IsHomeTeam => Team.Equals(MatchDataSideConstants.Home);
+        public bool IsAwayTeam => Team.Equals(MatchDataSideConstants.Away);
     }
 
     public class MatchDataMatchPeriodData
@@ -72,6 +74,12 @@ namespace CoachBot.Domain.Model
     {
         Home,
         Away
+    }
+
+    public static class MatchDataSideConstants
+    {
+        public const string Home = "home";
+        public const string Away = "away";
     }
 
     public enum MatchDataStatisticType

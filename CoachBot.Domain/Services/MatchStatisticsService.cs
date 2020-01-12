@@ -1,4 +1,5 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Attributes;
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
@@ -100,15 +101,22 @@ namespace CoachBot.Domain.Services
             // Game-generated statistics
             PropertyInfo[] properties = typeof(StatisticTotals).GetProperties();
             var matchDataTeamMatchTotal = matchData.Teams[(int)matchDataTeamType].MatchTotal;
-            var matchDataStatisticType = 0;
-            foreach (PropertyInfo property in properties)
+            foreach (PropertyInfo property in properties.Where(p => p.GetCustomAttribute(typeof(MatchDataStatistic)) != null))
             {
-                property.SetValue(teamStatisticTotals.StatisticTotals, (int)property.GetValue(teamStatisticTotals.StatisticTotals) + matchDataTeamMatchTotal.Statistics[matchDataStatisticType]);
-                matchDataStatisticType++;
-                if (matchDataStatisticType > typeof(MatchDataStatisticType).GetEnumNames().Count() - 1)
+                var matchDataAttribute = (MatchDataStatistic)property.GetCustomAttribute(typeof(MatchDataStatistic));
+                var existingValue = (int)property.GetValue(teamStatisticTotals.StatisticTotals);
+                var valueToAdd = matchDataTeamMatchTotal.Statistics[(int)matchDataAttribute.MatchDataStatisticType];
+                switch (matchDataAttribute.MatchDataTotalsType)
                 {
-                    break;
-                }
+                    case MatchDataTotalsType.Aggregate:
+                        property.SetValue(teamStatisticTotals.StatisticTotals, existingValue + valueToAdd);
+                        break;
+                    case MatchDataTotalsType.Average:
+                        var newAggregateValue = (existingValue * teamStatisticTotals.StatisticTotals.Matches) + valueToAdd;
+                        var newAverage = newAggregateValue / (teamStatisticTotals.StatisticTotals.Matches + 1);
+                        property.SetValue(teamStatisticTotals.StatisticTotals, newAverage);
+                        break;
+                };
             }
 
             // Custom statistics
@@ -145,7 +153,8 @@ namespace CoachBot.Domain.Services
         {
             // Game-generated statistics
             PropertyInfo[] properties = typeof(StatisticTotals).GetProperties();
-            foreach (var matchPeriod in matchData.Players.First(p => p.Info.SteamId == steamId).MatchPeriodData)
+            var playerMatchPeriodData = matchData.Players.First(p => p.Info.SteamId == steamId).MatchPeriodData;
+            foreach (var matchPeriod in playerMatchPeriodData)
             {
                 var matchDataStatisticType = 0;
                 foreach (PropertyInfo property in properties)
@@ -160,13 +169,13 @@ namespace CoachBot.Domain.Services
             }
 
             // Custom statistics
-            // TODO: work out what the JSON output uses for Team name string, so can figure out which team the player is on
             playerStatisticTotals.StatisticTotals.Matches++;
-            var teamGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Home);
-            var opponentGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Away);
-            if (teamGoals > opponentGoals) playerStatisticTotals.StatisticTotals.Wins++;
-            if (teamGoals == opponentGoals) playerStatisticTotals.StatisticTotals.Draws++;
-            if (opponentGoals > teamGoals) playerStatisticTotals.StatisticTotals.Losses++;
+            var homeGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Home);
+            var awayGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Away);
+            var firstPeriod = playerMatchPeriodData.First();
+            if ((homeGoals > awayGoals && firstPeriod.Info.IsHomeTeam) || (awayGoals > homeGoals && firstPeriod.Info.IsAwayTeam)) playerStatisticTotals.StatisticTotals.Wins++;
+            if (homeGoals == awayGoals) playerStatisticTotals.StatisticTotals.Draws++;
+            if ((awayGoals > homeGoals && firstPeriod.Info.IsHomeTeam) || (homeGoals > awayGoals && firstPeriod.Info.IsAwayTeam)) playerStatisticTotals.StatisticTotals.Losses++;
         }
         #endregion
     }

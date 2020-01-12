@@ -30,10 +30,10 @@ namespace CoachBot.Domain.Services
 
         public ServiceResponse Search(int channelId)
         {
-            var challenger = _coachBotContext.Channels.FirstOrDefault(c => c.Id == channelId);
-            if (challenger.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $":no_entry: Mix channels cannot search for opposition");
-            if (challenger.ChannelPositions.Count() - 1 > GetCurrentMatchForChannel(challenger.DiscordChannelId).SignedPlayersAndSubs.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $":no_entry: All outfield positions must be filled");
-            if (GetSearches().Any(c => c.ChannelId == challenger.Id)) return new ServiceResponse(ServiceResponseStatus.Failure, $":no_entry: You're already searching for a match. Type **!stopsearch** to cancel the previous search.");
+            var challenger = _coachBotContext.Channels.Include(c => c.ChannelPositions).FirstOrDefault(c => c.Id == channelId);
+            if (challenger.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"Mix channels cannot search for opposition");
+            if (challenger.ChannelPositions.Count() - 1 > GetCurrentMatchForChannel(challenger.DiscordChannelId).SignedPlayersAndSubs.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"All outfield positions must be filled");
+            if (GetSearches().Any(c => c.ChannelId == challenger.Id)) return new ServiceResponse(ServiceResponseStatus.Failure, $"You're already searching for a match. Type **!stopsearch** to cancel the previous search.");
 
             var search = new Search()
             {

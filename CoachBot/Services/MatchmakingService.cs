@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CoachBot.Services
 {
@@ -294,8 +293,6 @@ namespace CoachBot.Services
             {
                 embedBuilder.AddField("**Mixes**", "*There are no mix teams currently searching*");
             }
-
-            if (!searches.Any() && !mixChallenges.Any()) embedBuilder.AddField(":zzz: There are no teams currently available to challenge.", "*To start a search for your team, type `!search`*");
 
             embedBuilder.WithFooter(new EmbedFooterBuilder().WithText("To accept the challenge of any teams below, use the !challenge <team code> command, e.g. !challenge BB"));
 

@@ -209,7 +209,7 @@
 				bottom: 0;
 				width: 210px;
 				background-color: $header-secondary-bg;
-				left: -25px;
+				left: -73px;
 				margin-left: 0;
 				transform: skew(-25deg);
 
@@ -235,25 +235,21 @@
 /* Header Logo */
 .header-logo {
 	position: absolute;
-	// z-index: 3;
-	z-index: 1001; // should be bigger than menu (1000)
-	bottom: 21px;
-	left: 0;
-	display: block;
+	z-index: 1001;
+	bottom: 67px;
+    left: 74px;
+    display: block;
 
 	@media (max-width: 991px) {
 		display: none;
 	}
 
-	@if $template == 'football' {
-		bottom: 100%;
-		margin-left: 0;
-		margin-bottom: 7px;
-	}
 }
-	.header-logo__img {
-		position: relative;
-	}
+
+.header-logo__img {
+	max-width: 53%;
+	position: relative;
+}
 
 /* Header Mobile */
 .header-mobile {

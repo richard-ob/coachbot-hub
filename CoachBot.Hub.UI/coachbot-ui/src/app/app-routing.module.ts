@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { HeroComponent } from './pages/hero/hero.component';
 
+const routes: Routes = [
+  {
+    path: '',
+    component: HeroComponent
+  }
+];
 
-const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

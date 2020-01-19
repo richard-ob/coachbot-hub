@@ -578,12 +578,6 @@ namespace CoachBot.Domain.Migrations
                         },
                         new
                         {
-                            Id = 108,
-                            Code = "MK",
-                            Name = "Macedonia, FYRO"
-                        },
-                        new
-                        {
                             Id = 52,
                             Code = "MY",
                             Name = "Malaysia"
@@ -677,6 +671,12 @@ namespace CoachBot.Domain.Migrations
                             Id = 26,
                             Code = "NG",
                             Name = "Nigeria"
+                        },
+                        new
+                        {
+                            Id = 108,
+                            Code = "MK",
+                            Name = "North Macedonia"
                         },
                         new
                         {
@@ -966,6 +966,8 @@ namespace CoachBot.Domain.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("GETDATE()");
 
+                    b.Property<int?>("MatchStatisticsId");
+
                     b.Property<DateTime?>("ReadiedDate");
 
                     b.Property<int?>("ServerId");
@@ -975,6 +977,10 @@ namespace CoachBot.Domain.Migrations
                     b.Property<int?>("TeamHomeId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MatchStatisticsId")
+                        .IsUnique()
+                        .HasFilter("[MatchStatisticsId] IS NOT NULL");
 
                     b.HasIndex("ServerId");
 
@@ -1005,6 +1011,25 @@ namespace CoachBot.Domain.Migrations
                         .IsUnique();
 
                     b.ToTable("MatchStatistics");
+                });
+
+            modelBuilder.Entity("CoachBot.Domain.Model.PlayerStatisticTotals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PlayerId");
+
+                    b.Property<int?>("StatisticTotalsId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("StatisticTotalsId");
+
+                    b.ToTable("PlayerStatisticTotals");
                 });
 
             modelBuilder.Entity("CoachBot.Domain.Model.PlayerTeamPosition", b =>
@@ -1061,6 +1086,75 @@ namespace CoachBot.Domain.Migrations
                     b.ToTable("Searches");
                 });
 
+            modelBuilder.Entity("CoachBot.Domain.Model.StatisticTotals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Assists");
+
+                    b.Property<int>("Corners");
+
+                    b.Property<int>("DistanceCovered");
+
+                    b.Property<int>("Draws");
+
+                    b.Property<int>("Fouls");
+
+                    b.Property<int>("FoulsSuffered");
+
+                    b.Property<int>("FreeKicks");
+
+                    b.Property<int>("GoalKicks");
+
+                    b.Property<int>("Goals");
+
+                    b.Property<int>("GoalsConceded");
+
+                    b.Property<int>("Interceptions");
+
+                    b.Property<int>("KeeperSaves");
+
+                    b.Property<int>("KeeperSavesCaught");
+
+                    b.Property<int>("Losses");
+
+                    b.Property<int>("Matches");
+
+                    b.Property<int>("Offsides");
+
+                    b.Property<int>("OwnGoals");
+
+                    b.Property<int>("Passes");
+
+                    b.Property<int>("PassesCompleted");
+
+                    b.Property<int>("Penalties");
+
+                    b.Property<int>("Possession");
+
+                    b.Property<int>("RedCards");
+
+                    b.Property<int>("Shots");
+
+                    b.Property<int>("ShotsOnGoal");
+
+                    b.Property<int>("SlidingTackles");
+
+                    b.Property<int>("SlidingTacklesCompleted");
+
+                    b.Property<int>("ThrowIns");
+
+                    b.Property<int>("Wins");
+
+                    b.Property<int>("YellowCards");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatisticTotals");
+                });
+
             modelBuilder.Entity("CoachBot.Domain.Model.SubstitutionRequest", b =>
                 {
                     b.Property<string>("Token")
@@ -1088,6 +1182,25 @@ namespace CoachBot.Domain.Migrations
                     b.HasIndex("ServerId");
 
                     b.ToTable("SubstitutionRequests");
+                });
+
+            modelBuilder.Entity("CoachBot.Domain.Model.TeamStatisticTotals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ChannelId");
+
+                    b.Property<int?>("StatisticTotalsId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId");
+
+                    b.HasIndex("StatisticTotalsId");
+
+                    b.ToTable("TeamStatisticTotals");
                 });
 
             modelBuilder.Entity("CoachBot.Model.Guild", b =>
@@ -1239,6 +1352,10 @@ namespace CoachBot.Domain.Migrations
 
             modelBuilder.Entity("CoachBot.Domain.Model.Match", b =>
                 {
+                    b.HasOne("CoachBot.Domain.Model.MatchStatistics", "MatchStatistics")
+                        .WithOne("Match")
+                        .HasForeignKey("CoachBot.Domain.Model.Match", "MatchStatisticsId");
+
                     b.HasOne("CoachBot.Model.Server", "Server")
                         .WithMany()
                         .HasForeignKey("ServerId");
@@ -1252,12 +1369,16 @@ namespace CoachBot.Domain.Migrations
                         .HasForeignKey("TeamHomeId");
                 });
 
-            modelBuilder.Entity("CoachBot.Domain.Model.MatchStatistics", b =>
+            modelBuilder.Entity("CoachBot.Domain.Model.PlayerStatisticTotals", b =>
                 {
-                    b.HasOne("CoachBot.Domain.Model.Match", "Match")
+                    b.HasOne("CoachBot.Model.Player", "Player")
                         .WithMany()
-                        .HasForeignKey("MatchId")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CoachBot.Domain.Model.StatisticTotals", "StatisticTotals")
+                        .WithMany()
+                        .HasForeignKey("StatisticTotalsId");
                 });
 
             modelBuilder.Entity("CoachBot.Domain.Model.PlayerTeamPosition", b =>
@@ -1314,6 +1435,18 @@ namespace CoachBot.Domain.Migrations
                         .WithMany()
                         .HasForeignKey("ServerId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CoachBot.Domain.Model.TeamStatisticTotals", b =>
+                {
+                    b.HasOne("CoachBot.Domain.Model.Channel", "Channel")
+                        .WithMany()
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CoachBot.Domain.Model.StatisticTotals", "StatisticTotals")
+                        .WithMany()
+                        .HasForeignKey("StatisticTotalsId");
                 });
 
             modelBuilder.Entity("CoachBot.Model.Server", b =>

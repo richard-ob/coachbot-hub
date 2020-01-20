@@ -1,0 +1,7 @@
+.page-heading {
+    background-image: url(https://iosoccer.com/assets/stadium-3.jpg);
+}
+.page-heading::before {
+    opacity: 0.5;
+    background-color: #38a9ff;
+}

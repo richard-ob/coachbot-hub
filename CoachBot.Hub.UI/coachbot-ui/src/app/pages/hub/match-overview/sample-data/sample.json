@@ -1,0 +1,1760 @@
+{
+    "statisticTypes": [
+        "redCards",
+        "yellowCards",
+        "fouls",
+        "foulsSuffered",
+        "slidingTackles",
+        "slidingTacklesCompleted",
+        "goalsConceded",
+        "shots",
+        "shotsOnGoal",
+        "passesCompleted",
+        "interceptions",
+        "offsides",
+        "goals",
+        "ownGoals",
+        "assists",
+        "passes",
+        "freeKicks",
+        "penalties",
+        "corners",
+        "throwIns",
+        "keeperSaves",
+        "goalKicks",
+        "possession",
+        "distanceCovered",
+        "keeperSavesCaught"
+    ],
+        "matchInfo": {
+        "type": "Public Match",
+            "startTime": 1579550631,
+                "endTime": 1579552284,
+                    "periods": 2,
+                        "lastPeriodName": "SECOND HALF"
+    },
+    "teams": [
+        {
+            "matchTotal": {
+                "name": "France",
+                "side": "home",
+                "isMix": true,
+                "statistics": [
+                    0,
+                    1,
+                    1,
+                    3,
+                    15,
+                    3,
+                    3,
+                    12,
+                    11,
+                    119,
+                    51,
+                    0,
+                    2,
+                    0,
+                    2,
+                    180,
+                    2,
+                    0,
+                    8,
+                    7,
+                    4,
+                    1,
+                    618,
+                    50483,
+                    4
+                ]
+            },
+            "matchPeriods": [
+                {
+                    "period": 1,
+                    "periodName": "FIRST HALF",
+                    "announcedInjuryTimeSeconds": 120,
+                    "actualInjuryTimeSeconds": 120,
+                    "statistics": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        5,
+                        0,
+                        1,
+                        3,
+                        3,
+                        58,
+                        24,
+                        0,
+                        1,
+                        0,
+                        1,
+                        87,
+                        0,
+                        0,
+                        2,
+                        3,
+                        3,
+                        1,
+                        324,
+                        25062,
+                        3
+                    ]
+                },
+                {
+                    "period": 2,
+                    "periodName": "SECOND HALF",
+                    "announcedInjuryTimeSeconds": 120,
+                    "actualInjuryTimeSeconds": 144,
+                    "statistics": [
+                        0,
+                        1,
+                        1,
+                        3,
+                        10,
+                        3,
+                        2,
+                        9,
+                        8,
+                        61,
+                        27,
+                        0,
+                        1,
+                        0,
+                        1,
+                        93,
+                        2,
+                        0,
+                        6,
+                        4,
+                        1,
+                        0,
+                        293,
+                        25442,
+                        1
+                    ]
+                }
+            ]
+        },
+        {
+            "matchTotal": {
+                "name": "Slavic",
+                "side": "away",
+                "isMix": true,
+                "statistics": [
+                    0,
+                    3,
+                    3,
+                    1,
+                    15,
+                    4,
+                    2,
+                    7,
+                    7,
+                    106,
+                    52,
+                    0,
+                    3,
+                    0,
+                    3,
+                    163,
+                    1,
+                    0,
+                    2,
+                    6,
+                    9,
+                    3,
+                    640,
+                    51697,
+                    3
+                ]
+            },
+            "matchPeriods": [
+                {
+                    "period": 1,
+                    "periodName": "FIRST HALF",
+                    "announcedInjuryTimeSeconds": 120,
+                    "actualInjuryTimeSeconds": 120,
+                    "statistics": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        6,
+                        1,
+                        1,
+                        4,
+                        4,
+                        55,
+                        23,
+                        0,
+                        1,
+                        0,
+                        1,
+                        82,
+                        0,
+                        0,
+                        0,
+                        5,
+                        2,
+                        1,
+                        302,
+                        25732,
+                        1
+                    ]
+                },
+                {
+                    "period": 2,
+                    "periodName": "SECOND HALF",
+                    "announcedInjuryTimeSeconds": 120,
+                    "actualInjuryTimeSeconds": 144,
+                    "statistics": [
+                        0,
+                        3,
+                        3,
+                        1,
+                        9,
+                        3,
+                        1,
+                        3,
+                        3,
+                        51,
+                        29,
+                        0,
+                        2,
+                        0,
+                        2,
+                        81,
+                        1,
+                        0,
+                        2,
+                        1,
+                        7,
+                        2,
+                        338,
+                        25987,
+                        2
+                    ]
+                }
+            ]
+        }
+    ],
+        "players": [
+            {
+                "info": {
+                    "steamId": "STEAM_0:1:173565864",
+                    "name": "Alim (Referee)"
+                },
+                "matchPeriodData": []
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:94758706",
+                    "name": "Noderti"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "home",
+                            "position": "LB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            6,
+                            5,
+                            0,
+                            0,
+                            0,
+                            0,
+                            10,
+                            0,
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            21,
+                            3219,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "home",
+                            "position": "LB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            12,
+                            8,
+                            0,
+                            0,
+                            0,
+                            0,
+                            15,
+                            0,
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            32,
+                            3183,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:52166441",
+                    "name": "krWASD"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "away",
+                            "position": "GK"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            6,
+                            1,
+                            0,
+                            0,
+                            0,
+                            0,
+                            7,
+                            0,
+                            0,
+                            0,
+                            0,
+                            2,
+                            1,
+                            20,
+                            974,
+                            1
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "away",
+                            "position": "GK"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            5,
+                            1,
+                            0,
+                            0,
+                            0,
+                            0,
+                            5,
+                            0,
+                            0,
+                            0,
+                            0,
+                            7,
+                            2,
+                            17,
+                            1180,
+                            2
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:4675269",
+                    "name": "chuky"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "home",
+                            "position": "RB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            8,
+                            3,
+                            0,
+                            0,
+                            0,
+                            0,
+                            9,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            24,
+                            3427,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "home",
+                            "position": "RB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            3,
+                            2,
+                            0,
+                            0,
+                            0,
+                            9,
+                            7,
+                            0,
+                            0,
+                            0,
+                            0,
+                            10,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            28,
+                            3417,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:220002488",
+                    "name": "XOXO/\\"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "away",
+                            "position": "CM"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            11,
+                            3,
+                            0,
+                            0,
+                            0,
+                            0,
+                            14,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            50,
+                            3662,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "away",
+                            "position": "CM"
+                        },
+                        "statistics": [
+                            0,
+                            1,
+                            1,
+                            0,
+                            3,
+                            0,
+                            0,
+                            0,
+                            0,
+                            11,
+                            3,
+                            0,
+                            0,
+                            0,
+                            1,
+                            17,
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            0,
+                            81,
+                            3594,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:94144239",
+                    "name": "St.Rolexx :j"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "away",
+                            "position": "LW"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            1,
+                            1,
+                            5,
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            12,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            51,
+                            3691,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "away",
+                            "position": "LW"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            1,
+                            0,
+                            1,
+                            1,
+                            7,
+                            2,
+                            0,
+                            0,
+                            0,
+                            0,
+                            10,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            55,
+                            3685,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:1:105274742",
+                    "name": "colon"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "away",
+                            "position": "CF"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            2,
+                            2,
+                            4,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            4,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            17,
+                            3469,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "away",
+                            "position": "CF"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            1,
+                            5,
+                            2,
+                            0,
+                            1,
+                            0,
+                            0,
+                            8,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            23,
+                            3293,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:76074068",
+                    "name": "Lenno"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "away",
+                            "position": "CB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            9,
+                            7,
+                            0,
+                            0,
+                            0,
+                            0,
+                            13,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            38,
+                            3540,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "away",
+                            "position": "CB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            0,
+                            7,
+                            9,
+                            0,
+                            0,
+                            0,
+                            0,
+                            12,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            34,
+                            3635,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:1:3007736",
+                    "name": "SaliX"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "home",
+                            "position": "CM"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            0,
+                            13,
+                            4,
+                            0,
+                            0,
+                            0,
+                            0,
+                            16,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            67,
+                            3771,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "home",
+                            "position": "CM"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            2,
+                            1,
+                            0,
+                            0,
+                            1,
+                            1,
+                            10,
+                            2,
+                            0,
+                            0,
+                            0,
+                            0,
+                            18,
+                            1,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            61,
+                            3790,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:59074100",
+                    "name": "Seri (stream)"
+                },
+                "matchPeriodData": []
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:134661940",
+                    "name": "Flaz ;j"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "away",
+                            "position": "RB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            0,
+                            10,
+                            9,
+                            0,
+                            0,
+                            0,
+                            0,
+                            14,
+                            0,
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            56,
+                            3600,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "away",
+                            "position": "RB"
+                        },
+                        "statistics": [
+                            0,
+                            1,
+                            1,
+                            1,
+                            2,
+                            1,
+                            0,
+                            0,
+                            0,
+                            6,
+                            4,
+                            0,
+                            0,
+                            0,
+                            1,
+                            10,
+                            1,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            61,
+                            3677,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:185231374",
+                    "name": "<-Timinho`"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "away",
+                            "position": "LB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            3,
+                            2,
+                            0,
+                            0,
+                            0,
+                            0,
+                            4,
+                            0,
+                            0,
+                            0,
+                            3,
+                            0,
+                            0,
+                            6,
+                            3019,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "away",
+                            "position": "LB"
+                        },
+                        "statistics": [
+                            0,
+                            1,
+                            1,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            0,
+                            3,
+                            6,
+                            0,
+                            0,
+                            0,
+                            0,
+                            7,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            22,
+                            3120,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:1:189850670",
+                    "name": "Max"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "home",
+                            "position": "RW"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            0,
+                            4,
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            6,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            12,
+                            3268,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "home",
+                            "position": "RW"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            1,
+                            0,
+                            1,
+                            1,
+                            4,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            12,
+                            0,
+                            0,
+                            4,
+                            2,
+                            0,
+                            0,
+                            21,
+                            3391,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:59457977",
+                    "name": "sansable Loan"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "home",
+                            "position": "LW"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            1,
+                            1,
+                            7,
+                            3,
+                            0,
+                            0,
+                            0,
+                            0,
+                            14,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            57,
+                            3374,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "home",
+                            "position": "LW"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            1,
+                            2,
+                            0,
+                            0,
+                            3,
+                            3,
+                            10,
+                            4,
+                            0,
+                            0,
+                            0,
+                            1,
+                            15,
+                            1,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            53,
+                            3439,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:1:125589583",
+                    "name": "tix"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "home",
+                            "position": "GK"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            4,
+                            3,
+                            0,
+                            0,
+                            0,
+                            0,
+                            7,
+                            0,
+                            0,
+                            0,
+                            0,
+                            3,
+                            1,
+                            28,
+                            1066,
+                            3
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "home",
+                            "position": "GK"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            1,
+                            2,
+                            0,
+                            0,
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            7,
+                            1396,
+                            1
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:1:105244796",
+                    "name": "Janir"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "away",
+                            "position": "RW"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            3,
+                            1,
+                            0,
+                            1,
+                            1,
+                            7,
+                            1,
+                            0,
+                            0,
+                            0,
+                            0,
+                            14,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            62,
+                            3778,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "away",
+                            "position": "RW"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            1,
+                            0,
+                            1,
+                            1,
+                            7,
+                            2,
+                            0,
+                            1,
+                            0,
+                            0,
+                            12,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            41,
+                            3806,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:1:4574316",
+                    "name": "Nkz"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "home",
+                            "position": "CB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            0,
+                            0,
+                            5,
+                            5,
+                            0,
+                            0,
+                            0,
+                            0,
+                            12,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            49,
+                            3236,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "home",
+                            "position": "CB"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                            1,
+                            0,
+                            4,
+                            3,
+                            0,
+                            0,
+                            0,
+                            0,
+                            5,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            12,
+                            3124,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:1:37501167",
+                    "name": "mTz-"
+                },
+                "matchPeriodData": [
+                    {
+                        "info": {
+                            "startSecond": 0,
+                            "endSecond": 2820,
+                            "team": "home",
+                            "position": "CF"
+                        },
+                        "statistics": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            2,
+                            2,
+                            11,
+                            1,
+                            0,
+                            1,
+                            0,
+                            0,
+                            13,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            62,
+                            3699,
+                            0
+                        ]
+                    },
+                    {
+                        "info": {
+                            "startSecond": 2700,
+                            "endSecond": 5544,
+                            "team": "home",
+                            "position": "CF"
+                        },
+                        "statistics": [
+                            0,
+                            1,
+                            1,
+                            0,
+                            2,
+                            0,
+                            0,
+                            3,
+                            3,
+                            11,
+                            1,
+                            0,
+                            1,
+                            0,
+                            0,
+                            16,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            76,
+                            3704,
+                            0
+                        ]
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:141376986",
+                    "name": "Lucas hernandez"
+                },
+                "matchPeriodData": []
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:236748586",
+                    "name": "Joshua19"
+                },
+                "matchPeriodData": []
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:480236211",
+                    "name": "milkazz"
+                },
+                "matchPeriodData": []
+            },
+            {
+                "info": {
+                    "steamId": "STEAM_0:0:115494837",
+                    "name": "Slicer"
+                },
+                "matchPeriodData": []
+            }
+        ],
+            "matchEvents": [
+                {
+                    "second": 90,
+                    "event": "SAVE",
+                    "period": "FIRST HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:125589583",
+                    "player2SteamId": "STEAM_0:1:105274742"
+                },
+                {
+                    "second": 873,
+                    "event": "GOAL",
+                    "period": "FIRST HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:1:105274742",
+                    "player2SteamId": "STEAM_0:0:94144239"
+                },
+                {
+                    "second": 873,
+                    "event": "(null)",
+                    "period": "FIRST HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:1:105274742",
+                    "player2SteamId": ""
+                },
+                {
+                    "second": 1337,
+                    "event": "SAVE",
+                    "period": "FIRST HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:125589583",
+                    "player2SteamId": "STEAM_0:0:94144239"
+                },
+                {
+                    "second": 1403,
+                    "event": "SAVE",
+                    "period": "FIRST HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:125589583",
+                    "player2SteamId": "STEAM_0:1:105244796"
+                },
+                {
+                    "second": 1911,
+                    "event": "SAVE",
+                    "period": "FIRST HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:52166441",
+                    "player2SteamId": "STEAM_0:0:59457977"
+                },
+                {
+                    "second": 2186,
+                    "event": "SAVE",
+                    "period": "FIRST HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:52166441",
+                    "player2SteamId": "STEAM_0:1:37501167"
+                },
+                {
+                    "second": 2260,
+                    "event": "GOAL",
+                    "period": "FIRST HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:37501167",
+                    "player2SteamId": "STEAM_0:1:189850670"
+                },
+                {
+                    "second": 2260,
+                    "event": "(null)",
+                    "period": "FIRST HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:37501167",
+                    "player2SteamId": ""
+                },
+                {
+                    "second": 2848,
+                    "event": "SAVE",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:52166441",
+                    "player2SteamId": "STEAM_0:0:59457977"
+                },
+                {
+                    "second": 3062,
+                    "event": "MISS",
+                    "period": "SECOND HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:4574316",
+                    "player2SteamId": ""
+                },
+                {
+                    "second": 3072,
+                    "event": "SAVE",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:52166441",
+                    "player2SteamId": "STEAM_0:0:59457977"
+                },
+                {
+                    "second": 3338,
+                    "event": "YELLOW CARD",
+                    "period": "SECOND HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:37501167",
+                    "player2SteamId": ""
+                },
+                {
+                    "second": 3878,
+                    "event": "GOAL",
+                    "period": "SECOND HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:37501167",
+                    "player2SteamId": "STEAM_0:0:59457977"
+                },
+                {
+                    "second": 3878,
+                    "event": "(null)",
+                    "period": "SECOND HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:37501167",
+                    "player2SteamId": ""
+                },
+                {
+                    "second": 4030,
+                    "event": "GOAL",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:1:105274742",
+                    "player2SteamId": "STEAM_0:0:220002488"
+                },
+                {
+                    "second": 4030,
+                    "event": "(null)",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:1:105274742",
+                    "player2SteamId": ""
+                },
+                {
+                    "second": 4162,
+                    "event": "SAVE",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:52166441",
+                    "player2SteamId": "STEAM_0:1:37501167"
+                },
+                {
+                    "second": 4521,
+                    "event": "SAVE",
+                    "period": "SECOND HALF",
+                    "team": "home",
+                    "player1SteamId": "STEAM_0:1:125589583",
+                    "player2SteamId": "STEAM_0:0:94144239"
+                },
+                {
+                    "second": 4613,
+                    "event": "YELLOW CARD",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:185231374",
+                    "player2SteamId": ""
+                },
+                {
+                    "second": 4678,
+                    "event": "SAVE",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:52166441",
+                    "player2SteamId": "STEAM_0:1:189850670"
+                },
+                {
+                    "second": 4682,
+                    "event": "SAVE",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:52166441",
+                    "player2SteamId": "STEAM_0:1:3007736"
+                },
+                {
+                    "second": 4705,
+                    "event": "SAVE",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:52166441",
+                    "player2SteamId": "STEAM_0:1:37501167"
+                },
+                {
+                    "second": 4782,
+                    "event": "SAVE",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:52166441",
+                    "player2SteamId": "STEAM_0:0:59457977"
+                },
+                {
+                    "second": 4972,
+                    "event": "GOAL",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:1:105244796",
+                    "player2SteamId": "STEAM_0:0:134661940"
+                },
+                {
+                    "second": 4973,
+                    "event": "(null)",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:1:105244796",
+                    "player2SteamId": ""
+                },
+                {
+                    "second": 5251,
+                    "event": "YELLOW CARD",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:134661940",
+                    "player2SteamId": ""
+                },
+                {
+                    "second": 5482,
+                    "event": "YELLOW CARD",
+                    "period": "SECOND HALF",
+                    "team": "away",
+                    "player1SteamId": "STEAM_0:0:220002488",
+                    "player2SteamId": ""
+                }
+            ]
+}

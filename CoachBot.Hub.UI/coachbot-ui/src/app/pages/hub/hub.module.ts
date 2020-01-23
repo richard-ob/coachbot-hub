@@ -7,6 +7,8 @@ import { SecondsToMinutesPipe } from './match-overview/helpers/seconds-to-minute
 import { ArrayFilterPipe } from './match-overview/helpers/array-filter.pipe';
 import { MatchStatisticPercentageCalculatorPipe } from './match-overview/helpers/match-statistic-percentage-calculator.pipe';
 import { MatchStatisticTeamPercentageCalculatorPipe } from './match-overview/helpers/match-statistic-team-percentage-calculator.pipe';
+import { HorizontalBarGraphComponent } from './match-overview/components/horizontal-bar-graph/horizontal-bar-graph.component';
+import { PercentageSharePipe } from './match-overview/helpers/percentage-share.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { MatchStatisticTeamPercentageCalculatorPipe } from './match-overview/hel
     SecondsToMinutesPipe,
     ArrayFilterPipe,
     MatchStatisticPercentageCalculatorPipe,
-    MatchStatisticTeamPercentageCalculatorPipe
+    MatchStatisticTeamPercentageCalculatorPipe,
+    HorizontalBarGraphComponent,
+    PercentageSharePipe
   ],
   imports: [
     CommonModule

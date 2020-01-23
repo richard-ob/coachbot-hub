@@ -260,41 +260,13 @@
 
                             <!-- Ball Posession -->
                             <section class="game-result__section">
-                                <header class="game-result__subheader card__subheader">
-                                    <h5 class="game-result__subtitle">Ball Posession</h5>
-                                </header>
-                                <div class="game-result__content">
 
-                                    <div class="spacer-sm"></div>
+                                <app-horizontal-bar-graph
+                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Possession]"
+                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Possession]"
+                                    [title]="'Possession'" [displayValueMode]="displayValueModes.Percentage">
+                                </app-horizontal-bar-graph>
 
-                                    <!-- Progress: Ball Posession -->
-                                    <div class="progress-double-wrapper">
-                                        <div class="progress-inner-holder">
-                                            <div
-                                                class="progress__digit progress__digit--left progress__digit--highlight">
-                                                {{ sampleMatchData.teams | matchStatisticPercentage:statisticType.Possession:teamType.Home }}%
-                                            </div>
-                                            <div class="progress__double">
-                                                <div class="progress progress--lg">
-                                                    <div class="progress__bar" role="progressbar"
-                                                        [style.width]="(sampleMatchData.teams | matchStatisticPercentage:statisticType.Possession:teamType.Home) + '%'"
-                                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <div class="progress progress--lg">
-                                                    <div class="progress__bar progress__bar--success"
-                                                        [style.width]="(sampleMatchData.teams | matchStatisticPercentage:statisticType.Possession:teamType.Away) + '%'"
-                                                        role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="progress__digit progress__digit--right progress__digit--highlight">
-                                                {{ sampleMatchData.teams | matchStatisticPercentage:statisticType.Possession:teamType.Away }}%
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Progress: Ball Posession / End -->
-
-                                </div>
                             </section>
                             <!-- Ball Posession / End -->
 

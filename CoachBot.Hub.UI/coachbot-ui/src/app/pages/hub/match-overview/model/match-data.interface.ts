@@ -9,19 +9,22 @@ export interface MatchData {
 
 export interface MatchEvent {
     second: number;
-    event: Event;
+    event: EventType;
     period: LastPeriodName;
     team: TeamEnum;
     player1SteamId: string;
     player2SteamId: string;
 }
 
-export enum Event {
+export enum EventType {
     Goal = 'GOAL',
     Miss = 'MISS',
-    Null = '(null)',
     Save = 'SAVE',
     YellowCard = 'YELLOW CARD',
+    RedCard = 'RED CARD',
+    SecondYellowCard = 'SECOND YELLOW CARD',
+    Penalty = 'PENALTY',
+    Null = '(null)'
 }
 
 export enum LastPeriodName {

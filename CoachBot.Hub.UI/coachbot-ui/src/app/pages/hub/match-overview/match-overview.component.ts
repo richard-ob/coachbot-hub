@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import sampleMatchDataJson from './sample-data/sample.json';
-import { MatchData } from './model/match-data.interface';
+import { MatchData, EventType } from './model/match-data.interface';
 import { StatisticType } from './model/statistic-type.enum';
 import { TeamType } from './model/team-type.enum.js';
 
@@ -14,6 +14,7 @@ export class MatchOverviewComponent implements OnInit {
   sampleMatchData: any = sampleMatchDataJson;
   statisticType = StatisticType;
   teamType = TeamType;
+  eventType = EventType;
 
   // Match Data
   matchDate: Date = new Date(this.sampleMatchData.matchInfo.startTime * 1000);

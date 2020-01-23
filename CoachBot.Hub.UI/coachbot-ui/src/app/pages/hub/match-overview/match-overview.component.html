@@ -1,613 +1,439 @@
 <!-- Page Heading
 ================================================== -->
 <div class="page-heading">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10 offset-md-1">
-                    <h1 class="page-heading__title">Match Overview</h1>
-                    <ol class="page-heading__breadcrumb breadcrumb">
-                        <li class="breadcrumb-item"><a href="_soccer_index.html">Hub</a></li>
-                        <li class="breadcrumb-item"><a href="#">Recent Matches</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">MOF vs BB</li>
-                    </ol>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <h1 class="page-heading__title">Match Overview</h1>
+                <ol class="page-heading__breadcrumb breadcrumb">
+                    <li class="breadcrumb-item"><a href="_soccer_index.html">Hub</a></li>
+                    <li class="breadcrumb-item"><a href="#">Recent Matches</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">MOF vs BB</li>
+                </ol>
             </div>
         </div>
     </div>
+</div>
 <!-- Page Heading / End -->
-    
-		
+
+
 <!-- Content
 ================================================== -->
 <div class="site-content">
-        <div class="container">
-    
-            <div class="row">
-    
-                <!-- Content -->
-                <div class="content col-lg-8">
-    
-                    <!-- Game Scoreboard -->
-                    <div class="card">
-                        <header class="card__header card__header--has-btn">
-                            <h4>Last Game Results</h4>
-                            <a href="#" class="btn btn-default btn-outline btn-xs card-header__button">Check previous Results</a>
-                        </header>
-                        <div class="card__content">
-                    
-                            <!-- Game Result -->
-                            <div class="game-result">
-                                <section class="game-result__section pt-0">
-                                    <header class="game-result__header game-result__header--alt">
-                                        <span class="game-result__league">Ranked Friendly</span>
-                                        <h3 class="game-result__title">Official London 8v8</h3>
-                                        <time class="game-result__date">{{matchDate | date:'medium'}}</time>
-                                    </header>
-                                    <div class="game-result__content">
-                    
-                                        <!-- 1st Team -->
-                                        <div class="game-result__team game-result__team--first">
-                                            <figure class="game-result__team-logo">
-                                                <img src="assets/images/soccer/logos/alchemists_last_game_results_big.png" alt="">
-                                            </figure>
-                                            <div class="game-result__team-info">
-                                                <h5 class="game-result__team-name">{{sampleMatchData.teams[teamType.Home].matchTotal.name}}</h5>
-                                            </div>
-                                        </div>
-                                        <!-- 1st Team / End -->
-                    
-                                        <div class="game-result__score-wrap">
-                                            <div class="game-result__score game-result__score--lg">
-                                                <span class="game-result__score-result">{{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Goals]}}</span>
-                                                <span class="game-result__score-dash">-</span>
-                                                <span class="game-result__score-result">{{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
-                                            </div>
-                                            <div class="game-result__score-label">Final Score</div>
-                                        </div>
-                    
-                                        <!-- 2nd Team -->
-                                        <div class="game-result__team game-result__team--second">
-                                            <figure class="game-result__team-logo">
-                                                <img src="assets/images/samples/logo-l-clovers--sm.png" alt="">
-                                            </figure>
-                                            <div class="game-result__team-info">
-                                                <h5 class="game-result__team-name">{{sampleMatchData.teams[teamType.Away].matchTotal.name}}</h5>
-                                            </div>
-                                        </div>
-                                        <!-- 2nd Team / End -->
-                                    </div>
-                                </section>
-                                <div class="spacer"></div>
-                                <section class="game-result__section">
-                                    <header class="game-result__header game-result__header--alt">
-                                        <span class="game-result__goal">Franklin Stevens (22’) <i class="icon-svg icon-soccer-ball"></i></span>
-                                        <span class="game-result__goal">Christofer Grass (68’) (P) <i class="icon-svg icon-soccer-ball"></i></span>
-                                    </header>
-                                    <div class="game-result__content mb-0">
-                                        <div class="game-result__stats">
-                                            <div class="row">
-                                                <div class="col-12 col-md-6 order-md-2">
-                                                    <div class="game-result__table-stats game-result__table-stats--soccer">
-                                                        <table class="table table-wrap-bordered table-thead-color">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th colspan="3">Game Statistics</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>25(14)</td>
-                                                                    <td>Shots (on goal)</td>
-                                                                    <td>16(6)</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>9</td>
-                                                                    <td>Corner Kicks</td>
-                                                                    <td>7</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>8</td>
-                                                                    <td>Saves</td>
-                                                                    <td>5</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>0</td>
-                                                                    <td>Yellow Cards</td>
-                                                                    <td>2</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>Red Cards</td>
-                                                                    <td>0</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 col-md-3 order-md-1 game-result__stats-team-1">
-                    
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <div class="circular circular--size-70">
-                                                                <div class="circular__bar" data-percent="84.5">
-                                                                    <span class="circular__percents">84.5<small>%</small></span>
-                                                                </div>
-                                                                <span class="circular__label">Shot<br> Accuracy</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="circular circular--size-70">
-                                                                <div class="circular__bar" data-percent="62.3">
-                                                                    <span class="circular__percents">62.3<small>%</small></span>
-                                                                </div>
-                                                                <span class="circular__label">Pass<br> Accuracy</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="spacer"></div>
-                    
-                                                    <!-- Progress: Assists -->
-                                                    <div class="progress-stats">
-                                                        <div class="progress__label">Sho</div>
-                                                        <div class="progress">
-                                                            <div class="progress__bar progress__bar-width-90" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <div class="progress__number">25</div>
-                                                    </div>
-                                                    <!-- Progress: Assists / End -->
-                    
-                                                    <!-- Progress: Fouls -->
-                                                    <div class="progress-stats">
-                                                        <div class="progress__label">Fou</div>
-                                                        <div class="progress">
-                                                            <div class="progress__bar progress__bar-width-40" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <div class="progress__number">12</div>
-                                                    </div>
-                                                    <!-- Progress: Fouls / End -->
-                    
-                                                    <!-- Progress: OFF -->
-                                                    <div class="progress-stats">
-                                                        <div class="progress__label">OFF</div>
-                                                        <div class="progress">
-                                                            <div class="progress__bar progress__bar-width-30" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <div class="progress__number">10</div>
-                                                    </div>
-                                                    <!-- Progress: OFF / End -->
-                    
-                                                </div>
-                                                <div class="col-6 col-md-3 order-md-3 game-result__stats-team-2">
-                    
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <div class="circular circular--size-70">
-                                                                <div class="circular__bar" data-percent="74.6" data-bar-color="#9fe900">
-                                                                    <span class="circular__percents">74.6<small>%</small></span>
-                                                                </div>
-                                                                <span class="circular__label">Shot<br> Accuracy</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="circular circular--size-70">
-                                                                <div class="circular__bar" data-percent="53.9" data-bar-color="#9fe900">
-                                                                    <span class="circular__percents">53.9<small>%</small></span>
-                                                                </div>
-                                                                <span class="circular__label">Pass<br> Accuracy</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="spacer"></div>
-                    
-                                                    <!-- Progress: Assists -->
-                                                    <div class="progress-stats">
-                                                        <div class="progress__label">Sho</div>
-                                                        <div class="progress">
-                                                            <div class="progress__bar progress__bar--success progress__bar-width-80" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <div class="progress__number">25</div>
-                                                    </div>
-                                                    <!-- Progress: Assists / End -->
-                    
-                                                    <!-- Progress: Fouls -->
-                                                    <div class="progress-stats">
-                                                        <div class="progress__label">Fou</div>
-                                                        <div class="progress">
-                                                            <div class="progress__bar progress__bar--success progress__bar-width-60" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <div class="progress__number">14</div>
-                                                    </div>
-                                                    <!-- Progress: Fouls / End -->
-                    
-                                                    <!-- Progress: OFF -->
-                                                    <div class="progress-stats">
-                                                        <div class="progress__label">OFF</div>
-                                                        <div class="progress">
-                                                            <div class="progress__bar progress__bar--success progress__bar-width-40" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <div class="progress__number">12</div>
-                                                    </div>
-                                                    <!-- Progress: OFF / End -->
-                    
-                                                </div>
-                                            </div>
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Content -->
+            <div class="content col-lg-8">
+
+                <!-- Game Scoreboard -->
+                <div class="card">
+                    <header class="card__header card__header--has-btn">
+                        <h4>Last Game Results</h4>
+                        <a href="#" class="btn btn-default btn-outline btn-xs card-header__button">Check previous
+                            Results</a>
+                    </header>
+                    <div class="card__content">
+
+                        <!-- Game Result -->
+                        <div class="game-result">
+                            <section class="game-result__section pt-0">
+                                <header class="game-result__header game-result__header--alt">
+                                    <span class="game-result__league">Ranked Friendly</span>
+                                    <h3 class="game-result__title">Official London 8v8</h3>
+                                    <time class="game-result__date">{{matchDate | date:'medium'}}</time>
+                                </header>
+                                <div class="game-result__content">
+
+                                    <!-- 1st Team -->
+                                    <div class="game-result__team game-result__team--first">
+                                        <figure class="game-result__team-logo">
+                                            <ng-container
+                                                *ngIf="(sampleMatchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
+                                                <img
+                                                    src="https://www.countryflags.io/{{sampleMatchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
+                                            </ng-container>
+                                            <ng-template #blankCrest>
+                                                <img src="./assets/images/soccer/blank-crest.png"
+                                                    style="max-width: 64px;">
+                                            </ng-template>
+                                        </figure>
+                                        <div class="game-result__team-info">
+                                            <h5 class="game-result__team-name">
+                                                {{sampleMatchData.teams[teamType.Home].matchTotal.name}}</h5>
                                         </div>
                                     </div>
-                                </section>
-                    
-                                <!-- Ball Posession -->
-                                <section class="game-result__section">
-                                    <header class="game-result__subheader card__subheader">
-                                        <h5 class="game-result__subtitle">Ball Posession</h5>
-                                    </header>
-                                    <div class="game-result__content">
-                    
-                                        <div class="spacer-sm"></div>
-                    
-                                        <!-- Progress: Ball Posession -->
-                                        <div class="progress-double-wrapper">
-                                            <div class="progress-inner-holder">
-                                                <div class="progress__digit progress__digit--left progress__digit--highlight">62%</div>
-                                                <div class="progress__double">
-                                                    <div class="progress progress--lg">
-                                                        <div class="progress__bar progress__bar-width-60" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <div class="progress progress--lg">
-                                                        <div class="progress__bar progress__bar--success progress__bar-width-40" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="progress__digit progress__digit--right progress__digit--highlight">38%</div>
-                                            </div>
+                                    <!-- 1st Team / End -->
+
+                                    <div class="game-result__score-wrap">
+                                        <div class="game-result__score game-result__score--lg">
+                                            <span class="game-result__score-result">{{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Goals]}}</span>
+                                            <span class="game-result__score-dash">-</span>
+                                            <span class="game-result__score-result">{{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
                                         </div>
-                                        <!-- Progress: Ball Posession / End -->
-                    
-                                    </div>
-                                </section>
-                                <!-- Ball Posession / End -->
-                    
-                                <!-- Game Timeline -->
-                                <section class="game-result__section">
-                                    <header class="game-result__subheader card__subheader">
-                                        <h5 class="game-result__subtitle">Game Timeline</h5>
-                                    </header>
-                                    <div class="game-result__content game-result__content--visible mb-0">
-                    
-                                        <!-- Timeline -->
-                                        <div class="game-timeline-wrapper">
-                                            <div class="game-timeline">
-                    
-                                                <div class="game-timeline__event">
-                                                    <div class="game-timeline__team-1">
-                                                        <div class="game-timeline__team-shirt">
-                                                            <i class="icon-svg icon-shirt"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="game-timeline__time">0’</div>
-                                                    <div class="game-timeline__team-2">
-                                                        <div class="game-timeline__team-shirt">
-                                                            <i class="icon-svg icon-shirt-alt"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                    
-                                                <div class="game-timeline__event game-timeline__event--22">
-                                                    <div class="game-timeline__team-1">
-                                                        <div class="game-timeline__event-info">
-                                                            <div class="game-timeline__event-name">F. Stevens</div>
-                                                            <div class="game-timeline__event-desc">Alchemists 1-0</div>
-                                                        </div>
-                                                        <i class="icon-svg icon-soccer-ball"></i>
-                                                    </div>
-                                                    <div class="game-timeline__time">22’</div>
-                                                </div>
-                    
-                                                <div class="game-timeline__event game-timeline__event--36">
-                                                    <div class="game-timeline__time">36’</div>
-                                                    <div class="game-timeline__team-2">
-                                                        <i class="icon-svg icon-yellow-card"></i>
-                                                        <div class="game-timeline__event-info">
-                                                            <div class="game-timeline__event-name">J. Griffin</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                    
-                                                <div class="game-timeline__event game-timeline__event--ht">
-                                                    <div class="game-timeline__time">HT</div>
-                                                    <div class="game-timeline__team-2">
-                                                        <i class="icon-svg icon-substitution"></i>
-                                                        <div class="game-timeline__event-info">
-                                                            <div class="game-timeline__event-name">R. Valentine</div>
-                                                            <div class="game-timeline__event-name">M. Jackson</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                    
-                                                <div class="game-timeline__event game-timeline__event--59">
-                                                    <div class="game-timeline__team-1">
-                                                        <div class="game-timeline__event-info">
-                                                            <div class="game-timeline__event-name">B.Kingster</div>
-                                                        </div>
-                                                        <i class="icon-svg icon-red-card"></i>
-                                                    </div>
-                                                    <div class="game-timeline__time">59’</div>
-                                                </div>
-                    
-                                                <div class="game-timeline__event game-timeline__event--68">
-                                                    <div class="game-timeline__team-1">
-                                                        <div class="game-timeline__event-info">
-                                                            <div class="game-timeline__event-name">C. Grass (P)</div>
-                                                            <div class="game-timeline__event-desc">Alchemists 2-0</div>
-                                                        </div>
-                                                        <i class="icon-svg icon-soccer-ball-penalty"></i>
-                                                    </div>
-                                                    <div class="game-timeline__time">68’</div>
-                                                </div>
-                    
-                                                <div class="game-timeline__event game-timeline__event--84">
-                                                    <div class="game-timeline__time">84’</div>
-                                                    <div class="game-timeline__team-2">
-                                                        <i class="icon-svg icon-yellow-card"></i>
-                                                        <div class="game-timeline__event-info">
-                                                            <div class="game-timeline__event-name">W. Christison</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                    
-                                                <div class="game-timeline__event game-timeline__event--ft">
-                                                    <div class="game-timeline__time">FT</div>
-                                                </div>
-                    
-                                            </div>
+                                        <div [ngSwitch]="sampleMatchData.matchInfo.periods"
+                                            class="game-result__score-label">
+                                            <span *ngSwitchCase="2">FT</span>
+                                            <span *ngSwitchCase="3">AET</span>
+                                            <span *ngSwitchCase="4">AET</span>
+                                            <span *ngSwitchCase="5">PENS</span>
                                         </div>
-                                        <!-- Timeline / End -->
-                    
-                                        <div class="spacer"></div>
-                    
-                                        <div class="game-result__section-decor"></div>
-                    
+                                        <div class="game-result__score-label">Final Score</div>
                                     </div>
-                                </section>
-                                <!-- Ball Posession / End -->
-                            </div>
-                            <!-- Game Timeline / End -->
-                    
-                        </div>
-                    </div>
-                    <!-- Game Scoreboard / End -->
-    
-                    <div class="row">
-    
-                        <div class="col-md-6">
-    
-                            <!-- Widget: Lineup Table -->
-                            <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
-                                <div class="widget__title card__header">
-                                    <h4>Alchemists Lineup</h4>
+
+                                    <!-- 2nd Team -->
+                                    <div class="game-result__team game-result__team--second">
+                                        <figure class="game-result__team-logo">
+                                            <ng-container
+                                                *ngIf="(sampleMatchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
+                                                <img
+                                                    src="https://www.countryflags.io/{{sampleMatchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
+                                            </ng-container>
+                                            <ng-template #blankCrest>
+                                                <img src="./assets/images/soccer/blank-crest.png"
+                                                    style="max-width: 64px;">
+                                            </ng-template>
+                                        </figure>
+                                        <div class="game-result__team-info">
+                                            <h5 class="game-result__team-name">
+                                                {{sampleMatchData.teams[teamType.Away].matchTotal.name}}</h5>
+                                        </div>
+                                    </div>
+                                    <!-- 2nd Team / End -->
                                 </div>
-                                <div class="widget__content card__content">
-                            
-                                    <!-- Lineup Table -->
-                                    <div class="table-responsive">
-                                        <table class="table lineup-table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="lineup__num">NBR</th>
-                                                    <th class="lineup__pos">POS</th>
-                                                    <th class="lineup__name">Player Name</th>
-                                                    <th class="lineup__info"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <ng-container *ngFor="let player of sampleMatchData.players">
-                                                        <tr *ngIf="player.matchPeriodData && player.matchPeriodData.length && player.matchPeriodData[0].info.team === 'home'">                                                            
-                                                            <td class="lineup__num"></td>
-                                                            <td class="lineup__pos">{{player.matchPeriodData[0].info.position}}</td>
-                                                            <td class="lineup__name">{{player.info.name}}</td>
-                                                            <td class="lineup__info"><i class="icon-svg "></i></td>
-                                                        </tr>
-                                                </ng-container>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- Lineup Table / End -->
-                            
-                                </div>
-                            </aside>
-                            <!-- Widget: Lineup Table / End -->
-    
-                        </div>
-    
-                        <div class="col-md-6">
-    
-                            <!-- Widget: Lineup Table Alt -->
-                            <aside class="widget card card--alt-color card--has-table widget--sidebar widget-lineup-table">
-                                <div class="widget__title card__header">
-                                    <h4>Clovers Lineup</h4>
-                                </div>
-                                <div class="widget__content card__content">
-                            
-                                    <!-- Lineup Table -->
-                                    <div class="table-responsive">
-                                        <table class="table lineup-table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="lineup__num">NBR</th>
-                                                    <th class="lineup__pos">POS</th>
-                                                    <th class="lineup__name">Player Name</th>
-                                                    <th class="lineup__info"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>     
-                                                    <ng-container *ngFor="let player of sampleMatchData.players">
-                                                            <tr *ngIf="player.matchPeriodData && player.matchPeriodData.length && player.matchPeriodData[0].info.team === 'away'">                                                            
-                                                                <td class="lineup__num"></td>
-                                                                <td class="lineup__pos">{{player.matchPeriodData[0].info.position}}</td>
-                                                                <td class="lineup__name">{{player.info.name}}</td>
-                                                                <td class="lineup__info"><i class="icon-svg "></i></td>
+                            </section>
+                            <div class="spacer"></div>
+                            <section class="game-result__section">
+                                <header class="game-result__header game-result__header--alt">
+                                    <ng-container
+                                        *ngFor="let goalEvents of sampleMatchData.matchEvents | arrayFilter:'event':eventType.Goal">
+                                        <span class="game-result__goal">
+                                            {{goalEvents.player1SteamId | steamIdToPlayerName:sampleMatchData.players}} ({{goalEvents.second | secondsToMinutes}}’)
+                                            <i class="icon-svg icon-soccer-ball"></i>
+                                        </span>
+                                    </ng-container>
+                                </header>
+                                <div class="game-result__content mb-0">
+                                    <div class="game-result__stats">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 order-md-2">
+                                                <div class="game-result__table-stats game-result__table-stats--soccer">
+                                                    <table class="table table-wrap-bordered table-thead-color">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="3">Game Statistics</th>
                                                             </tr>
-                                                    </ng-container>
-                                            </tbody>
-                                        </table>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]}}
+                                                                    ({{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]}})
+                                                                </td>
+                                                                <td>Shots (on goal)</td>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]}}
+                                                                    ({{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]}})
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Corners]}}
+                                                                </td>
+                                                                <td>Corner Kicks</td>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Corners]}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.KeeperSaves]}}
+                                                                </td>
+                                                                <td>Saves</td>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.KeeperSaves]}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.YellowCards]}}
+                                                                </td>
+                                                                <td>Yellow Cards</td>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.YellowCards]}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.RedCards]}}
+                                                                </td>
+                                                                <td>Red Cards</td>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.RedCards]}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Offsides]}}
+                                                                </td>
+                                                                <td>Offsides</td>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Offsides]}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Fouls]}}
+                                                                </td>
+                                                                <td>Fouls</td>
+                                                                <td>
+                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Fouls]}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-3 order-md-1 game-result__stats-team-1">
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="circular circular--size-70">
+                                                            <div class="circular__bar" data-percent="84.5">
+                                                                <span class="circular__percents">
+                                                                    {{ sampleMatchData.teams | matchStatisticTeamPercentage:statisticType.Shots:statisticType.ShotsOnGoal:teamType.Home }}
+                                                                    <small>%</small>
+                                                                </span>
+                                                            </div>
+                                                            <span class="circular__label">Shot<br> Accuracy</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="circular circular--size-70">
+                                                            <div class="circular__bar" data-percent="62.3">
+                                                                <span class="circular__percents">
+                                                                    {{ sampleMatchData.teams | matchStatisticTeamPercentage:statisticType.Passes:statisticType.PassesCompleted:teamType.Home }}
+                                                                    <small>%</small>
+                                                                </span>
+                                                            </div>
+                                                            <span class="circular__label">Pass<br> Accuracy</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="spacer"></div>
+
+
+                                            </div>
+                                            <div class="col-6 col-md-3 order-md-3 game-result__stats-team-2">
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="circular circular--size-70">
+                                                            <div class="circular__bar" data-percent="74.6"
+                                                                data-bar-color="#9fe900">
+                                                                <span class="circular__percents">74.6<small>%</small></span>
+                                                            </div>
+                                                            <span class="circular__label">Shot<br> Accuracy</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="circular circular--size-70">
+                                                            <div class="circular__bar" data-percent="53.9"
+                                                                data-bar-color="#9fe900">
+                                                                <span class="circular__percents">53.9<small>%</small></span>
+                                                            </div>
+                                                            <span class="circular__label">Pass<br> Accuracy</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="spacer"></div>
+
+
+                                            </div>
+                                        </div>
                                     </div>
-                                    <!-- Lineup Table / End -->
-                            
                                 </div>
-                            </aside>
-                            <!-- Widget: Lineup Table Alt / End -->
-    
-                        </div>
-                    </div>
-    
-                </div>
-                <!-- Content / End -->
-    
-                <!-- Sidebar -->
-                <div class="sidebar col-lg-4">
-    
-                    <!-- Widget: Lineup -->
-                    <aside class="widget card widget--sidebar widget-lineup">
-                        <div class="widget__title card__header">
-                            <h4>Lineup and Tactic</h4>
-                        </div>
-                        <div class="widget__content card__content">
-                    
-                            <canvas id="soccer-lineup" class="soccer-lineup" width="316" height="460">
-                                <!-- Fallback Image -->
-                                <img src="assets/images/soccer/_soccer_field-lineup.jpg" alt="">
-                                <!-- Fallback Image / End -->
-                            </canvas>
-                    
-                            <script>
-                                var canvas = document.getElementById('soccer-lineup');
-                                var context = canvas.getContext('2d');
-                    
-                                function loadImages(sources, callback) {
-                                    var images = {};
-                                    var loadedImages = 0;
-                                    var numImages = 0;
-                                    // get num of sources
-                                    for(var src in sources) {
-                                        numImages++;
-                                    }
-                                    for(var src in sources) {
-                                        images[src] = new Image();
-                                        images[src].onload = function() {
-                                            if(++loadedImages >= numImages) {
-                                                callback(images);
-                                            }
-                                        };
-                                        images[src].src = sources[src];
-                                    }
-                                }
-                    
-                                // Players Shirt
-                                var sources = {
-                                    player1: 'assets/images/soccer/lineup_01.png',
-                                    player2: 'assets/images/soccer/lineup_04.png',
-                                    player3: 'assets/images/soccer/lineup_03.png',
-                                    player4: 'assets/images/soccer/lineup_22.png',
-                                    player5: 'assets/images/soccer/lineup_05.png',
-                                    player6: 'assets/images/soccer/lineup_02.png',
-                                    player7: 'assets/images/soccer/lineup_08.png',
-                                    player8: 'assets/images/soccer/lineup_26.png',
-                                    player9: 'assets/images/soccer/lineup_07.png',
-                                    player10: 'assets/images/soccer/lineup_18.png',
-                                    player11: 'assets/images/soccer/lineup_09.png',
-                                };
-                    
-                                loadImages(sources, function(images) {
-                                    context.drawImage(images.player1, 142, 26);
-                                    context.drawImage(images.player2, 79, 72);
-                                    context.drawImage(images.player3, 207, 72);
-                                    context.drawImage(images.player4, 37, 137);
-                                    context.drawImage(images.player5, 247, 137);
-                                    context.drawImage(images.player6, 142, 198);
-                                    context.drawImage(images.player7, 63, 230);
-                                    context.drawImage(images.player8, 221, 230);
-                                    context.drawImage(images.player9, 37, 314);
-                                    context.drawImage(images.player10, 247, 314);
-                                    context.drawImage(images.player11, 142, 358);
-                                });
-                    
-                                // Player Names
-                                var players = {
-                                    player1: 'Rodgers',
-                                    player2: 'Ironson',
-                                    player3: 'Kingster',
-                                    player4: 'Girobilli',
-                                    player5: 'Black',
-                                    player6: 'Arrowhead',
-                                    player7: 'Grass',
-                                    player8: 'Peterson',
-                                    player9: 'Messinal',
-                                    player10: 'Hawkins',
-                                    player11: 'Stevens',
-                                };
-                    
-                                drawTextBG(context, players.player1, 135, 64);
-                                drawTextBG(context, players.player2, 77, 110);
-                                drawTextBG(context, players.player3, 205, 110);
-                                drawTextBG(context, players.player4, 33, 174);
-                                drawTextBG(context, players.player5, 249, 174);
-                                drawTextBG(context, players.player6, 130, 238);
-                                drawTextBG(context, players.player7, 64, 269);
-                                drawTextBG(context, players.player8, 215, 269);
-                                drawTextBG(context, players.player9, 33, 353);
-                                drawTextBG(context, players.player10, 242, 353);
-                                drawTextBG(context, players.player11, 137, 398);
-                    
-                                /// expand with color, background etc.
-                                function drawTextBG(context, txt, x, y, padding) {
-                                    padding = padding || 6;
-                    
-                                    context.save();
-                                    context.font = '10px Montserrat';
-                                    context.textBaseline = 'top';
-                                    context.fillStyle = 'rgba(35,43,49,0.6)';
-                    
-                                    var width = context.measureText(txt).width;
-                                    context.fillRect(x-padding, y-padding+4, width+(padding*2), parseInt(context.font, 10) + (padding*1.1));
-                    
-                    
-                                    context.fillStyle = '#fff';
-                                    context.fillText(txt, x, y);
-                    
-                                    context.restore();
-                                }
-                    
-                            </script>
-                    
-                        </div>
-                    </aside>
-                    <!-- Widget: Lineup / End -->
-    
-                    <!-- Widget: Game Commentary -->
-                    <aside class="widget card card--no-paddings widget--sidebar widget-commentary">
-                        <div class="widget__title card__header">
-                            <h4>Game Highlights</h4>
-                        </div>
-                        <div class="widget__content card__content">
-                            <ul class="commentary">
-                                <li *ngFor="let matchEvent of sampleMatchData.matchEvents" class="commentary__item">
-                                    <span class="commentary__time">{{(matchEvent.second / 60)[0]}}</span>
-                                    <div class="commentary__icon">
-                                        <i class="icon-svg icon-soccer-ball"></i>
+                            </section>
+
+                            <!-- Ball Posession -->
+                            <section class="game-result__section">
+                                <header class="game-result__subheader card__subheader">
+                                    <h5 class="game-result__subtitle">Ball Posession</h5>
+                                </header>
+                                <div class="game-result__content">
+
+                                    <div class="spacer-sm"></div>
+
+                                    <!-- Progress: Ball Posession -->
+                                    <div class="progress-double-wrapper">
+                                        <div class="progress-inner-holder">
+                                            <div
+                                                class="progress__digit progress__digit--left progress__digit--highlight">
+                                                {{ sampleMatchData.teams | matchStatisticPercentage:statisticType.Possession:teamType.Home }}%
+                                            </div>
+                                            <div class="progress__double">
+                                                <div class="progress progress--lg">
+                                                    <div class="progress__bar" role="progressbar"
+                                                        [style.width]="(sampleMatchData.teams | matchStatisticPercentage:statisticType.Possession:teamType.Home) + '%'"
+                                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="progress progress--lg">
+                                                    <div class="progress__bar progress__bar--success"
+                                                        [style.width]="(sampleMatchData.teams | matchStatisticPercentage:statisticType.Possession:teamType.Away) + '%'"
+                                                        role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="progress__digit progress__digit--right progress__digit--highlight">
+                                                {{ sampleMatchData.teams | matchStatisticPercentage:statisticType.Possession:teamType.Away }}%
+                                            </div>
+                                        </div>
                                     </div>
-                                    {{matchEvent.event}} <strong>{{matchEvent.player1SteamId}}</strong>
-                                </li>                    
-                            </ul>
+                                    <!-- Progress: Ball Posession / End -->
+
+                                </div>
+                            </section>
+                            <!-- Ball Posession / End -->
+
+                            <!-- Game Timeline -->
+
+                            <!-- Ball Posession / End -->
                         </div>
-                    </aside>
-                    <!-- Widget: Game Commentary / End -->
-    
+                        <!-- Game Timeline / End -->
+
+                    </div>
                 </div>
-                <!-- Sidebar / End -->
+                <!-- Game Scoreboard / End -->
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <!-- Widget: Lineup Table -->
+                        <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
+                            <div class="widget__title card__header">
+                                <h4>{{sampleMatchData.teams[teamType.Home].matchTotal.name}} Lineup</h4>
+                            </div>
+                            <div class="widget__content card__content">
+
+                                <!-- Lineup Table -->
+                                <div class="table-responsive">
+                                    <table class="table lineup-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="lineup__pos">POS</th>
+                                                <th class="lineup__name">Player Name</th>
+                                                <th class="lineup__info"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let player of sampleMatchData.players">
+                                                <tr
+                                                    *ngIf="player.matchPeriodData && player.matchPeriodData.length && player.matchPeriodData[0].info.team === 'home'">
+                                                    <td class="lineup__pos">{{player.matchPeriodData[0].info.position}}
+                                                    </td>
+                                                    <td class="lineup__name">{{player.info.name}}</td>
+                                                    <td class="lineup__info"><i class="icon-svg "></i></td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Lineup Table / End -->
+
+                            </div>
+                        </aside>
+                        <!-- Widget: Lineup Table / End -->
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <!-- Widget: Lineup Table Alt -->
+                        <aside class="widget card card--alt-color card--has-table widget--sidebar widget-lineup-table">
+                            <div class="widget__title card__header">
+                                <h4>{{sampleMatchData.teams[teamType.Away].matchTotal.name}} Lineup</h4>
+                            </div>
+                            <div class="widget__content card__content">
+
+                                <!-- Lineup Table -->
+                                <div class="table-responsive">
+                                    <table class="table lineup-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="lineup__pos">POS</th>
+                                                <th class="lineup__name">Player Name</th>
+                                                <th class="lineup__info"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let player of sampleMatchData.players">
+                                                <tr
+                                                    *ngIf="player.matchPeriodData && player.matchPeriodData.length && player.matchPeriodData[0].info.team === 'away'">
+                                                    <td class="lineup__pos">{{player.matchPeriodData[0].info.position}}
+                                                    </td>
+                                                    <td class="lineup__name">{{player.info.name}}</td>
+                                                    <td class="lineup__info"><i class="icon-svg "></i></td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Lineup Table / End -->
+
+                            </div>
+                        </aside>
+                        <!-- Widget: Lineup Table Alt / End -->
+
+                    </div>
+                </div>
+
             </div>
+            <!-- Content / End -->
+
+            <!-- Sidebar -->
+            <div class="sidebar col-lg-4">
+
+                <!-- Widget: Lineup -->
+
+                <!-- Widget: Lineup / End -->
+
+                <!-- Widget: Game Commentary -->
+                <aside class="widget card card--no-paddings widget--sidebar widget-commentary">
+                    <div class="widget__title card__header">
+                        <h4>Game Highlights</h4>
+                    </div>
+                    <div class="widget__content card__content">
+                        <ul class="commentary">
+                            <ng-container *ngFor="let matchEvent of sampleMatchData.matchEvents">
+                                <li *ngIf="matchEvent.event !== eventType.Null" class="commentary__item">
+                                    <span class="commentary__time">{{matchEvent.second | secondsToMinutes}}</span>
+                                    <div [ngSwitch]="matchEvent.event" class="commentary__icon">
+                                        <i *ngSwitchCase="eventType.Goal" class="icon-svg icon-soccer-ball"></i>
+                                        <i *ngSwitchCase="eventType.YellowCard" class="icon-svg icon-yellow-card"></i>
+                                        <i *ngSwitchCase="eventType.SecondYellow" class="icon-svg icon-red-card"></i>
+                                        <i *ngSwitchCase="eventType.RedCard" class="icon-svg icon-red-card"></i>
+                                        <i *ngSwitchCase="eventType.Penalty"
+                                            class="icon-svg icon-soccer-ball-penalty"></i>
+                                        <i *ngSwitchCase="eventType.Miss" class="icon-svg icon-soccer-shots"></i>
+                                        <i *ngSwitchCase="eventType.Save" class="icon-svg icon-keepers-glove"></i>
+                                    </div>
+                                    {{matchEvent.event}}
+                                    <strong>{{matchEvent.player1SteamId | steamIdToPlayerName:sampleMatchData.players}}</strong>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>
+                </aside>
+                <!-- Widget: Game Commentary / End -->
+
+            </div>
+            <!-- Sidebar / End -->
         </div>
     </div>
-    
-    <!-- Content / End -->
-            
-    
+</div>
+
+<!-- Content / End -->

@@ -1,0 +1,8 @@
+<div class="c100 small center" [ngClass]="'p' + (partValue | percentageSharePipe:[totalValue - partValue])">
+    <span class="circle-value">{{(partValue | percentageSharePipe:[totalValue - partValue]) + '%'}}</span>
+    <div class="slice">
+        <div class="bar" [style.border-color]="fillColour"></div>
+        <div class=" fill" [style.border-color]="fillColour"></div>
+    </div>
+</div>
+<h6 class="text-center game-result__subtitle">{{title}}</h6>

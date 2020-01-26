@@ -1,11 +1,8 @@
-<header class="game-result__subheader card__subheader">
-    <h5 class="game-result__subtitle">{{title}}</h5>
-</header>
+<h5 class="game-result__subtitle">{{title}}</h5>
 <div class="game-result__content">
 
     <div class="spacer-sm"></div>
 
-    <!-- Progress: Ball Posession -->
     <div class="progress-double-wrapper">
         <div class="progress-inner-holder">
             <div class="progress__digit progress__digit--left progress__digit--highlight">
@@ -18,17 +15,13 @@
                     </span>
                 </ng-container>
             </div>
-            <div class="progress__double">
-                <div class="progress progress--lg">
-                    <div class="progress__bar" role="progressbar"
-                        [style.width]="(homeValue | percentageSharePipe:[awayValue]) + '%'" aria-valuemin="0"
-                        aria-valuemax="100"></div>
-                </div>
-                <div class="progress progress--lg">
-                    <div class="progress__bar progress__bar--success"
-                        [style.width]="(awayValue | percentageSharePipe:[homeValue]) + '%'" role="progressbar"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+            <div class="progress progress--lg">
+                <div class="progress__bar" role="progressbar"
+                    [style.width]="(homeValue | percentageSharePipe:[awayValue]) + '%'" aria-valuemin="0"
+                    aria-valuemax="100"></div>
+                <div class="progress__bar progress__bar--success"
+                    [style.width]="(awayValue | percentageSharePipe:[homeValue]) + '%'" role="progressbar"
+                    aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <div class="progress__digit progress__digit--right progress__digit--highlight">
                 <ng-container [ngSwitch]="displayValueMode">
@@ -42,6 +35,5 @@
             </div>
         </div>
     </div>
-    <!-- Progress: Ball Posession / End -->
 
 </div>

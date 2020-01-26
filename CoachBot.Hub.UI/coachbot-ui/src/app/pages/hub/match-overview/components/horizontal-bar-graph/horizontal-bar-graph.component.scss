@@ -2,3 +2,38 @@
 .progress__bar--success {
     background-color: #dc3545;
 }
+
+.progress__double {
+    width: 100%;
+}
+
+.progress__digit {
+    position: absolute;
+    width: 100px;
+    line-height: 30px;
+    z-index: 1;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.progress__digit--left {
+    left: 1.75rem;
+}
+
+.progress__digit--right {
+    right: 0rem;
+    top: 15px;
+}
+
+.progress--lg {
+    height: 25px;
+}
+
+.progress__bar {
+    border-radius: 0;
+}
+
+.game-result__subtitle {
+    text-align: center;
+}

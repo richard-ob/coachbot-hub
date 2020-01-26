@@ -2,8 +2,31 @@
     background-image: url(https://iosoccer.com/assets/stadium-3.jpg);
 }
 .page-heading::before {
-    opacity: 0.5;
-    background-color: #38a9ff;
+    background-image: none;
+    background-color: #00213a;
+}
+.game-result__header--alt {
+    border: none;
+    margin-top: 0;
+    padding-top: 0.5rem;
+}
+.game-result__header--alt * {
+    font-size: 0.73rem !important;
+}
+.game-result__section * {
+    color: white;
+}
+.game-result__team-events--first {
+    text-align: left;
+    left: 0;
+    position: absolute;
+    bottom: 0;
+}
+.game-result__team-events--second {
+    text-align: right;
+    right: 0;
+    position: absolute;
+    bottom: 0;
 }
 .card__header::before {
     background-color: #131313;

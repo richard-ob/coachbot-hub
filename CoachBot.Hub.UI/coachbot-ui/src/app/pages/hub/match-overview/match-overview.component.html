@@ -1,15 +1,86 @@
 <!-- Page Heading
 ================================================== -->
-<div class="page-heading">
+<div class="page-heading p-0">
     <div class="container">
         <div class="row">
             <div class="col-md-10 offset-md-1">
-                <h1 class="page-heading__title">Match Overview</h1>
-                <ol class="page-heading__breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="_soccer_index.html">Hub</a></li>
-                    <li class="breadcrumb-item"><a href="#">Recent Matches</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">MOF vs BB</li>
-                </ol>
+                <section class="game-result__section">
+                    <header class="game-result__header game-result__header--alt">
+                        <span class="game-result__league">Ranked Friendly</span>
+                        <h3 class="game-result__title">Official London 8v8</h3>
+                        <time class="game-result__date">{{matchDate | date:'medium'}}</time>
+                    </header>
+                    <div class="game-result__content">
+
+                        <!-- 1st Team -->
+                        <div class="game-result__team game-result__team--first">
+                            <figure class="game-result__team-logo">
+                                <ng-container
+                                    *ngIf="(sampleMatchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
+                                    <img
+                                        src="https://www.countryflags.io/{{sampleMatchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
+                                </ng-container>
+                                <ng-template #blankCrest>
+                                    <img src="./assets/images/soccer/blank-crest.png" style="max-width: 64px;">
+                                </ng-template>
+                            </figure>
+                            <div class="game-result__team-info">
+                                <h5 class="game-result__team-name">
+                                    {{sampleMatchData.teams[teamType.Home].matchTotal.name}}</h5>
+                            </div>
+                            <div class="game-result__team-events--first">
+                                <span *ngFor="let goalEvents of sampleMatchData.matchEvents  | arrayFilter:'team':'home' | arrayFilter:'event':eventType.Goal">
+                                    {{goalEvents.player1SteamId | steamIdToPlayerName:sampleMatchData.players}}
+                                    ({{goalEvents.second | secondsToMinutes}}’)
+                                    <i class="icon-svg icon-soccer-ball"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- 1st Team / End -->
+
+                        <div class="game-result__score-wrap">
+                            <div class="game-result__score game-result__score--lg">
+                                <span class="game-result__score-result">{{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Goals]}}</span>
+                                <span class="game-result__score-dash">-</span>
+                                <span class="game-result__score-result">{{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
+                            </div>
+                            <div [ngSwitch]="sampleMatchData.matchInfo.periods" class="game-result__score-label">
+                                <span *ngSwitchCase="2">FT</span>
+                                <span *ngSwitchCase="3">AET</span>
+                                <span *ngSwitchCase="4">AET</span>
+                                <span *ngSwitchCase="5">PENS</span>
+                            </div>
+                            <div class="game-result__score-label">Final Score</div>
+                        </div>
+
+                        <!-- 2nd Team -->
+                        <div class="game-result__team game-result__team--second">
+                            <figure class="game-result__team-logo">
+                                <ng-container
+                                    *ngIf="(sampleMatchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
+                                    <img
+                                        src="https://www.countryflags.io/{{sampleMatchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
+                                </ng-container>
+                                <ng-template #blankCrest>
+                                    <img src="./assets/images/soccer/blank-crest.png" style="max-width: 64px;">
+                                </ng-template>
+                            </figure>
+                            <div class="game-result__team-info">
+                                <h5 class="game-result__team-name">
+                                    {{sampleMatchData.teams[teamType.Away].matchTotal.name}}</h5>
+                            </div>
+                            <div class="game-result__team-events--second">
+                                <span *ngFor="let goalEvents of sampleMatchData.matchEvents  | arrayFilter:'team':'away' | arrayFilter:'event':eventType.Goal">
+                                    {{goalEvents.player1SteamId | steamIdToPlayerName:sampleMatchData.players}}
+                                    ({{goalEvents.second | secondsToMinutes}}’)
+                                    <i class="icon-svg icon-soccer-ball"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- 2nd Team / End -->
+                    </div>
+
+                </section>
             </div>
         </div>
     </div>
@@ -26,259 +97,6 @@
 
             <!-- Content -->
             <div class="content col-lg-8">
-
-                <!-- Game Scoreboard -->
-                <div class="card">
-                    <header class="card__header card__header--has-btn">
-                        <h4>Last Game Results</h4>
-                        <a href="#" class="btn btn-default btn-outline btn-xs card-header__button">Check previous
-                            Results</a>
-                    </header>
-                    <div class="card__content">
-
-                        <!-- Game Result -->
-                        <div class="game-result">
-                            <section class="game-result__section pt-0">
-                                <header class="game-result__header game-result__header--alt">
-                                    <span class="game-result__league">Ranked Friendly</span>
-                                    <h3 class="game-result__title">Official London 8v8</h3>
-                                    <time class="game-result__date">{{matchDate | date:'medium'}}</time>
-                                </header>
-                                <div class="game-result__content">
-
-                                    <!-- 1st Team -->
-                                    <div class="game-result__team game-result__team--first">
-                                        <figure class="game-result__team-logo">
-                                            <ng-container
-                                                *ngIf="(sampleMatchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
-                                                <img
-                                                    src="https://www.countryflags.io/{{sampleMatchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
-                                            </ng-container>
-                                            <ng-template #blankCrest>
-                                                <img src="./assets/images/soccer/blank-crest.png"
-                                                    style="max-width: 64px;">
-                                            </ng-template>
-                                        </figure>
-                                        <div class="game-result__team-info">
-                                            <h5 class="game-result__team-name">
-                                                {{sampleMatchData.teams[teamType.Home].matchTotal.name}}</h5>
-                                        </div>
-                                    </div>
-                                    <!-- 1st Team / End -->
-
-                                    <div class="game-result__score-wrap">
-                                        <div class="game-result__score game-result__score--lg">
-                                            <span class="game-result__score-result">{{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Goals]}}</span>
-                                            <span class="game-result__score-dash">-</span>
-                                            <span class="game-result__score-result">{{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
-                                        </div>
-                                        <div [ngSwitch]="sampleMatchData.matchInfo.periods"
-                                            class="game-result__score-label">
-                                            <span *ngSwitchCase="2">FT</span>
-                                            <span *ngSwitchCase="3">AET</span>
-                                            <span *ngSwitchCase="4">AET</span>
-                                            <span *ngSwitchCase="5">PENS</span>
-                                        </div>
-                                        <div class="game-result__score-label">Final Score</div>
-                                    </div>
-
-                                    <!-- 2nd Team -->
-                                    <div class="game-result__team game-result__team--second">
-                                        <figure class="game-result__team-logo">
-                                            <ng-container
-                                                *ngIf="(sampleMatchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
-                                                <img
-                                                    src="https://www.countryflags.io/{{sampleMatchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
-                                            </ng-container>
-                                            <ng-template #blankCrest>
-                                                <img src="./assets/images/soccer/blank-crest.png"
-                                                    style="max-width: 64px;">
-                                            </ng-template>
-                                        </figure>
-                                        <div class="game-result__team-info">
-                                            <h5 class="game-result__team-name">
-                                                {{sampleMatchData.teams[teamType.Away].matchTotal.name}}</h5>
-                                        </div>
-                                    </div>
-                                    <!-- 2nd Team / End -->
-                                </div>
-                            </section>
-                            <div class="spacer"></div>
-                            <section class="game-result__section">
-                                <header class="game-result__header game-result__header--alt">
-                                    <ng-container
-                                        *ngFor="let goalEvents of sampleMatchData.matchEvents | arrayFilter:'event':eventType.Goal">
-                                        <span class="game-result__goal">
-                                            {{goalEvents.player1SteamId | steamIdToPlayerName:sampleMatchData.players}} ({{goalEvents.second | secondsToMinutes}}’)
-                                            <i class="icon-svg icon-soccer-ball"></i>
-                                        </span>
-                                    </ng-container>
-                                </header>
-                                <div class="game-result__content mb-0">
-                                    <div class="game-result__stats">
-                                        <div class="row">
-                                            <div class="col-12 col-md-6 order-md-2">
-                                                <div class="game-result__table-stats game-result__table-stats--soccer">
-                                                    <table class="table table-wrap-bordered table-thead-color">
-                                                        <thead>
-                                                            <tr>
-                                                                <th colspan="3">Game Statistics</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]}}
-                                                                    ({{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]}})
-                                                                </td>
-                                                                <td>Shots (on goal)</td>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]}}
-                                                                    ({{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]}})
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Corners]}}
-                                                                </td>
-                                                                <td>Corner Kicks</td>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Corners]}}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.KeeperSaves]}}
-                                                                </td>
-                                                                <td>Saves</td>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.KeeperSaves]}}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.YellowCards]}}
-                                                                </td>
-                                                                <td>Yellow Cards</td>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.YellowCards]}}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.RedCards]}}
-                                                                </td>
-                                                                <td>Red Cards</td>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.RedCards]}}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Offsides]}}
-                                                                </td>
-                                                                <td>Offsides</td>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Offsides]}}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Fouls]}}
-                                                                </td>
-                                                                <td>Fouls</td>
-                                                                <td>
-                                                                    {{sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Fouls]}}
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div class="col-6 col-md-3 order-md-1 game-result__stats-team-1">
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="circular circular--size-70">
-                                                            <div class="circular__bar" data-percent="84.5">
-                                                                <span class="circular__percents">
-                                                                    {{ sampleMatchData.teams | matchStatisticTeamPercentage:statisticType.Shots:statisticType.ShotsOnGoal:teamType.Home }}
-                                                                    <small>%</small>
-                                                                </span>
-                                                            </div>
-                                                            <span class="circular__label">Shot<br> Accuracy</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="circular circular--size-70">
-                                                            <div class="circular__bar" data-percent="62.3">
-                                                                <span class="circular__percents">
-                                                                    {{ sampleMatchData.teams | matchStatisticTeamPercentage:statisticType.Passes:statisticType.PassesCompleted:teamType.Home }}
-                                                                    <small>%</small>
-                                                                </span>
-                                                            </div>
-                                                            <span class="circular__label">Pass<br> Accuracy</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="spacer"></div>
-
-
-                                            </div>
-                                            <div class="col-6 col-md-3 order-md-3 game-result__stats-team-2">
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="circular circular--size-70">
-                                                            <div class="circular__bar" data-percent="74.6"
-                                                                data-bar-color="#9fe900">
-                                                                <span class="circular__percents">74.6<small>%</small></span>
-                                                            </div>
-                                                            <span class="circular__label">Shot<br> Accuracy</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="circular circular--size-70">
-                                                            <div class="circular__bar" data-percent="53.9"
-                                                                data-bar-color="#9fe900">
-                                                                <span class="circular__percents">53.9<small>%</small></span>
-                                                            </div>
-                                                            <span class="circular__label">Pass<br> Accuracy</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="spacer"></div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-
-                            <!-- Ball Posession -->
-                            <section class="game-result__section">
-
-                                <app-horizontal-bar-graph
-                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Possession]"
-                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Possession]"
-                                    [title]="'Possession'" [displayValueMode]="displayValueModes.Percentage">
-                                </app-horizontal-bar-graph>
-
-                            </section>
-                            <!-- Ball Posession / End -->
-
-                            <!-- Game Timeline -->
-
-                            <!-- Ball Posession / End -->
-                        </div>
-                        <!-- Game Timeline / End -->
-
-                    </div>
-                </div>
-                <!-- Game Scoreboard / End -->
 
                 <div class="row">
 
@@ -362,6 +180,132 @@
 
                     </div>
                 </div>
+
+                <!-- Game Scoreboard -->
+                <div class="card">
+                    <header class="card__header">
+                        <h4>Match Statistics</h4>
+                    </header>
+                    <div class="card__content">
+
+                        <!-- Game Result -->
+                        <div class="game-result">
+                            <section class="game-result__section">
+                                <div class="game-result__content mb-5">
+                                    <div class="game-result__stats">
+                                        <div class="row">
+                                            <div class="col-6 col-md-6 order-md-1 game-result__stats-team-1">
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <app-circle-graph
+                                                            [totalValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]"
+                                                            [partValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]"
+                                                            [title]="'Shot Accuracy'" [fillColour]="'#38a9ff'">
+                                                        </app-circle-graph>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <app-circle-graph
+                                                            [totalValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Passes]"
+                                                            [partValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.PassesCompleted]"
+                                                            [title]="'Pass Accuracy'" [fillColour]="'#38a9ff'">
+                                                        </app-circle-graph>
+                                                    </div>
+
+                                                    <div class="spacer"></div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-6 order-md-3 game-result__stats-team-2">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <app-circle-graph
+                                                            [totalValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
+                                                            [partValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
+                                                            [title]="'Shot Accuracy'" [fillColour]="'#dc3545'">
+                                                        </app-circle-graph>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <app-circle-graph
+                                                            [totalValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
+                                                            [partValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
+                                                            [title]="'Pass Accuracy'" [fillColour]="'#dc3545'">
+                                                        </app-circle-graph>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="spacer"></div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Ball Posession -->
+                            <section class="game-result__section">
+
+                                <app-horizontal-bar-graph
+                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Possession]"
+                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Possession]"
+                                    [title]="'Possession'" [displayValueMode]="displayValueModes.Percentage">
+                                </app-horizontal-bar-graph>
+
+                                <app-horizontal-bar-graph
+                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]"
+                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
+                                    [title]="'Shots'" [displayValueMode]="displayValueModes.Value">
+                                </app-horizontal-bar-graph>
+
+                                <app-horizontal-bar-graph
+                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]"
+                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
+                                    [title]="'Shots On Goal'" [displayValueMode]="displayValueModes.Value">
+                                </app-horizontal-bar-graph>
+
+                                <app-horizontal-bar-graph
+                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.KeeperSaves]"
+                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.KeeperSaves]"
+                                    [title]="'Saves'" [displayValueMode]="displayValueModes.Value">
+                                </app-horizontal-bar-graph>
+
+                                <app-horizontal-bar-graph
+                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Passes]"
+                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
+                                    [title]="'Passes'" [displayValueMode]="displayValueModes.Value">
+                                </app-horizontal-bar-graph>
+
+                                <app-horizontal-bar-graph
+                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.PassesCompleted]"
+                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
+                                    [title]="'Passes Completed'" [displayValueMode]="displayValueModes.Value">
+                                </app-horizontal-bar-graph>
+
+                                <app-horizontal-bar-graph
+                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Corners]"
+                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Corners]"
+                                    [title]="'Corners'" [displayValueMode]="displayValueModes.Value">
+                                </app-horizontal-bar-graph>
+
+                                <app-horizontal-bar-graph
+                                    [homeValue]="sampleMatchData.teams[teamType.Home].matchTotal.statistics[statisticType.Fouls]"
+                                    [awayValue]="sampleMatchData.teams[teamType.Away].matchTotal.statistics[statisticType.Fouls]"
+                                    [title]="'Fouls'" [displayValueMode]="displayValueModes.Value">
+                                </app-horizontal-bar-graph>
+
+                            </section>
+                            <!-- Ball Posession / End -->
+
+                            <!-- Game Timeline -->
+
+                            <!-- Ball Posession / End -->
+                        </div>
+                        <!-- Game Timeline / End -->
+
+                    </div>
+                </div>
+                <!-- Game Scoreboard / End -->
 
             </div>
             <!-- Content / End -->

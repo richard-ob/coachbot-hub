@@ -9,6 +9,7 @@ import { MatchStatisticPercentageCalculatorPipe } from './match-overview/helpers
 import { MatchStatisticTeamPercentageCalculatorPipe } from './match-overview/helpers/match-statistic-team-percentage-calculator.pipe';
 import { HorizontalBarGraphComponent } from './match-overview/components/horizontal-bar-graph/horizontal-bar-graph.component';
 import { PercentageSharePipe } from './match-overview/helpers/percentage-share.pipe';
+import { CircleGraphComponent } from './match-overview/components/circle-graph/circle-graph.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { PercentageSharePipe } from './match-overview/helpers/percentage-share.p
     MatchStatisticPercentageCalculatorPipe,
     MatchStatisticTeamPercentageCalculatorPipe,
     HorizontalBarGraphComponent,
+    CircleGraphComponent,
     PercentageSharePipe
   ],
   imports: [

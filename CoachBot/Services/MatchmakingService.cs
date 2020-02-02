@@ -50,7 +50,7 @@ namespace CoachBot.Services
         public Embed Reset(ulong channelId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var response = _matchService.Create(channel.Id);
+            var response = _matchService.CreateMatch(channel.Id);
 
             ResetLastMentionTime(channelId);
 
@@ -141,21 +141,8 @@ namespace CoachBot.Services
             }
             else
             {
-                var sb = new StringBuilder();
-
-                sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");
-                foreach (var playerTeamPosition in match.TeamHome.PlayerTeamPositions)
-                {
-                    sb.Append($"{playerTeamPosition.Player.DiscordUserMention ?? playerTeamPosition.Player.Name} ");
-                    if (playerTeamPosition.Player.DiscordUserId != null)
-                    {
-                        var message = $":stadium: Match ready! {match.TeamHome.Channel.Name} vs {match.TeamAway.Channel.Name} - Please join {server.Name} (steam://connect/{server.Address}) as soon as possible.";
-                        _discordNotificationService.SendUserMessage((ulong)playerTeamPosition.Player.DiscordUserId, message);
-                    }
-                }
-                sb.AppendLine();
-
-                discordChannel.SendMessageAsync(sb.ToString());
+                SendReadyMessageForTeam(match, match.TeamHome, server);
+                SendReadyMessageForTeam(match, match.TeamAway, server);
 
                 return true;
             }
@@ -169,12 +156,12 @@ namespace CoachBot.Services
             if (!channel.UseClassicLineup) return GenerateTeamSheet(channelId);
 
             var teamLists = new List<Embed>() {
-                new TeamListEmbedFactory(channel, match, TeamType.Home).GenerateEmbed()
+                TeamListEmbedFactory.GenerateEmbed(channel, match, TeamType.Home)
             };
 
             if (match.IsMixMatch)
             {
-                var awayTeamList = new TeamListEmbedFactory(channel, match, TeamType.Away).GenerateEmbed();
+                var awayTeamList = TeamListEmbedFactory.GenerateEmbed(channel, match, TeamType.Away);
                 teamLists.Add(awayTeamList);
             }
 
@@ -189,12 +176,12 @@ namespace CoachBot.Services
             if (channel.UseClassicLineup) return GenerateTeamList(channelId);
 
             var teamSheets = new List<Embed>() {
-                new TeamSheetEmbedFactory(channel, match, TeamType.Home).GenerateEmbed()
+                TeamSheetEmbedFactory.GenerateEmbed(channel, match, TeamType.Home)
             };
 
             if (match.IsMixMatch)
             {
-                var awayTeamSheet = new TeamSheetEmbedFactory(channel, match, TeamType.Away).GenerateEmbed();
+                var awayTeamSheet = TeamSheetEmbedFactory.GenerateEmbed(channel, match, TeamType.Away);
                 teamSheets.Add(awayTeamSheet);
             }
 
@@ -245,7 +232,7 @@ namespace CoachBot.Services
 
             var response = _matchService.Challenge(challengerChannelId, opposition.DiscordChannelId, challengerMention);
 
-            if (response.Status != Domain.Model.ServiceResponseStatus.Success) return $":no_entry: {response.Message}";
+            if (response.Status != ServiceResponseStatus.Success) return $":no_entry: {response.Message}";
 
             var acceptMsg = $":handshake: {challenger.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
             (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithDescription(acceptMsg).WithCurrentTimestamp().Build());
@@ -398,6 +385,26 @@ namespace CoachBot.Services
             var servers = _serverService.GetServersByRegion((int)channel.RegionId);
 
             return servers[serverListItemId - 1];
+        }
+
+        private void SendReadyMessageForTeam(Match match, Team team, Server server)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");
+
+            foreach (var playerTeamPosition in team.PlayerTeamPositions)
+            {
+                sb.Append($"{playerTeamPosition.Player.DiscordUserMention ?? playerTeamPosition.Player.Name} ");
+                if (playerTeamPosition.Player.DiscordUserId != null)
+                {
+                    var message = $":stadium: Match ready! {match.TeamHome.Channel.Name} vs {match.TeamAway.Channel.Name} - Please join {server.Name} (steam://connect/{server.Address}) as soon as possible.";
+                    _discordNotificationService.SendUserMessage((ulong)playerTeamPosition.Player.DiscordUserId, message);
+                }
+            }
+
+            var discordChannel = _discordClient.GetChannel(team.Channel.DiscordChannelId) as ITextChannel;
+            discordChannel.SendMessageAsync(sb.ToString());
         }
     }
 }

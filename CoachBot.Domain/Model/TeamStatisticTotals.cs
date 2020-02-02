@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
@@ -14,6 +15,9 @@ namespace CoachBot.Domain.Model
         public Channel Channel { get; set; }
 
         public StatisticTotals StatisticTotals { get; set; } = new StatisticTotals();
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedDate { get; set; }
 
     }
 }

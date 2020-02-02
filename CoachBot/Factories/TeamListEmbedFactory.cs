@@ -7,31 +7,39 @@ using System.Text;
 
 namespace CoachBot.Factories
 {
-    public class TeamListEmbedFactory
+    public static class TeamListEmbedFactory
     {
-        private readonly Channel channel;
-        private readonly Match match;
-        private readonly TeamType teamType;
+        private const uint DEFAULT_EMBED_TEAM_COLOUR = 0x2463b0;
 
-        public TeamListEmbedFactory(Channel channel, Match match, TeamType teamType = TeamType.Home) {
-            this.channel = channel;
-            this.match = match;
-            this.teamType = teamType;
-        }
-
-        public Embed GenerateEmbed()
+        public static Embed GenerateEmbed(Channel channel, Match match, TeamType teamType = TeamType.Home)
         {
             var sb = new StringBuilder();
-            var teamColor = new Color(0x2463b0);
+            var teamColor = new Color(DEFAULT_EMBED_TEAM_COLOUR);
             var emptyPos = ":grey_question:";
 
-            var team = teamType == TeamType.Home ? match.TeamHome : match.TeamAway;
-
-            if (match.IsMixMatch && teamType == TeamType.Away)
+            Team team;
+            Channel oppositionChannel = null;
+            if (match.IsMixMatch && teamType == TeamType.Home)
             {
+                team = match.TeamHome;
+            }
+            else if (teamType == TeamType.Away)
+            {
+                team = match.TeamAway;
                 teamColor = new Color(0xd60e0e);
             }
-            else if(channel.Color != null && channel.Color[0] == '#')
+            else if (match.TeamAway?.ChannelId == channel.Id)
+            {
+                team = match.TeamAway;
+                oppositionChannel = match.TeamHome?.Channel;
+            }
+            else
+            {
+                team = match.TeamHome;
+                oppositionChannel = match.TeamAway?.Channel;
+            }
+
+            if (teamType == TeamType.Home && channel.Color != null && channel.Color[0] == '#')
             {
                 teamColor = new Color(ColorExtensions.FromHex(channel.Color).R, ColorExtensions.FromHex(channel.Color).G, ColorExtensions.FromHex(channel.Color).B);
             }            
@@ -46,10 +54,10 @@ namespace CoachBot.Factories
 
             if (team.PlayerSubstitutes.Any()) sb.Append($"*Subs*: **{string.Join(", ", team.PlayerSubstitutes.Select(ps => ps.Player.DiscordUserMention ?? ps.Player.Name))}**");
 
-            if (match.TeamAway?.ChannelId != null && match.TeamAway.ChannelId > 0 && !match.IsMixMatch)
+            if (!match.IsMixMatch && oppositionChannel != null)
             {
                 sb.AppendLine("");
-                sb.Append($"vs {channel.Name}");
+                sb.Append($"vs {oppositionChannel.Name}");
             }
 
             return embedBuilder.WithColor(teamColor).WithDescription(sb.ToString()).WithCurrentTimestamp().Build();

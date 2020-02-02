@@ -25,7 +25,9 @@ namespace CoachBot.Domain.Services
 
         public List<Search> GetSearches()
         {
-            return _coachBotContext.Searches.ToList();
+            var searches = _coachBotContext.Searches.ToList();
+
+            return searches;
         }
 
         public ServiceResponse Search(int channelId)

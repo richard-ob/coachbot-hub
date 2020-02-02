@@ -55,15 +55,22 @@ namespace CoachBot.Database
             modelBuilder.Entity<Server>().HasIndex(s => new { s.Address }).IsUnique(true);
             modelBuilder.Entity<Region>().HasIndex(r => new { r.RegionName }).IsUnique(true);
             modelBuilder.Entity<MatchStatistics>().HasIndex(ms => new { ms.MatchId }).IsUnique(true);
-            modelBuilder.Entity<PlayerTeamPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.TeamId }).IsUnique();
+            modelBuilder.Entity<PlayerTeamPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.TeamId }).IsUnique(true);
 
             // Defaults
             modelBuilder.Entity<Channel>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Match>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Server>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Region>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Player>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Guild>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Position>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<MatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerTeamPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PlayerTeamSubstitute>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PlayerStatisticTotals>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TeamStatisticTotals>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<ChannelPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
 
             // Conversions
             modelBuilder.Entity<Search>().Property(p => p.DiscordMessageIds).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<ulong>>(v));

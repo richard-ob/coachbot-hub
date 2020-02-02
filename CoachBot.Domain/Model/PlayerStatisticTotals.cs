@@ -1,4 +1,5 @@
 ﻿using CoachBot.Model;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,5 +17,7 @@ namespace CoachBot.Domain.Model
 
         public StatisticTotals StatisticTotals { get; set; } = new StatisticTotals();
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedDate { get; set; }
     }
 }

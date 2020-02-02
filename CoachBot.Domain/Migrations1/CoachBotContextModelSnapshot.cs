@@ -80,6 +80,10 @@ namespace CoachBot.Domain.Migrations
 
                     b.Property<int>("PositionId");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("GETDATE()");
+
                     b.HasKey("ChannelId", "PositionId");
 
                     b.HasIndex("PositionId");
@@ -984,9 +988,13 @@ namespace CoachBot.Domain.Migrations
 
                     b.HasIndex("ServerId");
 
-                    b.HasIndex("TeamAwayId");
+                    b.HasIndex("TeamAwayId")
+                        .IsUnique()
+                        .HasFilter("[TeamAwayId] IS NOT NULL");
 
-                    b.HasIndex("TeamHomeId");
+                    b.HasIndex("TeamHomeId")
+                        .IsUnique()
+                        .HasFilter("[TeamHomeId] IS NOT NULL");
 
                     b.ToTable("Matches");
                 });
@@ -1018,6 +1026,10 @@ namespace CoachBot.Domain.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int>("PlayerId");
 
@@ -1059,6 +1071,10 @@ namespace CoachBot.Domain.Migrations
                     b.Property<int>("PlayerId");
 
                     b.Property<int>("TeamId");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.HasKey("PlayerId", "TeamId");
 
@@ -1192,6 +1208,10 @@ namespace CoachBot.Domain.Migrations
 
                     b.Property<int>("ChannelId");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("GETDATE()");
+
                     b.Property<int?>("StatisticTotalsId");
 
                     b.HasKey("Id");
@@ -1208,6 +1228,10 @@ namespace CoachBot.Domain.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<decimal>("DiscordGuildId")
                         .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 20, scale: 0)));
@@ -1249,6 +1273,10 @@ namespace CoachBot.Domain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("GETDATE()");
+
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
@@ -1261,6 +1289,10 @@ namespace CoachBot.Domain.Migrations
                     b.Property<int>("RegionId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("RegionCode");
 
@@ -1361,12 +1393,12 @@ namespace CoachBot.Domain.Migrations
                         .HasForeignKey("ServerId");
 
                     b.HasOne("CoachBot.Model.Team", "TeamAway")
-                        .WithMany()
-                        .HasForeignKey("TeamAwayId");
+                        .WithOne("AwayMatch")
+                        .HasForeignKey("CoachBot.Domain.Model.Match", "TeamAwayId");
 
                     b.HasOne("CoachBot.Model.Team", "TeamHome")
-                        .WithMany()
-                        .HasForeignKey("TeamHomeId");
+                        .WithOne("HomeMatch")
+                        .HasForeignKey("CoachBot.Domain.Model.Match", "TeamHomeId");
                 });
 
             modelBuilder.Entity("CoachBot.Domain.Model.PlayerStatisticTotals", b =>

@@ -7,44 +7,53 @@ using System.Text;
 
 namespace CoachBot.Factories
 {
-    public class TeamSheetEmbedFactory
+    public static class TeamSheetEmbedFactory
     {
-        private readonly Channel channel;
-        private readonly Match match;
-        private readonly TeamType teamType;
+        private const uint DEFAULT_EMBED_TEAM_COLOUR = 0x2463b0;
 
-        public TeamSheetEmbedFactory(Channel channel, Match match, TeamType teamType = TeamType.Home)
+        public static Embed GenerateEmbed(Channel channel, Match match, TeamType teamType = TeamType.Home)
         {
-            this.channel = channel;
-            this.match = match;
-            this.teamType = teamType;
-        }
-
-        public Embed GenerateEmbed()
-        {          
+            var teamColor = new Color(DEFAULT_EMBED_TEAM_COLOUR);
             var teamList = new StringBuilder();
             var embedFooterBuilder = new EmbedFooterBuilder();
             var availablePlaceholderText = !string.IsNullOrEmpty(channel.KitEmote) && teamType == TeamType.Home ? channel.KitEmote : "<:redshirt:318114878063902720>";
-            var team = teamType == TeamType.Home ? match.TeamHome : match.TeamAway;
-            var oppositionTeam = teamType == TeamType.Home ? match.TeamAway : match.TeamHome;
-            var builder = new EmbedBuilder().WithTitle($"{team.Channel?.BadgeEmote ?? channel.Name} Team Sheet")
-                                            .WithDescription(oppositionTeam?.Channel?.Name != null ? $"vs {oppositionTeam.Channel.Name}" : "")
-                                            .WithCurrentTimestamp();
-            if (teamType == TeamType.Home)
+            Team team;
+            Channel oppositionChannel = null;
+
+            if (match.IsMixMatch && teamType == TeamType.Home)
             {
-                var teamColor = match.TeamHome.Channel.Color;
-                if (teamColor != null && teamColor[0] == '#')
-                {
-                    builder.WithColor(new Color(ColorExtensions.FromHex(teamColor).R, ColorExtensions.FromHex(teamColor).G, ColorExtensions.FromHex(teamColor).B));
-                }
-                else
-                {
-                    builder.WithColor(new Color(0x2463b0));
-                }
+                team = match.TeamHome;
+            }
+            else if (teamType == TeamType.Away)
+            {
+                team = match.TeamAway;
+                teamColor = new Color(0xd60e0e);
+            }
+            else if (match.TeamAway?.ChannelId == channel.Id)
+            {
+                team = match.TeamAway;
+                oppositionChannel = match.TeamHome?.Channel;
             }
             else
             {
-                builder.WithColor(new Color(0xd60e0e));
+                team = match.TeamHome;
+                oppositionChannel = match.TeamAway?.Channel;
+            }
+
+           
+            if (teamType == TeamType.Home && channel.Color != null && channel.Color[0] == '#')
+            {
+                teamColor = new Color(ColorExtensions.FromHex(channel.Color).R, ColorExtensions.FromHex(channel.Color).G, ColorExtensions.FromHex(channel.Color).B);
+            }
+
+            var builder = new EmbedBuilder()
+                           .WithTitle($"{team.Channel?.BadgeEmote ?? channel.Name} Team Sheet")
+                           .WithCurrentTimestamp()
+                           .WithColor(teamColor);
+
+            if (!match.IsMixMatch && oppositionChannel != null)
+            {
+                builder.WithDescription($"vs {oppositionChannel.Name}");
             }
 
             if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeThreeOne)
@@ -176,7 +185,7 @@ namespace CoachBot.Factories
             return builder.Build();
         }
 
-        private string AddNumericPrefix(string position)
+        private static string AddNumericPrefix(string position)
         {
             if (int.TryParse(position, out int parsedInt) == true)
             {

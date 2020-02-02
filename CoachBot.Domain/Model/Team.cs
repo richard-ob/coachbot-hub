@@ -17,6 +17,14 @@ namespace CoachBot.Model
 
         public Channel Channel { get; set; }
 
+        [InverseProperty("TeamHome")]
+        public Match HomeMatch { get; set; }
+
+        [InverseProperty("TeamAway")]
+        public Match AwayMatch { get; set; }
+
+        public Match Match => HomeMatch ?? AwayMatch;
+
         public TeamType TeamType { get; set; }
 
         public ICollection<PlayerTeamPosition> PlayerTeamPositions { get; set; }

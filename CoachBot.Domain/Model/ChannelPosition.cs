@@ -1,4 +1,6 @@
 ﻿using CoachBot.Model;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
@@ -12,5 +14,7 @@ namespace CoachBot.Domain.Model
 
         public Position Position { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedDate { get; set; }
     }
 }

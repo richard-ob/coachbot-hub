@@ -1,4 +1,5 @@
 ﻿using CoachBot.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +17,9 @@ namespace CoachBot.Model
         public ICollection<ChannelPosition> ChannelPositions { get; set; }
 
         public ICollection<PlayerTeamPosition> PlayerTeamPositions { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedDate { get; set; }
 
     }
 }

@@ -24,6 +24,8 @@ export enum EventType {
     RedCard = 'RED CARD',
     SecondYellowCard = 'SECOND YELLOW CARD',
     Penalty = 'PENALTY',
+    Foul = 'FOUL',
+    OwnGoal = 'OWN GOAL',
     Null = '(null)'
 }
 

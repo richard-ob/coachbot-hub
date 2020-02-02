@@ -24,6 +24,13 @@ export class MatchOverviewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.sampleMatchData.matchInfo.serverName = 'Official London 8v8';
+    this.sampleMatchData.matchInfo.mapName = '8v8_vienna';
+    this.sampleMatchData.matchInfo.serverAddress = '158.546.52.32:27015';
   }
 
+  loadJson(matchDataJson: string) {
+    this.sampleMatchData = JSON.parse(matchDataJson);
+    this.matchDate = new Date(this.sampleMatchData.matchInfo.startTime * 1000);
+  }
 }

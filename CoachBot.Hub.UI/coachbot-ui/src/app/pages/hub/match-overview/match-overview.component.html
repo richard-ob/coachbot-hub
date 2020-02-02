@@ -6,8 +6,8 @@
             <div class="col-md-10 offset-md-1">
                 <section class="game-result__section">
                     <header class="game-result__header game-result__header--alt">
-                        <span class="game-result__league">Ranked Friendly</span>
-                        <h3 class="game-result__title">Official London 8v8</h3>
+                        <span class="game-result__league">{{sampleMatchData.matchInfo.type}}</span>
+                        <h3 class="game-result__title">{{sampleMatchData.matchInfo.serverName}}</h3>
                         <time class="game-result__date">{{matchDate | date:'medium'}}</time>
                     </header>
                     <div class="game-result__content">
@@ -328,7 +328,10 @@
                                 <li *ngIf="matchEvent.event !== eventType.Null" class="commentary__item">
                                     <span class="commentary__time">{{matchEvent.second | secondsToMinutes}}</span>
                                     <div [ngSwitch]="matchEvent.event" class="commentary__icon">
+                                        <i *ngSwitchCase="eventType.Foul" class="icon-svg icon-whistle"></i>
                                         <i *ngSwitchCase="eventType.Goal" class="icon-svg icon-soccer-ball"></i>
+                                        <i *ngSwitchCase="eventType.OwnGoal"
+                                            class="icon-svg icon-soccer-ball-own-goal"></i>
                                         <i *ngSwitchCase="eventType.YellowCard" class="icon-svg icon-yellow-card"></i>
                                         <i *ngSwitchCase="eventType.SecondYellow" class="icon-svg icon-red-card"></i>
                                         <i *ngSwitchCase="eventType.RedCard" class="icon-svg icon-red-card"></i>
@@ -339,6 +342,17 @@
                                     </div>
                                     {{matchEvent.event}}
                                     <strong>{{matchEvent.player1SteamId | steamIdToPlayerName:sampleMatchData.players}}</strong>
+                                    <span *ngIf="matchEvent.event === eventType.SecondYellow">Received a second yellow card</span>
+                                    <ng-container *ngIf="matchEvent.player2SteamId">
+                                        <ng-container [ngSwitch]="matchEvent.event">
+                                            <span *ngSwitchCase="eventType.Goal">&nbsp;Assist by
+                                                    <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:sampleMatchData.players}}</strong></span>
+                                            <span *ngSwitchCase="eventType.Save">&nbsp;Shot by
+                                                    <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:sampleMatchData.players}}</strong></span>
+                                            <span *ngSwitchCase="eventType.Foul">&nbsp;Foul on
+                                                <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:sampleMatchData.players}}</strong></span>
+                                        </ng-container>
+                                    </ng-container>
                                 </li>
                             </ng-container>
                         </ul>
@@ -353,3 +367,5 @@
 </div>
 
 <!-- Content / End -->
+<input type="text" #newJson class="form-control">
+<button (click)="loadJson(newJson.value)" class="btn btn-primary">Load</button>

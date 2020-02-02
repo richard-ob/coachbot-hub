@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatchOverviewComponent } from './match-overview/match-overview.component';
 import { CountryNameConverterPipe } from './match-overview/helpers/country-name-converter.pipe';
@@ -25,7 +26,8 @@ import { CircleGraphComponent } from './match-overview/components/circle-graph/c
     PercentageSharePipe
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ]
 })
 export class HubModule { }

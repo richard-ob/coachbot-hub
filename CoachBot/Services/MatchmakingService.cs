@@ -223,23 +223,23 @@ namespace CoachBot.Services
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
-        public string Challenge(ulong challengerChannelId, string teamCode, string challengerMention)
+        public Embed Challenge(ulong challengerChannelId, string teamCode, string challengerMention)
         {
             var challenger = _channelService.GetChannelByDiscordId(challengerChannelId);
             var opposition = _channelService.GetChannelByTeamCode(teamCode);
 
-            if (opposition == null) return $":no_entry: {teamCode} is not a valid team code";
+            if (opposition == null) return EmbedTools.GenerateEmbed($"{teamCode} is not a valid team code", ServiceResponseStatus.Failure);
 
             var response = _matchService.Challenge(challengerChannelId, opposition.DiscordChannelId, challengerMention);
 
-            if (response.Status != ServiceResponseStatus.Success) return $":no_entry: {response.Message}";
+            if (response.Status != ServiceResponseStatus.Success) return EmbedTools.GenerateEmbedFromServiceResponse(response);
 
             var acceptMsg = $":handshake: {challenger.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
             (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithDescription(acceptMsg).WithCurrentTimestamp().Build());
             (_discordClient.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId).First());
             (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(opposition.DiscordChannelId).First());            
 
-            return $":handshake: You have successfully challenged {opposition.Name}. !ready will send both teams to the server";
+            return EmbedTools.GenerateSimpleEmbed($":handshake: You have successfully challenged {opposition.Name}. !ready will send both teams to the server");
         }
 
         public Embed ListChallenges(ulong challengerChannelId)
@@ -371,7 +371,7 @@ namespace CoachBot.Services
                 embedBuilder.AddField($"**{recentMatch.TeamHome.Channel.TeamCode}** vs **{recentMatch.TeamAway.Channel.TeamCode}** - {recentMatch.ReadiedDate.ToString()}", sb.ToString());
             }
 
-            return embedBuilder.Build();
+            return embedBuilder.WithRequestedBy().Build();
         }
 
         private void ResetLastMentionTime(ulong channelId)

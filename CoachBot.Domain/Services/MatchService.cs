@@ -73,10 +73,10 @@ namespace CoachBot.Domain.Services
                 position = channel.ChannelPositions.Select(cp => cp.Position).FirstOrDefault(p => p.Name.ToUpper() == positionName.ToUpper());
             }
 
-            if (player.DiscordUserId != null && match.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{player.DisplayName} is already signed");
-            if (match.SignedPlayersAndSubs.Any(sp => sp.Name == player.Name)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{player.DisplayName} is already signed");
-            if (position is null && positionName != null) return new ServiceResponse(ServiceResponseStatus.Failure, $"{positionName} is already filled");
-            if (team != null && team.OccupiedPositions.Any(op => op == position)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{positionName} is already filled");
+            if (player.DiscordUserId != null && match.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is already signed");
+            if (match.SignedPlayersAndSubs.Any(sp => sp.Name == player.Name)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is already signed");
+            if (position is null && positionName != null) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{positionName}** is already filled");
+            if (team != null && team.OccupiedPositions.Any(op => op == position)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{positionName}** is already filled");
             if (position is null && positionName == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There are no outfield positions available");
 
             var playerTeamPosition = new PlayerTeamPosition()
@@ -88,14 +88,14 @@ namespace CoachBot.Domain.Services
             _coachBotContext.PlayerTeamPositions.Add(playerTeamPosition);
             _coachBotContext.SaveChanges();
 
-            return new ServiceResponse(ServiceResponseStatus.Success, $"Signed {player.DisplayName} to {position.Name} for {team.Channel.Name}");
+            return new ServiceResponse(ServiceResponseStatus.Success, $"Signed **{player.DisplayName}** to **{position.Name}** for **{team.Channel.Name}**");
         }
 
         public ServiceResponse AddSubsitutePlayerToTeam(ulong channelId, Player player, TeamType teamType = TeamType.Home)
         {
             var match = GetCurrentMatchForChannel(channelId);
             if (match.TeamHome.PlayerSubstitutes is null) match.TeamHome.PlayerSubstitutes = new List<PlayerTeamSubstitute>();
-            if (match.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{player.DisplayName} is already signed");
+            if (match.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is already signed");
             if (!match.SignedPlayersAndSubs.Any()) return new ServiceResponse(ServiceResponseStatus.Failure, $"All outfield positions are still available");
 
             var playerTeamSubstitute = new PlayerTeamSubstitute()
@@ -106,7 +106,7 @@ namespace CoachBot.Domain.Services
             _coachBotContext.PlayerTeamSubstitute.Add(playerTeamSubstitute);
             _coachBotContext.SaveChanges();
 
-            return new ServiceResponse(ServiceResponseStatus.Success, $"Added {player.DisplayName} to the subs bench");
+            return new ServiceResponse(ServiceResponseStatus.Success, $"Added **{player.DisplayName}** to the subs bench");
         }
 
         public ServiceResponse RemoveSubstitutePlayerFromMatch(ulong channelId, Player player)
@@ -119,7 +119,7 @@ namespace CoachBot.Domain.Services
                 RemovePlayerSubstituteFromTeam(match.TeamAway, player);
             }
 
-            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed {player.DisplayName} from the subs bench");
+            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed **{player.DisplayName}** from the subs bench");
         }
                
         public ServiceResponse ClearPosition(ulong channelId, string position, TeamType teamType = TeamType.Home)
@@ -138,7 +138,7 @@ namespace CoachBot.Domain.Services
             }
             _coachBotContext.SaveChanges();
 
-            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Cleared {position}");
+            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Cleared **{position}**");
         }
 
         public ServiceResponse RemoveTeamFromMatch(ulong channelId)
@@ -187,7 +187,7 @@ namespace CoachBot.Domain.Services
                     return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Substituted **{player.DisplayName}** with **{substitute.DisplayName}**");
                 }
             }
-            else if (match.TeamAway.PlayerTeamPositions.Any(ptp => ptp.Player.DiscordUserId == player.DiscordUserId))
+            else if (match.TeamAway?.PlayerTeamPositions.Any(ptp => ptp.Player.DiscordUserId == player.DiscordUserId) == true)
             {
                 var removedPlayer = RemovePlayerFromTeam(match.TeamHome, player);
                 if (match.TeamAway.PlayerSubstitutes.Any())
@@ -239,10 +239,10 @@ namespace CoachBot.Domain.Services
 
             if (challenger.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"Mix channels cannot challenge teams");
             if (opposition.IsMixChannel && !oppositionMatch.IsMixMatch) return new ServiceResponse(ServiceResponseStatus.Failure, $"{opposition.Name} already has opposition challenging");
-            if (!_searchService.GetSearches().Any(s => s.ChannelId == opposition.Id) && !opposition.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"{opposition.Name} are no longer searching for a team to face");
+            if (!_searchService.GetSearches().Any(s => s.ChannelId == opposition.Id) && !opposition.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{opposition.Name}** are no longer searching for a team to face");
             if (challengerChannelId == oppositionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"You can't face yourself. Don't waste my time.");
-            if (challenger.ChannelPositions.Count() != opposition.ChannelPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"Sorry, {opposition.Name} are looking for an {opposition.ChannelPositions.Count()}v{opposition.ChannelPositions.Count()}");
-            if (Math.Round(challenger.ChannelPositions.Count() * 0.7) > GetCurrentMatchForChannel(challengerChannelId).TeamHome.OccupiedPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"At least {Math.Round(challenger.ChannelPositions.Count() * 0.7)} positions must be filled");
+            if (challenger.ChannelPositions.Count() != opposition.ChannelPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"Sorry, **{opposition.Name}** are looking for an **{opposition.ChannelPositions.Count()}v{opposition.ChannelPositions.Count()}** match");
+            if (Math.Round(challenger.ChannelPositions.Count() * 0.7) > GetCurrentMatchForChannel(challengerChannelId).TeamHome.OccupiedPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"At least **{Math.Round(challenger.ChannelPositions.Count() * 0.7)}** positions must be filled");
             if (challenger.RegionId != opposition.RegionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"You can't challenge opponents from other regions");
 
             _searchService.StopSearch(challenger.Id);

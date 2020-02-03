@@ -1,6 +1,7 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Extensions;
 using CoachBot.Model;
+using CoachBot.Tools;
 using Discord;
 using System.Linq;
 using System.Text;
@@ -60,7 +61,7 @@ namespace CoachBot.Factories
                 sb.Append($"vs {oppositionChannel.Name}");
             }
 
-            return embedBuilder.WithColor(teamColor).WithDescription(sb.ToString()).WithCurrentTimestamp().Build();
+            return embedBuilder.WithColor(teamColor).WithDescription(sb.ToString()).WithCurrentTimestamp().WithRequestedBy().Build();
         }
     }
 }

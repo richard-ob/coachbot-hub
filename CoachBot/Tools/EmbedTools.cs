@@ -1,4 +1,5 @@
 ﻿using CoachBot.Domain.Model;
+using CoachBot.Extensions;
 using Discord;
 using System.Text;
 
@@ -8,17 +9,24 @@ namespace CoachBot.Tools
     {
         public static Embed GenerateSimpleEmbed(string content)
         {
-            return new EmbedBuilder()
-                .WithDescription(content)
-                .Build(); 
+            return GenerateSimpleEmbed(content, null);
         }
 
-        public static Embed GenerateSimpleEmbed(string content, string title)
+        public static Embed GenerateSimpleEmbed(string content, string title = null)
         {
-            return new EmbedBuilder()
-                .WithDescription(content)
-                .WithTitle(title)
-                .Build();
+            var embedBuilder = new EmbedBuilder().WithCurrentTimestamp().WithDescription(content).WithRequestedBy();
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                embedBuilder.WithTitle(title);
+            }
+
+            return embedBuilder.Build();
+        }
+
+        public static Embed GenerateEmbed(string content, ServiceResponseStatus status)
+        {
+            return GenerateEmbedFromServiceResponse(new ServiceResponse(status, content));
         }
 
         public static Embed GenerateEmbedFromServiceResponse(ServiceResponse serviceResponse)
@@ -43,7 +51,19 @@ namespace CoachBot.Tools
 
             message.Append(serviceResponse.Message);
 
-            return new EmbedBuilder().WithCurrentTimestamp().WithDescription(message.ToString());
+            var embedBuilder =  new EmbedBuilder().WithCurrentTimestamp().WithDescription(message.ToString()).WithRequestedBy();
+
+            return embedBuilder.Build();
+        }
+
+        public static EmbedBuilder WithRequestedBy(this EmbedBuilder embedBuilder)
+        {
+            if (CallContext.GetData(CallContextDataType.DiscordUser) != null)
+            {
+                embedBuilder.WithFooter(new EmbedFooterBuilder().WithText("Requested by " + CallContext.GetData(CallContextDataType.DiscordUser)));
+            }
+
+            return embedBuilder;
         }
     }
 }

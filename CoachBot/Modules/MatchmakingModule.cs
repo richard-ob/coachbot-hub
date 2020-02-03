@@ -6,6 +6,8 @@ using CoachBot.Model;
 using Discord;
 using System;
 using CoachBot.Tools;
+using CoachBot.Extensions;
+using CoachBot.Domain.Model;
 
 namespace CoachBot.Modules.Matchmaker
 {
@@ -27,6 +29,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             base.BeforeExecute(command);
             Context.Message.AddReactionAsync(new Emoji("✅"));
+            CallContext.SetData(CallContextDataType.DiscordUser, Context.Message.Author.Username);
         }
 
         protected override void AfterExecute(CommandInfo command)
@@ -151,7 +154,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task UnsignPositionHomeTeamAsync(string position)
         {
-            var response = _channelMatchService.RemovePlayer(Context.Message.Channel.Id, position);
+            var response = _channelMatchService.ClearPosition(Context.Message.Channel.Id, position);
             await ReplyAsync("", embed: response);
         }
 
@@ -160,7 +163,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task UnsignPositionAwayTeamAsync(string position)
         {
-            var response = _channelMatchService.RemovePlayer(Context.Message.Channel.Id, position);
+            var response = _channelMatchService.ClearPosition(Context.Message.Channel.Id, position, TeamType.Away);
             await ReplyAsync("", embed: response);
         }
 
@@ -190,7 +193,7 @@ namespace CoachBot.Modules.Matchmaker
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed(":no_entry: Invalid server ID provided"));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID provided", ServiceResponseStatus.Failure));
             }
 
             this.sendUpdatedTeams = false;
@@ -215,11 +218,11 @@ namespace CoachBot.Modules.Matchmaker
                 var timeRemaining = lastMention.Value.AddMinutes(HERE_INTERVAL).Subtract(DateTime.Now).TotalMinutes;
                 if (timeRemaining >= 1)
                 {
-                    await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in {timeRemaining.ToString("0")} minutes."));
+                    await ReplyAsync("", embed: EmbedTools.GenerateEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in {timeRemaining.ToString("0")} minutes.", ServiceResponseStatus.Failure));
                 }
                 else
                 {
-                    await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in 1 minute."));
+                    await ReplyAsync("", embed: EmbedTools.GenerateEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in 1 minute.", ServiceResponseStatus.Failure));
                 }
             }
             else
@@ -259,7 +262,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task ChallengeAsync(string teamCode)
         {
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription(_channelMatchService.Challenge(Context.Channel.Id, teamCode, Context.User.Mention)).Build());
+            await ReplyAsync("", embed: _channelMatchService.Challenge(Context.Channel.Id, teamCode, Context.User.Mention));
             this.sendUpdatedTeams = false;
         }
 

@@ -100,8 +100,8 @@ namespace CoachBot.Domain.Services
 
             var playerTeamSubstitute = new PlayerTeamSubstitute()
             {
-                Player = player,
-                Team = teamType == TeamType.Home ? match.TeamHome : match.TeamAway
+                PlayerId = player.Id,
+                TeamId = teamType == TeamType.Home ? (int)match.TeamHomeId : (int)match.TeamAwayId
             };
             _coachBotContext.PlayerTeamSubstitute.Add(playerTeamSubstitute);
             _coachBotContext.SaveChanges();

@@ -27,22 +27,13 @@ namespace CoachBot.Modules.Matchmaker
         protected override void BeforeExecute(CommandInfo command)
         {
             base.BeforeExecute(command);
-            Context.Message.AddReactionAsync(new Emoji("✅"));
+            Context.Message.AddReactionAsync(new Emoji("⚙️"));
             CallContext.SetData(CallContextDataType.DiscordUser, Context.Message.Author.Username);
         }
 
         protected override void AfterExecute(CommandInfo command)
         {
             base.AfterExecute(command);
-
-            try
-            {
-                Context.Message.DeleteAsync();
-            }
-            catch
-            {
-                // TODO: Implement logger here
-            }
 
             Context.Message.AddReactionAsync(new Emoji("✅"));
 
@@ -258,14 +249,14 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task SearchOppositionAsync()
         {
-            await ReplyAsync("", embed: _channelMatchService.Search(Context.Channel.Id, Context.User.Mention));
+            await ReplyAsync("", embed: await _channelMatchService.Search(Context.Channel.Id, Context.User.Mention));
         }
 
         [Command("!stopsearch")]
         [RequireChannelConfigured]
         public async Task StopSearchOppositionAsync()
         {
-            await ReplyAsync("", embed: _channelMatchService.StopSearch(Context.Message.Channel.Id));
+            await ReplyAsync("", embed: await _channelMatchService.StopSearch(Context.Message.Channel.Id));
         }
 
         [Command("!challenge")]
@@ -297,7 +288,7 @@ namespace CoachBot.Modules.Matchmaker
         [SendLineupMessage]
         public async Task UnchallengeAsync()
         {
-            await ReplyAsync("", embed: _channelMatchService.Unchallenge(Context.Channel.Id, Context.User.Mention));
+            await ReplyAsync("", embed: await _channelMatchService.Unchallenge(Context.Channel.Id, Context.User.Mention));
         }
 
         [Command("!sub")]

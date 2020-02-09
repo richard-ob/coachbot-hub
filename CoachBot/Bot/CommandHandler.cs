@@ -97,6 +97,15 @@ namespace CoachBot
                 }
             }
 
+            try
+            { 
+                await message.DeleteAsync();
+            }
+            catch
+            {
+                Console.WriteLine($"Bot doesn't have have manage messages privileges in {message.Channel.Name} ({context.Guild.Name})");
+            }
+
             _logger.Debug("Invoked {Command} in {Context} with {Result}", message, context.Channel, result);
         }
 

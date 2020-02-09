@@ -34,15 +34,6 @@ namespace CoachBot.Modules
         {
             base.AfterExecute(command);
 
-            try
-            {
-                Context.Message.DeleteAsync();
-            }
-            catch
-            {
-                // TODO: Implement logger here
-            }
-
             Context.Message.AddReactionAsync(new Emoji("✅"));
         }
 

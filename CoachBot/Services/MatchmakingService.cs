@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CoachBot.Services
 {
@@ -120,6 +121,7 @@ namespace CoachBot.Services
             {
                 SendReadyMessageForTeam(match, match.TeamHome, server);
                 SendReadyMessageForTeam(match, match.TeamAway, server);
+                SendReadyMessageForPlayers(match, match.SignedPlayers, server);
 
                 return true;
             }
@@ -167,29 +169,18 @@ namespace CoachBot.Services
             return teamSheets;
         }
 
-        public Embed Search(ulong channelId, string challengerMention)
+        public async Task<Embed> Search(ulong channelId, string challengerMention)
         {
             var challenger = _channelService.GetChannelByDiscordId(channelId);
-            var response = _searchService.Search(challenger.Id);
-
-            var embed = new EmbedBuilder()
-                .WithTitle($":mag: {challenger.BadgeEmote ?? challenger.Name} are searching for a team to face")
-                .WithDescription($"To challenge **{challenger.Name}** type **!challenge {challenger.TeamCode}** and contact {challengerMention} for more information")
-                .WithCurrentTimestamp()
-                .WithColor(challenger.SystemColor);
-
-            var regionChannels = _channelService.GetChannelsByRegion((int)challenger.RegionId)
-                .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
-                .Select(c => c.DiscordChannelId).ToList();
-            _discordNotificationService.SendChannelMessage(regionChannels, embed);
+            var response = await _searchService.Search(challenger.Id, challengerMention);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
-        public Embed StopSearch(ulong channelId)
+        public async Task<Embed> StopSearch(ulong channelId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var response = _searchService.StopSearch(channel.Id);
+            var response = await _searchService.StopSearch(channel.Id);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
@@ -258,7 +249,7 @@ namespace CoachBot.Services
             return embedBuilder.WithDefaultColour().Build();
         }
 
-        public Embed Unchallenge(ulong challengerChannelId, string challengerMention)
+        public async Task<Embed> Unchallenge(ulong challengerChannelId, string challengerMention)
         {
             var match = _matchService.GetCurrentMatchForChannel(challengerChannelId);
             var homeChannel = match.TeamHome?.Channel;
@@ -270,8 +261,8 @@ namespace CoachBot.Services
             {
                 var unchallengeMessage = $"The game between **{homeChannel.Name}** & **{awayChannel.Name}** has been called off by **{challengerMention}**";
                 var embed = EmbedTools.GenerateSimpleEmbed(unchallengeMessage, ":thunder_cloud_rain: Match Abandoned!");
-                _discordNotificationService.SendChannelMessage(homeChannel.DiscordChannelId, embed: embed);
-                _discordNotificationService.SendChannelMessage(awayChannel.DiscordChannelId, embed: embed);
+                await _discordNotificationService.SendChannelMessage(homeChannel.DiscordChannelId, embed: embed);
+                await _discordNotificationService.SendChannelMessage(awayChannel.DiscordChannelId, embed: embed);
             }
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
@@ -364,24 +355,24 @@ namespace CoachBot.Services
             return servers[serverListItemId - 1];
         }
 
-        private void SendReadyMessageForTeam(Match match, Team team, Server server)
+        private async void SendReadyMessageForPlayers(Match match, List<Player> players, Server server)
         {
-            var sb = new StringBuilder();
-
-            sb.Append($":checkered_flag: Match Ready! {Environment.NewLine} Join {server.Name} steam://connect/{server.Address} ");
-
-            foreach (var playerTeamPosition in team.PlayerTeamPositions)
+            var message = $":soccer: Match ready! **{match.TeamHome.Channel.DisplayName}** vs **{match.TeamAway.Channel.DisplayName}** - Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible.";
+            foreach(var player in players.Where(p => p.DiscordUserId != null && !p.DisableDMNotifications))
             {
-                sb.Append($"{playerTeamPosition.Player.DiscordUserMention ?? playerTeamPosition.Player.Name} ");
-                if (playerTeamPosition.Player.DiscordUserId != null)
-                {
-                    var message = $":stadium: Match ready! {match.TeamHome.Channel.Name} vs {match.TeamAway.Channel.Name} - Please join {server.Name} (steam://connect/{server.Address}) as soon as possible.";
-                    _discordNotificationService.SendUserMessage((ulong)playerTeamPosition.Player.DiscordUserId, message);
-                }
+               await _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, message);
             }
+        }
 
+        private async void SendReadyMessageForTeam(Match match, Team team, Server server)
+        {
             var discordChannel = _discordClient.GetChannel(team.Channel.DiscordChannelId) as ITextChannel;
-            discordChannel.SendMessageAsync(sb.ToString());
+
+            var embed = EmbedTools.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible.", $":soccer: Kick Off! **{match.TeamHome.Channel.DisplayName}** vs **{match.TeamAway.Channel.DisplayName}**");
+            await discordChannel.SendMessageAsync("", embed: embed);
+
+            var highlightMessage = string.Join(", ", team.PlayerTeamPositions.Where(ptp => ptp.Player.DiscordUserId != null).Select(ptp => ptp.Player.DisplayName));
+            if (!string.IsNullOrEmpty(highlightMessage)) await discordChannel.SendMessageAsync(highlightMessage);
         }
     }
 }

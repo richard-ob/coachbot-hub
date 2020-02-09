@@ -30,7 +30,7 @@ namespace CoachBot.Domain.Services
             return searches;
         }
 
-        public ServiceResponse Search(int channelId)
+        public async Task<ServiceResponse> Search(int channelId, string startedBy)
         {
             var challenger = _coachBotContext.Channels.Include(c => c.ChannelPositions).FirstOrDefault(c => c.Id == channelId);
             if (challenger.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"Mix channels cannot search for opposition");
@@ -41,40 +41,60 @@ namespace CoachBot.Domain.Services
             {
                 CreatedDate = DateTime.UtcNow,
                 ChannelId = channelId,
-                DiscordMessageIds = new List<ulong>()
+                DiscordSearchMessages = new Dictionary<ulong, ulong>()
             };
 
             _coachBotContext.Searches.Add(search);
             _coachBotContext.SaveChanges();
-            TimeoutSearch(channelId).ConfigureAwait(false);
+            TimeoutSearch(channelId);
+
+            var embed = new EmbedBuilder()
+                .WithTitle($":mag: {challenger.BadgeEmote ?? challenger.Name} are searching for a team to face")
+                .WithDescription($"To challenge **{challenger.Name}** type **!challenge {challenger.TeamCode}** and contact {startedBy} for more information")
+                .WithCurrentTimestamp()
+                .WithColor(challenger.SystemColor);
+
+            var regionChannels = _coachBotContext.Channels
+                .Where(c => c.RegionId == challenger.RegionId)
+                .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
+                .Select(c => c.DiscordChannelId)
+                .ToList();
+
+            var discordSearchMessages = await _discordNotificationService.SendChannelMessage(regionChannels, embed);
+            search.DiscordSearchMessages = discordSearchMessages;
+            _coachBotContext.Searches.Update(search);
+            _coachBotContext.SaveChanges();
 
             return new ServiceResponse(ServiceResponseStatus.Success, $"Search successfully started");
         }
 
-        public async Task TimeoutSearch(int channelId)
+        public async void TimeoutSearch(int channelId)
         {
             await Task.Delay(15 * 60 * 1000);
             if (_coachBotContext.Searches.Any(s => s.ChannelId == channelId))
             {
                 var channel =_coachBotContext.Channels.Find(channelId);
-                _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, ":timer: Your search for an opponent has timed out after 15 minutes.Please try again if you are still searching");
-                StopSearch(channelId);
+                await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, ":timer: Your search for an opponent has timed out after 15 minutes.Please try again if you are still searching");
+                await StopSearch(channelId);
             }
         }
 
-        public ServiceResponse StopSearch(int channelId)
+        public async Task<ServiceResponse> StopSearch(int channelId)
         {
             var search =_coachBotContext.Searches.FirstOrDefault(s => s.ChannelId == channelId);
-            if (search == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There is no search in progress");
+            if (search == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There is no search in progress to stop");
 
             _coachBotContext.Remove(search);
             _coachBotContext.SaveChanges();
 
-            var discordChannelId = _coachBotContext.Channels.Find(channelId).DiscordChannelId;
-            var discordChannel = _discordSocketClient.GetChannel(discordChannelId) as ITextChannel;
-            discordChannel.DeleteMessagesAsync(search.DiscordMessageIds);
+            foreach(var messageChannel in search.DiscordSearchMessages.Keys)
+            {
+                var discordChannel = _discordSocketClient.GetChannel(messageChannel) as IMessageChannel;
+                var messageId = search.DiscordSearchMessages.GetValueOrDefault(messageChannel);
+                await discordChannel.DeleteMessagesAsync(new[] { messageId });
+            }
 
-            return new ServiceResponse(ServiceResponseStatus.Success, $"Search cancelled");
+            return new ServiceResponse(ServiceResponseStatus.Success, $"Search successfully stopped");
         }
 
         public Match GetCurrentMatchForChannel(ulong channelId)

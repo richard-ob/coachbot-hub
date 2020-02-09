@@ -75,7 +75,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<ChannelPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
 
             // Conversions
-            modelBuilder.Entity<Search>().Property(p => p.DiscordMessageIds).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<ulong>>(v));
+            modelBuilder.Entity<Search>().Property(p => p.DiscordSearchMessages).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<Dictionary<ulong, ulong>>(v));
             modelBuilder.Entity<MatchStatistics>().Property(p => p.MatchData).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<MatchData>(v));
 
             // Seed data

@@ -28,6 +28,8 @@ namespace CoachBot.Model
 
         public string SteamID { get; set; }
 
+        public bool DisableDMNotifications { get; set; }
+
         public ICollection<PlayerTeamPosition> PlayerTeamPositions { get; set; }
 
         public ICollection<PlayerTeamSubstitute> PlayerSubstitutes { get; set; }

@@ -15,7 +15,7 @@ namespace CoachBot.Domain.Model
 
         public Channel Channel { get; set; }
 
-        public List<ulong> DiscordMessageIds { get; set; }
+        public Dictionary<ulong, ulong> DiscordSearchMessages { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

@@ -1,6 +1,8 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CoachBot.Domain.Services
 {
@@ -13,41 +15,59 @@ namespace CoachBot.Domain.Services
             _discordSocketClient = discordSocketClient;
         }
 
-        public void SendChannelMessage(ulong discordChannelId, Embed embed)
+        public async Task<ulong> SendChannelMessage(ulong discordChannelId, Embed embed)
         {
             if (_discordSocketClient.GetChannel(discordChannelId) is ITextChannel channel)
             {
-                channel.SendMessageAsync("", embed: embed);
+                var result = await channel.SendMessageAsync("", embed: embed);
+
+                return result.Id;
             }
+
+            return 0;
         }
 
-        public void SendChannelMessage(ulong discordChannelId, string message)
+        public async Task<ulong> SendChannelMessage(ulong discordChannelId, string message)
         {
-            SendChannelMessage(discordChannelId, new EmbedBuilder().WithDescription(message).Build());
+            return await SendChannelMessage(discordChannelId, new EmbedBuilder().WithDescription(message).Build());
         }
 
-        public void SendChannelMessage(List<ulong> discordChannelIds, Embed embed)
+        public async Task<Dictionary<ulong, ulong>> SendChannelMessage(List<ulong> discordChannelIds, Embed embed)
         {
+            var messageIds = new Dictionary<ulong, ulong>();
+
             foreach (var discordChannelId in discordChannelIds)
             {
-                SendChannelMessage(discordChannelId, embed);
+                var discordMessageId = await SendChannelMessage(discordChannelId, embed);
+                if (discordMessageId != 0) messageIds.Add(discordChannelId, discordMessageId);
             }
+
+            return messageIds;
         }
 
-        public void SendChannelMessage(List<ulong> discordChannelIds, string message)
+        public async Task<Dictionary<ulong, ulong>> SendChannelMessage(List<ulong> discordChannelIds, string message)
         {
-            foreach(var discordChannelId in discordChannelIds)
+            var messageIds = new Dictionary<ulong, ulong>();
+
+            foreach (var discordChannelId in discordChannelIds)
             {
-                SendChannelMessage(discordChannelId, message);
+                var discordMessageId =  await SendChannelMessage(discordChannelId, message);
+                if (discordMessageId != 0) messageIds.Add(discordChannelId, discordMessageId);
             }
+
+            return messageIds;
         }
 
-        public void SendUserMessage(ulong discordUserId, string message)
+        public async Task<ulong> SendUserMessage(ulong discordUserId, string message)
         {
-            if (_discordSocketClient.GetUser(discordUserId).GetOrCreateDMChannelAsync() is IDMChannel dmChannel)
+            if (await _discordSocketClient.GetUser(discordUserId).GetOrCreateDMChannelAsync() is IDMChannel dmChannel)
             {
-                dmChannel.SendMessageAsync(message);
+                var result = await dmChannel.SendMessageAsync(message);
+
+                return result.Id;
             }
+
+            return 0;
         }
     }
 }

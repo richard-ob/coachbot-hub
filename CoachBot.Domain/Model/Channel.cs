@@ -28,6 +28,8 @@ namespace CoachBot.Domain.Model
 
         public string BadgeEmote { get; set; }
 
+        public string DisplayName => BadgeEmote ?? Name;
+
         public string Color { get; set; } // Rename to ColorHex
 
         public Color SystemColor

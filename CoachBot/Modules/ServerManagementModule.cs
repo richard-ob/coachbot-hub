@@ -1,7 +1,10 @@
-﻿using CoachBot.Domain.Services;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
+using CoachBot.Extensions;
 using CoachBot.Preconditions;
 using CoachBot.Services;
 using CoachBot.Tools;
+using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 
@@ -20,6 +23,29 @@ namespace CoachBot.Modules
             _discordServerService = discordServerService;
         }
 
+        protected override void BeforeExecute(CommandInfo command)
+        {
+            base.BeforeExecute(command);
+            CallContext.SetData(CallContextDataType.DiscordUser, Context.Message.Author.Username);
+            Context.Message.AddReactionAsync(new Emoji("⚙️"));
+        }
+
+        protected override void AfterExecute(CommandInfo command)
+        {
+            base.AfterExecute(command);
+
+            try
+            {
+                Context.Message.DeleteAsync();
+            }
+            catch
+            {
+                // TODO: Implement logger here
+            }
+
+            Context.Message.AddReactionAsync(new Emoji("✅"));
+        }
+
         [Command("!enablesinglekeeper")]
         [RequireChannelConfigured]
         public async Task EnableSingleKeeperAsync(int serverListItemId)
@@ -32,7 +58,7 @@ namespace CoachBot.Modules
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID provided"));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID provided. Use `!servers` to see the full server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -48,7 +74,7 @@ namespace CoachBot.Modules
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID provided"));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID provided. Use `!servers` to see the full server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -70,7 +96,7 @@ namespace CoachBot.Modules
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID provided"));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID provided. Use `!servers` to see the full server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -85,7 +111,7 @@ namespace CoachBot.Modules
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID provided. Use `!servers` to see the full server list."));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID provided. Use `!servers` to see the full server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -99,7 +125,7 @@ namespace CoachBot.Modules
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID provided. Use `!servers` to see the full server list."));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID provided. Use `!servers` to see the full server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -113,7 +139,7 @@ namespace CoachBot.Modules
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID or map name provided. Use `!servers` to see the full server list or `!maps <server id>` for the full map list."));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID or map name provided. Use `!servers` to see the full server list or `!maps <server id>` for the full map list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -126,7 +152,7 @@ namespace CoachBot.Modules
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID or map name provided. Use `!servers` to see the full server list or `!maps <server id>` for the full map list."));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID or map name provided. Use `!servers` to see the full server list or `!maps <server id>` for the full map list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -139,7 +165,7 @@ namespace CoachBot.Modules
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateSimpleEmbed("Invalid server ID or kit ID provided. Use `!servers` to see the full server list or `!kits <server id>` for the full kit list."));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID or kit ID provided. Use `!servers` to see the full server list or `!kits <server id>` for the full kit list.", ServiceResponseStatus.Failure));
             }
         }
     }

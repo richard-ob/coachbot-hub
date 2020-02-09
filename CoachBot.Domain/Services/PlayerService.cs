@@ -14,11 +14,11 @@ namespace CoachBot.Domain.Services
             _coachBotContext = coachBotContext;
         }
 
-        public Player GetPlayer(IUser user)
+        public Player GetPlayer(IUser user, bool createIfNotExists = false)
         {
             var player = _coachBotContext.Players.FirstOrDefault(p => p.DiscordUserId == user.Id);
 
-            if (player == null)
+            if (createIfNotExists && player == null)
             {
                 player = CreatePlayer(user.Username, user.Id, user.Mention);
             }
@@ -26,11 +26,11 @@ namespace CoachBot.Domain.Services
             return player;
         }
 
-        public Player GetPlayer(string playerName)
+        public Player GetPlayer(string playerName, bool createIfNotExists = false)
         {
             var player = _coachBotContext.Players.FirstOrDefault(p => string.Equals(p.Name, playerName, System.StringComparison.CurrentCultureIgnoreCase));
 
-            if (player == null)
+            if (createIfNotExists && player == null && !playerName.StartsWith('@'))
             {
                 player = CreatePlayer(playerName);
             }

@@ -38,9 +38,9 @@ namespace CoachBot.Domain.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 
-        public bool IsMixMatch {
-            get { return TeamHome?.ChannelId == TeamAway?.ChannelId; }
-        }
+        public bool IsMixMatch => TeamHome?.ChannelId == TeamAway?.ChannelId;
+
+        public Team GetTeam(TeamType teamType) => teamType == TeamType.Home ? TeamHome : TeamAway;
 
         [JsonIgnore]
         [NotMapped]

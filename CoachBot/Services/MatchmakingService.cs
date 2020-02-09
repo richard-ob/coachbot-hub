@@ -59,7 +59,7 @@ namespace CoachBot.Services
 
         public Embed AddPlayer(ulong channelId, IUser user, string positionName = null, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)
         {
-            var player = _playerService.GetPlayer(user);
+            var player = _playerService.GetPlayer(user, createIfNotExists: true);
             var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
             var response = _matchService.AddPlayerToTeam(channelId, player, positionName, teamType);
 
@@ -68,7 +68,7 @@ namespace CoachBot.Services
 
         public Embed AddPlayer(ulong channelId, string userName, string positionName = null, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)
         {
-            var player = _playerService.GetPlayer(userName);
+            var player = _playerService.GetPlayer(userName, createIfNotExists: true);
             var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
             var response = _matchService.AddPlayerToTeam(channelId, player, positionName, teamType);
 
@@ -174,17 +174,9 @@ namespace CoachBot.Services
 
             var embed = new EmbedBuilder()
                 .WithTitle($":mag: {challenger.BadgeEmote ?? challenger.Name} are searching for a team to face")
-                .WithDescription($"To challenge {challenger.Name} type **!challenge {challenger.Id}** and contact {challengerMention} for more information")
-                .WithCurrentTimestamp();
-
-            if (challenger.Color != null && challenger.Color[0] == '#')
-            {
-                embed.WithColor(new Color(ColorExtensions.FromHex(challenger.Color).R, ColorExtensions.FromHex(challenger.Color).G, ColorExtensions.FromHex(challenger.Color).B));
-            }
-            else
-            {
-                embed.WithColor(new Color(0xFFFFFF));
-            }
+                .WithDescription($"To challenge **{challenger.Name}** type **!challenge {challenger.TeamCode}** and contact {challengerMention} for more information")
+                .WithCurrentTimestamp()
+                .WithColor(challenger.SystemColor);
 
             var regionChannels = _channelService.GetChannelsByRegion((int)challenger.RegionId)
                 .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
@@ -213,12 +205,13 @@ namespace CoachBot.Services
 
             if (response.Status != ServiceResponseStatus.Success) return EmbedTools.GenerateEmbedFromServiceResponse(response);
 
-            var acceptMsg = $":handshake: {challenger.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
-            (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: new EmbedBuilder().WithDescription(acceptMsg).WithCurrentTimestamp().Build());
+            var acceptMessage = $":handshake: {challenger.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
+            (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(acceptMessage));
+
             (_discordClient.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId).First());
             (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(opposition.DiscordChannelId).First());            
 
-            return EmbedTools.GenerateSimpleEmbed($":handshake: You have successfully challenged {opposition.Name}. !ready will send both teams to the server");
+            return EmbedTools.GenerateSimpleEmbed($":handshake: You have successfully challenged {opposition.Name}. `!ready` will send both teams to the server");
         }
 
         public Embed ListChallenges(ulong challengerChannelId)
@@ -262,22 +255,23 @@ namespace CoachBot.Services
 
             embedBuilder.WithFooter(new EmbedFooterBuilder().WithText("To accept the challenge of any teams below, use the !challenge <team code> command, e.g. !challenge BB"));
 
-            return embedBuilder.Build();
+            return embedBuilder.WithDefaultColour().Build();
         }
 
         public Embed Unchallenge(ulong challengerChannelId, string challengerMention)
         {
             var match = _matchService.GetCurrentMatchForChannel(challengerChannelId);
+            var homeChannel = match.TeamHome?.Channel;
+            var awayChannel = match.TeamAway?.Channel;
 
             var response = _matchService.Unchallenge(challengerChannelId);
 
             if (response.Status == ServiceResponseStatus.NegativeSuccess)
             {
-                var unchallengeMessage = $"The game between **{match.TeamHome.Channel.Name}** & **{match.TeamAway.Channel.Name}** has been called off by **{challengerMention}**";
+                var unchallengeMessage = $"The game between **{homeChannel.Name}** & **{awayChannel.Name}** has been called off by **{challengerMention}**";
                 var embed = EmbedTools.GenerateSimpleEmbed(unchallengeMessage, ":thunder_cloud_rain: Match Abandoned!");
-
-                _discordNotificationService.SendChannelMessage(match.TeamHome.Channel.DiscordChannelId, embed: embed);
-                _discordNotificationService.SendChannelMessage(match.TeamAway.Channel.DiscordChannelId, embed: embed);
+                _discordNotificationService.SendChannelMessage(homeChannel.DiscordChannelId, embed: embed);
+                _discordNotificationService.SendChannelMessage(awayChannel.DiscordChannelId, embed: embed);
             }
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
@@ -346,23 +340,15 @@ namespace CoachBot.Services
             if (recentMatches == null || !recentMatches.Any()) return new EmbedBuilder().WithDescription(":information_source: No matches have been played yet. Chill.").Build();
             foreach (var recentMatch in recentMatches)
             {
-                var sb = new StringBuilder();
-                foreach (var player in recentMatch.SignedPlayers)
-                {
-                    if (recentMatch.SignedPlayers.Last() != player)
-                    {
-                        sb.Append($"{player.Name}, ");
-                    }
-                    else
-                    {
-                        sb.Append($"{player.Name}");
-                    }
+                var playerList = "";
+                if (recentMatch.TeamHome.Channel.DiscordChannelId == channelId) playerList = string.Join(", ", recentMatch.TeamHome.PlayerTeamPositions.Select(ptp => ptp.Player.Name));
+                if (recentMatch.TeamAway.Channel.DiscordChannelId == channelId) playerList = $"{(playerList == "" ? "" : ", ")} {string.Join(", ", recentMatch.TeamAway.PlayerTeamPositions.Select(ptp => ptp.Player.Name))}";
+                if (playerList == "") playerList = "No player data available";
 
-                }
-                embedBuilder.AddField($"**{recentMatch.TeamHome.Channel.TeamCode}** vs **{recentMatch.TeamAway.Channel.TeamCode}** - {recentMatch.ReadiedDate.ToString()}", sb.ToString());
+                embedBuilder.AddField($"**{recentMatch.TeamHome.Channel.TeamCode}** vs **{recentMatch.TeamAway.Channel.TeamCode}** - {recentMatch.ReadiedDate.ToString()}", playerList);
             }
 
-            return embedBuilder.WithRequestedBy().Build();
+            return embedBuilder.WithRequestedBy().WithDefaultColour().Build();
         }
 
         private void ResetLastMentionTime(ulong channelId)

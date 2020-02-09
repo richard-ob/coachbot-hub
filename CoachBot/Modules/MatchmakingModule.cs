@@ -44,11 +44,8 @@ namespace CoachBot.Modules.Matchmaker
                 // TODO: Implement logger here
             }
 
-            var coachEmote = "<:coach:481112227902914561>";
-            if (Emote.TryParse(coachEmote, out var emote))
-            {
-                Context.Message.AddReactionAsync(emote);
-            }
+            Context.Message.AddReactionAsync(new Emoji("✅"));
+
             if (command.Attributes.Any(a => a.GetType() == typeof(SendLineupMessage)))
             {
                 foreach(var teamEmbed in _channelMatchService.GenerateTeamList(Context.Channel.Id))
@@ -196,6 +193,13 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!ready")]
         [RequireChannelConfigured]
+        public async Task ReadyAsync()
+        {
+            await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
+        }
+
+        [Command("!ready")]
+        [RequireChannelConfigured]
         public async Task ReadyAsync(int serverListItemId)
         {            
             if (_channelServerService.ValidateServer(Context.Channel.Id, serverListItemId))
@@ -212,7 +216,7 @@ namespace CoachBot.Modules.Matchmaker
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID provided", ServiceResponseStatus.Failure));
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -269,7 +273,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task ChallengeAsync()
         {
-            await ReplyAsync("You must provide a valid team code, or type !challenges to see the currently available challenges");
+            await ReplyAsync("", embed: EmbedTools.GenerateEmbed("You must provide a valid team code, or type !challenges to see the currently available challenges", ServiceResponseStatus.Failure));
         }
 
         [Command("!challenge")]
@@ -281,7 +285,7 @@ namespace CoachBot.Modules.Matchmaker
         }
 
         [Command("!challenges")]
-        [Alias("!listchallenges", "!challengelist", "!challenges")]
+        [Alias("!listchallenges", "!challengelist", "!challenges", "!searches")]
         [RequireChannelConfigured]
         public async Task ListChallengesAsync()
         {
@@ -321,7 +325,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task RequestSubAsync()
         {
-            await ReplyAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: Please provide a server id & required position, e.g. **!requestsub 3 LW**").WithCurrentTimestamp().Build());
+            await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Please provide a server id & required position, e.g. **!requestsub 3 LW**", ServiceResponseStatus.Failure));
         }
 
         [Command("!requestsub")]
@@ -334,7 +338,7 @@ namespace CoachBot.Modules.Matchmaker
             }
             else
             {
-                await ReplyAsync($":no_entry: Please provide a valid server, {Context.Message.Author.Mention}");
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed($"Please provide a valid server. Use `!servers` to see the full server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -344,7 +348,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (string.IsNullOrWhiteSpace(subToken))
             {
-                await ReplyAsync($":no_entry: Please provide the sub request token, e.g. `!acceptsub dea53af`");
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Please provide the sub request token, e.g. `!acceptsub dea53af`", ServiceResponseStatus.Failure));
             }
             else
             {
@@ -359,7 +363,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (string.IsNullOrWhiteSpace(subToken))
             {
-                await ReplyAsync($":no_entry: Please provide the sub request token, e.g. `!acceptsub dea53af`");
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Please provide the sub request token, e.g. `!cancelsub dea53af`", ServiceResponseStatus.Failure));
             }
             else
             {

@@ -32,6 +32,7 @@ namespace CoachBot.Domain.Services
             var existingMatch = _coachBotContext.Matches.FirstOrDefault(m => m.TeamHome.ChannelId == channelId && (m.TeamAway == null || m.TeamAway.Channel.Id == channelId) && m.ReadiedDate == null);
             var match = existingMatch ?? new Match();
 
+            // TODO: Make sure we don't keep creating new teams every time
             match.TeamHome = existingTeam ?? new Team()
             {
                 ChannelId = channelId
@@ -59,7 +60,7 @@ namespace CoachBot.Domain.Services
 
             _coachBotContext.SaveChanges();
 
-            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Reset teamsheet");
+            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Teamsheet successfully reset");
         }
 
         public ServiceResponse AddPlayerToTeam(ulong channelId, Player player, string positionName = null, TeamType teamType = TeamType.Home)
@@ -133,17 +134,14 @@ namespace CoachBot.Domain.Services
         public ServiceResponse ClearPosition(ulong channelId, string position, TeamType teamType = TeamType.Home)
         {
             var match = GetCurrentMatchForChannel(channelId);
+            var team = match.GetTeam(teamType);
 
-            if (teamType == TeamType.Home)
-            {
-                var playerPosition = match.TeamHome.PlayerTeamPositions.FirstOrDefault(ptp => ptp.Position.Name.ToUpper() == position.ToUpper());
-                if (playerPosition != null) match.TeamHome.PlayerTeamPositions.Remove(playerPosition);
-            }
-            else
-            {
-                var playerPosition = match.TeamAway.PlayerTeamPositions.FirstOrDefault(ptp => ptp.Position.Name.ToUpper() == position.ToUpper());
-                if (playerPosition != null) match.TeamAway.PlayerTeamPositions.Remove(playerPosition);
-            }
+            if (team == null) new ServiceResponse(ServiceResponseStatus.Failure, $"Cannot clear position for a team that does not exist");
+            if (!team.Channel.ChannelPositions.Any(cp => cp.Position.Name.ToUpper() == position.ToUpper())) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{position.ToUpper()}** is not a valid position");
+
+            var playerPosition = team.PlayerTeamPositions.FirstOrDefault(ptp => ptp.Position.Name.ToUpper() == position.ToUpper());
+            if (playerPosition != null) team.PlayerTeamPositions.Remove(playerPosition);
+
             _coachBotContext.SaveChanges();
 
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Cleared position **{position.ToUpper()}**");
@@ -153,7 +151,7 @@ namespace CoachBot.Domain.Services
         {
             var match = GetCurrentMatchForChannel(channelId);
 
-            if (match.TeamHome.PlayerTeamPositions.Any(ptp => ptp.Player.DiscordUserId == player.DiscordUserId))
+            if (match.TeamHome.PlayerTeamPositions.Any(ptp => ptp.Player.Id == player.Id))
             {
                 var removedPlayer = RemovePlayerFromTeam(match.TeamHome, player);
                 if (match.TeamHome.PlayerSubstitutes.Any())
@@ -162,7 +160,7 @@ namespace CoachBot.Domain.Services
                     return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Substituted **{player.DisplayName}** with **{substitute.DisplayName}**");
                 }
             }
-            else if (match.TeamAway?.PlayerTeamPositions.Any(ptp => ptp.Player.DiscordUserId == player.DiscordUserId) == true)
+            else if (match.TeamAway != null && match.TeamAway.PlayerTeamPositions.Any(ptp => ptp.Player.Id == player.Id))
             {
                 var removedPlayer = RemovePlayerFromTeam(match.TeamHome, player);
                 if (match.TeamAway.PlayerSubstitutes.Any())
@@ -197,9 +195,7 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
 
             CreateMatch((int)match.TeamHome.ChannelId);
-            if (match.TeamHome.ChannelId != match.TeamAway.ChannelId) {
-                CreateMatch((int)match.TeamAway.ChannelId);
-            }
+            if (match.TeamHome.ChannelId != match.TeamAway.ChannelId) CreateMatch((int)match.TeamAway.ChannelId);
 
             RemovePlayersFromOtherMatches(match);
 
@@ -249,33 +245,7 @@ namespace CoachBot.Domain.Services
 
         public Match GetMatch(int matchId)
         {
-            return _coachBotContext.Matches
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.TeamHome)
-                   .ThenInclude(th => th.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Team)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(ta => ta.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.TeamAway)
-                   .ThenInclude(th => th.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Team)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.Server)
-                .Single(m => m.Id == matchId);
+            return _coachBotContext.GetMatchById(matchId);
         }
 
         public Match GetCurrentMatchForChannel(ulong channelId)
@@ -293,26 +263,40 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.Matches
                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Player)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Position)
+                .Include(m => m.TeamHome)
                    .ThenInclude(th => th.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Player)
-               .Include(m => m.TeamHome)
+                   .ThenInclude(ptp => ptp.Team)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.PlayerSubstitutes)
+                    .ThenInclude(ps => ps.Player)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.Channel)
+                    .ThenInclude(c => c.ChannelPositions)
+                    .ThenInclude(cp => cp.Position)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Player)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Position)
+                .Include(m => m.TeamAway)
                    .ThenInclude(th => th.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Position)
-               .Include(m => m.TeamHome)
-                   .ThenInclude(ta => ta.PlayerSubstitutes)
-                   .ThenInclude(ps => ps.Player)
-               .Include(m => m.TeamAway)
-                   .ThenInclude(ta => ta.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Player)
-               .Include(m => m.TeamAway)
-                   .ThenInclude(ta => ta.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Position)
-               .Include(m => m.TeamAway)
-                   .ThenInclude(ta => ta.PlayerSubstitutes)
-                   .ThenInclude(ps => ps.Player)
+                   .ThenInclude(ptp => ptp.Team)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.PlayerSubstitutes)
+                    .ThenInclude(ps => ps.Player)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.Channel)
+                    .ThenInclude(c => c.ChannelPositions)
+                    .ThenInclude(cp => cp.Position)
+               .Where(m => m.TeamHome.Channel != null && m.TeamAway.Channel != null)
                .Where(m => m.TeamHome.Channel.DiscordChannelId == channelId || m.TeamAway.Channel.DiscordChannelId == channelId)
                .Where(m => !readiedMatchesOnly || m.ReadiedDate != null)
-               .Where(m => m.TeamAway.Channel != null)
                .OrderByDescending(m => m.CreatedDate)
                .Take(limit)
                .ToList();
@@ -320,7 +304,7 @@ namespace CoachBot.Domain.Services
 
         private PlayerTeamPosition RemovePlayerFromTeam(Team team, Player player)
         {
-            var playerTeamPosition = team?.PlayerTeamPositions.FirstOrDefault(ptp => ptp.Player.DiscordUserId == player.DiscordUserId);
+            var playerTeamPosition = team?.PlayerTeamPositions.FirstOrDefault(ptp => ptp.Player.Id == player.Id);
             if (playerTeamPosition != null)
             {
                 team.PlayerTeamPositions.Remove(playerTeamPosition);
@@ -334,7 +318,7 @@ namespace CoachBot.Domain.Services
         {
             if (team == null) return;
 
-            var playerSubstitute = team.PlayerSubstitutes.First(ps => ps.Player.DiscordUserId == player.DiscordUserId);
+            var playerSubstitute = team.PlayerSubstitutes.First(ps => ps.Player.Id == player.Id);
             if (playerSubstitute != null)
             {
                 team.PlayerSubstitutes.Remove(playerSubstitute);

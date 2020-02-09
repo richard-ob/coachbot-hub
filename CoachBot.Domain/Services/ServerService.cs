@@ -22,7 +22,10 @@ namespace CoachBot.Domain.Services
 
         public List<Server> GetServersByRegion(int regionId)
         {
-            return _coachBotContext.Servers.Where(s => s.RegionId == regionId).ToList();
+            return _coachBotContext.Servers
+                .Include(s => s.Country)
+                .Include(s => s.Region)
+                .Where(s => s.RegionId == regionId).ToList();
         }
 
         public Server GetServer(int id)

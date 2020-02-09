@@ -13,6 +13,8 @@ namespace CoachBot.Domain.Model
 
         public string Name { get; set; }
 
+        public string DiscordFlagEmote => $":flag_{Code.ToLower()}:";
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
     }

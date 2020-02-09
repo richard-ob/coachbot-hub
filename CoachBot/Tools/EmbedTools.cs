@@ -7,6 +7,8 @@ namespace CoachBot.Tools
 {
     public static class EmbedTools
     {
+        private const uint DEFAULT_EMBED_COLOUR = 1131364;
+
         public static Embed GenerateSimpleEmbed(string content)
         {
             return GenerateSimpleEmbed(content, null);
@@ -14,7 +16,11 @@ namespace CoachBot.Tools
 
         public static Embed GenerateSimpleEmbed(string content, string title = null)
         {
-            var embedBuilder = new EmbedBuilder().WithCurrentTimestamp().WithDescription(content).WithRequestedBy();
+            var embedBuilder = new EmbedBuilder()
+                .WithCurrentTimestamp()
+                .WithDescription(content)
+                .WithRequestedBy()
+                .WithDefaultColour();
 
             if (!string.IsNullOrEmpty(title))
             {
@@ -32,6 +38,7 @@ namespace CoachBot.Tools
         public static Embed GenerateEmbedFromServiceResponse(ServiceResponse serviceResponse)
         {
             var message = new StringBuilder();
+            var embedBuilder = new EmbedBuilder();
 
             if (!serviceResponse.Message.StartsWith(':'))
             {
@@ -39,22 +46,36 @@ namespace CoachBot.Tools
                 {
                     case ServiceResponseStatus.Success:
                         message.Append(":white_check_mark: ");
+                        embedBuilder.WithColor(new Color(119, 178, 85));
                         break;
                     case ServiceResponseStatus.Failure:
                         message.Append(":no_entry: ");
+                        embedBuilder.WithColor(new Color(190, 25, 49));
                         break;
                     case ServiceResponseStatus.NegativeSuccess:
                         message.Append(":negative_squared_cross_mark: ");
+                        embedBuilder.WithColor(new Color(119, 178, 85));
                         break;
                     case ServiceResponseStatus.Info:
                         message.Append(":information_source: ");
+                        embedBuilder.WithColor(new Color(87, 164, 175));
+                        break;
+                    default:
+                        embedBuilder.WithDefaultColour();
                         break;
                 }
+            }
+            else
+            {
+                embedBuilder.WithDefaultColour();
             }
 
             message.Append(serviceResponse.Message);
 
-            var embedBuilder =  new EmbedBuilder().WithCurrentTimestamp().WithDescription(message.ToString()).WithRequestedBy();
+            embedBuilder
+                .WithCurrentTimestamp()
+                .WithDescription(message.ToString())
+                .WithRequestedBy();
 
             return embedBuilder.Build();
         }
@@ -67,6 +88,11 @@ namespace CoachBot.Tools
             }
 
             return embedBuilder;
+        }
+
+        public static EmbedBuilder WithDefaultColour(this EmbedBuilder embedBuilder)
+        {
+            return embedBuilder.WithColor(new Color(DEFAULT_EMBED_COLOUR));
         }
     }
 }

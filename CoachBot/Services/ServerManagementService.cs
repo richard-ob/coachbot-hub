@@ -53,12 +53,7 @@ namespace CoachBot.Services
 
                 if (gameServer.Name != null)
                 {
-                    sb.Append($"{gameServer.Name} ");
-                    if (gameServer.CountryCode != null)
-                    {
-                        sb.Append($":flag_{gameServer.CountryCode}: ".ToLower());
-                    }
-                    sb.Append($"`[{gameServer.Players}/{gameServer.MaxPlayers}]`");
+                    sb.Append($"{gameServer.Name}  `[{gameServer.Players}/{gameServer.MaxPlayers}]`  {server.Country.DiscordFlagEmote}");
                 }
                 else
                 {
@@ -74,7 +69,7 @@ namespace CoachBot.Services
                 serverId++;
             }
 
-            return embedBuilder.WithRequestedBy().Build();
+            return embedBuilder.WithRequestedBy().WithDefaultColour().Build();
         }
 
         public async Task ToggleSingleKeeper(int serverId, bool enable)
@@ -113,11 +108,11 @@ namespace CoachBot.Services
                 embedBuilder.AddField("VAC", gameServer.VAC);
                 embedBuilder.AddField("Game", gameServer.Game);
 
-                return embedBuilder.Build();
+                return embedBuilder.WithRequestedBy().WithDefaultColour().Build();
             }
             else
             {
-                return EmbedTools.GenerateSimpleEmbed("");
+                return EmbedTools.GenerateEmbed("Server information could not be retrieved. This server may be offline.", ServiceResponseStatus.Failure);
             }
         }
 
@@ -131,7 +126,7 @@ namespace CoachBot.Services
                 var embedBuilder = new EmbedBuilder();
                 embedBuilder.AddField("Maps", maps);
 
-                return embedBuilder.Build();
+                return embedBuilder.WithRequestedBy().WithDefaultColour().Build();
             }
             else
             {

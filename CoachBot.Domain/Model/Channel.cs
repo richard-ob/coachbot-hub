@@ -1,4 +1,7 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Domain.Extensions;
+using CoachBot.Model;
+
+using Discord;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,7 +28,22 @@ namespace CoachBot.Domain.Model
 
         public string BadgeEmote { get; set; }
 
-        public string Color { get; set; }
+        public string Color { get; set; } // Rename to ColorHex
+
+        public Color SystemColor
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Color) && Color[0] == '#')
+                {
+                    return new Color(ColorExtensions.FromHex(Color).R, ColorExtensions.FromHex(Color).G, ColorExtensions.FromHex(Color).B);
+                }
+                else
+                {
+                    return new Color(0x2463b0);
+                }
+            }
+        }
 
         public bool UseClassicLineup { get; set; }
 

@@ -5,7 +5,6 @@ namespace CoachBot.Extensions
 {
     public static class ColorExtensions
     {
-
             public static Color FromHex(string hexColor)
             {
                 Color c = Color.Empty;

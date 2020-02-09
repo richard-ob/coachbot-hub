@@ -57,18 +57,19 @@ namespace CoachBot.Services
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
-        public Embed AddPlayer(ulong channelId, IUser user, string positionName = null, TeamType teamType = TeamType.Home)
+        public Embed AddPlayer(ulong channelId, IUser user, string positionName = null, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)
         {
             var player = _playerService.GetPlayer(user);
+            var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
             var response = _matchService.AddPlayerToTeam(channelId, player, positionName, teamType);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
-        public Embed AddPlayer(ulong channelId, string userName, string positionName = null, TeamType teamType = TeamType.Home)
+        public Embed AddPlayer(ulong channelId, string userName, string positionName = null, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)
         {
             var player = _playerService.GetPlayer(userName);
-
+            var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
             var response = _matchService.AddPlayerToTeam(channelId, player, positionName, teamType);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
@@ -77,7 +78,6 @@ namespace CoachBot.Services
         public Embed RemovePlayer(ulong channelId, IUser user)
         {
             var player = _playerService.GetPlayer(user);
-
             var response = _matchService.RemovePlayerFromMatch(channelId, player);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
@@ -86,38 +86,15 @@ namespace CoachBot.Services
         public Embed RemovePlayer(ulong channelId, string userName)
         {
             var player = _playerService.GetPlayer(userName);
-
             var response = _matchService.RemovePlayerFromMatch(channelId, player);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
-        public Embed ClearPosition(ulong channelId, string position, TeamType teamType = TeamType.Home)
+        public Embed ClearPosition(ulong channelId, string position, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)
         {
+            var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
             var response = _matchService.ClearPosition(channelId, position, teamType);
-
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
-        }
-
-        public Embed RemoveOpposition(ulong channelId)
-        {
-            var response = _matchService.RemoveTeamFromMatch(channelId);
-
-            ResetLastMentionTime(channelId);
-
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
-        }
-
-        public Embed AddOpposition(ulong channelId, string oppositionName)
-        {
-            var channel = _channelService.GetChannelByDiscordId(channelId);
-            var team = new Team()
-            {
-                TeamType = TeamType.Away
-            };
-            var response = _matchService.AddTeamToMatch(channelId, team);
-
-            ResetLastMentionTime(channelId);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
@@ -155,8 +132,9 @@ namespace CoachBot.Services
 
             if (!channel.UseClassicLineup) return GenerateTeamSheet(channelId);
 
+            var teamType = _channelService.GetTeamTypeForChannelTeamType(ChannelTeamType.TeamOne, channelId);
             var teamLists = new List<Embed>() {
-                TeamListEmbedFactory.GenerateEmbed(channel, match, TeamType.Home)
+                TeamListEmbedFactory.GenerateEmbed(channel, match, teamType)
             };
 
             if (match.IsMixMatch)
@@ -175,8 +153,9 @@ namespace CoachBot.Services
 
             if (channel.UseClassicLineup) return GenerateTeamList(channelId);
 
+            var teamType = _channelService.GetTeamTypeForChannelTeamType(ChannelTeamType.TeamOne, channelId);
             var teamSheets = new List<Embed>() {
-                TeamSheetEmbedFactory.GenerateEmbed(channel, match, TeamType.Home)
+                TeamSheetEmbedFactory.GenerateEmbed(channel, match, teamType)
             };
 
             if (match.IsMixMatch)
@@ -288,7 +267,18 @@ namespace CoachBot.Services
 
         public Embed Unchallenge(ulong challengerChannelId, string challengerMention)
         {
+            var match = _matchService.GetCurrentMatchForChannel(challengerChannelId);
+
             var response = _matchService.Unchallenge(challengerChannelId);
+
+            if (response.Status == ServiceResponseStatus.NegativeSuccess)
+            {
+                var unchallengeMessage = $"The game between **{match.TeamHome.Channel.Name}** & **{match.TeamAway.Channel.Name}** has been called off by **{challengerMention}**";
+                var embed = EmbedTools.GenerateSimpleEmbed(unchallengeMessage, ":thunder_cloud_rain: Match Abandoned!");
+
+                _discordNotificationService.SendChannelMessage(match.TeamHome.Channel.DiscordChannelId, embed: embed);
+                _discordNotificationService.SendChannelMessage(match.TeamAway.Channel.DiscordChannelId, embed: embed);
+            }
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
@@ -296,8 +286,9 @@ namespace CoachBot.Services
         public Embed AddSub(ulong channelId, IUser user)
         {
             var player = _playerService.GetPlayer(user);
+            var teamType = _channelService.GetTeamTypeForChannelTeamType(ChannelTeamType.TeamOne, channelId);
 
-            var response = _matchService.AddSubsitutePlayerToTeam(channelId, player);
+            var response = _matchService.AddSubsitutePlayerToTeam(channelId, player, teamType);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }

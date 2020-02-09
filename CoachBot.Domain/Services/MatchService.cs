@@ -1,4 +1,5 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
@@ -28,15 +29,14 @@ namespace CoachBot.Domain.Services
         public ServiceResponse CreateMatch(int channelId, Team existingTeam = null)
         {
             var channel = _coachBotContext.Channels.First(c => c.Id == channelId);
-            var match = new Match()
-            {
-                TeamHome = existingTeam ?? new Team()
-                {
-                    ChannelId = channelId
-                },
-                CreatedDate = DateTime.UtcNow
-            };
+            var existingMatch = _coachBotContext.Matches.FirstOrDefault(m => m.TeamHome.ChannelId == channelId && (m.TeamAway == null || m.TeamAway.Channel.Id == channelId) && m.ReadiedDate == null);
+            var match = existingMatch ?? new Match();
 
+            match.TeamHome = existingTeam ?? new Team()
+            {
+                ChannelId = channelId
+            };
+            match.CreatedDate = DateTime.UtcNow;
             match.TeamHome.TeamType = TeamType.Home; // This is necessary to ensure that if a team is unchallenged that they become the Home team after
 
             if (channel.IsMixChannel)
@@ -47,8 +47,16 @@ namespace CoachBot.Domain.Services
                     ChannelId = channelId
                 };
             }
+            else
+            {
+                match.TeamAway = null;
+            }
 
-            _coachBotContext.Matches.Add(match);
+            if (existingMatch == null)
+            {
+                _coachBotContext.Matches.Add(match);
+            }
+
             _coachBotContext.SaveChanges();
 
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Reset teamsheet");
@@ -138,40 +146,7 @@ namespace CoachBot.Domain.Services
             }
             _coachBotContext.SaveChanges();
 
-            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Cleared **{position}**");
-        }
-
-        public ServiceResponse RemoveTeamFromMatch(ulong channelId)
-        {
-            var match = GetCurrentMatchForChannel(channelId);
-            var channel = _channelService.GetChannelByDiscordId(channelId);
-
-            match.TeamAwayId = null;
-            if (channel.IsMixChannel)
-            {
-                if (channel.IsMixChannel)
-                {
-                    match.TeamAway = new Team()
-                    {
-                        TeamType = TeamType.Away,
-                        ChannelId = channel.Id
-                    };
-                }
-            }
-            _coachBotContext.SaveChanges();
-
-            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed opposition");
-        }
-
-        public ServiceResponse AddTeamToMatch(ulong channelId, Team team, TeamType teamType = TeamType.Home)
-        {
-            var match = _coachBotContext.Matches
-                .OrderByDescending(m => m.CreatedDate)
-                .First(m => m.TeamHome.Channel.DiscordChannelId == channelId);
-            match.TeamAway = team;
-            _coachBotContext.SaveChanges();
-
-            return new ServiceResponse(ServiceResponseStatus.Success, $"Added opposition");
+            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Cleared position **{position.ToUpper()}**");
         }
 
         public ServiceResponse RemovePlayerFromMatch(ulong channelId, Player player)
@@ -215,6 +190,7 @@ namespace CoachBot.Domain.Services
             if (match.SignedPlayersAndSubs.Count < channel.ChannelPositions.Count) return new ServiceResponse(ServiceResponseStatus.Failure, $"All positions must be filled"); ;
             if (server == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"A valid server must be provided");
             if (server.RegionId != channel.RegionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server is not in this channels region");
+            if (match.SignedPlayers.GroupBy(p => p.Id).Where(p => p.Count() > 1).Any()) return new ServiceResponse(ServiceResponseStatus.Failure, $"One or more players is signed for both teams");
 
             match.ServerId = server.Id;
             match.ReadiedDate = DateTime.UtcNow;
@@ -238,6 +214,7 @@ namespace CoachBot.Domain.Services
             var challengerMatch = GetCurrentMatchForChannel(challengerChannelId);
 
             if (challenger.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"Mix channels cannot challenge teams");
+            if (!challenger.IsMixChannel && challengerMatch.TeamAway != null && challengerMatch.TeamAway.ChannelId != challengerMatch.TeamHome.ChannelId) return new ServiceResponse(ServiceResponseStatus.Failure, $"You are already challenging **{challengerMatch.TeamAway.Channel.Name}**");
             if (opposition.IsMixChannel && !oppositionMatch.IsMixMatch) return new ServiceResponse(ServiceResponseStatus.Failure, $"{opposition.Name} already has opposition challenging");
             if (!_searchService.GetSearches().Any(s => s.ChannelId == opposition.Id) && !opposition.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{opposition.Name}** are no longer searching for a team to face");
             if (challengerChannelId == oppositionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"You can't face yourself. Don't waste my time.");
@@ -303,43 +280,13 @@ namespace CoachBot.Domain.Services
 
         public Match GetCurrentMatchForChannel(ulong channelId)
         {
-            if (!_coachBotContext.Matches.Any(m => m.TeamHome.Channel.DiscordChannelId == channelId || (m.TeamAway != null && m.TeamAway.Channel.DiscordChannelId == channelId)))
+            if (!_coachBotContext.Matches.Any(m => (m.TeamHome.Channel.DiscordChannelId == channelId || (m.TeamAway != null && m.TeamAway.Channel.DiscordChannelId == channelId)) && m.ReadiedDate == null))
             {
                 var channel = _coachBotContext.Channels.First(c => c.DiscordChannelId == channelId);
                 CreateMatch(channel.Id);
             }
 
-            return _coachBotContext.Matches
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.TeamHome)
-                   .ThenInclude(th => th.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Team)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.Channel)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.TeamAway)
-                   .ThenInclude(th => th.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Team)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.Channel)
-                .OrderByDescending(m => m.CreatedDate)
-                .First(m => m.TeamHome.Channel.DiscordChannelId == channelId || (m.TeamAway != null && m.TeamAway.Channel.DiscordChannelId == channelId));
+            return _coachBotContext.GetCurrentMatchForChannel(channelId);
         }
 
         public List<Match> GetMatchesForChannel(ulong channelId, bool readiedMatchesOnly = false, int limit = 10)

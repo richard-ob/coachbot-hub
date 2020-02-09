@@ -16,7 +16,15 @@ namespace CoachBot.Model
 
         public ulong? DiscordUserId { get; set; }
 
-        public string DiscordUserMention { get; set; }
+        public string DiscordUserMention
+        {
+            get
+            {
+                if (DiscordUserId == null) return null;
+
+                return $"<@!{DiscordUserId}>";
+            }
+        }
 
         public string SteamID { get; set; }
 

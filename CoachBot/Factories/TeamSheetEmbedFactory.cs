@@ -9,38 +9,37 @@ namespace CoachBot.Factories
 {
     public static class TeamSheetEmbedFactory
     {
-        private const uint DEFAULT_EMBED_TEAM_COLOUR = 0x2463b0;
+        private const uint DEFAULT_EMBED_HOME_TEAM_COLOUR = 0x2463b0;
+        private const uint DEFAULT_EMBED_AWAY_TEAM_COLOUR = 0xd60e0e;
+        private const string DEFAULT_KIT_EMOTE = "<:redshirt:318114878063902720>";
+        private const string UNICODE_SPACE = "\u200B";
 
         public static Embed GenerateEmbed(Channel channel, Match match, TeamType teamType = TeamType.Home)
         {
-            var teamColor = new Color(DEFAULT_EMBED_TEAM_COLOUR);
             var teamList = new StringBuilder();
+            var teamColor = new Color(DEFAULT_EMBED_HOME_TEAM_COLOUR);
             var embedFooterBuilder = new EmbedFooterBuilder();
-            var availablePlaceholderText = !string.IsNullOrEmpty(channel.KitEmote) && teamType == TeamType.Home ? channel.KitEmote : "<:redshirt:318114878063902720>";
+            var availablePlaceholderText = !string.IsNullOrEmpty(channel.KitEmote) && teamType == TeamType.Home ? channel.KitEmote : DEFAULT_KIT_EMOTE;
+
             Team team;
             Channel oppositionChannel = null;
-
-            if (match.IsMixMatch && teamType == TeamType.Home)
-            {
-                team = match.TeamHome;
-            }
-            else if (teamType == TeamType.Away)
-            {
-                team = match.TeamAway;
-                teamColor = new Color(0xd60e0e);
-            }
-            else if (match.TeamAway?.ChannelId == channel.Id)
-            {
-                team = match.TeamAway;
-                oppositionChannel = match.TeamHome?.Channel;
-            }
-            else
+            if (teamType == TeamType.Home)
             {
                 team = match.TeamHome;
                 oppositionChannel = match.TeamAway?.Channel;
+                teamColor = channel.SystemColor;
+            }
+            else
+            {
+                team = match.TeamAway;
+                oppositionChannel = match.TeamHome?.Channel;
+                if (match.IsMixMatch)
+                {
+                    teamColor = new Color(DEFAULT_EMBED_AWAY_TEAM_COLOUR);
+                }
             }
 
-           
+
             if (teamType == TeamType.Home && channel.Color != null && channel.Color[0] == '#')
             {
                 teamColor = new Color(ColorExtensions.FromHex(channel.Color).R, ColorExtensions.FromHex(channel.Color).G, ColorExtensions.FromHex(channel.Color).B);
@@ -58,10 +57,10 @@ namespace CoachBot.Factories
 
             if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeThreeOne)
             {
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player8 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[7].Position.Name);
                 builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[7].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player7 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[6].Position.Name);
                 builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[6].Position.Name));
                 var player6 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[5].Position.Name);
@@ -74,21 +73,21 @@ namespace CoachBot.Factories
                 builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
                 var player2 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
                 builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player1 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
                 builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeTwoTwo)
             {
                 var player8 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[7].Position.Name);
                 builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[7].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player7 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[6].Position.Name);
                 builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[6].Position.Name));
                 var player6 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[5].Position.Name);
                 builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[5].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player5 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[4].Position.Name);
                 builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[4].Position.Name));
                 var player4 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[3].Position.Name);
@@ -97,36 +96,36 @@ namespace CoachBot.Factories
                 builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
                 var player2 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
                 builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player1 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
                 builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeOneTwoOne)
             {
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player8 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[7].Position.Name);
                 builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[7].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player7 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[6].Position.Name);
                 builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[6].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player6 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[5].Position.Name);
                 builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[5].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player5 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[4].Position.Name);
                 builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[4].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player4 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[3].Position.Name);
                 builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[3].Position.Name));
                 var player3 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[2].Position.Name);
                 builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
                 var player2 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
                 builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player1 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
                 builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeOneThree)
             {
@@ -136,36 +135,36 @@ namespace CoachBot.Factories
                 builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[6].Position.Name));
                 var player6 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[5].Position.Name);
                 builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[5].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player5 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[4].Position.Name);
                 builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[4].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player4 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[3].Position.Name);
                 builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[3].Position.Name));
                 var player3 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[2].Position.Name);
                 builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
                 var player2 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
                 builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player1 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
                 builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else if (channel.ChannelPositions.Count() == 4 && channel.Formation == Formation.TwoOne)
             {
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player4 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[3].Position.Name);
                 builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[3].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player3 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[2].Position.Name);
                 builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player2 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
                 builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 var player1 = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
                 builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
-                builder.AddInlineField("\u200B", "\u200B");
+                builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else
             {
@@ -176,7 +175,7 @@ namespace CoachBot.Factories
                 }
                 if (channel.ChannelPositions.Count() % 3 == 2) // Ensure that two-column fields are three-columns to ugly alignment
                 {
-                    builder.AddInlineField("\u200B", "\u200B");
+                    builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
                 }
             }
 

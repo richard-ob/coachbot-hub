@@ -1,4 +1,5 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
 using Discord.WebSocket;
@@ -100,6 +101,28 @@ namespace CoachBot.Domain.Services
             }
             channels.Reverse();
             return channels;
+        }
+
+        public TeamType GetTeamTypeForChannelTeamType(ChannelTeamType channelTeamType, ulong channelId)
+        {
+            var match = _dbContext.GetCurrentMatchForChannel(channelId);
+
+            if (match.IsMixMatch && channelTeamType == ChannelTeamType.TeamOne)
+            {
+                return TeamType.Home;
+            }
+            else if (match.IsMixMatch && channelTeamType == ChannelTeamType.TeamTwo)
+            {
+                return TeamType.Away;
+            }
+            else if (match.TeamHome.Channel.DiscordChannelId == channelId)
+            {
+                return TeamType.Home;
+            }
+            else
+            {
+                return TeamType.Away;
+            }
         }
 
         public bool UserIsOwningGuildAdmin(ulong userId)

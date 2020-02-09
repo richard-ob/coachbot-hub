@@ -1,5 +1,4 @@
 ﻿using CoachBot.Domain.Model;
-using CoachBot.Extensions;
 using CoachBot.Model;
 using CoachBot.Tools;
 using Discord;
@@ -10,40 +9,32 @@ namespace CoachBot.Factories
 {
     public static class TeamListEmbedFactory
     {
-        private const uint DEFAULT_EMBED_TEAM_COLOUR = 0x2463b0;
+        private const uint DEFAULT_EMBED_HOME_TEAM_COLOUR = 0x2463b0;
+        private const uint DEFAULT_EMBED_AWAY_TEAM_COLOUR = 0xd60e0e;
 
         public static Embed GenerateEmbed(Channel channel, Match match, TeamType teamType = TeamType.Home)
         {
             var sb = new StringBuilder();
-            var teamColor = new Color(DEFAULT_EMBED_TEAM_COLOUR);
+            var teamColor = new Color(DEFAULT_EMBED_HOME_TEAM_COLOUR);
             var emptyPos = ":grey_question:";
 
             Team team;
             Channel oppositionChannel = null;
-            if (match.IsMixMatch && teamType == TeamType.Home)
-            {
-                team = match.TeamHome;
-            }
-            else if (teamType == TeamType.Away)
-            {
-                team = match.TeamAway;
-                teamColor = new Color(0xd60e0e);
-            }
-            else if (match.TeamAway?.ChannelId == channel.Id)
-            {
-                team = match.TeamAway;
-                oppositionChannel = match.TeamHome?.Channel;
-            }
-            else
+            if (teamType == TeamType.Home)
             {
                 team = match.TeamHome;
                 oppositionChannel = match.TeamAway?.Channel;
+                teamColor = channel.SystemColor;
             }
-
-            if (teamType == TeamType.Home && channel.Color != null && channel.Color[0] == '#')
+            else
             {
-                teamColor = new Color(ColorExtensions.FromHex(channel.Color).R, ColorExtensions.FromHex(channel.Color).G, ColorExtensions.FromHex(channel.Color).B);
-            }            
+                team = match.TeamAway;
+                oppositionChannel = match.TeamHome?.Channel;
+                if (match.IsMixMatch)
+                {
+                    teamColor = new Color(DEFAULT_EMBED_AWAY_TEAM_COLOUR);
+                }
+            }        
 
             var embedBuilder = new EmbedBuilder().WithTitle($"{channel.BadgeEmote ?? channel.Name}{(match.IsMixMatch && teamType == TeamType.Away ? " #2" : "")} Team List");
             foreach (var channelPosition in channel.ChannelPositions)

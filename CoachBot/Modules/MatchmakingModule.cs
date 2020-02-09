@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using CoachBot.Preconditions;
 using CoachBot.Services;
-using CoachBot.Model;
 using Discord;
 using System;
 using CoachBot.Tools;
 using CoachBot.Extensions;
 using CoachBot.Domain.Model;
+using System.Linq;
 
 namespace CoachBot.Modules.Matchmaker
 {
@@ -16,7 +16,6 @@ namespace CoachBot.Modules.Matchmaker
         private readonly MatchmakingService _channelMatchService;
         private readonly ServerManagementService _channelServerService;
         private readonly CacheService _cacheService;
-        private bool sendUpdatedTeams = true;
 
         public MatchmakingModule(MatchmakingService channelMatchService, ServerManagementService channelServerService, CacheService cacheService)
         {
@@ -35,13 +34,22 @@ namespace CoachBot.Modules.Matchmaker
         protected override void AfterExecute(CommandInfo command)
         {
             base.AfterExecute(command);
-            Context.Message.DeleteAsync();
+
+            try
+            {
+                Context.Message.DeleteAsync();
+            }
+            catch
+            {
+                // TODO: Implement logger here
+            }
+
             var coachEmote = "<:coach:481112227902914561>";
             if (Emote.TryParse(coachEmote, out var emote))
             {
                 Context.Message.AddReactionAsync(emote);
             }
-            if (this.sendUpdatedTeams)
+            if (command.Attributes.Any(a => a.GetType() == typeof(SendLineupMessage)))
             {
                 foreach(var teamEmbed in _channelMatchService.GenerateTeamList(Context.Channel.Id))
                 {
@@ -53,6 +61,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!sign")]
         [Alias("!s")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task SignAsync(string positionName)
         {
             var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, Context.Message.Author, positionName);
@@ -62,6 +71,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!sign")]
         [Alias("!s")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task SignAsync()
         {
             var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, Context.Message.Author);
@@ -71,6 +81,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!sign")]
         [Alias("!s")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task CounterSignAsync(string positionName, [Remainder]string name)
         {
             if (DiscordTools.IsMention(name))
@@ -89,35 +100,38 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!sign2")]
         [Alias("!s2")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task SignTeam2Async()
         {
-            var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, Context.Message.Author, null, TeamType.Away);
+            var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, Context.Message.Author, null, ChannelTeamType.TeamTwo);
             await ReplyAsync("", embed: response);
         }
 
         [Command("!sign2")]
         [Alias("!s2")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task SignTeam2Async(string positionName)
         {
-            var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, Context.Message.Author, positionName, TeamType.Away);
+            var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, Context.Message.Author, positionName, ChannelTeamType.TeamTwo);
             await ReplyAsync("", embed: response);
         }
 
         [Command("!sign2")]
         [Alias("!s2")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task CounterSignTeam2Async(string position, [Remainder]string name)
         {
             if (DiscordTools.IsMention(name))
             {
                 var user = await Context.Guild.GetUserAsync(DiscordTools.ConvertMentionToUserID(name));
-                var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, null, TeamType.Away);
+                var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, null, ChannelTeamType.TeamTwo);
                 await ReplyAsync("", embed: response);
             }
             else
             {
-                var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, name, null, TeamType.Away);
+                var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, name, null, ChannelTeamType.TeamTwo);
                 await ReplyAsync("", embed: response);
             }
         }
@@ -125,6 +139,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!unsign")]
         [Alias("!us", "!u", "!r", "!remove")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task UnsignAsync()
         {
             var response = _channelMatchService.RemovePlayer(Context.Message.Channel.Id, Context.Message.Author);
@@ -134,6 +149,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!unsign")]
         [Alias("!us", "!u", "!r", "!remove")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task UnsignAsync([Remainder]string name)
         {
             if (DiscordTools.IsMention(name))
@@ -152,23 +168,26 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!unsignpos")]
         [Alias("!up", "!clearpos")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task UnsignPositionHomeTeamAsync(string position)
         {
-            var response = _channelMatchService.ClearPosition(Context.Message.Channel.Id, position);
+            var response = _channelMatchService.ClearPosition(Context.Message.Channel.Id, position, ChannelTeamType.TeamOne);
             await ReplyAsync("", embed: response);
         }
 
         [Command("!unsignpos2")]
         [Alias("!up2", "!clearpos2")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task UnsignPositionAwayTeamAsync(string position)
         {
-            var response = _channelMatchService.ClearPosition(Context.Message.Channel.Id, position, TeamType.Away);
+            var response = _channelMatchService.ClearPosition(Context.Message.Channel.Id, position, ChannelTeamType.TeamTwo);
             await ReplyAsync("", embed: response);
         }
 
         [Command("!reset")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task ResetChannelAsync(params string[] positions)
         {
             var response = _channelMatchService.Reset(Context.Message.Channel.Id);
@@ -195,13 +214,12 @@ namespace CoachBot.Modules.Matchmaker
             {
                 await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server ID provided", ServiceResponseStatus.Failure));
             }
-
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!list")]
         [Alias("!lineup")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task ListAsync()
         {
         }
@@ -237,7 +255,6 @@ namespace CoachBot.Modules.Matchmaker
         public async Task SearchOppositionAsync()
         {
             await ReplyAsync("", embed: _channelMatchService.Search(Context.Channel.Id, Context.User.Mention));
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!stopsearch")]
@@ -245,7 +262,6 @@ namespace CoachBot.Modules.Matchmaker
         public async Task StopSearchOppositionAsync()
         {
             await ReplyAsync("", embed: _channelMatchService.StopSearch(Context.Message.Channel.Id));
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!challenge")]
@@ -254,7 +270,6 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ChallengeAsync()
         {
             await ReplyAsync("You must provide a valid team code, or type !challenges to see the currently available challenges");
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!challenge")]
@@ -263,7 +278,6 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ChallengeAsync(string teamCode)
         {
             await ReplyAsync("", embed: _channelMatchService.Challenge(Context.Channel.Id, teamCode, Context.User.Mention));
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!challenges")]
@@ -272,29 +286,32 @@ namespace CoachBot.Modules.Matchmaker
         public async Task ListChallengesAsync()
         {
             await ReplyAsync("", embed: _channelMatchService.ListChallenges(Context.Channel.Id));
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!unchallenge")]
         [RequireChannelConfigured]
+        [SendLineupMessage]
         public async Task UnchallengeAsync()
         {
             await ReplyAsync("", embed: _channelMatchService.Unchallenge(Context.Channel.Id, Context.User.Mention));
         }
 
         [Command("!sub")]
+        [SendLineupMessage]
         public async Task SubAsync()
         {
             await ReplyAsync("", embed: _channelMatchService.AddSub(Context.Channel.Id, Context.User));
         }
 
         [Command("!unsub")]
+        [SendLineupMessage]
         public async Task UnsubAsync()
         {
             await ReplyAsync("", embed: _channelMatchService.RemoveSub(Context.Channel.Id, Context.User));
         }
 
         [Command("!unsub")]
+        [SendLineupMessage]
         public async Task UnsubAsync([Remainder]string playerName)
         {
             await ReplyAsync("", embed: _channelMatchService.RemoveSub(Context.Channel.Id, playerName));
@@ -305,7 +322,6 @@ namespace CoachBot.Modules.Matchmaker
         public async Task RequestSubAsync()
         {
             await ReplyAsync("", embed: new EmbedBuilder().WithDescription($":no_entry: Please provide a server id & required position, e.g. **!requestsub 3 LW**").WithCurrentTimestamp().Build());
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!requestsub")]
@@ -320,8 +336,6 @@ namespace CoachBot.Modules.Matchmaker
             {
                 await ReplyAsync($":no_entry: Please provide a valid server, {Context.Message.Author.Mention}");
             }
-            
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!acceptsub")]
@@ -336,8 +350,6 @@ namespace CoachBot.Modules.Matchmaker
             {
                 await ReplyAsync("", embed: _channelMatchService.AcceptSubRequest(subToken, Context.Message.Author));
             }
-
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!cancelsub")]
@@ -353,16 +365,12 @@ namespace CoachBot.Modules.Matchmaker
             {
                 await ReplyAsync("", embed: _channelMatchService.CancelSubRequest(subToken, Context.Message.Author));
             }
-
-            this.sendUpdatedTeams = false;
         }
 
         [Command("!recentmatches")]
         public async Task RecentMatchesAsync()
         {
             await ReplyAsync("", embed: _channelMatchService.GenerateRecentMatchList(Context.Channel.Id));
-
-            this.sendUpdatedTeams = false;
         }
     }
 }

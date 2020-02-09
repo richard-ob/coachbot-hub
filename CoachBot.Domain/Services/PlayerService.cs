@@ -43,8 +43,7 @@ namespace CoachBot.Domain.Services
             var player = new Player()
             {
                 Name = playerName,
-                DiscordUserId = discordUserId,
-                DiscordUserMention = discordUserMention
+                DiscordUserId = discordUserId
             };
 
             _coachBotContext.Players.Add(player);

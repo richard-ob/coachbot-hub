@@ -33,20 +33,23 @@ namespace CoachBot.Tools
         {
             var message = new StringBuilder();
 
-            switch(serviceResponse.Status)
+            if (!serviceResponse.Message.StartsWith(':'))
             {
-                case ServiceResponseStatus.Success:
-                    message.Append(":white_check_mark: ");
-                    break;
-                case ServiceResponseStatus.Failure:
-                    message.Append(":no_entry: ");
-                    break;
-                case ServiceResponseStatus.NegativeSuccess:
-                    message.Append(":negative_squared_cross_mark: ");
-                    break;
-                case ServiceResponseStatus.Info:
-                    message.Append(":information_source: ");
-                    break;
+                switch (serviceResponse.Status)
+                {
+                    case ServiceResponseStatus.Success:
+                        message.Append(":white_check_mark: ");
+                        break;
+                    case ServiceResponseStatus.Failure:
+                        message.Append(":no_entry: ");
+                        break;
+                    case ServiceResponseStatus.NegativeSuccess:
+                        message.Append(":negative_squared_cross_mark: ");
+                        break;
+                    case ServiceResponseStatus.Info:
+                        message.Append(":information_source: ");
+                        break;
+                }
             }
 
             message.Append(serviceResponse.Message);

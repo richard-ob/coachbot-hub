@@ -131,11 +131,15 @@ namespace CoachBot.Domain.Services
             return owningGuild.Users.FirstOrDefault(u => u.Id == userId).GuildPermissions.Administrator;
         }
 
-        public bool ChannelHasPosition(ulong channelId, string position)
+        public bool ChannelHasPosition(ulong channelId, string position, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)
         {
             var channel = GetChannelByDiscordId(channelId);
 
-            return channel != null && channel.ChannelPositions.Any(cp => position.ToUpper().Equals(cp.Position.Name.ToUpper()));
+            if (channel == null) return false;
+
+            if (channelTeamType == ChannelTeamType.TeamTwo) return channel.ChannelPositions.Any(cp => position.ToUpper().Equals($"{cp.Position.Name.ToUpper()}2"));
+
+            return channel.ChannelPositions.Any(cp => position.ToUpper().Equals(cp.Position.Name.ToUpper()));
         }
 
         public Channel GetChannelByDiscordId(ulong id, bool withForeignKeys = true)

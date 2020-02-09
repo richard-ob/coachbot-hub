@@ -81,6 +81,15 @@ namespace CoachBot
                         await context.Channel.SendMessageAsync("", embed: teamEmbed);
                     }
                 }
+                else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand && channelService.ChannelHasPosition(context.Channel.Id, context.Message.Content.Substring(1), ChannelTeamType.TeamTwo))
+                {
+                    var positionName = context.Message.Content.Substring(1, context.Message.Content.Length - 2).ToUpper();
+                    await context.Channel.SendMessageAsync("", embed: matchmakingService.AddPlayer(context.Message.Channel.Id, context.Message.Author, positionName, ChannelTeamType.TeamTwo));
+                    foreach (var teamEmbed in matchmakingService.GenerateTeamList(context.Channel.Id))
+                    {
+                        await context.Channel.SendMessageAsync("", embed: teamEmbed);
+                    }
+                }
                 else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
                 {
                     await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"Unknown command, {context.Message.Author.Mention}", ServiceResponseStatus.Failure));

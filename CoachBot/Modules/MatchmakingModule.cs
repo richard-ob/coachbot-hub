@@ -114,12 +114,12 @@ namespace CoachBot.Modules.Matchmaker
             if (DiscordTools.IsMention(name))
             {
                 var user = await Context.Guild.GetUserAsync(DiscordTools.ConvertMentionToUserID(name));
-                var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, null, ChannelTeamType.TeamTwo);
+                var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, position, ChannelTeamType.TeamTwo);
                 await ReplyAsync("", embed: response);
             }
             else
             {
-                var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, name, null, ChannelTeamType.TeamTwo);
+                var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, name, position, ChannelTeamType.TeamTwo);
                 await ReplyAsync("", embed: response);
             }
         }

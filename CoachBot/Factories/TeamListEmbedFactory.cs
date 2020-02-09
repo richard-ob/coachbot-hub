@@ -34,6 +34,10 @@ namespace CoachBot.Factories
                 {
                     teamColor = new Color(DEFAULT_EMBED_AWAY_TEAM_COLOUR);
                 }
+                else
+                {
+                    teamColor = channel.SystemColor;
+                }
             }        
 
             var embedBuilder = new EmbedBuilder().WithTitle($"{channel.BadgeEmote ?? channel.Name}{(match.IsMixMatch && teamType == TeamType.Away ? " #2" : "")} Team List");

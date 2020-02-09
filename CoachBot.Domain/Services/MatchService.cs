@@ -93,7 +93,7 @@ namespace CoachBot.Domain.Services
                 PlayerId = player.Id,
                 TeamId = team.Id,
                 PositionId = position.Id
-            };                                 
+            };
             _coachBotContext.PlayerTeamPositions.Add(playerTeamPosition);
             _coachBotContext.SaveChanges();
 
@@ -126,9 +126,11 @@ namespace CoachBot.Domain.Services
             {
                 RemovePlayerSubstituteFromTeam(match.TeamHome, player);
                 RemovePlayerSubstituteFromTeam(match.TeamAway, player);
+
+                return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed **{player.DisplayName}** from the subs bench");
             }
 
-            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed **{player.DisplayName}** from the subs bench");
+            return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is not on the subs bench and therefore cannot be removed");
         }
                
         public ServiceResponse ClearPosition(ulong channelId, string position, TeamType teamType = TeamType.Home)
@@ -157,16 +159,17 @@ namespace CoachBot.Domain.Services
                 if (match.TeamHome.PlayerSubstitutes.Any())
                 {
                     var substitute = ReplaceWithSubstitute(removedPlayer.Position, match.TeamHome);
-                    return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Substituted **{player.DisplayName}** with **{substitute.DisplayName}**");
+
+                    return new ServiceResponse(ServiceResponseStatus.Success, $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {substitute.DisplayName} comes off the bench to replace **{player.DisplayName}**");
                 }
             }
             else if (match.TeamAway != null && match.TeamAway.PlayerTeamPositions.Any(ptp => ptp.Player.Id == player.Id))
             {
-                var removedPlayer = RemovePlayerFromTeam(match.TeamHome, player);
+                var removedPlayer = RemovePlayerFromTeam(match.TeamAway, player);
                 if (match.TeamAway.PlayerSubstitutes.Any())
                 {
                     var substitute = ReplaceWithSubstitute(removedPlayer.Position, match.TeamAway);
-                    return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Substituted **{player.DisplayName}** with **{substitute.DisplayName}**");
+                    return new ServiceResponse(ServiceResponseStatus.Success, $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {substitute.DisplayName} comes off the bench to replace **{player.DisplayName}**");
                 }
             }
             else
@@ -217,6 +220,11 @@ namespace CoachBot.Domain.Services
             if (challenger.ChannelPositions.Count() != opposition.ChannelPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"Sorry, **{opposition.Name}** are looking for an **{opposition.ChannelPositions.Count()}v{opposition.ChannelPositions.Count()}** match");
             if (Math.Round(challenger.ChannelPositions.Count() * 0.7) > GetCurrentMatchForChannel(challengerChannelId).TeamHome.OccupiedPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"At least **{Math.Round(challenger.ChannelPositions.Count() * 0.7)}** positions must be filled");
             if (challenger.RegionId != opposition.RegionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"You can't challenge opponents from other regions");
+
+            if (opposition.IsMixChannel)
+            {
+                CombineMixTeams(oppositionMatch, opposition);
+            }
 
             _searchService.StopSearch(challenger.Id);
             _searchService.StopSearch(opposition.Id);
@@ -318,7 +326,7 @@ namespace CoachBot.Domain.Services
         {
             if (team == null) return;
 
-            var playerSubstitute = team.PlayerSubstitutes.First(ps => ps.Player.Id == player.Id);
+            var playerSubstitute = team.PlayerSubstitutes.FirstOrDefault(ps => ps.Player.Id == player.Id);
             if (playerSubstitute != null)
             {
                 team.PlayerSubstitutes.Remove(playerSubstitute);
@@ -339,7 +347,7 @@ namespace CoachBot.Domain.Services
             return sub;
         }
 
-        private void RemovePlayersFromOtherMatches(Match readiedMatch, bool respectDuplicityProtection = true)
+        private async void RemovePlayersFromOtherMatches(Match readiedMatch, bool respectDuplicityProtection = true)
         {
             var otherPlayerSignings = _coachBotContext.PlayerTeamPositions
                 .Where(ptp => ptp.Team.Match.ReadiedDate == null)
@@ -352,7 +360,31 @@ namespace CoachBot.Domain.Services
             foreach (var otherPlayerSigning in otherPlayerSignings)
             {
                 var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatch.TeamHome.Channel.TeamCode}** vs **{readiedMatch.TeamAway.Channel.TeamCode}**)";
-                _discordNotificationService.SendChannelMessage(otherPlayerSigning.Team.Channel.DiscordChannelId, message);
+                await _discordNotificationService.SendChannelMessage(otherPlayerSigning.Team.Channel.DiscordChannelId, message);
+            }
+        }
+
+        private void CombineMixTeams(Match match, Channel channel)
+        {
+            var unoccupiedHomePositions = channel.ChannelPositions.Where(cp => !match.TeamHome.OccupiedPositions.Any(op => cp.PositionId == op.Id));
+            var transferrablePositions = unoccupiedHomePositions.Where(up => match.TeamAway.OccupiedPositions.Any(op => op.Id == up.PositionId));
+
+            if (transferrablePositions.Any())
+            {
+                foreach(var position in transferrablePositions)
+                {
+                    var awayPlayer = match.TeamAway.PlayerTeamPositions.FirstOrDefault(ap => ap.PositionId == position.PositionId);
+                    if (awayPlayer != null)
+                    {
+                        var playerTeamPosition = new PlayerTeamPosition()
+                        {
+                            PlayerId = awayPlayer.PlayerId,
+                            TeamId = (int)match.TeamHomeId,
+                            PositionId = awayPlayer.PositionId
+                        };
+                        _coachBotContext.PlayerTeamPositions.Add(playerTeamPosition);
+                    }
+                }
             }
         }
     }

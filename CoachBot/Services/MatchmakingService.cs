@@ -120,7 +120,7 @@ namespace CoachBot.Services
             else
             {
                 SendReadyMessageForTeam(match, match.TeamHome, server);
-                SendReadyMessageForTeam(match, match.TeamAway, server);
+                if (!match.IsMixMatch) SendReadyMessageForTeam(match, match.TeamAway, server);
                 SendReadyMessageForPlayers(match, match.SignedPlayers, server);
 
                 return true;

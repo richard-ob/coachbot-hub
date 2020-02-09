@@ -36,7 +36,7 @@ namespace CoachBot.Domain.Model
         {
             get
             {
-                if (string.IsNullOrEmpty(Color) && Color[0] == '#')
+                if (!string.IsNullOrEmpty(Color) && Color[0] == '#')
                 {
                     return new Color(ColorExtensions.FromHex(Color).R, ColorExtensions.FromHex(Color).G, ColorExtensions.FromHex(Color).B);
                 }
@@ -50,6 +50,8 @@ namespace CoachBot.Domain.Model
         public bool UseClassicLineup { get; set; }
 
         public bool IsMixChannel { get; set; }
+
+        public List<ulong> SearchIgnoreList { get; set; } = new List<ulong>();
 
         public bool DisableSearchNotifications { get; set; }
 

@@ -270,7 +270,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!challenge")]
         [Alias("!vs")]
         [RequireChannelConfigured]
-        public async Task ChallengeAsync(string teamCode)
+        public async Task ChallengeAsync([Remainder]string teamCode)
         {
             await ReplyAsync("", embed: _channelMatchService.Challenge(Context.Channel.Id, teamCode, Context.User.Mention));
         }

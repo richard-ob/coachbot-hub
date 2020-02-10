@@ -25,7 +25,10 @@ namespace CoachBot.Domain.Services
 
         public List<Search> GetSearches()
         {
-            var searches = _coachBotContext.Searches.Include(s => s.Channel).ToList();
+            var searches = _coachBotContext.Searches
+                .Include(s => s.Channel)
+                    .ThenInclude(c => c.Guild)
+                .ToList();
 
             return searches;
         }

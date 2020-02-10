@@ -1,5 +1,7 @@
-﻿using CoachBot.Domain.Services;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
 using CoachBot.Services;
+using CoachBot.Tools;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
@@ -187,7 +189,7 @@ namespace CoachBot.Bot
                         var player = match.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                         if (player != null)
                         {
-                            discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":warning: Removed {player.DisplayName} from the line-up as they have gone offline").WithCurrentTimestamp().Build());
+                            discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning));
                             discordChannel.SendMessageAsync("", embed: _matchmakingService.RemovePlayer(channel.DiscordChannelId, userPre));
                             foreach (var teamEmbed in scope.ServiceProvider.GetService<MatchmakingService>().GenerateTeamList(channel.DiscordChannelId))
                             {
@@ -203,7 +205,7 @@ namespace CoachBot.Bot
                         if (sub != null)
                         {
                             _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, _matchmakingService.RemoveSub(channel.DiscordChannelId, userPre));
-                            _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, $":warning: Removed {sub.DisplayName} from the subs bench as they have gone offline");
+                            _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, embed: EmbedTools.GenerateEmbed($"Removed {sub.DisplayName} from the subs bench as they have gone offline", ServiceResponseStatus.Warning));
                         }
                     }
                 }
@@ -228,13 +230,13 @@ namespace CoachBot.Bot
                         var player = match.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                         if (player != null)
                         {
-                            discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {player.DisplayName} might be AFK. Keep your eyes peeled.").WithCurrentTimestamp().Build());
+                            discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {player.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());
                         }
 
                         var sub = match.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
                         if (sub != null)
                         {
-                            discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {sub.DisplayName} might be AFK. Keep your eyes peeled.").WithCurrentTimestamp().Build());
+                            discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {sub.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());
                         }
                     }
                 }

@@ -5,7 +5,8 @@
         Success,
         NegativeSuccess,
         Failure,
-        Info
+        Info,
+        Warning
     }
 
     public class ServiceResponse

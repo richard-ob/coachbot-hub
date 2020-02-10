@@ -44,6 +44,10 @@ namespace CoachBot.Tools
             {
                 switch (serviceResponse.Status)
                 {
+                    case ServiceResponseStatus.Warning:
+                        message.Append(":warning: ");
+                        embedBuilder.WithColor(new Color(255, 204, 77));
+                        break;
                     case ServiceResponseStatus.Success:
                         message.Append(":white_check_mark: ");
                         embedBuilder.WithColor(new Color(119, 178, 85));

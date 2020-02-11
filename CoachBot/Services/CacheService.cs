@@ -7,7 +7,8 @@ namespace CoachBot.Services
     {
         public enum CacheItemType
         {
-            LastMention
+            LastMention,
+            LastUserStatusChangeCheck
         }
 
         private Dictionary<CacheItemType, Dictionary<string, object>> _cacheStore = new Dictionary<CacheItemType, Dictionary<string, object>>();

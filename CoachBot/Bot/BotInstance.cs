@@ -20,8 +20,8 @@ namespace CoachBot.Bot
         private readonly ChannelService _channelService;
         private readonly MatchService _matchService;
         private readonly DiscordNotificationService _discordNotificationService;
+        private readonly CacheService _cacheService;
         private CommandHandler _handler;
-        private ulong _lastAfkCheckUser = 0;
 
         public BotInstance(
             IServiceProvider serviceProvider,
@@ -30,7 +30,8 @@ namespace CoachBot.Bot
             MatchmakingService matchmakingService,
             ChannelService channelService,
             MatchService matchService,
-            DiscordNotificationService discordNotificationService
+            DiscordNotificationService discordNotificationService,
+            CacheService cacheService
         )
         {
             _serviceProvider = serviceProvider;
@@ -40,6 +41,7 @@ namespace CoachBot.Bot
             _channelService = channelService;
             _matchService = matchService;
             _discordNotificationService = discordNotificationService;
+            _cacheService = cacheService;
             Startup();
         }
 
@@ -139,8 +141,10 @@ namespace CoachBot.Bot
 
         public Task UserUpdated(SocketGuildUser userPre, SocketGuildUser userPost)
         {
-            if (_lastAfkCheckUser == userPost.Id) return Task.CompletedTask;
-            _lastAfkCheckUser = userPost.Id;
+            var lastUserStatusCheck = (DateTime?)_cacheService.Get(CacheService.CacheItemType.LastUserStatusChangeCheck, userPost.Id.ToString());
+            if (lastUserStatusCheck != null && lastUserStatusCheck.Value > DateTime.Now.AddMinutes(-1)) return Task.CompletedTask;
+            _cacheService.Set(CacheService.CacheItemType.LastUserStatusChangeCheck, userPost.Id.ToString(), DateTime.Now);
+
             if (userPost.Status.Equals(UserStatus.Online)) return Task.CompletedTask;
 
             var playerSigned = false;
@@ -190,14 +194,14 @@ namespace CoachBot.Bot
                         if (player != null)
                         {
                             discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning));
-                            discordChannel.SendMessageAsync("", embed: _matchmakingService.RemovePlayer(channel.DiscordChannelId, userPre));
+                            _matchmakingService.RemovePlayer(channel.DiscordChannelId, userPre);
                             foreach (var teamEmbed in scope.ServiceProvider.GetService<MatchmakingService>().GenerateTeamList(channel.DiscordChannelId))
                             {
                                 discordChannel.SendMessageAsync("", embed: teamEmbed);
                             }
                             if (player.DiscordUserId != null)
                             {
-                                _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, $"You've been unsigned from the line-up in {discordChannel.Name} as you have gone offline. Sorry champ.");
+                                _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, $"You've been unsigned from the line-up in **{discordChannel.Name} ({discordChannel.Guild.Name})** as you've gone offline. Sorry champ.");
                             }
                         }
 
@@ -216,7 +220,7 @@ namespace CoachBot.Bot
 
         public Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)
         {
-            Task.Delay(TimeSpan.FromMinutes(15)).Wait(); // When user goes away, wait 15 minutes before unsigning them
+            Task.Delay(TimeSpan.FromMinutes(1)).Wait(); // When user goes away, wait 15 minutes before unsigning them
             var currentState = _client.GetUser(userPre.Id);
             if (currentState.Status.Equals(UserStatus.Online)) return Task.CompletedTask; // User is no longer AFK/Idle
 

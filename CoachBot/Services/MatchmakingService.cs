@@ -207,10 +207,11 @@ namespace CoachBot.Services
 
         public Embed ListChallenges(ulong challengerChannelId)
         {
-            const string formWinEmote = "<:form_win:676564248754782209>";
-            const string formLossEmote = "<:form_loss:676564248750456832>";
-            const string formDrawEmote = "<:form_draw:676564248830279686>";
+            const string formWinEmote = "<:form_win_sm:676578014188011520>";
+            const string formLossEmote = "<:form_loss_sm:676578012438855692>";
+            const string formDrawEmote = "<:form_draw_sm:676578012380135434>";
             const string formUnknownEmote = "<:form_unknown:676564248729485342>";
+
             var channel = _channelService.GetChannelByDiscordId(challengerChannelId);
             var searches = _searchService.GetSearches().Where(s => s.Channel.RegionId == channel.RegionId && s.ChannelId != channel.Id);
             var mixChallenges = _channelService.GetChannels().Where(c => c.IsMixChannel && c.RegionId == channel.RegionId);
@@ -223,7 +224,7 @@ namespace CoachBot.Services
             foreach (var search in searches)
             {
                 if (!string.IsNullOrEmpty(search.Channel.BadgeEmote)) teamList.Append($"{search.Channel.BadgeEmote} ");
-                teamList.AppendLine($"{search.Channel.TeamCode} ");
+                teamList.AppendLine($"**{search.Channel.TeamCode}** ");
                 teamList.AppendLine($"{formWinEmote} {formLossEmote} {formWinEmote} {formDrawEmote} {formLossEmote}");
                 var searchMinutesAgo = search.CreatedDate.Subtract(DateTime.Now).TotalMinutes.ToString("0");
                 if (searchMinutesAgo == "0" || searchMinutesAgo == "1")
@@ -245,18 +246,16 @@ namespace CoachBot.Services
                 if (match.IsMixMatch)
                 {
                     if (!string.IsNullOrEmpty(match.TeamHome.Channel.BadgeEmote)) mixTeamList.Append($"{match.TeamHome.Channel.BadgeEmote} ");
-                    mixTeamList.AppendLine($"{mix.TeamCode}");
+                    mixTeamList.AppendLine($"**{mix.TeamCode}**");
                     if (string.IsNullOrEmpty(match.TeamHome.Channel.BadgeEmote)) mixTeamList.Append($" ({match.TeamHome.Channel.Guild})");
                     mixTeamList.AppendLine($"{formLossEmote} {formLossEmote} {formDrawEmote} {formLossEmote} {formWinEmote}");
                     mixTeamList.AppendLine($"*{match.SignedPlayersAndSubs.Count} players currently signed*");
                     mixTeamList.AppendLine($"");
                 }
             }
-            embedBuilder.AddField("**Mixes**", mixTeamList.ToString().NullIfEmpty() ?? "*There are no mix teams currently searching*");
+            embedBuilder.AddField("**Mixes**", mixTeamList.ToString().NullIfEmpty() ?? "*There are no mix teams currently available*");
 
-            embedBuilder.WithFooter(new EmbedFooterBuilder().WithText("To accept a challenge, use `!challenge <team name>`, e.g. !challenge BB"));
-
-            return embedBuilder.WithDefaultColour().Build();
+            return embedBuilder.WithDefaultColour().WithRequestedBy().Build();
         }
 
         public async Task<Embed> Unchallenge(ulong challengerChannelId, string challengerMention)

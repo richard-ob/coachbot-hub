@@ -310,6 +310,31 @@ namespace CoachBot.Domain.Services
                .ToList();
         }
 
+        public List<MatchOutcomeType> GetFormForChannel(ulong channelId, int limit = 5)
+        {
+            var recentMatches = _coachBotContext.Matches
+                .Where(m => m.TeamHome.Channel.DiscordChannelId == channelId || m.TeamAway.Channel.DiscordChannelId == channelId)
+                .Where(m => m.IsMixMatch == false)
+                .Where(m => m.MatchStatistics != null)
+                .Include(m => m.MatchStatistics)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(t => t.Channel)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(t => t.Channel)
+                .OrderByDescending(m => m.ReadiedDate)
+                .Take(5);
+
+            var formList = new List<MatchOutcomeType>();
+            foreach(var recentMatch in recentMatches)
+            {
+                var matchDataTeamType = recentMatch.TeamHome.Channel.DiscordChannelId == channelId ? MatchDataTeamType.Home : MatchDataTeamType.Away;
+                var matchOutcomeType = recentMatch.MatchStatistics.GetMatchOutcomeTypeForTeam(matchDataTeamType);
+                formList.Add(matchOutcomeType);
+            }
+
+            return formList;
+        }
+
         private PlayerTeamPosition RemovePlayerFromTeam(Team team, Player player)
         {
             var playerTeamPosition = team?.PlayerTeamPositions.FirstOrDefault(ptp => ptp.Player.Id == player.Id);

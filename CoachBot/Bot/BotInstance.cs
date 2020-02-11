@@ -139,7 +139,7 @@ namespace CoachBot.Bot
             return Task.CompletedTask;
         }
 
-        public Task UserUpdated(SocketGuildUser userPre, SocketGuildUser userPost)
+        private Task UserUpdated(SocketGuildUser userPre, SocketGuildUser userPost)
         {
             var lastUserStatusCheck = (DateTime?)_cacheService.Get(CacheService.CacheItemType.LastUserStatusChangeCheck, userPost.Id.ToString());
             if (lastUserStatusCheck != null && lastUserStatusCheck.Value > DateTime.Now.AddMinutes(-1)) return Task.CompletedTask;
@@ -177,7 +177,7 @@ namespace CoachBot.Bot
             return Task.CompletedTask;
         }
 
-        public Task UserOffline(SocketGuildUser userPre, SocketGuildUser userPost)
+        private Task UserOffline(SocketGuildUser userPre, SocketGuildUser userPost)
         {
             Task.Delay(TimeSpan.FromMinutes(10)).Wait();
             var currentState = _client.GetUser(userPre.Id);
@@ -218,9 +218,9 @@ namespace CoachBot.Bot
             return Task.CompletedTask;
         }
 
-        public Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)
+        private Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)
         {
-            Task.Delay(TimeSpan.FromMinutes(1)).Wait(); // When user goes away, wait 15 minutes before unsigning them
+            Task.Delay(TimeSpan.FromMinutes(15)).Wait(); // When user goes away, wait 15 minutes before notifying others
             var currentState = _client.GetUser(userPre.Id);
             if (currentState.Status.Equals(UserStatus.Online)) return Task.CompletedTask; // User is no longer AFK/Idle
 

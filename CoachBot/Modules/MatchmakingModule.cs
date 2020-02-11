@@ -211,6 +211,20 @@ namespace CoachBot.Modules.Matchmaker
             }
         }
 
+        [Command("!setupserver")]
+        [RequireChannelConfigured]
+        public async Task SetupServerAsync(int serverListItemId, int matchId)
+        {
+            if (_channelServerService.ValidateServer(Context.Channel.Id, serverListItemId))
+            {
+                _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id, matchId);
+            }
+            else
+            {
+                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
+            }
+        }
+
         [Command("!list")]
         [Alias("!lineup")]
         [RequireChannelConfigured]

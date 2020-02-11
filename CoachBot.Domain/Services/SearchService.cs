@@ -74,11 +74,11 @@ namespace CoachBot.Domain.Services
 
         public async void TimeoutSearch(int channelId)
         {
-            await Task.Delay(1 * 60 * 1000);
+            await Task.Delay(30 * 60 * 1000);
             if (_coachBotContext.Searches.Any(s => s.ChannelId == channelId))
             {
                 var channel =_coachBotContext.Channels.Find(channelId);
-                await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, ":timer: Your search for an opponent has timed out after 15 minutes.Please try again if you are still searching");
+                await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, ":timer: Your search for an opponent has timed out after 15 minutes. Please try again if you are still searching");
                 await StopSearch(channelId);
             }
         }

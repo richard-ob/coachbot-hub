@@ -44,6 +44,8 @@ namespace CoachBot.Controllers
             var token = Encoding.UTF8.GetString(base64EncodedBytes);
             var serverAddress = token.Split("_")[0];
             var matchId = int.Parse(token.Split("_")[1]);
+            var homeTeamCode = token.Split("_")[2];
+            var awayTeamCode = token.Split("_")[3];
             var match = _matchService.GetMatch(matchId);
 
             if (match.Server.Address != serverAddress)
@@ -52,6 +54,11 @@ namespace CoachBot.Controllers
             }
 
             if (_matchStatisticsService.GetMatchStatistics(matchId) != null)
+            {
+                return BadRequest();
+            }
+
+            if (match.TeamHome.Channel.TeamCode != homeTeamCode || match.TeamAway.Channel.TeamCode != awayTeamCode)
             {
                 return BadRequest();
             }

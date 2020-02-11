@@ -19,17 +19,17 @@ namespace CoachBot.Factories
             var emptyPos = ":grey_question:";
 
             Team team;
-            Channel oppositionChannel = null;
+            Team oppositionTeam;
             if (teamType == TeamType.Home)
             {
                 team = match.TeamHome;
-                oppositionChannel = match.TeamAway?.Channel;
+                oppositionTeam = match.TeamAway;
                 teamColor = channel.SystemColor;
             }
             else
             {
                 team = match.TeamAway;
-                oppositionChannel = match.TeamHome?.Channel;
+                oppositionTeam = match.TeamHome;
                 if (match.IsMixMatch)
                 {
                     teamColor = new Color(DEFAULT_EMBED_AWAY_TEAM_COLOUR);
@@ -50,10 +50,11 @@ namespace CoachBot.Factories
 
             if (team.PlayerSubstitutes.Any()) sb.Append($"*Subs*: **{string.Join(", ", team.PlayerSubstitutes.Select(ps => ps.Player.DiscordUserMention ?? ps.Player.Name))}**");
 
-            if (!match.IsMixMatch && oppositionChannel != null)
+            if (!match.IsMixMatch && oppositionTeam?.Channel != null)
             {
                 sb.AppendLine("");
-                sb.Append($"vs {oppositionChannel.Name}");
+                sb.Append($"vs **{oppositionTeam.Channel.DisplayName}**");
+                if (!oppositionTeam.HasGk) sb.Append(" (No GK)");
             }
 
             return embedBuilder.WithColor(teamColor).WithDescription(sb.ToString()).WithCurrentTimestamp().WithRequestedBy().Build();

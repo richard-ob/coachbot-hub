@@ -49,6 +49,8 @@ namespace CoachBot.Model
             }
         }
 
+        public bool HasGk => !Channel.ChannelPositions.Any(cp => cp.Position.Name.ToUpper() == "GK") || OccupiedPositions.Any(p => p.Name.ToUpper() == "GK");
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 

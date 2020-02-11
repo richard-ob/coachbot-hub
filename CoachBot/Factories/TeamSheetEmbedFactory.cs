@@ -22,17 +22,17 @@ namespace CoachBot.Factories
             var availablePlaceholderText = !string.IsNullOrEmpty(channel.KitEmote) && teamType == TeamType.Home ? channel.KitEmote : DEFAULT_KIT_EMOTE;
 
             Team team;
-            Channel oppositionChannel = null;
+            Team oppositionTeam;
             if (teamType == TeamType.Home)
             {
                 team = match.TeamHome;
-                oppositionChannel = match.TeamAway?.Channel;
+                oppositionTeam = match.TeamAway;
                 teamColor = channel.SystemColor;
             }
             else
             {
                 team = match.TeamAway;
-                oppositionChannel = match.TeamHome?.Channel;
+                oppositionTeam = match.TeamHome;
                 if (match.IsMixMatch)
                 {
                     teamColor = new Color(DEFAULT_EMBED_AWAY_TEAM_COLOUR);
@@ -50,9 +50,11 @@ namespace CoachBot.Factories
                            .WithCurrentTimestamp()
                            .WithColor(teamColor);
 
-            if (!match.IsMixMatch && oppositionChannel != null)
+            if (!match.IsMixMatch && oppositionTeam?.Channel != null)
             {
-                builder.WithDescription($"vs {oppositionChannel.Name}");
+                var oppositionInfo = $"vs {oppositionTeam.Channel.Name}";
+                if (!oppositionTeam.HasGk) oppositionInfo += " (No GK)";
+                builder.WithDescription(oppositionInfo);
             }
 
             if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeThreeOne)

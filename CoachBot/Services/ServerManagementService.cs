@@ -321,7 +321,7 @@ namespace CoachBot.Services
                     if (authenticated)
                     {
                         await messenger.ExecuteCommandAsync($"exec {channel.ChannelPositions.Count}v{channel.ChannelPositions.Count}.cfg");
-                        if (match.TeamHome.PlayerTeamPositions.Any(p => p.Position.Name.ToUpper() == "GK") || match.TeamAway.PlayerTeamPositions.Any(p => p.Position.Name.ToUpper() == "GK"))
+                        if (match.TeamHome.HasGk && match.TeamAway.HasGk)
                         {
                             await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
                         }
@@ -329,12 +329,17 @@ namespace CoachBot.Services
                         {
                             await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
                         }
-                        await messenger.ExecuteCommandAsync("mp_matchinfo \"Friendly Match\"");
+                        await messenger.ExecuteCommandAsync("mp_matchinfo \"Ranked Friendly Match\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + "http://localhost/api/matchstatistic" + "\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_enabled 1");
-                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchId));
+                        await messenger.ExecuteCommandAsync($"mp_teamnames \"{match.TeamHome.Channel.TeamCode}: {match.TeamHome.Channel.Name}, {match.TeamAway.Channel.TeamCode}: {match.TeamAway.Channel.Name}\"");
+                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchId, match.TeamHome.Channel.TeamCode, match.TeamAway.Channel.TeamCode));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
                         await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
+                    }
+                    else
+                    {
+                        await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed("The server could not be auto-configured. You may need to set the server up manually.", ServiceResponseStatus.Failure));
                     }
                     messenger.CloseConnection();
                 }
@@ -384,9 +389,9 @@ namespace CoachBot.Services
             return servers[serverListItemId - 1];
         }
 
-        private string GenerateMatchDataAuthToken(Server server, int matchId)
+        private string GenerateMatchDataAuthToken(Server server, int matchId, string homeTeamCode, string awayTeamCode)
         {
-            var token = $"{server.Address}_{matchId}";
+            var token = $"{server.Address}_{matchId}_{homeTeamCode}_{awayTeamCode}";
             var encodedToken = Encoding.UTF8.GetBytes(token);
 
             return System.Convert.ToBase64String(encodedToken);

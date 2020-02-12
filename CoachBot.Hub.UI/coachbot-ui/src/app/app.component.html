@@ -29,8 +29,12 @@
                         </li>
                         <li class="nav-account__item"><a href="#">Language: <span class="highlight">EN</span></a>
                         </li>
-                        <li class="nav-account__item nav-account__item--logout"><a
-                                href="_soccer_shop-login.html">Login</a></li>
+                        <li *ngIf="!user" class="nav-account__item nav-account__item--login">
+                            <a routerLink="./login">Login</a>
+                        </li>
+                        <li *ngIf="user" class="nav-account__item nav-account__item--logout">
+                            <a href="{{apiUrl}}/logout">Logout</a>
+                        </li>
                     </ul>
                     <!-- Account Navigation / End -->
                 </div>
@@ -131,6 +135,10 @@
                                         <li class="main-nav__title">Tournaments</li>
                                         <li><a routerLink="./match-overview">Current Tournaments</a></li>
                                         <li><a routerLink="./match-overview">Previous Tournaments</a></li>
+                                    </ul>
+                                    <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">Management</li>
+                                        <li><a routerLink="./server-manager">Servers</a></li>
                                     </ul>
                                 </div>
                             </li>

@@ -54,7 +54,7 @@ namespace CoachBot.Factories
             {
                 sb.AppendLine("");
                 sb.Append($"vs **{oppositionTeam.Channel.DisplayName}**");
-                if (!oppositionTeam.HasGk) sb.Append(" (No GK)");
+                if (!oppositionTeam.HasGk) sb.Append(" ***No GK***");
             }
 
             return embedBuilder.WithColor(teamColor).WithDescription(sb.ToString()).WithCurrentTimestamp().WithRequestedBy().Build();

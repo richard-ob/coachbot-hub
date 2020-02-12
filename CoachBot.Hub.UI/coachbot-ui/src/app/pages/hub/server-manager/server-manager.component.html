@@ -1,0 +1,88 @@
+<div class="py-5 container">
+    <div class="card card--has-table">
+        <div class="widget__title card__header card__header--has-btn">
+            <h4>Servers</h4>
+            <a href="#" class="btn btn-primary-inverse btn-xs card-header__button">Add Server</a>
+        </div>
+        <div class="card__content">
+            <div class="table-responsive">
+                <div *ngIf="!servers" class="text-center">
+                    <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+                </div>
+                <div *ngIf="servers">
+                    <table class="table table--lg">
+                        <thead>
+                            <th>Server Name</th>
+                            <th>Address</th>
+                            <th>Country</th>
+                            <th>Region</th>
+                            <th>RCON Password</th>
+                            <th>Actions</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let server of servers" [attr.data-index]="i">
+                                <td>{{server.name}}</td>
+                                <td>{{server.address}}</td>
+                                <td>{{server.country.name}}</td>
+                                <td>{{server.region.regionName}}</td>
+                                <td>{{server.rconPassword}}</td>
+                                <td>
+                                    <button class="btn btn-outline-primary btn-xs mr-2"
+                                        (click)="removeServer(server.id)">
+                                        <i class="fa fa-times"></i> Edit</button>
+                                    <button class="btn btn-outline-danger btn-xs" (click)="removeServer(server.id)">
+                                        <i class="fa fa-times"></i> Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">
+                <i class="fa fa-plus"></i> Add Server</h4>
+            <form class="d-flex">
+                <div class="form-group flex-fill p-2">
+                    <label for="serverName">Server Name</label>
+                    <input type="text" class="form-control" id="serverName" name="serverName"
+                        [(ngModel)]="newServer.name">
+                </div>
+                <div class="form-group flex-fill p-2">
+                    <label for="ipAddress">IP Address</label>
+                    <input type="text" class="form-control" id="ipAddress" name="ipAddress"
+                        [(ngModel)]="newServer.address">
+                </div>
+
+                <div class="form-group flex-fill p-2">
+                    <label for="rconPassword">RCON Password</label>
+                    <input type="text" class="form-control" id="rconPassword" name="rconPassword"
+                        [(ngModel)]="newServer.rconPassword">
+                </div>
+                <div class="form-group flex-fill p-2">
+                    <label for="countryId">Country</label>
+                    <select class="form-control" [(ngModel)]="newServer.countryId" name="countryId" id="countryId">
+                        <option *ngFor="let country of countries" [ngValue]="country.id">
+                            {{country.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group flex-fill p-2">
+                    <label for="regionId">Region</label>
+                    <select class="form-control" [(ngModel)]="newServer.regionId" name="regionId" id="regionId">
+                        <option *ngFor="let region of regions" [ngValue]="region.regionId">
+                            {{region.regionName}}
+                        </option>
+                    </select>
+                </div>
+            </form>
+            <div class="form-group ">
+                <button type="submit" class="btn btn-outline-success float-right" (click)="addServer()">
+                    <i class="fa fa-check"></i> Add</button>
+            </div>
+        </div>
+    </div>
+</div>

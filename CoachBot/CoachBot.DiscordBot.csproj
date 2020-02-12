@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ChannelController.cs" />
+    <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\MatchStatisticController.cs" />
     <Compile Include="Controllers\RegionController.cs" />

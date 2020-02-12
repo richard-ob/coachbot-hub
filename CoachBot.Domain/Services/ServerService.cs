@@ -17,7 +17,7 @@ namespace CoachBot.Domain.Services
 
         public List<Server> GetServers()
         {
-            return _coachBotContext.Servers.Include(s => s.Region).ToList();
+            return _coachBotContext.Servers.Include(s => s.Region).Include(s => s.Country).ToList();
         }
 
         public List<Server> GetServersByRegion(int regionId)

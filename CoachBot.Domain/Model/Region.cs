@@ -17,6 +17,5 @@ namespace CoachBot.Model
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
-
     }
 }

@@ -75,6 +75,7 @@ namespace CoachBot
                 .AddTransient<BotService>()
                 .AddTransient<RegionRepository>()
                 .AddTransient<RegionService>()
+                .AddTransient<CountryService>()
                 .AddTransient<ServerRepository>()
                 .AddTransient<ServerService>()
                 .AddTransient<ChannelService>()

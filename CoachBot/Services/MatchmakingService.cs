@@ -244,8 +244,8 @@ namespace CoachBot.Services
                 if (match.IsMixMatch)
                 {
                     if (!string.IsNullOrEmpty(match.TeamHome.Channel.BadgeEmote)) mixTeamList.Append($"{match.TeamHome.Channel.BadgeEmote} ");
-                    mixTeamList.Append($"**{mix.TeamCode}**");
-                    if (string.IsNullOrEmpty(match.TeamHome.Channel.BadgeEmote)) mixTeamList.Append($" ({match.TeamHome.Channel.Guild}) ");
+                    mixTeamList.Append($"**{mix.TeamCode}** ");
+                    if (string.IsNullOrEmpty(match.TeamHome.Channel.BadgeEmote)) mixTeamList.Append($"({match.TeamHome.Channel.Guild}) ");
                     if (!match.TeamHome.HasGk) mixTeamList.Append(" (No GK)");
                     mixTeamList.AppendLine("");
                     mixTeamList.AppendLine(GenerateFormEmoteListForChannel(match.TeamHome.Channel.DiscordChannelId));

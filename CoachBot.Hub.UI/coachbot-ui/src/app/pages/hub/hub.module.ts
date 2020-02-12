@@ -11,6 +11,7 @@ import { MatchStatisticTeamPercentageCalculatorPipe } from './match-overview/hel
 import { HorizontalBarGraphComponent } from './match-overview/components/horizontal-bar-graph/horizontal-bar-graph.component';
 import { PercentageSharePipe } from './match-overview/helpers/percentage-share.pipe';
 import { CircleGraphComponent } from './match-overview/components/circle-graph/circle-graph.component';
+import { ServerManagerComponent } from './server-manager/server-manager.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { CircleGraphComponent } from './match-overview/components/circle-graph/c
     MatchStatisticTeamPercentageCalculatorPipe,
     HorizontalBarGraphComponent,
     CircleGraphComponent,
-    PercentageSharePipe
+    PercentageSharePipe,
+    ServerManagerComponent
   ],
   imports: [
     CommonModule,

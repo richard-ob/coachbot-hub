@@ -53,7 +53,7 @@ namespace CoachBot.Factories
             if (!match.IsMixMatch && oppositionTeam?.Channel != null)
             {
                 var oppositionInfo = $"vs {oppositionTeam.Channel.Name}";
-                if (!oppositionTeam.HasGk) oppositionInfo += " (No GK)";
+                if (!oppositionTeam.HasGk) oppositionInfo += " ***No GK***";
                 builder.WithDescription(oppositionInfo);
             }
 

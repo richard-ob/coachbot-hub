@@ -25,14 +25,20 @@
                         <td class="team-result__date">{{match.readiedDate | date:'medium'}}</td>
                         <td class="team-result__vs">
                             <div class="team-meta">
-                                <strong>{{match.teamHome.channel.teamCode}}</strong> vs
-                                <strong>{{match.teamAway.channel.teamCode}}</strong>
+                                <strong
+                                    [attr.title]="match.teamHome.channel.name">{{match.teamHome.channel.teamCode}}</strong>
+                                vs
+                                <strong
+                                    [attr.title]="match.teamAway.channel.name">{{match.teamAway.channel.teamCode}}</strong>
                             </div>
                         </td>
                         <td class="team-result__score">? - ?</td>
                         <td class="team-result__status">Ranked Friendly</td>
                         <td class="team-result__status">8v8</td>
-                        <td class="team-result__ball-posession">{{match.server.country.name}}</td>
+                        <td class="team-result__ball-posession" title="{{match.server.country.name}}">
+                            <img src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png">
+
+                        </td>
                         <td class="team-result__game-overview">
                             <a [routerLink]="['../match-overview', match.id]"
                                 class="btn btn-xs btn-outline-primary btn-block">See Match Overview</a>

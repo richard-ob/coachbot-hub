@@ -15,6 +15,7 @@ import { ServerManagerComponent } from './server-manager/server-manager.componen
 import { RegionManagerComponent } from './region-manager/region-manager.component';
 import { SpinnerModule } from 'src/app/core/components/spinner/spinner.module';
 import { RecentMatchesComponent } from './recent-matches/recent-matches.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { RecentMatchesComponent } from './recent-matches/recent-matches.componen
   ],
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     SpinnerModule
   ]

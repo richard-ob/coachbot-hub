@@ -14,7 +14,7 @@ const routes: Routes = [
     component: HeroComponent
   },
   {
-    path: 'match-overview',
+    path: 'match-overview/:id',
     component: MatchOverviewComponent
   },
   {

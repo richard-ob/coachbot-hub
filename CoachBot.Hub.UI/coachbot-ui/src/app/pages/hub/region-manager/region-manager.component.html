@@ -1,0 +1,69 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card--has-table">
+                <div class="widget__title card__header card__header--has-btn">
+                    <h4>Regions</h4>
+                </div>
+                <div class="card__content">
+                    <app-spinner *ngIf="!regions"></app-spinner>
+                    <div *ngIf="regions">
+                        <table class="table  table--lg">
+                            <thead>
+                                <th>Region Name</th>
+                                <th>Region Code</th>
+                                <th>Server Count</th>
+                                <th>Team Count</th>
+                                <th>Match Count</th>
+                                <th>Actions</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let region of regions">
+                                    <td>
+                                        {{region.regionName}}
+                                    </td>
+                                    <td>{{region.regionCode}}</td>
+                                    <td>
+                                        {{region.serverCount}}
+                                    </td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-xs" (click)="removeRegion(region.regionId)"
+                                            [disabled]="region.serverCount">
+                                            <i class="fa fa-times"></i> Remove</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="widget__title card__header card__header--has-btn">
+                    <h4>Add Region</h4>
+                </div>
+                <div class="card__content">
+                    <form class="d-flex">
+                        <div class="form-group flex-fill pr-2">
+                            <label for="regionName">Region Name</label>
+                            <input type="text" class="form-control" id="regionName" name="regionName"
+                                [(ngModel)]="newRegion.regionName">
+                        </div>
+                        <div class="form-group flex-fill">
+                            <label for="regionName">Region Code</label>
+                            <input type="text" maxlength="4" class="form-control" id="regionCode" name="regionCode"
+                                [(ngModel)]="newRegion.regionCode">
+                        </div>
+                    </form>
+                    <div class="form-group float-right">
+                        <button type="submit" class="btn btn-outline-success btn-sm float-right" (click)="addRegion()">
+                            <i class="fa fa-check"></i> Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

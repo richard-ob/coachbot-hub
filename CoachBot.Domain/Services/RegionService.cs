@@ -1,42 +1,55 @@
-﻿using CoachBot.Domain.Model.Dtos;
-using CoachBot.Domain.Repositories;
+﻿using CoachBot.Database;
+using CoachBot.Domain.Model.Dtos;
 using CoachBot.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoachBot.Domain.Services
 {
     public class RegionService
     {
-        private readonly RegionRepository _regionRepository;
+        private readonly CoachBotContext _coachBotContext;
 
-        public RegionService(RegionRepository regionRepository)
+        public RegionService(CoachBotContext coachBotContext)
         {
-            _regionRepository = regionRepository;
+            _coachBotContext = coachBotContext;
         }
 
         public List<RegionDto> GetRegions()
         {
-            return _regionRepository.GetAll();
+            return _coachBotContext.Regions.Select(r =>
+               new RegionDto()
+               {
+                   RegionId = r.RegionId,
+                   RegionName = r.RegionName,
+                   RegionCode = r.RegionCode,
+                   ServerCount = _coachBotContext.Servers.Count(s => s.RegionId == r.RegionId)
+               }
+           ).ToList();
         }
 
-        public Region GetRegion(int id)
+        public Region Get(int id)
         {
-            return _regionRepository.Get(id);
+            return _coachBotContext.Regions.FirstOrDefault(s => s.RegionId == id);
         }
 
-        public void AddRegion(Region region)
+        public void Add(Region region)
         {
-            _regionRepository.Add(region);
+            _coachBotContext.Regions.Add(region);
+            _coachBotContext.SaveChanges();
         }
 
-        public void UpdateRegion(Region region)
+        public void Update(Region region)
         {
-            _regionRepository.Update(region);
+            _coachBotContext.Regions.Update(region);
+            _coachBotContext.SaveChanges();
         }
 
-        public void RemoveRegion(int id)
+        public void Delete(int id)
         {
-            _regionRepository.Delete(id);
+            var region = _coachBotContext.Regions.First(s => s.RegionId == id);
+            _coachBotContext.Regions.Remove(region);
+            _coachBotContext.SaveChanges();
         }
     }
 }

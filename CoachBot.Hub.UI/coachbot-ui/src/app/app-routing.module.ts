@@ -5,6 +5,8 @@ import { MatchOverviewComponent } from './pages/hub/match-overview/match-overvie
 import { ServerManagerComponent } from './pages/hub/server-manager/server-manager.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ErrorComponent } from './pages/error/error.component';
+import { RegionManagerComponent } from './pages/hub/region-manager/region-manager.component';
+import { RecentMatchesComponent } from './pages/hub/recent-matches/recent-matches.component';
 
 const routes: Routes = [
   {
@@ -18,6 +20,14 @@ const routes: Routes = [
   {
     path: 'server-manager',
     component: ServerManagerComponent
+  },
+  {
+    path: 'region-manager',
+    component: RegionManagerComponent
+  },
+  {
+    path: 'recent-matches',
+    component: RecentMatchesComponent
   },
   {
     path: 'login',

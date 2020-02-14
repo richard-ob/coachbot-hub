@@ -73,7 +73,6 @@ namespace CoachBot
                 .AddSingleton<LogAdaptor>()
                 .AddSingleton<ConfigService>()
                 .AddTransient<BotService>()
-                .AddTransient<RegionRepository>()
                 .AddTransient<RegionService>()
                 .AddTransient<CountryService>()
                 .AddTransient<ServerRepository>()

@@ -41,7 +41,7 @@ namespace CoachBot.Controllers
             {
                 throw new Exception();
             }
-            _regionService.AddRegion(region);
+            _regionService.Add(region);
         }
 
         [HttpPost("{id}")]
@@ -57,7 +57,7 @@ namespace CoachBot.Controllers
             {
                 throw new Exception();
             }
-            _regionService.RemoveRegion(id);
+            _regionService.Delete(id);
         }
     }
 }

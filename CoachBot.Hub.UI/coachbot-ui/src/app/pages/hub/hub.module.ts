@@ -12,6 +12,9 @@ import { HorizontalBarGraphComponent } from './match-overview/components/horizon
 import { PercentageSharePipe } from './match-overview/helpers/percentage-share.pipe';
 import { CircleGraphComponent } from './match-overview/components/circle-graph/circle-graph.component';
 import { ServerManagerComponent } from './server-manager/server-manager.component';
+import { RegionManagerComponent } from './region-manager/region-manager.component';
+import { SpinnerModule } from 'src/app/core/components/spinner/spinner.module';
+import { RecentMatchesComponent } from './recent-matches/recent-matches.component';
 
 @NgModule({
   declarations: [
@@ -25,11 +28,14 @@ import { ServerManagerComponent } from './server-manager/server-manager.componen
     HorizontalBarGraphComponent,
     CircleGraphComponent,
     PercentageSharePipe,
-    ServerManagerComponent
+    ServerManagerComponent,
+    RegionManagerComponent,
+    RecentMatchesComponent
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    SpinnerModule
   ]
 })
 export class HubModule { }

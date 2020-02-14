@@ -6,9 +6,7 @@
         </div>
         <div class="card__content">
             <div class="table-responsive">
-                <div *ngIf="!servers" class="text-center">
-                    <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
-                </div>
+                <app-spinner *ngIf="!region"></app-spinner>
                 <div *ngIf="servers">
                     <table class="table table--lg">
                         <thead>

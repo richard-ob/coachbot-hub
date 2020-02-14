@@ -1,9 +1,9 @@
-﻿using CoachBot.Model;
-using CoachBot.Services.Matchmaker;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
+using CoachBot.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CoachBot.Controllers
 {
@@ -12,23 +12,23 @@ namespace CoachBot.Controllers
     [Authorize]
     public class MatchController : Controller
     {
-        private readonly StatisticsService _statisticsService;
+        private readonly MatchService _matchService;
 
-        public MatchController(StatisticsService statisticsService)
+        public MatchController(MatchService matchService)
         {
-            _statisticsService = statisticsService;
+            _matchService = matchService;
         }
 
-        [HttpGet("channel/{id}")]
-        public IEnumerable<Match> GetChannelMatches(ulong id)
+        [HttpGet("{id}")]
+        public Match Get(int id)
         {
-            return _statisticsService.MatchHistory.Where(m => m.ChannelId == id).OrderByDescending(x => x.MatchDate);
+            return _matchService.GetMatch(id);
         }
 
-        [HttpGet("player/{id}")]
-        public IEnumerable<Match> GetPlayerMatches(ulong id)
-        { 
-            return _statisticsService.MatchHistory.Where(m => m.Players.Any(p => p.DiscordUserId == id)).OrderByDescending(x => x.MatchDate);
+        [HttpPost]
+        public IEnumerable<Match> PagedMatchList([FromBody]PagedMatchRequestDto pagedRequest)
+        {
+            return _matchService.GetMatches(pagedRequest.RegionId, pagedRequest.PageSize, pagedRequest.Offset);
         }
     }
 }

@@ -19,24 +19,17 @@ namespace CoachBot.Domain.Services
         public void SaveMatchData(MatchData matchData, int matchId, bool manualSave = false)
         {
             var match = _coachBotContext.Matches.Single(m => m.Id == matchId);
-            var matchStatistics = new MatchStatistics()
+            match.MatchStatistics = new MatchStatistics()
             {
-                MatchId = match.Id,
                 MatchData = matchData
             };
 
             if (matchData.IsValid(match, manualSave))
             {
-                _coachBotContext.MatchStatistics.Add(matchStatistics);
                 GenerateTeamStatisticTotals(match);
                 GeneratePlayerStatisticTotals(match);
                 _coachBotContext.SaveChanges();
             }
-        }
-
-        public MatchStatistics GetMatchStatistics(int matchId)
-        {
-            return _coachBotContext.MatchStatistics.FirstOrDefault(m => m.MatchId == matchId);
         }
 
         public List<TeamStatisticTotals> GetTeamStatistics()

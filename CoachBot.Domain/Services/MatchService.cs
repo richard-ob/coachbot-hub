@@ -5,6 +5,7 @@ using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace CoachBot.Domain.Services
@@ -26,6 +27,109 @@ namespace CoachBot.Domain.Services
             _discordNotificationService = discordNotificationService;
         }
 
+        #region Get Match Data
+        public Match GetMatch(int matchId)
+        {
+            return _coachBotContext.GetMatchById(matchId);
+        }
+
+        public IEnumerable<Match> GetMatches(int regionId, int limit, int offset)
+        {
+            return _coachBotContext.Matches
+                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.Channel)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.Channel)
+                .Include(m => m.MatchStatistics)
+                .Include(s => s.Server)
+                    .ThenInclude(s => s.Country)
+                .Where(m => m.ReadiedDate != null)
+                .Where(m => m.Server.RegionId == regionId)
+                .Skip(offset)
+                .Take(limit);
+        }
+
+        public Match GetCurrentMatchForChannel(ulong channelId)
+        {
+            if (!_coachBotContext.Matches.Any(m => (m.TeamHome.Channel.DiscordChannelId == channelId || (m.TeamAway != null && m.TeamAway.Channel.DiscordChannelId == channelId)) && m.ReadiedDate == null))
+            {
+                var channel = _coachBotContext.Channels.First(c => c.DiscordChannelId == channelId);
+                CreateMatch(channel.Id);
+            }
+
+            return _coachBotContext.GetCurrentMatchForChannel(channelId);
+        }
+
+        public List<Match> GetMatchesForChannel(ulong channelId, bool readiedMatchesOnly = false, int limit = 10)
+        {
+            return _coachBotContext.Matches
+               .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Player)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Position)
+                .Include(m => m.TeamHome)
+                   .ThenInclude(th => th.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Team)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.PlayerSubstitutes)
+                    .ThenInclude(ps => ps.Player)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(th => th.Channel)
+                    .ThenInclude(c => c.ChannelPositions)
+                    .ThenInclude(cp => cp.Position)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Player)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.PlayerTeamPositions)
+                    .ThenInclude(ptp => ptp.Position)
+                .Include(m => m.TeamAway)
+                   .ThenInclude(th => th.PlayerTeamPositions)
+                   .ThenInclude(ptp => ptp.Team)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.PlayerSubstitutes)
+                    .ThenInclude(ps => ps.Player)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(ta => ta.Channel)
+                    .ThenInclude(c => c.ChannelPositions)
+                    .ThenInclude(cp => cp.Position)
+               .Where(m => m.TeamHome.Channel != null && m.TeamAway.Channel != null)
+               .Where(m => m.TeamHome.Channel.DiscordChannelId == channelId || m.TeamAway.Channel.DiscordChannelId == channelId)
+               .Where(m => !readiedMatchesOnly || m.ReadiedDate != null)
+               .OrderByDescending(m => m.CreatedDate)
+               .Take(limit)
+               .ToList();
+        }
+
+        public List<MatchOutcomeType> GetFormForChannel(ulong channelId, int limit = 5)
+        {
+            var recentMatches = _coachBotContext.Matches
+                .Where(m => m.TeamHome.Channel.DiscordChannelId == channelId || m.TeamAway.Channel.DiscordChannelId == channelId)
+                .Where(m => m.IsMixMatch == false)
+                .Where(m => m.MatchStatistics != null)
+                .Include(m => m.MatchStatistics)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(t => t.Channel)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(t => t.Channel)
+                .OrderByDescending(m => m.ReadiedDate)
+                .Take(5);
+
+            var formList = new List<MatchOutcomeType>();
+            foreach (var recentMatch in recentMatches)
+            {
+                var matchDataTeamType = recentMatch.TeamHome.Channel.DiscordChannelId == channelId ? MatchDataTeamType.Home : MatchDataTeamType.Away;
+                var matchOutcomeType = recentMatch.MatchStatistics.GetMatchOutcomeTypeForTeam(matchDataTeamType);
+                formList.Add(matchOutcomeType);
+            }
+
+            return formList;
+        }
+        #endregion
+
+        #region Manage Match Data
         public ServiceResponse CreateMatch(int channelId, Team existingTeam = null)
         {
             var channel = _coachBotContext.Channels.First(c => c.Id == channelId);
@@ -251,90 +355,9 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Team successfully unchallenged");
         }
 
-        public Match GetMatch(int matchId)
-        {
-            return _coachBotContext.GetMatchById(matchId);
-        }
+        #endregion
 
-        public Match GetCurrentMatchForChannel(ulong channelId)
-        {
-            if (!_coachBotContext.Matches.Any(m => (m.TeamHome.Channel.DiscordChannelId == channelId || (m.TeamAway != null && m.TeamAway.Channel.DiscordChannelId == channelId)) && m.ReadiedDate == null))
-            {
-                var channel = _coachBotContext.Channels.First(c => c.DiscordChannelId == channelId);
-                CreateMatch(channel.Id);
-            }
-
-            return _coachBotContext.GetCurrentMatchForChannel(channelId);
-        }
-
-        public List<Match> GetMatchesForChannel(ulong channelId, bool readiedMatchesOnly = false, int limit = 10)
-        {
-            return _coachBotContext.Matches
-               .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.TeamHome)
-                   .ThenInclude(th => th.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Team)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.Channel)
-                    .ThenInclude(c => c.ChannelPositions)
-                    .ThenInclude(cp => cp.Position)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerTeamPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.TeamAway)
-                   .ThenInclude(th => th.PlayerTeamPositions)
-                   .ThenInclude(ptp => ptp.Team)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.Channel)
-                    .ThenInclude(c => c.ChannelPositions)
-                    .ThenInclude(cp => cp.Position)
-               .Where(m => m.TeamHome.Channel != null && m.TeamAway.Channel != null)
-               .Where(m => m.TeamHome.Channel.DiscordChannelId == channelId || m.TeamAway.Channel.DiscordChannelId == channelId)
-               .Where(m => !readiedMatchesOnly || m.ReadiedDate != null)
-               .OrderByDescending(m => m.CreatedDate)
-               .Take(limit)
-               .ToList();
-        }
-
-        public List<MatchOutcomeType> GetFormForChannel(ulong channelId, int limit = 5)
-        {
-            var recentMatches = _coachBotContext.Matches
-                .Where(m => m.TeamHome.Channel.DiscordChannelId == channelId || m.TeamAway.Channel.DiscordChannelId == channelId)
-                .Where(m => m.IsMixMatch == false)
-                .Where(m => m.MatchStatistics != null)
-                .Include(m => m.MatchStatistics)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(t => t.Channel)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(t => t.Channel)
-                .OrderByDescending(m => m.ReadiedDate)
-                .Take(5);
-
-            var formList = new List<MatchOutcomeType>();
-            foreach(var recentMatch in recentMatches)
-            {
-                var matchDataTeamType = recentMatch.TeamHome.Channel.DiscordChannelId == channelId ? MatchDataTeamType.Home : MatchDataTeamType.Away;
-                var matchOutcomeType = recentMatch.MatchStatistics.GetMatchOutcomeTypeForTeam(matchDataTeamType);
-                formList.Add(matchOutcomeType);
-            }
-
-            return formList;
-        }
-
+        #region Private methods
         private PlayerTeamPosition RemovePlayerFromTeam(Team team, Player player)
         {
             var playerTeamPosition = team?.PlayerTeamPositions.FirstOrDefault(ptp => ptp.Player.Id == player.Id);
@@ -412,5 +435,6 @@ namespace CoachBot.Domain.Services
                 }
             }
         }
+        #endregion
     }
 }

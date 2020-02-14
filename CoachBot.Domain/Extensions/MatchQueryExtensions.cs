@@ -83,7 +83,9 @@ namespace CoachBot.Domain.Extensions
                 .Include(m => m.TeamAway)
                     .ThenInclude(ta => ta.PlayerSubstitutes)
                     .ThenInclude(ps => ps.Player)
+                .Include(m => m.MatchStatistics)
                 .Include(m => m.Server)
+                    .ThenInclude(s => s.Region)
                 .Single(m => m.Id == matchId);
         }
     }

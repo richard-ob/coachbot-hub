@@ -23,20 +23,6 @@ namespace CoachBot.Controllers
             _matchStatisticsService = matchStatisticsService;
         }
 
-        [Authorize]
-        [HttpGet("{id}")]
-        public IActionResult Get(int matchId)
-        {
-            var matchStatistics = _matchStatisticsService.GetMatchStatistics(matchId);
-
-            if (matchStatistics == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(matchStatistics);
-        }
-
         [HttpPost]
         public IActionResult Submit(MatchStatisticsDto matchStatisticsDto)
         {
@@ -53,7 +39,7 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            if (_matchStatisticsService.GetMatchStatistics(matchId) != null)
+            if (match.MatchStatistics != null)
             {
                 return BadRequest();
             }
@@ -84,7 +70,7 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            if (_matchStatisticsService.GetMatchStatistics(matchId) != null)
+            if (match.MatchStatistics != null)
             {
                 return BadRequest();
             }

@@ -16,6 +16,7 @@ import { RegionManagerComponent } from './region-manager/region-manager.componen
 import { SpinnerModule } from 'src/app/core/components/spinner/spinner.module';
 import { RecentMatchesComponent } from './recent-matches/recent-matches.component';
 import { RouterModule } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     RouterModule,
     FormsModule,
-    SpinnerModule
+    SpinnerModule,
+    NgxPaginationModule
   ]
 })
 export class HubModule { }

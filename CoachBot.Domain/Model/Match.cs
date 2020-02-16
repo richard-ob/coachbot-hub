@@ -42,6 +42,8 @@ namespace CoachBot.Domain.Model
 
         public Team GetTeam(TeamType teamType) => teamType == TeamType.Home ? TeamHome : TeamAway;
 
+        public string MatchFormat => "8v8";
+
         [JsonIgnore]
         [NotMapped]
         public List<Player> SignedPlayers

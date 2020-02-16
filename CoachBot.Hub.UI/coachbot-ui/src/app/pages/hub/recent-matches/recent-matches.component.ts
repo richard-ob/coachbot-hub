@@ -9,14 +9,24 @@ import { Match } from '../shared/model/match.model';
 export class RecentMatchesComponent implements OnInit {
 
     matches: Match[];
+    currentPage = 1;
+    totalPages: number;
+    totalItems: number;
 
     constructor(private matchService: MatchService) {
 
     }
 
     ngOnInit() {
-        this.matchService.getMatches(1, 1).subscribe(matches => {
-            this.matches = matches;
+        this.loadPage(1);
+    }
+
+    loadPage(page: number) {
+        this.matchService.getMatches(1, page).subscribe(response => {
+            this.matches = response.items;
+            this.currentPage = response.page;
+            this.totalPages = response.totalPages;
+            this.totalItems = response.totalItems;
         });
     }
 

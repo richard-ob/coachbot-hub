@@ -1,13 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CoachBot.Domain.Model.Dtos
 {
-    public class PagedResult<T> where T : class
+    public class PagedResult<T>: PagedRequest where T : class
     {
-        public List<T> Items { get; set; }
-
-        public PagedRequest PagedRequest { get; set; }
+        public IEnumerable<T> Items { get; set; }
 
         public int TotalItems { get; set; }
+
+        public int TotalPages
+        {
+            get
+            {
+                var pageCount = (double)TotalItems / PageSize;
+
+                return (int)Math.Ceiling(pageCount);
+            }
+        }        
     }
 }

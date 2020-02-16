@@ -1,6 +1,7 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
+using CoachBot.Domain.Model.Dtos;
 using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -33,7 +34,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.GetMatchById(matchId);
         }
 
-        public IEnumerable<Match> GetMatches(int regionId, int limit, int offset)
+        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder)
         {
             return _coachBotContext.Matches
                 .Include(m => m.TeamHome)
@@ -45,8 +46,7 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(s => s.Country)
                 .Where(m => m.ReadiedDate != null)
                 .Where(m => m.Server.RegionId == regionId)
-                .Skip(offset)
-                .Take(limit);
+                .GetPaged(page, pageSize, sortOrder);
         }
 
         public Match GetCurrentMatchForChannel(ulong channelId)

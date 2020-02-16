@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoachBot.Domain.Model
+﻿namespace CoachBot.Domain.Model
 {
     public class PagedRequest
     {
@@ -13,6 +9,16 @@ namespace CoachBot.Domain.Model
         public string SortBy { get; set; }
 
         public string SortOrder { get; set; }
+
+        public string SortOrderFull {
+            get
+            {
+                if (string.IsNullOrEmpty(SortBy)) return null;
+                if (string.IsNullOrEmpty(SortOrder)) return $"{SortBy} ASC";
+
+                return $"{SortBy} {SortOrder}";
+            }
+        }
 
         public int Offset => (Page - 1) * PageSize + 1;
 

@@ -1,9 +1,9 @@
 ﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace CoachBot.Controllers
 {
@@ -26,9 +26,9 @@ namespace CoachBot.Controllers
         }
 
         [HttpPost]
-        public IEnumerable<Match> PagedMatchList([FromBody]PagedMatchRequestDto pagedRequest)
+        public PagedResult<Match> PagedMatchList([FromBody]PagedMatchRequestDto pagedRequest)
         {
-            return _matchService.GetMatches(pagedRequest.RegionId, pagedRequest.PageSize, pagedRequest.Offset);
+            return _matchService.GetMatches(pagedRequest.RegionId, pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull);
         }
     }
 }

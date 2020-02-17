@@ -1,0 +1,63 @@
+<div class="container my-4">
+    <!-- Team Latest Results -->
+    <div class="card card--has-table">
+        <div class="card__header card__header--has-btn">
+            <h4>Players</h4>
+            <!-- Result Filter -->
+            <!-- Result Filter / End -->
+        </div>
+        <div class="card__content">
+            <app-spinner *ngIf="!players"></app-spinner>
+            <table *ngIf="players" class="table table--large">
+                <thead>
+                    <tr>
+                        <th class="team-result__date">Name</th>
+                        <th class="team-result__vs">Steam</th>
+                        <th>Nationality</th>
+                        <th class="team-result__status">Appearances</th>
+                        <th class="team-result__status">Goals</th>
+                        <th class="team-result__ball-posession">Yellow Cards</th>
+                        <th class="team-result__game-overview">Red Cards</th>
+                        <th class="team-result__game-overview">Assists</th>
+                        <th class="team-result__game-overview">Avg. Passes</th>
+                        <th class="team-result__game-overview">Avg. Distance</th>
+                        <th class="team-result__game-overview">Wins</th>
+                        <th class="team-result__game-overview">Losses</th>
+                        <th class="team-result__game-overview">Draws</th>
+                        <th class="team-result__game-overview"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let player of players | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
+                        <td class="team-result__score">{{player.name}}</td>
+                        <td class="team-result__vs">
+                            <a href="http://steamcommunity.com/id/thinge">Profile</a>
+                        </td>
+                        <td class="team-result__ball-posession">
+                            <img src="https://www.countryflags.io/gb/flat/24.png">
+                        </td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">0</td>
+                        <td class="team-result__game-overview">
+                            <a [routerLink]="['../player-profile', player.id]"
+                                class="btn btn-xs btn-outline-primary btn-block">Profile</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="totalPages > 1" class="text-center">
+        <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
+    </div>
+</div>
+<!-- Team Latest Results / End -->

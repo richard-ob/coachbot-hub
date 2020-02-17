@@ -17,6 +17,8 @@ import { SpinnerModule } from 'src/app/core/components/spinner/spinner.module';
 import { RecentMatchesComponent } from './recent-matches/recent-matches.component';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { PlayerListComponent } from './player-list/player-list.component';
+import { PlayerProfileComponent } from './player-profile/player-profile.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     PercentageSharePipe,
     ServerManagerComponent,
     RegionManagerComponent,
-    RecentMatchesComponent
+    RecentMatchesComponent,
+    PlayerListComponent,
+    PlayerProfileComponent
   ],
   imports: [
     CommonModule,

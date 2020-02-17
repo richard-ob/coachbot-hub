@@ -2,6 +2,9 @@
 using CoachBot.Model;
 using System.Linq;
 using Discord;
+using CoachBot.Domain.Model.Dtos;
+using CoachBot.Domain.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoachBot.Domain.Services
 {
@@ -12,6 +15,19 @@ namespace CoachBot.Domain.Services
         public PlayerService(CoachBotContext coachBotContext)
         {
             _coachBotContext = coachBotContext;
+        }
+
+        public Player GetPlayer(int playerId)
+        {
+            return _coachBotContext.Players.Single(p => p.Id == playerId);
+        }
+
+        public PagedResult<Player> GetPlayers(int page, int pageSize, string sortOrder)
+        {
+            return _coachBotContext.Players
+                .Include(p => p.PlayerStatisticTotals)
+                .Where(p => p.DiscordUserId != null)
+                .GetPaged(page, pageSize, sortOrder);
         }
 
         public Player GetPlayer(IUser user, bool createIfNotExists = false)

@@ -11,10 +11,6 @@ namespace CoachBot.Domain.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int PlayerId { get; set; }
-
-        public Player Player { get; set; }
-
         public StatisticTotals StatisticTotals { get; set; } = new StatisticTotals();
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

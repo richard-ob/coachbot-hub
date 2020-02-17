@@ -7,6 +7,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { RegionManagerComponent } from './pages/hub/region-manager/region-manager.component';
 import { RecentMatchesComponent } from './pages/hub/recent-matches/recent-matches.component';
+import { PlayerListComponent } from './pages/hub/player-list/player-list.component';
+import { PlayerProfileComponent } from './pages/hub/player-profile/player-profile.component';
 
 const routes: Routes = [
   {
@@ -28,6 +30,14 @@ const routes: Routes = [
   {
     path: 'recent-matches',
     component: RecentMatchesComponent
+  },
+  {
+    path: 'player-list',
+    component: PlayerListComponent
+  },
+  {
+    path: 'player-profile/:id',
+    component: PlayerProfileComponent
   },
   {
     path: 'login',

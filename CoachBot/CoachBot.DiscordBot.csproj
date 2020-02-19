@@ -37,6 +37,7 @@
     <Compile Include="Controllers\PlayerStatisticsController.cs" />
     <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
+    <Compile Include="Controllers\TeamStatisticsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
   </ItemGroup>
   <ItemGroup>

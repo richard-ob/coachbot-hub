@@ -50,6 +50,7 @@ namespace CoachBot.Bot
             Console.WriteLine("Connecting..");
             await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
             await _client.StartAsync();
+            await _client.SetGameAsync("IOSoccer Hub", "http://hub.iosoccer.com");
 
             _client.Connected += Connected;
             _client.Disconnected += Disconnected;

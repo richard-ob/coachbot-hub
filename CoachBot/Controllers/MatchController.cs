@@ -2,14 +2,12 @@
 using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
 using CoachBot.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoachBot.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    [Authorize]
     public class MatchController : Controller
     {
         private readonly MatchService _matchService;

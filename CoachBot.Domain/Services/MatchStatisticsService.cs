@@ -4,6 +4,7 @@ using CoachBot.Domain.Model;
 using CoachBot.Domain.Model.Dtos;
 using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace CoachBot.Domain.Services
@@ -50,31 +51,55 @@ namespace CoachBot.Domain.Services
               .GetPaged(page, pageSize, sortOrder);
         }
 
+        public void GenerateStatistics()
+        {
+            var matches = _coachBotContext.Matches
+                .Include(m => m.MatchStatistics)
+                .Where(m => m.MatchStatistics != null);
+            
+            foreach(var match in matches)
+            {
+                GenerateTeamStatisticTotals(match);
+                GeneratePlayerStatisticTotals(match);
+                _coachBotContext.SaveChanges();
+            }
+        }
+
         #region Private Methods
 
         private void GenerateTeamStatisticTotals(Match match)
         {
-            var homeTeamStatisticTotals = _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.TeamHome.ChannelId);
-            if (homeTeamStatisticTotals == null)
+            foreach (var timePeriod in Enum.GetValues(typeof(StatisticsTimePeriod)))
             {
-                homeTeamStatisticTotals = new TeamStatisticTotals
-                {
-                    ChannelId = (int)match.TeamHome.ChannelId
-                };
-                _coachBotContext.TeamStatisticTotals.Add(homeTeamStatisticTotals);
-            }
-            AddMatchDataTotalsToTeamStatisticTotals(ref homeTeamStatisticTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Home);
+                var timePeriodDays = (int)timePeriod;
+                if (DateTime.Now.AddDays(-timePeriodDays) > match.ReadiedDate && (StatisticsTimePeriod)timePeriod != StatisticsTimePeriod.AllTime) continue;
 
-            var awayTeamStatisticsTotals = _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.TeamAway.ChannelId);
-            if (awayTeamStatisticsTotals == null)
-            {
-                awayTeamStatisticsTotals = new TeamStatisticTotals
+                var homeTeamStatisticTotals = 
+                    _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.TeamHome.ChannelId && t.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
+
+                if (homeTeamStatisticTotals == null)
                 {
-                    ChannelId = (int)match.TeamAway.ChannelId
-                };
-                _coachBotContext.TeamStatisticTotals.Add(awayTeamStatisticsTotals);
+                    homeTeamStatisticTotals = new TeamStatisticTotals
+                    {
+                        ChannelId = (int)match.TeamHome.ChannelId
+                    };
+                    _coachBotContext.TeamStatisticTotals.Add(homeTeamStatisticTotals);
+                }
+                AddMatchDataTotalsToTeamStatisticTotals(ref homeTeamStatisticTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Home);
+
+                var awayTeamStatisticsTotals = 
+                    _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.TeamAway.ChannelId && t.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
+
+                if (awayTeamStatisticsTotals == null)
+                {
+                    awayTeamStatisticsTotals = new TeamStatisticTotals
+                    {
+                        ChannelId = (int)match.TeamAway.ChannelId
+                    };
+                    _coachBotContext.TeamStatisticTotals.Add(awayTeamStatisticsTotals);
+                }
+                AddMatchDataTotalsToTeamStatisticTotals(ref awayTeamStatisticsTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Away);
             }
-            AddMatchDataTotalsToTeamStatisticTotals(ref awayTeamStatisticsTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Away);
         }
 
         private void AddMatchDataTotalsToTeamStatisticTotals(ref TeamStatisticTotals teamStatisticTotals, MatchData matchData, MatchDataTeamType matchDataTeamType)
@@ -96,20 +121,27 @@ namespace CoachBot.Domain.Services
         {
             foreach (var matchDataPlayer in match.MatchStatistics.MatchData.Players)
             {
-                var player = _coachBotContext.Players.FirstOrDefault(p => p.SteamID == matchDataPlayer.Info.SteamId);
-                var playerStatisticTotals = _coachBotContext.PlayerStatisticTotals.FirstOrDefault(p => player != null && p.PlayerId == player.Id) ?? new PlayerStatisticTotals();
-                if (player == null)
+                foreach(var timePeriod in Enum.GetValues(typeof(StatisticsTimePeriod)))
                 {
-                    player = new Player()
+                    var timePeriodDays = (int)timePeriod;
+                    if (DateTime.Now.AddDays(-timePeriodDays) > match.ReadiedDate && (StatisticsTimePeriod)timePeriod != StatisticsTimePeriod.AllTime) continue;
+
+                    var player = _coachBotContext.Players.FirstOrDefault(p => p.SteamID == matchDataPlayer.Info.SteamId);
+                    var playerStatisticTotals =
+                        _coachBotContext.PlayerStatisticTotals.FirstOrDefault(p => player != null && p.PlayerId == player.Id && p.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod) ?? new PlayerStatisticTotals((StatisticsTimePeriod)timePeriod);
+                    if (player == null)
                     {
-                        Name = matchDataPlayer.Info.Name,
-                        SteamID = matchDataPlayer.Info.SteamId
-                    };
-                    _coachBotContext.Players.Add(player);
-                    playerStatisticTotals.Player = player;
-                    _coachBotContext.PlayerStatisticTotals.Add(playerStatisticTotals);
+                        player = new Player()
+                        {
+                            Name = matchDataPlayer.Info.Name,
+                            SteamID = matchDataPlayer.Info.SteamId
+                        };
+                        _coachBotContext.Players.Add(player);
+                        playerStatisticTotals.Player = player;
+                        _coachBotContext.PlayerStatisticTotals.Add(playerStatisticTotals);
+                    }
+                    AddMatchDataTotalsToPlayerStatisticTotals(ref playerStatisticTotals, match.MatchStatistics.MatchData, player.SteamID);
                 }
-                AddMatchDataTotalsToPlayerStatisticTotals(ref playerStatisticTotals, match.MatchStatistics.MatchData, player.SteamID);
             }
         }
 

@@ -8,6 +8,7 @@ namespace CoachBot.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
+    [ApiController]
     public class TeamStatisticsController : Controller
     {
         private readonly MatchStatisticsService _matchStatisticsService;

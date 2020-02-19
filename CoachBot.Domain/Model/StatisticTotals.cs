@@ -92,5 +92,7 @@ namespace CoachBot.Domain.Model
         public int Draws { get; set; }
 
         public int Losses { get; set; }
+
+        public StatisticsTimePeriod TimePeriod { get; set; }
     }
 }

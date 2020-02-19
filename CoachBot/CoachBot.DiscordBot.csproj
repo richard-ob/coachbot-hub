@@ -34,6 +34,7 @@
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\MatchStatisticController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\PlayerStatisticsController.cs" />
     <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\UserController.cs" />

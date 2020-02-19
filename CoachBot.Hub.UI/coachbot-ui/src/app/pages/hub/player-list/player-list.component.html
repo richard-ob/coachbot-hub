@@ -29,8 +29,8 @@
                 </thead>
                 <tbody>
                     <tr
-                        *ngFor="let player of players | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
-                        <td class="team-result__score">{{player.name}}</td>
+                        *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
+                        <td class="team-result__score">{{statistics.player.name}}</td>
                         <td class="team-result__vs">
                             <a href="http://steamcommunity.com/id/thinge">Profile</a>
                         </td>
@@ -48,7 +48,7 @@
                         <td class="team-result__status">0</td>
                         <td class="team-result__status">0</td>
                         <td class="team-result__game-overview">
-                            <a [routerLink]="['../player-profile', player.id]"
+                            <a [routerLink]="['../player-profile', statistics.player.id]"
                                 class="btn btn-xs btn-outline-primary btn-block">Profile</a>
                         </td>
                     </tr>

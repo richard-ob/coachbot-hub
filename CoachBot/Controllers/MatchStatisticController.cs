@@ -79,17 +79,5 @@ namespace CoachBot.Controllers
 
             return Ok();
         }
-
-        [HttpGet]
-        public IActionResult GetPlayerLeaderboard(MatchDataStatisticType orderByMatchDataStatisticType, int regionId = 1)
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        public IActionResult GetTeamLeaderboard(MatchDataStatisticType orderByMatchDataStatisticType, int regionId = 1)
-        {
-            return Ok();
-        }
     }
 }

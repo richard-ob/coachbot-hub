@@ -25,7 +25,6 @@ namespace CoachBot.Domain.Services
         public PagedResult<Player> GetPlayers(int page, int pageSize, string sortOrder)
         {
             return _coachBotContext.Players
-                .Include(p => p.PlayerStatisticTotals)
                 .Where(p => p.DiscordUserId != null)
                 .GetPaged(page, pageSize, sortOrder);
         }

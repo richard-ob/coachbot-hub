@@ -30,10 +30,6 @@ namespace CoachBot.Model
 
         public bool DisableDMNotifications { get; set; }
 
-        public int? PlayerStatisticTotalsId { get; set; }
-
-        public PlayerStatisticTotals PlayerStatisticTotals { get; set; }
-
         public ICollection<PlayerTeamPosition> PlayerTeamPositions { get; set; }
 
         public ICollection<PlayerTeamSubstitute> PlayerSubstitutes { get; set; }

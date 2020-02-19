@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Player } from '../shared/model/player.model';
 import { PlayerService } from '../shared/services/player.service';
+import { PlayerStatistics } from '../shared/model/player-statistics.model';
 
 @Component({
     selector: 'app-player-list',
@@ -9,7 +9,7 @@ import { PlayerService } from '../shared/services/player.service';
 })
 export class PlayerListComponent implements OnInit {
 
-    players: Player[];
+    playerStatistics: PlayerStatistics[];
     currentPage = 1;
     totalPages: number;
     totalItems: number;
@@ -23,8 +23,8 @@ export class PlayerListComponent implements OnInit {
     }
 
     loadPage(page: number) {
-        this.playerService.getPlayers(page).subscribe(response => {
-            this.players = response.items;
+        this.playerService.getPlayerStatistics(page).subscribe(response => {
+            this.playerStatistics = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;
             this.totalItems = response.totalItems;

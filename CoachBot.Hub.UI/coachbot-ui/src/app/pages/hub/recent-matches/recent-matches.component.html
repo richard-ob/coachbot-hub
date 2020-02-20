@@ -27,13 +27,14 @@
                         <td class="team-result__vs">
                             <div class="team-meta">
                                 <strong
-                                    [attr.title]="match.teamHome.channel.name">{{match.teamHome.channel.teamCode}}</strong>
+                                    [attr.title]="match.teamHome.channel.name">{{match?.matchStatistics?.matchData.teams[0].matchTotal.name}}</strong>
                                 vs
                                 <strong
-                                    [attr.title]="match.teamAway.channel.name">{{match.teamAway.channel.teamCode}}</strong>
+                                    [attr.title]="match.teamAway.channel.name">{{match?.matchStatistics?.matchData.teams[1].matchTotal.name}}</strong>
                             </div>
                         </td>
-                        <td class="team-result__score">? - ?</td>
+                        <td class="team-result__score">{{match?.matchStatistics?.matchGoalsHome}} -
+                            {{match?.matchStatistics?.matchGoalsAway}}</td>
                         <td class="team-result__status">Ranked Friendly</td>
                         <td class="team-result__status">{{match.matchFormat}}</td>
                         <td class="team-result__ball-posession" title="{{match.server.country.name}}">

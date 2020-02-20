@@ -37,6 +37,8 @@ namespace CoachBot.Domain.Services
         public PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod)
         {
             return _coachBotContext.TeamStatisticTotals
+              .Include(ts => ts.Channel)
+                .ThenInclude(c => c.Region)
               .Include(ts => ts.StatisticTotals)
               .Where(ts => ts.StatisticTotals.TimePeriod == timePeriod)
               .GetPaged(page, pageSize, sortOrder);
@@ -55,6 +57,10 @@ namespace CoachBot.Domain.Services
         {
             var matches = _coachBotContext.Matches
                 .Include(m => m.MatchStatistics)
+                .Include(m => m.TeamHome)
+                    .ThenInclude(t => t.Channel)
+                .Include(m => m.TeamAway)
+                    .ThenInclude(t => t.Channel)
                 .Where(m => m.MatchStatistics != null);
             
             foreach(var match in matches)
@@ -79,9 +85,9 @@ namespace CoachBot.Domain.Services
 
                 if (homeTeamStatisticTotals == null)
                 {
-                    homeTeamStatisticTotals = new TeamStatisticTotals
+                    homeTeamStatisticTotals = new TeamStatisticTotals((StatisticsTimePeriod)timePeriod)
                     {
-                        ChannelId = (int)match.TeamHome.ChannelId
+                        ChannelId = (int)match.TeamHome.ChannelId,
                     };
                     _coachBotContext.TeamStatisticTotals.Add(homeTeamStatisticTotals);
                 }
@@ -92,7 +98,7 @@ namespace CoachBot.Domain.Services
 
                 if (awayTeamStatisticsTotals == null)
                 {
-                    awayTeamStatisticsTotals = new TeamStatisticTotals
+                    awayTeamStatisticsTotals = new TeamStatisticTotals((StatisticsTimePeriod)timePeriod)
                     {
                         ChannelId = (int)match.TeamAway.ChannelId
                     };
@@ -119,7 +125,7 @@ namespace CoachBot.Domain.Services
 
         private void GeneratePlayerStatisticTotals(Match match)
         {
-            foreach (var matchDataPlayer in match.MatchStatistics.MatchData.Players)
+            foreach (var matchDataPlayer in match.MatchStatistics.MatchData.Players.Where(p => p.MatchPeriodData != null && p.MatchPeriodData.Any()))
             {
                 foreach(var timePeriod in Enum.GetValues(typeof(StatisticsTimePeriod)))
                 {
@@ -127,8 +133,6 @@ namespace CoachBot.Domain.Services
                     if (DateTime.Now.AddDays(-timePeriodDays) > match.ReadiedDate && (StatisticsTimePeriod)timePeriod != StatisticsTimePeriod.AllTime) continue;
 
                     var player = _coachBotContext.Players.FirstOrDefault(p => p.SteamID == matchDataPlayer.Info.SteamId);
-                    var playerStatisticTotals =
-                        _coachBotContext.PlayerStatisticTotals.FirstOrDefault(p => player != null && p.PlayerId == player.Id && p.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod) ?? new PlayerStatisticTotals((StatisticsTimePeriod)timePeriod);
                     if (player == null)
                     {
                         player = new Player()
@@ -137,9 +141,18 @@ namespace CoachBot.Domain.Services
                             SteamID = matchDataPlayer.Info.SteamId
                         };
                         _coachBotContext.Players.Add(player);
-                        playerStatisticTotals.Player = player;
+                    }
+
+                    var playerStatisticTotals = _coachBotContext.PlayerStatisticTotals.FirstOrDefault(p => player != null && p.PlayerId == player.Id && p.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
+                    if (playerStatisticTotals == null)
+                    {
+                        playerStatisticTotals = new PlayerStatisticTotals((StatisticsTimePeriod)timePeriod)
+                        {
+                            PlayerId = player.Id
+                        };
                         _coachBotContext.PlayerStatisticTotals.Add(playerStatisticTotals);
                     }
+
                     AddMatchDataTotalsToPlayerStatisticTotals(ref playerStatisticTotals, match.MatchStatistics.MatchData, player.SteamID);
                 }
             }

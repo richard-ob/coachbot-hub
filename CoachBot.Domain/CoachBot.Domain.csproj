@@ -25,4 +25,8 @@
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.20" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\SeedData\" />
+  </ItemGroup>
+
 </Project>

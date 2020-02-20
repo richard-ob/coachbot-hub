@@ -24,5 +24,9 @@ namespace CoachBot.Domain.Model
         {
             StatisticTotals.TimePeriod = timePeriod;
         }
+
+        public PlayerStatisticTotals()
+        {
+        }
     }
 }

@@ -1,6 +1,6 @@
 <!-- Page Heading
 ================================================== -->
-<div class="page-heading p-0">
+<div *ngIf="sampleMatchData" class="page-heading p-0">
     <div class="container">
         <div class="row">
             <div class="col-md-10 offset-md-1">
@@ -90,7 +90,7 @@
 
 <!-- Content
 ================================================== -->
-<div class="site-content">
+<div *ngIf="sampleMatchData" class="site-content">
     <div class="container">
 
         <div class="row">
@@ -326,7 +326,7 @@
                         <ul class="commentary">
                             <ng-container *ngFor="let matchEvent of sampleMatchData.matchEvents">
                                 <li *ngIf="matchEvent.event !== eventType.Null" class="commentary__item">
-                                    <span class="commentary__time">{{matchEvent.second | secondsToMinutes}}</span>
+                                    <span class="commentary__time">{{matchEvent.second | secondsToMinutes}}'</span>
                                     <div [ngSwitch]="matchEvent.event" class="commentary__icon">
                                         <i *ngSwitchCase="eventType.Foul" class="icon-svg icon-whistle"></i>
                                         <i *ngSwitchCase="eventType.Goal" class="icon-svg icon-soccer-ball"></i>
@@ -367,5 +367,3 @@
 </div>
 
 <!-- Content / End -->
-<input type="text" #newJson class="form-control">
-<button (click)="loadJson(newJson.value)" class="btn btn-primary">Load</button>

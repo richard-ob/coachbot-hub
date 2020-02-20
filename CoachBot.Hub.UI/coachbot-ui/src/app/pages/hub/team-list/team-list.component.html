@@ -1,0 +1,55 @@
+<div class="container my-4">
+    <!-- Team Latest Results -->
+    <div class="card card--has-table">
+        <div class="card__header card__header--has-btn">
+            <h4>Teams</h4>
+            <!-- Result Filter -->
+            <!-- Result Filter / End -->
+        </div>
+        <div class="card__content">
+            <app-spinner *ngIf="!teamStatistics"></app-spinner>
+            <table *ngIf="teamStatistics" class="table table--large">
+                <thead>
+                    <tr>
+                        <th class="team-result__date">Team</th>
+                        <th class="team-result__date">Region</th>
+                        <th class="team-result__status">Appearances</th>
+                        <th class="team-result__game-overview">Wins</th>
+                        <th class="team-result__game-overview">Losses</th>
+                        <th class="team-result__game-overview">Draws</th>
+                        <th class="team-result__status">Goals</th>
+                        <th class="team-result__ball-posession">Yellow Cards</th>
+                        <th class="team-result__game-overview">Red Cards</th>
+                        <th class="team-result__game-overview">Assists</th>
+                        <th class="team-result__game-overview">Avg. Passes</th>
+                        <th class="team-result__game-overview">Avg. Distance</th>
+                        <th class="team-result__game-overview"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let statistics of teamStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
+                        <td class="team-result__score">{{statistics.channel.name}}</td>
+                        <td class="team-result__status">{{statistics.channel.region.regionCode}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.matches}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.wins}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.losses}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.draws}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.goals}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.yellowCards}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.redCards}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.assists}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.passes}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.distanceCovered}}</td>
+                        <td class="team-result__game-overview">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="totalPages > 1" class="text-center">
+        <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
+    </div>
+</div>
+<!-- Team Latest Results / End -->

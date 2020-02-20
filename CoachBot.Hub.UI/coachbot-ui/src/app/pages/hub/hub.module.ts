@@ -19,6 +19,7 @@ import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PlayerListComponent } from './player-list/player-list.component';
 import { PlayerProfileComponent } from './player-profile/player-profile.component';
+import { TeamListComponent } from './team-list/team-list.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { PlayerProfileComponent } from './player-profile/player-profile.componen
     RegionManagerComponent,
     RecentMatchesComponent,
     PlayerListComponent,
-    PlayerProfileComponent
+    PlayerProfileComponent,
+    TeamListComponent
   ],
   imports: [
     CommonModule,

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Player } from '../shared/model/player.model';
 import { PlayerService } from '../shared/services/player.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-player-profile',
@@ -10,21 +11,16 @@ import { PlayerService } from '../shared/services/player.service';
 export class PlayerProfileComponent implements OnInit {
 
     player: Player;
-    currentPage = 1;
-    totalPages: number;
-    totalItems: number;
 
-    constructor(private playerService: PlayerService) {
+    constructor(private playerService: PlayerService, private route: ActivatedRoute) {
 
     }
 
     ngOnInit() {
-        this.loadPage(1);
-    }
-
-    loadPage(playerId: number) {
-        this.playerService.getPlayer(1).subscribe(response => {
-            this.player = response;
+        this.route.paramMap.pipe().subscribe(params => {
+            this.playerService.getPlayer(+params.get('id')).subscribe(response => {
+                this.player = response;
+            });
         });
     }
 

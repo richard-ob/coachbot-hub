@@ -79,7 +79,7 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Generate()
         {
             _matchStatisticsService.GenerateStatistics();

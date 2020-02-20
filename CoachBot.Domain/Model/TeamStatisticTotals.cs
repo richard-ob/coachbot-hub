@@ -19,5 +19,13 @@ namespace CoachBot.Domain.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 
+        public TeamStatisticTotals(StatisticsTimePeriod timePeriod)
+        {
+            StatisticTotals.TimePeriod = timePeriod;
+        }
+
+        public TeamStatisticTotals()
+        {
+        }
     }
 }

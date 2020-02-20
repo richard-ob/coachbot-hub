@@ -109,6 +109,7 @@ namespace CoachBot
             provider.GetService<BotInstance>();
 
             provider.GetService<CoachBotContext>().Initialize();
+            provider.GetService<CoachBotContext>().SeedMatchData();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

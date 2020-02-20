@@ -4,26 +4,92 @@
         <div class="card__header card__header--has-btn">
             <h4>Players</h4>
             <!-- Result Filter -->
+            <ul class="team-result-filter">
+                <li class="team-result-filter__item">
+                    <select class="form-control" #timePeriodSelect>
+                        <option value=0>All Time</option>
+                        <option value="365">Year</option>
+                        <option value="31">Month</option>
+                        <option value="7">Week</option>
+                    </select>
+                </li>
+                <li class="team-result-filter__item">
+                    <button type="button" class="btn btn-default btn-outline btn-xs card-header__button"
+                        (click)="setTimePeriod(timePeriodSelect.value)">
+                        Filter By Time Period
+                    </button>
+                </li>
+            </ul>
             <!-- Result Filter / End -->
         </div>
         <div class="card__content">
-            <app-spinner *ngIf="!players"></app-spinner>
-            <table *ngIf="players" class="table table--large">
+            <app-spinner *ngIf="!playerStatistics"></app-spinner>
+            <table *ngIf="playerStatistics" class="table table--large">
                 <thead>
                     <tr>
                         <th class="team-result__date">Name</th>
                         <th class="team-result__vs">Steam</th>
                         <th>Nationality</th>
-                        <th class="team-result__status">Appearances</th>
-                        <th class="team-result__status">Goals</th>
+                        <th style="cursor: pointer" class="team-result__status"
+                            (click)="loadPage(currentPage, 'StatisticTotals.Matches')">
+                            <span style=" white-space: nowrap; ">
+                                Appearances&nbsp;
+                                <i *ngIf="sortBy === 'StatisticTotals.Matches' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'StatisticTotals.Matches' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'StatisticTotals.Matches'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
+                        <th style="cursor: pointer" class="team-result__status"
+                            (click)="loadPage(currentPage, 'StatisticTotals.Wins')">
+                            <span style=" white-space: nowrap; ">
+                                    Wins&nbsp;
+                                <i *ngIf="sortBy === 'StatisticTotals.Wins' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'StatisticTotals.Wins' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'StatisticTotals.Wins'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
+                        <th style="cursor: pointer" class="team-result__status"
+                            (click)="loadPage(currentPage, 'StatisticTotals.Losses')">
+                            <span style=" white-space: nowrap; ">
+                                    Losses&nbsp;
+                                <i *ngIf="sortBy === 'StatisticTotals.Losses' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'StatisticTotals.Losses' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'StatisticTotals.Losses'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
+                        <th style="cursor: pointer" class="team-result__status"
+                            (click)="loadPage(currentPage, 'StatisticTotals.Draws')">
+                            <span style=" white-space: nowrap; ">
+                                    Draws&nbsp;
+                                <i *ngIf="sortBy === 'StatisticTotals.Draws' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'StatisticTotals.Draws' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'StatisticTotals.Draws'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
+                        <th style="cursor: pointer" class="team-result__status"
+                            (click)="loadPage(currentPage, 'StatisticTotals.Goals')">
+                            <span style=" white-space: nowrap; ">
+                                    Goals&nbsp;
+                                <i *ngIf="sortBy === 'StatisticTotals.Goals' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'StatisticTotals.Goals' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'StatisticTotals.Goals'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
                         <th class="team-result__ball-posession">Yellow Cards</th>
                         <th class="team-result__game-overview">Red Cards</th>
                         <th class="team-result__game-overview">Assists</th>
                         <th class="team-result__game-overview">Avg. Passes</th>
                         <th class="team-result__game-overview">Avg. Distance</th>
-                        <th class="team-result__game-overview">Wins</th>
-                        <th class="team-result__game-overview">Losses</th>
-                        <th class="team-result__game-overview">Draws</th>
                         <th class="team-result__game-overview"></th>
                     </tr>
                 </thead>
@@ -32,21 +98,22 @@
                         *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
                         <td class="team-result__score">{{statistics.player.name}}</td>
                         <td class="team-result__vs">
-                            <a href="http://steamcommunity.com/id/thinge">Profile</a>
+                            <a *ngIf="statistics.player.steamID && statistics.player.steamID !== 'BOT'"
+                                [attr.href]="getSteamProfileLink(statistics.player.steamID)">Profile</a>
                         </td>
                         <td class="team-result__ball-posession">
                             <img src="https://www.countryflags.io/gb/flat/24.png">
                         </td>
-                        <td class="team-result__status">0</td>
-                        <td class="team-result__status">0</td>
-                        <td class="team-result__status">0</td>
-                        <td class="team-result__status">0</td>
-                        <td class="team-result__status">0</td>
-                        <td class="team-result__status">0</td>
-                        <td class="team-result__status">0</td>
-                        <td class="team-result__status">0</td>
-                        <td class="team-result__status">0</td>
-                        <td class="team-result__status">0</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.matches}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.wins}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.losses}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.draws}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.goals}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.yellowCards}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.redCards}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.assists}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.passes}}</td>
+                        <td class="team-result__status">{{statistics.statisticTotals.distanceCovered}}</td>
                         <td class="team-result__game-overview">
                             <a [routerLink]="['../player-profile', statistics.player.id]"
                                 class="btn btn-xs btn-outline-primary btn-block">Profile</a>
@@ -56,7 +123,7 @@
             </table>
         </div>
     </div>
-    <div *ngIf="totalPages > 1" class="text-center">
+    <div *ngIf="totalPages > 1" class="text-center mb-4">
         <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
     </div>
 </div>

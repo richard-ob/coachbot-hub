@@ -8,6 +8,7 @@ import { PagedPlayerRequestDto } from '../model/dtos/paged-player-request-dto.mo
 import { Player } from '../model/player.model';
 import { PlayerStatistics } from '../model/player-statistics.model';
 import { PagedPlayerStatisticsRequestDto } from '../model/dtos/paged-player-statistics-request-dto.model';
+import { TimePeriod } from '../model/time-period.enum';
 
 @Injectable({
     providedIn: 'root'
@@ -27,9 +28,15 @@ export class PlayerService {
         return this.http.get<Player>(`${environment.apiUrl}/api/player/${playerId}`);
     }
 
-    getPlayerStatistics(page: number): Observable<PagedResult<PlayerStatistics>> {
+    getPlayerStatistics(page: number, sortBy: string = null, sortOrder: string, timePeriod: number = 0)
+        : Observable<PagedResult<PlayerStatistics>> {
         const pagedPlayerStatisticsRequestDto = new PagedPlayerStatisticsRequestDto();
         pagedPlayerStatisticsRequestDto.page = page;
+        pagedPlayerStatisticsRequestDto.timePeriod = timePeriod;
+        pagedPlayerStatisticsRequestDto.sortOrder = sortOrder;
+        if (sortBy !== null) {
+            pagedPlayerStatisticsRequestDto.sortBy = sortBy;
+        }
 
         return this.http.post<PagedResult<PlayerStatistics>>(`${environment.apiUrl}/api/playerstatistics`, pagedPlayerStatisticsRequestDto);
     }

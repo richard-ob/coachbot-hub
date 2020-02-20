@@ -9,6 +9,7 @@ import { RegionManagerComponent } from './pages/hub/region-manager/region-manage
 import { RecentMatchesComponent } from './pages/hub/recent-matches/recent-matches.component';
 import { PlayerListComponent } from './pages/hub/player-list/player-list.component';
 import { PlayerProfileComponent } from './pages/hub/player-profile/player-profile.component';
+import { TeamListComponent } from './pages/hub/team-list/team-list.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
   {
     path: 'player-list',
     component: PlayerListComponent
+  },
+  {
+    path: 'team-list',
+    component: TeamListComponent
   },
   {
     path: 'player-profile/:id',

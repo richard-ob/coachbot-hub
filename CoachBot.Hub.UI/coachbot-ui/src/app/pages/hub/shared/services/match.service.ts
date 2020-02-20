@@ -22,7 +22,7 @@ export class MatchService {
         return this.http.post<PagedResult<Match>>(`${environment.apiUrl}/api/match`, pagedMatchRequestDto);
     }
 
-    getMatch(matchId: number): Observable<PagedResult<Match>> {
-        return this.http.get<PagedResult<Match>>(`${environment.apiUrl}/api/match/${matchId}`);
+    getMatch(matchId: number): Observable<Match> {
+        return this.http.get<Match>(`${environment.apiUrl}/api/match/${matchId}`);
     }
 }

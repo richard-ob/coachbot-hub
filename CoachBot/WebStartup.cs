@@ -62,6 +62,7 @@ namespace CoachBot
                 .AddJsonOptions(options =>
                 {
                     options.SerializerSettings.Converters.Add(new UlongToStringConverter());
+                    options.SerializerSettings.Converters.Add(new UlongNullableToStringConverter());
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 

@@ -1,4 +1,5 @@
-﻿using CoachBot.Domain.Model;
+﻿using CoachBot.Bot.Preconditions;
+using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Preconditions;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace CoachBot.Modules
 {
+    [RequireChannelConfigured]
+    [RequireChannelAndTeamActive]
     public class ServerManagementModule : ModuleBase
     {
         private readonly ServerService _serverService;
@@ -38,7 +41,6 @@ namespace CoachBot.Modules
         }
 
         [Command("!enablesinglekeeper")]
-        [RequireChannelConfigured]
         public async Task EnableSingleKeeperAsync(int serverListItemId)
         {
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
@@ -54,7 +56,6 @@ namespace CoachBot.Modules
         }
 
         [Command("!disablesinglekeeper")]
-        [RequireChannelConfigured]
         public async Task DisableSingleKeeperAsync(int serverListItemId)
         {
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))

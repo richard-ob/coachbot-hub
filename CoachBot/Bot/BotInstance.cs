@@ -61,6 +61,23 @@ namespace CoachBot.Bot
 
             _handler = new CommandHandler(_serviceProvider);
             await _handler.ConfigureAsync();
+
+            EnsureConnected();
+        }
+
+        private async void EnsureConnected()
+        {
+            Task.Delay(TimeSpan.FromMinutes(10)).Wait();
+
+            if (_client.ConnectionState != ConnectionState.Connected || _client.LoginState != LoginState.LoggedIn)
+            {
+                Console.WriteLine("Attempting reconnection");
+                await _client.LogoutAsync();
+                await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
+                await _client.StartAsync();
+            }
+
+            EnsureConnected();
         }
 
         private Task Connected()

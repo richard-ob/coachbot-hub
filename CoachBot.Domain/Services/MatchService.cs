@@ -6,7 +6,6 @@ using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace CoachBot.Domain.Services
@@ -167,7 +166,7 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Teamsheet successfully reset");
         }
 
-        public ServiceResponse AddPlayerToTeam(ulong channelId, Player player, string positionName = null, TeamType teamType = TeamType.Home)
+        public ServiceResponse AddPlayerToLineup(ulong channelId, Player player, string positionName = null, TeamType teamType = TeamType.Home)
         {
             const string GK_POSITION = "GK";
             var match = GetCurrentMatchForChannel(channelId);
@@ -204,7 +203,7 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.Success, $"Signed **{player.DisplayName}** to **{position.Name}** for **{team.Channel.Team.Name}**");
         }
 
-        public ServiceResponse AddSubsitutePlayerToTeam(ulong channelId, Player player, TeamType teamType = TeamType.Home)
+        public ServiceResponse AddSubsitutePlayerToLineup(ulong channelId, Player player, TeamType teamType = TeamType.Home)
         {
             var match = GetCurrentMatchForChannel(channelId);
             if (match.LineupHome.PlayerSubstitutes is null) match.LineupHome.PlayerSubstitutes = new List<PlayerLineupSubstitute>();
@@ -327,7 +326,7 @@ namespace CoachBot.Domain.Services
 
             if (opposition.IsMixChannel)
             {
-                CombineMixTeams(oppositionMatch, opposition);
+                CombineMixLineups(oppositionMatch, opposition);
             }
 
             _searchService.StopSearch(challenger.Id);
@@ -389,7 +388,7 @@ namespace CoachBot.Domain.Services
             if (sub != null)
             {
                 RemovePlayerSubstituteFromTeam(team, sub);
-                AddPlayerToTeam(team.Channel.DiscordChannelId, sub, position.Name, team.TeamType);
+                AddPlayerToLineup(team.Channel.DiscordChannelId, sub, position.Name, team.TeamType);
             }
 
             return sub;
@@ -412,7 +411,7 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        private void CombineMixTeams(Match match, Channel channel)
+        private void CombineMixLineups(Match match, Channel channel)
         {
             var unoccupiedHomePositions = channel.ChannelPositions.Where(cp => !match.LineupHome.OccupiedPositions.Any(op => cp.PositionId == op.Id));
             var transferrablePositions = unoccupiedHomePositions.Where(up => match.LineupAway.OccupiedPositions.Any(op => op.Id == up.PositionId));

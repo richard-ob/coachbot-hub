@@ -8,9 +8,11 @@ using CoachBot.Tools;
 using CoachBot.Extensions;
 using CoachBot.Domain.Model;
 using System.Linq;
+using CoachBot.Bot.Preconditions;
 
 namespace CoachBot.Modules.Matchmaker
 {
+    [RequireChannelAndTeamActive]
     public class MatchmakingModule : ModuleBase
     {
         private readonly MatchmakingService _channelMatchService;

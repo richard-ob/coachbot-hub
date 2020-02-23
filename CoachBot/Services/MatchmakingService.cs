@@ -62,7 +62,7 @@ namespace CoachBot.Services
         {
             var player = _playerService.GetPlayer(user, createIfNotExists: true);
             var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
-            var response = _matchService.AddPlayerToTeam(channelId, player, positionName, teamType);
+            var response = _matchService.AddPlayerToLineup(channelId, player, positionName, teamType);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
@@ -71,7 +71,7 @@ namespace CoachBot.Services
         {
             var player = _playerService.GetPlayer(userName, createIfNotExists: true);
             var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
-            var response = _matchService.AddPlayerToTeam(channelId, player, positionName, teamType);
+            var response = _matchService.AddPlayerToLineup(channelId, player, positionName, teamType);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
@@ -282,7 +282,7 @@ namespace CoachBot.Services
             var player = _playerService.GetPlayer(user);
             var teamType = _channelService.GetTeamTypeForChannelTeamType(ChannelTeamType.TeamOne, channelId);
 
-            var response = _matchService.AddSubsitutePlayerToTeam(channelId, player, teamType);
+            var response = _matchService.AddSubsitutePlayerToLineup(channelId, player, teamType);
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }

@@ -155,6 +155,7 @@ namespace CoachBot.Domain.Services
                     }
 
                     AddMatchDataTotalsToPlayerStatisticTotals(ref playerStatisticTotals, match.MatchStatistics.MatchData, player.SteamID);
+                    _coachBotContext.SaveChanges();
                 }
             }
         }

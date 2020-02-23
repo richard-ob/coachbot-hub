@@ -53,3 +53,61 @@
         <!-- Player Stats / End -->
     </div>
 </div>
+
+<div class="container my-4">
+    <!-- Team Latest Results -->
+    <div class="card card--has-table">
+        <div class="card__header card__header--has-btn">
+            <h4>Matches</h4>
+            <!-- Result Filter -->
+            <!-- Result Filter / End -->
+        </div>
+        <div class="card__content">
+            <app-spinner *ngIf="!matches"></app-spinner>
+            <table *ngIf="matches" class="table table--large">
+                <thead>
+                    <tr>
+                        <th class="team-result__date">Date</th>
+                        <th class="team-result__vs">Match</th>
+                        <th class="team-result__score">Score</th>
+                        <th class="team-result__status">Match Type</th>
+                        <th class="team-result__status">Match Format</th>
+                        <th class="team-result__ball-posession">Location</th>
+                        <th class="team-result__game-overview">Match Overview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
+                        <td class="team-result__date">{{match.readiedDate | date:'medium'}}</td>
+                        <td class="team-result__vs">
+                            <div class="team-meta">
+                                <strong
+                                    [attr.title]="match.lineupHome.channel.name">{{match?.matchStatistics?.matchData.teams[0].matchTotal.name}}</strong>
+                                vs
+                                <strong
+                                    [attr.title]="match.lineupAway.channel.name">{{match?.matchStatistics?.matchData.teams[1].matchTotal.name}}</strong>
+                            </div>
+                        </td>
+                        <td class="team-result__score">{{match?.matchStatistics?.matchGoalsHome}} -
+                            {{match?.matchStatistics?.matchGoalsAway}}</td>
+                        <td class="team-result__status">Ranked Friendly</td>
+                        <td class="team-result__status">{{match.matchFormat}}</td>
+                        <td class="team-result__ball-posession" title="{{match.server.country.name}}">
+                            <img src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png">
+
+                        </td>
+                        <td class="team-result__game-overview">
+                            <a [routerLink]="['/match-overview', match.id]"
+                                class="btn btn-xs btn-outline-primary btn-block">See Match Overview</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="totalPages > 1" class="text-center">
+        <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
+    </div>
+</div>
+<!-- Team Latest Results / End -->

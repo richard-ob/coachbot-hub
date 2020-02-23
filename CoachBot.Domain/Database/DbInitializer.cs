@@ -166,14 +166,47 @@ namespace CoachBot.Database
                         LineupHome = new Lineup()
                         {
                             ChannelId = context.Channels.First().Id,
-                            TeamType = TeamType.Home
+                            TeamType = TeamType.Home,
+                            PlayerLineupPositions = new List<PlayerLineupPosition>()
                         },
                         LineupAway = new Lineup()
                         {
                             ChannelId = context.Channels.First(c => c.Id != context.Channels.First().Id).Id,
-                            TeamType = TeamType.Away                            
+                            TeamType = TeamType.Away,
+                            PlayerLineupPositions = new List<PlayerLineupPosition>()
                         }
                     };
+
+                    int currentPlayer = 1;
+                    foreach (var player in match.MatchStatistics.MatchData.Players)
+                    {
+                        var newPlayer = new Player()
+                        {
+                            SteamID = player.Info.SteamId64,
+                            Name = player.Info.Name
+                        };
+
+                        if (currentPlayer > 8)
+                        {
+                            match.LineupAway.PlayerLineupPositions.Add(new PlayerLineupPosition()
+                            {
+                                Lineup = match.LineupAway,
+                                Player = newPlayer,
+                                Position = new Position() { Name = "XXX" }
+                            });
+                        }
+                        else
+                        {
+                            match.LineupHome.PlayerLineupPositions.Add(new PlayerLineupPosition()
+                            {
+                                Lineup = match.LineupHome,
+                                Player = newPlayer,
+                                Position = new Position() { Name = "XXX" }
+                            });
+                        }
+
+                        currentPlayer++;
+                    }
 
                     context.Matches.Add(match);
                 }

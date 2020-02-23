@@ -27,10 +27,10 @@
                         <td class="team-result__vs">
                             <div class="team-meta">
                                 <strong
-                                    [attr.title]="match.teamHome.channel.name">{{match?.matchStatistics?.matchData.teams[0].matchTotal.name}}</strong>
+                                    [attr.title]="match.lineupHome.channel.name">{{match?.matchStatistics?.matchData.teams[0].matchTotal.name}}</strong>
                                 vs
                                 <strong
-                                    [attr.title]="match.teamAway.channel.name">{{match?.matchStatistics?.matchData.teams[1].matchTotal.name}}</strong>
+                                    [attr.title]="match.lineupAway.channel.name">{{match?.matchStatistics?.matchData.teams[1].matchTotal.name}}</strong>
                             </div>
                         </td>
                         <td class="team-result__score">{{match?.matchStatistics?.matchGoalsHome}} -

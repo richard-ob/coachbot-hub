@@ -11,7 +11,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
             if (err instanceof HttpErrorResponse) {
-                if (err.status === 401 && !request.url.endsWith('user')) {
+                if (err.status === 401) {
                     this.router.navigate(['/login']);
                 }
             }

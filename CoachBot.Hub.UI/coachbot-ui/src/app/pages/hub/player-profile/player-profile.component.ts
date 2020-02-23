@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { SteamService } from '../shared/services/steam.service.';
 import { SteamUserProfile } from '../shared/model/steam-user-profile.model';
 import * as humanizeDuration from 'humanize-duration';
+import { Match } from '../shared/model/match.model';
+import { MatchService } from '../shared/services/match.service';
 
 @Component({
     selector: 'app-player-profile',
@@ -17,10 +19,16 @@ export class PlayerProfileComponent implements OnInit {
     steamUserProfile: SteamUserProfile;
     playingTime: string;
     isLoading = true;
+    matches: Match[];
+    currentPage = 1;
+    totalPages: number;
+    totalItems: number;
 
-    constructor(private playerService: PlayerService, private steamService: SteamService, private route: ActivatedRoute) {
-
-    }
+    constructor(
+        private playerService: PlayerService,
+        private steamService: SteamService,
+        private matchService: MatchService,
+        private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
@@ -35,10 +43,21 @@ export class PlayerProfileComponent implements OnInit {
                                 this.playingTime = humanizeDuration(iosoccerStats.playtime_forever * 60 * 1000);
                             }
                         }
+                        this.loadPage(1);
                         this.isLoading = false;
                     });
                 });
             });
+        });
+    }
+
+
+    loadPage(page: number) {
+        this.matchService.getMatchesForPlayer(1, this.player.id, page).subscribe(response => {
+            this.matches = response.items;
+            this.currentPage = response.page;
+            this.totalPages = response.totalPages;
+            this.totalItems = response.totalItems;
         });
     }
 }

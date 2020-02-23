@@ -33,9 +33,9 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.GetMatchById(matchId);
         }
 
-        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder)
+        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId)
         {
-            return _coachBotContext.Matches
+            var queryable = _coachBotContext.Matches
                 .Include(m => m.LineupHome)
                     .ThenInclude(th => th.Channel)
                 .Include(m => m.LineupAway)
@@ -44,8 +44,14 @@ namespace CoachBot.Domain.Services
                 .Include(s => s.Server)
                     .ThenInclude(s => s.Country)
                 .Where(m => m.ReadiedDate != null)
-                .Where(m => m.Server.RegionId == regionId)
-                .GetPaged(page, pageSize, sortOrder);
+                .Where(m => m.Server.RegionId == regionId);
+
+            if (playerId != null)
+            {
+                queryable = queryable.Where(m => m.LineupHome.PlayerLineupPositions.Any(plp => plp.PlayerId == playerId) || m.LineupAway.PlayerLineupPositions.Any(plp => plp.PlayerId == playerId));
+            }
+
+            return queryable.GetPaged(page, pageSize, sortOrder);
         }
 
         public Match GetCurrentMatchForChannel(ulong channelId)

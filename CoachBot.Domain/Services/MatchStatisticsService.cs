@@ -38,7 +38,8 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.TeamStatisticTotals
               .Include(ts => ts.Channel)
-                .ThenInclude(c => c.Region)
+                .ThenInclude(c => c.Team)
+                .ThenInclude(t => t.Region)
               .Include(ts => ts.StatisticTotals)
               .Where(ts => ts.StatisticTotals.TimePeriod == timePeriod)
               .GetPaged(page, pageSize, sortOrder);
@@ -57,9 +58,9 @@ namespace CoachBot.Domain.Services
         {
             var matches = _coachBotContext.Matches
                 .Include(m => m.MatchStatistics)
-                .Include(m => m.TeamHome)
+                .Include(m => m.LineupHome)
                     .ThenInclude(t => t.Channel)
-                .Include(m => m.TeamAway)
+                .Include(m => m.LineupAway)
                     .ThenInclude(t => t.Channel)
                 .Where(m => m.MatchStatistics != null);
             
@@ -81,26 +82,26 @@ namespace CoachBot.Domain.Services
                 if (DateTime.Now.AddDays(-timePeriodDays) > match.ReadiedDate && (StatisticsTimePeriod)timePeriod != StatisticsTimePeriod.AllTime) continue;
 
                 var homeTeamStatisticTotals = 
-                    _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.TeamHome.ChannelId && t.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
+                    _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.LineupHome.ChannelId && t.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
 
                 if (homeTeamStatisticTotals == null)
                 {
                     homeTeamStatisticTotals = new TeamStatisticTotals((StatisticsTimePeriod)timePeriod)
                     {
-                        ChannelId = (int)match.TeamHome.ChannelId,
+                        ChannelId = (int)match.LineupHome.ChannelId,
                     };
                     _coachBotContext.TeamStatisticTotals.Add(homeTeamStatisticTotals);
                 }
                 AddMatchDataTotalsToTeamStatisticTotals(ref homeTeamStatisticTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Home);
 
                 var awayTeamStatisticsTotals = 
-                    _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.TeamAway.ChannelId && t.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
+                    _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.LineupAway.ChannelId && t.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
 
                 if (awayTeamStatisticsTotals == null)
                 {
                     awayTeamStatisticsTotals = new TeamStatisticTotals((StatisticsTimePeriod)timePeriod)
                     {
-                        ChannelId = (int)match.TeamAway.ChannelId
+                        ChannelId = (int)match.LineupAway.ChannelId
                     };
                     _coachBotContext.TeamStatisticTotals.Add(awayTeamStatisticsTotals);
                 }

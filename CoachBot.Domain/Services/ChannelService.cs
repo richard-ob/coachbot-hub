@@ -53,7 +53,8 @@ namespace CoachBot.Domain.Services
         public List<Channel> GetChannels()
         {
             return _dbContext.Channels
-                .Include(c => c.Region)
+                .Include(c => c.Team)
+                .ThenInclude(t => t.Region)
                 .Include(c => c.ChannelPositions)
                     .ThenInclude(cp => cp.Position)
                 .ToList();
@@ -61,7 +62,7 @@ namespace CoachBot.Domain.Services
 
         public List<Channel> GetChannelsByRegion(int regionId)
         {
-            return GetChannels().Where(c => c.RegionId == regionId).ToList();
+            return GetChannels().Where(c => c.Team.RegionId == regionId).ToList();
         }
 
         public List<Channel> GetChannelsForUser(ulong userId, bool unconfiguredChannels, bool hasAdmin = true)
@@ -78,7 +79,6 @@ namespace CoachBot.Domain.Services
                         if (existingChannel != null && !unconfiguredChannels)
                         {
                             existingChannel.DiscordChannelName = channel.Name;
-                            existingChannel.Region = _dbContext.Regions.FirstOrDefault(r => r.RegionId == existingChannel.RegionId);
                             channels.Add(existingChannel);
                         }
                         if (existingChannel is null && unconfiguredChannels)
@@ -87,11 +87,14 @@ namespace CoachBot.Domain.Services
                                 new Channel()
                                 {
                                     DiscordChannelId = channel.Id,
-                                    Name = channel.Name,
-                                    Guild = new Guild()
+                                    Team = new Team
                                     {
-                                        Name = channel.Guild.Name,
-                                        DiscordGuildId = channel.Guild.Id
+                                        Name = channel.Name,
+                                        Guild = new Guild()
+                                        {
+                                            Name = channel.Guild.Name,
+                                            DiscordGuildId = channel.Guild.Id
+                                        }
                                     }
                                 };
                             channels.Add(unconfiguredChannel);
@@ -115,7 +118,7 @@ namespace CoachBot.Domain.Services
             {
                 return TeamType.Away;
             }
-            else if (match.TeamHome.Channel.DiscordChannelId == channelId)
+            else if (match.LineupHome.Channel.DiscordChannelId == channelId)
             {
                 return TeamType.Home;
             }
@@ -147,7 +150,8 @@ namespace CoachBot.Domain.Services
             if (!withForeignKeys) return _dbContext.Channels.FirstOrDefault(c => c.DiscordChannelId == id);
 
             return _dbContext.Channels
-                .Include(c => c.Region)
+                .Include(c => c.Team)
+                    .ThenInclude(t => t.Region)
                 .Include(c => c.ChannelPositions)
                     .ThenInclude(cp => cp.Position)
                 .Where(c => c.DiscordChannelId == id)
@@ -157,10 +161,11 @@ namespace CoachBot.Domain.Services
         public Channel GetChannelByTeamCode(string teamCode)
         {
             return _dbContext.Channels
-                .Include(c => c.Region)
+                .Include(c => c.Team)
+                    .ThenInclude(t => t.Region)
                 .Include(c => c.ChannelPositions)
                     .ThenInclude(cp => cp.Position)
-                .FirstOrDefault(c => c.TeamCode == teamCode);
+                .FirstOrDefault(c => c.Team.TeamCode == teamCode);
         }
     }
 }

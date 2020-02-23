@@ -31,7 +31,7 @@ namespace CoachBot.Services
         public bool ValidateServer(ulong channelId, int serverListItemId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId, false);
-            var servers = _serverService.GetServersByRegion((int)channel.RegionId);
+            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
 
             return servers.Count >= serverListItemId && serverListItemId > 0;
         }
@@ -41,7 +41,7 @@ namespace CoachBot.Services
             var serverId = 1;
             var embedBuilder = new EmbedBuilder().WithTitle(":desktop: Servers");
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var servers = _serverService.GetServersByRegion((int)channel.RegionId);
+            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
 
             foreach (var server in servers)
             {
@@ -321,7 +321,7 @@ namespace CoachBot.Services
                     if (authenticated)
                     {
                         await messenger.ExecuteCommandAsync($"exec {channel.ChannelPositions.Count}v{channel.ChannelPositions.Count}.cfg");
-                        if (match.TeamHome.HasGk && match.TeamAway.HasGk)
+                        if (match.LineupHome.HasGk && match.LineupAway.HasGk)
                         {
                             await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
                         }
@@ -332,8 +332,8 @@ namespace CoachBot.Services
                         await messenger.ExecuteCommandAsync("mp_matchinfo \"Ranked Friendly Match\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + "http://localhost/api/matchstatistic" + "\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_enabled 1");
-                        await messenger.ExecuteCommandAsync($"mp_teamnames \"{match.TeamHome.Channel.TeamCode}: {match.TeamHome.Channel.Name}, {match.TeamAway.Channel.TeamCode}: {match.TeamAway.Channel.Name}\"");
-                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchId, match.TeamHome.Channel.TeamCode, match.TeamAway.Channel.TeamCode));
+                        await messenger.ExecuteCommandAsync($"mp_teamnames \"{match.LineupHome.Channel.Team.TeamCode}: {match.LineupHome.Channel.Team.Name}, {match.LineupAway.Channel.Team.TeamCode}: {match.LineupAway.Channel.Team.Name}\"");
+                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchId, match.LineupHome.Channel.Team.TeamCode, match.LineupAway.Channel.Team.TeamCode));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
                         await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
                     }
@@ -384,7 +384,7 @@ namespace CoachBot.Services
         public Server GetServerFromServerListItemId(int serverListItemId, ulong channelId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId, false);
-            var servers = _serverService.GetServersByRegion((int)channel.RegionId);
+            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
 
             return servers[serverListItemId - 1];
         }

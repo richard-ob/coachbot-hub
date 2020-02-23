@@ -104,13 +104,13 @@ namespace CoachBot.Bot
             using (var scope = _serviceProvider.CreateScope())
             {
                 var channelService = scope.ServiceProvider.GetService<ChannelService>();
-                var matchmakingGuild = channelService.GetChannels().Where(c => c.Guild.DiscordGuildId == guild.Id);
+                var matchmakingGuild = channelService.GetChannels().Where(c => c.Team.Guild.DiscordGuildId == guild.Id);
                 if (matchmakingGuild != null)
                 {
                     Console.WriteLine($"Guild has been destroyed: {guild.Name}");
                     foreach (var matchmakingChannel in matchmakingGuild)
                     {
-                        Console.WriteLine($"Channel has been destroyed: {matchmakingChannel.Name} on {guild.Name}");
+                        Console.WriteLine($"Channel has been destroyed: {matchmakingChannel.Team.Name} on {guild.Name}");
                         matchmakingChannel.Inactive = true;
                         channelService.Update(matchmakingChannel);
                     }

@@ -4,15 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
-    public class PlayerTeamPosition
+    public class PlayerLineupPosition
     {
         public int PlayerId { get; set; }
 
         public Player Player { get; set; }
         
-        public int TeamId { get; set; }
+        public int LineupId { get; set; }
 
-        public Team Team { get; set; }
+        public Lineup Lineup { get; set; }
 
         public int PositionId { get; set; }
 

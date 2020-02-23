@@ -43,7 +43,7 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            if (match.TeamHome.Channel.TeamCode != homeTeamCode || match.TeamAway.Channel.TeamCode != awayTeamCode)
+            if (match.LineupHome.Channel.Team.TeamCode != homeTeamCode || match.LineupAway.Channel.Team.TeamCode != awayTeamCode)
             {
                 return BadRequest();
             }

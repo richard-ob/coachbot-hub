@@ -16,7 +16,7 @@ namespace CoachBot.Database
             try
             {
                 context.Searches.RemoveRange(context.Searches); // Clear all searches when restarted as timers will have stopped
-                context.Teams.RemoveRange(context.Teams.Where(t => !context.Matches.Any(m => m.TeamHomeId == t.Id || m.TeamAwayId == t.Id))); // Remove orphaned teams
+                context.Lineups.RemoveRange(context.Lineups.Where(t => !context.Matches.Any(m => m.LineupHomeId == t.Id || m.LineupAwayId == t.Id))); // Remove orphaned teams
                 context.TeamStatisticTotals.RemoveRange(context.TeamStatisticTotals);
                 context.PlayerStatisticTotals.RemoveRange(context.PlayerStatisticTotals);
                 context.StatisticTotals.RemoveRange(context.StatisticTotals);
@@ -50,12 +50,12 @@ namespace CoachBot.Database
                         },
                         ReadiedDate = DateTime.UnixEpoch.AddSeconds(matchStatisticsData.MatchData.MatchInfo.StartTime),
                         ServerId = context.Servers.First().Id,
-                        TeamHome = new Team()
+                        LineupHome = new Lineup()
                         {
                             ChannelId = 1,
                             TeamType = TeamType.Home
                         },
-                        TeamAway = new Team()
+                        LineupAway = new Lineup()
                         {
                             ChannelId = 2,
                             TeamType = TeamType.Away

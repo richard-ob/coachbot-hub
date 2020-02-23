@@ -14,15 +14,15 @@ namespace CoachBot.Domain.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int? TeamHomeId { get; set; }
+        public int? LineupHomeId { get; set; }
 
-        public int? TeamAwayId { get; set; }
+        public int? LineupAwayId { get; set; }
 
-        [ForeignKey("TeamHomeId")]
-        public Team TeamHome { get; set; }
+        [ForeignKey("LineupHomeId")]
+        public Lineup LineupHome { get; set; }
 
-        [ForeignKey("TeamAwayId")]
-        public Team TeamAway { get; set; }
+        [ForeignKey("LineupAwayId")]
+        public Lineup LineupAway { get; set; }
 
         public int? ServerId { get; set; }
 
@@ -38,9 +38,9 @@ namespace CoachBot.Domain.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 
-        public bool IsMixMatch => TeamHome?.ChannelId == TeamAway?.ChannelId;
+        public bool IsMixMatch => LineupHome?.ChannelId == LineupAway?.ChannelId;
 
-        public Team GetTeam(TeamType teamType) => teamType == TeamType.Home ? TeamHome : TeamAway;
+        public Lineup GetTeam(TeamType teamType) => teamType == TeamType.Home ? LineupHome : LineupAway;
 
         public string MatchFormat => "8v8";
 
@@ -51,13 +51,13 @@ namespace CoachBot.Domain.Model
             get
             {
                 var players = new List<Player>();
-                if (TeamHome != null && TeamHome.PlayerTeamPositions != null)
+                if (LineupHome != null && LineupHome.PlayerLineupPositions != null)
                 {
-                    players.AddRange(TeamHome.PlayerTeamPositions.Select(ptp => ptp.Player));
+                    players.AddRange(LineupHome.PlayerLineupPositions.Select(ptp => ptp.Player));
                 }
-                if (TeamAway != null && TeamAway.PlayerTeamPositions != null)
+                if (LineupAway != null && LineupAway.PlayerLineupPositions != null)
                 {
-                    players.AddRange(TeamAway.PlayerTeamPositions.Select(ptp => ptp.Player));
+                    players.AddRange(LineupAway.PlayerLineupPositions.Select(ptp => ptp.Player));
                 }
 
                 return players;
@@ -71,13 +71,13 @@ namespace CoachBot.Domain.Model
             get
             {
                 var players = new List<Player>();
-                if (TeamHome != null && TeamHome.PlayerSubstitutes != null)
+                if (LineupHome != null && LineupHome.PlayerSubstitutes != null)
                 {
-                    players.AddRange(TeamHome.PlayerSubstitutes.Select(ps => ps.Player));
+                    players.AddRange(LineupHome.PlayerSubstitutes.Select(ps => ps.Player));
                 }
-                if (TeamAway != null && TeamAway.PlayerSubstitutes != null)
+                if (LineupAway != null && LineupAway.PlayerSubstitutes != null)
                 {
-                    players.AddRange(TeamAway.PlayerSubstitutes.Select(ps => ps.Player));
+                    players.AddRange(LineupAway.PlayerSubstitutes.Select(ps => ps.Player));
                 }
 
                 return players;

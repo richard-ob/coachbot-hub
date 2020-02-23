@@ -27,7 +27,8 @@ namespace CoachBot.Domain.Services
         {
             var searches = _coachBotContext.Searches
                 .Include(s => s.Channel)
-                    .ThenInclude(c => c.Guild)
+                    .ThenInclude(c => c.Team)
+                    .ThenInclude(t => t.Guild)
                 .ToList();
 
             return searches;
@@ -52,13 +53,13 @@ namespace CoachBot.Domain.Services
             TimeoutSearch(channelId);
 
             var embed = new EmbedBuilder()
-                .WithTitle($":mag: {challenger.BadgeEmote ?? challenger.Name} are searching for a team to face")
-                .WithDescription($"To challenge **{challenger.Name}** type **!challenge {challenger.TeamCode}** and contact {startedBy} for more information")
+                .WithTitle($":mag: {challenger.Team.BadgeEmote ?? challenger.Team.Name} are searching for a team to face")
+                .WithDescription($"To challenge **{challenger.Team.Name}** type **!challenge {challenger.Team.TeamCode}** and contact {startedBy} for more information")
                 .WithCurrentTimestamp()
-                .WithColor(challenger.SystemColor);
+                .WithColor(challenger.Team.SystemColor);
 
             var regionChannels = _coachBotContext.Channels
-                .Where(c => c.RegionId == challenger.RegionId)
+                .Where(c => c.Team.RegionId == challenger.Team.RegionId)
                 .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
                 .Where(c => c.SearchIgnoreList == null || !c.SearchIgnoreList.Any(i => i == challenger.DiscordChannelId))
                 .Select(c => c.DiscordChannelId)
@@ -104,20 +105,20 @@ namespace CoachBot.Domain.Services
         public Match GetCurrentMatchForChannel(ulong channelId)
         {
             return _coachBotContext.Matches
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerTeamPositions)
+                .Include(m => m.LineupHome)
+                    .ThenInclude(th => th.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.TeamHome)
-                    .ThenInclude(th => th.PlayerTeamPositions)
+                .Include(m => m.LineupHome)
+                    .ThenInclude(th => th.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerTeamPositions)
+                .Include(m => m.LineupAway)
+                    .ThenInclude(ta => ta.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.TeamAway)
-                    .ThenInclude(ta => ta.PlayerTeamPositions)
+                .Include(m => m.LineupAway)
+                    .ThenInclude(ta => ta.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Position)
                 .OrderByDescending(m => m.CreatedDate)
-                .First(m => m.TeamHome.Channel.DiscordChannelId == channelId);
+                .First(m => m.LineupHome.Channel.DiscordChannelId == channelId);
         }
     }
 }

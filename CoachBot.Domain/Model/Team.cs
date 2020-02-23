@@ -1,59 +1,60 @@
-﻿using CoachBot.Domain.Model;
-using Newtonsoft.Json;
+﻿using CoachBot.Domain.Extensions;
+using CoachBot.Model;
+using Discord;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
-namespace CoachBot.Model
+namespace CoachBot.Domain.Model
 {
     public class Team
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int? ChannelId { get; set; }
+        public string Name { get; set; }
 
-        public Channel Channel { get; set; }
+        public string TeamCode { get; set; }
 
-        [InverseProperty("TeamHome")]
-        public Match HomeMatch { get; set; }
+        public string KitEmote { get; set; }
 
-        [InverseProperty("TeamAway")]
-        public Match AwayMatch { get; set; }
+        public string BadgeEmote { get; set; }
 
-        public Match Match => HomeMatch ?? AwayMatch;
+        public string DisplayName => BadgeEmote ?? Name;
 
-        public TeamType TeamType { get; set; }
+        public int? RegionId { get; set; }
 
-        public ICollection<PlayerTeamPosition> PlayerTeamPositions { get; set; }
+        public Region Region { get; set; }
 
-        public ICollection<PlayerTeamSubstitute> PlayerSubstitutes { get; set; }
+        public int GuildId { get; set; }
 
-        [JsonIgnore]
-        [NotMapped]
-        public List<Position> OccupiedPositions
+        public Guild Guild { get; set; }
+
+        public string Color { get; set; } // Rename to ColorHex
+
+        public Color SystemColor
         {
             get
             {
-                if (PlayerTeamPositions != null)
+                if (!string.IsNullOrEmpty(Color) && Color[0] == '#')
                 {
-                    return PlayerTeamPositions.Select(ptp => ptp.Position).ToList();
+                    return new Color(ColorExtensions.FromHex(Color).R, ColorExtensions.FromHex(Color).G, ColorExtensions.FromHex(Color).B);
                 }
                 else
                 {
-                    return new List<Position>();
+                    return new Color(0x2463b0);
                 }
             }
         }
 
-        [JsonIgnore]
-        public bool HasGk => !Channel.ChannelPositions.Any(cp => cp.Position.Name.ToUpper() == "GK") || OccupiedPositions.Any(p => p.Name.ToUpper() == "GK");
+        public bool Inactive { get; set; }
+
+        public ICollection<Channel> Channels { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 
+        public DateTime UpdatedDate { get; set; }
     }
 }

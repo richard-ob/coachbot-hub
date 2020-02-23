@@ -44,7 +44,7 @@ namespace CoachBot.Modules
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
-                var server = _serverService.GetServersByRegion((int)channel.RegionId)[serverListItemId - 1];
+                var server = _serverService.GetServersByRegion((int)channel.Team.RegionId)[serverListItemId - 1];
                 await _discordServerService.ToggleSingleKeeper(server.Id, true);
             }
             else
@@ -60,7 +60,7 @@ namespace CoachBot.Modules
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
-                var server = _serverService.GetServersByRegion((int)channel.RegionId)[serverListItemId - 1];
+                var server = _serverService.GetServersByRegion((int)channel.Team.RegionId)[serverListItemId - 1];
                 await _discordServerService.ToggleSingleKeeper(server.Id, false);
             }
             else
@@ -82,7 +82,7 @@ namespace CoachBot.Modules
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
-                var server = _serverService.GetServersByRegion((int)channel.RegionId)[serverListItemId - 1];
+                var server = _serverService.GetServersByRegion((int)channel.Team.RegionId)[serverListItemId - 1];
                 await ReplyAsync("", embed: _discordServerService.GetServerInfo(server.Id));
             }
             else

@@ -22,10 +22,10 @@ namespace CoachBot.Database
         public DbSet<Guild> Guilds { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Position> Positions { get; set; }
-        public DbSet<PlayerTeamPosition> PlayerTeamPositions { get; set; }
-        public DbSet<PlayerTeamSubstitute> PlayerTeamSubstitute { get; set; }
+        public DbSet<PlayerLineupPosition> PlayerLineupPositions { get; set; }
+        public DbSet<PlayerLineupSubstitute> PlayerLineupSubstitutes { get; set; }
         public DbSet<ChannelPosition> ChannelPositions { get; set; }
-        public DbSet<Team> Teams { get; set; }
+        public DbSet<Lineup> Lineups { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<SubstitutionRequest> SubstitutionRequests { get; set; }
         public DbSet<Search> Searches { get; set; }
@@ -46,15 +46,15 @@ namespace CoachBot.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Many-to-many composite primary keys
-            modelBuilder.Entity<PlayerTeamPosition>().HasKey(ptp => new { ptp.PlayerId, ptp.PositionId, ptp.TeamId });
-            modelBuilder.Entity<PlayerTeamSubstitute>().HasKey(ptp => new { ptp.PlayerId, ptp.TeamId });
+            modelBuilder.Entity<PlayerLineupPosition>().HasKey(ptp => new { ptp.PlayerId, ptp.PositionId, ptp.LineupId });
+            modelBuilder.Entity<PlayerLineupSubstitute>().HasKey(ptp => new { ptp.PlayerId, ptp.LineupId });
             modelBuilder.Entity<ChannelPosition>().HasKey(cp => new { cp.ChannelId, cp.PositionId });
 
             // Unique constraints
             modelBuilder.Entity<Channel>().HasIndex(c => new { c.DiscordChannelId }).IsUnique(true);
             modelBuilder.Entity<Server>().HasIndex(s => new { s.Address }).IsUnique(true);
             modelBuilder.Entity<Region>().HasIndex(r => new { r.RegionName }).IsUnique(true);
-            modelBuilder.Entity<PlayerTeamPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.TeamId }).IsUnique(true);
+            modelBuilder.Entity<PlayerLineupPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.LineupId }).IsUnique(true);
 
             // Defaults
             modelBuilder.Entity<Channel>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
@@ -62,13 +62,13 @@ namespace CoachBot.Database
             modelBuilder.Entity<Server>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Region>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Player>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<Team>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Lineup>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Country>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Guild>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Position>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<MatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<PlayerTeamPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<PlayerTeamSubstitute>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PlayerLineupPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PlayerLineupSubstitute>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerStatisticTotals>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TeamStatisticTotals>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<ChannelPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

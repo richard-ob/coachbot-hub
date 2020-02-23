@@ -18,32 +18,32 @@ namespace CoachBot.Factories
             var teamColor = new Color(DEFAULT_EMBED_HOME_TEAM_COLOUR);
             var emptyPos = ":grey_question:";
 
-            Team team;
-            Team oppositionTeam;
+            Lineup team;
+            Lineup oppositionTeam;
             if (teamType == TeamType.Home)
             {
-                team = match.TeamHome;
-                oppositionTeam = match.TeamAway;
-                teamColor = channel.SystemColor;
+                team = match.LineupHome;
+                oppositionTeam = match.LineupAway;
+                teamColor = channel.Team.SystemColor;
             }
             else
             {
-                team = match.TeamAway;
-                oppositionTeam = match.TeamHome;
+                team = match.LineupAway;
+                oppositionTeam = match.LineupHome;
                 if (match.IsMixMatch)
                 {
                     teamColor = new Color(DEFAULT_EMBED_AWAY_TEAM_COLOUR);
                 }
                 else
                 {
-                    teamColor = channel.SystemColor;
+                    teamColor = channel.Team.SystemColor;
                 }
             }        
 
-            var embedBuilder = new EmbedBuilder().WithTitle($"{channel.BadgeEmote ?? channel.Name}{(match.IsMixMatch && teamType == TeamType.Away ? " #2" : "")} Team List");
+            var embedBuilder = new EmbedBuilder().WithTitle($"{channel.Team.BadgeEmote ?? channel.Team.Name}{(match.IsMixMatch && teamType == TeamType.Away ? " #2" : "")} Team List");
             foreach (var channelPosition in channel.ChannelPositions)
             {
-                var playerTeamPosition = team.PlayerTeamPositions.FirstOrDefault(p => p.Position.Name == channelPosition.Position.Name);
+                var playerTeamPosition = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channelPosition.Position.Name);
                 var playerName = playerTeamPosition?.Player.DiscordUserMention ?? playerTeamPosition?.Player.Name ?? emptyPos;
                 sb.Append($"{channelPosition.Position.Name}:**{playerName}** ");
             }
@@ -53,7 +53,7 @@ namespace CoachBot.Factories
             if (!match.IsMixMatch && oppositionTeam?.Channel != null)
             {
                 sb.AppendLine("");
-                sb.Append($"vs **{oppositionTeam.Channel.DisplayName}**");
+                sb.Append($"vs **{oppositionTeam.Channel.Team.DisplayName}**");
                 if (!oppositionTeam.HasGk) sb.Append(" ***No GK***");
             }
 

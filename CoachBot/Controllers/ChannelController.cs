@@ -37,7 +37,10 @@ namespace CoachBot.Controllers
                 if (guildChannel != null)
                 {
                     channel.DiscordChannelName = guildChannel.Name;
-                    channel.Guild = new Guild() { Name = guildChannel.Guild.Name, DiscordGuildId = guildChannel.Guild.Id };
+                    channel.Team = new Team()
+                    {
+                        Guild = new Guild() { Name = guildChannel.Name, DiscordGuildId = guildChannel.Guild.Id }
+                    };
                 }
             }
             return channels;
@@ -50,7 +53,10 @@ namespace CoachBot.Controllers
             var channel = _channelService.GetChannelsForUser(userId, false).First(c => c.DiscordChannelId == id);
             var guildChannel = (SocketGuildChannel)_client.GetChannel(id);
             channel.DiscordChannelName = guildChannel.Name;
-            channel.Guild = new Guild() { Name = guildChannel.Guild.Name, DiscordGuildId = guildChannel.Guild.Id };
+            channel.Team = new Team()
+            {
+                Guild = new Guild() { Name = guildChannel.Guild.Name, DiscordGuildId = guildChannel.Guild.Id }
+            };
 
             return channel;
         }
@@ -67,7 +73,10 @@ namespace CoachBot.Controllers
                 if (guildChannel != null)
                 {
                     channel.DiscordChannelName = guildChannel.Name;
-                    channel.Guild = new Guild() { Name = guildChannel.Guild.Name, DiscordGuildId = guildChannel.Guild.Id };
+                    channel.Team = new Team()
+                    {
+                        Guild = new Guild() { Name = guildChannel.Guild.Name, DiscordGuildId = guildChannel.Guild.Id }
+                    };
                 }
             }
 

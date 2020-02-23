@@ -110,6 +110,10 @@ namespace CoachBot
 
             provider.GetService<CoachBotContext>().Initialize();
             provider.GetService<CoachBotContext>().SeedMatchData();
+
+            // TEMPORARY: Generate match stats on startup
+            provider.GetService<MatchStatisticsService>().GenerateStatistics();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

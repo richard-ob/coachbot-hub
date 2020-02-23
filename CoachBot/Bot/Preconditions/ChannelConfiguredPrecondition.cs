@@ -19,7 +19,7 @@ namespace CoachBot.Preconditions
                 if (channelService.GetChannelByDiscordId(context.Channel.Id) is null)
                     return Task.FromResult(PreconditionResult.FromError($":wrench: This channel is not yet configured. To configure the channel, please visit {configService.Config.ClientUrl}"));
 
-                if (channelService.GetChannelByDiscordId(context.Channel.Id).Region is null)
+                if (channelService.GetChannelByDiscordId(context.Channel.Id).Team.Region is null)
                     return Task.FromResult(PreconditionResult.FromError($":earth_asia: This channel does not have a region set. To configure the channel, please visit {configService.Config.ClientUrl}"));
             }
 

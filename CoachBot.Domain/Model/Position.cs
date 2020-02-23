@@ -16,7 +16,7 @@ namespace CoachBot.Model
 
         public ICollection<ChannelPosition> ChannelPositions { get; set; }
 
-        public ICollection<PlayerTeamPosition> PlayerTeamPositions { get; set; }
+        public ICollection<PlayerLineupPosition> PlayerLineupPositions { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }

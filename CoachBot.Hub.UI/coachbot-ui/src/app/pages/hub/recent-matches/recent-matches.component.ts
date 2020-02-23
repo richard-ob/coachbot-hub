@@ -13,9 +13,7 @@ export class RecentMatchesComponent implements OnInit {
     totalPages: number;
     totalItems: number;
 
-    constructor(private matchService: MatchService) {
-
-    }
+    constructor(private matchService: MatchService) { }
 
     ngOnInit() {
         this.loadPage(1);

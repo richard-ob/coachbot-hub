@@ -21,6 +21,10 @@ namespace CoachBot.Database
                 context.TeamStatisticTotals.RemoveRange(context.TeamStatisticTotals);
                 context.PlayerStatisticTotals.RemoveRange(context.PlayerStatisticTotals);
                 context.StatisticTotals.RemoveRange(context.StatisticTotals);
+                context.Matches.RemoveRange(context.Matches);
+                context.MatchStatistics.RemoveRange(context.MatchStatistics);
+                //context.PlayerLineupPositions.RemoveRange(context.PlayerLineupPositions);
+                //context.Players.RemoveRange(context.Players);
                 //context.PlayerTeamPositions.RemoveRange(context.PlayerTeamPositions.Where(ptp => ptp.CreatedDate < DateTime.Now.AddDays(-1)).Where(ptp => ptp.Team == null || ptp.Team.Match == null || ptp.Team.Match.ReadiedDate == null)); // Clear any signings older than a day
                 context.SaveChanges();
             }

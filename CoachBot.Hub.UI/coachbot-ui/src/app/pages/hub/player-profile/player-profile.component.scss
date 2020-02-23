@@ -1,0 +1,19 @@
+.player-heading {
+    background-image: url(https://iosoccer.com/assets/stadium-3.jpg);
+}
+.player-heading::before {
+    background-image: none !important;
+    background-color: #00213a;
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-size: auto;
+    background-position: 100% 0;
+    background-repeat: no-repeat;
+    opacity: 0.75;
+    height: 100%;
+}

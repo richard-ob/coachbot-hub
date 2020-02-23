@@ -26,7 +26,7 @@ namespace CoachBot.Model
             }
         }
 
-        public string SteamID { get; set; }
+        public ulong? SteamID { get; set; }
 
         public bool DisableDMNotifications { get; set; }
 

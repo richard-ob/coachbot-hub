@@ -4,7 +4,6 @@ using System.Linq;
 using Discord;
 using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Extensions;
-using Microsoft.EntityFrameworkCore;
 
 namespace CoachBot.Domain.Services
 {
@@ -53,12 +52,33 @@ namespace CoachBot.Domain.Services
             return player;
         }
 
-        private Player CreatePlayer(string playerName, ulong? discordUserId = null, string discordUserMention = null)
+        public Player GetPlayer(ulong discordUserId, bool createIfNotExists = false, string playerName = null)
+        {
+            var player = _coachBotContext.Players.FirstOrDefault(p => p.DiscordUserId == discordUserId);
+
+            if (createIfNotExists && player == null)
+            {
+                player = CreatePlayer(playerName);
+            }
+
+            return player;
+        }
+
+        public void UpdatePlayerSteamID(ulong discordUserId, ulong steamId, string playerName)
+        {
+            // TODO: Ensure player is not an admin for security purposes
+            var player = GetPlayer(discordUserId, createIfNotExists: true, playerName: playerName);
+            player.SteamID = steamId;
+            _coachBotContext.SaveChanges();
+        }
+
+        private Player CreatePlayer(string playerName, ulong? discordUserId = null, string discordUserMention = null, ulong? steamId = null)
         {
             var player = new Player()
             {
                 Name = playerName,
-                DiscordUserId = discordUserId
+                DiscordUserId = discordUserId,
+                SteamID = steamId
             };
 
             _coachBotContext.Players.Add(player);

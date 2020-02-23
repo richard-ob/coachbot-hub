@@ -15,11 +15,13 @@ namespace CoachBot.Controllers
     {
         private readonly ChannelService _channelService;
         private readonly ConfigService _configService;
+        private readonly PlayerService _playerService;
 
-        public UserController(ChannelService channelService, ConfigService configService)
+        public UserController(ChannelService channelService, PlayerService playerService, ConfigService configService)
         {
             _channelService = channelService;
             _configService = configService;
+            _playerService = playerService;
         }
 
         [HttpGet]
@@ -32,6 +34,7 @@ namespace CoachBot.Controllers
                 user.Name = User.Identity.Name;
                 user.DiscordUserId = ulong.Parse(User.Claims.First().Value);
                 user.IsAdministrator = _channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value));
+                user.PlayerId = _playerService.GetPlayer(user.DiscordUserId, createIfNotExists: true, playerName: User.Identity.Name).Id;
                 //user.Channels = _botService.GetChannelsForUser(ulong.Parse(User.Claims.First().Value), false, false);
             }
             return user;

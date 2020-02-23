@@ -4,6 +4,7 @@ using CoachBot.Model;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace CoachBot.Controllers
 {
@@ -28,6 +29,18 @@ namespace CoachBot.Controllers
         public PagedResult<Player> PagedMatchList([FromBody]PagedPlayerRequestDto pagedRequest)
         {
             return _playerService.GetPlayers(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull);
+        }
+        
+        [Authorize]
+        [HttpPost]
+        [Route("update-steam-id")]
+        public IActionResult UpdateSteamId([FromBody]SteamIdDto steamIdDto)
+        {
+            // TODO: encrypt and decrypt SteamID
+            var playerDiscordUserId = ulong.Parse(User.Claims.First().Value);
+            _playerService.UpdatePlayerSteamID(playerDiscordUserId, steamIdDto.SteamId, User.Identity.Name);
+
+            return Ok();
         }
 
     }

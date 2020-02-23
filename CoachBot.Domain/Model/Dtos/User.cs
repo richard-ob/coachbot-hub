@@ -15,5 +15,7 @@ namespace CoachBot.Model
 
         public bool IsAdministrator { get; set; }
 
+        public int PlayerId { get; set; }
+
     }
 }

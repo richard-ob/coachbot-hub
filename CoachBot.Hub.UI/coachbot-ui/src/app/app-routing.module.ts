@@ -10,6 +10,8 @@ import { RecentMatchesComponent } from './pages/hub/recent-matches/recent-matche
 import { PlayerListComponent } from './pages/hub/player-list/player-list.component';
 import { PlayerProfileComponent } from './pages/hub/player-profile/player-profile.component';
 import { TeamListComponent } from './pages/hub/team-list/team-list.component';
+import { ProfileEditorComponent } from './pages/hub/profile-editor/profile-editor.component';
+import { SteamIDValidatorComponent } from './pages/hub/profile-editor/steam-id-validator.component';
 
 const routes: Routes = [
   {
@@ -43,6 +45,14 @@ const routes: Routes = [
   {
     path: 'player-profile/:id',
     component: PlayerProfileComponent
+  },
+  {
+    path: 'edit-profile',
+    component: ProfileEditorComponent
+  },
+  {
+    path: 'validate-steamid',
+    component: SteamIDValidatorComponent
   },
   {
     path: 'login',

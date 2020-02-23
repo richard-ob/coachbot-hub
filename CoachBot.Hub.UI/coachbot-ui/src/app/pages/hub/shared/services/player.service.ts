@@ -41,4 +41,12 @@ export class PlayerService {
         return this.http.post<PagedResult<PlayerStatistics>>(`${environment.apiUrl}/api/playerstatistics`, pagedPlayerStatisticsRequestDto);
     }
 
+    updateSteamId(steamId: string): Observable<void> {
+        const steamIdDto = {
+            steamId
+        };
+
+        return this.http.post<void>(`${environment.apiUrl}/api/player/update-steam-id`, steamIdDto);
+    }
+
 }

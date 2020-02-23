@@ -20,6 +20,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { PlayerListComponent } from './player-list/player-list.component';
 import { PlayerProfileComponent } from './player-profile/player-profile.component';
 import { TeamListComponent } from './team-list/team-list.component';
+import { SteamProfileFlagPipe } from './player-list/helpers/steam-profile-flag.pipe';
+import { ProfileEditorComponent } from './profile-editor/profile-editor.component';
+import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { TeamListComponent } from './team-list/team-list.component';
     RecentMatchesComponent,
     PlayerListComponent,
     PlayerProfileComponent,
-    TeamListComponent
+    TeamListComponent,
+    SteamProfileFlagPipe,
+    ProfileEditorComponent,
+    SteamIDValidatorComponent
   ],
   imports: [
     CommonModule,

@@ -1,148 +1,55 @@
-<div class="player-heading">
+<app-spinner *ngIf="isLoading"></app-spinner>
+<div *ngIf="!isLoading" class="player-heading">
     <div class="container">
         <div class="player-info__title player-info__title--mobile">
-            <div class="player-info__number">07</div>
-            <h1 class="player-info__name"><span class="player-info__first-name">{{player?.name}}</span></h1>
+            <h1 class="player-info__name"><span class="player-info__first-name">{{player.name}}</span></h1>
         </div>
-        <div class="player-info slick-initialized slick-slider">
-            <!-- Player Photo -->
-            <div class="slick-list draggable">
-                <div class="slick-track" style="opacity: 1; width: 15000px; transform: translate3d(0px, 0px, 0px);">
-                    <div class="player-info__item player-info__item--details slick-slide slick-active"
-                        data-slick-index="1" aria-hidden="false">
-                        <div class="player-info__title player-info__title--desktop">
-                            <div class="player-info__number">07</div>
-                            <h1 class="player-info__name"><span class="player-info__first-name">{{player?.name}}</span>
-                            </h1>
-                        </div>
-                        <div class="player-info-details">
-                            <div class="player-info-details__item player-info-details__item--height">
-                                <h6 class="player-info-details__title">Height</h6>
-                                <div class="player-info-details__value">5'8"</div>
-                            </div>
-                            <div class="player-info-details__item player-info-details__item--weight">
-                                <h6 class="player-info-details__title">Weight</h6>
-                                <div class="player-info-details__value">176 lbs</div>
-                            </div>
-                            <div class="player-info-details__item player-info-details__item--age">
-                                <h6 class="player-info-details__title">Age</h6>
-                                <div class="player-info-details__value">18</div>
-                            </div>
-                            <div class="player-info-details__item player-info-details__item--college">
-                                <h6 class="player-info-details__title">College</h6>
-                                <div class="player-info-details__value">Rockbell Bay College</div>
-                            </div>
-                            <div class="player-info-details__item player-info-details__item--born">
-                                <h6 class="player-info-details__title">Born</h6>
-                                <div class="player-info-details__value">Amestris, California. USA</div>
-                            </div>
-                            <div class="player-info-details__item player-info-details__item--position">
-                                <h6 class="player-info-details__title">Position</h6>
-                                <div class="player-info-details__value">Forward</div>
-                            </div>
-                            <div class="player-info-details__item player-info-details__item--foot">
-                                <h6 class="player-info-details__title">Foot</h6>
-                                <div class="player-info-details__value">Left</div>
-                            </div>
-                        </div>
-                        <div class="player-info-stats pt-0">
-                            <div class="player-info-stats__item">
-                                <div class="player-info-details">
-                                    <div class="player-info-details__item player-info-details__item--goals">
-                                        <h6 class="player-info-details__title">T.Goals</h6>
-                                        <div class="player-info-details__value">104</div>
-                                    </div>
-                                    <div class="player-info-details__item player-info-details__item--assists">
-                                        <h6 class="player-info-details__title">T.Assists</h6>
-                                        <div class="player-info-details__value">64</div>
-                                    </div>
-                                    <div class="player-info-details__item player-info-details__item--games pb-0">
-                                        <h6 class="player-info-details__title">Total Games Played</h6>
-                                        <div class="player-info-details__value">86</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="player-info-stats__item player-info-stats__item--top-padding">
-                                <div class="circular">
-                                    <div class="circular__bar" data-percent="88" data-bar-color="#9fe900"
-                                        data-track-color="rgba(255,255,255,.2)">
-                                        <span class="circular__percents">1.21<small>avg</small></span><canvas
-                                            height="90" width="90"></canvas></div>
-                                    <span class="circular__label"><strong>Goals</strong> per game</span>
-                                </div>
-                            </div>
-                            <div class="player-info-stats__item player-info-stats__item--top-padding">
-                                <div class="circular">
-                                    <div class="circular__bar" data-percent="74" data-bar-color="#9fe900"
-                                        data-track-color="rgba(255,255,255,.2)">
-                                        <span class="circular__percents">0.74<small>avg</small></span><canvas
-                                            height="90" width="90"></canvas></div>
-                                    <span class="circular__label"><strong>Assists</strong> per game</span>
-                                </div>
-                            </div>
+        <div class="player-info">
+            <div class="player-info__item player-info__item--details" aria-hidden="false">
+                <img *ngIf="steamUserProfile.avatarfull" [attr.src]="steamUserProfile.avatarfull"
+                    style="position: absolute; right: 30px; top: 33px;">
+                <div class="player-info__title player-info__title--desktop">
+                    <h1 class="player-info__name">
+                        <span class="player-info__first-name">{{player.name}}</span>
+                    </h1>
+                </div>
+                <div class="player-info-details">
+                    <div class="player-info-details__item player-info-details__item--height">
+                        <h6 class="player-info-details__title">Position</h6>
+                        <div class="player-info-details__value">LW</div>
+                    </div>
+                    <div class="player-info-details__item player-info-details__item--weight">
+                        <h6 class="player-info-details__title">Country</h6>
+                        <div class="player-info-details__value">
+                            <ng-container *ngIf="steamUserProfile">
+                                <img *ngIf="steamUserProfile.loccountrycode; else unknownFlag"
+                                    src="https://www.countryflags.io/{{steamUserProfile.loccountrycode}}/flat/24.png">
+                                <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
+                            </ng-container>
                         </div>
                     </div>
-                    <div class="player-info__item player-info__item--stats slick-slide slick-active"
-                        data-slick-index="2" aria-hidden="false">
-                        <div class="player-info__item--stats-inner">
-                            <!-- Progress: Shot Accuracy -->
-                            <div class="progress-stats progress-stats--top-labels">
-                                <div class="progress__label">Shot Accuracy</div>
-                                <div class="progress">
-                                    <div class="progress__bar progress__bar--success progress__bar-width-90"
-                                        role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="progress__number">96%</div>
-                            </div><!-- Progress: Shot Accuracy / End -->
-                            <!-- Progress: Pass Accuracy -->
-                            <div class="progress-stats progress-stats--top-labels">
-                                <div class="progress__label">Pass Accuracy</div>
-                                <div class="progress">
-                                    <div class="progress__bar progress__bar--success progress__bar-width-70"
-                                        role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="progress__number">74%</div>
-                            </div><!-- Progress: Pass Accuracy / End -->
-                            <!-- Progress: Perfomance -->
-                            <div class="progress-stats progress-stats--top-labels">
-                                <div class="progress__label">Perfomance</div>
-                                <div class="progress">
-                                    <div class="progress__bar progress__bar--success progress__bar-width-80"
-                                        role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="progress__number">85%</div>
-                            </div><!-- Progress: Perfomance / End -->
-                            <!-- Progress: Dribble -->
-                            <div class="progress-stats progress-stats--top-labels">
-                                <div class="progress__label">Dribble</div>
-                                <div class="progress">
-                                    <div class="progress__bar progress__bar--success progress__bar-width-60"
-                                        role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="progress__number">62%</div>
-                            </div><!-- Progress: Dribble / End -->
-                            <!-- Progress: Stamina -->
-                            <div class="progress-stats progress-stats--top-labels">
-                                <div class="progress__label">Stamina</div>
-                                <div class="progress">
-                                    <div class="progress__bar progress__bar--success progress__bar-width-80"
-                                        role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="progress__number">80%</div>
-                            </div><!-- Progress: Stamina / End -->
-                        </div>
+                    <div class="player-info-details__item player-info-details__item--position">
+                        <h6 class="player-info-details__title">Position</h6>
+                        <div class="player-info-details__value">Forward</div>
+                    </div>
+                    <div class="player-info-details__item player-info-details__item--college">
+                        <h6 class="player-info-details__title">Club Team</h6>
+                        <div class="player-info-details__value">Excel</div>
+                    </div>
+                    <div class="player-info-details__item player-info-details__item--born">
+                        <h6 class="player-info-details__title">National Team</h6>
+                        <div class="player-info-details__value">England</div>
+                    </div>
+                    <div *ngIf="playingTime" class="player-info-details__item">
+                        <h6 class="player-info-details__title">Playing Time</h6>
+                        <div class="player-info-details__value">{{playingTime}}</div>
                     </div>
                 </div>
-            </div><!-- Player Photo / End -->
-            <!-- Player Details -->
-            <!-- Player Details / End -->
-            <!-- Player Stats -->
-            <!-- Player Stats / End -->
-        </div>
+            </div>
+        </div><!-- Player Photo / End -->
+        <!-- Player Details -->
+        <!-- Player Details / End -->
+        <!-- Player Stats -->
+        <!-- Player Stats / End -->
     </div>
 </div>

@@ -133,13 +133,13 @@ namespace CoachBot.Domain.Services
                     var timePeriodDays = (int)timePeriod;
                     if (DateTime.Now.AddDays(-timePeriodDays) > match.ReadiedDate && (StatisticsTimePeriod)timePeriod != StatisticsTimePeriod.AllTime) continue;
 
-                    var player = _coachBotContext.Players.FirstOrDefault(p => p.SteamID == matchDataPlayer.Info.SteamId);
+                    var player = _coachBotContext.Players.FirstOrDefault(p => p.SteamID == matchDataPlayer.Info.SteamId64);
                     if (player == null)
                     {
                         player = new Player()
                         {
                             Name = matchDataPlayer.Info.Name,
-                            SteamID = matchDataPlayer.Info.SteamId
+                            SteamID = matchDataPlayer.Info.SteamId64
                         };
                         _coachBotContext.Players.Add(player);
                     }
@@ -159,17 +159,17 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        private void AddMatchDataTotalsToPlayerStatisticTotals(ref PlayerStatisticTotals playerStatisticTotals, MatchData matchData, string steamId)
+        private void AddMatchDataTotalsToPlayerStatisticTotals(ref PlayerStatisticTotals playerStatisticTotals, MatchData matchData, ulong? steamId)
         {
             // Game-generated statistics
-            var playerTotalMatchStatistics = matchData.Players.First(p => p.Info.SteamId == steamId).GetMatchStatisticsPlayerTotal();
+            var playerTotalMatchStatistics = matchData.Players.First(p => p.Info.SteamId64 == steamId).GetMatchStatisticsPlayerTotal();
             playerStatisticTotals.StatisticTotals.AddMatchDataStatistics(playerTotalMatchStatistics);
 
             // Custom statistics
             playerStatisticTotals.StatisticTotals.Matches++;
             var homeGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Home);
             var awayGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Away);
-            var firstPeriod = matchData.Players.First(p => p.Info.SteamId == steamId).MatchPeriodData.First();
+            var firstPeriod = matchData.Players.First(p => p.Info.SteamId64 == steamId).MatchPeriodData.First();
             if ((homeGoals > awayGoals && firstPeriod.Info.IsHomeTeam) || (awayGoals > homeGoals && firstPeriod.Info.IsAwayTeam)) playerStatisticTotals.StatisticTotals.Wins++;
             if (homeGoals == awayGoals) playerStatisticTotals.StatisticTotals.Draws++;
             if ((awayGoals > homeGoals && firstPeriod.Info.IsHomeTeam) || (homeGoals > awayGoals && firstPeriod.Info.IsAwayTeam)) playerStatisticTotals.StatisticTotals.Losses++;

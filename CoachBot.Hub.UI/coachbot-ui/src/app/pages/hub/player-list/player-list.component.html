@@ -23,8 +23,8 @@
             <!-- Result Filter / End -->
         </div>
         <div class="card__content">
-            <app-spinner *ngIf="!playerStatistics"></app-spinner>
-            <table *ngIf="playerStatistics" class="table table--large">
+            <app-spinner *ngIf="isLoading"></app-spinner>
+            <table *ngIf="!isLoading" class="table table--large">
                 <thead>
                     <tr>
                         <th class="team-result__date">Name</th>
@@ -98,11 +98,18 @@
                         *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
                         <td class="team-result__score">{{statistics.player.name}}</td>
                         <td class="team-result__vs">
-                            <a *ngIf="statistics.player.steamID && statistics.player.steamID !== 'BOT'"
-                                [attr.href]="getSteamProfileLink(statistics.player.steamID)">Profile</a>
+                            <a *ngIf="statistics.player.steamUserProfile"
+                                [attr.href]="getSteamProfileLink(statistics.player.steamID)">
+                                <img [attr.src]="statistics.player.steamUserProfile.avatar"
+                                    style="height: 16px; width: 16px;">
+                            </a>
                         </td>
-                        <td class="team-result__ball-posession">
-                            <img src="https://www.countryflags.io/gb/flat/24.png">
+                        <td class="team-result__ball-posession text-center">
+                            <ng-container *ngIf="statistics.player.steamUserProfile">
+                                <img *ngIf="statistics.player.steamUserProfile.loccountrycode; else unknownFlag"
+                                    src="https://www.countryflags.io/{{statistics.player.steamUserProfile.loccountrycode}}/flat/24.png">
+                                <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
+                            </ng-container>
                         </td>
                         <td class="team-result__status">{{statistics.statisticTotals.matches}}</td>
                         <td class="team-result__status">{{statistics.statisticTotals.wins}}</td>
@@ -123,7 +130,7 @@
             </table>
         </div>
     </div>
-    <div *ngIf="totalPages > 1" class="text-center mb-4">
+    <div *ngIf="!isLoading && totalPages > 1" class="text-center mb-4">
         <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
     </div>
 </div>

@@ -1,3 +1,4 @@
+import { SteamUserProfile } from './steam-user-profile.model';
 
 export interface Player {
     id: number;
@@ -9,6 +10,7 @@ export interface Player {
     playerStatisticsTotalsId: number;
     playerStatisticsTotals: any;
     displayName: string;
+    steamUserProfile: SteamUserProfile;
     createdDate: Date;
 }
 

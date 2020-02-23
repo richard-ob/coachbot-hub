@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CoachBot.Domain.Helpers;
+using System.Collections.Generic;
 
 namespace CoachBot.Domain.Model
 {
@@ -45,6 +46,7 @@ namespace CoachBot.Domain.Model
     public class MatchDataPlayerInfo
     {
         public string SteamId { get; set; }
+        public ulong? SteamId64 => SteamIdHelper.ConvertSteamIDToSteamID64(SteamId);
         public string Name { get; set; }
     }
 

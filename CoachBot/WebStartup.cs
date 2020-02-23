@@ -109,6 +109,7 @@ namespace CoachBot
             provider.GetService<BotInstance>();
 
             provider.GetService<CoachBotContext>().Initialize();
+            provider.GetService<CoachBotContext>().SeedPreReleaseData();
             provider.GetService<CoachBotContext>().SeedMatchData();
 
             // TEMPORARY: Generate match stats on startup

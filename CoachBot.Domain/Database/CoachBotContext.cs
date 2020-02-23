@@ -18,6 +18,7 @@ namespace CoachBot.Database
         public DbSet<Server> Servers { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Channel> Channels { get; set; }
+        public DbSet<Team> Teams { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Guild> Guilds { get; set; }
         public DbSet<Player> Players { get; set; }
@@ -52,12 +53,14 @@ namespace CoachBot.Database
 
             // Unique constraints
             modelBuilder.Entity<Channel>().HasIndex(c => new { c.DiscordChannelId }).IsUnique(true);
+            modelBuilder.Entity<Guild>().HasIndex(g => new { g.DiscordGuildId }).IsUnique(true);
             modelBuilder.Entity<Server>().HasIndex(s => new { s.Address }).IsUnique(true);
             modelBuilder.Entity<Region>().HasIndex(r => new { r.RegionName }).IsUnique(true);
             modelBuilder.Entity<PlayerLineupPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.LineupId }).IsUnique(true);
 
             // Defaults
             modelBuilder.Entity<Channel>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Team>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Match>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Server>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Region>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

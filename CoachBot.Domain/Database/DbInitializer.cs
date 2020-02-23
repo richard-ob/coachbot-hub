@@ -3,6 +3,7 @@ using CoachBot.Domain.Models.Dto;
 using CoachBot.Model;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -30,6 +31,114 @@ namespace CoachBot.Database
             context.Database.EnsureCreated();
         }
 
+        public static void SeedPreReleaseData(this CoachBotContext context)
+        {
+            if (context.Regions.Any()) return;
+
+            var regions = new List<Region>()
+            {
+                new Region()
+                {
+                    RegionName = "Europe",
+                    RegionCode = "EU"
+                },
+                new Region()
+                {
+                    RegionName = "South America",
+                    RegionCode = "SA"
+                }
+            };
+            context.Regions.AddRange(regions);
+
+            var servers = new List<Server>()
+            {
+                new Server()
+                {
+                    Address = "31.33.132.153:27015",
+                    Name = "Test Server UK",
+                    RegionId = regions.First().RegionId,
+                    CountryId = 1
+                }
+            };
+            context.Servers.AddRange(servers);
+
+            var guilds = new List<Guild>()
+            {
+                new Guild()
+                {
+                    DiscordGuildId = 310829524277395457,
+                    Name = "CoachBot"
+                }
+            };
+            context.Guilds.AddRange(guilds);
+
+            var teams = new List<Team>()
+            {
+                new Team()
+                {
+                    GuildId = guilds.First().Id,
+                    RegionId = regions.First().RegionId,
+                    Name = "Roby",
+                    TeamCode = "Roby"
+                },
+            };
+            context.Teams.AddRange(teams);
+
+            var channels = new List<Channel>()
+            {
+                new Channel()
+                {
+                    TeamId = teams.First().Id,
+                    IsMixChannel = false,
+                    UseClassicLineup = true,
+                    DisableSearchNotifications = false,
+                    Inactive = false,
+                    DiscordChannelName = "test",
+                    DiscordChannelId = 319213117341040641
+                },
+                new Channel()
+                {
+                    TeamId = teams.First().Id,
+                    IsMixChannel = true,
+                    UseClassicLineup = true,
+                    DisableSearchNotifications = false,
+                    Inactive = false,
+                    DiscordChannelName = "matchmaking",
+                    DiscordChannelId = 317415858702123009
+                },
+                new Channel()
+                {
+                    TeamId = teams.First().Id,
+                    IsMixChannel = false,
+                    UseClassicLineup = true,
+                    DisableSearchNotifications = false,
+                    Inactive = false,
+                    DiscordChannelName = "Academy",
+                    SubTeamName = "Academy",
+                    DiscordChannelId = 318123215669166090
+                }
+            };
+            context.Channels.AddRange(channels);
+
+            foreach(var channel in channels)
+            {
+                channel.ChannelPositions = new List<ChannelPosition>();
+                foreach(var position in new string[] { "GK", "LB", "RB", "CF" })
+                {
+                    channel.ChannelPositions.Add(new ChannelPosition()
+                    {
+                        ChannelId = channel.Id,
+                        Position = new Position()
+                        {
+                            Name = position
+                        }
+                    });
+                }
+            }
+
+            context.SaveChanges();
+        }
+
         public static void SeedMatchData(this CoachBotContext context)
         {
             context.Matches.RemoveRange(context.Matches);
@@ -52,14 +161,13 @@ namespace CoachBot.Database
                         ServerId = context.Servers.First().Id,
                         LineupHome = new Lineup()
                         {
-                            ChannelId = 1,
+                            ChannelId = context.Channels.First().Id,
                             TeamType = TeamType.Home
                         },
                         LineupAway = new Lineup()
                         {
-                            ChannelId = 2,
-                            TeamType = TeamType.Away
-                            
+                            ChannelId = context.Channels.First(c => c.Id != context.Channels.First().Id).Id,
+                            TeamType = TeamType.Away                            
                         }
                     };
 

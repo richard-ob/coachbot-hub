@@ -1,0 +1,43 @@
+<app-spinner *ngIf="isLoading"></app-spinner>
+<div *ngIf="!isLoading" class="player-heading">
+    <div class="container">
+        <div class="player-info__title player-info__title--mobile">
+            <h1 class="player-info__name"><span class="player-info__first-name">{{team.name}}</span></h1>
+        </div>
+        <div class="player-info">
+            <div class="player-info__item player-info__item--details" aria-hidden="false">
+                <img *ngIf="team.guild"
+                    src="https://cdn.discordapp.com/icons/310829524277395457/e9b3bbe6219879c2f77a8508b3c2da64.jpg"
+                    style="position: absolute; right: 30px; top: 33px;">
+                <div class="player-info__title player-info__title--desktop">
+                    <h1 class="player-info__name">
+                        <span class="player-info__first-name">{{team.name}}</span>
+                    </h1>
+                </div>
+                <div class="player-info-details">
+                    <div class="player-info-details__item player-info-details__item--height">
+                        <h6 class="player-info-details__title">Team Code</h6>
+                        <div class="player-info-details__value">{{team.teamCode}}</div>
+                    </div>
+                    <div class="player-info-details__item player-info-details__item--height">
+                        <h6 class="player-info-details__title">Region</h6>
+                        <div class="player-info-details__value">{{team.region.regionName}}</div>
+                    </div>
+                    <div class="player-info-details__item player-info-details__item--weight">
+                        <h6 class="player-info-details__title">Matches</h6>
+                        <div class="player-info-details__value">
+                        </div>
+                    </div>
+                    <div class="player-info-details__item player-info-details__item--position">
+                        <h6 class="player-info-details__title">Founded</h6>
+                        <div class="player-info-details__value">25th January 2016</div>
+                    </div>
+                    <div class="player-info-details__item player-info-details__item--college">
+                        <h6 class="player-info-details__title">Players</h6>
+                        <div class="player-info-details__value">16</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

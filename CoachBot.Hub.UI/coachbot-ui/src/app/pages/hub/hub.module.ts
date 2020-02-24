@@ -23,6 +23,7 @@ import { TeamListComponent } from './team-list/team-list.component';
 import { SteamProfileFlagPipe } from './player-list/helpers/steam-profile-flag.pipe';
 import { ProfileEditorComponent } from './profile-editor/profile-editor.component';
 import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
+import { TeamProfileComponent } from './team-profile/team-profile.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.c
     TeamListComponent,
     SteamProfileFlagPipe,
     ProfileEditorComponent,
-    SteamIDValidatorComponent
+    SteamIDValidatorComponent,
+    TeamProfileComponent
   ],
   imports: [
     CommonModule,

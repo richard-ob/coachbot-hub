@@ -34,15 +34,21 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        public PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod)
+        public PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod, int? teamId)
         {
-            return _coachBotContext.TeamStatisticTotals
+            var queryable = _coachBotContext.TeamStatisticTotals
               .Include(ts => ts.Channel)
                 .ThenInclude(c => c.Team)
                 .ThenInclude(t => t.Region)
               .Include(ts => ts.StatisticTotals)
-              .Where(ts => ts.StatisticTotals.TimePeriod == timePeriod)
-              .GetPaged(page, pageSize, sortOrder);
+              .Where(ts => ts.StatisticTotals.TimePeriod == timePeriod);
+
+            if (teamId != null && teamId > 0)
+            {
+                queryable.Where(ts => ts.Channel.TeamId == teamId);
+            }
+
+            return queryable.GetPaged(page, pageSize, sortOrder);
         }
 
         public PagedResult<PlayerStatisticTotals> GetPlayerStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod)

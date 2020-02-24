@@ -29,8 +29,8 @@
                 <tbody>
                     <tr
                         *ngFor="let statistics of teamStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
-                        <td class="team-result__score">{{statistics.channel.name}}</td>
-                        <td class="team-result__status">{{statistics.channel.region.regionCode}}</td>
+                        <td class="team-result__score">{{statistics.channel.team.name}}</td>
+                        <td class="team-result__status">{{statistics.channel.team.region.regionCode}}</td>
                         <td class="team-result__status">{{statistics.statisticTotals.matches}}</td>
                         <td class="team-result__status">{{statistics.statisticTotals.wins}}</td>
                         <td class="team-result__status">{{statistics.statisticTotals.losses}}</td>
@@ -42,6 +42,8 @@
                         <td class="team-result__status">{{statistics.statisticTotals.passes}}</td>
                         <td class="team-result__status">{{statistics.statisticTotals.distanceCovered}}</td>
                         <td class="team-result__game-overview">
+                            <a [routerLink]="['../team-profile', statistics.channel.team.id]"
+                                class="btn btn-xs btn-outline-primary btn-block">Profile</a>
                         </td>
                     </tr>
                 </tbody>

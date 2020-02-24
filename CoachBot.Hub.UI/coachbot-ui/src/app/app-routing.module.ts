@@ -12,6 +12,7 @@ import { PlayerProfileComponent } from './pages/hub/player-profile/player-profil
 import { TeamListComponent } from './pages/hub/team-list/team-list.component';
 import { ProfileEditorComponent } from './pages/hub/profile-editor/profile-editor.component';
 import { SteamIDValidatorComponent } from './pages/hub/profile-editor/steam-id-validator.component';
+import { TeamProfileComponent } from './pages/hub/team-profile/team-profile.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,10 @@ const routes: Routes = [
   {
     path: 'player-profile/:id',
     component: PlayerProfileComponent
+  },
+  {
+    path: 'team-profile/:id',
+    component: TeamProfileComponent
   },
   {
     path: 'edit-profile',

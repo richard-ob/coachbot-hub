@@ -1,11 +1,13 @@
-import { Region } from './region.model';
 import { Formation } from './formation';
 import { ChannelPosition } from './channel-position';
 import { Guild } from './guild';
+import { Team } from './team.model';
 
 export interface Channel {
     id: number;
-    name: string;
+    teamId: number;
+    team: Team;
+    subTeamName: string;
     discordChannelId: string;
     discordChannelName: string;
     channelPositions: ChannelPosition[];
@@ -19,7 +21,6 @@ export interface Channel {
     duplicityProtection: boolean;
     isMixChannel: boolean;
     inactive: boolean;
-    region: Region;
     updatedDate: Date;
     createdDate: Date;
 }

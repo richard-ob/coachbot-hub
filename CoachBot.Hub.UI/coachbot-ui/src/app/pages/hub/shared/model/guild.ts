@@ -1,5 +1,6 @@
-export class Guild {
-    id: string;
-    name: string;
+export interface Guild {
+    id: number;
     discordGuildId: string;
+    name: string;
+    createdDate: Date;
 }

@@ -21,8 +21,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public PagedResult<TeamStatisticTotals> PagedTeamStatistics([FromBody]PagedTeamStatisticsRequestDto pagedRequest)
         {
-            return _matchStatisticsService.GetTeamStatistics(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.TimePeriod);
+            return _matchStatisticsService.GetTeamStatistics(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.TimePeriod, pagedRequest.TeamId);
         }
-
     }
 }

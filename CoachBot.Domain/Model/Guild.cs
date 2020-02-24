@@ -14,6 +14,8 @@ namespace CoachBot.Model
 
         public string Name { get; set; }
 
+        public string IconUrl { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 

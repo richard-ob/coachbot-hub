@@ -23,6 +23,7 @@ namespace CoachBot.Database
         public DbSet<Guild> Guilds { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Position> Positions { get; set; }
+        public DbSet<PlayerPosition> PlayerPositions { get; set; }
         public DbSet<PlayerLineupPosition> PlayerLineupPositions { get; set; }
         public DbSet<PlayerLineupSubstitute> PlayerLineupSubstitutes { get; set; }
         public DbSet<ChannelPosition> ChannelPositions { get; set; }
@@ -47,6 +48,7 @@ namespace CoachBot.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Many-to-many composite primary keys
+            modelBuilder.Entity<PlayerPosition>().HasKey(pp => new { pp.PlayerId, pp.PositionId });
             modelBuilder.Entity<PlayerLineupPosition>().HasKey(ptp => new { ptp.PlayerId, ptp.PositionId, ptp.LineupId });
             modelBuilder.Entity<PlayerLineupSubstitute>().HasKey(ptp => new { ptp.PlayerId, ptp.LineupId });
             modelBuilder.Entity<ChannelPosition>().HasKey(cp => new { cp.ChannelId, cp.PositionId });
@@ -70,6 +72,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<Guild>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Position>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<MatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PlayerPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerLineupPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerLineupSubstitute>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerStatisticTotals>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

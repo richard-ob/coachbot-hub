@@ -50,7 +50,6 @@ export class PlayerListComponent implements OnInit {
 
     getSteamProfileLink(steamId: string) {
         return `http://steamcommunity.com/profiles/${steamId}`;
-
     }
 
     getSteamUserProfiles(playerStatistics: PlayerStatistics[]) {

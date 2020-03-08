@@ -6,6 +6,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RuntimeFrameworkVersion>2.1.0</RuntimeFrameworkVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bkconfig\**" />
@@ -35,6 +36,7 @@
     <Compile Include="Controllers\MatchStatisticController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerStatisticsController.cs" />
+    <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\TeamController.cs" />

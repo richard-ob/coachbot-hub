@@ -4,6 +4,7 @@ using System.Linq;
 using Discord;
 using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoachBot.Domain.Services
 {
@@ -30,7 +31,7 @@ namespace CoachBot.Domain.Services
 
         public Player GetPlayer(IUser user, bool createIfNotExists = false)
         {
-            var player = _coachBotContext.Players.FirstOrDefault(p => p.DiscordUserId == user.Id);
+            var player = _coachBotContext.Players.Include(p => p.Positions).ThenInclude(p => p.Position).FirstOrDefault(p => p.DiscordUserId == user.Id);
 
             if (createIfNotExists && player == null)
             {
@@ -42,7 +43,7 @@ namespace CoachBot.Domain.Services
 
         public Player GetPlayer(string playerName, bool createIfNotExists = false)
         {
-            var player = _coachBotContext.Players.FirstOrDefault(p => string.Equals(p.Name, playerName, System.StringComparison.CurrentCultureIgnoreCase));
+            var player = _coachBotContext.Players.Include(p => p.Positions).ThenInclude(p => p.Position).FirstOrDefault(p => string.Equals(p.Name, playerName, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (createIfNotExists && player == null && !playerName.StartsWith('@'))
             {
@@ -54,11 +55,11 @@ namespace CoachBot.Domain.Services
 
         public Player GetPlayer(ulong discordUserId, bool createIfNotExists = false, string playerName = null)
         {
-            var player = _coachBotContext.Players.FirstOrDefault(p => p.DiscordUserId == discordUserId);
+            var player = _coachBotContext.Players.Include(p => p.Positions).ThenInclude(p => p.Position).FirstOrDefault(p => p.DiscordUserId == discordUserId);
 
             if (createIfNotExists && player == null)
             {
-                player = CreatePlayer(playerName);
+                player = CreatePlayer(playerName, discordUserId);
             }
 
             return player;
@@ -69,6 +70,12 @@ namespace CoachBot.Domain.Services
             // TODO: Ensure player is not an admin for security purposes
             var player = GetPlayer(discordUserId, createIfNotExists: true, playerName: playerName);
             player.SteamID = steamId;
+            _coachBotContext.SaveChanges();
+        }
+
+        public void UpdatePlayer(Player player)
+        {
+            _coachBotContext.Players.Update(player);
             _coachBotContext.SaveChanges();
         }
 

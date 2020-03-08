@@ -30,6 +30,14 @@ namespace CoachBot.Model
 
         public bool DisableDMNotifications { get; set; }
 
+        public DateTime? PlayingSince { get; set; }
+
+        public int? CountryId { get; set; }
+
+        public Country Country { get; set; }
+
+        public ICollection<PlayerPosition> Positions { get; set; }
+
         public ICollection<PlayerLineupPosition> PlayerTeamPositions { get; set; }
 
         public ICollection<PlayerLineupSubstitute> PlayerSubstitutes { get; set; }

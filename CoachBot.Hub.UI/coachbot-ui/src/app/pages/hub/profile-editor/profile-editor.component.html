@@ -1,1 +1,78 @@
-<a [routerLink]="['/validate-steamid']">Sign In</a>
+<div class="container my-4">
+    <!-- Team Latest Results -->
+    <div id="player-profile-recent-matches">
+        <div class="card">
+            <div class="card__header">
+                <h4>Edit Profile</h4>
+                <!-- Result Filter -->
+                <!-- Result Filter / End -->
+            </div>
+            <div class="card__content">
+                <div class="row">
+                    <app-spinner *ngIf="isLoading" class="m-auto"></app-spinner>
+                    <div *ngIf="!isLoading" class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Nickname</label>
+                            <input type="text" class="form-control" id="input-default" [(ngModel)]="player.name"
+                                placeholder="Your most well-known alias">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Steam Account</label>
+                            <ng-container *ngIf="player.steamID">
+                                <p>
+                                    <img [attr.src]="steamUserProfile.avatar" style="height: 16px; width: 16px;"
+                                        class="mr-2">
+                                    <a [attr.href]="steamUserProfile.profileurl"
+                                        target="_blank">{{steamUserProfile.personaname}}</a>
+                                </p>
+                            </ng-container>
+                            <ng-container *ngIf="!player.steamID">
+                                <p><a [routerLink]="['/validate-steamid']">Link Steam Account</a></p>
+                            </ng-container>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Playing Since</label>
+                            <input type="date" class="form-control" id="input-default" [(ngModel)]="player.playingSince"
+                                placeholder="The date you first started playing IOSoccer">
+                            {{player.playingSince | date}}
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Nationality</label>
+                            <select class="form-control" id="input-default" [(ngModel)]="player.countryId"
+                                placeholder="Select nationality...">
+                                <option *ngFor="let country of countries" [ngValue]="country.id">{{country.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Positions</label>
+                            <div>
+                                <span *ngFor="let playerPosition of player.positions" class="label label-primary mr-2">
+                                    {{playerPosition.position.name}}
+                                </span>
+                            </div>
+                            <label class="control-label text-muted" for="input-default">Add
+                                Position</label>
+                            <div>
+                                <select class="form-control input-sm col-sm-1 d-inline mr-1" id="input-default"
+                                    placeholder="Select position..." #position>
+                                    <option *ngFor="let position of positions" [value]="position.id">{{position.name}}
+                                    </option>
+                                </select>
+                                <button class="btn btn-primary" type="button"
+                                    (click)="addPosition(position.value)">Add</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Teams</label>
+                            <p><span class="mr-2">MOF</span> <a href="#" class="btn btn-danger btn-xs">Leave</a></p>
+                        </div>
+                        <div class="float-right">
+                            <button class="btn btn-success btn-sm" (click)="saveChanges()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Team Latest Results / End -->
+    </div>

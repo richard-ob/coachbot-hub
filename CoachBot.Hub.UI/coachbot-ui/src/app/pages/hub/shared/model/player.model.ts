@@ -1,4 +1,5 @@
 import { SteamUserProfile } from './steam-user-profile.model';
+import { PlayerPosition } from './player-position.model';
 
 export interface Player {
     id: number;
@@ -10,6 +11,7 @@ export interface Player {
     playerStatisticsTotalsId: number;
     playerStatisticsTotals: any;
     displayName: string;
+    positions: PlayerPosition[];
     steamUserProfile: SteamUserProfile;
     createdDate: Date;
 }

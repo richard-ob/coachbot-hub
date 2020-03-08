@@ -24,15 +24,14 @@
                 <div class="header__top-bar-inner">
                     <!-- Account Navigation -->
                     <ul class="nav-account">
-                        <li class="nav-account__item"><a href="#" data-toggle="modal"
-                                data-target="#modal-login-register-tabs">Your Account</a>
+                        <li class="nav-account__item"><a href="#" routerLink="./edit-profile">Your Account</a>
                         </li>
                         <li class="nav-account__item"><a href="#">Language: <span class="highlight">EN</span></a>
                         </li>
-                        <li *ngIf="!user" class="nav-account__item nav-account__item--login">
+                        <li *ngIf="!player" class="nav-account__item nav-account__item--login">
                             <a routerLink="./login">Login</a>
                         </li>
-                        <li *ngIf="user" class="nav-account__item nav-account__item--logout">
+                        <li *ngIf="player" class="nav-account__item nav-account__item--logout">
                             <a href="{{apiUrl}}/logout">Logout</a>
                         </li>
                     </ul>
@@ -127,18 +126,20 @@
                             <li class=""><a href="#">Match Hub</a>
                                 <div class="main-nav__megamenu clearfix">
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                        <li class="main-nav__title">Ranked</li>
+                                        <li class="main-nav__title">Matches</li>
                                         <li><a routerLink="./recent-matches">Recent Matches</a></li>
-                                        <li><a routerLink="./match-overview">Match Overview</a></li>
+                                        <li><a routerLink="./upcoming-matches">Upcoming Matches</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Teams</li>
                                         <li><a routerLink="./match-overview">My Team</a></li>
                                         <li><a routerLink="./team-list">Team Rankings</a></li>
+                                        <li><a routerLink="./team-list">Team List</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Players</li>
-                                        <li><a routerLink="./edit-profile">My Profile</a></li>
+                                        <li *ngIf="player"><a routerLink="./player-profile/{{player.id}}">My Profile</a>
+                                        </li>
                                         <li><a routerLink="./player-list">Player Rankings</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">

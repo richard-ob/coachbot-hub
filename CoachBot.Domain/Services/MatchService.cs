@@ -48,6 +48,7 @@ namespace CoachBot.Domain.Services
 
             if (playerId != null)
             {
+                // TODO: Get the actual players who played from match data
                 queryable = queryable.Where(m => m.LineupHome.PlayerLineupPositions.Any(plp => plp.PlayerId == playerId) || m.LineupAway.PlayerLineupPositions.Any(plp => plp.PlayerId == playerId));
             }
 

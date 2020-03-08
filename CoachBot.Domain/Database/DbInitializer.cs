@@ -61,7 +61,7 @@ namespace CoachBot.Database
                     Address = "31.33.132.153:27015",
                     Name = "Test Server UK",
                     RegionId = regions.First().RegionId,
-                    CountryId = 1
+                    CountryId = 32
                 }
             };
             context.Servers.AddRange(servers);

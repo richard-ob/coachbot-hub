@@ -25,12 +25,44 @@ namespace CoachBot.Controllers
             return _playerService.GetPlayer(id);
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("@me")]
+        public Player Get()
+        {
+            return _playerService.GetPlayer(ulong.Parse(User.Claims.First().Value), createIfNotExists: true, playerName: User.Identity.Name);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("@me")]
+        public IActionResult UpdatePlayerProfile([FromBody]Player playerProfileUpdateDto)
+        {
+            var player = _playerService.GetPlayer(ulong.Parse(User.Claims.First().Value));
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            // TODO: Switch to AutoMapper
+            player.Name = playerProfileUpdateDto.Name;
+            player.CountryId = playerProfileUpdateDto.CountryId;
+            player.DisableDMNotifications = playerProfileUpdateDto.DisableDMNotifications;
+            player.PlayingSince = playerProfileUpdateDto.PlayingSince;
+            player.Positions = playerProfileUpdateDto.Positions.ToList();
+
+            _playerService.UpdatePlayer(player);
+
+            return Ok();
+        }
+
         [HttpPost]
         public PagedResult<Player> PagedMatchList([FromBody]PagedPlayerRequestDto pagedRequest)
         {
             return _playerService.GetPlayers(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull);
         }
-        
+
         [Authorize]
         [HttpPost]
         [Route("update-steam-id")]

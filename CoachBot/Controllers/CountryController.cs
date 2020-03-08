@@ -1,6 +1,5 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -9,7 +8,6 @@ namespace CoachBot.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class CountryController : Controller
     {
         private readonly CountryService _countryService;

@@ -84,6 +84,7 @@ namespace CoachBot
                 .AddTransient<MatchService>()
                 .AddTransient<SearchService>()
                 .AddTransient<PlayerService>()
+                .AddTransient<PositionService>()
                 .AddTransient<TeamService>()
                 .AddTransient<SubstitutionService>()
                 .AddTransient<MatchStatisticsService>()

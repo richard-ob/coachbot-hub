@@ -24,6 +24,7 @@ import { SteamProfileFlagPipe } from './player-list/helpers/steam-profile-flag.p
 import { ProfileEditorComponent } from './profile-editor/profile-editor.component';
 import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
 import { TeamProfileComponent } from './team-profile/team-profile.component';
+import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { TeamProfileComponent } from './team-profile/team-profile.component';
     ServerManagerComponent,
     RegionManagerComponent,
     RecentMatchesComponent,
+    UpcomingMatchesComponent,
     PlayerListComponent,
     PlayerProfileComponent,
     TeamListComponent,

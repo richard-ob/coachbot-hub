@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { UserService } from './core/services/user.service';
 import { User } from './core/models/user.model';
 import { environment } from 'src/environments/environment';
+import { Player } from './pages/hub/shared/model/player.model';
+import { PlayerService } from './pages/hub/shared/services/player.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +12,13 @@ import { environment } from 'src/environments/environment';
 })
 export class AppComponent {
 
-  user: User;
+  player: Player;
   apiUrl = environment.apiUrl;
 
-  constructor(private userService: UserService) {
-    this.userService.getUser().subscribe(user => this.user = user);
+  constructor(private playerService: PlayerService) {
+    this.playerService.getCurrentPlayer().subscribe(player => {
+      this.player = player;
+    });
   }
 
 }

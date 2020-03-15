@@ -211,6 +211,16 @@ namespace CoachBot.Database
                     context.Matches.Add(match);
                 }
             }
+            foreach(var player in context.Players)
+            {
+                var playerTeam = new PlayerTeam()
+                {
+                    PlayerId = player.Id,
+                    TeamId = 1,
+                    TeamRole = TeamRole.Player
+                };
+                context.PlayerTeams.Add(playerTeam);
+            }
             context.SaveChanges();
         }
     }

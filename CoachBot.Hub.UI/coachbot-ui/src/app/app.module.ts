@@ -8,11 +8,15 @@ import { LoginModule } from './pages/login/login.module';
 import { ErrorModule } from './pages/error/error.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
+import { ManualComponent } from './pages/manual/manual.component';
+import { TeamComponent } from './pages/team/team.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeroComponent
+    HeroComponent,
+    ManualComponent,
+    TeamComponent
   ],
   imports: [
     BrowserModule,

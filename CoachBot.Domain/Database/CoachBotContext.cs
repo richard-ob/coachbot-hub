@@ -23,6 +23,7 @@ namespace CoachBot.Database
         public DbSet<Guild> Guilds { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Position> Positions { get; set; }
+        public DbSet<PlayerTeam> PlayerTeams { get; set; }
         public DbSet<PlayerPosition> PlayerPositions { get; set; }
         public DbSet<PlayerLineupPosition> PlayerLineupPositions { get; set; }
         public DbSet<PlayerLineupSubstitute> PlayerLineupSubstitutes { get; set; }
@@ -75,6 +76,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<PlayerPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerLineupPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerLineupSubstitute>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PlayerTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerStatisticTotals>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TeamStatisticTotals>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<ChannelPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

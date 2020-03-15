@@ -1,0 +1,73 @@
+<div class="container my-4">
+    <!-- Team Latest Results -->
+    <div id="team-profile-info">
+        <div class="card">
+            <div class="card__header">
+                <h4>Edit Team Info</h4>
+            </div>
+            <div class="card__content">
+                <div class="row">
+                    <app-spinner *ngIf="isLoading" class="m-auto"></app-spinner>
+                    <div *ngIf="!isLoading" class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Team Name</label>
+                            <input type="text" class="form-control" id="input-default" [(ngModel)]="team.name"
+                                placeholder="Full team name">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Team Code</label>
+                            <input type="text" class="form-control" id="input-default" [(ngModel)]="team.teamCode"
+                                placeholder="Short team code">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Date Founded</label>
+                            <input type="date" class="form-control" id="input-default" [(ngModel)]="team.foundedDate"
+                                placeholder="The date the team was founded">
+                            {{team.foundedDate | date}}
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-default">Region</label>
+                            <select class="form-control" id="input-default" [(ngModel)]="team.regionId"
+                                placeholder="Select region...">
+                                <option *ngFor="let region of regions" [ngValue]="region.id">{{region.regionName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="team-profile-discord">
+        <div class="card">
+            <div class="card__header">
+                <h4>Manage Discord Integration</h4>
+            </div>
+            <div class="card__content">
+                <div class="row">
+                    <app-spinner *ngIf="isLoading" class="m-auto"></app-spinner>
+                    <div *ngIf="!isLoading" class="col-md-12">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="team-profile-discord">
+        <div class="card">
+            <div class="card__header">
+                <h4>Manage Players</h4>
+            </div>
+            <div class="card__content">
+                <div class="row">
+                    <app-spinner *ngIf="isLoading" class="m-auto"></app-spinner>
+                    <div *ngIf="!isLoading" class="col-md-12">
+                    </div>
+                    <div *ngFor="let teamPlayer of teamPlayers">
+                        {{teamPlayer.player.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -48,9 +48,13 @@ namespace CoachBot.Domain.Model
             }
         }
 
+        public DateTime? FoundedDate { get; set; }
+
         public bool Inactive { get; set; }
 
         public ICollection<Channel> Channels { get; set; }
+
+        public ICollection<PlayerTeam> Players { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }

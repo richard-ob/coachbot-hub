@@ -13,11 +13,22 @@ import { TeamListComponent } from './pages/hub/team-list/team-list.component';
 import { ProfileEditorComponent } from './pages/hub/profile-editor/profile-editor.component';
 import { SteamIDValidatorComponent } from './pages/hub/profile-editor/steam-id-validator.component';
 import { TeamProfileComponent } from './pages/hub/team-profile/team-profile.component';
+import { ManualComponent } from './pages/manual/manual.component';
+import { TeamComponent } from './pages/team/team.component';
+import { TeamEditorComponent } from './pages/hub/team-editor/team-editor.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HeroComponent
+  },
+  {
+    path: 'manual',
+    component: ManualComponent
+  },
+  {
+    path: 'team',
+    component: TeamComponent
   },
   {
     path: 'match-overview/:id',
@@ -54,6 +65,10 @@ const routes: Routes = [
   {
     path: 'edit-profile',
     component: ProfileEditorComponent
+  },
+  {
+    path: 'edit-team',
+    component: TeamEditorComponent
   },
   {
     path: 'validate-steamid',

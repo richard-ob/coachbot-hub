@@ -25,6 +25,7 @@ import { ProfileEditorComponent } from './profile-editor/profile-editor.componen
 import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
 import { TeamProfileComponent } from './team-profile/team-profile.component';
 import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
+import { TeamEditorComponent } from './team-editor/team-editor.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.co
     SteamProfileFlagPipe,
     ProfileEditorComponent,
     SteamIDValidatorComponent,
-    TeamProfileComponent
+    TeamProfileComponent,
+    TeamEditorComponent
   ],
   imports: [
     CommonModule,

@@ -36,6 +36,7 @@
     <Compile Include="Controllers\MatchStatisticController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerStatisticsController.cs" />
+    <Compile Include="Controllers\PlayerTeamController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Controllers\ServerController.cs" />

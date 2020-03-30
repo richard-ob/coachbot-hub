@@ -14,19 +14,12 @@ export class MatchService {
 
     constructor(private http: HttpClient) { }
 
-    getMatches(regionId: number, page: number): Observable<PagedResult<Match>> {
-        const pagedMatchRequestDto = new PagedMatchRequestDto();
-        pagedMatchRequestDto.page = page;
-        pagedMatchRequestDto.regionId = regionId;
-
-        return this.http.post<PagedResult<Match>>(`${environment.apiUrl}/api/match`, pagedMatchRequestDto);
-    }
-
-    getMatchesForPlayer(regionId: number, playerId: number, page: number): Observable<PagedResult<Match>> {
+    getMatches(regionId: number, page: number, playerId: number = null, teamId: number = null): Observable<PagedResult<Match>> {
         const pagedMatchRequestDto = new PagedMatchRequestDto();
         pagedMatchRequestDto.page = page;
         pagedMatchRequestDto.regionId = regionId;
         pagedMatchRequestDto.playerId = playerId;
+        pagedMatchRequestDto.teamId = teamId;
 
         return this.http.post<PagedResult<Match>>(`${environment.apiUrl}/api/match`, pagedMatchRequestDto);
     }

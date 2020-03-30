@@ -126,7 +126,13 @@
                             <li routerLinkActive="active"><a href="#">News</a></li>
                             <li routerLinkActive="active"><a href="https://store.steampowered.com/app/673560/IOSoccer/"
                                     target="_blank">Download</a></li>
-                            <li routerLinkActive="active"><a routerLink="/manual">Manual</a></li>
+                            <li routerLinkActive="active">
+                                <a href="#">Manuals</a>
+                                <ul class="main-nav__sub">
+                                    <li><a routerLink="/manual">Player Manual</a></li>
+                                    <li><a routerLink="/manual">Server Admin Manual</a></li>
+                                </ul>
+                            </li>
                             <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
                                 <a href="#">Match Hub</a>
                                 <div class="main-nav__megamenu clearfix">
@@ -137,7 +143,7 @@
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Teams</li>
-                                        <li><a routerLink="./edit-team">My Team</a></li>
+                                        <li *ngIf="player"><a routerLink="./edit-team">My Team</a></li>
                                         <li><a routerLink="./team-list">Team Statistics</a></li>
                                         <li><a routerLink="./team-list">Team List</a></li>
                                     </ul>

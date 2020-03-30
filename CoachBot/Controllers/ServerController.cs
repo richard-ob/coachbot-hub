@@ -64,7 +64,7 @@ namespace CoachBot.Controllers
         }
 
         [HttpPost]
-        public void Add(Server server)
+        public void Create(Server server)
         {
             if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
             {

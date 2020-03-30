@@ -43,21 +43,10 @@ export class PlayerProfileComponent implements OnInit {
                                 this.playingTime = humanizeDuration(iosoccerStats.playtime_forever * 60 * 1000);
                             }
                         }
-                        this.loadPage(1);
                         this.isLoading = false;
                     });
                 });
             });
-        });
-    }
-
-
-    loadPage(page: number) {
-        this.matchService.getMatchesForPlayer(1, this.player.id, page).subscribe(response => {
-            this.matches = response.items;
-            this.currentPage = response.page;
-            this.totalPages = response.totalPages;
-            this.totalItems = response.totalItems;
         });
     }
 }

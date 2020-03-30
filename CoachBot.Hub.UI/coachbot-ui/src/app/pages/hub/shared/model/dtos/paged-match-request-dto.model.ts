@@ -2,5 +2,6 @@ export class PagedMatchRequestDto {
     page = 1;
     pageSize = 10;
     regionId: number;
-    playerId: number;
+    playerId?: number;
+    teamId?: number;
 }

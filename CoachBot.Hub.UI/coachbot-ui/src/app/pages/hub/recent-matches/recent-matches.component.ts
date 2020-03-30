@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatchService } from '../shared/services/match.service';
 import { Match } from '../shared/model/match.model';
 @Component({
@@ -8,6 +8,8 @@ import { Match } from '../shared/model/match.model';
 })
 export class RecentMatchesComponent implements OnInit {
 
+    @Input() playerId: number;
+    @Input() teamId: number;
     matches: Match[];
     currentPage = 1;
     totalPages: number;
@@ -20,7 +22,7 @@ export class RecentMatchesComponent implements OnInit {
     }
 
     loadPage(page: number) {
-        this.matchService.getMatches(1, page).subscribe(response => {
+        this.matchService.getMatches(1, page, this.playerId, this.teamId).subscribe(response => {
             this.matches = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;

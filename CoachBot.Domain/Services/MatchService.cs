@@ -33,7 +33,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.GetMatchById(matchId);
         }
 
-        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId)
+        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId = null, int? teamId = null)
         {
             var queryable = _coachBotContext.Matches
                 .Include(m => m.LineupHome)
@@ -50,6 +50,12 @@ namespace CoachBot.Domain.Services
             {
                 // TODO: Get the actual players who played from match data
                 queryable = queryable.Where(m => m.LineupHome.PlayerLineupPositions.Any(plp => plp.PlayerId == playerId) || m.LineupAway.PlayerLineupPositions.Any(plp => plp.PlayerId == playerId));
+            }
+
+            if (teamId != null)
+            {
+                // TODO: Get the actual players who played from match data
+                queryable = queryable.Where(m => m.LineupHome.Channel.TeamId == teamId || m.LineupAway.Channel.TeamId == teamId);
             }
 
             return queryable.GetPaged(page, pageSize, sortOrder);

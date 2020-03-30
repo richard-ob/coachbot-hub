@@ -26,7 +26,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public PagedResult<Match> PagedMatchList([FromBody]PagedMatchRequestDto pagedRequest)
         {
-            return _matchService.GetMatches(pagedRequest.RegionId, pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.PlayerId);
+            return _matchService.GetMatches(pagedRequest.RegionId, pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.PlayerId, pagedRequest.TeamId);
         }
     }
 }

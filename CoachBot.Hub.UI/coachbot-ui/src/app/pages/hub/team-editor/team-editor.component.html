@@ -1,6 +1,9 @@
 <div class="container my-4">
     <!-- Team Latest Results -->
-    <div id="team-profile-info">
+    <div class="alert alert-warning">
+        You do not currently manage any teams.
+    </div>
+    <div *ngIf="!noTeamsAvailable" id="team-profile-info">
         <div class="card">
             <div class="card__header">
                 <h4>Edit Team Info</h4>
@@ -53,21 +56,5 @@
         </div>
     </div>
 
-    <div id="team-profile-discord">
-        <div class="card">
-            <div class="card__header">
-                <h4>Manage Players</h4>
-            </div>
-            <div class="card__content">
-                <div class="row">
-                    <app-spinner *ngIf="isLoading" class="m-auto"></app-spinner>
-                    <div *ngIf="!isLoading" class="col-md-12">
-                    </div>
-                    <div *ngFor="let teamPlayer of teamPlayers">
-                        {{teamPlayer.player.name}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <app-team-editor-player-list *ngIf="!isLoading" [teamId]="team && team.id"></app-team-editor-player-list>
 </div>

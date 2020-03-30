@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
+using CoachBot.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -33,16 +34,16 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
-        [HttpGet("player/{id}")]
-        public List<PlayerTeam> GetForPlayer(int id)
+        [HttpPost("player")]
+        public List<PlayerTeam> GetForPlayer([FromBody]PlayerTeamRequestDto playerTeamRequestDto)
         {
-            return _playerTeamService.GetForPlayer(id);
+            return _playerTeamService.GetForPlayer(playerTeamRequestDto.Id, playerTeamRequestDto.IncludeInactive);
         }
 
-        [HttpGet("team/{id}")]
-        public List<PlayerTeam> GetForTeam(int id)
+        [HttpPost("team")]
+        public List<PlayerTeam> GetForTeam([FromBody]PlayerTeamRequestDto playerTeamRequestDto)
         {
-            return _playerTeamService.GetForTeam(id);
+            return _playerTeamService.GetForTeam(playerTeamRequestDto.Id, playerTeamRequestDto.IncludeInactive);
         }
     }
 }

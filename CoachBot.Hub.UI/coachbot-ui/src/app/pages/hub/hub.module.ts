@@ -26,6 +26,7 @@ import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.c
 import { TeamProfileComponent } from './team-profile/team-profile.component';
 import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
 import { TeamEditorComponent } from './team-editor/team-editor.component';
+import { TeamEditorPlayerListComponent } from './team-editor/team-editor-player-list/team-editor-player-list.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { TeamEditorComponent } from './team-editor/team-editor.component';
     ProfileEditorComponent,
     SteamIDValidatorComponent,
     TeamProfileComponent,
-    TeamEditorComponent
+    TeamEditorComponent,
+    TeamEditorPlayerListComponent
   ],
   imports: [
     CommonModule,

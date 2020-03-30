@@ -28,7 +28,7 @@ namespace CoachBot.Domain.Services
             _dbContext.SaveChanges();
         }
 
-        public List<PlayerTeam> GetForPlayer(int playerId)
+        public List<PlayerTeam> GetForPlayer(int playerId, bool includeInactive = false)
         {
             return _dbContext.PlayerTeams
                 .Include(pt => pt.Team)
@@ -37,14 +37,16 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(t => t.Guild)
                 .Include(pt => pt.Player)
                 .Where(pt => pt.Player.Id == playerId)
+                .Where(pt => pt.LeaveDate == null || includeInactive)
                 .AsNoTracking()
                 .ToList();
         }
 
-        public List<PlayerTeam> GetForTeam(int teamId)
+        public List<PlayerTeam> GetForTeam(int teamId, bool includeInactive = false)
         {
             return _dbContext.PlayerTeams
                 .Where(pt => pt.TeamId == teamId)
+                .Where(pt => pt.LeaveDate == null || includeInactive)
                 .Include(pt => pt.Player)
                 .AsNoTracking()
                 .ToList();

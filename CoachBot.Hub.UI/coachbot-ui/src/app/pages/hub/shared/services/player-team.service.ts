@@ -12,12 +12,22 @@ export class PlayerTeamService {
 
     constructor(private http: HttpClient) { }
 
-    getForPlayer(playerId: number): Observable<PlayerTeam[]> {
-        return this.http.get<PlayerTeam[]>(`${environment.apiUrl}/api/player-team/player/${playerId}`);
+    getForPlayer(playerId: number, includeInactive = false): Observable<PlayerTeam[]> {
+        const playerTeamRequestDto = {
+            id: playerId,
+            includeInactive
+        };
+
+        return this.http.post<PlayerTeam[]>(`${environment.apiUrl}/api/player-team/player`, playerTeamRequestDto);
     }
 
-    getForTeam(teamId: number): Observable<PlayerTeam[]> {
-        return this.http.get<PlayerTeam[]>(`${environment.apiUrl}/api/player-team/team/${teamId}`);
+    getForTeam(teamId: number, includeInactive = false): Observable<PlayerTeam[]> {
+        const playerTeamRequestDto = {
+            id: teamId,
+            includeInactive
+        };
+
+        return this.http.post<PlayerTeam[]>(`${environment.apiUrl}/api/player-team/team`, playerTeamRequestDto);
     }
 
 }

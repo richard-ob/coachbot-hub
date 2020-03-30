@@ -38,9 +38,11 @@ namespace CoachBot.Model
 
         public ICollection<PlayerPosition> Positions { get; set; }
 
-        public ICollection<PlayerLineupPosition> PlayerTeamPositions { get; set; }
+        public ICollection<PlayerLineupPosition> PlayerLineupPositions { get; set; }
 
         public ICollection<PlayerLineupSubstitute> PlayerSubstitutes { get; set; }
+
+        public ICollection<PlayerTeam> Teams { get; set; }
 
         public string DisplayName
         {

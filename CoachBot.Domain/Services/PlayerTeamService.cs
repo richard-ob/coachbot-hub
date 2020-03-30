@@ -45,6 +45,7 @@ namespace CoachBot.Domain.Services
         {
             return _dbContext.PlayerTeams
                 .Where(pt => pt.TeamId == teamId)
+                .Include(pt => pt.Player)
                 .AsNoTracking()
                 .ToList();
         }

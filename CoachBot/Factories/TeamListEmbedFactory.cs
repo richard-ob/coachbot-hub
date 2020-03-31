@@ -12,7 +12,7 @@ namespace CoachBot.Factories
         private const uint DEFAULT_EMBED_HOME_TEAM_COLOUR = 0x2463b0;
         private const uint DEFAULT_EMBED_AWAY_TEAM_COLOUR = 0xd60e0e;
 
-        public static Embed GenerateEmbed(Channel channel, Match match, TeamType teamType = TeamType.Home)
+        public static Embed GenerateEmbed(Channel channel, Match match, MatchTeamType teamType = MatchTeamType.Home)
         {
             var sb = new StringBuilder();
             var teamColor = new Color(DEFAULT_EMBED_HOME_TEAM_COLOUR);
@@ -20,7 +20,7 @@ namespace CoachBot.Factories
 
             Lineup team;
             Lineup oppositionTeam;
-            if (teamType == TeamType.Home)
+            if (teamType == MatchTeamType.Home)
             {
                 team = match.LineupHome;
                 oppositionTeam = match.LineupAway;
@@ -40,7 +40,7 @@ namespace CoachBot.Factories
                 }
             }        
 
-            var embedBuilder = new EmbedBuilder().WithTitle($"{channel.Team.BadgeEmote ?? channel.Team.Name}{(match.IsMixMatch && teamType == TeamType.Away ? " #2" : "")} Team List");
+            var embedBuilder = new EmbedBuilder().WithTitle($"{channel.Team.BadgeEmote ?? channel.Team.Name}{(match.IsMixMatch && teamType == MatchTeamType.Away ? " #2" : "")} Team List");
             foreach (var channelPosition in channel.ChannelPositions)
             {
                 var playerTeamPosition = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channelPosition.Position.Name);

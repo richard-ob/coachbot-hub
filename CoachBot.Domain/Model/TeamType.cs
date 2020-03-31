@@ -1,8 +1,9 @@
-﻿namespace CoachBot.Model
+﻿namespace CoachBot.Domain.Model
 {
     public enum TeamType
     {
-        Home = 1,
-        Away = 2
+        Club,
+        National,
+        Mix
     }
 }

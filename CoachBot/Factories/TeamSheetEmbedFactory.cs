@@ -14,16 +14,16 @@ namespace CoachBot.Factories
         private const string DEFAULT_KIT_EMOTE = "<:redshirt:318114878063902720>";
         private const string UNICODE_SPACE = "\u200B";
 
-        public static Embed GenerateEmbed(Channel channel, Match match, TeamType teamType = TeamType.Home)
+        public static Embed GenerateEmbed(Channel channel, Match match, MatchTeamType teamType = MatchTeamType.Home)
         {
             var teamList = new StringBuilder();
             var teamColor = new Color(DEFAULT_EMBED_HOME_TEAM_COLOUR);
             var embedFooterBuilder = new EmbedFooterBuilder();
-            var availablePlaceholderText = !string.IsNullOrEmpty(channel.Team.KitEmote) && teamType == TeamType.Home ? channel.Team.KitEmote : DEFAULT_KIT_EMOTE;
+            var availablePlaceholderText = !string.IsNullOrEmpty(channel.Team.KitEmote) && teamType == MatchTeamType.Home ? channel.Team.KitEmote : DEFAULT_KIT_EMOTE;
 
             Lineup team;
             Lineup oppositionTeam;
-            if (teamType == TeamType.Home)
+            if (teamType == MatchTeamType.Home)
             {
                 team = match.LineupHome;
                 oppositionTeam = match.LineupAway;
@@ -40,7 +40,7 @@ namespace CoachBot.Factories
             }
 
 
-            if (teamType == TeamType.Home && channel.Team.Color != null && channel.Team.Color[0] == '#')
+            if (teamType == MatchTeamType.Home && channel.Team.Color != null && channel.Team.Color[0] == '#')
             {
                 teamColor = new Color(ColorExtensions.FromHex(channel.Team.Color).R, ColorExtensions.FromHex(channel.Team.Color).G, ColorExtensions.FromHex(channel.Team.Color).B);
             }
@@ -181,7 +181,7 @@ namespace CoachBot.Factories
                 }
             }
 
-            if (teamType == TeamType.Home && team.PlayerSubstitutes.Any()) builder.AddField("Subs", string.Join(", ", match.LineupHome.PlayerSubstitutes.Select(ps => ps.Player.DiscordUserMention ?? ps.Player.Name)));
+            if (teamType == MatchTeamType.Home && team.PlayerSubstitutes.Any()) builder.AddField("Subs", string.Join(", ", match.LineupHome.PlayerSubstitutes.Select(ps => ps.Player.DiscordUserMention ?? ps.Player.Name)));
 
             return builder.Build();
         }

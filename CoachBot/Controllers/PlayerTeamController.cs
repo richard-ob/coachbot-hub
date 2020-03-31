@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
+using CoachBot.Extensions;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,26 +13,42 @@ namespace CoachBot.Controllers
     public class PlayerTeamController : Controller
     {
         private readonly PlayerTeamService _playerTeamService;
+        private readonly TeamService _teamService;
+        private readonly PlayerService _playerService;
 
-        public PlayerTeamController(PlayerTeamService playerTeamService)
+        public PlayerTeamController(PlayerTeamService playerTeamService, TeamService teamService, PlayerService playerService)
         {
             _playerTeamService = playerTeamService;
+            _teamService = teamService;
+            _playerService = playerService;
         }
 
         [HttpPost]
         public IActionResult Create(PlayerTeam playerTeam)
         {
-            _playerTeamService.Create(playerTeam);
+            if (!_teamService.IsTeamCaptain(playerTeam.TeamId, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(playerTeam.TeamId, User.GetDiscordUserId()))
+            {
+                return Forbid();
+            }
+
+            _playerTeamService.AddPlayerToTeam(playerTeam.TeamId, playerTeam.PlayerId, playerTeam.TeamRole);
 
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPut]
         public IActionResult Update(PlayerTeam playerTeam)
         {
-            _playerTeamService.Update(playerTeam);
+            if (_teamService.IsTeamCaptain(playerTeam.TeamId, User.GetDiscordUserId()) ||
+                _teamService.IsViceCaptain(playerTeam.TeamId, User.GetDiscordUserId()) ||
+                _playerService.GetPlayer(User.GetDiscordUserId()).Id == playerTeam.PlayerId)
+            {
+                _playerTeamService.Update(playerTeam);
 
-            return Ok();
+                return Ok();
+            }
+
+            return Forbid();
         }
 
         [HttpPost("player")]
@@ -45,5 +62,6 @@ namespace CoachBot.Controllers
         {
             return _playerTeamService.GetForTeam(playerTeamRequestDto.Id, playerTeamRequestDto.IncludeInactive);
         }
+
     }
 }

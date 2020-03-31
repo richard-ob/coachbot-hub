@@ -106,25 +106,25 @@ namespace CoachBot.Domain.Services
             return channels;
         }
 
-        public TeamType GetTeamTypeForChannelTeamType(ChannelTeamType channelTeamType, ulong channelId)
+        public MatchTeamType GetTeamTypeForChannelTeamType(ChannelTeamType channelTeamType, ulong channelId)
         {
             var match = _dbContext.GetCurrentMatchForChannel(channelId);
 
             if (match.IsMixMatch && channelTeamType == ChannelTeamType.TeamOne)
             {
-                return TeamType.Home;
+                return MatchTeamType.Home;
             }
             else if (match.IsMixMatch && channelTeamType == ChannelTeamType.TeamTwo)
             {
-                return TeamType.Away;
+                return MatchTeamType.Away;
             }
             else if (match.LineupHome.Channel.DiscordChannelId == channelId)
             {
-                return TeamType.Home;
+                return MatchTeamType.Home;
             }
             else
             {
-                return TeamType.Away;
+                return MatchTeamType.Away;
             }
         }
 

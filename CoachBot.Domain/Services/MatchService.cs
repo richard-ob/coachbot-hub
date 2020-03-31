@@ -154,13 +154,13 @@ namespace CoachBot.Domain.Services
                 ChannelId = channelId
             };
             match.CreatedDate = DateTime.UtcNow;
-            match.LineupHome.TeamType = TeamType.Home; // This is necessary to ensure that if a team is unchallenged that they become the Home team after
+            match.LineupHome.TeamType = MatchTeamType.Home; // This is necessary to ensure that if a team is unchallenged that they become the Home team after
 
             if (channel.IsMixChannel)
             {
                 match.LineupAway = new Lineup()
                 {
-                    TeamType = TeamType.Away,
+                    TeamType = MatchTeamType.Away,
                     ChannelId = channelId
                 };
             }
@@ -179,13 +179,13 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Teamsheet successfully reset");
         }
 
-        public ServiceResponse AddPlayerToLineup(ulong channelId, Player player, string positionName = null, TeamType teamType = TeamType.Home)
+        public ServiceResponse AddPlayerToLineup(ulong channelId, Player player, string positionName = null, MatchTeamType teamType = MatchTeamType.Home)
         {
             const string GK_POSITION = "GK";
             var match = GetCurrentMatchForChannel(channelId);
             if (match.LineupHome.PlayerLineupPositions is null) match.LineupHome.PlayerLineupPositions = new List<PlayerLineupPosition>();
             var channel = _coachBotContext.Channels.Include(c => c.ChannelPositions).ThenInclude(cp => cp.Position).First(c => c.DiscordChannelId == channelId);
-            var team = teamType == TeamType.Home ? match.LineupHome : match.LineupAway;
+            var team = teamType == MatchTeamType.Home ? match.LineupHome : match.LineupAway;
 
             Position position;
             if (positionName == null)
@@ -216,7 +216,7 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.Success, $"Signed **{player.DisplayName}** to **{position.Name}** for **{team.Channel.Team.Name}**");
         }
 
-        public ServiceResponse AddSubsitutePlayerToLineup(ulong channelId, Player player, TeamType teamType = TeamType.Home)
+        public ServiceResponse AddSubsitutePlayerToLineup(ulong channelId, Player player, MatchTeamType teamType = MatchTeamType.Home)
         {
             var match = GetCurrentMatchForChannel(channelId);
             if (match.LineupHome.PlayerSubstitutes is null) match.LineupHome.PlayerSubstitutes = new List<PlayerLineupSubstitute>();
@@ -226,7 +226,7 @@ namespace CoachBot.Domain.Services
             var playerTeamSubstitute = new PlayerLineupSubstitute()
             {
                 PlayerId = player.Id,
-                LineupId = teamType == TeamType.Home ? (int)match.LineupHomeId : (int)match.LineupAwayId
+                LineupId = teamType == MatchTeamType.Home ? (int)match.LineupHomeId : (int)match.LineupAwayId
             };
             _coachBotContext.PlayerLineupSubstitutes.Add(playerTeamSubstitute);
             _coachBotContext.SaveChanges();
@@ -249,7 +249,7 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is not on the subs bench and therefore cannot be removed");
         }
                
-        public ServiceResponse ClearPosition(ulong channelId, string position, TeamType teamType = TeamType.Home)
+        public ServiceResponse ClearPosition(ulong channelId, string position, MatchTeamType teamType = MatchTeamType.Home)
         {
             var match = GetCurrentMatchForChannel(channelId);
             var team = match.GetTeam(teamType);
@@ -345,7 +345,7 @@ namespace CoachBot.Domain.Services
             _searchService.StopSearch(challenger.Id);
             _searchService.StopSearch(opposition.Id);
             challengerMatch.LineupAway = oppositionMatch.LineupHome;
-            challengerMatch.LineupAway.TeamType = TeamType.Away;
+            challengerMatch.LineupAway.TeamType = MatchTeamType.Away;
             _coachBotContext.Matches.Remove(oppositionMatch);
             _coachBotContext.SaveChanges();
 

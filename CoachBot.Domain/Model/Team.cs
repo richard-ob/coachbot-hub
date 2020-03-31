@@ -23,6 +23,8 @@ namespace CoachBot.Domain.Model
 
         public string DisplayName => BadgeEmote ?? Name;
 
+        public TeamType TeamType { get; set; }
+
         public int? RegionId { get; set; }
 
         public Region Region { get; set; }

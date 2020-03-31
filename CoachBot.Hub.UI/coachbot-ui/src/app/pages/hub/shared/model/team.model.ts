@@ -1,6 +1,7 @@
 import { Guild } from './guild';
 import { Region } from './region.model';
 import { Channel } from './channel.model';
+import { TeamType } from '../../match-overview/model/team-type.enum';
 
 export interface Team {
     id: number;
@@ -9,6 +10,7 @@ export interface Team {
     kitEmote: null;
     badgeEmote: null;
     displayName: string;
+    teamType: TeamType;
     regionId: number;
     region: Region;
     guildId: number;

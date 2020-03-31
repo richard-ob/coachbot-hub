@@ -29,5 +29,25 @@ namespace CoachBot.Domain.Services
         {
             return _dbContext.Teams.ToList();
         }
+
+        public void CreateTeam(Team team)
+        {
+
+        }
+
+        public void UpdateTeam(Team team)
+        {
+
+        }
+
+        public bool IsTeamCaptain(int teamId, ulong discordUserId)
+        {
+            return _dbContext.PlayerTeams.Any(pt => pt.Player.DiscordUserId == discordUserId && pt.TeamRole == TeamRole.Captain && pt.LeaveDate == null);
+        }
+
+        public bool IsViceCaptain(int teamId, ulong discordUserId)
+        {
+            return _dbContext.PlayerTeams.Any(pt => pt.Player.DiscordUserId == discordUserId && pt.TeamRole == TeamRole.ViceCaptain && pt.LeaveDate == null);
+        }
     }
 }

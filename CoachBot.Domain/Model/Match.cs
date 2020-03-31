@@ -40,7 +40,7 @@ namespace CoachBot.Domain.Model
 
         public bool IsMixMatch => LineupHome?.ChannelId == LineupAway?.ChannelId;
 
-        public Lineup GetTeam(TeamType teamType) => teamType == TeamType.Home ? LineupHome : LineupAway;
+        public Lineup GetTeam(MatchTeamType teamType) => teamType == MatchTeamType.Home ? LineupHome : LineupAway;
 
         public string MatchFormat => "8v8";
 

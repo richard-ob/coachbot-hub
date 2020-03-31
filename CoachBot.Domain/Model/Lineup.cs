@@ -26,7 +26,7 @@ namespace CoachBot.Model
 
         public Match Match => HomeMatch ?? AwayMatch;
 
-        public TeamType TeamType { get; set; }
+        public MatchTeamType TeamType { get; set; }
 
         public ICollection<PlayerLineupPosition> PlayerLineupPositions { get; set; }
 

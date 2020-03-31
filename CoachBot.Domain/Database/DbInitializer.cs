@@ -166,13 +166,13 @@ namespace CoachBot.Database
                         LineupHome = new Lineup()
                         {
                             ChannelId = context.Channels.First().Id,
-                            TeamType = TeamType.Home,
+                            TeamType = MatchTeamType.Home,
                             PlayerLineupPositions = new List<PlayerLineupPosition>()
                         },
                         LineupAway = new Lineup()
                         {
                             ChannelId = context.Channels.First(c => c.Id != context.Channels.First().Id).Id,
-                            TeamType = TeamType.Away,
+                            TeamType = MatchTeamType.Away,
                             PlayerLineupPositions = new List<PlayerLineupPosition>()
                         }
                     };

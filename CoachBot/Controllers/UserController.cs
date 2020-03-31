@@ -1,7 +1,6 @@
 ﻿using CoachBot.Domain.Services;
 using CoachBot.Model;
 using CoachBot.Services;
-using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +28,12 @@ namespace CoachBot.Controllers
         public User Get()
         {
             var user = new User();
-            if(User.Claims.Any())
+            if (User.Claims.Any())
             {
                 user.Name = User.Identity.Name;
                 user.DiscordUserId = ulong.Parse(User.Claims.First().Value);
                 user.IsAdministrator = _channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value));
                 user.PlayerId = _playerService.GetPlayer(user.DiscordUserId, createIfNotExists: true, playerName: User.Identity.Name).Id;
-                //user.Channels = _botService.GetChannelsForUser(ulong.Parse(User.Claims.First().Value), false, false);
             }
             return user;
         }

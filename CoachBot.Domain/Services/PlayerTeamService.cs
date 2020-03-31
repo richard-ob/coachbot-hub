@@ -1,6 +1,7 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,9 +16,28 @@ namespace CoachBot.Domain.Services
             _dbContext = dbContext;
         }
 
-        public void Create(PlayerTeam playerTeam)
+        public void AddPlayerToTeam(int teamId, int playerId, TeamRole teamRole)
         {
-            // TODO: Validation logic here to prevent someone being in multiple teams (Not on load etc)
+            var playerTeam = new PlayerTeam()
+            {
+                PlayerId = playerId,
+                TeamId = teamId,
+                TeamRole = teamRole,
+                CreatedDate = DateTime.Now
+            };
+
+            var team = _dbContext.Teams.Single(t => t.Id == teamId);       
+            
+            if (team.TeamType == TeamType.Club && _dbContext.PlayerTeams.Any(pt => pt.LeaveDate == null && pt.PlayerId == playerId && pt.Team.TeamType == TeamType.Club))
+            {
+                throw new Exception("A player cannot belong to two club teams at once");
+            }
+
+            if (_dbContext.PlayerTeams.Any(pt => pt.TeamId == teamId && pt.PlayerId == playerId && pt.LeaveDate == null))
+            {
+                throw new Exception("Player already belongs to this team");
+            }
+
             _dbContext.PlayerTeams.Add(playerTeam);
             _dbContext.SaveChanges();
         }

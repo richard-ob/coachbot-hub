@@ -141,7 +141,7 @@ namespace CoachBot.Services
 
             if (match.IsMixMatch)
             {
-                var awayTeamList = TeamListEmbedFactory.GenerateEmbed(channel, match, TeamType.Away);
+                var awayTeamList = TeamListEmbedFactory.GenerateEmbed(channel, match, MatchTeamType.Away);
                 teamLists.Add(awayTeamList);
             }
 
@@ -162,7 +162,7 @@ namespace CoachBot.Services
 
             if (match.IsMixMatch)
             {
-                var awayTeamSheet = TeamSheetEmbedFactory.GenerateEmbed(channel, match, TeamType.Away);
+                var awayTeamSheet = TeamSheetEmbedFactory.GenerateEmbed(channel, match, MatchTeamType.Away);
                 teamSheets.Add(awayTeamSheet);
             }
 

@@ -52,7 +52,7 @@ namespace CoachBot.Domain.Model
 
         public DateTime? FoundedDate { get; set; }
 
-        public bool Inactive { get; set; }
+        public bool Inactive { get; set; } = false;
 
         public ICollection<Channel> Channels { get; set; }
 

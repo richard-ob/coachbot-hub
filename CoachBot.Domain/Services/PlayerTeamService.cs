@@ -42,8 +42,26 @@ namespace CoachBot.Domain.Services
             _dbContext.SaveChanges();
         }
 
-        public void Update(PlayerTeam playerTeam)
+        public void Update(PlayerTeam playerTeam, bool hasCaptainPermissions)
         {
+            var current = _dbContext.PlayerTeams.Single(pt => pt.Id == playerTeam.Id);
+
+            if (current.TeamId != playerTeam.TeamId)
+            {
+                throw new ArgumentException("Team cannot be changed in this manner");
+            }
+
+            if (current.TeamRole != playerTeam.TeamRole && !hasCaptainPermissions)
+            {
+                throw new UnauthorizedAccessException("You must be a captain or vice captain to change roles");
+            }
+
+            var currentCaptainCount = _dbContext.PlayerTeams.Count(pt => pt.LeaveDate == null && pt.TeamRole == TeamRole.Captain);
+            if (current.TeamRole != playerTeam.TeamRole && current.TeamRole == TeamRole.Captain && currentCaptainCount == 1)
+            {
+                throw new UnauthorizedAccessException("You cannot remove yourself as a captain of a team without closing the team");
+            }
+
             _dbContext.PlayerTeams.Update(playerTeam);
             _dbContext.SaveChanges();
         }

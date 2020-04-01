@@ -39,11 +39,11 @@ namespace CoachBot.Controllers
         [HttpPut]
         public IActionResult Update(PlayerTeam playerTeam)
         {
-            if (_teamService.IsTeamCaptain(playerTeam.TeamId, User.GetDiscordUserId()) ||
-                _teamService.IsViceCaptain(playerTeam.TeamId, User.GetDiscordUserId()) ||
-                _playerService.GetPlayer(User.GetDiscordUserId()).Id == playerTeam.PlayerId)
+            var hasCaptainPermissions = _teamService.IsTeamCaptain(playerTeam.TeamId, User.GetDiscordUserId()) || _teamService.IsViceCaptain(playerTeam.TeamId, User.GetDiscordUserId());
+
+            if (hasCaptainPermissions || _playerService.GetPlayer(User.GetDiscordUserId()).Id == playerTeam.PlayerId)
             {
-                _playerTeamService.Update(playerTeam);
+                _playerTeamService.Update(playerTeam, hasCaptainPermissions);
 
                 return Ok();
             }

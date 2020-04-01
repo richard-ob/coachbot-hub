@@ -1,6 +1,7 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,14 +31,29 @@ namespace CoachBot.Domain.Services
             return _dbContext.Teams.ToList();
         }
 
-        public void CreateTeam(Team team)
+        public void CreateTeam(Team team, ulong captainDiscordUserId)
         {
+            var player = _dbContext.Players.Single(p => p.DiscordUserId == captainDiscordUserId);
 
+            team.FoundedDate = team.FoundedDate ?? DateTime.Now;
+            _dbContext.Teams.Add(team);
+
+            var playerTeam = new PlayerTeam()
+            {
+                PlayerId = player.Id,
+                TeamId = team.Id,
+                TeamRole = TeamRole.Captain
+            };
+            _dbContext.PlayerTeams.Add(playerTeam);
+
+            _dbContext.SaveChanges();
         }
 
         public void UpdateTeam(Team team)
         {
-
+            team.UpdatedDate = DateTime.Now;
+            _dbContext.Teams.Update(team);
+            _dbContext.SaveChanges();
         }
 
         public bool IsTeamCaptain(int teamId, ulong discordUserId)

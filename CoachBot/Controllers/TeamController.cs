@@ -3,6 +3,7 @@ using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace CoachBot.Controllers
 {
@@ -22,6 +23,12 @@ namespace CoachBot.Controllers
         public Team Get(int id)
         {
             return _teamService.GetTeam(id);
+        }
+
+        [HttpGet]
+        public List<Team> GetAll()
+        {
+            return _teamService.GetTeams();
         }
 
         [HttpPost]

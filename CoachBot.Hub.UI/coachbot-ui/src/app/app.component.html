@@ -158,7 +158,7 @@
                                         <li><a routerLink="./match-overview">Current Competitions</a></li>
                                         <li><a routerLink="./match-overview">Previous Competitions</a></li>
                                     </ul>
-                                    <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                    <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Management</li>
                                         <li><a routerLink="./server-manager">Servers</a></li>
                                         <li><a routerLink="./region-manager">Regions</a></li>

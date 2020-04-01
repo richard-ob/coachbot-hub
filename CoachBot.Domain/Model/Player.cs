@@ -36,6 +36,8 @@ namespace CoachBot.Model
 
         public Country Country { get; set; }
 
+        public PlayerHubRole HubRole { get; set; }
+
         public ICollection<PlayerPosition> Positions { get; set; }
 
         public ICollection<PlayerLineupPosition> PlayerLineupPositions { get; set; }

@@ -3,6 +3,7 @@
     public enum TeamRole
     {
         Trialist,
+        Reserve,
         Loanee,
         Loaned,
         Player,

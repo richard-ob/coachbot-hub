@@ -7,6 +7,7 @@ namespace CoachBot.Domain.Model
     public enum PlayerHubRole
     {
         Player,
+        Manager,
         Administrator
     }
 }

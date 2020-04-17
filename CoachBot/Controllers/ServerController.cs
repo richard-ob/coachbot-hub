@@ -1,10 +1,10 @@
 ﻿using CoachBot.Domain.Services;
+using CoachBot.Extensions;
 using CoachBot.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CoachBot.Controllers
 {
@@ -15,18 +15,18 @@ namespace CoachBot.Controllers
     public class ServerController : Controller
     {
         private readonly ServerService _serverService;
-        private readonly ChannelService _channelService;
+        private readonly DiscordService _discordService;
 
-        public ServerController(ServerService serverService, ChannelService channelService)
+        public ServerController(ServerService serverService, DiscordService discordService)
         {
             _serverService = serverService;
-            _channelService = channelService;
+            _discordService = discordService;
         }
 
         [HttpGet("{id}")]
         public Server Get(int id)
         {
-            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
             {
                 throw new Exception();
             }
@@ -36,7 +36,7 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IEnumerable<Server> GetAll()
         {
-            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
             {
                 throw new Exception();
             }
@@ -46,7 +46,7 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
             {
                 throw new Exception();
             }
@@ -56,7 +56,7 @@ namespace CoachBot.Controllers
         [HttpPut]
         public void Update(Server server)
         {
-            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
             {
                 throw new Exception();
             }
@@ -66,7 +66,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Create(Server server)
         {
-            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
             {
                 throw new Exception();
             }

@@ -9,7 +9,7 @@ namespace CoachBot.Domain.Attributes
         public MatchDataTotalsType MatchDataTotalsType { get; private set; }
         public MatchDataStatisticType MatchDataStatisticType { get; private set; }
 
-        public MatchDataStatistic(MatchDataStatisticType matchDataStatisticType, MatchDataTotalsType matchDataTotalsType)
+        public MatchDataStatistic(MatchDataStatisticType matchDataStatisticType, MatchDataTotalsType matchDataTotalsType = MatchDataTotalsType.None)
         {
             MatchDataTotalsType = matchDataTotalsType;
             MatchDataStatisticType = matchDataStatisticType;
@@ -19,6 +19,7 @@ namespace CoachBot.Domain.Attributes
     public enum MatchDataTotalsType
     {
         Aggregate,
-        Average
+        Average,
+        None
     }
 }

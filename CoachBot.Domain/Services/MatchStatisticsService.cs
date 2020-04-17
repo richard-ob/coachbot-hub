@@ -4,8 +4,9 @@ using CoachBot.Domain.Model;
 using CoachBot.Domain.Model.Dtos;
 using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace CoachBot.Domain.Services
 {
@@ -28,15 +29,15 @@ namespace CoachBot.Domain.Services
 
             if (matchData.IsValid(match, manualSave))
             {
-                GenerateTeamStatisticTotals(match);
-                GeneratePlayerStatisticTotals(match);
+                GeneratePlayerMatchStatistics(match);
+                GenerateTeamMatchStatistics(match);
                 _coachBotContext.SaveChanges();
             }
         }
 
-        public PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod, int? teamId)
+        public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod, int? teamId)
         {
-            var queryable = _coachBotContext.TeamStatisticTotals
+            /*var queryable = _coachBotContext.TeamStatisticTotals
               .Include(ts => ts.Channel)
                 .ThenInclude(c => c.Team)
                 .ThenInclude(t => t.Region)
@@ -48,16 +49,13 @@ namespace CoachBot.Domain.Services
                 queryable.Where(ts => ts.Channel.TeamId == teamId);
             }
 
-            return queryable.GetPaged(page, pageSize, sortOrder);
+            return queryable.GetPaged(page, pageSize, sortOrder);*/
+            return null;
         }
 
-        public PagedResult<PlayerStatisticTotals> GetPlayerStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod)
+        public Model.Dtos.PagedResult<PlayerStatisticTotals> GetPlayerStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod)
         {
-            return _coachBotContext.PlayerStatisticTotals
-              .Include(ps => ps.Player)
-              .Include(ps => ps.StatisticTotals)
-              .Where(ps => ps.StatisticTotals.TimePeriod == timePeriod)
-              .GetPaged(page, pageSize, sortOrder);
+            return GetPlayerStatisticTotals().GetPaged(page, pageSize, sortOrder);
         }
 
         public void GenerateStatistics()
@@ -72,114 +70,128 @@ namespace CoachBot.Domain.Services
             
             foreach(var match in matches)
             {
-                GenerateTeamStatisticTotals(match);
-                GeneratePlayerStatisticTotals(match);
-                _coachBotContext.SaveChanges();
+                GeneratePlayerMatchStatistics(match);
+                GenerateTeamMatchStatistics(match);
             }
         }
 
         #region Private Methods
 
-        private void GenerateTeamStatisticTotals(Match match)
-        {
-            foreach (var timePeriod in Enum.GetValues(typeof(StatisticsTimePeriod)))
-            {
-                var timePeriodDays = (int)timePeriod;
-                if (DateTime.Now.AddDays(-timePeriodDays) > match.ReadiedDate && (StatisticsTimePeriod)timePeriod != StatisticsTimePeriod.AllTime) continue;
-
-                var homeTeamStatisticTotals = 
-                    _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.LineupHome.ChannelId && t.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
-
-                if (homeTeamStatisticTotals == null)
-                {
-                    homeTeamStatisticTotals = new TeamStatisticTotals((StatisticsTimePeriod)timePeriod)
-                    {
-                        ChannelId = (int)match.LineupHome.ChannelId,
-                    };
-                    _coachBotContext.TeamStatisticTotals.Add(homeTeamStatisticTotals);
-                }
-                AddMatchDataTotalsToTeamStatisticTotals(ref homeTeamStatisticTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Home);
-
-                var awayTeamStatisticsTotals = 
-                    _coachBotContext.TeamStatisticTotals.FirstOrDefault(t => t.ChannelId == match.LineupAway.ChannelId && t.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
-
-                if (awayTeamStatisticsTotals == null)
-                {
-                    awayTeamStatisticsTotals = new TeamStatisticTotals((StatisticsTimePeriod)timePeriod)
-                    {
-                        ChannelId = (int)match.LineupAway.ChannelId
-                    };
-                    _coachBotContext.TeamStatisticTotals.Add(awayTeamStatisticsTotals);
-                }
-                AddMatchDataTotalsToTeamStatisticTotals(ref awayTeamStatisticsTotals, match.MatchStatistics.MatchData, MatchDataTeamType.Away);
-            }
-        }
-
-        private void AddMatchDataTotalsToTeamStatisticTotals(ref TeamStatisticTotals teamStatisticTotals, MatchData matchData, MatchDataTeamType matchDataTeamType)
-        {
-            // Game-generated statistics
-            var matchDataTeamMatchTotal = matchData.Teams[(int)matchDataTeamType].MatchTotal;
-            teamStatisticTotals.StatisticTotals.AddMatchDataStatistics(matchDataTeamMatchTotal.Statistics);
-
-            // Custom statistics
-            teamStatisticTotals.StatisticTotals.Matches++;
-            var teamGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, matchDataTeamType);
-            var opponentGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, 1 - matchDataTeamType);
-            if (teamGoals > opponentGoals) teamStatisticTotals.StatisticTotals.Wins++;
-            if (teamGoals == opponentGoals) teamStatisticTotals.StatisticTotals.Draws++;
-            if (opponentGoals > teamGoals) teamStatisticTotals.StatisticTotals.Losses++;
-        }
-
-        private void GeneratePlayerStatisticTotals(Match match)
+        private void GeneratePlayerMatchStatistics(Match match)
         {
             foreach (var matchDataPlayer in match.MatchStatistics.MatchData.Players.Where(p => p.MatchPeriodData != null && p.MatchPeriodData.Any()))
             {
-                foreach(var timePeriod in Enum.GetValues(typeof(StatisticsTimePeriod)))
+                var player = GetOrCreatePlayer(matchDataPlayer);
+                foreach(var teamType in matchDataPlayer.MatchPeriodData.Select(m => m.Info.Team).Distinct())
                 {
-                    var timePeriodDays = (int)timePeriod;
-                    if (DateTime.Now.AddDays(-timePeriodDays) > match.ReadiedDate && (StatisticsTimePeriod)timePeriod != StatisticsTimePeriod.AllTime) continue;
-
-                    var player = _coachBotContext.Players.FirstOrDefault(p => p.SteamID == matchDataPlayer.Info.SteamId64);
-                    if (player == null)
+                    foreach(var position in matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == teamType).Select(m => m.Info.Position).Distinct())
                     {
-                        player = new Player()
+                        var isHomeTeam = teamType == MatchDataSideConstants.Home;
+                        var team = isHomeTeam ? match.LineupHome : match.LineupAway;
+                        var positionId = _coachBotContext.Positions.Where(p => p.Name == position).Select(p => p.Id).FirstOrDefault();
+                        var playerMatchStatistics = new PlayerMatchStatistics()
                         {
-                            Name = matchDataPlayer.Info.Name,
-                            SteamID = matchDataPlayer.Info.SteamId64
+                            PlayerId = player.Id,
+                            MatchId = match.Id,
+                            ChannelId = (int)team.ChannelId,
+                            TeamId = team.Channel.TeamId,
+                            PositionId = positionId > 0 ? positionId : _coachBotContext.Positions.FirstOrDefault().Id,
+                            MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
+                            SecondsPlayed = matchDataPlayer.GetPlayerPositionSeconds(teamType, position),
+                            Nickname = matchDataPlayer.Info.Name,
+                            Substitute = false
                         };
-                        _coachBotContext.Players.Add(player);
+                        playerMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetPlayerTotals(teamType, position));
+                        _coachBotContext.PlayerMatchStatistics.Add(playerMatchStatistics);
+                        _coachBotContext.SaveChanges();
                     }
-
-                    var playerStatisticTotals = _coachBotContext.PlayerStatisticTotals.FirstOrDefault(p => player != null && p.PlayerId == player.Id && p.StatisticTotals.TimePeriod == (StatisticsTimePeriod)timePeriod);
-                    if (playerStatisticTotals == null)
-                    {
-                        playerStatisticTotals = new PlayerStatisticTotals((StatisticsTimePeriod)timePeriod)
-                        {
-                            PlayerId = player.Id
-                        };
-                        _coachBotContext.PlayerStatisticTotals.Add(playerStatisticTotals);
-                    }
-
-                    AddMatchDataTotalsToPlayerStatisticTotals(ref playerStatisticTotals, match.MatchStatistics.MatchData, player.SteamID);
-                    _coachBotContext.SaveChanges();
                 }
             }
         }
 
-        private void AddMatchDataTotalsToPlayerStatisticTotals(ref PlayerStatisticTotals playerStatisticTotals, MatchData matchData, ulong? steamId)
+        private void GenerateTeamMatchStatistics(Match match)
         {
-            // Game-generated statistics
-            var playerTotalMatchStatistics = matchData.Players.First(p => p.Info.SteamId64 == steamId).GetMatchStatisticsPlayerTotal();
-            playerStatisticTotals.StatisticTotals.AddMatchDataStatistics(playerTotalMatchStatistics);
+            foreach (var matchDataTeam in match.MatchStatistics.MatchData.Teams)
+            {
+                var isHomeTeam = matchDataTeam.MatchTotal.Side == MatchDataSideConstants.Home;
+                var team = isHomeTeam ? match.LineupHome : match.LineupAway;
+                var teamMatchStatistics = new TeamMatchStatistics()
+                {
+                    MatchId = match.Id,
+                    ChannelId = (int)team.ChannelId,
+                    TeamId = team.Channel.TeamId,
+                    MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
+                    TeamName = matchDataTeam.MatchTotal.Name
+                };
+                teamMatchStatistics.AddMatchDataStatistics(matchDataTeam.MatchTotal.Statistics);
+                _coachBotContext.TeamMatchStatistics.Add(teamMatchStatistics);
+                _coachBotContext.SaveChanges();
+            }
+        }
 
-            // Custom statistics
-            playerStatisticTotals.StatisticTotals.Matches++;
-            var homeGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Home);
-            var awayGoals = matchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Away);
-            var firstPeriod = matchData.Players.First(p => p.Info.SteamId64 == steamId).MatchPeriodData.First();
-            if ((homeGoals > awayGoals && firstPeriod.Info.IsHomeTeam) || (awayGoals > homeGoals && firstPeriod.Info.IsAwayTeam)) playerStatisticTotals.StatisticTotals.Wins++;
-            if (homeGoals == awayGoals) playerStatisticTotals.StatisticTotals.Draws++;
-            if ((awayGoals > homeGoals && firstPeriod.Info.IsHomeTeam) || (homeGoals > awayGoals && firstPeriod.Info.IsAwayTeam)) playerStatisticTotals.StatisticTotals.Losses++;
+        private IQueryable<PlayerStatisticTotals> GetPlayerStatisticTotals()
+        {
+            return _coachBotContext
+                 .PlayerMatchStatistics
+                 .AsNoTracking()
+                 .GroupBy(p => new { p.PlayerId, p.Player.Name, p.Player.SteamID, p.Player.DiscordUserId }, (key, grp) => 
+                 .Select(s => new PlayerStatisticTotals()
+                 {
+                     RedCards = s.Sum(p => p.RedCards),
+                     YellowCards = s.Sum(p => p.YellowCards),
+                     Fouls = s.Sum(p => p.Fouls),
+                     FoulsSuffered = s.Sum(p => p.FoulsSuffered),
+                     SlidingTackles = s.Sum(p => p.SlidingTackles),
+                     SlidingTacklesCompleted = s.Sum(p => p.SlidingTacklesCompleted),
+                     GoalsConceded = s.Sum(p => p.GoalsConceded),
+                     Shots = s.Sum(p => p.Shots),
+                     ShotsOnGoal = s.Sum(p => p.ShotsOnGoal),
+                     Passes = s.Sum(p => p.Passes),
+                     PassesCompleted = s.Sum(p => p.PassesCompleted),
+                     Interceptions = s.Sum(p => p.Interceptions),
+                     Offsides = s.Sum(p => p.Offsides),
+                     GoalKicks = s.Sum(p => p.GoalKicks),
+                     OwnGoals = s.Sum(p => p.OwnGoals),
+                     DistanceCovered = s.Sum(p => p.DistanceCovered),
+                     FreeKicks = s.Sum(p => p.FreeKicks),
+                     KeeperSaves = s.Sum(p => p.KeeperSaves),
+                     KeeperSavesCaught = s.Sum(p => p.KeeperSavesCaught),
+                     Penalties = s.Sum(p => p.Penalties),
+                     Possession = s.Sum(p => p.Possession),
+                     ThrowIns = s.Sum(p => p.ThrowIns),
+                     Corners = s.Sum(p => p.Corners),
+                     Goals = s.Sum(p => p.Goals),
+                     Assists = s.Sum(p => p.Assists),
+                     PlayerId = s.Key.PlayerId,
+                     Matches = s.Count(),
+                     Wins = s.Key.Name.Length > 8 ? 1 : 2,
+                     /*Losses = s.Where(t => t.MatchOutcome == MatchOutcomeType.Loss).Count(),
+                     Draws = s.Where(t => t.MatchOutcome == MatchOutcomeType.Draw).Count(),*/
+                     Player = new Player()
+                     {
+                         Name = s.Key.Name,
+                         DiscordUserId = s.Key.DiscordUserId,
+                         SteamID = s.Key.SteamID
+                     }
+                 });
+        }
+
+
+        private Player GetOrCreatePlayer(MatchDataPlayer matchDataPlayer)
+        {
+            var player = _coachBotContext.Players.FirstOrDefault(p => p.SteamID == matchDataPlayer.Info.SteamId64);
+
+            if (player == null)
+            {
+                player = new Player()
+                {
+                    Name = matchDataPlayer.Info.Name,
+                    SteamID = matchDataPlayer.Info.SteamId64
+                };
+                _coachBotContext.Players.Add(player);
+            }
+
+            return player;
         }
         #endregion
     }

@@ -1,15 +1,9 @@
 ﻿using CoachBot.Domain.Attributes;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
     public class StatisticTotals
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         [MatchDataStatistic(MatchDataStatisticType.RedCards, MatchDataTotalsType.Aggregate)]
         public int RedCards { get; set; }
 
@@ -93,6 +87,5 @@ namespace CoachBot.Domain.Model
 
         public int Losses { get; set; }
 
-        public StatisticsTimePeriod TimePeriod { get; set; }
     }
 }

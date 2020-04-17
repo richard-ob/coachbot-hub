@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
+using CoachBot.Extensions;
 using CoachBot.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,18 +17,18 @@ namespace CoachBot.Controllers
     public class RegionController : Controller
     {
         private readonly RegionService _regionService;
-        private readonly ChannelService _channelService;
+        private readonly DiscordService _discordService;
 
-        public RegionController(RegionService regionService, ChannelService channelService)
+        public RegionController(RegionService regionService, DiscordService discordService)
         {
             _regionService = regionService;
-            _channelService = channelService;
+            _discordService = discordService;
         }
 
         [HttpGet]
         public IEnumerable<RegionDto> Get()
         {
-            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
             {
                 throw new Exception();
             }
@@ -37,7 +38,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Add(Region region)
         {
-            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
             {
                 throw new Exception();
             }
@@ -53,7 +54,7 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            if (!_channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
             {
                 throw new Exception();
             }

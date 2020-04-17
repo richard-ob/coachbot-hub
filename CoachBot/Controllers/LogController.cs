@@ -12,9 +12,7 @@ namespace CoachBot.Controllers
     public class LogController : Controller
     {
 
-        public LogController()
-        {
-        }
+        public LogController() { }
 
         [HttpGet]
         public string Get()
@@ -28,7 +26,7 @@ namespace CoachBot.Controllers
             {
                 using (StreamReader sr = new StreamReader(fs))
                 {
-                    while (sr.Peek() >= 0) // reading the old data
+                    while (sr.Peek() >= 0)
                     {
                         log = sr.ReadLine() + Environment.NewLine + log;                        
                     }

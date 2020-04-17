@@ -1,1 +1,1265 @@
-{"matchData":{"statisticTypes":["redCards","yellowCards","fouls","foulsSuffered","slidingTackles","slidingTacklesCompleted","goalsConceded","shots","shotsOnGoal","passesCompleted","interceptions","offsides","goals","ownGoals","assists","passes","freeKicks","penalties","corners","throwIns","keeperSaves","goalKicks","possession","distanceCovered","keeperSavesCaught"],"matchInfo":{"type":"Public Match","startTime":1582157292,"endTime":1582158877,"periods":2,"lastPeriodName":"SECOND HALF"},"teams":[{"matchTotal":{"name":"Chefs","side":"home","isMix":true,"statistics":[0,1,1,4,15,0,2,9,7,90,47,0,1,0,1,145,6,0,1,5,5,2,541,49820,3]},"matchPeriods":[{"period":1,"periodName":"FIRST HALF","announcedInjuryTimeSeconds":120,"actualInjuryTimeSeconds":120,"statistics":[0,0,0,0,9,0,1,3,3,52,19,0,1,0,1,82,1,0,1,4,4,2,292,25322,2]},{"period":2,"periodName":"SECOND HALF","announcedInjuryTimeSeconds":120,"actualInjuryTimeSeconds":120,"statistics":[0,1,1,4,6,0,1,6,4,38,28,0,0,0,0,63,5,0,0,1,1,0,248,24516,1]}]},{"matchTotal":{"name":"Chile","side":"away","isMix":true,"statistics":[0,4,4,1,17,1,1,11,7,119,45,3,2,0,2,169,1,0,4,7,6,5,688,47358,2]},"matchPeriods":[{"period":1,"periodName":"FIRST HALF","announcedInjuryTimeSeconds":120,"actualInjuryTimeSeconds":120,"statistics":[0,0,0,0,10,1,1,8,5,58,24,1,1,0,1,77,0,0,1,4,2,2,323,23560,0]},{"period":2,"periodName":"SECOND HALF","announcedInjuryTimeSeconds":120,"actualInjuryTimeSeconds":120,"statistics":[0,4,4,1,7,0,0,3,2,61,21,2,1,0,1,92,1,0,3,3,4,3,365,23820,2]}]}],"players":[{"info":{"steamId":"STEAM_0:1:106475181","name":"omiea"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"home","position":"RB"},"statistics":[0,0,0,0,4,0,0,0,0,4,1,0,0,0,0,4,0,0,0,0,0,0,21,3108,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"home","position":"RB"},"statistics":[0,0,0,0,2,0,0,0,0,3,4,0,0,0,0,5,0,0,0,1,0,0,15,3147,0]}]},{"info":{"steamId":"STEAM_0:1:54205492","name":"Dino"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"home","position":"LB"},"statistics":[0,0,0,0,1,0,0,0,0,6,1,0,0,0,0,10,0,0,0,1,0,0,26,3369,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"home","position":"LB"},"statistics":[0,0,0,0,0,0,0,0,0,5,7,0,0,0,0,7,0,0,0,0,0,0,16,3247,0]}]},{"info":{"steamId":"STEAM_0:1:5524635","name":"creaven"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"away","position":"CB"},"statistics":[0,0,0,0,2,1,0,0,0,4,3,0,0,0,0,4,0,0,0,0,0,0,28,3258,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"away","position":"CB"},"statistics":[0,0,0,0,0,0,0,0,0,6,2,0,0,0,0,7,0,0,0,0,0,0,17,3175,0]}]},{"info":{"steamId":"STEAM_0:1:11731333","name":"Jonni"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"away","position":"RB"},"statistics":[0,0,0,0,1,0,0,0,0,11,4,0,0,0,0,12,0,0,0,3,0,0,23,3055,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"away","position":"RB"},"statistics":[0,1,1,0,1,0,0,0,0,6,3,0,0,0,0,7,0,0,0,0,0,0,32,3124,0]}]},{"info":{"steamId":"STEAM_0:0:21008476","name":"X"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"away","position":"RW"},"statistics":[0,0,0,0,3,0,0,4,2,6,4,1,1,0,0,9,0,0,0,0,0,0,56,3413,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"away","position":"RW"},"statistics":[0,0,0,0,2,0,0,0,0,11,2,1,0,0,1,16,0,0,0,1,0,0,59,3557,0]}]},{"info":{"steamId":"STEAM_0:1:64122632","name":"Bas"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"away","position":"CM"},"statistics":[0,0,0,0,1,0,0,1,1,13,5,0,0,0,0,15,0,0,0,1,0,0,43,3599,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"away","position":"CM"},"statistics":[0,1,1,0,2,0,0,0,0,11,6,0,0,0,0,16,0,0,0,1,0,0,49,3461,0]}]},{"info":{"steamId":"STEAM_0:0:27052639","name":"Zetavack"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"home","position":"CB"},"statistics":[0,0,0,0,3,0,0,0,0,7,7,0,0,0,0,15,0,0,0,1,0,0,49,3539,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"home","position":"CB"},"statistics":[0,0,0,0,0,0,0,0,0,8,8,0,0,0,0,11,1,0,0,0,0,0,33,3495,0]}]},{"info":{"steamId":"STEAM_0:0:71238392","name":"Opp"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"away","position":"LB"},"statistics":[0,0,0,0,2,0,0,0,0,6,4,0,0,0,0,8,0,0,0,0,0,0,42,2823,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"away","position":"LB"},"statistics":[0,1,1,0,1,0,0,0,0,10,4,0,0,0,0,13,0,0,0,1,0,0,53,2844,0]}]},{"info":{"steamId":"STEAM_0:1:50696312","name":"k1eran01"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"away","position":"LW"},"statistics":[0,0,0,0,1,0,0,3,2,5,2,0,0,0,0,9,0,0,1,0,0,0,55,3363,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"away","position":"LW"},"statistics":[0,0,0,1,0,0,0,1,1,6,2,0,0,0,0,14,1,0,2,0,0,0,54,3267,0]}]},{"info":{"steamId":"STEAM_0:0:102381297","name":"Dec"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"home","position":"CF"},"statistics":[0,0,0,0,0,0,0,1,1,7,0,0,0,0,1,10,0,0,0,1,0,0,36,3298,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"home","position":"CF"},"statistics":[0,0,0,0,1,0,0,3,2,4,2,0,0,0,0,8,0,0,0,0,0,0,45,3305,0]}]},{"info":{"steamId":"STEAM_0:0:123930242","name":".KAim"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"home","position":"CM"},"statistics":[0,0,0,0,0,0,0,0,0,10,7,0,0,0,0,15,1,0,0,0,0,0,39,3647,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"home","position":"CM"},"statistics":[0,1,1,1,3,0,0,1,1,7,6,0,0,0,0,15,0,0,0,0,0,0,66,3506,0]}]},{"info":{"steamId":"STEAM_0:1:7116806","name":"Lua"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2059,"team":"home","position":"LW"},"statistics":[0,0,0,0,0,0,0,1,1,4,2,0,0,0,0,7,0,0,1,1,0,0,37,2399,0]},{"info":{"startSecond":2115,"endSecond":2820,"team":"home","position":"LW"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,9,872,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"home","position":"LW"},"statistics":[0,0,0,0,0,0,0,1,0,3,0,0,0,0,0,5,0,0,0,0,0,0,39,3315,0]}]},{"info":{"steamId":"STEAM_0:0:59074100","name":"Seri"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":31,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,0]},{"info":{"startSecond":31,"endSecond":83,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,0]},{"info":{"startSecond":83,"endSecond":231,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,100,1]},{"info":{"startSecond":231,"endSecond":321,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,3,81,0]},{"info":{"startSecond":321,"endSecond":492,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,2,0,0,0,0,0,0,8,177,0]},{"info":{"startSecond":492,"endSecond":580,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,0]},{"info":{"startSecond":580,"endSecond":684,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,4,101,0]},{"info":{"startSecond":684,"endSecond":820,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,110,0]},{"info":{"startSecond":820,"endSecond":931,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,66,0]},{"info":{"startSecond":931,"endSecond":1060,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,66,0]},{"info":{"startSecond":1060,"endSecond":1342,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,2,0,0,0,0,1,0,6,204,1]},{"info":{"startSecond":1342,"endSecond":1421,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1,52,0]},{"info":{"startSecond":1421,"endSecond":1455,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,31,0]},{"info":{"startSecond":1455,"endSecond":1462,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0]},{"info":{"startSecond":1462,"endSecond":1480,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0]},{"info":{"startSecond":1480,"endSecond":1510,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0]},{"info":{"startSecond":1510,"endSecond":1773,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,1,0,0,2,0,0,0,0,0,2,0,0,0,0,1,0,11,243,0]},{"info":{"startSecond":1773,"endSecond":1817,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,2,46,0]},{"info":{"startSecond":1817,"endSecond":1922,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,3,102,0]},{"info":{"startSecond":1922,"endSecond":2081,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,2,120,0]},{"info":{"startSecond":2081,"endSecond":2266,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,2,0,0,0,0,0,0,4,163,0]},{"info":{"startSecond":2266,"endSecond":2333,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0]},{"info":{"startSecond":2333,"endSecond":2375,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0]},{"info":{"startSecond":2375,"endSecond":2509,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,72,0]},{"info":{"startSecond":2509,"endSecond":2534,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,0]},{"info":{"startSecond":2534,"endSecond":2603,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0]},{"info":{"startSecond":2603,"endSecond":2819,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1,154,0]},{"info":{"startSecond":2819,"endSecond":2820,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"info":{"startSecond":2700,"endSecond":2771,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,0]},{"info":{"startSecond":2771,"endSecond":2818,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,0]},{"info":{"startSecond":2818,"endSecond":2927,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,56,0]},{"info":{"startSecond":2927,"endSecond":3093,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,136,0]},{"info":{"startSecond":3093,"endSecond":3239,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,2,0,0,0,0,1,0,9,131,1]},{"info":{"startSecond":3239,"endSecond":3266,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0]},{"info":{"startSecond":3266,"endSecond":3518,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1,179,0]},{"info":{"startSecond":3518,"endSecond":3529,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0]},{"info":{"startSecond":3529,"endSecond":3660,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,85,0]},{"info":{"startSecond":3660,"endSecond":3712,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,51,0]},{"info":{"startSecond":3712,"endSecond":3742,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0]},{"info":{"startSecond":3742,"endSecond":3760,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0]},{"info":{"startSecond":3760,"endSecond":3844,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,2,0,0,0,0,0,0,7,126,0]},{"info":{"startSecond":3844,"endSecond":3906,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,38,0]},{"info":{"startSecond":3906,"endSecond":3966,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,39,0]},{"info":{"startSecond":3966,"endSecond":4050,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0]},{"info":{"startSecond":4050,"endSecond":4085,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0]},{"info":{"startSecond":4085,"endSecond":4138,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,5,77,0]},{"info":{"startSecond":4138,"endSecond":4237,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1,65,0]},{"info":{"startSecond":4237,"endSecond":4248,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0]},{"info":{"startSecond":4248,"endSecond":4303,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0]},{"info":{"startSecond":4303,"endSecond":4360,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,0]},{"info":{"startSecond":4360,"endSecond":4476,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,0]},{"info":{"startSecond":4476,"endSecond":4671,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,1,125,0]},{"info":{"startSecond":4671,"endSecond":4725,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,21,0]},{"info":{"startSecond":4725,"endSecond":4787,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,2,59,0]},{"info":{"startSecond":4787,"endSecond":4797,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0]},{"info":{"startSecond":4797,"endSecond":4868,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,55,1]},{"info":{"startSecond":4868,"endSecond":4881,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,11,0]},{"info":{"startSecond":4881,"endSecond":4921,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,0]},{"info":{"startSecond":4921,"endSecond":5028,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,65,0]},{"info":{"startSecond":5028,"endSecond":5078,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,52,0]},{"info":{"startSecond":5078,"endSecond":5145,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,2,0,3,50,1]},{"info":{"startSecond":5145,"endSecond":5180,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,29,0]},{"info":{"startSecond":5180,"endSecond":5250,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2,71,0]},{"info":{"startSecond":5250,"endSecond":5399,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,92,0]},{"info":{"startSecond":5399,"endSecond":5446,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,3,46,0]},{"info":{"startSecond":5446,"endSecond":5491,"team":"home","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,51,0]},{"info":{"startSecond":5491,"endSecond":5520,"team":"away","position":"GK"},"statistics":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0]}]},{"info":{"steamId":"STEAM_0:0:13346995","name":"fang"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"away","position":"CF"},"statistics":[0,0,0,0,0,0,0,0,0,9,1,0,0,0,1,14,0,0,0,0,0,0,58,3358,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"away","position":"CF"},"statistics":[0,1,1,0,1,0,0,2,1,3,0,1,1,0,0,9,0,0,1,0,0,0,64,3302,0]}]},{"info":{"steamId":"STEAM_0:1:3280605","name":"skum"},"matchPeriodData":[{"info":{"startSecond":0,"endSecond":2820,"team":"home","position":"RW"},"statistics":[0,0,0,0,1,0,0,1,1,3,0,0,1,0,0,8,0,0,0,0,0,0,32,3675,0]},{"info":{"startSecond":2700,"endSecond":5520,"team":"home","position":"RW"},"statistics":[0,0,0,3,0,0,0,1,1,5,0,0,0,0,0,8,3,0,0,0,0,0,21,3562,0]}]},{"info":{"steamId":"STEAM_0:0:20301667","name":"Kobe"},"matchPeriodData":[]}],"matchEvents":[{"second":223,"event":"SAVE","period":"FIRST HALF","team":"home","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:1:50696312"},{"second":553,"event":"GOAL","period":"FIRST HALF","team":"home","player1SteamId":"STEAM_0:1:3280605","player2SteamId":"STEAM_0:0:102381297"},{"second":554,"event":"(null)","period":"FIRST HALF","team":"home","player1SteamId":"STEAM_0:1:3280605","player2SteamId":""},{"second":1012,"event":"SAVE","period":"FIRST HALF","team":"away","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:0:102381297"},{"second":1305,"event":"SAVE","period":"FIRST HALF","team":"home","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:1:64122632"},{"second":1538,"event":"GOAL","period":"FIRST HALF","team":"away","player1SteamId":"STEAM_0:0:21008476","player2SteamId":"STEAM_0:0:13346995"},{"second":1539,"event":"(null)","period":"FIRST HALF","team":"away","player1SteamId":"STEAM_0:0:21008476","player2SteamId":""},{"second":1598,"event":"SAVE","period":"FIRST HALF","team":"home","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:1:50696312"},{"second":1868,"event":"SAVE","period":"FIRST HALF","team":"home","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:0:21008476"},{"second":1884,"event":"MISS","period":"FIRST HALF","team":"away","player1SteamId":"STEAM_0:0:21008476","player2SteamId":""},{"second":1949,"event":"SAVE","period":"FIRST HALF","team":"away","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:1:7116806"},{"second":2801,"event":"MISS","period":"FIRST HALF","team":"away","player1SteamId":"STEAM_0:0:21008476","player2SteamId":""},{"second":3200,"event":"YELLOW CARD","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:0:13346995","player2SteamId":""},{"second":3217,"event":"SAVE","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:1:3280605"},{"second":3396,"event":"MISS","period":"SECOND HALF","team":"home","player1SteamId":"STEAM_0:0:102381297","player2SteamId":""},{"second":3910,"event":"YELLOW CARD","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:0:71238392","player2SteamId":""},{"second":4206,"event":"MISS","period":"SECOND HALF","team":"home","player1SteamId":"STEAM_0:1:7116806","player2SteamId":""},{"second":4369,"event":"YELLOW CARD","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:1:11731333","player2SteamId":""},{"second":4818,"event":"YELLOW CARD","period":"SECOND HALF","team":"home","player1SteamId":"STEAM_0:0:123930242","player2SteamId":""},{"second":4860,"event":"SAVE","period":"SECOND HALF","team":"home","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:1:50696312"},{"second":5055,"event":"GOAL","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:0:13346995","player2SteamId":"STEAM_0:0:21008476"},{"second":5055,"event":"(null)","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:0:13346995","player2SteamId":""},{"second":5122,"event":"SAVE","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:0:102381297"},{"second":5129,"event":"SAVE","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:0:123930242"},{"second":5416,"event":"SAVE","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:0:59074100","player2SteamId":"STEAM_0:0:102381297"},{"second":5502,"event":"YELLOW CARD","period":"SECOND HALF","team":"away","player1SteamId":"STEAM_0:1:64122632","player2SteamId":""}]}}
+{
+  "matchData": {
+    "statisticTypes": [ "redCards", "yellowCards", "fouls", "foulsSuffered", "slidingTackles", "slidingTacklesCompleted", "goalsConceded", "shots", "shotsOnGoal", "passesCompleted", "interceptions", "offsides", "goals", "ownGoals", "assists", "passes", "freeKicks", "penalties", "corners", "throwIns", "keeperSaves", "goalKicks", "possession", "distanceCovered", "keeperSavesCaught" ],
+    "matchInfo": {
+      "type": "Public Match",
+      "startTime": 1582157292,
+      "endTime": 1582158877,
+      "periods": 2,
+      "lastPeriodName": "SECOND HALF"
+    },
+    "teams": [
+      {
+        "matchTotal": {
+          "name": "Chefs",
+          "side": "home",
+          "isMix": true,
+          "statistics": [ 0, 1, 1, 4, 15, 0, 2, 9, 7, 90, 47, 0, 1, 0, 1, 145, 6, 0, 1, 5, 5, 2, 541, 49820, 3 ]
+        },
+        "matchPeriods": [
+          {
+            "period": 1,
+            "periodName": "FIRST HALF",
+            "announcedInjuryTimeSeconds": 120,
+            "actualInjuryTimeSeconds": 120,
+            "statistics": [ 0, 0, 0, 0, 9, 0, 1, 3, 3, 52, 19, 0, 1, 0, 1, 82, 1, 0, 1, 4, 4, 2, 292, 25322, 2 ]
+          },
+          {
+            "period": 2,
+            "periodName": "SECOND HALF",
+            "announcedInjuryTimeSeconds": 120,
+            "actualInjuryTimeSeconds": 120,
+            "statistics": [ 0, 1, 1, 4, 6, 0, 1, 6, 4, 38, 28, 0, 0, 0, 0, 63, 5, 0, 0, 1, 1, 0, 248, 24516, 1 ]
+          }
+        ]
+      },
+      {
+        "matchTotal": {
+          "name": "Chile",
+          "side": "away",
+          "isMix": true,
+          "statistics": [ 0, 4, 4, 1, 17, 1, 1, 11, 7, 119, 45, 3, 2, 0, 2, 169, 1, 0, 4, 7, 6, 5, 688, 47358, 2 ]
+        },
+        "matchPeriods": [
+          {
+            "period": 1,
+            "periodName": "FIRST HALF",
+            "announcedInjuryTimeSeconds": 120,
+            "actualInjuryTimeSeconds": 120,
+            "statistics": [ 0, 0, 0, 0, 10, 1, 1, 8, 5, 58, 24, 1, 1, 0, 1, 77, 0, 0, 1, 4, 2, 2, 323, 23560, 0 ]
+          },
+          {
+            "period": 2,
+            "periodName": "SECOND HALF",
+            "announcedInjuryTimeSeconds": 120,
+            "actualInjuryTimeSeconds": 120,
+            "statistics": [ 0, 4, 4, 1, 7, 0, 0, 3, 2, 61, 21, 2, 1, 0, 1, 92, 1, 0, 3, 3, 4, 3, 365, 23820, 2 ]
+          }
+        ]
+      }
+    ],
+    "players": [
+      {
+        "info": {
+          "steamId": "STEAM_0:1:106475181",
+          "name": "omiea"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "home",
+              "position": "RB"
+            },
+            "statistics": [ 0, 0, 0, 0, 4, 0, 0, 0, 0, 4, 1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 21, 3108, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "home",
+              "position": "RB"
+            },
+            "statistics": [ 0, 0, 0, 0, 2, 0, 0, 0, 0, 3, 4, 0, 0, 0, 0, 5, 0, 0, 0, 1, 0, 0, 15, 3147, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:1:54205492",
+          "name": "Dino"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "home",
+              "position": "LB"
+            },
+            "statistics": [ 0, 0, 0, 0, 1, 0, 0, 0, 0, 6, 1, 0, 0, 0, 0, 10, 0, 0, 0, 1, 0, 0, 26, 3369, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "home",
+              "position": "LB"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 7, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 16, 3247, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:1:5524635",
+          "name": "creaven"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "away",
+              "position": "CB"
+            },
+            "statistics": [ 0, 0, 0, 0, 2, 1, 0, 0, 0, 4, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 28, 3258, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "away",
+              "position": "CB"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 2, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 17, 3175, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:1:11731333",
+          "name": "Jonni"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "away",
+              "position": "RB"
+            },
+            "statistics": [ 0, 0, 0, 0, 1, 0, 0, 0, 0, 11, 4, 0, 0, 0, 0, 12, 0, 0, 0, 3, 0, 0, 23, 3055, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "away",
+              "position": "RB"
+            },
+            "statistics": [ 0, 1, 1, 0, 1, 0, 0, 0, 0, 6, 3, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 32, 3124, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:0:21008476",
+          "name": "X"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "away",
+              "position": "RW"
+            },
+            "statistics": [ 0, 0, 0, 0, 3, 0, 0, 4, 2, 6, 4, 1, 1, 0, 0, 9, 0, 0, 0, 0, 0, 0, 56, 3413, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "away",
+              "position": "RW"
+            },
+            "statistics": [ 0, 0, 0, 0, 2, 0, 0, 0, 0, 11, 2, 1, 0, 0, 1, 16, 0, 0, 0, 1, 0, 0, 59, 3557, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:1:64122632",
+          "name": "Bas"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "away",
+              "position": "CM"
+            },
+            "statistics": [ 0, 0, 0, 0, 1, 0, 0, 1, 1, 13, 5, 0, 0, 0, 0, 15, 0, 0, 0, 1, 0, 0, 43, 3599, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "away",
+              "position": "CM"
+            },
+            "statistics": [ 0, 1, 1, 0, 2, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 16, 0, 0, 0, 1, 0, 0, 49, 3461, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:0:27052639",
+          "name": "Zetavack"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "home",
+              "position": "CB"
+            },
+            "statistics": [ 0, 0, 0, 0, 3, 0, 0, 0, 0, 7, 7, 0, 0, 0, 0, 15, 0, 0, 0, 1, 0, 0, 49, 3539, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "home",
+              "position": "CB"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 0, 0, 0, 0, 11, 1, 0, 0, 0, 0, 0, 33, 3495, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:0:71238392",
+          "name": "Opp"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "away",
+              "position": "LB"
+            },
+            "statistics": [ 0, 0, 0, 0, 2, 0, 0, 0, 0, 6, 4, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 42, 2823, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "away",
+              "position": "LB"
+            },
+            "statistics": [ 0, 1, 1, 0, 1, 0, 0, 0, 0, 10, 4, 0, 0, 0, 0, 13, 0, 0, 0, 1, 0, 0, 53, 2844, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:1:50696312",
+          "name": "k1eran01"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "away",
+              "position": "LW"
+            },
+            "statistics": [ 0, 0, 0, 0, 1, 0, 0, 3, 2, 5, 2, 0, 0, 0, 0, 9, 0, 0, 1, 0, 0, 0, 55, 3363, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "away",
+              "position": "LW"
+            },
+            "statistics": [ 0, 0, 0, 1, 0, 0, 0, 1, 1, 6, 2, 0, 0, 0, 0, 14, 1, 0, 2, 0, 0, 0, 54, 3267, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:0:102381297",
+          "name": "Dec"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "home",
+              "position": "CF"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 1, 1, 7, 0, 0, 0, 0, 1, 10, 0, 0, 0, 1, 0, 0, 36, 3298, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "home",
+              "position": "CF"
+            },
+            "statistics": [ 0, 0, 0, 0, 1, 0, 0, 3, 2, 4, 2, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 45, 3305, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:0:123930242",
+          "name": ".KAim"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "home",
+              "position": "CM"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 7, 0, 0, 0, 0, 15, 1, 0, 0, 0, 0, 0, 39, 3647, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "home",
+              "position": "CM"
+            },
+            "statistics": [ 0, 1, 1, 1, 3, 0, 0, 1, 1, 7, 6, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 66, 3506, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:1:7116806",
+          "name": "Lua"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2059,
+              "team": "home",
+              "position": "LW"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 1, 1, 4, 2, 0, 0, 0, 0, 7, 0, 0, 1, 1, 0, 0, 37, 2399, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2115,
+              "endSecond": 2820,
+              "team": "home",
+              "position": "LW"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 9, 872, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "home",
+              "position": "LW"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 1, 0, 3, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 39, 3315, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:0:59074100",
+          "name": "Seri"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 31,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 31,
+              "endSecond": 83,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 83,
+              "endSecond": 231,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 100, 1 ]
+          },
+          {
+            "info": {
+              "startSecond": 231,
+              "endSecond": 321,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 3, 81, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 321,
+              "endSecond": 492,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 8, 177, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 492,
+              "endSecond": 580,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 56, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 580,
+              "endSecond": 684,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 101, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 684,
+              "endSecond": 820,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 110, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 820,
+              "endSecond": 931,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 66, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 931,
+              "endSecond": 1060,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 66, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 1060,
+              "endSecond": 1342,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 6, 204, 1 ]
+          },
+          {
+            "info": {
+              "startSecond": 1342,
+              "endSecond": 1421,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 52, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 1421,
+              "endSecond": 1455,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 1455,
+              "endSecond": 1462,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 1462,
+              "endSecond": 1480,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 1480,
+              "endSecond": 1510,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 1510,
+              "endSecond": 1773,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 11, 243, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 1773,
+              "endSecond": 1817,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 46, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 1817,
+              "endSecond": 1922,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 3, 102, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 1922,
+              "endSecond": 2081,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 2, 120, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2081,
+              "endSecond": 2266,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 4, 163, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2266,
+              "endSecond": 2333,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2333,
+              "endSecond": 2375,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2375,
+              "endSecond": 2509,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 72, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2509,
+              "endSecond": 2534,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2534,
+              "endSecond": 2603,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2603,
+              "endSecond": 2819,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 154, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2819,
+              "endSecond": 2820,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 2771,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2771,
+              "endSecond": 2818,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2818,
+              "endSecond": 2927,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 56, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2927,
+              "endSecond": 3093,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 136, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3093,
+              "endSecond": 3239,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 9, 131, 1 ]
+          },
+          {
+            "info": {
+              "startSecond": 3239,
+              "endSecond": 3266,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3266,
+              "endSecond": 3518,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 179, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3518,
+              "endSecond": 3529,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3529,
+              "endSecond": 3660,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 85, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3660,
+              "endSecond": 3712,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 51, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3712,
+              "endSecond": 3742,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3742,
+              "endSecond": 3760,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3760,
+              "endSecond": 3844,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 7, 126, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3844,
+              "endSecond": 3906,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3906,
+              "endSecond": 3966,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 39, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 3966,
+              "endSecond": 4050,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4050,
+              "endSecond": 4085,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4085,
+              "endSecond": 4138,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 5, 77, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4138,
+              "endSecond": 4237,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 65, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4237,
+              "endSecond": 4248,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4248,
+              "endSecond": 4303,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4303,
+              "endSecond": 4360,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 45, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4360,
+              "endSecond": 4476,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4476,
+              "endSecond": 4671,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 125, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4671,
+              "endSecond": 4725,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4725,
+              "endSecond": 4787,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 59, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4787,
+              "endSecond": 4797,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4797,
+              "endSecond": 4868,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 55, 1 ]
+          },
+          {
+            "info": {
+              "startSecond": 4868,
+              "endSecond": 4881,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 11, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4881,
+              "endSecond": 4921,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 4921,
+              "endSecond": 5028,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 5028,
+              "endSecond": 5078,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 5078,
+              "endSecond": 5145,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 3, 50, 1 ]
+          },
+          {
+            "info": {
+              "startSecond": 5145,
+              "endSecond": 5180,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 5180,
+              "endSecond": 5250,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 71, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 5250,
+              "endSecond": 5399,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 92, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 5399,
+              "endSecond": 5446,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 3, 46, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 5446,
+              "endSecond": 5491,
+              "team": "home",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 5491,
+              "endSecond": 5520,
+              "team": "away",
+              "position": "GK"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:0:13346995",
+          "name": "fang"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "away",
+              "position": "CF"
+            },
+            "statistics": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 1, 0, 0, 0, 1, 14, 0, 0, 0, 0, 0, 0, 58, 3358, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "away",
+              "position": "CF"
+            },
+            "statistics": [ 0, 1, 1, 0, 1, 0, 0, 2, 1, 3, 0, 1, 1, 0, 0, 9, 0, 0, 1, 0, 0, 0, 64, 3302, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:1:3280605",
+          "name": "skum"
+        },
+        "matchPeriodData": [
+          {
+            "info": {
+              "startSecond": 0,
+              "endSecond": 2820,
+              "team": "home",
+              "position": "RW"
+            },
+            "statistics": [ 0, 0, 0, 0, 1, 0, 0, 1, 1, 3, 0, 0, 1, 0, 0, 8, 0, 0, 0, 0, 0, 0, 32, 3675, 0 ]
+          },
+          {
+            "info": {
+              "startSecond": 2700,
+              "endSecond": 5520,
+              "team": "home",
+              "position": "RW"
+            },
+            "statistics": [ 0, 0, 0, 3, 0, 0, 0, 1, 1, 5, 0, 0, 0, 0, 0, 8, 3, 0, 0, 0, 0, 0, 21, 3562, 0 ]
+          }
+        ]
+      },
+      {
+        "info": {
+          "steamId": "STEAM_0:0:20301667",
+          "name": "Kobe"
+        },
+        "matchPeriodData": []
+      }
+    ],
+    "matchEvents": [
+      {
+        "second": 223,
+        "event": "SAVE",
+        "period": "FIRST HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:1:50696312"
+      },
+      {
+        "second": 553,
+        "event": "GOAL",
+        "period": "FIRST HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:1:3280605",
+        "player2SteamId": "STEAM_0:0:102381297"
+      },
+      {
+        "second": 554,
+        "event": "(null)",
+        "period": "FIRST HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:1:3280605",
+        "player2SteamId": ""
+      },
+      {
+        "second": 1012,
+        "event": "SAVE",
+        "period": "FIRST HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:0:102381297"
+      },
+      {
+        "second": 1305,
+        "event": "SAVE",
+        "period": "FIRST HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:1:64122632"
+      },
+      {
+        "second": 1538,
+        "event": "GOAL",
+        "period": "FIRST HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:21008476",
+        "player2SteamId": "STEAM_0:0:13346995"
+      },
+      {
+        "second": 1539,
+        "event": "(null)",
+        "period": "FIRST HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:21008476",
+        "player2SteamId": ""
+      },
+      {
+        "second": 1598,
+        "event": "SAVE",
+        "period": "FIRST HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:1:50696312"
+      },
+      {
+        "second": 1868,
+        "event": "SAVE",
+        "period": "FIRST HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:0:21008476"
+      },
+      {
+        "second": 1884,
+        "event": "MISS",
+        "period": "FIRST HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:21008476",
+        "player2SteamId": ""
+      },
+      {
+        "second": 1949,
+        "event": "SAVE",
+        "period": "FIRST HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:1:7116806"
+      },
+      {
+        "second": 2801,
+        "event": "MISS",
+        "period": "FIRST HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:21008476",
+        "player2SteamId": ""
+      },
+      {
+        "second": 3200,
+        "event": "YELLOW CARD",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:13346995",
+        "player2SteamId": ""
+      },
+      {
+        "second": 3217,
+        "event": "SAVE",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:1:3280605"
+      },
+      {
+        "second": 3396,
+        "event": "MISS",
+        "period": "SECOND HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:0:102381297",
+        "player2SteamId": ""
+      },
+      {
+        "second": 3910,
+        "event": "YELLOW CARD",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:71238392",
+        "player2SteamId": ""
+      },
+      {
+        "second": 4206,
+        "event": "MISS",
+        "period": "SECOND HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:1:7116806",
+        "player2SteamId": ""
+      },
+      {
+        "second": 4369,
+        "event": "YELLOW CARD",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:1:11731333",
+        "player2SteamId": ""
+      },
+      {
+        "second": 4818,
+        "event": "YELLOW CARD",
+        "period": "SECOND HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:0:123930242",
+        "player2SteamId": ""
+      },
+      {
+        "second": 4860,
+        "event": "SAVE",
+        "period": "SECOND HALF",
+        "team": "home",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:1:50696312"
+      },
+      {
+        "second": 5055,
+        "event": "GOAL",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:13346995",
+        "player2SteamId": "STEAM_0:0:21008476"
+      },
+      {
+        "second": 5055,
+        "event": "(null)",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:13346995",
+        "player2SteamId": ""
+      },
+      {
+        "second": 5122,
+        "event": "SAVE",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:0:102381297"
+      },
+      {
+        "second": 5129,
+        "event": "SAVE",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:0:123930242"
+      },
+      {
+        "second": 5416,
+        "event": "SAVE",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:0:59074100",
+        "player2SteamId": "STEAM_0:0:102381297"
+      },
+      {
+        "second": 5502,
+        "event": "YELLOW CARD",
+        "period": "SECOND HALF",
+        "team": "away",
+        "player1SteamId": "STEAM_0:1:64122632",
+        "player2SteamId": ""
+      }
+    ]
+  }
+}

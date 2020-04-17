@@ -18,9 +18,8 @@ namespace CoachBot.Database
             {
                 context.Searches.RemoveRange(context.Searches); // Clear all searches when restarted as timers will have stopped
                 context.Lineups.RemoveRange(context.Lineups.Where(t => !context.Matches.Any(m => m.LineupHomeId == t.Id || m.LineupAwayId == t.Id))); // Remove orphaned teams
-                context.TeamStatisticTotals.RemoveRange(context.TeamStatisticTotals);
-                context.PlayerStatisticTotals.RemoveRange(context.PlayerStatisticTotals);
-                context.StatisticTotals.RemoveRange(context.StatisticTotals);
+                context.PlayerMatchStatistics.RemoveRange(context.PlayerMatchStatistics);
+                context.TeamMatchStatistics.RemoveRange(context.TeamMatchStatistics);
                 context.Matches.RemoveRange(context.Matches);
                 context.MatchStatistics.RemoveRange(context.MatchStatistics);
                 //context.PlayerLineupPositions.RemoveRange(context.PlayerLineupPositions);
@@ -138,6 +137,11 @@ namespace CoachBot.Database
                         }
                     });
                 }
+            }
+
+            foreach(var position in new string[] { "CB", "LW", "RW", "CM" })
+            {
+                context.Positions.Add(new Position() { Name = position });
             }
 
             context.SaveChanges();

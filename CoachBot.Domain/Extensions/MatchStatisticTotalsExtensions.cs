@@ -27,6 +27,9 @@ namespace CoachBot.Domain.Extensions
                         var newAverage = newAggregateValue / (statisticTotals.Matches + 1);
                         property.SetValue(statisticTotals, newAverage);
                         break;
+                    case MatchDataTotalsType.None:
+                        property.SetValue(statisticTotals, valueToAdd);
+                        break;
                 };
             }
         }

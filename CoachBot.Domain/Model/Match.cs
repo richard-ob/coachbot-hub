@@ -35,14 +35,18 @@ namespace CoachBot.Domain.Model
 
         public DateTime? ReadiedDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime CreatedDate { get; set; }
+        public DateTime? KickOff { get; set; }
 
         public bool IsMixMatch => LineupHome?.ChannelId == LineupAway?.ChannelId;
 
         public Lineup GetTeam(MatchTeamType teamType) => teamType == MatchTeamType.Home ? LineupHome : LineupAway;
 
-        public string MatchFormat => "8v8";
+        public MatchFormat Format { get; set; } = MatchFormat.EightVsEight;
+
+        public string Map { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedDate { get; set; }
 
         [JsonIgnore]
         [NotMapped]
@@ -51,10 +55,12 @@ namespace CoachBot.Domain.Model
             get
             {
                 var players = new List<Player>();
+
                 if (LineupHome != null && LineupHome.PlayerLineupPositions != null)
                 {
                     players.AddRange(LineupHome.PlayerLineupPositions.Select(ptp => ptp.Player));
                 }
+
                 if (LineupAway != null && LineupAway.PlayerLineupPositions != null)
                 {
                     players.AddRange(LineupAway.PlayerLineupPositions.Select(ptp => ptp.Player));

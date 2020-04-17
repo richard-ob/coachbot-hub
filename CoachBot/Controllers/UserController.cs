@@ -1,4 +1,5 @@
 ﻿using CoachBot.Domain.Services;
+using CoachBot.Extensions;
 using CoachBot.Model;
 using CoachBot.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -12,13 +13,13 @@ namespace CoachBot.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly ChannelService _channelService;
+        private readonly DiscordService _discordService;
         private readonly ConfigService _configService;
         private readonly PlayerService _playerService;
 
-        public UserController(ChannelService channelService, PlayerService playerService, ConfigService configService)
+        public UserController(DiscordService discordService, PlayerService playerService, ConfigService configService)
         {
-            _channelService = channelService;
+            _discordService = discordService;
             _configService = configService;
             _playerService = playerService;
         }
@@ -27,15 +28,13 @@ namespace CoachBot.Controllers
         [Authorize]
         public User Get()
         {
-            var user = new User();
-            if (User.Claims.Any())
+            return new User
             {
-                user.Name = User.Identity.Name;
-                user.DiscordUserId = ulong.Parse(User.Claims.First().Value);
-                user.IsAdministrator = _channelService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value));
-                user.PlayerId = _playerService.GetPlayer(user.DiscordUserId, createIfNotExists: true, playerName: User.Identity.Name).Id;
-            }
-            return user;
+                Name = User.Identity.Name,
+                DiscordUserId = User.GetDiscordUserId(),
+                IsAdministrator = _discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()),
+                PlayerId = _playerService.GetPlayer(User.GetDiscordUserId(), createIfNotExists: true, playerName: User.Identity.Name).Id
+            };
         }
 
         [HttpGet("/login")]

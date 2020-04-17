@@ -20,6 +20,27 @@ namespace CoachBot.Domain.Extensions
             return matchDataPlayer.MatchPeriodData.Sum(m => m.Statistics[(int)matchDataStatisticType]);
         }
 
+        public static int GetMatchStatisticPlayerTotal(this MatchDataPlayer matchDataPlayer, MatchDataStatisticType matchDataStatisticType, string team, string position)
+        {
+            return matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == team && m.Info.Position == position).Sum(m => m.Statistics[(int)matchDataStatisticType]);
+        }
+
+        public static List<int> GetPlayerTotals(this MatchDataPlayer matchDataPlayer, string team, string position)
+        {
+            var statisticTotals = new List<int>();
+            foreach (MatchDataStatisticType statisticType in Enum.GetValues(typeof(MatchDataStatisticType)))
+            {
+                statisticTotals.Add(matchDataPlayer.GetMatchStatisticPlayerTotal(statisticType, team, position));
+            }
+
+            return statisticTotals;
+        }
+
+        public static int GetPlayerPositionSeconds(this MatchDataPlayer matchDataPlayer, string team, string position)
+        {
+            return matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == team && m.Info.Position == position).Sum(m => m.Info.EndSecond - m.Info.StartSecond);
+        }
+
         public static List<int> GetMatchStatisticsPlayerTotal(this MatchDataPlayer matchDataPlayer)
         {
             var statistics = new List<int>();

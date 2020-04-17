@@ -14,13 +14,11 @@ namespace CoachBot.Domain.Services
     {
         private readonly CoachBotContext _dbContext;
         private readonly DiscordSocketClient _discordClient;
-        private readonly Config _config;
 
-        public ChannelService(Config config, CoachBotContext dbContext, DiscordSocketClient discordClient)
+        public ChannelService(CoachBotContext dbContext, DiscordSocketClient discordClient)
         {
             _dbContext = dbContext;
             _discordClient = discordClient;
-            _config = config;
         }
 
         public void Update(Channel channel)
@@ -65,47 +63,6 @@ namespace CoachBot.Domain.Services
             return GetChannels().Where(c => c.Team.RegionId == regionId).ToList();
         }
 
-        public List<Channel> GetChannelsForUser(ulong userId, bool unconfiguredChannels, bool hasAdmin = true)
-        {
-            var channels = new List<Channel>();
-            foreach (var guild in _discordClient.Guilds.Where(g => g.Users.Any(u => u.Id == userId || userId == 166153339610857472)))
-            {
-                var userIsAdmin = guild.Users.FirstOrDefault(u => u.Id == userId)?.GuildPermissions.Administrator ?? false;
-                if (userIsAdmin || (!hasAdmin && guild.Users.Any(u => u.Id == userId)) || userId == 166153339610857472)
-                {
-                    foreach (var channel in guild.TextChannels)
-                    {
-                        var existingChannel = GetChannelByDiscordId(channel.Id);
-                        if (existingChannel != null && !unconfiguredChannels)
-                        {
-                            existingChannel.DiscordChannelName = channel.Name;
-                            channels.Add(existingChannel);
-                        }
-                        if (existingChannel is null && unconfiguredChannels)
-                        {
-                            var unconfiguredChannel = 
-                                new Channel()
-                                {
-                                    DiscordChannelId = channel.Id,
-                                    Team = new Team
-                                    {
-                                        Name = channel.Name,
-                                        Guild = new Guild()
-                                        {
-                                            Name = channel.Guild.Name,
-                                            DiscordGuildId = channel.Guild.Id
-                                        }
-                                    }
-                                };
-                            channels.Add(unconfiguredChannel);
-                        }
-                    }
-                }
-            }
-            channels.Reverse();
-            return channels;
-        }
-
         public MatchTeamType GetTeamTypeForChannelTeamType(ChannelTeamType channelTeamType, ulong channelId)
         {
             var match = _dbContext.GetCurrentMatchForChannel(channelId);
@@ -126,12 +83,6 @@ namespace CoachBot.Domain.Services
             {
                 return MatchTeamType.Away;
             }
-        }
-
-        public bool UserIsOwningGuildAdmin(ulong userId)
-        {
-            var owningGuild = _discordClient.Guilds.First(g => g.Id == _config.OwnerGuildId);
-            return owningGuild.Users.FirstOrDefault(u => u.Id == userId).GuildPermissions.Administrator;
         }
 
         public bool ChannelHasPosition(ulong channelId, string position, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)

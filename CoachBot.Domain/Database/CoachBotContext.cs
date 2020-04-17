@@ -33,9 +33,8 @@ namespace CoachBot.Database
         public DbSet<SubstitutionRequest> SubstitutionRequests { get; set; }
         public DbSet<Search> Searches { get; set; }
         public DbSet<MatchStatistics> MatchStatistics { get; set; }
-        public DbSet<StatisticTotals> StatisticTotals { get; set; }
-        public DbSet<PlayerStatisticTotals> PlayerStatisticTotals { get; set; }
-        public DbSet<TeamStatisticTotals> TeamStatisticTotals { get; set; }
+        public DbSet<TeamMatchStatistics> TeamMatchStatistics { get; set; }
+        public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -73,12 +72,12 @@ namespace CoachBot.Database
             modelBuilder.Entity<Guild>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Position>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<MatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TeamMatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PlayerMatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerLineupPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerLineupSubstitute>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<PlayerStatisticTotals>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<TeamStatisticTotals>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<ChannelPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
 
             // Conversions

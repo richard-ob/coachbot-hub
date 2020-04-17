@@ -24,65 +24,64 @@
         </div>
         <div class="card__content">
             <app-spinner *ngIf="isLoading"></app-spinner>
-            <table *ngIf="!isLoading" class="table table--large">
+            <table *ngIf="!isLoading" class="table table--large table-striped">
                 <thead>
                     <tr>
                         <th class="team-result__date">Name</th>
                         <th class="team-result__vs">Steam</th>
                         <th>Nationality</th>
                         <th style="cursor: pointer" class="team-result__status"
-                            (click)="loadPage(currentPage, 'StatisticTotals.Matches')">
+                            (click)="loadPage(currentPage, 'Matches')">
                             <span style=" white-space: nowrap; ">
                                 Appearances&nbsp;
-                                <i *ngIf="sortBy === 'StatisticTotals.Matches' && sortOrder === 'ASC'"
+                                <i *ngIf="sortBy === 'Matches' && sortOrder === 'ASC'"
                                     class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'StatisticTotals.Matches' && sortOrder === 'DESC'"
+                                <i *ngIf="sortBy === 'Matches' && sortOrder === 'DESC'"
                                     class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'StatisticTotals.Matches'" class="fas fa-sort"></i>
+                                <i *ngIf="sortBy !== 'Matches'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
-                            (click)="loadPage(currentPage, 'StatisticTotals.Wins')">
+                        <th style="cursor: pointer" class="team-result__status" (click)="loadPage(currentPage, 'Wins')">
                             <span style=" white-space: nowrap; ">
                                     Wins&nbsp;
-                                <i *ngIf="sortBy === 'StatisticTotals.Wins' && sortOrder === 'ASC'"
+                                <i *ngIf="sortBy === 'Wins' && sortOrder === 'ASC'"
                                     class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'StatisticTotals.Wins' && sortOrder === 'DESC'"
+                                <i *ngIf="sortBy === 'Wins' && sortOrder === 'DESC'"
                                     class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'StatisticTotals.Wins'" class="fas fa-sort"></i>
+                                <i *ngIf="sortBy !== 'Wins'" class="fas fa-sort"></i>
                             </span>
                         </th>
                         <th style="cursor: pointer" class="team-result__status"
-                            (click)="loadPage(currentPage, 'StatisticTotals.Losses')">
+                            (click)="loadPage(currentPage, 'Losses')">
                             <span style=" white-space: nowrap; ">
                                     Losses&nbsp;
-                                <i *ngIf="sortBy === 'StatisticTotals.Losses' && sortOrder === 'ASC'"
+                                <i *ngIf="sortBy === 'Losses' && sortOrder === 'ASC'"
                                     class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'StatisticTotals.Losses' && sortOrder === 'DESC'"
+                                <i *ngIf="sortBy === 'Losses' && sortOrder === 'DESC'"
                                     class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'StatisticTotals.Losses'" class="fas fa-sort"></i>
+                                <i *ngIf="sortBy !== 'Losses'" class="fas fa-sort"></i>
                             </span>
                         </th>
                         <th style="cursor: pointer" class="team-result__status"
-                            (click)="loadPage(currentPage, 'StatisticTotals.Draws')">
+                            (click)="loadPage(currentPage, 'Draws')">
                             <span style=" white-space: nowrap; ">
                                     Draws&nbsp;
-                                <i *ngIf="sortBy === 'StatisticTotals.Draws' && sortOrder === 'ASC'"
+                                <i *ngIf="sortBy === 'Draws' && sortOrder === 'ASC'"
                                     class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'StatisticTotals.Draws' && sortOrder === 'DESC'"
+                                <i *ngIf="sortBy === 'Draws' && sortOrder === 'DESC'"
                                     class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'StatisticTotals.Draws'" class="fas fa-sort"></i>
+                                <i *ngIf="sortBy !== 'Draws'" class="fas fa-sort"></i>
                             </span>
                         </th>
                         <th style="cursor: pointer" class="team-result__status"
-                            (click)="loadPage(currentPage, 'StatisticTotals.Goals')">
+                            (click)="loadPage(currentPage, 'Goals')">
                             <span style=" white-space: nowrap; ">
                                     Goals&nbsp;
-                                <i *ngIf="sortBy === 'StatisticTotals.Goals' && sortOrder === 'ASC'"
+                                <i *ngIf="sortBy === 'Goals' && sortOrder === 'ASC'"
                                     class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'StatisticTotals.Goals' && sortOrder === 'DESC'"
+                                <i *ngIf="sortBy === 'Goals' && sortOrder === 'DESC'"
                                     class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'StatisticTotals.Goals'" class="fas fa-sort"></i>
+                                <i *ngIf="sortBy !== 'Goals'" class="fas fa-sort"></i>
                             </span>
                         </th>
                         <th class="team-result__ball-posession">Yellow Cards</th>
@@ -111,16 +110,16 @@
                                 <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
                             </ng-container>
                         </td>
-                        <td class="team-result__status">{{statistics.statisticTotals.matches}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.wins}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.losses}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.draws}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.goals}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.yellowCards}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.redCards}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.assists}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.passes}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.distanceCovered}}</td>
+                        <td class="team-result__status">{{statistics.matches}}</td>
+                        <td class="team-result__status">{{statistics.wins}}</td>
+                        <td class="team-result__status">{{statistics.losses}}</td>
+                        <td class="team-result__status">{{statistics.draws}}</td>
+                        <td class="team-result__status">{{statistics.goals}}</td>
+                        <td class="team-result__status">{{statistics.yellowCards}}</td>
+                        <td class="team-result__status">{{statistics.redCards}}</td>
+                        <td class="team-result__status">{{statistics.assists}}</td>
+                        <td class="team-result__status">{{statistics.passes}}</td>
+                        <td class="team-result__status">{{statistics.distanceCovered}}</td>
                         <td class="team-result__game-overview">
                             <a [routerLink]="['../player-profile', statistics.player.id]"
                                 class="btn btn-xs btn-outline-primary btn-block">Profile</a>

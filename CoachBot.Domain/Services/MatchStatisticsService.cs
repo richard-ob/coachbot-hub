@@ -134,8 +134,40 @@ namespace CoachBot.Domain.Services
             return _coachBotContext
                  .PlayerMatchStatistics
                  .AsNoTracking()
-                 .GroupBy(p => new { p.PlayerId, p.Player.Name, p.Player.SteamID, p.Player.DiscordUserId }, (key, grp) => 
-                 .Select(s => new PlayerStatisticTotals()
+                 .Select(m => new
+                 {
+                     m.PlayerId,
+                     m.Player.DiscordUserId,
+                     m.Player.SteamID,
+                     m.Player.Name,
+                     m.RedCards,
+                     m.YellowCards,
+                     m.Fouls,
+                     m.FoulsSuffered,
+                     m.SlidingTackles,
+                     m.SlidingTacklesCompleted,
+                     m.GoalsConceded,
+                     m.Shots,
+                     m.ShotsOnGoal,
+                     m.Passes,
+                     m.PassesCompleted,
+                     m.Interceptions,
+                     m.Offsides,
+                     m.GoalKicks,
+                     m.OwnGoals,
+                     m.DistanceCovered,
+                     m.FreeKicks,
+                     m.KeeperSaves,
+                     m.KeeperSavesCaught,
+                     m.Penalties,
+                     m.Possession,
+                     m.ThrowIns,
+                     m.Corners,
+                     m.Goals,
+                     m.Assists,
+                     m.MatchOutcome
+                 })
+                 .GroupBy(p => new { p.PlayerId, p.DiscordUserId, p.SteamID, p.Name }, (key, s) => new PlayerStatisticTotals()
                  {
                      RedCards = s.Sum(p => p.RedCards),
                      YellowCards = s.Sum(p => p.YellowCards),
@@ -162,16 +194,16 @@ namespace CoachBot.Domain.Services
                      Corners = s.Sum(p => p.Corners),
                      Goals = s.Sum(p => p.Goals),
                      Assists = s.Sum(p => p.Assists),
-                     PlayerId = s.Key.PlayerId,
+                     PlayerId = key.PlayerId,
                      Matches = s.Count(),
-                     Wins = s.Key.Name.Length > 8 ? 1 : 2,
-                     /*Losses = s.Where(t => t.MatchOutcome == MatchOutcomeType.Loss).Count(),
-                     Draws = s.Where(t => t.MatchOutcome == MatchOutcomeType.Draw).Count(),*/
+                     Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
+                     Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
+                     Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
                      Player = new Player()
                      {
-                         Name = s.Key.Name,
-                         DiscordUserId = s.Key.DiscordUserId,
-                         SteamID = s.Key.SteamID
+                         Name = key.Name,
+                         DiscordUserId = key.DiscordUserId,
+                         SteamID = key.SteamID
                      }
                  });
         }

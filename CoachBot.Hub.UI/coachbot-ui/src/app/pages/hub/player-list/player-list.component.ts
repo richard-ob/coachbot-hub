@@ -55,18 +55,17 @@ export class PlayerListComponent implements OnInit {
     getSteamUserProfiles(playerStatistics: PlayerStatistics[]) {
         const steamIds = [];
         for (const player of playerStatistics) {
-            console.log(player.player);
-            if (player.player.steamID) {
-                steamIds.push(player.player.steamID);
+            if (player.steamID) {
+                steamIds.push(player.steamID);
             }
         }
         console.log(steamIds);
         this.steamService.getUserProfiles(steamIds).subscribe(response => {
             for (const player of playerStatistics) {
-                if (player.player.steamID && player.player.steamID.length > 5) {
-                    const steamUserProfile = response.response.players.find(u => u.steamid === player.player.steamID);
+                if (player.steamID && player.steamID.length > 5) {
+                    const steamUserProfile = response.response.players.find(u => u.steamid === player.steamID);
                     if (steamUserProfile) {
-                        player.player.steamUserProfile = steamUserProfile;
+                        player.steamUserProfile = steamUserProfile;
                     }
                 }
             }

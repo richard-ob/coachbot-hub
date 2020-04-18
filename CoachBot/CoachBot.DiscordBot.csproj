@@ -80,7 +80,13 @@
     <None Update="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SeedData\2020.02.16_18h.46m.14s_netherlands-vs-spain_2-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SeedData\2020.02.16_20h.32m.08s_humble.idiots-vs-creds_0-7.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.02.16_20h.40m.10s_cooks-vs-nextgen_0-12.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="SeedData\2020.02.16_21h.33m.04s_raw.talent-vs-natural.talent_0-3.json">
@@ -89,7 +95,25 @@
     <None Update="SeedData\2020.02.16_22h.35m.08s_excel-vs-natural.talent.academy_16-1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="SeedData\2020.02.17_03h.04m.44s_zero-vs-raw.talent_4-8.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.02.18_01h.23m.16s_united.states-vs-chefs_11-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.02.18_16h.03m.34s_excel-vs-chefs_6-8.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.02.18_19h.30m.57s_phoenix-vs-nextgen_0-4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.02.18_20h.38m.15s_red.sunset-vs-creds_0-5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SeedData\2020.02.18_20h.46m.39s_natural.talent-vs-natural.talent.academy_9-1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.02.18_21h.30m.06s_cooks-vs-excel_0-2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="SeedData\2020.02.18_21h.31m.22s_zero-vs-raw.talent_9-3.json">
@@ -107,10 +131,109 @@
     <None Update="SeedData\2020.02.19_16h.25m.46s_spain-vs-france_4-5.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="SeedData\2020.02.19_16h.44m.42s_china-vs-australia_7-6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SeedData\2020.02.19_16h.57m.37s_netherlands-vs-ireland_7-6.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="SeedData\2020.02.19_17h.29m.48s_nextgen-vs-red.sunset_3-4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.02.19_20h.41m.13s_nextgen-vs-chefs_3-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.02.20_00h.34m.37s_chefs-vs-chile_1-2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.02.20_18h.49m.45s_chefs-vs-excel_3-5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.03.27_15h.00m.08s_england-vs-excel_5-6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.03.27_18h.03m.35s_portugal-vs-excel_2-2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.03.28_15h.11m.57s_mexico-vs-korea.republic_2-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.03.28_15h.45m.27s_ukraine-vs-tunisia_7-6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.03.28_21h.44m.03s_england-vs-excel_5-5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.03.31_18h.20m.36s_excel-vs-phoenix_3-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.03.31_19h.27m.15s_excel-vs-phoenix_3-5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.01_19h.10m.51s_excel-vs-dishwashers_3-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.02_22h.38m.01s_dishwashers-vs-excel_3-5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.04_21h.10m.47s_creds-vs-natural.talent_12-0.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.04_23h.06m.15s_netherlands-vs-france_2-1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.07_16h.49m.27s_excel-vs-volt_4-2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.07_21h.08m.12s_red.devils-vs-red.sunset_8-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.08_00h.19m.32s_excel-vs-red.sunset_11-10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.08_01h.16m.00s_ireland-vs-costa.rica_5-1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.08_19h.38m.47s_excel-vs-raw.talent_3-1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.08_23h.31m.26s_excel-vs-creds_6-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.09_21h.56m.20s_phoenix-vs-excel_4-0.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.10_22h.50m.54s_portugal-vs-greece_1-4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.11_18h.20m.50s_excel-vs-england_5-4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.13_23h.30m.40s_chefs-vs-united.states_2-2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.15_01h.56m.52s_chefs-vs-excel_3-1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.15_19h.32m.37s_raw.talent-vs-excel_4-5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.16_22h.11m.11s_excel-vs-chefs_3-1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.17_17h.59m.52s_prosoccer-vs-excel_3-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.17_20h.59m.18s_excel-vs-phoenix_2-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.17_21h.47m.34s_excel-vs-natural.talent_2-2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.17_23h.44m.29s_brazil-vs-excel_1-2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\2020.04.18_01h.08m.26s_excel-vs-brazil_1-3.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

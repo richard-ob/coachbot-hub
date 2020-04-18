@@ -9,7 +9,9 @@ namespace CoachBot.Domain.Model
     {
         public int PlayerId { get; set; }
 
-        public Player Player { get; set; }
+        public string Name { get; set; }
+
+        public ulong? SteamID { get; set; }
 
     }
 }

@@ -52,6 +52,9 @@ namespace CoachBot.Domain.Model
         [MatchDataStatistic(MatchDataStatisticType.Passes, MatchDataTotalsType.Average)]
         public int Passes { get; set; }
 
+        [MatchDataStatistic(MatchDataStatisticType.Passes, MatchDataTotalsType.Average)]
+        public double PassesAverage { get; set; }
+
         [MatchDataStatistic(MatchDataStatisticType.OwnGoals, MatchDataTotalsType.Average)]
         public int FreeKicks { get; set; }
 

@@ -27,7 +27,16 @@
             <table *ngIf="!isLoading" class="table table--large table-striped">
                 <thead>
                     <tr>
-                        <th class="team-result__date">Name</th>
+                        <th style="cursor: pointer" class="team-result__status" (click)="loadPage(currentPage, 'Name')">
+                            <span style=" white-space: nowrap; ">
+                                Name&nbsp;
+                                <i *ngIf="sortBy === 'Name' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'Name' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'Name'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
                         <th class="team-result__vs">Steam</th>
                         <th>Nationality</th>
                         <th style="cursor: pointer" class="team-result__status"
@@ -95,18 +104,17 @@
                 <tbody>
                     <tr
                         *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
-                        <td class="team-result__score">{{statistics.player.name}}</td>
+                        <td class="team-result__score">{{statistics.name}}</td>
                         <td class="team-result__vs">
-                            <a *ngIf="statistics.player.steamUserProfile"
-                                [attr.href]="getSteamProfileLink(statistics.player.steamID)">
-                                <img [attr.src]="statistics.player.steamUserProfile.avatar"
-                                    style="height: 16px; width: 16px;">
+                            <a *ngIf="statistics.steamUserProfile"
+                                [attr.href]="getSteamProfileLink(statistics.steamID)">
+                                <img [attr.src]="statistics.steamUserProfile.avatar" style="height: 16px; width: 16px;">
                             </a>
                         </td>
                         <td class="team-result__ball-posession text-center">
-                            <ng-container *ngIf="statistics.player.steamUserProfile">
-                                <img *ngIf="statistics.player.steamUserProfile.loccountrycode; else unknownFlag"
-                                    src="https://www.countryflags.io/{{statistics.player.steamUserProfile.loccountrycode}}/flat/24.png">
+                            <ng-container *ngIf="statistics.steamUserProfile">
+                                <img *ngIf="statistics.steamUserProfile.loccountrycode; else unknownFlag"
+                                    src="https://www.countryflags.io/{{statistics.steamUserProfile.loccountrycode}}/flat/24.png">
                                 <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
                             </ng-container>
                         </td>
@@ -121,7 +129,7 @@
                         <td class="team-result__status">{{statistics.passes}}</td>
                         <td class="team-result__status">{{statistics.distanceCovered}}</td>
                         <td class="team-result__game-overview">
-                            <a [routerLink]="['../player-profile', statistics.player.id]"
+                            <a [routerLink]="['../player-profile', statistics.id]"
                                 class="btn btn-xs btn-outline-primary btn-block">Profile</a>
                         </td>
                     </tr>

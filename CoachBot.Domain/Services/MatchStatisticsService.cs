@@ -4,6 +4,7 @@ using CoachBot.Domain.Model;
 using CoachBot.Domain.Model.Dtos;
 using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -167,7 +168,7 @@ namespace CoachBot.Domain.Services
                      m.Assists,
                      m.MatchOutcome
                  })
-                 .GroupBy(p => new { p.PlayerId, p.DiscordUserId, p.SteamID, p.Name }, (key, s) => new PlayerStatisticTotals()
+                 .GroupBy(p => new { p.PlayerId, p.SteamID, p.Name }, (key, s) => new PlayerStatisticTotals()
                  {
                      RedCards = s.Sum(p => p.RedCards),
                      YellowCards = s.Sum(p => p.YellowCards),
@@ -179,6 +180,7 @@ namespace CoachBot.Domain.Services
                      Shots = s.Sum(p => p.Shots),
                      ShotsOnGoal = s.Sum(p => p.ShotsOnGoal),
                      Passes = s.Sum(p => p.Passes),
+                     PassesAverage = s.Average(p => p.Passes),
                      PassesCompleted = s.Sum(p => p.PassesCompleted),
                      Interceptions = s.Sum(p => p.Interceptions),
                      Offsides = s.Sum(p => p.Offsides),
@@ -199,12 +201,8 @@ namespace CoachBot.Domain.Services
                      Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
                      Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
                      Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
-                     Player = new Player()
-                     {
-                         Name = key.Name,
-                         DiscordUserId = key.DiscordUserId,
-                         SteamID = key.SteamID
-                     }
+                     Name = key.Name,
+                     SteamID = key.SteamID
                  });
         }
 

@@ -24,7 +24,7 @@
         </div>
         <div class="card__content table-responsive">
             <app-spinner *ngIf="isLoading"></app-spinner>
-            <table *ngIf="!isLoading" class="table table--large table-striped">
+            <table *ngIf="!isLoading" class="table table--large table-striped table-hover table-clickable">
                 <thead>
                     <tr>
                         <th class="team-result__vs" style="width: 40px;"></th>
@@ -115,9 +115,39 @@
                                 <i *ngIf="sortBy !== 'ShotAccuracyPercentage'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th class="team-result__game-overview">Assists</th>
-                        <th class="team-result__game-overview">Avg. Assists</th>
-                        <th class="team-result__game-overview">Avg. Passes</th>
+                        <th style="cursor: pointer" class="team-result__status"
+                            (click)="loadPage(currentPage, 'Assists')">
+                            <span style=" white-space: nowrap; ">
+                                Assists&nbsp;
+                                <i *ngIf="sortBy === 'Assists' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'Assists' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'Assists'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
+                        <th style="cursor: pointer" class="team-result__status"
+                            (click)="loadPage(currentPage, 'AssistsAverage')">
+                            <span style=" white-space: nowrap; ">
+                                Avg. Assists&nbsp;
+                                <i *ngIf="sortBy === 'AssistsAverage' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'AssistsAverage' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'AssistsAverage'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
+                        <th style="cursor: pointer" class="team-result__status"
+                            (click)="loadPage(currentPage, 'PassesAverage')">
+                            <span style=" white-space: nowrap; ">
+                                Avg. Passes&nbsp;
+                                <i *ngIf="sortBy === 'PassesAverage' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'PassesAverage' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'PassesAverage'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
                         <th style="cursor: pointer" class="team-result__status"
                             (click)="loadPage(currentPage, 'PassCompletionPercentageAverage')">
                             <span style=" white-space: nowrap; ">
@@ -132,12 +162,11 @@
                         <th class="team-result__ball-posession">Yellow Cards</th>
                         <th class="team-result__game-overview">Red Cards</th>
                         <th class="team-result__game-overview">Avg. Distance</th>
-                        <th class="team-result__game-overview"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
+                    <tr *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
+                        (click)="navigateToProfile(statistics.playerId)">
                         <td class="team-result__vs">
                             <a *ngIf="statistics.steamUserProfile"
                                 [attr.href]="getSteamProfileLink(statistics.steamID)">
@@ -167,10 +196,6 @@
                         <td class="team-result__status">{{statistics.yellowCards}}</td>
                         <td class="team-result__status">{{statistics.redCards}}</td>
                         <td class="team-result__status">{{statistics.distanceCoveredAverage | number : '1.2-2'}}</td>
-                        <td class="team-result__game-overview">
-                            <a [routerLink]="['../player-profile', statistics.playerId]"
-                                class="btn btn-xs btn-outline-primary btn-block">Profile</a>
-                        </td>
                     </tr>
                 </tbody>
             </table>

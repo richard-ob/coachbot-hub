@@ -34,6 +34,7 @@ namespace CoachBot.Database
         public DbSet<Search> Searches { get; set; }
         public DbSet<MatchStatistics> MatchStatistics { get; set; }
         public DbSet<TeamMatchStatistics> TeamMatchStatistics { get; set; }
+        public DbSet<PlayerPositionMatchStatistics> PlayerPositionMatchStatistics { get; set; }
         public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -74,6 +75,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<MatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TeamMatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerMatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PlayerPositionMatchStatistics>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerLineupPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerLineupSubstitute>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

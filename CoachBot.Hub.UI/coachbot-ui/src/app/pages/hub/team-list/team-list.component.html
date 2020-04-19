@@ -22,12 +22,11 @@
                         <th class="team-result__game-overview">Assists</th>
                         <th class="team-result__game-overview">Avg. Passes</th>
                         <th class="team-result__game-overview">Avg. Distance</th>
-                        <th class="team-result__game-overview"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        *ngFor="let statistics of teamStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
+                    <tr *ngFor="let statistics of teamStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
+                        (click)="navigatetoProfile(statistics.teamId)">
                         <td class="team-result__score">{{statistics.teamName}}</td>
                         <td class="team-result__status">{{statistics.matches}}</td>
                         <td class="team-result__status">{{statistics.wins}}</td>
@@ -39,10 +38,6 @@
                         <td class="team-result__status">{{statistics.assists}}</td>
                         <td class="team-result__status">{{statistics.passes}}</td>
                         <td class="team-result__status"></td>
-                        <td class="team-result__game-overview">
-                            <a [routerLink]="['../team-profile', statistics.teamId]"
-                                class="btn btn-xs btn-outline-primary btn-block">Profile</a>
-                        </td>
                     </tr>
                 </tbody>
             </table>

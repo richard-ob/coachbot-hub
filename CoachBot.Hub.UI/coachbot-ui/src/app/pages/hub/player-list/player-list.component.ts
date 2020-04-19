@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlayerService } from '../shared/services/player.service';
 import { PlayerStatistics } from '../shared/model/player-statistics.model';
 import { SteamService } from '../shared/services/steam.service.';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-player-list',
@@ -19,7 +20,7 @@ export class PlayerListComponent implements OnInit {
     timePeriod = 0;
     isLoading = true;
 
-    constructor(private playerService: PlayerService, private steamService: SteamService) { }
+    constructor(private playerService: PlayerService, private steamService: SteamService, private router: Router) { }
 
     ngOnInit() {
         this.loadPage(1);
@@ -70,6 +71,10 @@ export class PlayerListComponent implements OnInit {
                 }
             }
         });
+    }
+
+    navigateToProfile(playerId: number) {
+        this.router.navigate(['/player-profile', playerId]);
     }
 
 }

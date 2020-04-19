@@ -70,14 +70,14 @@ namespace CoachBot.Domain.Services
             foreach (var matchDataPlayer in match.MatchStatistics.MatchData.Players.Where(p => p.MatchPeriodData != null && p.MatchPeriodData.Any()))
             {
                 var player = GetOrCreatePlayer(matchDataPlayer);
-                foreach(var teamType in matchDataPlayer.MatchPeriodData.Select(m => m.Info.Team).Distinct())
+                foreach (var teamType in matchDataPlayer.MatchPeriodData.Select(m => m.Info.Team).Distinct())
                 {
-                    foreach(var position in matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == teamType).Select(m => m.Info.Position).Distinct())
+                    var isHomeTeam = teamType == MatchDataSideConstants.Home;
+                    var team = isHomeTeam ? match.LineupHome : match.LineupAway;
+                    foreach (var position in matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == teamType).Select(m => m.Info.Position).Distinct())
                     {
-                        var isHomeTeam = teamType == MatchDataSideConstants.Home;
-                        var team = isHomeTeam ? match.LineupHome : match.LineupAway;
                         var positionId = _coachBotContext.Positions.Where(p => p.Name == position).Select(p => p.Id).FirstOrDefault();
-                        var playerMatchStatistics = new PlayerMatchStatistics()
+                        var playerPositionMatchStatistics = new PlayerPositionMatchStatistics()
                         {
                             PlayerId = player.Id,
                             MatchId = match.Id,
@@ -89,10 +89,22 @@ namespace CoachBot.Domain.Services
                             Nickname = matchDataPlayer.Info.Name,
                             Substitute = false
                         };
-                        playerMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetPlayerTotals(teamType, position));
-                        _coachBotContext.PlayerMatchStatistics.Add(playerMatchStatistics);
-                        _coachBotContext.SaveChanges();
+                        playerPositionMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetPlayerTotals(teamType, position));
+                        _coachBotContext.PlayerPositionMatchStatistics.Add(playerPositionMatchStatistics);
                     }
+                    var playerMatchStatistics = new PlayerMatchStatistics()
+                    {
+                        PlayerId = player.Id,
+                        MatchId = match.Id,
+                        ChannelId = (int)team.ChannelId,
+                        TeamId = team.Channel.TeamId,
+                        MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
+                        SecondsPlayed = matchDataPlayer.GetPlayerSeconds(teamType),
+                        Nickname = matchDataPlayer.Info.Name
+                    };
+                    playerMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetMatchStatisticsPlayerTotal());
+                    _coachBotContext.PlayerMatchStatistics.Add(playerMatchStatistics);
+                    _coachBotContext.SaveChanges();
                 }
             }
         }
@@ -120,7 +132,7 @@ namespace CoachBot.Domain.Services
         private IQueryable<PlayerStatisticTotals> GetPlayerStatisticTotals()
         {
             return _coachBotContext
-                 .PlayerMatchStatistics
+                 .PlayerPositionMatchStatistics
                  .AsNoTracking()
                  .Select(m => new
                  {
@@ -153,7 +165,8 @@ namespace CoachBot.Domain.Services
                      m.Corners,
                      m.Goals,
                      m.Assists,
-                     m.MatchOutcome
+                     m.MatchOutcome,
+                     m.MatchId
                  })
                  .GroupBy(p => new { p.PlayerId, p.SteamID, p.Name }, (key, s) => new PlayerStatisticTotals()
                  {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TeamStatistics } from '../shared/model/team-statistics.model';
 import { TeamService } from '../shared/services/team.service';
+import { Router } from '@angular/router';
 @Component({
     selector: 'app-team-list',
     templateUrl: './team-list.component.html',
@@ -13,7 +14,7 @@ export class TeamListComponent implements OnInit {
     totalPages: number;
     totalItems: number;
 
-    constructor(private teamService: TeamService) {
+    constructor(private teamService: TeamService, private router: Router) {
 
     }
 
@@ -28,6 +29,10 @@ export class TeamListComponent implements OnInit {
             this.totalPages = response.totalPages;
             this.totalItems = response.totalItems;
         });
+    }
+
+    navigatetoProfile(teamId: number) {
+        this.router.navigate(['/player-profile', teamId]);
     }
 
 }

@@ -41,6 +41,11 @@ namespace CoachBot.Domain.Extensions
             return matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == team && m.Info.Position == position).Sum(m => m.Info.EndSecond - m.Info.StartSecond);
         }
 
+        public static int GetPlayerSeconds(this MatchDataPlayer matchDataPlayer, string team)
+        {
+            return matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == team).Sum(m => m.Info.EndSecond - m.Info.StartSecond);
+        }
+
         public static List<int> GetMatchStatisticsPlayerTotal(this MatchDataPlayer matchDataPlayer)
         {
             var statistics = new List<int>();

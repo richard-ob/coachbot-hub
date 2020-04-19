@@ -12,8 +12,7 @@
                 <thead>
                     <tr>
                         <th class="team-result__date">Team</th>
-                        <th class="team-result__date">Region</th>
-                        <th class="team-result__status">Appearances</th>
+                        <th class="team-result__status">Matches</th>
                         <th class="team-result__game-overview">Wins</th>
                         <th class="team-result__game-overview">Losses</th>
                         <th class="team-result__game-overview">Draws</th>
@@ -29,20 +28,19 @@
                 <tbody>
                     <tr
                         *ngFor="let statistics of teamStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
-                        <td class="team-result__score">{{statistics.channel.team.name}}</td>
-                        <td class="team-result__status">{{statistics.channel.team.region.regionCode}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.matches}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.wins}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.losses}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.draws}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.goals}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.yellowCards}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.redCards}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.assists}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.passes}}</td>
-                        <td class="team-result__status">{{statistics.statisticTotals.distanceCovered}}</td>
+                        <td class="team-result__score">{{statistics.teamName}}</td>
+                        <td class="team-result__status">{{statistics.matches}}</td>
+                        <td class="team-result__status">{{statistics.wins}}</td>
+                        <td class="team-result__status">{{statistics.losses}}</td>
+                        <td class="team-result__status">{{statistics.draws}}</td>
+                        <td class="team-result__status">{{statistics.goals}}</td>
+                        <td class="team-result__status">{{statistics.yellowCards}}</td>
+                        <td class="team-result__status">{{statistics.redCards}}</td>
+                        <td class="team-result__status">{{statistics.assists}}</td>
+                        <td class="team-result__status">{{statistics.passes}}</td>
+                        <td class="team-result__status"></td>
                         <td class="team-result__game-overview">
-                            <a [routerLink]="['../team-profile', statistics.channel.team.id]"
+                            <a [routerLink]="['../team-profile', statistics.teamId]"
                                 class="btn btn-xs btn-outline-primary btn-block">Profile</a>
                         </td>
                     </tr>

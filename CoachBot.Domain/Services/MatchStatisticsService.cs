@@ -38,20 +38,7 @@ namespace CoachBot.Domain.Services
 
         public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod, int? teamId)
         {
-            /*var queryable = _coachBotContext.TeamStatisticTotals
-              .Include(ts => ts.Channel)
-                .ThenInclude(c => c.Team)
-                .ThenInclude(t => t.Region)
-              .Include(ts => ts.StatisticTotals)
-              .Where(ts => ts.StatisticTotals.TimePeriod == timePeriod);
-
-            if (teamId != null && teamId > 0)
-            {
-                queryable.Where(ts => ts.Channel.TeamId == teamId);
-            }
-
-            return queryable.GetPaged(page, pageSize, sortOrder);*/
-            return null;
+            return GetTeamStatisticTotals().GetPaged(page, pageSize, sortOrder);
         }
 
         public Model.Dtos.PagedResult<PlayerStatisticTotals> GetPlayerStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod)
@@ -170,32 +157,50 @@ namespace CoachBot.Domain.Services
                  })
                  .GroupBy(p => new { p.PlayerId, p.SteamID, p.Name }, (key, s) => new PlayerStatisticTotals()
                  {
-                     RedCards = s.Sum(p => p.RedCards),
-                     YellowCards = s.Sum(p => p.YellowCards),
+                     Goals = s.Sum(p => p.Goals),
+                     GoalsAverage = s.Average(p => p.Goals),
+                     Assists = s.Sum(p => p.Assists),
+                     AssistsAverage = s.Average(p => p.Assists),
                      Fouls = s.Sum(p => p.Fouls),
+                     FoulsAverage = s.Average(p => p.Fouls),
                      FoulsSuffered = s.Sum(p => p.FoulsSuffered),
-                     SlidingTackles = s.Sum(p => p.SlidingTackles),
-                     SlidingTacklesCompleted = s.Sum(p => p.SlidingTacklesCompleted),
+                     FoulsSufferedAverage = s.Average(p => p.FoulsSuffered),
+                     SlidingTacklesAverage = s.Average(p => p.SlidingTackles),
+                     SlidingTacklesCompletedAverage = s.Average(p => p.SlidingTacklesCompleted),
                      GoalsConceded = s.Sum(p => p.GoalsConceded),
+                     GoalsConcededAverage = s.Average(p => p.GoalsConceded),
                      Shots = s.Sum(p => p.Shots),
+                     ShotsAverage = s.Average(p => p.Shots),
                      ShotsOnGoal = s.Sum(p => p.ShotsOnGoal),
+                     ShotsOnGoalAverage = s.Average(p => p.ShotsOnGoal),
+                     ShotAccuracyPercentage = s.Average(p => p.Shots > 0 ? Convert.ToDouble(p.ShotsOnGoal) / Convert.ToDouble(p.Shots) : 0),
                      Passes = s.Sum(p => p.Passes),
                      PassesAverage = s.Average(p => p.Passes),
                      PassesCompleted = s.Sum(p => p.PassesCompleted),
+                     PassesCompletedAverage = s.Average(p => p.PassesCompleted),
+                     PassCompletionPercentageAverage = s.Average(p => p.Passes > 0 ? Convert.ToDouble(p.PassesCompleted) / Convert.ToDouble(p.Passes) : 0),
                      Interceptions = s.Sum(p => p.Interceptions),
+                     InterceptionsAverage = s.Average(p => p.Interceptions),
                      Offsides = s.Sum(p => p.Offsides),
-                     GoalKicks = s.Sum(p => p.GoalKicks),
+                     OffsidesAverage = s.Average(p => p.Offsides),
+                     GoalKicksAverage = s.Average(p => p.GoalKicks),
                      OwnGoals = s.Sum(p => p.OwnGoals),
-                     DistanceCovered = s.Sum(p => p.DistanceCovered),
+                     OwnGoalsAverage = s.Average(p => p.OwnGoals),
+                     DistanceCoveredAverage = s.Average(p => p.DistanceCovered),
                      FreeKicks = s.Sum(p => p.FreeKicks),
+                     FreeKicksAverage = s.Average(p => p.FreeKicks),
                      KeeperSaves = s.Sum(p => p.KeeperSaves),
-                     KeeperSavesCaught = s.Sum(p => p.KeeperSavesCaught),
+                     KeeperSavesAverage = s.Average(p => p.KeeperSaves),
+                     KeeperSavesCaughtAverage = s.Average(p => p.KeeperSavesCaught),
                      Penalties = s.Sum(p => p.Penalties),
-                     Possession = s.Sum(p => p.Possession),
+                     PenaltiesAverage = s.Average(p => p.Penalties),
+                     PossessionAverage = s.Average(p => p.Possession),
+                     RedCards = s.Sum(p => p.RedCards),
+                     RedCardsAverage = s.Average(p => p.RedCards),
+                     YellowCards = s.Sum(p => p.YellowCards),
+                     YellowCardsAverage = s.Average(p => p.YellowCards),
                      ThrowIns = s.Sum(p => p.ThrowIns),
                      Corners = s.Sum(p => p.Corners),
-                     Goals = s.Sum(p => p.Goals),
-                     Assists = s.Sum(p => p.Assists),
                      PlayerId = key.PlayerId,
                      Matches = s.Count(),
                      Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
@@ -206,6 +211,99 @@ namespace CoachBot.Domain.Services
                  });
         }
 
+
+        private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals()
+        {
+            return _coachBotContext
+                 .TeamMatchStatistics
+                 .AsNoTracking()
+                 .Select(m => new
+                 {
+                     m.TeamId,
+                     m.ChannelId,
+                     m.TeamName,
+                     m.RedCards,
+                     m.YellowCards,
+                     m.Fouls,
+                     m.FoulsSuffered,
+                     m.SlidingTackles,
+                     m.SlidingTacklesCompleted,
+                     m.GoalsConceded,
+                     m.Shots,
+                     m.ShotsOnGoal,
+                     m.Passes,
+                     m.PassesCompleted,
+                     m.Interceptions,
+                     m.Offsides,
+                     m.GoalKicks,
+                     m.OwnGoals,
+                     m.DistanceCovered,
+                     m.FreeKicks,
+                     m.KeeperSaves,
+                     m.KeeperSavesCaught,
+                     m.Penalties,
+                     m.Possession,
+                     m.ThrowIns,
+                     m.Corners,
+                     m.Goals,
+                     m.Assists,
+                     m.MatchOutcome
+                 })
+                 .GroupBy(p => new { p.TeamId, p.ChannelId, p.TeamName }, (key, s) => new TeamStatisticTotals()
+                 {
+                     Goals = s.Sum(p => p.Goals),
+                     GoalsAverage = s.Average(p => p.Goals),
+                     Assists = s.Sum(p => p.Assists),
+                     AssistsAverage = s.Average(p => p.Assists),
+                     Fouls = s.Sum(p => p.Fouls),
+                     FoulsAverage = s.Average(p => p.Fouls),
+                     FoulsSuffered = s.Sum(p => p.FoulsSuffered),
+                     FoulsSufferedAverage = s.Average(p => p.FoulsSuffered),
+                     SlidingTacklesAverage = s.Average(p => p.SlidingTackles),
+                     SlidingTacklesCompletedAverage = s.Average(p => p.SlidingTacklesCompleted),
+                     GoalsConceded = s.Sum(p => p.GoalsConceded),
+                     GoalsConcededAverage = s.Average(p => p.GoalsConceded),
+                     Shots = s.Sum(p => p.Shots),
+                     ShotsAverage = s.Average(p => p.Shots),
+                     ShotsOnGoal = s.Sum(p => p.ShotsOnGoal),
+                     ShotsOnGoalAverage = s.Average(p => p.ShotsOnGoal),
+                     ShotAccuracyPercentage = s.Average(p => p.Shots > 0 ? Convert.ToDouble(p.ShotsOnGoal) / Convert.ToDouble(p.Shots) : 0),
+                     Passes = s.Sum(p => p.Passes),
+                     PassesAverage = s.Average(p => p.Passes),
+                     PassesCompleted = s.Sum(p => p.PassesCompleted),
+                     PassesCompletedAverage = s.Average(p => p.PassesCompleted),
+                     PassCompletionPercentageAverage = s.Average(p => p.Passes > 0 ? Convert.ToDouble(p.PassesCompleted) / Convert.ToDouble(p.Passes) : 0),
+                     Interceptions = s.Sum(p => p.Interceptions),
+                     InterceptionsAverage = s.Average(p => p.Interceptions),
+                     Offsides = s.Sum(p => p.Offsides),
+                     OffsidesAverage = s.Average(p => p.Offsides),
+                     GoalKicksAverage = s.Average(p => p.GoalKicks),
+                     OwnGoals = s.Sum(p => p.OwnGoals),
+                     OwnGoalsAverage = s.Average(p => p.OwnGoals),
+                     DistanceCoveredAverage = s.Average(p => p.DistanceCovered),
+                     FreeKicks = s.Sum(p => p.FreeKicks),
+                     FreeKicksAverage = s.Average(p => p.FreeKicks),
+                     KeeperSaves = s.Sum(p => p.KeeperSaves),
+                     KeeperSavesAverage = s.Average(p => p.KeeperSaves),
+                     KeeperSavesCaughtAverage = s.Average(p => p.KeeperSavesCaught),
+                     Penalties = s.Sum(p => p.Penalties),
+                     PenaltiesAverage = s.Average(p => p.Penalties),
+                     PossessionAverage = s.Average(p => p.Possession),
+                     RedCards = s.Sum(p => p.RedCards),
+                     RedCardsAverage = s.Average(p => p.RedCards),
+                     YellowCards = s.Sum(p => p.YellowCards),
+                     YellowCardsAverage = s.Average(p => p.YellowCards),
+                     ThrowIns = s.Sum(p => p.ThrowIns),
+                     Corners = s.Sum(p => p.Corners),
+                     Matches = s.Count(),
+                     Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
+                     Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
+                     Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
+                     TeamId = key.TeamId,
+                     TeamName = key.TeamName,
+                     ChannelId = key.ChannelId
+                 });
+        }
 
         private Player GetOrCreatePlayer(MatchDataPlayer matchDataPlayer)
         {

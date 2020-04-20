@@ -40,14 +40,25 @@
                         </th>
                         <th class="text-center">Nationality</th>
                         <th style="cursor: pointer" class="team-result__status"
-                            (click)="loadPage(currentPage, 'Matches')">
+                            (click)="loadPage(currentPage, 'Appearances')">
                             <span style=" white-space: nowrap; ">
                                 Appearances&nbsp;
-                                <i *ngIf="sortBy === 'Matches' && sortOrder === 'ASC'"
+                                <i *ngIf="sortBy === 'Appearances' && sortOrder === 'ASC'"
                                     class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'Matches' && sortOrder === 'DESC'"
+                                <i *ngIf="sortBy === 'Appearances' && sortOrder === 'DESC'"
                                     class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'Matches'" class="fas fa-sort"></i>
+                                <i *ngIf="sortBy !== 'Appearances'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
+                        <th style="cursor: pointer" class="team-result__status"
+                            (click)="loadPage(currentPage, 'SubstituteAppearances')">
+                            <span style=" white-space: nowrap; ">
+                                As Sub&nbsp;
+                                <i *ngIf="sortBy === 'SubstituteAppearances' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'SubstituteAppearances' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'SubstituteAppearances'" class="fas fa-sort"></i>
                             </span>
                         </th>
                         <th style="cursor: pointer" class="team-result__status" (click)="loadPage(currentPage, 'Wins')">
@@ -181,7 +192,8 @@
                                 <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
                             </ng-container>
                         </td>
-                        <td class="team-result__status">{{statistics.matches}}</td>
+                        <td class="team-result__status">{{statistics.appearances}}</td>
+                        <td class="team-result__status">{{statistics.substituteAppearances}}</td>
                         <td class="team-result__status">{{statistics.wins}}</td>
                         <td class="team-result__status">{{statistics.losses}}</td>
                         <td class="team-result__status">{{statistics.draws}}</td>

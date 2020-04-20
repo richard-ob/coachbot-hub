@@ -23,8 +23,8 @@ namespace CoachBot.Domain.Extensions
                         property.SetValue(statisticTotals, existingValue + valueToAdd);
                         break;
                     case MatchDataTotalsType.Average:
-                        var newAggregateValue = (existingValue * statisticTotals.Matches) + valueToAdd;
-                        var newAverage = newAggregateValue / (statisticTotals.Matches + 1);
+                        var newAggregateValue = (existingValue * statisticTotals.Appearances) + valueToAdd;
+                        var newAverage = newAggregateValue / (statisticTotals.Appearances + 1);
                         property.SetValue(statisticTotals, newAverage);
                         break;
                     case MatchDataTotalsType.None:

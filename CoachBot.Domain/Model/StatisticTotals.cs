@@ -134,7 +134,9 @@ namespace CoachBot.Domain.Model
         [MatchDataStatistic(MatchDataStatisticType.DistanceCovered, MatchDataTotalsType.Average)]
         public double DistanceCoveredAverage { get; set; }
 
-        public int Matches { get; set; }
+        public int Appearances { get; set; }
+
+        public int SubstituteAppearances { get; set; }
 
         public int Wins { get; set; }
 

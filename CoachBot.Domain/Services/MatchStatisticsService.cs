@@ -87,7 +87,7 @@ namespace CoachBot.Domain.Services
                             MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                             SecondsPlayed = matchDataPlayer.GetPlayerPositionSeconds(teamType, position),
                             Nickname = matchDataPlayer.Info.Name,
-                            Substitute = false
+                            Substitute = matchDataPlayer.WasPlayerSubstitute(teamType, position)
                         };
                         playerPositionMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetPlayerTotals(teamType, position));
                         _coachBotContext.PlayerPositionMatchStatistics.Add(playerPositionMatchStatistics);
@@ -100,7 +100,8 @@ namespace CoachBot.Domain.Services
                         TeamId = team.Channel.TeamId,
                         MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                         SecondsPlayed = matchDataPlayer.GetPlayerSeconds(teamType),
-                        Nickname = matchDataPlayer.Info.Name
+                        Nickname = matchDataPlayer.Info.Name,
+                        Substitute = matchDataPlayer.WasPlayerSubstitute(teamType)
                     };
                     playerMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetMatchStatisticsPlayerTotal());
                     _coachBotContext.PlayerMatchStatistics.Add(playerMatchStatistics);
@@ -129,11 +130,15 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        private IQueryable<PlayerStatisticTotals> GetPlayerStatisticTotals()
+        private IQueryable<PlayerStatisticTotals> GetPlayerStatisticTotals(int? teamId = null, int? channelId = null, int? positionId = null, bool includeSubstituteAppearances = true)
         {
             return _coachBotContext
                  .PlayerPositionMatchStatistics
                  .AsNoTracking()
+                 .Where(p => includeSubstituteAppearances || !p.Substitute)
+                 .Where(p => teamId == null || p.TeamId == teamId)
+                 .Where(p => channelId == null || p.ChannelId == channelId)
+                 .Where(p => positionId == null || p.PositionId == positionId)
                  .Select(m => new
                  {
                      m.PlayerId,
@@ -166,6 +171,7 @@ namespace CoachBot.Domain.Services
                      m.Goals,
                      m.Assists,
                      m.MatchOutcome,
+                     m.Substitute,
                      m.MatchId
                  })
                  .GroupBy(p => new { p.PlayerId, p.SteamID, p.Name }, (key, s) => new PlayerStatisticTotals()
@@ -215,7 +221,8 @@ namespace CoachBot.Domain.Services
                      ThrowIns = s.Sum(p => p.ThrowIns),
                      Corners = s.Sum(p => p.Corners),
                      PlayerId = key.PlayerId,
-                     Matches = s.Count(),
+                     Appearances = s.Count(),
+                     SubstituteAppearances = s.Sum(p => p.Substitute ? 1 : 0),
                      Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
                      Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
                      Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
@@ -308,7 +315,7 @@ namespace CoachBot.Domain.Services
                      YellowCardsAverage = s.Average(p => p.YellowCards),
                      ThrowIns = s.Sum(p => p.ThrowIns),
                      Corners = s.Sum(p => p.Corners),
-                     Matches = s.Count(),
+                     Appearances = s.Count(),
                      Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
                      Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
                      Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),

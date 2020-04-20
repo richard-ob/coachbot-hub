@@ -3,6 +3,7 @@ import { PlayerService } from '../shared/services/player.service';
 import { PlayerStatistics } from '../shared/model/player-statistics.model';
 import { SteamService } from '../shared/services/steam.service.';
 import { Router } from '@angular/router';
+import { PlayerStatisticFilters } from '../shared/model/dtos/paged-player-statistics-request-dto.model';
 
 @Component({
     selector: 'app-player-list',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class PlayerListComponent implements OnInit {
 
     playerStatistics: PlayerStatistics[];
+    filters = new PlayerStatisticFilters();
     currentPage = 1;
     totalPages: number;
     totalItems: number;
@@ -34,7 +36,7 @@ export class PlayerListComponent implements OnInit {
             this.sortOrder = 'ASC';
         }
         this.sortBy = sortBy;
-        this.playerService.getPlayerStatistics(page, this.sortBy, this.sortOrder, this.timePeriod).subscribe(response => {
+        this.playerService.getPlayerStatistics(page, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
             this.playerStatistics = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;
@@ -44,8 +46,7 @@ export class PlayerListComponent implements OnInit {
         });
     }
 
-    setTimePeriod(timePeriod: number) {
-        this.timePeriod = timePeriod;
+    setFilters(timePeriod: number) {
         this.loadPage(this.currentPage, this.sortBy);
     }
 

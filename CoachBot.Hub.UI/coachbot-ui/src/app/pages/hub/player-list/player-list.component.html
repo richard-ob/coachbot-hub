@@ -1,4 +1,4 @@
-<div class="container-fluid my-4">
+<div class="container my-4">
     <!-- Team Latest Results -->
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
@@ -6,17 +6,24 @@
             <!-- Result Filter -->
             <ul class="team-result-filter">
                 <li class="team-result-filter__item">
-                    <select class="form-control" #timePeriodSelect>
-                        <option value=0>All Time</option>
-                        <option value="365">Year</option>
-                        <option value="31">Month</option>
-                        <option value="7">Week</option>
+                    <label class="checkbox checkbox-inline mr-2">
+                        <input [(ngModel)]="filters.includeSubstituteAppearances" type="checkbox"
+                            name="includeSubstituteAppearances"> Include Sub Appearances
+                        <span class="checkbox-indicator"></span>
+                    </label>
+                </li>
+                <li class="team-result-filter__item">
+                    <select [(ngModel)]="filters.timePeriod" name="timePeriod" class="form-control" #timePeriodSelect>
+                        <option [ngValue]="0">All Time</option>
+                        <option [ngValue]="365">Year</option>
+                        <option [ngValue]="31">Month</option>
+                        <option [ngValue]="7">Week</option>
                     </select>
                 </li>
                 <li class="team-result-filter__item">
                     <button type="button" class="btn btn-default btn-outline btn-xs card-header__button"
-                        (click)="setTimePeriod(timePeriodSelect.value)">
-                        Filter By Time Period
+                        (click)="setFilters()">
+                        Filter
                     </button>
                 </li>
             </ul>

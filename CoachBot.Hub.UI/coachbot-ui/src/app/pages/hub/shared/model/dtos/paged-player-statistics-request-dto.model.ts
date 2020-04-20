@@ -5,5 +5,13 @@ export class PagedPlayerStatisticsRequestDto {
     pageSize = 10;
     sortBy: string;
     sortOrder: string;
-    timePeriod: TimePeriod;
+    filters: PlayerStatisticFilters;
+}
+
+export class PlayerStatisticFilters {
+    timePeriod: TimePeriod = TimePeriod.AllTime;
+    teamId?: number;
+    channelId?: number;
+    positionId?: number;
+    includeSubstituteAppearances = true;
 }

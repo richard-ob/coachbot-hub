@@ -41,9 +41,9 @@ namespace CoachBot.Domain.Services
             return GetTeamStatisticTotals().GetPaged(page, pageSize, sortOrder);
         }
 
-        public Model.Dtos.PagedResult<PlayerStatisticTotals> GetPlayerStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod)
+        public Model.Dtos.PagedResult<PlayerStatisticTotals> GetPlayerStatistics(int page, int pageSize, string sortOrder, PlayerStatisticFilters filters)
         {
-            return GetPlayerStatisticTotals().GetPaged(page, pageSize, sortOrder);
+            return GetPlayerStatisticTotals(filters).GetPaged(page, pageSize, sortOrder);
         }
 
         public void GenerateStatistics()
@@ -130,15 +130,18 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        private IQueryable<PlayerStatisticTotals> GetPlayerStatisticTotals(int? teamId = null, int? channelId = null, int? positionId = null, bool includeSubstituteAppearances = true)
+        private IQueryable<PlayerStatisticTotals> GetPlayerStatisticTotals(PlayerStatisticFilters filters)
         {
             return _coachBotContext
                  .PlayerPositionMatchStatistics
                  .AsNoTracking()
-                 .Where(p => includeSubstituteAppearances || !p.Substitute)
-                 .Where(p => teamId == null || p.TeamId == teamId)
-                 .Where(p => channelId == null || p.ChannelId == channelId)
-                 .Where(p => positionId == null || p.PositionId == positionId)
+                 .Where(p => filters.IncludeSubstituteAppearances || !p.Substitute)
+                 .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
+                 .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
+                 .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
                  .Select(m => new
                  {
                      m.PlayerId,
@@ -230,7 +233,6 @@ namespace CoachBot.Domain.Services
                      SteamID = key.SteamID
                  });
         }
-
 
         private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals()
         {

@@ -22,7 +22,7 @@ export class RecentMatchesComponent implements OnInit {
     }
 
     loadPage(page: number) {
-        this.matchService.getMatches(1, page, this.playerId, this.teamId).subscribe(response => {
+        this.matchService.getMatches(2, page, this.playerId, this.teamId).subscribe(response => {
             this.matches = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;

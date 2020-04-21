@@ -46,6 +46,43 @@ namespace CoachBot.Domain.Services
             return GetPlayerStatisticTotals(filters).GetPaged(page, pageSize, sortOrder);
         }
 
+        public List<PlayerTeamStatisticsTotals> GetPlayerTeamStatistics(int playerId)
+        {
+            var playerTeams = _coachBotContext.PlayerTeams
+                .Include(p => p.Team)
+                .Where(p => p.PlayerId == playerId).OrderByDescending(p => p.JoinDate);
+            var allPlayerTeamStatisticTotals = new List<PlayerTeamStatisticsTotals>();
+
+            foreach (var playerTeam in playerTeams)
+            {
+                var filter = new PlayerStatisticFilters()
+                {
+                    TeamId = playerTeam.TeamId,
+                    DateFrom = playerTeam.JoinDate,
+                    DateTo = playerTeam.LeaveDate
+                };
+                var statistics = GetPlayerStatisticTotals(filter).FirstOrDefault();
+                var playerTeamStatisticsTotals = new PlayerTeamStatisticsTotals()
+                {
+                    PlayerTeam = playerTeam,
+                    Position = GetMostCommonPosition(playerTeam)
+                };
+
+                if (statistics != null)
+                {
+                    playerTeamStatisticsTotals.Appearances = statistics.Appearances;
+                    playerTeamStatisticsTotals.Goals = statistics.Goals;
+                    playerTeamStatisticsTotals.Assists = statistics.Assists;
+                    playerTeamStatisticsTotals.YellowCards = statistics.YellowCards;
+                    playerTeamStatisticsTotals.RedCards = statistics.RedCards;
+                }
+
+                allPlayerTeamStatisticTotals.Add(playerTeamStatisticsTotals);
+            }
+
+            return allPlayerTeamStatisticTotals;
+        }
+
         public void GenerateStatistics()
         {
             var matches = _coachBotContext.Matches
@@ -327,6 +364,29 @@ namespace CoachBot.Domain.Services
                  });
         }
 
+        private Position GetMostCommonPosition(PlayerTeam playerTeam)
+        {
+           var topPosition = _coachBotContext.PlayerPositionMatchStatistics
+                .AsNoTracking()
+                .Where(p => p.PlayerId == playerTeam.Player.Id)
+                .Where(p => p.Match.ReadiedDate > playerTeam.JoinDate)
+                .Where(p => playerTeam.LeaveDate == null || p.Match.ReadiedDate < playerTeam.LeaveDate)
+                .GroupBy(p => new { p.Position.Id, p.Position.Name })
+                .Select(p => new PositionAppearances()
+                {
+                    Appearances = p.Count(),
+                    Position = new Position()
+                    {
+                        Name = p.Key.Name,
+                        Id = p.Key.Id
+                    }
+                })
+                .OrderByDescending(p => p.Appearances)
+                .FirstOrDefault();
+
+            return topPosition.Position;
+        }
+
         private Player GetOrCreatePlayer(MatchDataPlayer matchDataPlayer)
         {
             var player = _coachBotContext.Players.FirstOrDefault(p => p.SteamID == matchDataPlayer.Info.SteamId64);
@@ -342,6 +402,12 @@ namespace CoachBot.Domain.Services
             }
 
             return player;
+        }
+
+        struct PositionAppearances
+        {
+            public int Appearances;
+            public Position Position;
         }
         #endregion
     }

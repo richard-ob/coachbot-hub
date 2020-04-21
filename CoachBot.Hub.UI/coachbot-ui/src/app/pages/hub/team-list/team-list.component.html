@@ -8,7 +8,7 @@
         </div>
         <div class="card__content">
             <app-spinner *ngIf="!teamStatistics"></app-spinner>
-            <table *ngIf="teamStatistics" class="table table--large">
+            <table *ngIf="teamStatistics" class="table table--large table-striped table-hover table-clickable">
                 <thead>
                     <tr>
                         <th class="team-result__date">Team</th>
@@ -28,7 +28,7 @@
                     <tr *ngFor="let statistics of teamStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                         (click)="navigatetoProfile(statistics.teamId)">
                         <td class="team-result__score">{{statistics.teamName}}</td>
-                        <td class="team-result__status">{{statistics.matches}}</td>
+                        <td class="team-result__status">{{statistics.appearances}}</td>
                         <td class="team-result__status">{{statistics.wins}}</td>
                         <td class="team-result__status">{{statistics.losses}}</td>
                         <td class="team-result__status">{{statistics.draws}}</td>

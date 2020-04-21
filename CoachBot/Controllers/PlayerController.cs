@@ -1,9 +1,11 @@
-﻿using CoachBot.Domain.Model.Dtos;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
 using CoachBot.Model;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CoachBot.Controllers
@@ -13,10 +15,12 @@ namespace CoachBot.Controllers
     public class PlayerController : Controller
     {
         private readonly PlayerService _playerService;
+        private readonly MatchStatisticsService _matchStatisticsService;
 
-        public PlayerController(PlayerService playerService)
+        public PlayerController(PlayerService playerService, MatchStatisticsService matchStatisticsService)
         {
             _playerService = playerService;
+            _matchStatisticsService = matchStatisticsService;
         }
 
         [HttpGet("{id}")]
@@ -61,6 +65,12 @@ namespace CoachBot.Controllers
         public PagedResult<Player> PagedMatchList([FromBody]PagedPlayerRequestDto pagedRequest)
         {
             return _playerService.GetPlayers(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull);
+        }
+
+        [HttpGet("{playerId}/team-history")]
+        public List<PlayerTeamStatisticsTotals> GetPlayerTeamStatisticsHistory(int playerId)
+        {
+            return _matchStatisticsService.GetPlayerTeamStatistics(playerId);
         }
 
         [Authorize]

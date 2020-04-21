@@ -5,7 +5,7 @@ namespace CoachBot.Domain.Model
     public enum MatchFormat
     {
         [Description("1v1")]
-        OneVsOne,
+        OneVsOne = 1,
         [Description("2v2")]
         TwoVsTwo,
         [Description("3v4")]

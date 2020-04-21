@@ -10,10 +10,12 @@ namespace CoachBot.Domain.Services
     public class PlayerTeamService
     {
         private readonly CoachBotContext _dbContext;
+        private readonly MatchStatisticsService _matchStatisticsService;
 
-        public PlayerTeamService(CoachBotContext dbContext)
+        public PlayerTeamService(CoachBotContext dbContext, MatchStatisticsService matchStatisticsService)
         {
             _dbContext = dbContext;
+            _matchStatisticsService = matchStatisticsService;
         }
 
         public void AddPlayerToTeam(int teamId, int playerId, TeamRole teamRole)

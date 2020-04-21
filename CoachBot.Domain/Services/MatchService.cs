@@ -48,14 +48,12 @@ namespace CoachBot.Domain.Services
 
             if (playerId != null)
             {
-                // TODO: Get the actual players who played from match data
-                queryable = queryable.Where(m => m.LineupHome.PlayerLineupPositions.Any(plp => plp.PlayerId == playerId) || m.LineupAway.PlayerLineupPositions.Any(plp => plp.PlayerId == playerId));
+                queryable = queryable.Where(m => m.PlayerMatchStatistics.Any(p => p.PlayerId == playerId));
             }
 
             if (teamId != null)
             {
-                // TODO: Get the actual players who played from match data
-                queryable = queryable.Where(m => m.LineupHome.Channel.TeamId == teamId || m.LineupAway.Channel.TeamId == teamId);
+                queryable = queryable.Where(m => m.TeamMatchStatistics.Any(t => t.TeamId == teamId));
             }
 
             return queryable.GetPaged(page, pageSize, sortOrder);

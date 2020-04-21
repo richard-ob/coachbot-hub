@@ -43,7 +43,7 @@
 
         <!-- Header Secondary -->
         <div class="header__secondary">
-            <div class="container">
+            <div class="container py-4">
                 <!-- Header Search Form -->
                 <div class="header-search-form d-none">
                     <form action="#" id="mobile-search-form" class="search-form">
@@ -54,22 +54,17 @@
                 </div>
                 <!-- Header Search Form / End -->
                 <ul class="info-block info-block--header">
-                    <li class="info-block__item info-block__item--contact-secondary">
-                        <svg role="img" class="df-icon df-icon--soccer-ball">
-                            <use xlink:href="assets/images/icons-soccer.svg#soccer-ball" />
-                        </svg>
-                        <h6 class="info-block__heading">Contact Us</h6>
-                        <a class="info-block__link" href="mailto:info@iosoccer.com">info@iosoccer.com</a>
-                    </li>
-
-
+                    <!-- try 2px border with the brand colour, plus white icon, transparent bg etc -->
+                    <a class="btn btn-sm btn-primary" href="steam://run/673560/" style="padding-right: 20px;background-color: #5c7e10; margin-right: 9px;
+                        border-radius: 4px;">
+                        Install Via Steam <i class="fa fa-lg fa-steam" style="padding-left: 15px; margin-top: 5px"></i>
+                    </a>
+                    <a class="btn btn-sm btn-primary-inverse ml-4" href="steam://run/673560/"
+                        style="padding-right: 20px; background: #7289da; border-radius: 4px;">Join Our Discord
+                        <i class="fab fa-lg fa-discord" style="padding-left: 15px; margin-top: 5px;"></i>
+                    </a>
                     <!-- Social Links -->
                     <ul class="social-links social-links--inline social-links--main-nav">
-                        <li class="social-links__item">
-                            <a href="https://store.steampowered.com/app/673560/IOSoccer/" class="social-links__link"
-                                data-toggle="tooltip" data-placement="bottom" title="Steam">
-                                <i class="fa fa-steam"></i></a>
-                        </li>
                         <li class="social-links__item">
                             <a href="https://facebook.com/IOSoccer" class="social-links__link" data-toggle="tooltip"
                                 data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>
@@ -95,6 +90,11 @@
                             <a href="https://www.reddit.com/r/iosoccer" class="social-links__link" data-toggle="tooltip"
                                 data-placement="bottom" title="Reddit"><i class="fa fa-twitch"></i>
                             </a>
+                        </li>
+                        <li class="social-links__item">
+                            <a href="https://store.steampowered.com/app/673560/IOSoccer/" class="social-links__link"
+                                data-toggle="tooltip" data-placement="bottom" title="Steam">
+                                <i class="fa fa-steam"></i></a>
                         </li>
                     </ul>
                     <!-- Social Links / End -->

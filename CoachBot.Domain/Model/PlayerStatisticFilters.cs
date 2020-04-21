@@ -15,5 +15,10 @@ namespace CoachBot.Domain.Model
         public int? PositionId { get; set; }
 
         public bool IncludeSubstituteAppearances { get; set; } = true;
+
+        public DateTime? DateFrom { get; set; }
+
+        public DateTime? DateTo { get; set; }
+
     }
 }

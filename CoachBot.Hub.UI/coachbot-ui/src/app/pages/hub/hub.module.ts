@@ -27,6 +27,7 @@ import { TeamProfileComponent } from './team-profile/team-profile.component';
 import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
 import { TeamEditorComponent } from './team-editor/team-editor.component';
 import { TeamEditorPlayerListComponent } from './team-editor/team-editor-player-list/team-editor-player-list.component';
+import { PlayerTeamHistoryComponent } from './player-profile/player-team-history/player-team-history.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { TeamEditorPlayerListComponent } from './team-editor/team-editor-player-
     SteamIDValidatorComponent,
     TeamProfileComponent,
     TeamEditorComponent,
-    TeamEditorPlayerListComponent
+    TeamEditorPlayerListComponent,
+    PlayerTeamHistoryComponent
   ],
   imports: [
     CommonModule,

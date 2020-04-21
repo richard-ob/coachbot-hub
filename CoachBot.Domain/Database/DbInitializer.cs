@@ -221,7 +221,8 @@ namespace CoachBot.Database
                 {
                     PlayerId = player.Id,
                     TeamId = 1,
-                    TeamRole = TeamRole.Player
+                    TeamRole = TeamRole.Player,
+                    JoinDate = DateTime.Now
                 };
                 context.PlayerTeams.Add(playerTeam);
             }

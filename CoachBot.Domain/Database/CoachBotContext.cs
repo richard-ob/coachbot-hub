@@ -36,6 +36,7 @@ namespace CoachBot.Database
         public DbSet<TeamMatchStatistics> TeamMatchStatistics { get; set; }
         public DbSet<PlayerPositionMatchStatistics> PlayerPositionMatchStatistics { get; set; }
         public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
+        public DbSet<PlayerRating> PlayerRatings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

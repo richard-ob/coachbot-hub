@@ -45,6 +45,12 @@ namespace CoachBot.Domain.Model
 
         public string Map { get; set; }
 
+        public ICollection<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
+
+        public ICollection<PlayerPositionMatchStatistics> PlayerPositionMatchStatistics { get; set; }
+
+        public ICollection<TeamMatchStatistics> TeamMatchStatistics { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 
@@ -103,6 +109,5 @@ namespace CoachBot.Domain.Model
                 return players;
             }
         }
-
     }
 }

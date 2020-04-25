@@ -24,6 +24,16 @@ namespace CoachBot.Domain.Model
         [ForeignKey("LineupAwayId")]
         public Lineup LineupAway { get; set; }
 
+        public int? TeamHomeId { get; set; }
+
+        [ForeignKey("TeamHomeId")]
+        public Team TeamHome { get; set; }
+
+        public int? TeamAwayId { get; set; }
+
+        [ForeignKey("TeamAwayId")]
+        public Team TeamAway { get; set; }
+
         public int? ServerId { get; set; }
 
         public Server Server { get; set; }
@@ -37,13 +47,17 @@ namespace CoachBot.Domain.Model
 
         public DateTime? KickOff { get; set; }
 
-        public bool IsMixMatch => LineupHome?.ChannelId == LineupAway?.ChannelId;
-
-        public Lineup GetTeam(MatchTeamType teamType) => teamType == MatchTeamType.Home ? LineupHome : LineupAway;
-
         public MatchFormat Format { get; set; } = MatchFormat.EightVsEight;
 
+        public MatchType MatchType { get; set; } = MatchType.RankedFriendly;
+
         public string Map { get; set; }
+
+        public MatchPeriod FinalMatchPeriod { get; set; }
+
+        public int? TournamentId { get; set; }
+
+        public TournamentEdition Tournament { get; set; }
 
         public ICollection<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
 
@@ -53,6 +67,10 @@ namespace CoachBot.Domain.Model
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
+        public bool IsMixMatch => LineupHome?.ChannelId == LineupAway?.ChannelId;
+
+        public Lineup GetTeam(MatchTeamType teamType) => teamType == MatchTeamType.Home ? LineupHome : LineupAway;
 
         [JsonIgnore]
         [NotMapped]

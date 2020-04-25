@@ -90,6 +90,7 @@ namespace CoachBot
                 .AddTransient<SubstitutionService>()
                 .AddTransient<MatchStatisticsService>()
                 .AddTransient<DiscordNotificationService>()
+                .AddTransient<DiscordService>()
                 .AddSingleton<CacheService>()
                 .AddSingleton<BotInstance>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);

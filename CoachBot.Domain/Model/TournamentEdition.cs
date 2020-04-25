@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,9 @@ namespace CoachBot.Domain.Model
         [Key]
         public int Id { get; set; }
 
-        public int TournamentId { get; set; } 
+        public bool IsPublic { get; set; } = false;
+
+        public int TournamentId { get; set; }
 
         public Tournament Tournament { get; set; }
 
@@ -17,7 +20,14 @@ namespace CoachBot.Domain.Model
 
         public DateTime? EndDate { get; set; }
 
+        public MatchFormat Format { get; set; } = MatchFormat.EightVsEight;
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
+        public ICollection<TournamentStage> TournamentStages { get; set; }
+
+        public ICollection<TournamentEditionMatchDay> TournamentEditionMatchDays { get; set; }
+
     }
 }

@@ -28,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Database\StoredProcedures\" />
     <Folder Include="Database\SeedData\" />
-    <Folder Include="Model\NewFolder\" />
   </ItemGroup>
 
 </Project>

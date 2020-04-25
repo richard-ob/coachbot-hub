@@ -37,6 +37,15 @@ namespace CoachBot.Database
         public DbSet<PlayerPositionMatchStatistics> PlayerPositionMatchStatistics { get; set; }
         public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
         public DbSet<PlayerRating> PlayerRatings { get; set; }
+        public DbSet<Organisation> Organisations { get; set; }
+        public DbSet<Tournament> Tournaments { get; set; }
+        public DbSet<TournamentEdition> TournamentEditions { get; set; }
+        public DbSet<TournamentStage> TournamentStages { get; set; }
+        public DbSet<TournamentPhase> TournamentPhases { get; set; }
+        public DbSet<TournamentGroup> TournamentGroups { get; set; }
+        public DbSet<TournamentGroupMatch> TournamentGroupMatches { get; set; }
+        public DbSet<TournamentGroupTeam> TournamentGroupTeams { get; set; }
+        public DbSet<TournamentEditionMatchDay> TournamentEditionMatchDays { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -82,6 +91,14 @@ namespace CoachBot.Database
             modelBuilder.Entity<PlayerLineupSubstitute>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<ChannelPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Tournament>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentEdition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentStage>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentPhase>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentGroup>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentGroupMatch>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentGroupTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentEditionMatchDay>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
 
             // Conversions
             modelBuilder.Entity<Search>().Property(p => p.DiscordSearchMessages).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<Dictionary<ulong, ulong>>(v));

@@ -6,22 +6,22 @@ using System.Text;
 
 namespace CoachBot.Domain.Model
 {
-    public class Tournament
+    public class TournamentGroupMatch
     {
         [Key]
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public int MatchId { get; set; }
 
-        public bool IsPublic { get; set; }
+        public Match Match { get; set; }
 
-        public bool IsActive { get; set; }
+        public int TournamentGroupId { get; set; }
 
-        public TournamentType TournamentType { get; set; }
+        public TournamentGroup TournamentGroup { get; set; }
 
-        public int OrganisationId { get; set; }
+        public int TournamentPhaseId { get; set; }
 
-        public Organisation Organisation { get; set; }
+        public TournamentPhase TournamentPhase { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }

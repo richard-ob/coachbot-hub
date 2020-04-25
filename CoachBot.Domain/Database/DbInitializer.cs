@@ -22,11 +22,40 @@ namespace CoachBot.Database
                 context.TeamMatchStatistics.RemoveRange(context.TeamMatchStatistics);
                 context.Matches.RemoveRange(context.Matches);
                 context.MatchStatistics.RemoveRange(context.MatchStatistics);
-                //context.PlayerLineupPositions.RemoveRange(context.PlayerLineupPositions);
-                //context.Players.RemoveRange(context.Players);
+                context.PlayerTeams.RemoveRange(context.PlayerTeams);
+                context.Teams.RemoveRange(context.Teams);
+                context.Players.RemoveRange(context.Players);
+                context.PlayerPositionMatchStatistics.RemoveRange(context.PlayerPositionMatchStatistics);
+                context.PlayerPositions.RemoveRange(context.PlayerPositions);
+                context.Positions.RemoveRange(context.Positions);
+                context.PlayerLineupPositions.RemoveRange(context.PlayerLineupPositions);
+                context.Players.RemoveRange(context.Players);
                 //context.PlayerTeamPositions.RemoveRange(context.PlayerTeamPositions.Where(ptp => ptp.CreatedDate < DateTime.Now.AddDays(-1)).Where(ptp => ptp.Team == null || ptp.Team.Match == null || ptp.Team.Match.ReadiedDate == null)); // Clear any signings older than a day
                 context.SaveChanges();
-            }
+
+                    /*public DbSet<Server> Servers { get; set; }
+                    public DbSet<Region> Regions { get; set; }
+                    public DbSet<Channel> Channels { get; set; }
+                    public DbSet<Team> Teams { get; set; }
+                    public DbSet<Country> Countries { get; set; }
+                    public DbSet<Guild> Guilds { get; set; }
+                    public DbSet<Player> Players { get; set; }
+                    public DbSet<Position> Positions { get; set; }
+                    public DbSet<PlayerTeam> PlayerTeams { get; set; }
+                    public DbSet<PlayerPosition> PlayerPositions { get; set; }
+                    public DbSet<PlayerLineupPosition> PlayerLineupPositions { get; set; }
+                    public DbSet<PlayerLineupSubstitute> PlayerLineupSubstitutes { get; set; }
+                    public DbSet<ChannelPosition> ChannelPositions { get; set; }
+                    public DbSet<Lineup> Lineups { get; set; }
+                    public DbSet<Match> Matches { get; set; }
+                    public DbSet<SubstitutionRequest> SubstitutionRequests { get; set; }
+                    public DbSet<Search> Searches { get; set; }
+                    public DbSet<MatchStatistics> MatchStatistics { get; set; }
+                    public DbSet<TeamMatchStatistics> TeamMatchStatistics { get; set; }
+                    public DbSet<PlayerPositionMatchStatistics> PlayerPositionMatchStatistics { get; set; }
+                    public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
+                    public DbSet<PlayerRating> PlayerRatings { get; set; }*/
+    }
             catch
             {
 
@@ -184,18 +213,14 @@ namespace CoachBot.Database
                     int currentPlayer = 1;
                     foreach (var player in match.MatchStatistics.MatchData.Players)
                     {
-                        var newPlayer = new Player()
-                        {
-                            SteamID = player.Info.SteamId64,
-                            Name = player.Info.Name
-                        };
+                        var newPlayer = GetOrCreatePlayer(context, player.Info.SteamId64 ?? 0, player.Info.Name);
 
                         if (currentPlayer > 8)
                         {
                             match.LineupAway.PlayerLineupPositions.Add(new PlayerLineupPosition()
                             {
                                 Lineup = match.LineupAway,
-                                Player = newPlayer,
+                                PlayerId = newPlayer.Id,
                                 Position = new Position() { Name = "XXX" }
                             });
                         }
@@ -204,7 +229,7 @@ namespace CoachBot.Database
                             match.LineupHome.PlayerLineupPositions.Add(new PlayerLineupPosition()
                             {
                                 Lineup = match.LineupHome,
-                                Player = newPlayer,
+                                PlayerId = newPlayer.Id,
                                 Position = new Position() { Name = "XXX" }
                             });
                         }
@@ -215,18 +240,37 @@ namespace CoachBot.Database
                     context.Matches.Add(match);
                 }
             }
-            foreach(var player in context.Players)
+            context.SaveChanges();
+            foreach (var player in context.Players)
             {
                 var playerTeam = new PlayerTeam()
                 {
                     PlayerId = player.Id,
                     TeamId = 1,
                     TeamRole = TeamRole.Player,
-                    JoinDate = DateTime.Now
+                    JoinDate = DateTime.Now.AddMonths(-7)
                 };
                 context.PlayerTeams.Add(playerTeam);
             }
             context.SaveChanges();
         }
+
+        private static Player GetOrCreatePlayer(CoachBotContext context, ulong steamId, string name)
+        {
+            var player = context.Players.FirstOrDefault(p => p.SteamID == steamId);
+
+            if (player == null)
+            {
+                player = new Player()
+                {
+                    Name = name,
+                    SteamID = steamId
+                };
+                context.Players.Add(player);
+            }
+
+            return player;
+        }
     }
+
 }

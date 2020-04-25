@@ -50,6 +50,7 @@ namespace CoachBot.Domain.Services
         {
             var playerTeams = _coachBotContext.PlayerTeams
                 .Include(p => p.Team)
+                .Include(p => p.Player)
                 .Where(p => p.PlayerId == playerId).OrderByDescending(p => p.JoinDate);
             var allPlayerTeamStatisticTotals = new List<PlayerTeamStatisticsTotals>();
 

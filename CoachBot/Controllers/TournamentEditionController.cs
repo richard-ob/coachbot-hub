@@ -9,26 +9,27 @@ using System.Text;
 namespace CoachBot.Controllers
 {
     [Produces("application/json")]
-    [Route("api/tournaments")]
+    [Route("api/tournament-editions")]
     [ApiController]
-    public class TournamentController : Controller
+    public class TournamentEditionController : Controller
     {
         private readonly TournamentService _tournamentService;
 
-        public TournamentController(TournamentService tournamentService)
+        public TournamentEditionController(TournamentService tournamentService)
         {
             _tournamentService = tournamentService;
         }
 
-        public List<Tournament> GetTournaments()
+        [HttpGet]
+        public List<TournamentEdition> GetTournamentEditions()
         {
-            return _tournamentService.GetTournaments();
+            return _tournamentService.GetTournamentEditions();
         }
 
         [HttpGet("{id}")]
-        public Tournament GetTournamentEdition(int id)
+        public TournamentEdition GetTournamentEdition(int id)
         {
-            return _tournamentService.GetTournaments().First(t => t.Id == id);
+            return _tournamentService.GetTournamentEditions().First(t => t.Id == id);
         }
     }
 }

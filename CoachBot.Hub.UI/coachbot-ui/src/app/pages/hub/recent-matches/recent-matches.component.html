@@ -3,8 +3,27 @@
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Matches</h4>
-            <!-- Result Filter -->
-            <!-- Result Filter / End -->
+            <ul class="team-result-filter">
+                <li class="team-result-filter__item">
+                    <input type="date" class="form-control input-xs" placeholder="Date From">
+                </li>
+                <li class="team-result-filter__item">
+                    <input type="date" class="form-control input-xs" placeholder="Date To">
+                </li>
+                <li class="team-result-filter__item">
+                    <select class="form-control">
+                        <option>All</option>
+                        <option>Friendlies</option>
+                        <option>Competitive</option>
+                    </select>
+                </li>
+                <li class="team-result-filter__item">
+                    <button type="button" class="btn btn-default btn-outline btn-xs card-header__button"
+                        (click)="setFilters()">
+                        Filter
+                    </button>
+                </li>
+            </ul>
         </div>
         <div class="card__content">
             <app-spinner *ngIf="!matches"></app-spinner>
@@ -35,8 +54,16 @@
                         </td>
                         <td class="team-result__score">{{match?.matchStatistics?.matchGoalsHome}} -
                             {{match?.matchStatistics?.matchGoalsAway}}</td>
-                        <td class="team-result__status">Ranked Friendly</td>
-                        <td class="team-result__status">{{match.matchFormat}}</td>
+                        <td class="team-result__status">
+                            <ng-container [ngSwitch]="match.matchType">
+                                <span *ngSwitchCase="matchTypes.UnrankedFriendly">Unranked Friendly</span>
+                                <span *ngSwitchCase="matchTypes.RankedFriendly">Ranked Friendly</span>
+                                <span *ngSwitchCase="matchTypes.Competition">
+                                    {{match.tournament?.name}}
+                                </span>
+                            </ng-container>
+                        </td>
+                        <td class="team-result__status">{{match.format}}v{{match.format}}</td>
                         <td class="team-result__ball-posession" title="{{match.server.country.name}}">
                             <img src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png">
 

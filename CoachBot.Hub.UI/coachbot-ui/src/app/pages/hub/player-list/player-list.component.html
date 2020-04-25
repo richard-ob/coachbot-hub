@@ -186,9 +186,9 @@
                     <tr *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                         (click)="navigateToProfile(statistics.playerId)">
                         <td class="team-result__vs">
-                            <a *ngIf="statistics.steamUserProfile"
-                                [attr.href]="getSteamProfileLink(statistics.steamID)">
-                                <img [attr.src]="statistics.steamUserProfile.avatar" style="height: 16px; width: 16px;">
+                            <a *ngIf="statistics.steamUserProfile" [attr.href]="statistics.steamUserProfile.profileurl">
+                                <img [attr.src]="statistics.steamUserProfile.avatar"
+                                    style="height: 16px; width: 16px; max-width: unset;">
                             </a>
                         </td>
                         <td class="team-result__score">{{statistics.name}}</td>

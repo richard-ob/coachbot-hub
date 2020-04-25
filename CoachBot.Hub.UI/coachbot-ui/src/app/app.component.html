@@ -143,18 +143,23 @@
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Teams</li>
-                                        <li *ngIf="player"><a routerLink="./edit-team">My Team</a></li>
+                                        <li *ngIf="player">
+                                            <a routerLink="./edit-team">My Team</a>
+                                        </li>
                                         <li><a routerLink="./team-list">Team Statistics</a></li>
-                                        <li><a routerLink="./team-list">Team List</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Players</li>
-                                        <li *ngIf="player"><a routerLink="./player-profile/{{player.id}}">My Profile</a>
+                                        <li *ngIf="player">
+                                            <a routerLink="./player-profile/{{player.id}}">My Profile</a>
                                         </li>
                                         <li><a routerLink="./player-list">Player Statistics</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Competitions</li>
+                                        <li *ngIf="player">
+                                            <a routerLink="./edit-team">My Competitions</a>
+                                        </li>
                                         <li><a routerLink="./match-overview">Current Competitions</a></li>
                                         <li><a routerLink="./match-overview">Previous Competitions</a></li>
                                     </ul>

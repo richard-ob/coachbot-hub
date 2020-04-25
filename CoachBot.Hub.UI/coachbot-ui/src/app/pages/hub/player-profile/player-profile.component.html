@@ -49,11 +49,7 @@
                     </div>
                 </div>
             </div>
-        </div><!-- Player Photo / End -->
-        <!-- Player Details -->
-        <!-- Player Details / End -->
-        <!-- Player Stats -->
-        <!-- Player Stats / End -->
+        </div>
     </div>
 </div>
 <nav class="content-filter">
@@ -73,20 +69,4 @@
 <div class="container my-4">
     <app-recent-matches *ngIf="!isLoading" [playerId]="player.id"></app-recent-matches>
     <app-player-team-history></app-player-team-history>
-    <!-- Team Latest Results / End -->
-    <!-- Team Latest Results -->
-    <div id="player-profile-team-history">
-        <div class="card card--has-table">
-            <div class="card__header card__header--has-btn">
-                <h4>Team History</h4>
-                <!-- Result Filter -->
-                <!-- Result Filter / End -->
-            </div>
-            <div class="card__content">
-                <table class="table table--large">
-                </table>
-            </div>
-        </div>
-    </div>
-    <!-- Team Latest Results / End -->
 </div>

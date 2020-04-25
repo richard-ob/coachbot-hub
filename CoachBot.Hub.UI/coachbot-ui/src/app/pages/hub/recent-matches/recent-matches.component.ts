@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatchService } from '../shared/services/match.service';
 import { Match } from '../shared/model/match.model';
+import { MatchTypes } from '../shared/model/match-types.enum';
 @Component({
     selector: 'app-recent-matches',
     templateUrl: './recent-matches.component.html',
@@ -10,6 +11,7 @@ export class RecentMatchesComponent implements OnInit {
 
     @Input() playerId: number;
     @Input() teamId: number;
+    matchTypes = MatchTypes;
     matches: Match[];
     currentPage = 1;
     totalPages: number;

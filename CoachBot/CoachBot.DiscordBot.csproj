@@ -31,6 +31,7 @@
   <ItemGroup>
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DiscordGuildController.cs" />
+    <Compile Include="Controllers\FantasyTeamController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\MatchStatisticController.cs" />

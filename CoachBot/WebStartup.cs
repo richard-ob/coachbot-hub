@@ -20,7 +20,6 @@ using CoachBot.Domain.Repositories;
 using CoachBot.Bot;
 using CoachBot.Extensions;
 using CoachBot.Services;
-using Discord.Addons.Interactive;
 
 namespace CoachBot
 {
@@ -90,6 +89,7 @@ namespace CoachBot
                 .AddTransient<SubstitutionService>()
                 .AddTransient<TournamentService>()
                 .AddTransient<MatchStatisticsService>()
+                .AddTransient<FantasyService>()
                 .AddTransient<DiscordNotificationService>()
                 .AddTransient<DiscordService>()
                 .AddSingleton<CacheService>()

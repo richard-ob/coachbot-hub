@@ -46,6 +46,9 @@ namespace CoachBot.Database
         public DbSet<TournamentGroupMatch> TournamentGroupMatches { get; set; }
         public DbSet<TournamentGroupTeam> TournamentGroupTeams { get; set; }
         public DbSet<TournamentEditionMatchDay> TournamentEditionMatchDays { get; set; }
+        public DbSet<FantasyTeam> FantasyTeams { get; set; }
+        public DbSet<FantasyPlayer> FantasyPlayers { get; set; }
+        public DbSet<FantasyTeamSelection> FantasyTeamSelections { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -99,6 +102,9 @@ namespace CoachBot.Database
             modelBuilder.Entity<TournamentGroupMatch>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentGroupTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentEditionMatchDay>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<FantasyPlayer>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<FantasyTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<FantasyTeamSelection>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
 
             // Conversions
             modelBuilder.Entity<Search>().Property(p => p.DiscordSearchMessages).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<Dictionary<ulong, ulong>>(v));

@@ -10,6 +10,8 @@ namespace CoachBot.Domain.Model
         [Key]
         public int Id { get; set; }
 
+        public string Name { get; set; }
+
         public bool IsPublic { get; set; } = false;
 
         public int TournamentId { get; set; }

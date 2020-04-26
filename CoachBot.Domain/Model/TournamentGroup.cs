@@ -13,7 +13,7 @@ namespace CoachBot.Domain.Model
 
         public string Name { get; set; }
 
-        public int TournamentStageId { get; set; }
+        public int? TournamentStageId { get; set; }
 
         public TournamentStage TournamentStage { get; set; }
 

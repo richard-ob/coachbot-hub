@@ -3,6 +3,7 @@ using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace CoachBot.Controllers
 {
@@ -26,7 +27,21 @@ namespace CoachBot.Controllers
         [HttpPost]
         public PagedResult<Match> PagedMatchList([FromBody]PagedMatchRequestDto pagedRequest)
         {
-            return _matchService.GetMatches(pagedRequest.RegionId, pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.PlayerId, pagedRequest.TeamId);
+            return _matchService.GetMatches(
+                pagedRequest.RegionId,
+                pagedRequest.Page,
+                pagedRequest.PageSize,
+                pagedRequest.SortOrderFull,
+                pagedRequest.PlayerId,
+                pagedRequest.TeamId,
+                pagedRequest.UpcomingOnly
+            );
+        }
+
+        [HttpPut("{id}")]
+        public void UpdateMatch([FromBody]Match match)
+        {
+            _matchService.UpdateMatch(match);
         }
     }
 }

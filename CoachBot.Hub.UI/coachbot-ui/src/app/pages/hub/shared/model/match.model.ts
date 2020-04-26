@@ -9,5 +9,6 @@ export interface Match {
     server: Server;
     matchStatistics: MatchStatistics;
     readiedDate: Date;
+    scheduledKickOff: Date;
     createdDate: Date;
 }

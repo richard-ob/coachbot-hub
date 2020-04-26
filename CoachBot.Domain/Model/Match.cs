@@ -45,6 +45,8 @@ namespace CoachBot.Domain.Model
 
         public DateTime? ReadiedDate { get; set; }
 
+        public DateTime? ScheduledKickOff { get; set; }
+
         public DateTime? KickOff { get; set; }
 
         public MatchFormat Format { get; set; } = MatchFormat.EightVsEight;

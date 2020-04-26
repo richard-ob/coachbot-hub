@@ -4,4 +4,5 @@ export class PagedMatchRequestDto {
     regionId: number;
     playerId?: number;
     teamId?: number;
+    upcomingOnly = false;
 }

@@ -16,6 +16,11 @@ import { TeamProfileComponent } from './pages/hub/team-profile/team-profile.comp
 import { ManualComponent } from './pages/manual/manual.component';
 import { TeamComponent } from './pages/team/team.component';
 import { TeamEditorComponent } from './pages/hub/team-editor/team-editor.component';
+import { TournamentCreatorComponent } from './pages/hub/tournaments/tournament-creator/tournament-creator.component';
+import { TournamentEditorComponent } from './pages/hub/tournaments/tournament-editor/tournament-editor.component';
+import { TournamentEditionManagerComponent } from './pages/hub/tournaments/tournament-edition-manager/tournament-edition-manager.component';
+import { MatchEditorComponent } from './pages/hub/match-editor/match-editor.component';
+import { UpcomingMatchesComponent } from './pages/hub/upcoming-matches/upcoming-matches.component';
 
 const routes: Routes = [
   {
@@ -47,6 +52,10 @@ const routes: Routes = [
     component: RecentMatchesComponent
   },
   {
+    path: 'upcoming-matches',
+    component: UpcomingMatchesComponent
+  },
+  {
     path: 'player-list',
     component: PlayerListComponent
   },
@@ -75,6 +84,22 @@ const routes: Routes = [
     component: SteamIDValidatorComponent
   },
   {
+    path: 'tournament-creator',
+    component: TournamentCreatorComponent
+  },
+  {
+    path: 'tournament-editor/:id',
+    component: TournamentEditorComponent
+  },
+  {
+    path: 'tournament-edition-manager/:id',
+    component: TournamentEditionManagerComponent
+  },
+  {
+    path: 'match-editor/:id',
+    component: MatchEditorComponent
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
@@ -83,7 +108,6 @@ const routes: Routes = [
     component: ErrorComponent
   }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

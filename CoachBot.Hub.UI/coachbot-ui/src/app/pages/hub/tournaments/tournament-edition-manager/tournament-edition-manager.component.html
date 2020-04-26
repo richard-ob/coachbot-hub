@@ -1,0 +1,94 @@
+<div class="container my-4">
+    <ng-container *ngIf="tournamentEdition && !isLoading; else spinner">
+        <h5>{{tournamentEdition.name}}</h5>
+        <div class="card">
+            <div class="card__header">
+                <h4>Manage</h4>
+            </div>
+            <div class="card__content">
+                <button type="button" class="btn btn-primary mx-1" (click)="generateSchedule()">Generate
+                    Schedule</button>
+                <button *ngIf="!tournamentEdition.isPublic" type="button" class="btn btn-primary mx-1"
+                    (click)="toggleIsPublic()">Make Public</button>
+                <button *ngIf="tournamentEdition.isPublic" type="button" class="btn btn-primary mx-1"
+                    (click)="toggleIsPublic()">Make Private</button>
+            </div>
+        </div>
+        <div class="card" *ngFor="let stage of tournamentEdition.tournamentStages">
+            <div class="card__header card__header--has-btn">
+                <h4>{{stage.name}}</h4>
+            </div>
+            <div class="card__content">
+                <h5>New Group</h5>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input [(ngModel)]="tournamentGroup.name" name="tournamentGroupName" type="text"
+                        class="form-control">
+                </div>
+                <button type="button" class="btn btn-primary mx-1" (click)="createTournamentGroup(stage.id)">
+                    Add Group
+                </button>
+                <h5 class="mt-3">Groups </h5>
+                <div *ngIf="!stage.tournamentGroups || !stage.tournamentGroups.length" class="alert alert-info">
+                    No groups added yet. A tournament must have at least one group.
+                </div>
+                <div *ngFor="let group of stage.tournamentGroups" class="mt-4">
+                    <h6>
+                        {{group.name}}
+                        <button class="btn btn-danger btn-xs" type="button" (click)="deleteTournamentGroup(group.id)">
+                            Remove
+                        </button>
+                    </h6>
+                    <div *ngIf="group.tournamentGroupTeams.length; else noTeamsAdded" class="table table-stripe">
+                        <label>Team</label>
+                        <ul>
+                            <li *ngFor="let groupTeam of group.tournamentGroupTeams">
+                                {{groupTeam.team.name}}
+                                <button class="btn btn-danger btn-xs" type="button"
+                                    (click)="removeTournamentGroupTeam(groupTeam.team.id, group.id)">
+                                    Remove
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <ng-template #noTeamsAdded>
+                        <div class="alert alert-info">No teams added to group yet</div>
+                    </ng-template>
+                    <app-tournament-group-team-manager [tournamentGroupId]="group.id"
+                        (teamAdded)="loadTournamentEdition()">
+                    </app-tournament-group-team-manager>
+                    <h6 class="mt-3">Group Schedule</h6>
+                    <table *ngIf="group.tournamentGroupMatches; else noScheduleGenerated" class="table table-striped">
+                        <thead>
+                            <th>Match Date</th>
+                            <th>Home Team</th>
+                            <th>Away Team</th>
+                            <th>Phase</th>
+                            <th>Actions</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let groupMatch of group.tournamentGroupMatches">
+                                <td>{{groupMatch.match.scheduledKickOff | date}}</td>
+                                <td>{{groupMatch.match.teamHome.name}}</td>
+                                <td>{{groupMatch.match.teamAway.name}}</td>
+                                <td>{{groupMatch.tournamentPhase.name}}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-xs" type="button"
+                                        (click)="editMatch(groupMatch.match.id)">
+                                        Edit Match
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noScheduleGenerated>
+                        <div class="alert alert-info">The schedule has not been generated yet</div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #spinner>
+        <app-spinner></app-spinner>
+    </ng-template>
+</div>

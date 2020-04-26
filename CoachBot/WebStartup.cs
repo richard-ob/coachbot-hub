@@ -88,6 +88,7 @@ namespace CoachBot
                 .AddTransient<PositionService>()
                 .AddTransient<TeamService>()
                 .AddTransient<SubstitutionService>()
+                .AddTransient<TournamentService>()
                 .AddTransient<MatchStatisticsService>()
                 .AddTransient<DiscordNotificationService>()
                 .AddTransient<DiscordService>()
@@ -113,12 +114,10 @@ namespace CoachBot
             provider.GetService<ConfigService>();
             provider.GetService<BotInstance>();
 
-            provider.GetService<CoachBotContext>().Initialize();
-            provider.GetService<CoachBotContext>().SeedPreReleaseData();
-            provider.GetService<CoachBotContext>().SeedMatchData();
-
-            // TEMPORARY: Generate match stats on startup
-            provider.GetService<MatchStatisticsService>().GenerateStatistics();
+            //provider.GetService<CoachBotContext>().Initialize();
+            //provider.GetService<CoachBotContext>().SeedPreReleaseData();
+            //provider.GetService<CoachBotContext>().SeedMatchData();
+            //provider.GetService<MatchStatisticsService>().GenerateStatistics();
 
         }
 

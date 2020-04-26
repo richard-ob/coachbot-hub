@@ -28,7 +28,14 @@
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.teamRole}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.position?.name}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.joinDate | date}}</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.leaveDate | date}}</td>
+                        <td class="team-result__date">
+                            <ng-container *ngIf="playerTeamStatisticsTotal.playerTeam.leaveDate; else present">
+                                {{playerTeamStatisticsTotal.playerTeam.leaveDate | date}}
+                            </ng-container>
+                            <ng-template #present>
+                                Present
+                            </ng-template>
+                        </td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.appearances}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.goals}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.assists}}</td>

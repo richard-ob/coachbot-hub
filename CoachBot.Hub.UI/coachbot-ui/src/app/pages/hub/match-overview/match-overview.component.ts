@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import sampleMatchDataJson from './sample-data/sample.json';
-import { MatchData, EventType } from './model/match-data.interface';
+import { EventType } from './model/match-data.interface';
 import { StatisticType } from './model/statistic-type.enum';
 import { TeamType } from './model/team-type.enum.js';
 import { DisplayValueMode } from './components/horizontal-bar-graph/horizontal-bar-graph.component.js';
 import { MatchService } from '../shared/services/match.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-match-overview',
@@ -15,7 +13,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class MatchOverviewComponent implements OnInit {
 
-  sampleMatchData: any;
+  matchData: any;
   statisticType = StatisticType;
   teamType = TeamType;
   eventType = EventType;
@@ -33,7 +31,7 @@ export class MatchOverviewComponent implements OnInit {
   }
 
   loadJson(matchData: any) {
-    this.sampleMatchData = matchData;
-    this.matchDate = new Date(this.sampleMatchData.matchInfo.startTime * 1000);
+    this.matchData = matchData;
+    this.matchDate = new Date(this.matchData.matchInfo.startTime * 1000);
   }
 }

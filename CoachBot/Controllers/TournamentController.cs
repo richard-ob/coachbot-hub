@@ -20,15 +20,22 @@ namespace CoachBot.Controllers
             _tournamentService = tournamentService;
         }
 
+        [HttpGet]
         public List<Tournament> GetTournaments()
         {
             return _tournamentService.GetTournaments();
         }
 
         [HttpGet("{id}")]
-        public Tournament GetTournamentEdition(int id)
+        public Tournament GetTournament(int id)
         {
-            return _tournamentService.GetTournaments().First(t => t.Id == id);
+            return _tournamentService.GetTournament(id);
+        }
+
+        [HttpPost]
+        public void CreateTournament(Tournament tournament)
+        {
+            _tournamentService.CreateTournament(tournament);
         }
     }
 }

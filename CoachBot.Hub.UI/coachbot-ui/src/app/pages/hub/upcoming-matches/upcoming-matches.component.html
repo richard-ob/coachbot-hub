@@ -22,21 +22,28 @@
                 <tbody>
                     <tr
                         *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
-                        <td class="team-result__date">{{match.readiedDate | date:'medium'}}</td>
+                        <td class="team-result__date">{{match.scheduledKickOff | date:'medium'}}</td>
                         <td class="team-result__vs">
                             <div class="team-meta">
-                                <strong
-                                    [attr.title]="match.lineupHome.channel.name">{{match?.matchStatistics?.matchData.teams[0].matchTotal.name}}</strong>
+                                <strong [attr.title]="match.teamHome.name">{{match.teamHome.teamCode}}</strong>
                                 vs
-                                <strong
-                                    [attr.title]="match.lineupAway.channel.name">{{match?.matchStatistics?.matchData.teams[1].matchTotal.name}}</strong>
+                                <strong [attr.title]="match.teamAway.name">{{match.teamAway.teamCode}}</strong>
                             </div>
                         </td>
-                        <td class="team-result__status">Ranked Friendly</td>
-                        <td class="team-result__status">{{match.matchFormat}}</td>
+                        <td class="team-result__status">
+                            <ng-container *ngIf="match.tournament; else matchType">
+                                {{match.tournament.name}}
+                            </ng-container>
+                            <ng-template>
+                                <ng-container [ngSwitch]="match.matchType">
+                                    <span *ngSwitchCase="matchTypes.UnrankedFriendly">Unranked Friendly</span>
+                                    <span *ngSwitchCase="matchTypes.RankedFriendly">Ranked Friendly</span>
+                                </ng-container>
+                            </ng-template>
+                        </td>
+                        <td class="team-result__status">{{match.format}}v{{match.format}}</td>
                         <td class="team-result__ball-posession" title="{{match.server.country.name}}">
                             <img src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png">
-
                         </td>
                         <td class="team-result__game-overview">
                             <a [routerLink]="['../match-overview', match.id]"

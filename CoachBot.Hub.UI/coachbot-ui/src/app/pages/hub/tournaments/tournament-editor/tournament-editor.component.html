@@ -1,0 +1,57 @@
+<div class="container my-4">
+    <ng-container *ngIf="tournamentEdition && !isLoading; else spinner">
+        <div class="card">
+            <div class="card__header">
+                <h4>Tournament Editor</h4>
+            </div>
+            <div class="card__content">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input [(ngModel)]="tournamentEdition.name" name="tournament" type="text" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Tournament Format</label>
+                    <select [(ngModel)]="tournamentEdition.format" name="tournamentFormat" class="form-control">
+                        <option [ngValue]="1">1v1</option>
+                        <option [ngValue]="2">2v2</option>
+                        <option [ngValue]="3">3v3</option>
+                        <option [ngValue]="4">4v4</option>
+                        <option [ngValue]="5">5v5</option>
+                        <option [ngValue]="6">6v6</option>
+                        <option [ngValue]="7">7v7</option>
+                        <option [ngValue]="8">8v8</option>
+                        <option [ngValue]="9">9v9</option>
+                        <option [ngValue]="10">10v10</option>
+                        <option [ngValue]="11">11v11</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input [(ngModel)]="tournamentEdition.startDate" name="startDate" type="date" class="form-control">
+                </div>
+
+                <button class="btn btn-success" (click)="createTournamentEdition()" type="button"
+                    [disabled]="isCreating">Create</button>
+
+
+                <table class="table table-striped my-3">
+                    <thead>
+                        <th>Name</th>
+                        <th>Format</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let edition of tournament.tournamentEditions">
+                            <td><a [routerLink]="['/tournament-edition-manager/', edition.id]">{{edition.name}}</a></td>
+                            <td>{{edition.format}}vs{{edition.format}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #spinner>
+        <app-spinner></app-spinner>
+    </ng-template>
+</div>

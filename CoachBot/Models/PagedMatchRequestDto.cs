@@ -10,5 +10,7 @@ namespace CoachBot.Models
 
         public int? TeamId { get; set; }
 
+        public bool UpcomingOnly { get; set; } = false;
+
     }
 }

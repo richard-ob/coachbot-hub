@@ -28,6 +28,14 @@ import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.co
 import { TeamEditorComponent } from './team-editor/team-editor.component';
 import { TeamEditorPlayerListComponent } from './team-editor/team-editor-player-list/team-editor-player-list.component';
 import { PlayerTeamHistoryComponent } from './player-profile/player-team-history/player-team-history.component';
+import { TournamentCreatorComponent } from './tournaments/tournament-creator/tournament-creator.component';
+import { TournamentEditorComponent } from './tournaments/tournament-editor/tournament-editor.component';
+import { TournamentEditionManagerComponent } from './tournaments/tournament-edition-manager/tournament-edition-manager.component';
+import {
+  TournamentGroupTeamManagerComponent
+} from './tournaments/tournament-edition-manager/tournament-group-team-manager/tournament-group-team-manager.component';
+import { MatchEditorComponent } from './match-editor/match-editor.component';
+import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 
 @NgModule({
   declarations: [
@@ -54,14 +62,21 @@ import { PlayerTeamHistoryComponent } from './player-profile/player-team-history
     TeamProfileComponent,
     TeamEditorComponent,
     TeamEditorPlayerListComponent,
-    PlayerTeamHistoryComponent
+    PlayerTeamHistoryComponent,
+    TournamentCreatorComponent,
+    TournamentEditorComponent,
+    TournamentEditionManagerComponent,
+    TournamentGroupTeamManagerComponent,
+    MatchEditorComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
     SpinnerModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    DlDateTimeDateModule,
+    DlDateTimePickerModule
   ]
 })
 export class HubModule { }

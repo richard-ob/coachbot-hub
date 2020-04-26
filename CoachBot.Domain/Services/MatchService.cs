@@ -33,30 +33,35 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.GetMatchById(matchId);
         }
 
-        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId = null, int? teamId = null)
+        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId = null, int? teamId = null, bool upcomingOnly = false)
         {
             var queryable = _coachBotContext.Matches
                 .Include(m => m.LineupHome)
                     .ThenInclude(th => th.Channel)
                 .Include(m => m.LineupAway)
                     .ThenInclude(ta => ta.Channel)
+                .Include(m => m.TeamHome)
+                .Include(m => m.TeamAway)
                 .Include(m => m.MatchStatistics)
+                .Include(m => m.Tournament)
                 .Include(s => s.Server)
                     .ThenInclude(s => s.Country)
-                .Where(m => m.ReadiedDate != null)
-                .Where(m => m.Server.RegionId == regionId);
-
-            if (playerId != null)
-            {
-                queryable = queryable.Where(m => m.PlayerMatchStatistics.Any(p => p.PlayerId == playerId));
-            }
-
-            if (teamId != null)
-            {
-                queryable = queryable.Where(m => m.TeamMatchStatistics.Any(t => t.TeamId == teamId));
-            }
+                .Where(m => upcomingOnly || m.ReadiedDate != null)
+                .Where(m => m.Server.RegionId == regionId)
+                .Where(m => !upcomingOnly || m.ScheduledKickOff > DateTime.Now)
+                .Where(m => playerId == null || m.PlayerMatchStatistics.Any(p => p.PlayerId == playerId))
+                .Where(m => teamId == null || m.TeamMatchStatistics.Any(t => t.TeamId == teamId));
 
             return queryable.GetPaged(page, pageSize, sortOrder);
+        }
+
+        public void UpdateMatch(Match match)
+        {
+            var existingMatch = _coachBotContext.Matches.Single(m => m.Id == match.Id);
+            existingMatch.ScheduledKickOff = match.ScheduledKickOff;
+            existingMatch.ServerId = match.ServerId;
+            _coachBotContext.Update(existingMatch);
+            _coachBotContext.SaveChanges();
         }
 
         public Match GetCurrentMatchForChannel(ulong channelId)

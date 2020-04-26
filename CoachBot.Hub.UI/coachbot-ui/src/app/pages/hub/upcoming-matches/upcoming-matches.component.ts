@@ -20,7 +20,7 @@ export class UpcomingMatchesComponent implements OnInit {
     }
 
     loadPage(page: number) {
-        this.matchService.getMatches(1, page).subscribe(response => {
+        this.matchService.getMatches(2, page, undefined, undefined, true).subscribe(response => {
             this.matches = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;

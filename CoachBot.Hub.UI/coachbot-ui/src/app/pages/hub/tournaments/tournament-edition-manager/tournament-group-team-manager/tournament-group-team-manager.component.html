@@ -1,0 +1,9 @@
+<ng-container *ngIf="!isLoading; else spinner">
+    <select class="form-control" [(ngModel)]="tournamentGroupTeamDto.teamId" name="team">
+        <option *ngFor="let team of teams" [ngValue]="team.id">{{team.name}}</option>
+    </select>
+    <button type="button" class="btn btn-primary" (click)="addTeam()">Add Team</button>
+</ng-container>
+<ng-template #spinner>
+    <app-spinner></app-spinner>
+</ng-template>

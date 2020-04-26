@@ -10,15 +10,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { ManualComponent } from './pages/manual/manual.component';
 import { TeamComponent } from './pages/team/team.component';
-import { SteamDownloadWidgetComponent } from './shared/components/steam-download-widget/steam-download-widget.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeroComponent,
     ManualComponent,
-    TeamComponent,
-    SteamDownloadWidgetComponent
+    TeamComponent
   ],
   imports: [
     BrowserModule,

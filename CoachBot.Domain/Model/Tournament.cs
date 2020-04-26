@@ -19,12 +19,14 @@ namespace CoachBot.Domain.Model
 
         public TournamentType TournamentType { get; set; }
 
-        public int OrganisationId { get; set; }
+        public int? OrganisationId { get; set; }
 
         public Organisation Organisation { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
+        public ICollection<TournamentEdition> TournamentEditions { get; set; }
 
     }
 }

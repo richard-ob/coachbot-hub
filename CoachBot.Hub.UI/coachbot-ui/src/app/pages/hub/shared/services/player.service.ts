@@ -10,6 +10,7 @@ import { PlayerStatistics } from '../model/player-statistics.model';
 import { PagedPlayerStatisticsRequestDto, PlayerStatisticFilters } from '../model/dtos/paged-player-statistics-request-dto.model';
 import { TimePeriod } from '../model/time-period.enum';
 import { PlayerTeamStatisticsTotals } from '../model/player-team-statistics-totals.model';
+import { PlayerProfile } from '../model/player-profile.model';
 
 @Injectable({
     providedIn: 'root'
@@ -44,6 +45,10 @@ export class PlayerService {
 
     getPlayerTeamStatisticsHistory(playerId: number): Observable<PlayerTeamStatisticsTotals[]> {
         return this.http.get<PlayerTeamStatisticsTotals[]>(`${environment.apiUrl}/api/player/${playerId}/team-history`);
+    }
+
+    getPlayerProfile(playerId: number): Observable<PlayerProfile> {
+        return this.http.get<PlayerProfile>(`${environment.apiUrl}/api/player-profiles/${playerId}`);
     }
 
     getCurrentPlayer(): Observable<Player> {

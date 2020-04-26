@@ -17,3 +17,12 @@
     opacity: 0.75;
     height: 100%;
 }
+
+.player-info-details__team-link {
+    color: white;
+    border-bottom: 1px dotted white;
+    &:hover {
+        color: #ccc;
+    }
+}
+

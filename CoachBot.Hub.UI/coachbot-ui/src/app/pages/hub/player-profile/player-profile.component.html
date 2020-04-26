@@ -1,75 +1,88 @@
 <app-spinner *ngIf="isLoading"></app-spinner>
-<div *ngIf="!isLoading" class="player-heading">
-    <div class="container">
-        <div class="player-info__title player-info__title--mobile">
-            <h1 class="player-info__name"><span class="player-info__first-name">{{player.name}}</span></h1>
-        </div>
-        <div class="player-info">
-            <div class="player-info__item player-info__item--details" aria-hidden="false">
-                <a class="btn btn-primary-inverse btn-xs" style="position: absolute; right: 72px; bottom: 26px;"
-                    routerLink="/edit-profile">Edit
-                    Profile</a>
-                <img *ngIf="steamUserProfile.avatarfull" [attr.src]="steamUserProfile.avatarfull"
-                    style="position: absolute; right: 30px; top: 33px;">
-                <div class="player-info__title player-info__title--desktop">
-                    <h1 class="player-info__name">
-                        <span class="player-info__first-name">{{player.name}}</span>
-                    </h1>
-                </div>
-                <div class="player-info-details">
-                    <div class="player-info-details__item player-info-details__item--height">
-                        <h6 class="player-info-details__title">Position</h6>
-                        <div class="player-info-details__value">LW</div>
+<ng-container *ngIf="!isLoading">
+    <div class="player-heading">
+        <div class="container">
+            <div class="player-info__title player-info__title--mobile">
+                <h1 class="player-info__name"><span class="player-info__first-name">{{player.name}}</span></h1>
+            </div>
+            <div class="player-info">
+                <div class="player-info__item player-info__item--details" aria-hidden="false">
+                    <a class="btn btn-primary-inverse btn-xs" style="position: absolute; right: 72px; bottom: 26px;"
+                        routerLink="/edit-profile">Edit Profile</a>
+                    <img *ngIf="steamUserProfile.avatarfull" [attr.src]="steamUserProfile.avatarfull"
+                        style="position: absolute; right: 30px; top: 33px;">
+                    <div class="player-info__title player-info__title--desktop">
+                        <h1 class="player-info__name">
+                            <span class="player-info__first-name">{{player.name}}</span>
+                        </h1>
                     </div>
-                    <div class="player-info-details__item player-info-details__item--weight">
-                        <h6 class="player-info-details__title">Country</h6>
-                        <div class="player-info-details__value">
-                            <ng-container *ngIf="steamUserProfile">
-                                <img *ngIf="steamUserProfile.loccountrycode; else unknownFlag"
-                                    src="https://www.countryflags.io/{{steamUserProfile.loccountrycode}}/flat/24.png">
-                                <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
-                            </ng-container>
+                    <div class="player-info-details">
+                        <div class="player-info-details__item player-info-details__item--height">
+                            <h6 class="player-info-details__title">Position</h6>
+                            <div class="player-info-details__value">{{playerProfile.position.name}}</div>
                         </div>
-                    </div>
-                    <div class="player-info-details__item player-info-details__item--position">
-                        <h6 class="player-info-details__title">Position</h6>
-                        <div class="player-info-details__value">Forward</div>
-                    </div>
-                    <div class="player-info-details__item player-info-details__item--college">
-                        <h6 class="player-info-details__title">Club Team</h6>
-                        <div class="player-info-details__value">Excel</div>
-                    </div>
-                    <div class="player-info-details__item player-info-details__item--born">
-                        <h6 class="player-info-details__title">National Team</h6>
-                        <div class="player-info-details__value">England</div>
-                    </div>
-                    <div *ngIf="playingTime" class="player-info-details__item">
-                        <h6 class="player-info-details__title">Playing Time</h6>
-                        <div class="player-info-details__value">{{playingTime}}</div>
+                        <div class="player-info-details__item player-info-details__item--weight">
+                            <h6 class="player-info-details__title">Country</h6>
+                            <div class="player-info-details__value">
+                                <ng-container *ngIf="steamUserProfile">
+                                    <img *ngIf="steamUserProfile.loccountrycode; else unknownFlag"
+                                        src="https://www.countryflags.io/{{steamUserProfile.loccountrycode}}/flat/24.png">
+                                    <ng-template #unknownFlag>
+                                        <span >Unknown</span>
+                                    </ng-template>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="player-info-details__item player-info-details__item--position">
+                            <h6 class="player-info-details__title">Position</h6>
+                            <div class="player-info-details__value">{{playerProfile.position.name}}</div>
+                        </div>
+                        <div class="player-info-details__item player-info-details__item--college">
+                            <h6 class="player-info-details__title">Club Team</h6>
+                            <div class="player-info-details__value">
+                                <span *ngIf="playerProfile.clubTeam">
+                                    <a class="player-info-details__team-link" [routerLink]="['/team-profile/', playerProfile.clubTeam.id]">{{playerProfile.clubTeam.name}}</a>                                    
+                                </span>
+                                <span *ngIf="!playerProfile.clubTeam">None</span>
+                            </div>
+                        </div>
+                        <div class="player-info-details__item player-info-details__item--born">
+                            <h6 class="player-info-details__title">National Team</h6>
+                            <div class="player-info-details__value">
+                                <span *ngIf="playerProfile.nationalTeam">
+                                    <a [routerLink]="['/team-profile/', playerProfile.nationalTeam.id]">{{playerProfile.nationalTeam.name}}</a>
+                                </span>
+                                <span *ngIf="!playerProfile.nationalTeam">None</span>
+                            </div>
+                        </div>
+                        <div *ngIf="playingTime" class="player-info-details__item">
+                            <h6 class="player-info-details__title">Playing Time</h6>
+                            <div class="player-info-details__value">{{playingTime}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<nav class="content-filter">
-    <div class="container"><a href="#" class="content-filter__toggle"></a>
-        <ul class="content-filter__list">
-            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                <a [routerLink]="['./statistics']" class="content-filter__link">Statistics</a>
-            </li>
-            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                <a [routerLink]="['./matches']" class="content-filter__link">Matches</a>
-            </li>
-            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                <a [routerLink]="['./teams']" class="content-filter__link">Team History</a>
-            </li>
-            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                <a [routerLink]="['./tournaments']" class="content-filter__link">Tournaments</a>
-            </li>
-        </ul>
+    <nav class="content-filter">
+        <div class="container"><a href="#" class="content-filter__toggle"></a>
+            <ul class="content-filter__list">
+                <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                    <a [routerLink]="['./statistics']" class="content-filter__link">Statistics</a>
+                </li>
+                <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                    <a [routerLink]="['./matches']" class="content-filter__link">Matches</a>
+                </li>
+                <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                    <a [routerLink]="['./teams']" class="content-filter__link">Team History</a>
+                </li>
+                <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                    <a [routerLink]="['./tournaments']" class="content-filter__link">Tournaments</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container my-4">
+        <router-outlet></router-outlet>
     </div>
-</nav>
-<div class="container my-4">
-    <router-outlet></router-outlet>
-</div>
+</ng-container>

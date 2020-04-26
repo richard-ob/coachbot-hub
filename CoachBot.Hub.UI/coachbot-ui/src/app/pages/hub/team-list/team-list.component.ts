@@ -32,7 +32,7 @@ export class TeamListComponent implements OnInit {
     }
 
     navigatetoProfile(teamId: number) {
-        this.router.navigate(['/player-profile', teamId]);
+        this.router.navigate(['/team-profile', teamId]);
     }
 
 }

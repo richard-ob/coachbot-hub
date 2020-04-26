@@ -90,6 +90,7 @@ namespace CoachBot
                 .AddTransient<TournamentService>()
                 .AddTransient<MatchStatisticsService>()
                 .AddTransient<FantasyService>()
+                .AddTransient<PlayerProfileService>()
                 .AddTransient<DiscordNotificationService>()
                 .AddTransient<DiscordService>()
                 .AddSingleton<CacheService>()

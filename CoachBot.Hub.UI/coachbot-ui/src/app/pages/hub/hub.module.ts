@@ -18,7 +18,6 @@ import { RecentMatchesComponent } from './recent-matches/recent-matches.componen
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PlayerListComponent } from './player-list/player-list.component';
-import { PlayerProfileComponent } from './player-profile/player-profile.component';
 import { TeamListComponent } from './team-list/team-list.component';
 import { SteamProfileFlagPipe } from './player-list/helpers/steam-profile-flag.pipe';
 import { ProfileEditorComponent } from './profile-editor/profile-editor.component';
@@ -27,7 +26,6 @@ import { TeamProfileComponent } from './team-profile/team-profile.component';
 import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
 import { TeamEditorComponent } from './team-editor/team-editor.component';
 import { TeamEditorPlayerListComponent } from './team-editor/team-editor-player-list/team-editor-player-list.component';
-import { PlayerTeamHistoryComponent } from './player-profile/player-team-history/player-team-history.component';
 import { TournamentCreatorComponent } from './tournaments/tournament-creator/tournament-creator.component';
 import { TournamentEditorComponent } from './tournaments/tournament-editor/tournament-editor.component';
 import { TournamentEditionManagerComponent } from './tournaments/tournament-edition-manager/tournament-edition-manager.component';
@@ -36,6 +34,7 @@ import {
 } from './tournaments/tournament-edition-manager/tournament-group-team-manager/tournament-group-team-manager.component';
 import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { PlayerProfileModule } from './player-profile/player-profile.module';
 
 @NgModule({
   declarations: [
@@ -54,7 +53,6 @@ import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-
     RecentMatchesComponent,
     UpcomingMatchesComponent,
     PlayerListComponent,
-    PlayerProfileComponent,
     TeamListComponent,
     SteamProfileFlagPipe,
     ProfileEditorComponent,
@@ -62,7 +60,6 @@ import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-
     TeamProfileComponent,
     TeamEditorComponent,
     TeamEditorPlayerListComponent,
-    PlayerTeamHistoryComponent,
     TournamentCreatorComponent,
     TournamentEditorComponent,
     TournamentEditionManagerComponent,
@@ -76,7 +73,8 @@ import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-
     SpinnerModule,
     NgxPaginationModule,
     DlDateTimeDateModule,
-    DlDateTimePickerModule
+    DlDateTimePickerModule,
+    PlayerProfileModule
   ]
 })
 export class HubModule { }

@@ -21,6 +21,10 @@ import { TournamentEditorComponent } from './pages/hub/tournaments/tournament-ed
 import { TournamentEditionManagerComponent } from './pages/hub/tournaments/tournament-edition-manager/tournament-edition-manager.component';
 import { MatchEditorComponent } from './pages/hub/match-editor/match-editor.component';
 import { UpcomingMatchesComponent } from './pages/hub/upcoming-matches/upcoming-matches.component';
+import { PlayerProfileStatisticsComponent } from './pages/hub/player-profile/player-profile-statistics/player-profile-statistics.component';
+import { PlayerProfileMatchesComponent } from './pages/hub/player-profile/player-profile-matches/player-profile-matches.component';
+import { PlayerTeamHistoryComponent } from './pages/hub/player-profile/player-team-history/player-team-history.component';
+import { PlayerProfileTournamentsComponent } from './pages/hub/player-profile/player-profile-tournaments/player-profile-tournaments.component';
 
 const routes: Routes = [
   {
@@ -62,10 +66,6 @@ const routes: Routes = [
   {
     path: 'team-list',
     component: TeamListComponent
-  },
-  {
-    path: 'player-profile/:id',
-    component: PlayerProfileComponent
   },
   {
     path: 'team-profile/:id',

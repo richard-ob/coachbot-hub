@@ -15,7 +15,7 @@ export class PlayerTeamHistoryComponent implements OnInit {
     constructor(private route: ActivatedRoute, private playerService: PlayerService) { }
 
     ngOnInit() {
-        this.route.paramMap.pipe().subscribe(params => {
+        this.route.parent.paramMap.pipe().subscribe(params => {
             const playerId = +params.get('id');
             this.playerService.getPlayerTeamStatisticsHistory(playerId).subscribe((playerTeamStatisticsTotals) => {
                 this.playerTeamStatisticsTotals = playerTeamStatisticsTotals;

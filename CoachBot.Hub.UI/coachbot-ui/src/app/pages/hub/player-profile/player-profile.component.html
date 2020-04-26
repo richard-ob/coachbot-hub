@@ -55,18 +55,21 @@
 <nav class="content-filter">
     <div class="container"><a href="#" class="content-filter__toggle"></a>
         <ul class="content-filter__list">
-            <li class="content-filter__item content-filter__item--active"><a href="_soccer_team-overview.html"
-                    class="content-filter__link">Statistics</a></li>
-            <li class="content-filter__item"><a href="_soccer_team-roster.html" class="content-filter__link">Matches</a>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./statistics']" class="content-filter__link">Statistics</a>
             </li>
-            <li class="content-filter__item"><a href="_soccer_team-last-results.html" class="content-filter__link">Team
-                    History</a></li>
-            <li class="content-filter__item"><a href="_soccer_team-standings.html"
-                    class="content-filter__link">Tournaments</a></li>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./matches']" class="content-filter__link">Matches</a>
+            </li>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./teams']" class="content-filter__link">Team History</a>
+            </li>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./tournaments']" class="content-filter__link">Tournaments</a>
+            </li>
         </ul>
     </div>
 </nav>
 <div class="container my-4">
-    <app-recent-matches *ngIf="!isLoading" [playerId]="player.id"></app-recent-matches>
-    <app-player-team-history></app-player-team-history>
+    <router-outlet></router-outlet>
 </div>

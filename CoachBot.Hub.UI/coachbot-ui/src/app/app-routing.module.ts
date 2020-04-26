@@ -25,6 +25,7 @@ import { PlayerProfileStatisticsComponent } from './pages/hub/player-profile/pla
 import { PlayerProfileMatchesComponent } from './pages/hub/player-profile/player-profile-matches/player-profile-matches.component';
 import { PlayerTeamHistoryComponent } from './pages/hub/player-profile/player-team-history/player-team-history.component';
 import { PlayerProfileTournamentsComponent } from './pages/hub/player-profile/player-profile-tournaments/player-profile-tournaments.component';
+import { CurrentTournamentsComponent } from './pages/hub/tournaments/current-tournaments/current-tournaments.component';
 
 const routes: Routes = [
   {
@@ -94,6 +95,10 @@ const routes: Routes = [
   {
     path: 'tournament-edition-manager/:id',
     component: TournamentEditionManagerComponent
+  },
+  {
+    path: 'tournaments',
+    component: CurrentTournamentsComponent
   },
   {
     path: 'match-editor/:id',

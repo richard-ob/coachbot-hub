@@ -35,6 +35,7 @@ import {
 import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 import { PlayerProfileModule } from './player-profile/player-profile.module';
+import { CurrentTournamentsComponent } from './tournaments/current-tournaments/current-tournaments.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { PlayerProfileModule } from './player-profile/player-profile.module';
     TournamentEditorComponent,
     TournamentEditionManagerComponent,
     TournamentGroupTeamManagerComponent,
-    MatchEditorComponent
+    MatchEditorComponent,
+    CurrentTournamentsComponent
   ],
   imports: [
     CommonModule,

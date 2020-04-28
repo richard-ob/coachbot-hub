@@ -8,6 +8,8 @@ namespace CoachBot.Domain.Model
     {
         public StatisticsTimePeriod TimePeriod { get; set; }
 
+        public int? PlayerId { get; set; }
+
         public int? TeamId { get; set; }
 
         public int? ChannelId { get; set; }

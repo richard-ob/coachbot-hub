@@ -1,0 +1,30 @@
+// TODO: import variables stylesheet for colours and font, or move into central folder
+
+.player-profile-statistics__statistic-box {
+
+}
+
+.player-profile-statistics__statistic-box__item {
+    font-family: 'Montserrat';
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 25px;
+    &:not(:last-child) {
+        border-bottom: 1px #e4e7ed solid;
+    }
+    &:nth-child(even) {
+        background-color: #fbfbfb;
+    }
+}
+
+.player-profile-statistics__statistic-box__item-statistic {    text-transform: uppercase;
+    color: #31404b;
+    font-weight: 700;
+    font-size: 11px;
+}
+
+.player-profile-statistics__statistic-box__item-value {
+    font-weight: 300;
+    font-size: 11px;
+}

@@ -10,13 +10,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { ManualComponent } from './pages/manual/manual.component';
 import { TeamComponent } from './pages/team/team.component';
+import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeroComponent,
     ManualComponent,
-    TeamComponent
+    TeamComponent,
+    MatchmakingComponent
   ],
   imports: [
     BrowserModule,

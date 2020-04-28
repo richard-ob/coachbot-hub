@@ -11,6 +11,8 @@ import { PagedPlayerStatisticsRequestDto, PlayerStatisticFilters } from '../mode
 import { TimePeriod } from '../model/time-period.enum';
 import { PlayerTeamStatisticsTotals } from '../model/player-team-statistics-totals.model';
 import { PlayerProfile } from '../model/player-profile.model';
+import { PlayerAppearanceTotals } from '../model/player-appearance-totals.model';
+import { PlayerPositionMatchStatistics } from '../model/player-match-statistics.model';
 
 @Injectable({
     providedIn: 'root'
@@ -32,19 +34,24 @@ export class PlayerService {
 
     getPlayerStatistics(page: number, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
         : Observable<PagedResult<PlayerStatistics>> {
-        const pagedPlayerStatisticsRequestDto = new PagedPlayerStatisticsRequestDto();
-        pagedPlayerStatisticsRequestDto.filters = filters;
-        pagedPlayerStatisticsRequestDto.page = page;
-        pagedPlayerStatisticsRequestDto.sortOrder = sortOrder;
-        if (sortBy !== null) {
-            pagedPlayerStatisticsRequestDto.sortBy = sortBy;
-        }
+        return this.http.post<PagedResult<PlayerStatistics>>(
+            `${environment.apiUrl}/api/player-statistics`, this.generatePlayerStatisticsFilter(page, sortBy, sortOrder, filters)
+        );
+    }
 
-        return this.http.post<PagedResult<PlayerStatistics>>(`${environment.apiUrl}/api/playerstatistics`, pagedPlayerStatisticsRequestDto);
+    getPlayerMatchStatistics(page: number, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
+        : Observable<PagedResult<PlayerPositionMatchStatistics[]>> {
+        return this.http.post<PagedResult<PlayerPositionMatchStatistics[]>>(
+            `${environment.apiUrl}/api/player-statistics/matches`, this.generatePlayerStatisticsFilter(page, sortBy, sortOrder, filters)
+        );
     }
 
     getPlayerTeamStatisticsHistory(playerId: number): Observable<PlayerTeamStatisticsTotals[]> {
         return this.http.get<PlayerTeamStatisticsTotals[]>(`${environment.apiUrl}/api/player/${playerId}/team-history`);
+    }
+
+    getPlayerAppearanceTotals(playerId: number): Observable<PlayerAppearanceTotals[]> {
+        return this.http.get<PlayerAppearanceTotals[]>(`${environment.apiUrl}/api/player-statistics/appearance-totals/${playerId}`);
     }
 
     getPlayerProfile(playerId: number): Observable<PlayerProfile> {
@@ -65,6 +72,18 @@ export class PlayerService {
         };
 
         return this.http.post<void>(`${environment.apiUrl}/api/player/update-steam-id`, steamIdDto);
+    }
+
+    private generatePlayerStatisticsFilter(page: number, sortBy: string, sortOrder: string, filters: PlayerStatisticFilters) {
+        const pagedPlayerStatisticsRequestDto = new PagedPlayerStatisticsRequestDto();
+        pagedPlayerStatisticsRequestDto.filters = filters;
+        pagedPlayerStatisticsRequestDto.page = page;
+        pagedPlayerStatisticsRequestDto.sortOrder = sortOrder;
+        if (sortBy !== null) {
+            pagedPlayerStatisticsRequestDto.sortBy = sortBy;
+        }
+
+        return pagedPlayerStatisticsRequestDto;
     }
 
 }

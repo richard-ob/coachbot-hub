@@ -1,0 +1,86 @@
+<div class="container my-4">
+    <div class="row">
+        <!-- Team Latest Results -->
+        <div class="card card--has-table w-100">
+            <div class="card__header card__header--has-btn">
+                <h4>Players</h4>
+                <!-- Result Filter -->
+                <ul class="team-result-filter">
+                    <li class="team-result-filter__item">
+                        <label class="checkbox checkbox-inline mr-2">
+                            <input type="checkbox" name="includeSubstituteAppearances"> Include Sub Appearances
+                            <span class="checkbox-indicator"></span>
+                        </label>
+                    </li>
+                    <li class="team-result-filter__item">
+                        <select name="timePeriod" class="form-control">
+                            <option>All Time</option>
+                        </select>
+                    </li>
+                    <li class="team-result-filter__item">
+                        <button type="button" class="btn btn-default btn-outline btn-xs card-header__button">
+                            Filter
+                        </button>
+                    </li>
+                </ul>
+                <!-- Result Filter / End -->
+            </div>
+            <div class="card__content table-responsive">
+                <app-spinner *ngIf="isLoading"></app-spinner>
+                <table *ngIf="!isLoading" class="table table--large table-striped table-hover table-clickable">
+                    <thead>
+                        <tr>
+                            <th class="team-result__ball-posession">Team</th>
+                            <th class="team-result__ball-posession">Nickname</th>
+                            <th class="team-result__ball-posession">Result</th>
+                            <th class="team-result__ball-posession">Position</th>
+                            <th class="team-result__ball-posession">Substitute?</th>
+                            <th style="cursor: pointer" class="team-result__status"
+                                (click)="loadPage(currentPage, 'Goals')">
+                                <span style=" white-space: nowrap; ">
+                                        Goals&nbsp;
+                                    <i *ngIf="sortBy === 'Goals' && sortOrder === 'ASC'"
+                                        class="fas fa-sort-up"></i>
+                                    <i *ngIf="sortBy === 'Goals' && sortOrder === 'DESC'"
+                                        class="fas fa-sort-down"></i>
+                                    <i *ngIf="sortBy !== 'Goals'" class="fas fa-sort"></i>
+                                </span>
+                            </th>
+                            <th class="team-result__ball-posession">Shots</th>
+                            <th class="team-result__ball-posession">Shots on Goal</th>
+                            <th class="team-result__ball-posession">Assists</th>
+                            <th class="team-result__ball-posession">Passes</th>
+                            <th class="team-result__ball-posession">Passes Completed</th>
+                            <th class="team-result__ball-posession">Yellow Cards</th>
+                            <th class="team-result__game-overview">Red Cards</th>
+                            <th class="team-result__game-overview">Distance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
+                            (click)="navigateToMatch(match.matchId)">
+                            <td class="team-result__score">{{match.match.readiedDate | date}}</td>
+                            <td class="team-result__score">{{match.nickname}}</td>
+                            <td class="team-result__score">{{match.matchOutcome}}</td>
+                            <td class="team-result__status">{{match.position.name}}</td>
+                            <td class="team-result__status">{{match.substitute}}</td>
+                            <td class="team-result__status">{{match.goals}}</td>
+                            <td class="team-result__status">{{match.shots}}</td>
+                            <td class="team-result__status">{{match.shotsOnGoal}}</td>
+                            <td class="team-result__status">{{match.assists}}</td>
+                            <td class="team-result__status">{{match.passes}}</td>
+                            <td class="team-result__status">{{match.passesCompleted}}</td>
+                            <td class="team-result__status">{{match.yellowCards}}</td>
+                            <td class="team-result__status">{{match.redCards}}</td>
+                            <td class="team-result__status">{{match.distanceCovered}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div *ngIf="!isLoading && totalPages > 1" class="text-center mb-4">
+            <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
+        </div>
+    </div>
+    <!-- Team Latest Results / End -->
+</div>

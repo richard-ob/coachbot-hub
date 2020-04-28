@@ -9,7 +9,11 @@ import { PlayerTeamHistoryComponent } from './player-team-history/player-team-hi
 import { PlayerProfileComponent } from './player-profile.component';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { CalendarHeatmap } from 'angular2-calendar-heatmap';
 import { PlayerProfileRoutingModule } from './player-profile.routing-module';
+import {
+    PlayerProfileActivityHeatmapComponent
+} from './player-profile-statistics/player-profile-activity-heatmap/player-profile-activity-heatmap.component';
 
 @NgModule({
     declarations: [
@@ -17,7 +21,9 @@ import { PlayerProfileRoutingModule } from './player-profile.routing-module';
         PlayerProfileComponent,
         PlayerProfileMatchesComponent,
         PlayerProfileTournamentsComponent,
-        PlayerProfileStatisticsComponent
+        PlayerProfileStatisticsComponent,
+        PlayerProfileActivityHeatmapComponent,
+        CalendarHeatmap
     ],
     imports: [
         CommonModule,

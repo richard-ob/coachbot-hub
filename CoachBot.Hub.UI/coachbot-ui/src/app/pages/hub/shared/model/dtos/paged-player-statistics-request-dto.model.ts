@@ -10,6 +10,7 @@ export class PagedPlayerStatisticsRequestDto {
 
 export class PlayerStatisticFilters {
     timePeriod: TimePeriod = TimePeriod.AllTime;
+    playerId?: number;
     teamId?: number;
     channelId?: number;
     positionId?: number;

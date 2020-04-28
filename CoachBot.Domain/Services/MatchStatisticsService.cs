@@ -46,6 +46,11 @@ namespace CoachBot.Domain.Services
             return GetPlayerStatisticTotals(filters).GetPaged(page, pageSize, sortOrder);
         }
 
+        public Model.Dtos.PagedResult<PlayerPositionMatchStatistics> GetPlayerPositionMatchStatistics(int page, int pageSize, string sortOrder, PlayerStatisticFilters filters)
+        {
+            return GetPlayerPositionMatchStatisticsQueryable(filters).GetPaged(page, pageSize, sortOrder);
+        }
+
         public List<PlayerTeamStatisticsTotals> GetPlayerTeamStatistics(int playerId)
         {
             var playerTeams = _coachBotContext.PlayerTeams
@@ -99,6 +104,19 @@ namespace CoachBot.Domain.Services
                 GeneratePlayerMatchStatistics(match);
                 GenerateTeamMatchStatistics(match);
             }
+        }
+
+        public List<PlayerAppearanceTotals> GetPlayerAppearanceTotals(int playerId)
+        {
+            return _coachBotContext.PlayerPositionMatchStatistics
+                .AsNoTracking()
+                .Where(p => p.PlayerId == playerId)
+                .Where(p => p.Match.ReadiedDate != null && p.Match.ReadiedDate.Value.Year == DateTime.Now.Year)
+                .GroupBy(p => p.Match.ReadiedDate.Value.Date)
+                .Select(s => new PlayerAppearanceTotals() {
+                    Appearances = s.Count(),
+                    AppearancesDate = s.Key
+                }).ToList();
         }
 
         #region Private Methods
@@ -168,12 +186,27 @@ namespace CoachBot.Domain.Services
             }
         }
 
+        private IQueryable<PlayerPositionMatchStatistics> GetPlayerPositionMatchStatisticsQueryable(PlayerStatisticFilters filters)
+        {
+            return _coachBotContext.PlayerPositionMatchStatistics
+                .AsNoTracking()
+                .Include(p => p.Match)
+                    .ThenInclude(p => p.TeamHome)
+                .Include(p => p.Match)
+                    .ThenInclude(p => p.TeamAway)
+                .Include(p => p.Team)
+                .Include(c => c.Channel)
+                .Include(p => p.Position)
+                .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId);
+        }
+
         private IQueryable<PlayerStatisticTotals> GetPlayerStatisticTotals(PlayerStatisticFilters filters)
         {
             return _coachBotContext
                  .PlayerPositionMatchStatistics
                  .AsNoTracking()
                  .Where(p => filters.IncludeSubstituteAppearances || !p.Substitute)
+                 .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId)
                  .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
                  .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
                  .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)

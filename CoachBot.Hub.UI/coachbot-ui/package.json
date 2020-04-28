@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "angular-bootstrap-datetimepicker": "^4.0.2",
+    "angular2-calendar-heatmap": "^0.2.2",
     "humanize-duration": "^3.21.0",
     "moment": "^2.24.0",
     "ngx-pagination": "^5.0.0",

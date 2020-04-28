@@ -23,19 +23,39 @@
                                 placeholder="Short team code">
                         </div>
                         <div class="form-group">
+                            <label class="control-label" for="input-default">Team Badge</label>
+                            <app-asset-image-uploader (imageUploaded)="updateBadgeImageId($event)"
+                                [currentAssetImageId]="team.badgeImageId">
+                            </app-asset-image-uploader>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label" for="input-default">Date Founded</label>
-                            <input type="date" class="form-control" id="input-default" [(ngModel)]="team.foundedDate"
-                                placeholder="The date the team was founded">
-                            {{team.foundedDate | date}}
+                            <!--<input type="text" class="form-control" id="input-default"
+                                [ngModel]="team.foundedDate | date: 'MM/dd/yyyy'" (ngModelChange)=""
+                                placeholder="The date the team was founded" bsDatepicker>-->
+                            <mat-datepicker #picker></mat-datepicker>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend clickable">
+                                    <span class="input-group-text" id="basic-addon1" (click)="picker.open()">
+                                        <i class="fas fa-calendar"></i>
+                                    </span>
+                                </div>
+                                <input matInput class="form-control" [matDatepicker]="picker"
+                                    [(ngModel)]="team.foundedDate">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="input-default">Region</label>
                             <select class="form-control" id="input-default" [(ngModel)]="team.regionId"
                                 placeholder="Select region...">
-                                <option *ngFor="let region of regions" [ngValue]="region.id">{{region.regionName}}
+                                <option *ngFor="let region of regions" [ngValue]="region.regionId">{{region.regionName}}
                                 </option>
                             </select>
                         </div>
+                        <button type="button" class="btn btn-primary" (click)="saveTeamProfile()" [disabled]="isSaving">
+                            <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i>
+                            Save
+                        </button>
                     </div>
                 </div>
             </div>

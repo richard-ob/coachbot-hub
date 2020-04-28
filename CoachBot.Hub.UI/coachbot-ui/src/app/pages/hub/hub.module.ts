@@ -36,6 +36,11 @@ import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 import { PlayerProfileModule } from './player-profile/player-profile.module';
 import { CurrentTournamentsComponent } from './tournaments/current-tournaments/current-tournaments.component';
+import { AssetImageUploaderComponent } from 'src/app/shared/components/asset-image-uploader/asset-image-uploader.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -66,7 +71,8 @@ import { CurrentTournamentsComponent } from './tournaments/current-tournaments/c
     TournamentEditionManagerComponent,
     TournamentGroupTeamManagerComponent,
     MatchEditorComponent,
-    CurrentTournamentsComponent
+    CurrentTournamentsComponent,
+    AssetImageUploaderComponent
   ],
   imports: [
     CommonModule,
@@ -76,7 +82,13 @@ import { CurrentTournamentsComponent } from './tournaments/current-tournaments/c
     NgxPaginationModule,
     DlDateTimeDateModule,
     DlDateTimePickerModule,
-    PlayerProfileModule
+    PlayerProfileModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    BrowserAnimationsModule
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
   ]
 })
 export class HubModule { }

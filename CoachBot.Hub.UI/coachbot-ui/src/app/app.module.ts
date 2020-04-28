@@ -11,6 +11,8 @@ import { CoreModule } from './core/core.module';
 import { ManualComponent } from './pages/manual/manual.component';
 import { TeamComponent } from './pages/team/team.component';
 import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component'
     HttpClientModule,
     HubModule,
     LoginModule,
-    ErrorModule
+    ErrorModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

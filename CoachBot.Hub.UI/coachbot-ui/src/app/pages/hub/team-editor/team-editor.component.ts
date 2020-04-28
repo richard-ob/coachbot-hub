@@ -5,6 +5,7 @@ import { PlayerTeam } from '../shared/model/player-team.model';
 import { Team } from '../shared/model/team.model';
 import { RegionService } from '../shared/services/region.service';
 import { Region } from '../shared/model/region.model';
+import { TeamService } from '../shared/services/team.service';
 
 @Component({
     selector: 'app-team-editor',
@@ -18,11 +19,13 @@ export class TeamEditorComponent implements OnInit {
     teamPlayers: PlayerTeam[];
     regions: Region[];
     isLoading = true;
+    isSaving = false;
     noTeamsAvailable = false;
 
     constructor(
         private playerTeamservice: PlayerTeamService,
         private playerService: PlayerService,
+        private teamService: TeamService,
         private regionService: RegionService
     ) { }
 
@@ -41,5 +44,20 @@ export class TeamEditorComponent implements OnInit {
                 });
             });
         });
+    }
+
+    saveTeamProfile() {
+        this.isSaving = true;
+        this.teamService.updateTeam(this.team).subscribe(() => {
+            this.isSaving = false;
+            this.teamService.getTeam(this.team.id).subscribe(team => {
+                this.team = team;
+            });
+        });
+    }
+
+    updateBadgeImageId(assetImageId: number) {
+        console.log(assetImageId);
+        this.team.badgeImageId = assetImageId;
     }
 }

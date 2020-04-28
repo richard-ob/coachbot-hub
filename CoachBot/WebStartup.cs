@@ -60,6 +60,8 @@ namespace CoachBot
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
+                    options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                    //options.SerializerSettings.DateFormatString = "yyyy'-'dd'-'MM'T'HH':'mm':'ssZ";
                     options.SerializerSettings.Converters.Add(new UlongToStringConverter());
                     options.SerializerSettings.Converters.Add(new UlongNullableToStringConverter());
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -94,6 +96,7 @@ namespace CoachBot
                 .AddTransient<DiscordNotificationService>()
                 .AddTransient<DiscordService>()
                 .AddSingleton<CacheService>()
+                .AddTransient<AssetImageService>()
                 .AddSingleton<BotInstance>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
 

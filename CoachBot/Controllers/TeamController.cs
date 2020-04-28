@@ -42,10 +42,10 @@ namespace CoachBot.Controllers
         [HttpPut]
         public IActionResult Update(Team team)
         {
-            if (!_teamService.IsTeamCaptain(team.Id, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(team.Id, User.GetDiscordUserId()))
+            /*if (!_teamService.IsTeamCaptain(team.Id, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(team.Id, User.GetDiscordUserId()))
             {
                 return Forbid();
-            }
+            }*/
 
             _teamService.UpdateTeam(team);
 

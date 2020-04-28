@@ -49,6 +49,7 @@ namespace CoachBot.Database
         public DbSet<FantasyTeam> FantasyTeams { get; set; }
         public DbSet<FantasyPlayer> FantasyPlayers { get; set; }
         public DbSet<FantasyTeamSelection> FantasyTeamSelections { get; set; }
+        public DbSet<AssetImage> AssetImages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -105,6 +106,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<FantasyPlayer>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<FantasyTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<FantasyTeamSelection>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<AssetImage>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
 
             // Conversions
             modelBuilder.Entity<Search>().Property(p => p.DiscordSearchMessages).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<Dictionary<ulong, ulong>>(v));

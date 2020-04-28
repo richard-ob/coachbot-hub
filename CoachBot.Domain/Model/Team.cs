@@ -21,6 +21,10 @@ namespace CoachBot.Domain.Model
 
         public string BadgeEmote { get; set; }
 
+        public int? BadgeImageId { get; set; }
+
+        public AssetImage BadgeImage { get; set; }
+
         public string DisplayName => BadgeEmote ?? Name;
 
         public TeamType TeamType { get; set; }

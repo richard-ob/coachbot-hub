@@ -32,4 +32,8 @@ export class TeamService {
         return this.http.post<PagedResult<TeamStatistics>>(`${environment.apiUrl}/api/teamstatistics`, pagedTeamStatisticsRequestDto);
     }
 
+    updateTeam(team: Team) {
+        return this.http.put<void>(`${environment.apiUrl}/api/team`, team);
+    }
+
 }

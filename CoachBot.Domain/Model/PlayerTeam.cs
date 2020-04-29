@@ -20,6 +20,8 @@ namespace CoachBot.Domain.Model
 
         public TeamRole TeamRole { get; set; } = TeamRole.Player;
 
+        public bool isCurrentTeam => LeaveDate == null;
+
         public DateTime JoinDate { get; set; }
 
         public DateTime? LeaveDate { get; set; }

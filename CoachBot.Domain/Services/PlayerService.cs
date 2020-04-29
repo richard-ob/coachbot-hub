@@ -55,7 +55,14 @@ namespace CoachBot.Domain.Services
 
         public Player GetPlayer(ulong discordUserId, bool createIfNotExists = false, string playerName = null)
         {
-            var player = _coachBotContext.Players.Include(p => p.Positions).ThenInclude(p => p.Position).FirstOrDefault(p => p.DiscordUserId == discordUserId);
+            var player = _coachBotContext.Players
+                .Include(p => p.Positions)
+                    .ThenInclude(p => p.Position)
+                .Include(p => p.Teams)
+                    .ThenInclude(t => t.Team)
+                    .ThenInclude(t => t.BadgeImage)
+                .Include(p => p.Country)
+                .FirstOrDefault(p => p.DiscordUserId == discordUserId);
 
             if (createIfNotExists && player == null)
             {
@@ -75,6 +82,11 @@ namespace CoachBot.Domain.Services
 
         public void UpdatePlayer(Player player)
         {
+            var existingPlayer = _coachBotContext.Players.Single(p => p.Id == player.Id);
+            existingPlayer.Name = player.Name;
+            existingPlayer.CountryId = player.CountryId;
+            existingPlayer.DisableDMNotifications = player.DisableDMNotifications;
+            existingPlayer.PlayingSince = player.PlayingSince;
             _coachBotContext.Players.Update(player);
             _coachBotContext.SaveChanges();
         }

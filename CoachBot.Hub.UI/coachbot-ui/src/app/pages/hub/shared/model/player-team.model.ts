@@ -11,4 +11,5 @@ export interface PlayerTeam {
     teamRole: TeamRole;
     joinDate?: Date;
     leaveDate?: Date;
+    isCurrentTeam: boolean;
 }

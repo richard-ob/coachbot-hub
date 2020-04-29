@@ -8,6 +8,8 @@ import { SteamService } from '../shared/services/steam.service.';
 import { PositionService } from '../shared/services/position.service';
 import { Position } from '../shared/model/position';
 import { PlayerPosition } from '../shared/model/player-position.model';
+import { PlayerTeamService } from '../shared/services/player-team.service';
+import { PlayerTeam } from '../shared/model/player-team.model';
 
 @Component({
     selector: 'app-profile-editor',
@@ -26,7 +28,8 @@ export class ProfileEditorComponent implements OnInit {
         private playerService: PlayerService,
         private countryService: CountryService,
         private steamService: SteamService,
-        private positionService: PositionService
+        private positionService: PositionService,
+        private playerTeamService: PlayerTeamService
     ) { }
 
     ngOnInit() {
@@ -36,12 +39,12 @@ export class ProfileEditorComponent implements OnInit {
                 this.player = player;
                 this.positionService.getPositions().subscribe(positions => {
                     this.positions = positions;
+                    this.isLoading = false;
                     if (this.player.steamID && this.player.steamID.length > 5) {
                         this.steamService.getUserProfiles([this.player.steamID]).subscribe(steamResponse => {
                             if (steamResponse && steamResponse.response.players) {
                                 this.steamUserProfile = steamResponse.response.players[0];
                             }
-                            this.isLoading = false;
                         });
                     }
                 });
@@ -59,6 +62,17 @@ export class ProfileEditorComponent implements OnInit {
             this.player.positions = [];
         }
         this.player.positions.push(playerPosition);
+    }
+
+    leaveTeam(playerTeam: PlayerTeam) {
+        playerTeam.leaveDate = new Date();
+        this.isLoading = true;
+        this.playerTeamService.updatePlayerTeam(playerTeam).subscribe(() => {
+            this.playerService.getCurrentPlayer().subscribe(player => {
+                this.player = player;
+                this.isLoading = false;
+            });
+        });
     }
 
     saveChanges() {

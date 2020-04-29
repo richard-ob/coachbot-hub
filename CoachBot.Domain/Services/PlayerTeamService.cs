@@ -64,7 +64,10 @@ namespace CoachBot.Domain.Services
                 throw new UnauthorizedAccessException("You cannot remove yourself as a captain of a team without closing the team");
             }
 
-            _dbContext.PlayerTeams.Update(playerTeam);
+            current.LeaveDate = playerTeam.LeaveDate;
+            current.TeamRole = playerTeam.TeamRole;
+
+            _dbContext.PlayerTeams.Update(current);
             _dbContext.SaveChanges();
         }
 

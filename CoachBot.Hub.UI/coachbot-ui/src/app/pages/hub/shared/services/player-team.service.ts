@@ -30,4 +30,8 @@ export class PlayerTeamService {
         return this.http.post<PlayerTeam[]>(`${environment.apiUrl}/api/player-team/team`, playerTeamRequestDto);
     }
 
+    updatePlayerTeam(playerTeam: PlayerTeam): Observable<void> {
+        return this.http.put<void>(`${environment.apiUrl}/api/player-team`, playerTeam);
+    }
+
 }

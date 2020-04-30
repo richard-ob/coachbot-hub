@@ -22,7 +22,6 @@ import { TeamListComponent } from './team-list/team-list.component';
 import { SteamProfileFlagPipe } from './player-list/helpers/steam-profile-flag.pipe';
 import { ProfileEditorComponent } from './profile-editor/profile-editor.component';
 import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
-import { TeamProfileComponent } from './team-profile/team-profile.component';
 import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
 import { TeamEditorComponent } from './team-editor/team-editor.component';
 import { TeamEditorPlayerListComponent } from './team-editor/team-editor-player-list/team-editor-player-list.component';
@@ -37,11 +36,12 @@ import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-
 import { PlayerProfileModule } from './player-profile/player-profile.module';
 import { CurrentTournamentsComponent } from './tournaments/current-tournaments/current-tournaments.component';
 import { AssetImageUploaderComponent } from 'src/app/shared/components/asset-image-uploader/asset-image-uploader.component';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgPipesModule } from 'ngx-pipes';
+import { TeamProfileModule } from './team-profile/team-profile.module';
+import { RecentMatchesModule } from './recent-matches/recent-matches.module';
 
 @NgModule({
   declarations: [
@@ -57,14 +57,12 @@ import { NgPipesModule } from 'ngx-pipes';
     PercentageSharePipe,
     ServerManagerComponent,
     RegionManagerComponent,
-    RecentMatchesComponent,
     UpcomingMatchesComponent,
     PlayerListComponent,
     TeamListComponent,
     SteamProfileFlagPipe,
     ProfileEditorComponent,
     SteamIDValidatorComponent,
-    TeamProfileComponent,
     TeamEditorComponent,
     TeamEditorPlayerListComponent,
     TournamentCreatorComponent,
@@ -84,6 +82,8 @@ import { NgPipesModule } from 'ngx-pipes';
     DlDateTimeDateModule,
     DlDateTimePickerModule,
     PlayerProfileModule,
+    TeamProfileModule,
+    RecentMatchesModule,
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserAnimationsModule,

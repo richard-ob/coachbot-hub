@@ -5,10 +5,28 @@
             <h4>Matches</h4>
             <ul class="team-result-filter">
                 <li class="team-result-filter__item">
-                    <input type="date" class="form-control input-xs" placeholder="Date From">
+                    <mat-datepicker #dateFromPicker></mat-datepicker>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend clickable">
+                            <span class="input-group-text" id="basic-addon1" (click)="dateFromPicker.open()">
+                                <i class="fas fa-calendar"></i>
+                            </span>
+                        </div>
+                        <input matInput class="form-control input-xs" [matDatepicker]="dateFromPicker"
+                            [(ngModel)]="filters.dateFrom" placeholder="Date From">
+                    </div>
                 </li>
                 <li class="team-result-filter__item">
-                    <input type="date" class="form-control input-xs" placeholder="Date To">
+                    <mat-datepicker #dateToPicker></mat-datepicker>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend clickable">
+                            <span class="input-group-text" id="basic-addon1" (click)="dateToPicker.open()">
+                                <i class="fas fa-calendar"></i>
+                            </span>
+                        </div>
+                        <input matInput class="form-control input-xs" [matDatepicker]="dateToPicker"
+                            [(ngModel)]="filters.dateTo" placeholder="Date To">
+                    </div>
                 </li>
                 <li class="team-result-filter__item">
                     <select class="form-control">

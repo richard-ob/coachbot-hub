@@ -7,13 +7,12 @@
             </div>
             <div class="player-info">
                 <div class="player-info__item player-info__item--details" aria-hidden="false">
-                    <a class="btn btn-primary-inverse btn-xs" style="position: absolute; right: 72px; bottom: 26px;"
-                        routerLink="/edit-profile">Edit Profile</a>
                     <img *ngIf="steamUserProfile.avatarfull" [attr.src]="steamUserProfile.avatarfull"
                         style="position: absolute; right: 30px; top: 33px;">
                     <div class="player-info__title player-info__title--desktop">
                         <h1 class="player-info__name">
-                            <span class="player-info__first-name">{{player.name}}</span>
+                            <span class="player-info__first-name">{{player.name}} 
+                                    <a class="btn btn-primary-inverse btn-xs ml-2" routerLink="/edit-profile">Edit Profile</a></span>
                         </h1>
                     </div>
                     <div class="player-info-details">

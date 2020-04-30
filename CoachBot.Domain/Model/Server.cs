@@ -25,6 +25,12 @@ namespace CoachBot.Model
 
         public Country Country { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
+        public DateTime? DeactivatedDate { get; set; }
+
+        public DateTime? DateModified { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MatchService } from '../shared/services/match.service';
 import { Match } from '../shared/model/match.model';
 import { MatchTypes } from '../shared/model/match-types.enum';
+import { PagedMatchRequestDto } from '../shared/model/dtos/paged-match-request-dto.model';
 @Component({
     selector: 'app-recent-matches',
     templateUrl: './recent-matches.component.html',
@@ -11,6 +12,7 @@ export class RecentMatchesComponent implements OnInit {
 
     @Input() playerId: number;
     @Input() teamId: number;
+    filters = new PagedMatchRequestDto();
     matchTypes = MatchTypes;
     matches: Match[];
     currentPage = 1;
@@ -20,11 +22,15 @@ export class RecentMatchesComponent implements OnInit {
     constructor(private matchService: MatchService) { }
 
     ngOnInit() {
+        this.filters.regionId = 2;
+        this.filters.playerId = this.playerId;
+        this.filters.teamId = this.teamId;
         this.loadPage(1);
     }
 
     loadPage(page: number) {
-        this.matchService.getMatches(2, page, this.playerId, this.teamId).subscribe(response => {
+        this.filters.page = page;
+        this.matchService.getMatches(this.filters).subscribe(response => {
             this.matches = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;

@@ -1,8 +1,34 @@
 <div class="container my-4">
     <ng-container *ngIf="tournamentEdition && !isLoading; else spinner">
-        <div class="card">
+        <div class="card card--has-table">
             <div class="card__header">
                 <h4>Tournament Editor</h4>
+            </div>
+            <div class="card__content">
+
+                <table class="table table-striped">
+                    <thead>
+                        <th>Name</th>
+                        <th>Format</th>
+                        <th>Is Public</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let edition of tournament.tournamentEditions">
+                            <td><a [routerLink]="['/tournament-edition-manager/', edition.id]">{{edition.name}}</a></td>
+                            <td>{{edition.format}}vs{{edition.format}}</td>
+                            <td>{{edition.isPublic ? 'Yes' : 'No' }}</td>
+                            <td>{{edition.startDate | date}}</td>
+                            <td>{{edition.endDate | date }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card__header">
+                <h4>Tournament Creator</h4>
             </div>
             <div class="card__content">
                 <div class="form-group">
@@ -29,25 +55,22 @@
 
                 <div class="form-group">
                     <label>Start Date</label>
-                    <input [(ngModel)]="tournamentEdition.startDate" name="startDate" type="date" class="form-control">
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                    <div class="input-group">
+                        <div class="input-group-prepend clickable">
+                            <span class="input-group-text" id="basic-addon1" (click)="startDatePicker.open()">
+                                <i class="fas fa-calendar"></i>
+                            </span>
+                        </div>
+                        <input matInput class="form-control" [matDatepicker]="startDatePicker"
+                            [(ngModel)]="tournamentEdition.startDate" placeholder="Start Date">
+                    </div>
                 </div>
 
-                <button class="btn btn-success" (click)="createTournamentEdition()" type="button"
+                <button class="btn btn-primary" (click)="createTournamentEdition()" type="button"
                     [disabled]="isCreating">Create</button>
 
 
-                <table class="table table-striped my-3">
-                    <thead>
-                        <th>Name</th>
-                        <th>Format</th>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let edition of tournament.tournamentEditions">
-                            <td><a [routerLink]="['/tournament-edition-manager/', edition.id]">{{edition.name}}</a></td>
-                            <td>{{edition.format}}vs{{edition.format}}</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </ng-container>

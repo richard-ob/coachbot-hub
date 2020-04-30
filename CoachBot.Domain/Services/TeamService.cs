@@ -23,6 +23,7 @@ namespace CoachBot.Domain.Services
                 .Include(t => t.Channels)
                     .ThenInclude(c => c.ChannelPositions)
                 .Include(t => t.Region)
+                .Include(t => t.BadgeImage)
                 .Single(t => t.Id == teamId);
         }
 

@@ -14,16 +14,7 @@ export class MatchService {
 
     constructor(private http: HttpClient) { }
 
-    getMatches(
-        regionId: number, page: number, playerId: number = null, teamId: number = null, upcomingOnly = false
-    ): Observable<PagedResult<Match>> {
-        const pagedMatchRequestDto = new PagedMatchRequestDto();
-        pagedMatchRequestDto.page = page;
-        pagedMatchRequestDto.regionId = regionId;
-        pagedMatchRequestDto.playerId = playerId;
-        pagedMatchRequestDto.teamId = teamId;
-        pagedMatchRequestDto.upcomingOnly = upcomingOnly;
-
+    getMatches(pagedMatchRequestDto: PagedMatchRequestDto): Observable<PagedResult<Match>> {
         return this.http.post<PagedResult<Match>>(`${environment.apiUrl}/api/match`, pagedMatchRequestDto);
     }
 

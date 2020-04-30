@@ -40,9 +40,12 @@
     </div>
     <br />
     <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">
-                <i class="fa fa-plus"></i> Add Server</h4>
+        <div class="card__header">
+            <h4>
+                Add Server
+            </h4>
+        </div>
+        <div class="card__content">
             <form class="d-flex">
                 <div class="form-group flex-fill p-2">
                     <label for="serverName">Server Name</label>
@@ -77,8 +80,8 @@
                     </select>
                 </div>
             </form>
-            <div class="form-group ">
-                <button type="submit" class="btn btn-outline-success float-right" (click)="addServer()">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary float-right" (click)="addServer()">
                     <i class="fa fa-check"></i> Add</button>
             </div>
         </div>

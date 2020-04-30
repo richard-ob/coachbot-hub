@@ -1,0 +1,4 @@
+<app-recent-matches *ngIf="!isLoading; else spinner" [teamId]="teamId"></app-recent-matches>
+<ng-template #spinner>
+    <app-spinner></app-spinner>
+</ng-template>

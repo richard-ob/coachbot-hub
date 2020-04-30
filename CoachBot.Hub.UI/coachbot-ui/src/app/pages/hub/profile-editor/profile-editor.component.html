@@ -1,11 +1,8 @@
 <div class="container my-4">
-    <!-- Team Latest Results -->
     <div id="player-profile-recent-matches">
         <div class="card">
             <div class="card__header">
                 <h4>Edit Profile</h4>
-                <!-- Result Filter -->
-                <!-- Result Filter / End -->
             </div>
             <div class="card__content">
                 <div class="row">
@@ -46,9 +43,9 @@
                         <div class="form-group">
                             <label class="control-label" for="input-default">Nationality</label>
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend clickable">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">
-                                        <i *ngIf="player.country" class="flag-icon" [ngClass]="'flag-icon-' + (countries | filterBy:['id']:player.countryId)[0].code.toLowerCase()"></i>
+                                        <i *ngIf="player.country" class="flag-icon flag-icon-squared" [ngClass]="'flag-icon-' + (countries | filterBy:['id']:player.countryId)[0].code.toLowerCase()"></i>
                                     </span>
                                 </div>
                                 <select class="form-control" id="input-default" [(ngModel)]="player.countryId"
@@ -72,11 +69,10 @@
                             </ng-template>
                         </div>
                         <div class="float-right">
-                            <button class="btn btn-success btn-sm" (click)="saveChanges()">Save</button>
+                            <button class="btn btn-primary btn-sm" (click)="saveChanges()">Save</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Team Latest Results / End -->
     </div>

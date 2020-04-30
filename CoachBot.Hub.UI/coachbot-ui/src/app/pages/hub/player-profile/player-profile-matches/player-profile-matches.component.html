@@ -3,7 +3,7 @@
         <!-- Team Latest Results -->
         <div class="card card--has-table w-100">
             <div class="card__header card__header--has-btn">
-                <h4>Players</h4>
+                <h4>Matches</h4>
                 <!-- Result Filter -->
                 <ul class="team-result-filter">
                     <li class="team-result-filter__item">
@@ -78,7 +78,7 @@
                 </table>
             </div>
         </div>
-        <div *ngIf="!isLoading && totalPages > 1" class="text-center mb-4">
+        <div *ngIf="!isLoading && totalPages > 1" class="text-center w-100 mb-4">
             <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
         </div>
     </div>

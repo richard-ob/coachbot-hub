@@ -5,4 +5,6 @@ export class PagedMatchRequestDto {
     playerId?: number;
     teamId?: number;
     upcomingOnly = false;
+    dateFrom?: Date;
+    dateTo?: Date;
 }

@@ -1,8 +1,28 @@
 <div class="container my-4">
     <ng-container *ngIf="tournaments; else spinner">
+        <div class="card card--has-table">
+            <div class="card__header">
+                <h4>Tournaments</h4>
+            </div>
+            <div class="card__content">
+                <table class="table table-striped">
+                    <thead>
+                        <th>Name</th>
+                        <th>Type</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let tournament of tournaments">
+                            <td><a [routerLink]="['/tournament-editor/', tournament.id]">{{tournament.name}}</a>
+                            </td>
+                            <td>{{tournament.tournamentType}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="card">
             <div class="card__header">
-                <h4>Create Tournamen</h4>
+                <h4>Create Tournament</h4>
             </div>
             <div class="card__content">
                 <div class="form-group">
@@ -16,24 +36,11 @@
                         <option [ngValue]="4">Round Robbin Ladder</option>
                     </select>
                 </div>
-
-                <button class="btn btn-success" (click)="createTournament()" type="button"
+                <button class="btn btn-primary" (click)="createTournament()" type="button"
                     [disabled]="isCreating">Create</button>
-
-                <table class="table table-striped my-3">
-                    <thead>
-                        <th>Name</th>
-                        <th>Type</th>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let tournament of tournaments">
-                            <td><a [routerLink]="['/tournament-editor/', tournament.id]">{{tournament.name}}</a></td>
-                            <td>{{tournament.tournamentType}}</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
+
     </ng-container>
     <ng-template #spinner>
         <app-spinner></app-spinner>

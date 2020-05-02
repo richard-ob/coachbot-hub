@@ -20,7 +20,7 @@
                 <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals"
                     (click)="navigateToPlayerProfile(playerTeamStatisticsTotal.playerTeam.playerId)">
                     <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.player.name}}</td>
-                    <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.teamRole}}</td>
+                    <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.teamRole | teamRole}}</td>
                     <td class="team-result__date">{{playerTeamStatisticsTotal.position?.name}}</td>
                     <td class="team-result__date">
                         <span *ngIf="playerTeamStatisticsTotal.playerTeam.player.country; else unknownFlag" class="flag-icon"

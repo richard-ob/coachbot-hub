@@ -25,7 +25,7 @@
                     <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals">
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.team.name}}</td>
                         <td class="team-result__date">Club</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.teamRole}}</td>
+                        <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.teamRole | teamRole}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.position?.name}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.joinDate | date}}</td>
                         <td class="team-result__date">

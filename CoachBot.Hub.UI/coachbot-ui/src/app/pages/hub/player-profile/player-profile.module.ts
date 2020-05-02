@@ -15,6 +15,7 @@ import {
 } from './player-profile-statistics/player-profile-activity-heatmap/player-profile-activity-heatmap.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { CalendarHeatmapModule } from 'src/app/shared/components/calendar-heatmap/calendar-heatmap.module';
+import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { CalendarHeatmapModule } from 'src/app/shared/components/calendar-heatma
         NgxPaginationModule,
         PlayerProfileRoutingModule,
         SweetAlert2Module,
-        CalendarHeatmapModule
+        CalendarHeatmapModule,
+        HubPipesModule
     ]
 })
 export class PlayerProfileModule { }

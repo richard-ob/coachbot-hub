@@ -19,6 +19,7 @@ import { CalendarHeatmapModule } from 'src/app/shared/components/calendar-heatma
 import {
     TeamProfileActivityHeatmapComponent
 } from './team-profile-statistics/team-profile-activity-heatmap/team-profile-activity-heatmap.component';
+import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
 
 @NgModule({
     declarations: [
@@ -39,7 +40,8 @@ import {
         NgxPaginationModule,
         RecentMatchesModule,
         TeamProfileRoutingModule,
-        CalendarHeatmapModule
+        CalendarHeatmapModule,
+        HubPipesModule
     ]
 })
 export class TeamProfileModule { }

@@ -9,6 +9,7 @@ import { PagedTeamStatisticsRequestDto } from '../model/dtos/paged-team-statisti
 import { TimePeriod } from '../model/time-period.enum';
 import { Team } from '../model/team.model';
 import { PlayerTeamStatisticsTotals } from '../model/player-team-statistics-totals.model';
+import { MatchDayTotals } from '../model/team-match-day-totals';
 
 @Injectable({
     providedIn: 'root'
@@ -31,6 +32,10 @@ export class TeamService {
         pagedTeamStatisticsRequestDto.timePeriod = TimePeriod.AllTime;
 
         return this.http.post<PagedResult<TeamStatistics>>(`${environment.apiUrl}/api/teamstatistics`, pagedTeamStatisticsRequestDto);
+    }
+
+    getTeamMatchDayTotals(teamId: number): Observable<MatchDayTotals[]> {
+        return this.http.get<MatchDayTotals[]>(`${environment.apiUrl}/api/teamstatistics/match-totals/${teamId}`);
     }
 
     getTeamSquad(teamId: number): Observable<PlayerTeamStatisticsTotals[]> {

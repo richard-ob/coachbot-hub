@@ -3,6 +3,7 @@ using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace CoachBot.Controllers
 {
@@ -22,6 +23,12 @@ namespace CoachBot.Controllers
         public PagedResult<TeamStatisticTotals> PagedTeamStatistics([FromBody]PagedTeamStatisticsRequestDto pagedRequest)
         {
             return _matchStatisticsService.GetTeamStatistics(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.TimePeriod, pagedRequest.TeamId);
+        }
+
+        [HttpGet("match-totals/{teamId}")]
+        public List<MatchDayTotals> GetPlayerAppearanceTotals(int teamId)
+        {
+            return _matchStatisticsService.GetTeamMatchDayTotals(teamId);
         }
     }
 }

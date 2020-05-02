@@ -111,16 +111,30 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        public List<PlayerAppearanceTotals> GetPlayerAppearanceTotals(int playerId)
+        public List<MatchDayTotals> GetPlayerMatchDayTotals(int playerId)
         {
             return _coachBotContext.PlayerPositionMatchStatistics
                 .AsNoTracking()
                 .Where(p => p.PlayerId == playerId)
                 .Where(p => p.Match.ReadiedDate != null && p.Match.ReadiedDate.Value.Year == DateTime.Now.Year)
                 .GroupBy(p => p.Match.ReadiedDate.Value.Date)
-                .Select(s => new PlayerAppearanceTotals() {
-                    Appearances = s.Count(),
-                    AppearancesDate = s.Key
+                .Select(s => new MatchDayTotals() {
+                    Matches = s.Count(),
+                    MatchDayDate = s.Key
+                }).ToList();
+        }
+
+        public List<MatchDayTotals> GetTeamMatchDayTotals(int teamId)
+        {
+            return _coachBotContext.TeamMatchStatistics
+                .AsNoTracking()
+                .Where(t => t.TeamId == teamId)
+                .Where(t => t.Match.ReadiedDate != null && t.Match.ReadiedDate.Value.Year == DateTime.Now.Year)
+                .GroupBy(t => t.Match.ReadiedDate.Value.Date)
+                .Select(s => new MatchDayTotals()
+                {
+                    Matches = s.Count(),
+                    MatchDayDate = s.Key
                 }).ToList();
         }
 

@@ -32,9 +32,9 @@ namespace CoachBot.Controllers
         }
 
         [HttpGet("appearance-totals/{playerId}")]
-        public List<PlayerAppearanceTotals> GetPlayerAppearanceTotals(int playerId)
+        public List<MatchDayTotals> GetPlayerAppearanceTotals(int playerId)
         {
-            return _matchStatisticsService.GetPlayerAppearanceTotals(playerId);
+            return _matchStatisticsService.GetPlayerMatchDayTotals(playerId);
         }
 
     }

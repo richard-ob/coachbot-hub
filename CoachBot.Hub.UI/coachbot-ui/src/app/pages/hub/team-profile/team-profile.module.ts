@@ -15,6 +15,10 @@ import { TeamProfilePlayerHistoryComponent } from './team-profile-player-history
 import {
     TeamProfileStatisticsLeaderboardComponent
 } from './team-profile-statistics/team-profile-statistics-leaderboard/team-profile-statistics-leaderboard.component';
+import { CalendarHeatmapModule } from 'src/app/shared/components/calendar-heatmap/calendar-heatmap.module';
+import {
+    TeamProfileActivityHeatmapComponent
+} from './team-profile-statistics/team-profile-activity-heatmap/team-profile-activity-heatmap.component';
 
 @NgModule({
     declarations: [
@@ -24,6 +28,7 @@ import {
         TeamProfileTournamentsComponent,
         TeamProfilePlayerHistoryComponent,
         TeamProfileStatisticsLeaderboardComponent,
+        TeamProfileActivityHeatmapComponent,
         TeamProfileComponent
     ],
     imports: [
@@ -33,7 +38,8 @@ import {
         SpinnerModule,
         NgxPaginationModule,
         RecentMatchesModule,
-        TeamProfileRoutingModule
+        TeamProfileRoutingModule,
+        CalendarHeatmapModule
     ]
 })
 export class TeamProfileModule { }

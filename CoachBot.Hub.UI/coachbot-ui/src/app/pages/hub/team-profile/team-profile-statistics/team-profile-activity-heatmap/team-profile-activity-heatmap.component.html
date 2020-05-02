@@ -1,0 +1,16 @@
+<div class="card card--has-table">
+    <div class="card__header card__header--has-btn">
+        <h4 title="Activity in 2020">Activity</h4>
+        <ul class="team-result-filter">
+            <li class="team-result-filter__item">
+                <button type="button" class="btn btn-default btn-outline btn-xs card-header__button">
+                    Filter
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div class="card__content p-1">
+        <calendar-heatmap [data]="matchData" [overview]="overview" [color]="'#3b7eab'">
+        </calendar-heatmap>
+    </div>
+</div>

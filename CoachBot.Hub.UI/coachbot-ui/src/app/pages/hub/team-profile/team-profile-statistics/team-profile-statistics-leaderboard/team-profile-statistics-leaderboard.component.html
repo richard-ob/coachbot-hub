@@ -1,6 +1,6 @@
 <div class="card card--has-table">
     <div class="card__header">
-        <h4 class="text-center">Top {{statisticDisplayName}}</h4>
+        <h4 class="text-center">{{statisticDisplayName}}</h4>
     </div>
     <div class="card__content">
         <div *ngIf="!isLoading; else spinner" class="player-profile-statistics__statistic-box">
@@ -13,7 +13,7 @@
             </div>
         </div>
         <ng-template #spinner>
-            <app-spinner></app-spinner>
+            <app-spinner class="py-3"></app-spinner>
         </ng-template>
     </div>
 </div>

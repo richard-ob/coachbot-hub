@@ -11,7 +11,7 @@ import { PagedPlayerStatisticsRequestDto, PlayerStatisticFilters } from '../mode
 import { TimePeriod } from '../model/time-period.enum';
 import { PlayerTeamStatisticsTotals } from '../model/player-team-statistics-totals.model';
 import { PlayerProfile } from '../model/player-profile.model';
-import { PlayerAppearanceTotals } from '../model/player-appearance-totals.model';
+import { MatchDayTotals } from '../model/team-match-day-totals';
 import { PlayerPositionMatchStatistics } from '../model/player-match-statistics.model';
 
 @Injectable({
@@ -50,8 +50,8 @@ export class PlayerService {
         return this.http.get<PlayerTeamStatisticsTotals[]>(`${environment.apiUrl}/api/player/${playerId}/team-history`);
     }
 
-    getPlayerAppearanceTotals(playerId: number): Observable<PlayerAppearanceTotals[]> {
-        return this.http.get<PlayerAppearanceTotals[]>(`${environment.apiUrl}/api/player-statistics/appearance-totals/${playerId}`);
+    getPlayerAppearanceTotals(playerId: number): Observable<MatchDayTotals[]> {
+        return this.http.get<MatchDayTotals[]>(`${environment.apiUrl}/api/player-statistics/appearance-totals/${playerId}`);
     }
 
     getPlayerProfile(playerId: number): Observable<PlayerProfile> {

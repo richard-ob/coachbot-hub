@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OverviewType, CalendarHeatmapData } from 'angular2-calendar-heatmap';
 import { PlayerService } from '../../../shared/services/player.service';
-import { PlayerAppearanceTotals } from '../../../shared/model/player-appearance-totals.model';
+import { MatchDayTotals } from '../../../shared/model/team-match-day-totals';
 
 @Component({
     selector: 'app-player-profile-activity-heatmap',
@@ -14,7 +14,7 @@ export class PlayerProfileActivityHeatmapComponent implements OnInit {
     @Input() playerId: number;
     isLoading = true;
     overview = OverviewType.year;
-    appearanceTotals: PlayerAppearanceTotals[];
+    appearanceTotals: MatchDayTotals[];
     appearanceData: CalendarHeatmapData[];
 
     constructor(private route: ActivatedRoute, private playerService: PlayerService) { }
@@ -51,10 +51,10 @@ export class PlayerProfileActivityHeatmapComponent implements OnInit {
     }
 
     private getAppearanceTotalForDate(totalsForDate: Date) {
-        const appearanceTotal = this.appearanceTotals.find(t => new Date(t.appearancesDate).getTime() === totalsForDate.getTime());
+        const appearanceTotal = this.appearanceTotals.find(t => new Date(t.matchDayDate).getTime() === totalsForDate.getTime());
 
         if (appearanceTotal) {
-            return appearanceTotal.appearances;
+            return appearanceTotal.matches;
         }
 
         return 1;

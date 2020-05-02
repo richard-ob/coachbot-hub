@@ -1,15 +1,18 @@
-<div class="row">
-    <app-team-profile-statistics-leaderboard class="col-3" [teamId]="teamId" [statisticSortColumn]="'Appearances'"
-        [statisticProperty]="'appearances'" [statisticDisplayName]="'Appearances'">
-    </app-team-profile-statistics-leaderboard>
+<div class="py-4">
+    <app-team-profile-activity-heatmap [teamId]="teamId"></app-team-profile-activity-heatmap>
+    <div class="row pt-2">
+        <app-team-profile-statistics-leaderboard class="col-3" [teamId]="teamId" [statisticSortColumn]="'Appearances'"
+            [statisticProperty]="'appearances'" [statisticDisplayName]="'Appearances'">
+        </app-team-profile-statistics-leaderboard>
 
-    <app-team-profile-statistics-leaderboard class="col-3" [teamId]="teamId" [statisticSortColumn]="'Goals'"
-        [statisticProperty]="'goals'" [statisticDisplayName]="'Goals'">
-    </app-team-profile-statistics-leaderboard>
-    <app-team-profile-statistics-leaderboard class="col-3" [teamId]="teamId" [statisticSortColumn]="'Assists'"
-        [statisticProperty]="'assists'" [statisticDisplayName]="'Assists'">
-    </app-team-profile-statistics-leaderboard>
-    <app-team-profile-statistics-leaderboard class="col-3" [teamId]="teamId" [statisticSortColumn]="'Wins'"
-        [statisticProperty]="'wins'" [statisticDisplayName]="'Wins'">
-    </app-team-profile-statistics-leaderboard>
+        <app-team-profile-statistics-leaderboard class="col-3" [teamId]="teamId" [statisticSortColumn]="'Goals'"
+            [statisticProperty]="'goals'" [statisticDisplayName]="'Goals'">
+        </app-team-profile-statistics-leaderboard>
+        <app-team-profile-statistics-leaderboard class="col-3" [teamId]="teamId" [statisticSortColumn]="'Assists'"
+            [statisticProperty]="'assists'" [statisticDisplayName]="'Assists'">
+        </app-team-profile-statistics-leaderboard>
+        <app-team-profile-statistics-leaderboard class="col-3" [teamId]="teamId" [statisticSortColumn]="'Wins'"
+            [statisticProperty]="'wins'" [statisticDisplayName]="'Wins'">
+        </app-team-profile-statistics-leaderboard>
+    </div>
 </div>

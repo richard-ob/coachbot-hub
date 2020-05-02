@@ -9,12 +9,12 @@ import { PlayerTeamHistoryComponent } from './player-team-history/player-team-hi
 import { PlayerProfileComponent } from './player-profile.component';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { CalendarHeatmap } from 'angular2-calendar-heatmap';
 import { PlayerProfileRoutingModule } from './player-profile.routing-module';
 import {
     PlayerProfileActivityHeatmapComponent
 } from './player-profile-statistics/player-profile-activity-heatmap/player-profile-activity-heatmap.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { CalendarHeatmapModule } from 'src/app/shared/components/calendar-heatmap/calendar-heatmap.module';
 
 @NgModule({
     declarations: [
@@ -23,8 +23,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
         PlayerProfileMatchesComponent,
         PlayerProfileTournamentsComponent,
         PlayerProfileStatisticsComponent,
-        PlayerProfileActivityHeatmapComponent,
-        CalendarHeatmap
+        PlayerProfileActivityHeatmapComponent
     ],
     imports: [
         CommonModule,
@@ -33,7 +32,8 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
         SpinnerModule,
         NgxPaginationModule,
         PlayerProfileRoutingModule,
-        SweetAlert2Module
+        SweetAlert2Module,
+        CalendarHeatmapModule
     ]
 })
 export class PlayerProfileModule { }

@@ -1,11 +1,11 @@
 <div class="container my-4">
-    <div class="card card--has-table">
+    <app-spinner *ngIf="!playerTeamStatisticsTotals"></app-spinner>
+    <div *ngIf="playerTeamStatisticsTotals" class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Player History</h4>
         </div>
         <div class="card__content">
-            <app-spinner *ngIf="!playerTeamStatisticsTotals"></app-spinner>
-            <table *ngIf="playerTeamStatisticsTotals" class="table table-striped table--large">
+            <table class="table table-striped table--large">
                 <thead>
                     <tr>
                         <th class="team-result__vs">Name</th>

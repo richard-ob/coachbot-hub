@@ -1,19 +1,18 @@
 <div class="container my-4">
     <div class="card card--has-table">
-        <!--<div class="card__header card__header--has-btn">
-            <h4>Current Squad</h4>
-        </div>-->
+        <div class="card__header card__header--has-btn">
+            <h4>Player History</h4>
+        </div>
         <div class="card__content">
             <app-spinner *ngIf="!playerTeamStatisticsTotals"></app-spinner>
-            <table *ngIf="playerTeamStatisticsTotals"
-                class="table table-striped table-clickable table-hover table--large">
+            <table *ngIf="playerTeamStatisticsTotals" class="table table-striped table--large">
                 <thead>
                     <tr>
                         <th class="team-result__vs">Name</th>
                         <th class="team-result__vs">Role</th>
                         <th class="team-result__score">Positions</th>
-                        <th class="team-result__score">Nationality</th>
-                        <th class="team-result__status">Joined</th>
+                        <th class="team-result__status">Date From</th>
+                        <th class="team-result__status">Date Until</th>
                         <th class="team-result__status">Appearances</th>
                         <th class="team-result__status">Goals</th>
                         <th class="team-result__status">Assists</th>
@@ -22,16 +21,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals"
-                        (click)="navigateToPlayerProfile(playerTeamStatisticsTotal.playerTeam.playerId)">
+                    <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals">
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.player.name}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.teamRole}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.position?.name}}</td>
-                        <td class="team-result__date">
-                            <span *ngIf="playerTeamStatisticsTotal.playerTeam.player.country; else unknownFlag" class="flag-icon"
-                            [ngClass]="'flag-icon-' + playerTeamStatisticsTotal.playerTeam.player.country.code.toLowerCase()"></span>
-                        </td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.joinDate | date}}</td>
+                        <td class="team-result__date">
+                            <ng-container *ngIf="playerTeamStatisticsTotal.playerTeam.leaveDate; else present">
+                                {{playerTeamStatisticsTotal.playerTeam.leaveDate | date}}
+                            </ng-container>
+                            <ng-template #present>
+                                Present
+                            </ng-template>
+                        </td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.appearances}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.goals}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.assists}}</td>

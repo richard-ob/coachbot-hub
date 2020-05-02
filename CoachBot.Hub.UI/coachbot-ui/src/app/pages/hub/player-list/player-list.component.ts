@@ -46,7 +46,7 @@ export class PlayerListComponent implements OnInit {
         });
     }
 
-    setFilters(timePeriod: number) {
+    setFilters() {
         this.loadPage(this.currentPage, this.sortBy);
     }
 

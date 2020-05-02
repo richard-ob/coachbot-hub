@@ -5,6 +5,7 @@ import { TeamProfileMatchesComponent } from './team-profile-matches/team-profile
 import { TeamProfilePlayersComponent } from './team-profile-players/team-profile-players.component';
 import { TeamProfileTournamentsComponent } from './team-profile-tournaments/team-profile-tournaments.component';
 import { TeamProfileStatisticsComponent } from './team-profile-statistics/team-profile-statistics.component';
+import { TeamProfilePlayerHistoryComponent } from './team-profile-player-history/team-profile-player-history.component';
 
 const routes: Routes = [
     {
@@ -15,6 +16,7 @@ const routes: Routes = [
             { path: 'statistics', component: TeamProfileStatisticsComponent },
             { path: 'matches', component: TeamProfileMatchesComponent },
             { path: 'squad', component: TeamProfilePlayersComponent },
+            { path: 'player-history', component: TeamProfilePlayerHistoryComponent },
             { path: 'tournaments', component: TeamProfileTournamentsComponent }
         ]
     },

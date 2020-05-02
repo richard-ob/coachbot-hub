@@ -14,6 +14,7 @@ import { PlayerProfileRoutingModule } from './player-profile.routing-module';
 import {
     PlayerProfileActivityHeatmapComponent
 } from './player-profile-statistics/player-profile-activity-heatmap/player-profile-activity-heatmap.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import {
         FormsModule,
         SpinnerModule,
         NgxPaginationModule,
-        PlayerProfileRoutingModule
+        PlayerProfileRoutingModule,
+        SweetAlert2Module
     ]
 })
 export class PlayerProfileModule { }

@@ -13,7 +13,7 @@
                             </span>
                         </div>
                         <input matInput class="form-control input-xs" [matDatepicker]="dateFromPicker"
-                            [(ngModel)]="filters.dateFrom" placeholder="Date From">
+                            [(ngModel)]="filters.dateFrom" placeholder="Date From" (click)="dateFromPicker.open()">
                     </div>
                 </li>
                 <li class="team-result-filter__item">
@@ -25,7 +25,7 @@
                             </span>
                         </div>
                         <input matInput class="form-control input-xs" [matDatepicker]="dateToPicker"
-                            [(ngModel)]="filters.dateTo" placeholder="Date To">
+                            [(ngModel)]="filters.dateTo" placeholder="Date To" (click)="dateToPicker.open()">
                     </div>
                 </li>
                 <li class="team-result-filter__item">

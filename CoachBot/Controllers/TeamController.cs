@@ -13,16 +13,30 @@ namespace CoachBot.Controllers
     public class TeamController : Controller
     {
         private readonly TeamService _teamService;
+        private readonly MatchStatisticsService _matchStatisticsService;
 
-        public TeamController(TeamService teamService)
+        public TeamController(TeamService teamService, MatchStatisticsService matchStatisticsService)
         {
             _teamService = teamService;
+            _matchStatisticsService = matchStatisticsService;
         }
 
         [HttpGet("{id}")]
         public Team Get(int id)
         {
             return _teamService.GetTeam(id);
+        }
+
+        [HttpGet("{id}/squad")]
+        public List<PlayerTeamStatisticsTotals> GetTeamSquad(int id)
+        {
+            return _matchStatisticsService.GetPlayerTeamStatistics(null, id, true);
+        }
+
+        [HttpGet("{id}/player-history")]
+        public List<PlayerTeamStatisticsTotals> GetTeamPlayerHistory(int id)
+        {
+            return _matchStatisticsService.GetPlayerTeamStatistics(null, id, false);
         }
 
         [HttpGet]
@@ -42,10 +56,10 @@ namespace CoachBot.Controllers
         [HttpPut]
         public IActionResult Update(Team team)
         {
-            /*if (!_teamService.IsTeamCaptain(team.Id, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(team.Id, User.GetDiscordUserId()))
+            if (!_teamService.IsTeamCaptain(team.Id, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(team.Id, User.GetDiscordUserId()))
             {
                 return Forbid();
-            }*/
+            }
 
             _teamService.UpdateTeam(team);
 

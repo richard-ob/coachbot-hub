@@ -36,7 +36,7 @@
                                         <i class="fas fa-calendar"></i>
                                     </span>
                                 </div>
-                                <input matInput class="form-control" [matDatepicker]="picker"
+                                <input matInput class="form-control" [matDatepicker]="picker" (click)="picker.open()"
                                     [(ngModel)]="player.playingSince">
                             </div>
                         </div>
@@ -61,7 +61,8 @@
                                 <li *ngFor="let playerTeam of player.teams | filterBy: ['isCurrentTeam']:'true'">
                                     <span class="mr-2">{{playerTeam.team.name}}</span>
                                     <button href="#" class="btn btn-danger btn-xs" type="button"
-                                        (click)="leaveTeam(playerTeam)">Leave</button>
+                                        [swal]="{ title: 'Are you sure?', text: 'You will leave the team immediately', icon: 'warning', showCancelButton: true}"
+                                        (confirm)="leaveTeam(playerTeam)">Leave</button>
                                 </li>
                             </ul>
                             <ng-template #unteamed>

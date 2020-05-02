@@ -37,18 +37,23 @@ export class PlayerProfileComponent implements OnInit {
                 this.player = player;
                 this.playerService.getPlayerProfile(player.id).subscribe(playerProfile => {
                     this.playerProfile = playerProfile;
-                    this.steamService.getUserProfiles([this.player.steamID]).subscribe(steamUserProfile => {
-                        this.steamUserProfile = steamUserProfile.response.players[0];
-                        this.steamService.getPlayingTime(this.player.steamID).subscribe(steamPlayingTime => {
-                            if (steamPlayingTime && steamPlayingTime.response && steamPlayingTime.response.games) {
-                                const iosoccerStats = steamPlayingTime.response.games.find(g => g.appid === 673560);
-                                if (iosoccerStats && iosoccerStats.playtime_forever) {
-                                    this.playingTime = humanizeDuration(iosoccerStats.playtime_forever * 60 * 1000);
+                    if (this.player.steamID) {
+                        this.steamService.getUserProfiles([this.player.steamID]).subscribe(steamUserProfile => {
+                            this.steamUserProfile = steamUserProfile.response.players[0];
+                            this.steamService.getPlayingTime(this.player.steamID).subscribe(steamPlayingTime => {
+                                if (steamPlayingTime && steamPlayingTime.response && steamPlayingTime.response.games) {
+                                    const iosoccerStats = steamPlayingTime.response.games.find(g => g.appid === 673560);
+                                    if (iosoccerStats && iosoccerStats.playtime_forever) {
+                                        this.playingTime = humanizeDuration(iosoccerStats.playtime_forever * 60 * 1000);
+                                    }
                                 }
-                            }
-                            this.isLoading = false;
+                                this.isLoading = false;
+                            });
                         });
-                    });
+                    } else {
+                        this.steamUserProfile = null;
+                        this.isLoading = false;
+                    }
                 });
             });
         });

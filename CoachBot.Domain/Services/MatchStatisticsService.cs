@@ -51,15 +51,20 @@ namespace CoachBot.Domain.Services
             return GetPlayerPositionMatchStatisticsQueryable(filters).GetPaged(page, pageSize, sortOrder);
         }
 
-        public List<PlayerTeamStatisticsTotals> GetPlayerTeamStatistics(int playerId)
+        public List<PlayerTeamStatisticsTotals> GetPlayerTeamStatistics(int? playerId = null, int? teamId = null, bool activeOnly = false)
         {
             var playerTeams = _coachBotContext.PlayerTeams
+                .AsNoTracking()
                 .Include(p => p.Team)
                 .Include(p => p.Player)
-                .Where(p => p.PlayerId == playerId).OrderByDescending(p => p.JoinDate);
+                    .ThenInclude(p => p.Country)
+                .Where(p => playerId == null || p.PlayerId == playerId)
+                .Where(p => teamId == null || p.TeamId == teamId)
+                .Where(p => !activeOnly || p.LeaveDate == null)
+                .OrderByDescending(p => p.JoinDate);
             var allPlayerTeamStatisticTotals = new List<PlayerTeamStatisticsTotals>();
 
-            foreach (var playerTeam in playerTeams)
+            foreach (var playerTeam in playerTeams.Take(30))
             {
                 var filter = new PlayerStatisticFilters()
                 {
@@ -70,7 +75,7 @@ namespace CoachBot.Domain.Services
                 var statistics = GetPlayerStatisticTotals(filter).FirstOrDefault();
                 var playerTeamStatisticsTotals = new PlayerTeamStatisticsTotals()
                 {
-                    PlayerTeam = playerTeam,
+                    PlayerTeam = MapToSimplePlayerTeamInstance(playerTeam),
                     Position = GetMostCommonPosition(playerTeam)
                 };
 
@@ -340,9 +345,10 @@ namespace CoachBot.Domain.Services
                      m.Corners,
                      m.Goals,
                      m.Assists,
-                     m.MatchOutcome
+                     m.MatchOutcome,
+                     m.Team.BadgeImage.Base64EncodedImage
                  })
-                 .GroupBy(p => new { p.TeamId, p.ChannelId, p.TeamName }, (key, s) => new TeamStatisticTotals()
+                 .GroupBy(p => new { p.TeamId, p.ChannelId, p.TeamName, p.Base64EncodedImage }, (key, s) => new TeamStatisticTotals()
                  {
                      Goals = s.Sum(p => p.Goals),
                      GoalsAverage = s.Average(p => p.Goals),
@@ -394,7 +400,8 @@ namespace CoachBot.Domain.Services
                      Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
                      TeamId = key.TeamId,
                      TeamName = key.TeamName,
-                     ChannelId = key.ChannelId
+                     ChannelId = key.ChannelId,
+                     BadgeImage = key.Base64EncodedImage
                  });
         }
 
@@ -436,6 +443,26 @@ namespace CoachBot.Domain.Services
             }
 
             return player;
+        }
+
+        private PlayerTeam MapToSimplePlayerTeamInstance(PlayerTeam playerTeam)
+        {
+            return new PlayerTeam()
+            {
+                TeamRole = playerTeam.TeamRole,
+                JoinDate = playerTeam.JoinDate,
+                LeaveDate = playerTeam.LeaveDate,
+                PlayerId = playerTeam.PlayerId,
+                Player = new Player()
+                {
+                    Name = playerTeam.Player.Name,
+                    Country = playerTeam.Player.Country
+                },
+                Team = new Team()
+                {
+                    Name = playerTeam.Team.Name
+                }
+            };
         }
 
         struct PositionAppearances

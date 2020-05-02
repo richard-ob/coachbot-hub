@@ -6,4 +6,5 @@ export interface TeamStatistics {
     channel: Channel;
     statisticsTotals: any;
     createdDate: Date;
+    badgeImage: string;
 }

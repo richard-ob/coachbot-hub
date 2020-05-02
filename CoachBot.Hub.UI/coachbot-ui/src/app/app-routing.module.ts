@@ -70,10 +70,6 @@ const routes: Routes = [
     component: TeamListComponent
   },
   {
-    path: 'team-profile/:id',
-    component: TeamProfileComponent
-  },
-  {
     path: 'edit-profile',
     component: ProfileEditorComponent
   },

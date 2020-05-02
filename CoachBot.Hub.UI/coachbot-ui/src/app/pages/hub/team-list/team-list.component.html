@@ -2,15 +2,34 @@
     <!-- Team Latest Results -->
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>Teams</h4>
+            <h4>Team Statistics</h4>
             <!-- Result Filter -->
             <!-- Result Filter / End -->
+            <ul class="team-result-filter">
+                <li class="team-result-filter__item">
+                    <label class="checkbox checkbox-inline mr-2">
+                        <input type="checkbox" name="includeSubstituteAppearances"> Include Inactive
+                        <span class="checkbox-indicator"></span>
+                    </label>
+                </li>
+                <li class="team-result-filter__item">
+                    <select name="timePeriod" class="form-control" #timePeriodSelect>
+                        <option>All Time</option>
+                    </select>
+                </li>
+                <li class="team-result-filter__item">
+                    <button type="button" class="btn btn-default btn-outline btn-xs card-header__button">
+                        Filter
+                    </button>
+                </li>
+            </ul>
         </div>
         <div class="card__content">
             <app-spinner *ngIf="!teamStatistics"></app-spinner>
             <table *ngIf="teamStatistics" class="table table--large table-striped table-hover table-clickable">
                 <thead>
                     <tr>
+                        <th class="team-result__date" style="width: 35px;"></th>
                         <th class="team-result__date">Team</th>
                         <th class="team-result__status">Matches</th>
                         <th class="team-result__game-overview">Wins</th>
@@ -27,6 +46,9 @@
                 <tbody>
                     <tr *ngFor="let statistics of teamStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                         (click)="navigatetoProfile(statistics.teamId)">
+                        <td class="team-result__score pl-2 pr-1 py-2">
+                            <img *ngIf="statistics.badgeImage" [src]="statistics.badgeImage">
+                        </td>
                         <td class="team-result__score">{{statistics.teamName}}</td>
                         <td class="team-result__status">{{statistics.appearances}}</td>
                         <td class="team-result__status">{{statistics.wins}}</td>
@@ -42,9 +64,9 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div *ngIf="totalPages > 1" class="text-center">
-        <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
+        <div *ngIf="totalPages > 1" class="card__footer border-top pt-3 text-center">
+            <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
+        </div>
     </div>
 </div>
 <!-- Team Latest Results / End -->

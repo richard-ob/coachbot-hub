@@ -22,6 +22,11 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.AssetImages.Single(a => a.Id == id);
         }
 
+        public List<AssetImage> GetAssetImages(List<int> ids)
+        {
+            return _coachBotContext.AssetImages.Where(a => ids.Any(i => i == a.Id)).ToList();
+        }
+
         public int CreateAssetImage(string base64encodedImage, string fileName, ulong discordUserId)
         {
             var playerId = _coachBotContext.Players.Where(p => p.DiscordUserId == discordUserId).Select(s => s.Id).Single();

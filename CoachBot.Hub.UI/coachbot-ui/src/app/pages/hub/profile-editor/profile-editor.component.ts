@@ -65,14 +65,14 @@ export class ProfileEditorComponent implements OnInit {
     }
 
     leaveTeam(playerTeam: PlayerTeam) {
-        playerTeam.leaveDate = new Date();
+       /* playerTeam.leaveDate = new Date();
         this.isLoading = true;
         this.playerTeamService.updatePlayerTeam(playerTeam).subscribe(() => {
             this.playerService.getCurrentPlayer().subscribe(player => {
                 this.player = player;
                 this.isLoading = false;
             });
-        });
+        });*/
     }
 
     saveChanges() {

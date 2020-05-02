@@ -42,6 +42,7 @@ import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { TeamProfileModule } from './team-profile/team-profile.module';
 import { RecentMatchesModule } from './recent-matches/recent-matches.module';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { RecentMatchesModule } from './recent-matches/recent-matches.module';
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserAnimationsModule,
-    NgPipesModule
+    NgPipesModule,
+    SweetAlert2Module
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

@@ -2,6 +2,7 @@
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace CoachBot.Controllers
 {
@@ -27,6 +28,12 @@ namespace CoachBot.Controllers
         public AssetImage GetAssetImage(int id)
         {
             return _assetImageService.GetAssetImage(id);
+        }
+
+        [HttpPost("get-batch")]
+        public List<AssetImage> GetAssetImages(List<int> assetImageIds)
+        {
+            return _assetImageService.GetAssetImages(assetImageIds);
         }
     }
 }

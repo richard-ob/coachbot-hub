@@ -11,6 +11,10 @@ import { TeamProfileStatisticsComponent } from './team-profile-statistics/team-p
 import { TeamProfileTournamentsComponent } from './team-profile-tournaments/team-profile-tournaments.component';
 import { TeamProfileComponent } from './team-profile.component';
 import { RecentMatchesModule } from '../recent-matches/recent-matches.module';
+import { TeamProfilePlayerHistoryComponent } from './team-profile-player-history/team-profile-player-history.component';
+import {
+    TeamProfileStatisticsLeaderboardComponent
+} from './team-profile-statistics/team-profile-statistics-leaderboard/team-profile-statistics-leaderboard.component';
 
 @NgModule({
     declarations: [
@@ -18,6 +22,8 @@ import { RecentMatchesModule } from '../recent-matches/recent-matches.module';
         TeamProfilePlayersComponent,
         TeamProfileStatisticsComponent,
         TeamProfileTournamentsComponent,
+        TeamProfilePlayerHistoryComponent,
+        TeamProfileStatisticsLeaderboardComponent,
         TeamProfileComponent
     ],
     imports: [

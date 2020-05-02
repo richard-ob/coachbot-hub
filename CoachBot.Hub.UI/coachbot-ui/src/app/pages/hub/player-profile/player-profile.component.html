@@ -7,8 +7,8 @@
             </div>
             <div class="player-info">
                 <div class="player-info__item player-info__item--details" aria-hidden="false">
-                    <img *ngIf="steamUserProfile.avatarfull" [attr.src]="steamUserProfile.avatarfull"
-                        style="position: absolute; right: 30px; top: 33px;">
+                    <img *ngIf="steamUserProfile && steamUserProfile.avatarfull"
+                        [attr.src]="steamUserProfile.avatarfull" style="position: absolute; right: 30px; top: 33px;">
                     <div class="player-info__title player-info__title--desktop">
                         <h1 class="player-info__name">
                             <span class="player-info__first-name">{{player.name}} 
@@ -18,14 +18,14 @@
                     <div class="player-info-details">
                         <div class="player-info-details__item player-info-details__item--height">
                             <h6 class="player-info-details__title">Position</h6>
-                            <div class="player-info-details__value">{{playerProfile.position.name}}</div>
+                            <div class="player-info-details__value">{{playerProfile?.position?.name}}</div>
                         </div>
                         <div class="player-info-details__item player-info-details__item--weight">
                             <h6 class="player-info-details__title">Country</h6>
                             <div class="player-info-details__value">
                                 <ng-container *ngIf="steamUserProfile">
-                                    <img *ngIf="steamUserProfile.loccountrycode; else unknownFlag"
-                                        src="https://www.countryflags.io/{{steamUserProfile.loccountrycode}}/flat/24.png">
+                                    <span *ngIf="steamUserProfile.loccountrycode; else unknownFlag" class="flag-icon"
+                                        [ngClass]="'flag-icon-' + steamUserProfile.loccountrycode.toLowerCase()"></span>
                                     <ng-template #unknownFlag>
                                         <span >Unknown</span>
                                     </ng-template>

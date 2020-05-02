@@ -1,0 +1,19 @@
+<div class="card card--has-table">
+    <div class="card__header">
+        <h4 class="text-center">Top {{statisticDisplayName}}</h4>
+    </div>
+    <div class="card__content">
+        <div *ngIf="!isLoading; else spinner" class="player-profile-statistics__statistic-box">
+            <div *ngFor="let player of playerStatistics; let rank = index"
+                class="player-profile-statistics__statistic-box__item">
+                <div class="player-profile-statistics__statistic-box__item-statistic">{{rank + 1}}</div>
+                <div class="player-profile-statistics__statistic-box__item-statistic">{{player.name}}</div>
+                <div class="player-profile-statistics__statistic-box__item-value">
+                    {{player[statisticProperty]}}</div>
+            </div>
+        </div>
+        <ng-template #spinner>
+            <app-spinner></app-spinner>
+        </ng-template>
+    </div>
+</div>

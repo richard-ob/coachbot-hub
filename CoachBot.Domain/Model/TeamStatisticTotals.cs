@@ -11,5 +11,7 @@ namespace CoachBot.Domain.Model
 
         public string TeamName { get; set; }
 
+        public string BadgeImage { get; set; }
+
     }
 }

@@ -13,6 +13,7 @@ import { TeamComponent } from './pages/team/team.component';
 import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HubModule,
     LoginModule,
     ErrorModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SweetAlert2Module.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

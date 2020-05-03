@@ -2,6 +2,8 @@
 using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
+using CoachBot.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -45,6 +47,7 @@ namespace CoachBot.Controllers
             return _teamService.GetTeams();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(Team team)
         {
@@ -53,6 +56,7 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         public IActionResult Update(Team team)
         {
@@ -62,6 +66,21 @@ namespace CoachBot.Controllers
             }
 
             _teamService.UpdateTeam(team);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("update-guild-id")]
+        public IActionResult UpdateGuildId([FromBody]UpdateGuildIdDto updateGuildIdDto)
+        {
+            if (!_teamService.IsTeamCaptain(updateGuildIdDto.TeamId, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(updateGuildIdDto.TeamId, User.GetDiscordUserId()))
+            {
+                return Forbid();
+            }
+
+            _teamService.UpdateTeamGuildId(updateGuildIdDto.TeamId, updateGuildIdDto.GuildId);
 
             return Ok();
         }

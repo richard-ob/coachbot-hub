@@ -129,7 +129,7 @@ namespace CoachBot.Bot
                     {
                         Console.WriteLine($"Channel has been destroyed: {matchmakingChannel.Team.Name} on {guild.Name}");
                         matchmakingChannel.Inactive = true;
-                        channelService.Update(matchmakingChannel);
+                        channelService.UpdateChannel(matchmakingChannel);
                     }
                 }
             }
@@ -149,7 +149,7 @@ namespace CoachBot.Bot
                     {
                         Console.WriteLine($"Channel has been destroyed: {textChannel.Name} on {textChannel.Guild.Name}");
                         matchmakingChannel.Inactive = true;
-                        channelService.Update(matchmakingChannel);
+                        channelService.UpdateChannel(matchmakingChannel);
                     }
                 }
             }

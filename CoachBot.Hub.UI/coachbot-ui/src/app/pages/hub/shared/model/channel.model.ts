@@ -3,24 +3,23 @@ import { ChannelPosition } from './channel-position';
 import { Guild } from './guild';
 import { Team } from './team.model';
 
-export interface Channel {
-    id: number;
+export class Channel {
+    id?: number;
     teamId: number;
-    team: Team;
-    subTeamName: string;
-    discordChannelId: string;
-    discordChannelName: string;
-    channelPositions: ChannelPosition[];
-    color: string;
-    formation: Formation;
-    teamCode: string;
-    guildId: number;
-    guild: Guild;
-    useClassicLineup: boolean;
-    disableSearchNotifications: boolean;
-    duplicityProtection: boolean;
-    isMixChannel: boolean;
-    inactive: boolean;
-    updatedDate: Date;
-    createdDate: Date;
+    team?: Team = null;
+    subTeamName = null;
+    discordChannelId = '';
+    discordChannelName = '';
+    channelPositions: ChannelPosition[] = [];
+    formation: Formation = Formation.None;
+    guildId?: number;
+    guild: Guild = null;
+    useClassicLineup = true;
+    disableSearchNotifications = false;
+    duplicityProtection = false;
+    isMixChannel = false;
+    searchIgnoreList = [];
+    inactive = false;
+    updatedDate: Date = new Date();
+    createdDate: Date = new Date();
 }

@@ -1,7 +1,11 @@
-﻿using CoachBot.Services.Matchmaker;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
+using CoachBot.Model;
+using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CoachBot.Controllers
@@ -11,21 +15,25 @@ namespace CoachBot.Controllers
     [Authorize]
     public class GuildController : Controller
     {
-        private readonly BotService _botService;
+        private readonly GuildService _guildService;
+        private readonly ChannelService _channelService;
 
-        public GuildController(BotService botService)
+        public GuildController(GuildService guildService, ChannelService channelService)
         {
-            _botService = botService;
+            _guildService = guildService;
+            _channelService = channelService;
         }
 
-        [HttpDelete("{id}")]
-        public void Leave(string id)
+        [HttpGet("{guildId}")]
+        public Guild Get(ulong guildId)
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
-            {
-                throw new Exception();
-            }
-            _botService.LeaveGuild(id);
+            return _guildService.GetGuildByDiscordId(guildId, true);
+        }
+
+        [HttpGet("{guildId}/channels")]
+        public List<Channel> GetChannelsForGuild(ulong guildId)
+        {
+            return _channelService.GetChannelsForGuild(guildId);
         }
     }
 }

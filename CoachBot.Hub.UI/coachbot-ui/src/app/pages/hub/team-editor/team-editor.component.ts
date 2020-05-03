@@ -6,6 +6,7 @@ import { Team } from '../shared/model/team.model';
 import { RegionService } from '../shared/services/region.service';
 import { Region } from '../shared/model/region.model';
 import { TeamService } from '../shared/services/team.service';
+import { DiscordService } from '../shared/services/discord.service';
 
 @Component({
     selector: 'app-team-editor',
@@ -26,7 +27,8 @@ export class TeamEditorComponent implements OnInit {
         private playerTeamservice: PlayerTeamService,
         private playerService: PlayerService,
         private teamService: TeamService,
-        private regionService: RegionService
+        private regionService: RegionService,
+        private discordService: DiscordService
     ) { }
 
     ngOnInit() {
@@ -57,7 +59,6 @@ export class TeamEditorComponent implements OnInit {
     }
 
     updateBadgeImageId(assetImageId: number) {
-        console.log(assetImageId);
         this.team.badgeImageId = assetImageId;
     }
 }

@@ -1,0 +1,73 @@
+<ng-container *ngIf="wizardMode === wizardModes.Creating && wizardStep === wizardSteps.ChannelSelection">
+    <div class="form-group">
+        <label class="control-label" for="input-default">Add Channel</label>
+        <select class="form-control" id="input-default" [(ngModel)]="channel.discordChannelId"
+            placeholder="Select Discord server...">
+            <ng-container *ngFor="let channel of discordChannels">
+                <option *ngIf="!channel.isConfigured" [ngValue]="channel.id">{{channel.name}}</option>
+            </ng-container>
+        </select>
+    </div>
+    <div class="float-right">
+        <button class="btn btn-outline-primary mr-2" type="button" (click)="abortWizard()">
+            Cancel
+        </button>
+        <button class="btn btn-primary" type="button" (click)="wizardStep = wizardSteps.Configuration">
+            Next
+        </button>
+    </div>
+</ng-container>
+<ng-container *ngIf="wizardMode !== wizardModes.Disabled && wizardStep === wizardSteps.Configuration">
+    <div class="form-group">
+        <label class="control-label" for="input-default">Sub Team Name</label>
+        <input class="form-control" [(ngModel)]="channel.subTeamName" type="text">
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="input-default">Is Mix Channel?</label>
+        <div>
+            <label class="checkbox mr-2">
+                <input [(ngModel)]="channel.isMixChannel" type="checkbox" name="isMixChannel">
+                <span class="checkbox-indicator"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="input-default">Disable Search Notifications</label>
+        <div>
+            <label class="checkbox mr-2">
+                <input [(ngModel)]="channel.disableSearchNotifications" type="checkbox"
+                    name="disableSearchNotifications">
+                <span class="checkbox-indicator"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="input-default">Duplicity Protection</label>
+        <div>
+            <label class="checkbox mr-2">
+                <input [(ngModel)]="channel.duplicityProtection" type="checkbox" name="duplicityProtection">
+                <span class="checkbox-indicator"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="input-default">Use Classic Lineup?</label>
+        <div>
+            <label class="checkbox mr-2">
+                <input [(ngModel)]="channel.useClassicLineup" type="checkbox" name="useClassicLineup">
+                <span class="checkbox-indicator"></span>
+            </label>
+        </div>
+    </div>
+    <div class="float-right">
+        <button class="btn btn-outline-primary mr-2" type="button" (click)="abortWizard()">
+            Cancel
+        </button>
+        <button class="btn btn-primary" type="button" [disabled]="isSaving" (click)="saveChannel()">
+            Save
+        </button>
+    </div>
+</ng-container>

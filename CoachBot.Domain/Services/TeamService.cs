@@ -57,6 +57,13 @@ namespace CoachBot.Domain.Services
             _dbContext.SaveChanges();
         }
 
+        public void UpdateTeamGuildId(int teamId, int guildId)
+        {
+            var team = _dbContext.Teams.Single(t => t.Id == teamId);
+            team.GuildId = guildId;
+            _dbContext.SaveChanges();
+        }
+
         public bool IsTeamCaptain(int teamId, ulong discordUserId)
         {
             return _dbContext.PlayerTeams.Any(pt => pt.Player.DiscordUserId == discordUserId && pt.TeamRole == TeamRole.Captain && pt.LeaveDate == null);

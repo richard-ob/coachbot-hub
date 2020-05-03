@@ -22,6 +22,22 @@ namespace CoachBot.Domain.Services
             _config = config;
         }
 
+        public DiscordGuild GetDiscordGuild(ulong guildId)
+        {
+            var guild = _discordSocketClient.GetGuild(guildId);
+
+            if (guild == null)
+            {
+                throw new Exception("No access to this Discord guild");
+            }
+
+            return new DiscordGuild()
+            {
+                Name = guild.Name,
+                Id = guild.Id
+            };
+        }
+
         public IEnumerable<DiscordChannel> GetChannelsForGuild(ulong guildId)
         {
             var guild = _discordSocketClient.GetGuild(guildId);

@@ -80,6 +80,7 @@ namespace CoachBot
                 .AddTransient<ServerRepository>()
                 .AddTransient<ServerService>()
                 .AddTransient<ChannelService>()
+                .AddTransient<GuildService>()
                 .AddTransient<MatchmakingService>()
                 .AddTransient<ServerManagementService>()
                 .AddTransient<MatchService>()

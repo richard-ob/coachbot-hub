@@ -1,6 +1,6 @@
 <div class="container my-4">
     <!-- Team Latest Results -->
-    <div class="alert alert-warning">
+    <div *ngIf="noTeamsAvailable" class="alert alert-warning">
         You do not currently manage any teams.
     </div>
     <div *ngIf="!noTeamsAvailable" id="team-profile-info">
@@ -37,7 +37,7 @@
                                         <i class="fas fa-calendar"></i>
                                     </span>
                                 </div>
-                                <input matInput class="form-control" [matDatepicker]="picker"
+                                <input matInput class="form-control" [matDatepicker]="picker" (click)="picker.open()"
                                     [(ngModel)]="team.foundedDate">
                             </div>
                         </div>
@@ -58,20 +58,6 @@
             </div>
         </div>
     </div>
-    <div id="team-profile-discord">
-        <div class="card">
-            <div class="card__header">
-                <h4>Manage Discord Integration</h4>
-            </div>
-            <div class="card__content">
-                <div class="row">
-                    <app-spinner *ngIf="isLoading" class="m-auto"></app-spinner>
-                    <div *ngIf="!isLoading" class="col-md-12">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <app-team-editor-player-list *ngIf="!isLoading" [teamId]="team && team.id"></app-team-editor-player-list>
+    <app-team-editor-discord-integration [teamId]="team?.id"></app-team-editor-discord-integration>
+    <app-team-editor-player-list [teamId]="team?.id"></app-team-editor-player-list>
 </div>

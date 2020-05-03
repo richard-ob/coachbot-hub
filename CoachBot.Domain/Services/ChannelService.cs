@@ -21,7 +21,7 @@ namespace CoachBot.Domain.Services
             _discordClient = discordClient;
         }
 
-        public void Update(Channel channel)
+        public void UpdateChannel(Channel channel)
         {
             channel.UpdatedDate = DateTime.UtcNow;
             _dbContext.Update(channel);
@@ -40,7 +40,7 @@ namespace CoachBot.Domain.Services
             _dbContext.SaveChanges();
         }
 
-        public void Create(Channel channel)
+        public void CreateChannel(Channel channel)
         {
             channel.UpdatedDate = DateTime.UtcNow;
             channel.CreatedDate = DateTime.UtcNow;
@@ -55,6 +55,17 @@ namespace CoachBot.Domain.Services
                 .ThenInclude(t => t.Region)
                 .Include(c => c.ChannelPositions)
                     .ThenInclude(cp => cp.Position)
+                .ToList();
+        }
+
+        public List<Channel> GetChannelsForGuild(ulong discordGuildId)
+        {
+            return _dbContext.Channels
+                .Include(c => c.Team)
+                .ThenInclude(t => t.Region)
+                .Include(c => c.ChannelPositions)
+                    .ThenInclude(cp => cp.Position)
+                .Where(c => c.Team.Guild.DiscordGuildId == discordGuildId)
                 .ToList();
         }
 
@@ -94,6 +105,16 @@ namespace CoachBot.Domain.Services
             if (channelTeamType == ChannelTeamType.TeamTwo) return channel.ChannelPositions.Any(cp => position.ToUpper().Equals($"{cp.Position.Name.ToUpper()}2"));
 
             return channel.ChannelPositions.Any(cp => position.ToUpper().Equals(cp.Position.Name.ToUpper()));
+        }
+
+        public Channel GetChannel(int id)
+        {
+            return _dbContext.Channels
+                  .Include(c => c.Team)
+                      .ThenInclude(t => t.Region)
+                  .Include(c => c.ChannelPositions)
+                      .ThenInclude(cp => cp.Position)
+                  .FirstOrDefault(c => c.Id == id);
         }
 
         public Channel GetChannelByDiscordId(ulong id, bool withForeignKeys = true)

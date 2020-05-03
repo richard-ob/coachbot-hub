@@ -43,6 +43,10 @@ import { NgPipesModule } from 'ngx-pipes';
 import { TeamProfileModule } from './team-profile/team-profile.module';
 import { RecentMatchesModule } from './recent-matches/recent-matches.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import {
+  TeamEditorDiscordIntegrationComponent
+} from './team-editor/team-editor-discord-integration/team-editor-discord-integration.component';
+import { ChannelEditorComponent } from './team-editor/team-editor-discord-integration/channel-editor/channel-editor.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +76,9 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     TournamentGroupTeamManagerComponent,
     MatchEditorComponent,
     CurrentTournamentsComponent,
-    AssetImageUploaderComponent
+    AssetImageUploaderComponent,
+    TeamEditorDiscordIntegrationComponent,
+    ChannelEditorComponent
   ],
   imports: [
     CommonModule,

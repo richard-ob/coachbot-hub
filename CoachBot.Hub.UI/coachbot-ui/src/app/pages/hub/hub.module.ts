@@ -46,7 +46,14 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import {
   TeamEditorDiscordIntegrationComponent
 } from './team-editor/team-editor-discord-integration/team-editor-discord-integration.component';
-import { ChannelEditorComponent } from './team-editor/team-editor-discord-integration/channel-editor/channel-editor.component';
+import {
+  DiscordChannelEditorComponent
+} from './team-editor/team-editor-discord-integration/discord-channel-editor/discord-channel-editor.component';
+import {
+  DiscordGuildEditorComponent
+} from './team-editor/team-editor-discord-integration/discord-guild-editor/discord-guild-editor.component';
+import { ChromeColourPickerModule } from 'src/app/shared/components/chrome-colour-picker/chrome-colour-picker.module';
+import { DiscordEmoteDisplayNamePipe } from './team-editor/team-editor-discord-integration/discord-guild-editor/discord-emote-display-name.pipe';
 
 @NgModule({
   declarations: [
@@ -78,7 +85,9 @@ import { ChannelEditorComponent } from './team-editor/team-editor-discord-integr
     CurrentTournamentsComponent,
     AssetImageUploaderComponent,
     TeamEditorDiscordIntegrationComponent,
-    ChannelEditorComponent
+    DiscordChannelEditorComponent,
+    DiscordGuildEditorComponent,
+    DiscordEmoteDisplayNamePipe
   ],
   imports: [
     CommonModule,
@@ -95,7 +104,8 @@ import { ChannelEditorComponent } from './team-editor/team-editor-discord-integr
     MatNativeDateModule,
     BrowserAnimationsModule,
     NgPipesModule,
-    SweetAlert2Module
+    SweetAlert2Module,
+    ChromeColourPickerModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

@@ -12,5 +12,7 @@ namespace CoachBot.Domain.Model
 
         public bool IsLinked { get; set; }
 
+        public List<KeyValuePair<string, string>> Emotes { get; set; }
+
     }
 }

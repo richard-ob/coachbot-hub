@@ -58,7 +58,8 @@ namespace CoachBot.Domain.Services
                 {
                     Id = g.Id,
                     Name = g.Name,
-                    IsLinked = _coachBotContext.Guilds.Any(cg => cg.DiscordGuildId == g.Id)
+                    IsLinked = _coachBotContext.Guilds.Any(cg => cg.DiscordGuildId == g.Id),
+                    Emotes = g.Emotes.Select(e => new KeyValuePair<string, string>($"<:{e.Name}:{e.Id}>", e.Url)).ToList()
                 });
         }
 

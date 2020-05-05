@@ -1,57 +1,43 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { DiscordService } from '../../shared/services/discord.service';
-import { DiscordGuild } from '../../shared/model/discord-guild.model';
+import { Component, Input, OnChanges } from '@angular/core';
 import { TeamService } from '../../shared/services/team.service';
-import { GuildService } from '../../shared/services/guild.service';
 import { Channel } from '../../shared/model/channel.model';
 import { ChannelService } from '../../shared/services/channel.service';
+import { Team } from '../../shared/model/team.model';
 
 @Component({
     selector: 'app-team-editor-discord-integration',
     templateUrl: './team-editor-discord-integration.component.html'
 })
-export class TeamEditorDiscordIntegrationComponent implements OnInit {
+export class TeamEditorDiscordIntegrationComponent implements OnChanges {
 
     @Input() teamId: number;
-    isDiscordGuildSet = false;
-    discordGuildId: string;
-    discordGuilds: DiscordGuild[];
+    team: Team;
     channels: Channel[];
+    isDiscordGuildSet: boolean;
+    isGuildEditorOpen = false;
     isChannelWizardOpen = false;
     isLoading = true;
 
-    constructor(
-        private discordService: DiscordService,
-        private teamService: TeamService,
-        private guildService: GuildService,
-        private channelService: ChannelService
-    ) { }
+    constructor(private teamService: TeamService, private channelService: ChannelService) { }
 
-    ngOnInit() {
-        console.log(this.teamId);
-        this.discordService.getGuildsForUser().subscribe(discordGuilds => {
-            this.discordGuilds = discordGuilds;
-            this.isLoading = false;
-        });
+    ngOnChanges() {
+        if (this.teamId) {
+            this.teamService.getTeam(this.teamId).subscribe(team => {
+                this.team = team;
+                if (this.team.guild && this.team.guild.discordGuildId) {
+                    this.isDiscordGuildSet = true;
+                    this.loadChannels();
+                }
+            });
+        }
     }
 
     loadChannels() {
         this.isLoading = true;
-        this.channelService.getChannelsForGuild(this.discordGuildId).subscribe(channels => {
+        this.channelService.getChannelsForGuild(this.team.guild.discordGuildId).subscribe(channels => {
             this.channels = channels;
             this.isLoading = false;
         });
     }
 
-    updateDiscordGuildId() {
-        this.isLoading = true;
-        this.guildService.getGuildByDiscordId(this.discordGuildId).subscribe(guildId => {
-            this.teamService.updateGuildId(this.teamId, guildId.id).subscribe(() => {
-                this.isLoading = false;
-                this.isDiscordGuildSet = true;
-            });
-        });
-    }
-    
-    
 }

@@ -29,6 +29,14 @@
                             </app-asset-image-uploader>
                         </div>
                         <div class="form-group">
+                            <label class="control-label" for="input-default">Team Colour</label>
+                            <div style="width: 25px; height: 25px; border-radius: 15px;"
+                                [style.background-color]="team.color" (click)="colourPicker.showColorPicker()"></div>
+                            <app-chrome-colour-picker [color]="team.color" (colorChange)="team.color = $event"
+                                #colourPicker>
+                            </app-chrome-colour-picker>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label" for="input-default">Date Founded</label>
                             <mat-datepicker #picker></mat-datepicker>
                             <div class="input-group mb-3">

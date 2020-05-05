@@ -2,67 +2,47 @@
     <div class="card">
         <div class="card__header card__header--has-btn">
             <h4>Manage Discord Integration</h4>
-            <ng-container *ngIf="isDiscordGuildSet && !isChannelWizardOpen">
+            <ng-container *ngIf="isDiscordGuildSet && !isChannelWizardOpen && !isGuildEditorOpen">
                 <button type="button" (click)="channelEditor.startCreateWizard(teamId); isChannelWizardOpen = true;"
-                    class="btn btn-primary-inverse btn-xs card-header__button">Add Channel</button>
-                <button type="button" class="btn btn-primary btn-xs card-header__button mr-2">Change
-                    Server</button>
+                    class="btn btn-primary-inverse btn-xs card-header__button" [disabled]="">Add Channel</button>
+                <button type="button" class="btn btn-primary btn-xs card-header__button mr-2"
+                    (click)="guildEditor.openGuildEditor(teamId, team.guild.discordGuildId); isGuildEditorOpen = true;">Edit
+                    Server Settings</button>
             </ng-container>
         </div>
         <div class="card__content">
-            <div *ngIf="!isLoading && !isChannelWizardOpen">
-                <ng-container *ngIf="!isDiscordGuildSet">
-                    <div class="alert alert-info" role="alert">
-                        To add a channel, you must have invited CoachBot to your Discord server, and it must have access
-                        to your channel
-                        <button class="btn btn-sm  text-white"
-                            href="https://discordapp.com/oauth2/authorize?client_id=310871748562386954&scope=bot"
-                            role="button" style="background-color: #7289da; text-decoration: none;">
-                            <i class="fab fa-lg fa-discord pr-2"></i> Invite CoachBot
-                        </button>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="input-default">Discord Server</label>
-                        <select class="form-control" id="input-default" [(ngModel)]="discordGuildId"
-                            placeholder="Select Discord server...">
-                            <option *ngFor="let guild of discordGuilds" [ngValue]="guild.id">{{guild.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary float-right" type="button" (click)="updateDiscordGuildId()">
-                        Set Discord Server
-                    </button>
-                </ng-container>
-                <ng-container *ngIf="isDiscordGuildSet">
-                    <div *ngIf="!channels" class="alert alert-info">
-                        You haven not added any channels yet
-                    </div>
-                    <table *ngIf="channels" class="table table-striped table-hover table-clickable">
-                        <thead>
-                            <th>Channel Name</th>
-                            <th>Sub Team</th>
-                            <th>Format</th>
-                            <th>Is Mix</th>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let channel of channels">
-                                <td>{{channel.discordChannelName}}</td>
-                                <td>{{channel.subTeamName}}</td>
-                                <td>
-                                    <span *ngIf="channel.channelPositions">{{channel.channelPositions.length}}v{{channel.channelPositions.length}}</span>
-                                </td>
-                                <td>
-                                    <i *ngIf="channel.isMixChannel" class="text-success fa fa-check"></i>
-                                    <i *ngIf="!channel.isMixChannel" class="text-danger fa fa-times"></i>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </ng-container>
+            <div *ngIf="!isLoading && !isChannelWizardOpen && !isGuildEditorOpen">
+                <div *ngIf="!channels" class="alert alert-info">
+                    You haven not added any channels yet
+                </div>
+                <table *ngIf="channels" class="table table-striped table-hover table-clickable">
+                    <thead>
+                        <th>Channel Name</th>
+                        <th>Sub Team</th>
+                        <th>Format</th>
+                        <th>Is Mix</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let channel of channels"
+                            (click)="channelEditor.startEditWizard(channel.id); isChannelWizardOpen = true;">
+                            <td>{{channel.discordChannelName}}</td>
+                            <td>{{channel.subTeamName}}</td>
+                            <td>
+                                <span *ngIf="channel.channelPositions">{{channel.channelPositions.length}}v{{channel.channelPositions.length}}</span>
+                            </td>
+                            <td>
+                                <i *ngIf="channel.isMixChannel" class="text-success fa fa-check"></i>
+                                <i *ngIf="!channel.isMixChannel" class="text-danger fa fa-times"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <app-spinner *ngIf="isLoading"></app-spinner>
-            <app-channel-editor (wizardClosed)="isChannelWizardOpen = false; loadChannels();" #channelEditor>
-            </app-channel-editor>
+            <app-discord-channel-editor (wizardClosed)="isChannelWizardOpen = false; loadChannels();" #channelEditor>
+            </app-discord-channel-editor>
+            <app-discord-guild-editor (guildEditorClosed)="isGuildEditorOpen = false; loadChannels();" #guildEditor>
+            </app-discord-guild-editor>
         </div>
     </div>
 </div>

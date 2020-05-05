@@ -8,10 +8,10 @@ import { Channel } from '../../../shared/model/channel.model';
 import { Team } from '../../../shared/model/team.model';
 
 @Component({
-    selector: 'app-channel-editor',
-    templateUrl: './channel-editor.component.html'
+    selector: 'app-discord-channel-editor',
+    templateUrl: './discord-channel-editor.component.html'
 })
-export class ChannelEditorComponent implements OnInit {
+export class DiscordChannelEditorComponent implements OnInit {
 
     @Output() wizardClosed = new EventEmitter<void>();
     team: Team;
@@ -32,9 +32,7 @@ export class ChannelEditorComponent implements OnInit {
         private channelService: ChannelService
     ) { }
 
-    ngOnInit() {
-
-    }
+    ngOnInit() { }
 
     startCreateWizard(teamId: number) {
         this.isLoading = true;
@@ -51,9 +49,14 @@ export class ChannelEditorComponent implements OnInit {
         });
     }
 
-    startEditWizard(channel: number) {
-        this.isSaving = true;
+    startEditWizard(channelId: number) {
+        this.isLoading = false;
         this.wizardMode = WizardMode.Editing;
+        this.wizardStep = WizardStep.Configuration;
+        this.channelService.getChannel(channelId).subscribe(channel => {
+            this.channel = channel;
+            this.isLoading = false;
+        });
     }
 
     abortWizard() {
@@ -61,6 +64,10 @@ export class ChannelEditorComponent implements OnInit {
         this.isLoading = true;
         this.isSaving = false;
         this.wizardClosed.emit();
+    }
+
+    addSearchIgnoreChannel(discordChannelId: string) {
+        this.channel.searchIgnoreList.push(discordChannelId);
     }
 
     saveChannel() {
@@ -80,7 +87,6 @@ export class ChannelEditorComponent implements OnInit {
                 break;
         }
     }
-
 }
 
 enum WizardMode {

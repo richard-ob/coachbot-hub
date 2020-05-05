@@ -12,6 +12,10 @@ export class ChannelService {
 
     constructor(private http: HttpClient) { }
 
+    getChannel(channelId: number): Observable<Channel> {
+        return this.http.get<Channel>(`${environment.apiUrl}/api/channel/${channelId}`);
+    }
+
     getChannelsForGuild(discordGuildId: string): Observable<Channel[]> {
         return this.http.get<Channel[]>(`${environment.apiUrl}/api/guild/${discordGuildId}/channels`);
     }

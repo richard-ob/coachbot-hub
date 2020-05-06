@@ -1,17 +1,18 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { DiscordService } from '../../../shared/services/discord.service';
 import { TeamService } from '../../../shared/services/team.service';
-import { GuildService } from '../../../shared/services/guild.service';
 import { ChannelService } from '../../../shared/services/channel.service';
 import { DiscordChannel } from '../../../shared/model/discord-channel.model';
 import { Channel } from '../../../shared/model/channel.model';
 import { Team } from '../../../shared/model/team.model';
+import { Position } from '../../../shared/model/position';
+import { ChannelPosition } from '../../../shared/model/channel-position';
 
 @Component({
     selector: 'app-discord-channel-editor',
     templateUrl: './discord-channel-editor.component.html'
 })
-export class DiscordChannelEditorComponent implements OnInit {
+export class DiscordChannelEditorComponent {
 
     @Output() wizardClosed = new EventEmitter<void>();
     team: Team;
@@ -28,11 +29,8 @@ export class DiscordChannelEditorComponent implements OnInit {
     constructor(
         private discordService: DiscordService,
         private teamService: TeamService,
-        private guildService: GuildService,
         private channelService: ChannelService
     ) { }
-
-    ngOnInit() { }
 
     startCreateWizard(teamId: number) {
         this.isLoading = true;
@@ -66,12 +64,29 @@ export class DiscordChannelEditorComponent implements OnInit {
         this.wizardClosed.emit();
     }
 
+    setPositions(format: number) {
+        console.log(format);
+        this.channel.channelPositions = this.channel.channelPositions || [];
+        if (this.channel.channelPositions.length > format) {
+            this.channel.channelPositions.splice(format);
+        } else if (this.channel.channelPositions.length < format) {
+            while (this.channel.channelPositions.length < format) {
+                const channelPosition = new ChannelPosition();
+                channelPosition.position = new Position();
+                channelPosition.channelId = this.channel.id;
+                channelPosition.position.name = (this.channel.channelPositions.length + 1).toString();
+                this.channel.channelPositions.push(channelPosition);
+            }
+        }
+    }
+
     addSearchIgnoreChannel(discordChannelId: string) {
         this.channel.searchIgnoreList.push(discordChannelId);
     }
 
     saveChannel() {
         this.isLoading = true;
+        this.isSaving = true;
         switch (this.wizardMode) {
             case WizardMode.Creating:
                 this.channelService.createChannel(this.channel).subscribe(() => {

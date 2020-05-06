@@ -56,7 +56,7 @@ namespace CoachBot.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(Channel channel)
+        public IActionResult Update([FromBody]Channel channel)
         {
             if (!_teamService.IsTeamCaptain(channel.Id, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(channel.Id, User.GetDiscordUserId()))
             {

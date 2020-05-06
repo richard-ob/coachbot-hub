@@ -19,12 +19,22 @@
 </ng-container>
 <ng-container *ngIf="wizardMode !== wizardModes.Disabled && wizardStep === wizardSteps.Configuration">
     <div class="form-group">
+        <label class="control-label" for="input-default">Format</label>
+        <select class="form-control" (change)="setPositions($event.target.value)">
+            <option value="">Select a format</option>
+            <option *ngFor="let format of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"
+                [selected]="channel.channelPositions.length === format" [value]="format">
+                {{format}}v{{format}}
+            </option>
+        </select>
+    </div>
+    <div class=" form-group">
         <label class="control-label" for="input-default">Positions</label>
-        <span class="badge badge-pill badge-primary mr-2">CB</span>
-        <span class="badge badge-pill badge-primary mr-2">LB</span>
-        <span class="badge badge-pill badge-primary mr-2">RB</span>
-        <span class="badge badge-pill badge-primary mr-2">CM</span>
-        <span class="badge badge-pill badge-primary mr-2">CF</span>
+        <div class="d-block">
+            <span *ngFor="let position of channel.channelPositions" class="badge badge-pill badge-primary mr-2">
+                {{position.position.name}}
+            </span>
+        </div>
     </div>
     <div class="form-group">
         <label class="control-label" for="input-default">Sub Team Name</label>

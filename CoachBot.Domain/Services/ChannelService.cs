@@ -37,6 +37,14 @@ namespace CoachBot.Domain.Services
                 .Where(cp => !channel.ChannelPositions.Any(cpt => cpt.PositionId == cp.PositionId));
             if (deletedPositions.Any()) _dbContext.ChannelPositions.RemoveRange(deletedPositions);
 
+            // Ensure we don't have duplicate positions in the DB
+            var newPositions = channel.ChannelPositions.Where(cp => !_dbContext.Positions.Any(p => cp.PositionId == p.Id));
+            foreach(var duplicatePosition in newPositions.Where(np => _dbContext.Positions.Any(p => p.Name == np.Position.Name)))
+            {
+                duplicatePosition.PositionId = _dbContext.Positions.First(p => p.Name == duplicatePosition.Position.Name).Id;
+                duplicatePosition.Position = null;
+            }
+
             _dbContext.SaveChanges();
         }
 

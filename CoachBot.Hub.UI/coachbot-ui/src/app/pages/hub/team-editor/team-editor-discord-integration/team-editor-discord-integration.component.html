@@ -26,7 +26,14 @@
                         <tr *ngFor="let channel of channels"
                             (click)="channelEditor.startEditWizard(channel.id); isChannelWizardOpen = true;">
                             <td>{{channel.discordChannelName}}</td>
-                            <td>{{channel.subTeamName}}</td>
+                            <td>
+                                <ng-container *ngIf="channel.subTeamName">
+                                    {{channel.subTeamName}}
+                                </ng-container>
+                                <ng-container *ngIf="!channel.subTeamName">
+                                    <span class="text-muted">N/A</span>
+                                </ng-container>
+                            </td>
                             <td>
                                 <span *ngIf="channel.channelPositions">{{channel.channelPositions.length}}v{{channel.channelPositions.length}}</span>
                             </td>

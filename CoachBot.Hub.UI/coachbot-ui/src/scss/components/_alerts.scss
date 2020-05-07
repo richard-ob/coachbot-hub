@@ -9,7 +9,19 @@
 	border: 1px solid transparent;
 	font-size: 13px;
 	position: relative;
-	color: $body-font-color;
+	font-weight: 500;
+	font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+	color: #ffffff;
+
+	a {
+		font-weight: 600;
+		color: #ffffff;
+		border-bottom: 1px dotted white;
+		&:hover {
+			color: #ccc;
+			border-bottom: 1px dotted #ccc;
+		}
+	}
 
 	&::before {
 		content:"";
@@ -63,7 +75,7 @@
 // Alternate styles
 
 .alert-success {
-	@include alert-variant($alert-success-bg, $alert-success-border, $alert-success-icon-bg);
+	@include alert-variant($alert-success-icon-bg, $alert-success-border);
 
 	&::before {
 		background-size: 14px 12px;
@@ -72,7 +84,7 @@
 }
 
 .alert-info {
-	@include alert-variant($alert-info-bg, $alert-info-border, $alert-info-icon-bg);
+	@include alert-variant($alert-info-icon-bg, $alert-info-border);
 
 	&::before {
 		background-size: 5px 18px;
@@ -81,7 +93,7 @@
 }
 
 .alert-warning {
-	@include alert-variant($alert-warning-bg, $alert-warning-border, $alert-warning-icon-bg);
+	@include alert-variant($alert-warning-icon-bg, $alert-warning-border);
 
 	&::before {
 		background-size: 5px 18px;
@@ -90,7 +102,7 @@
 }
 
 .alert-danger {
-	@include alert-variant($alert-danger-bg, $alert-danger-border, $alert-danger-icon-bg);
+	@include alert-variant($alert-danger-icon-bg, $alert-danger-border);
 
 	&::before {
 		background-size: 11px 11px;

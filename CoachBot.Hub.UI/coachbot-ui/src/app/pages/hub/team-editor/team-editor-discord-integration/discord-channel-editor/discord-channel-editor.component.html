@@ -2,7 +2,7 @@
     <div class="form-group">
         <label class="control-label" for="input-default">Channel</label>
         <select class="form-control" id="input-default" [(ngModel)]="channel.discordChannelId"
-            placeholder="Select Discord server...">
+            (ngModelChange)="setChannelName($event)" placeholder="Select Discord server...">
             <ng-container *ngFor="let channel of discordChannels">
                 <option *ngIf="!channel.isConfigured" [ngValue]="channel.id">{{channel.name}}</option>
             </ng-container>

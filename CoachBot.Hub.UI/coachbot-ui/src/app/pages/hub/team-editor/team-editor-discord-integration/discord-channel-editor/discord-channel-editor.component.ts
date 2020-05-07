@@ -64,6 +64,10 @@ export class DiscordChannelEditorComponent {
         this.wizardClosed.emit();
     }
 
+    setChannelName(discordChannelId: string) {
+        this.channel.discordChannelName = this.discordChannels.find(c => c.id === discordChannelId).name;
+    }
+
     setPositions(format: number) {
         console.log(format);
         this.channel.channelPositions = this.channel.channelPositions || [];

@@ -16,6 +16,7 @@ export class DiscordGuildEditorComponent {
     teamId: number;
     team: Team;
     selectedDiscordGuildId: string;
+    discordGuildPreviouslySet = false;
     isEditing = false;
     isLoading = true;
 
@@ -26,6 +27,7 @@ export class DiscordGuildEditorComponent {
         this.isEditing = true;
         this.teamId = teamId;
         this.selectedDiscordGuildId = discordGuildId;
+        this.discordGuildPreviouslySet = discordGuildId != null;
         this.discordService.getGuildsForUser().subscribe(discordGuilds => {
             this.discordGuilds = discordGuilds;
             this.teamService.getTeam(teamId).subscribe(team => {

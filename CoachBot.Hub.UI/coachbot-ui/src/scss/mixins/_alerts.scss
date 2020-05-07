@@ -1,8 +1,7 @@
 // Alerts
 
-@mixin alert-variant($background, $border, $icon-bg) {
+@mixin alert-variant($background, $border) {
 	background-color: $background;
-	border-color: $border;
 
 	hr {
 		border-top-color: darken($border, 5%);
@@ -12,6 +11,6 @@
 	}
 
 	&::before {
-		background-color: $icon-bg;
+		background-color: $background;
 	}
 }

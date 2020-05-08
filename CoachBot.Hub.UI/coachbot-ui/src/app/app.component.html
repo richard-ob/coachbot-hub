@@ -6,11 +6,14 @@
     <!-- Header Mobile -->
     <div class="header-mobile clearfix" id="header-mobile">
         <div class="header-mobile__logo">
-            <a href="_soccer_index.html"><img src="assets/images/soccer/logo.png"
-                    srcset="assets/images/soccer/logo@2x.png 2x" alt="Alchemists" class="header-mobile__logo-img"></a>
+            <a href="_soccer_index.html">
+                <img src="assets/images/logos/iosoccer-full-logo-medium.png" alt="IOSoccer"
+                    class="header-mobile__logo-img">
+            </a>
         </div>
         <div class="header-mobile__inner">
-            <a id="header-mobile__toggle" class="burger-menu-icon"><span class="burger-menu-icon__line"></span></a>
+            <a id="header-mobile__toggle" class="burger-menu-icon"
+                (click)="toggleSidebar()"><span class="burger-menu-icon__line"></span></a>
             <span class="header-mobile__search-icon" id="header-mobile__search-icon"></span>
         </div>
     </div>
@@ -55,7 +58,7 @@
                 <!-- Header Search Form / End -->
                 <ul class="info-block info-block--header">
                     <!-- try 2px border with the brand colour, plus white icon, transparent bg etc -->
-                    <a class="btn btn-sm btn-primary" href="steam://run/673560/" style="padding-right: 20px;background-color: #5c7e10; margin-right: 9px;
+                    <a class="btn btn-sm btn-primary d-none d-xl-inline-block" href="steam://run/673560/" style="padding-right: 20px;background-color: #5c7e10; margin-right: 9px;
                         border-radius: 4px;">
                         Install Via Steam <i class="fa fa-lg fa-steam" style="padding-left: 15px; margin-top: 5px"></i>
                     </a>
@@ -110,12 +113,15 @@
 
                     <!-- Header Logo -->
                     <div class="header-logo">
-                        <a routerlink="/"><img src="assets/images/logos/iosoccer-full-logo-medium.png" alt="Alchemists"
-                                class="header-logo__img"></a>
+                        <a routerlink="/">
+                            <img src="assets/images/logos/iosoccer-full-logo-medium.png" alt="IOSoccer"
+                                class="header-logo__img">
+                        </a>
                     </div>
                     <!-- Header Logo / End -->
 
                     <!-- Main Navigation -->
+                    <div class="main-nav--backdrop d-none" (click)="toggleSidebar()"></div>
                     <nav class="main-nav clearfix">
                         <ul class="main-nav__list">
                             <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -126,16 +132,19 @@
                             <li routerLinkActive="active"><a href="#">News</a></li>
                             <li routerLinkActive="active"><a href="https://store.steampowered.com/app/673560/IOSoccer/"
                                     target="_blank">Download</a></li>
-                            <li routerLinkActive="active">
-                                <a href="#">Manuals</a>
-                                <ul class="main-nav__sub">
+                            <li routerLinkActive="active" (click)="toggleSectionOpen(manualsSection, manualsToggle)">
+                                <a href="javascript:void(0);">Manuals</a>
+                                <span class="main-nav__toggle" #manualsToggle></span>
+                                <ul class="main-nav__sub" #manualsSection>
                                     <li><a routerLink="/manual">Player Manual</a></li>
                                     <li><a routerLink="/manual">Server Admin Manual</a></li>
                                 </ul>
                             </li>
-                            <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-                                <a href="#">Match Hub</a>
-                                <div class="main-nav__megamenu clearfix">
+                            <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
+                                (click)="toggleSectionOpen(matchHubSection, matchHubToggle)">
+                                <a href="javascript:void(0);">Match Hub</a>
+                                <span class="main-nav__toggle" #matchHubToggle></span>
+                                <div class="main-nav__megamenu clearfix" #matchHubSection>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Matches</li>
                                         <li><a routerLink="./recent-matches">Recent Matches</a></li>
@@ -170,9 +179,10 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li routerLinkActive="active">
-                                <a href="_soccer_team-overview.html">INFO</a>
-                                <ul class="main-nav__sub">
+                            <li routerLinkActive="active" (click)="toggleSectionOpen(infoSection, infoToggle)">
+                                <a href="javascript:void(0);">Info</a>
+                                <span class="main-nav__toggle" #infoToggle></span>
+                                <ul class="main-nav__sub" #infoSection>
                                     <li><a href="_soccer_staff-single.html">About</a></li>
                                     <li><a routerLink="./team">Team</a></li>
                                 </ul>
@@ -195,7 +205,7 @@
 
     <!-- Content -->
 
-    <div id="page-content">
+    <div id="page-content" style="min-height: 300px">
         <app-matchmaking></app-matchmaking>
         <router-outlet></router-outlet>
     </div>
@@ -391,18 +401,6 @@
                             <div class="footer-copyright"><a href="_soccer_index.html">IOSoccer</a> 2020 &nbsp; |
                                 &nbsp; All
                                 Rights Reserved</div>
-                        </div>
-                        <div class="col-md-8">
-                            <ul class="footer-nav footer-nav--right footer-nav--condensed footer-nav--sm">
-                                <li class="footer-nav__item"><a href="_soccer_index.html">Home</a></li>
-                                <li class="footer-nav__item"><a href="_soccer_features-shortcodes.html">Download</a>
-                                </li>
-                                <li class="footer-nav__item"><a href="_soccer_team-standings.html">Manual</a></li>
-                                <li class="footer-nav__item"><a href="_soccer_team-overview.html">News</a></li>
-                                <li class="footer-nav__item"><a href="_soccer_blog-3.html">Match Hub</a></li>
-                                <li class="footer-nav__item"><a href="_soccer_shop-grid.html">About</a></li>
-                                <li class="footer-nav__item"><a href="_soccer_shop-grid.html">Chat</a></li>
-                            </ul>
                         </div>
                     </div>
                 </div>

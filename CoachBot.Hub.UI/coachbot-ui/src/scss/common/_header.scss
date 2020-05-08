@@ -161,7 +161,10 @@
 
 /* Header Primary */
 .header__primary {
-	height: $nav-height;
+	height: $nav-height;	
+	@media (max-width: 991px) {
+		height: 0;
+	}
 	background-color: $header-secondary-bg;
 	position: relative;
 
@@ -352,11 +355,14 @@
 
 	.header-mobile {
 		display: block;
-		position: relative;
+		position: fixed;
 		top: 0;
 		left: 0;
 		width: 100%;
-		z-index: 3;
+		z-index: 5;
+	}
+	#page-content {
+		margin-top: $header-mobile-height;
 	}
 
 		.header-mobile__inner {
@@ -375,21 +381,17 @@
 			z-index: 3;
 			left: 50%;
 			transform: translate(-50%, 0);
-
-			@if $template == 'football' {
-				top: 2px;
-			} @else {
-				top: 5px;
-			}
-
+			top: 5px;
 			.main-nav & {
 				top: 0;
 			}
 		}
-			.header-mobile__logo-img {
-				width: $header-mobile-logo-width;
-				height: auto;
-			}
+
+		.header-mobile__logo-img {
+			width: auto;
+			height: 58px;
+			margin-top: 15px;
+		}
 
 		/* Header Mobile Burger Icon */
 		.burger-menu-icon {
@@ -397,123 +399,36 @@
 			transition: all 0.4s ease-in-out;
 			display: block;
 			position: absolute;
-			top: 40px;
-			left: 34px;
+			right: 34px;
+			top: 39px;
 			cursor: pointer;
 			width: 26px;
 			height: 19px;
 		}
 
-			.burger-menu-icon__line {
+		.burger-menu-icon__line {
 
-				&,
-				&::before,
-				&::after {
-					content: '';
-					cursor: pointer;
-					height: 3px;
-					width: 100%;
-					background-color: #fff;
-					position: absolute;
-					top: 0;
-					display: block;
-					border-radius: 1px;
-				}
-
-				&::before {
-					top: 8px;
-				}
-
-				&::after {
-					top: 16px;
-				}
+			&,
+			&::before,
+			&::after {
+				content: '';
+				cursor: pointer;
+				height: 3px;
+				width: 100%;
+				background-color: #fff;
+				position: absolute;
+				top: 0;
+				display: block;
+				border-radius: 1px;
 			}
 
-	/* Mobile Search Icon */
-	.header-mobile__search-icon {
-		display: block;
-		position: absolute;
-		right: 34px;
-		top: 39px;
-		width: 24px;
-		height: 24px;
-		line-height: 24px;
-		font-size: 22px;
-		color: #fff;
-		text-align: center;
-
-		&::before,
-		&::after {
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			transform: translate(-50%, -50%);
-			transition: all 0.3s ease-in-out;
-		}
-
-		// Search Icon
-		&::before {
-			content:"\f002";
-			-webkit-font-smoothing: antialiased;
-			-moz-osx-font-smoothing: grayscale;
-			font-family: "Font Awesome 5 Free";
-			font-weight: 900;
-		}
-
-		// Close Icon
-		&::after {
-			content:"";
-			transform: translate(-50%, -50%), scale(0);
-			opacity: 0;
-			width: 24px;
-			height: 24px;
-			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 19 19'%3E%3Cpath transform='translate(-267.219 -40.219)' fill='%23fff' d='M267.62,56.258L283.258,40.62a1.5,1.5,0,0,1,2.121,2.121L269.741,58.379A1.5,1.5,0,0,1,267.62,56.258Zm15.638,2.122L267.62,42.742a1.5,1.5,0,0,1,2.121-2.121l15.638,15.638A1.5,1.5,0,0,1,283.258,58.38Z'/%3E%3C/svg%3E");
-			background-position: center center;
-			background-size: 19px 19px;
-			background-repeat: no-repeat;
-		}
-
-		&.header-mobile__search-icon--close {
-
 			&::before {
-				transform: translate(-50%, -50%), scale(0);
-				opacity: 0;
+				top: 8px;
 			}
 
 			&::after {
-				transform: translate(-50%, -50%), scale(1);
-				opacity: 1;
+				top: 16px;
 			}
-		}
-
-		&:hover {
-			cursor: pointer;
-		}
-	}
-
-	/* Mobile Search */
-	.header-search-form {
-		padding: 0 25px;
-		height: 0;
-		top: -62px;
-
-		.header-mobile--expanded & {
-			top: 0;
-			height: 63px;
-		}
-	}
-		/* Search Input */
-		input.header-mobile__search-control {
-			margin-top: 12px;
-
-			&:focus {
-
-			}
-		}
-
-		/* Submit Button */
-		.header-mobile__search-submit {
-
 		}
 }
 

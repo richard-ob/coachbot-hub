@@ -11,6 +11,10 @@
 
 /* Footer Widgets */
 .footer-widgets {
+	@media (max-width: 991px) {
+		display: none;
+	}
+
 	background: $footer-widgets-bg;
 	background-repeat: no-repeat;
 	background-position: 50% 0;
@@ -368,7 +372,7 @@
 /* Footer Copyright */
 .footer-copyright {
 	@include font-accent($footer-copyright-font-size);
-	color: $body-font-color;
+	color: rgba(255, 255, 255, 0.65);
 	text-align: center;
 
 	@media (min-width: 992px) {

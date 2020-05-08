@@ -11,9 +11,9 @@ import { CoreModule } from './core/core.module';
 import { ManualComponent } from './pages/manual/manual.component';
 import { TeamComponent } from './pages/team/team.component';
 import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,8 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     LoginModule,
     ErrorModule,
     BrowserAnimationsModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    LayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

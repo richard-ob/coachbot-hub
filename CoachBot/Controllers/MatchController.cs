@@ -34,7 +34,9 @@ namespace CoachBot.Controllers
                 pagedRequest.SortOrderFull,
                 pagedRequest.PlayerId,
                 pagedRequest.TeamId,
-                pagedRequest.UpcomingOnly
+                pagedRequest.TournamentEditionId,
+                pagedRequest.IncludePast,
+                pagedRequest.IncludeUpcoming
             );
         }
 

@@ -33,7 +33,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.GetMatchById(matchId);
         }
 
-        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId = null, int? teamId = null, bool upcomingOnly = false)
+        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId = null, int? teamId = null, int? tournamentEditionId = null, bool includePast = false, bool includeUpcoming = false)
         {
             var queryable = _coachBotContext.Matches
                 .Include(m => m.LineupHome)
@@ -46,11 +46,12 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.Tournament)
                 .Include(s => s.Server)
                     .ThenInclude(s => s.Country)
-                .Where(m => upcomingOnly || m.ReadiedDate != null)
                 .Where(m => m.Server.RegionId == regionId)
-                .Where(m => !upcomingOnly || m.ScheduledKickOff > DateTime.Now)
+                .Where(m => includeUpcoming || m.ReadiedDate != null)
+                .Where(m => includePast || m.ScheduledKickOff > DateTime.Now)
                 .Where(m => playerId == null || m.PlayerMatchStatistics.Any(p => p.PlayerId == playerId))
-                .Where(m => teamId == null || m.TeamMatchStatistics.Any(t => t.TeamId == teamId));
+                .Where(m => teamId == null || m.TeamMatchStatistics.Any(t => t.TeamId == teamId))
+                .Where(m => tournamentEditionId == null || m.TournamentId == tournamentEditionId);
 
             return queryable.GetPaged(page, pageSize, sortOrder);
         }

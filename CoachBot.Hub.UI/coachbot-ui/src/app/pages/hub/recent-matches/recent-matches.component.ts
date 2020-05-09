@@ -12,6 +12,10 @@ export class RecentMatchesComponent implements OnInit {
 
     @Input() playerId: number;
     @Input() teamId: number;
+    @Input() tournamentEditionId: number;
+    @Input() includePast = true;
+    @Input() includeUpcoming = false;
+    @Input() showFilters = true;
     filters = new PagedMatchRequestDto();
     matchTypes = MatchTypes;
     matches: Match[];
@@ -25,6 +29,9 @@ export class RecentMatchesComponent implements OnInit {
         this.filters.regionId = 2;
         this.filters.playerId = this.playerId;
         this.filters.teamId = this.teamId;
+        this.filters.tournamentEditionId = this.tournamentEditionId;
+        this.filters.includePast = this.includePast;
+        this.filters.includeUpcoming = this.includeUpcoming;
         this.loadPage(1);
     }
 

@@ -3,7 +3,7 @@
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Matches</h4>
-            <ul class="team-result-filter">
+            <ul *ngIf="showFilters" class="team-result-filter">
                 <li class="team-result-filter__item">
                     <mat-datepicker #dateFromPicker></mat-datepicker>
                     <div class="input-group input-group-sm">
@@ -60,18 +60,25 @@
                 <tbody>
                     <tr
                         *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
-                        <td class="team-result__date">{{match.readiedDate | date:'medium'}}</td>
+                        <td class="team-result__date">
+                            {{(match.readiedDate || match.scheduledKickOff)| date:'medium'}}
+                        </td>
                         <td class="team-result__vs">
                             <div class="team-meta">
-                                <strong
-                                    [attr.title]="match.lineupHome.channel.name">{{match?.matchStatistics?.matchData.teams[0].matchTotal.name}}</strong>
+                                <strong [attr.title]="match.teamHome.name">{{match.teamHome.teamCode}}</strong>
                                 vs
-                                <strong
-                                    [attr.title]="match.lineupAway.channel.name">{{match?.matchStatistics?.matchData.teams[1].matchTotal.name}}</strong>
+                                <strong [attr.title]="match.teamAway.name">{{match.teamAway.teamCode}}</strong>
                             </div>
                         </td>
-                        <td class="team-result__score">{{match?.matchStatistics?.matchGoalsHome}} -
-                            {{match?.matchStatistics?.matchGoalsAway}}</td>
+                        <td class="team-result__score">
+                            <ng-container *ngIf="match.matchStatistics; else matchNotPlayed">
+                                {{match?.matchStatistics?.matchGoalsHome}} -
+                                {{match?.matchStatistics?.matchGoalsAway}}
+                            </ng-container>
+                            <ng-template #matchNotPlayed>
+                                TBC
+                            </ng-template>
+                        </td>
                         <td class="team-result__status">
                             <ng-container [ngSwitch]="match.matchType">
                                 <span *ngSwitchCase="matchTypes.UnrankedFriendly">Unranked Friendly</span>

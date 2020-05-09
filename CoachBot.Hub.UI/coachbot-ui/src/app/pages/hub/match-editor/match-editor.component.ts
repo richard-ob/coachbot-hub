@@ -16,7 +16,7 @@ export class MatchEditorComponent implements OnInit {
     servers: Server[];
     showDatepicker = false;
     isLoading = true;
-
+    /* TODO: Add custom match events to list, substitutions, half time, etc. See PL.com */
     constructor(private matchService: MatchService, private serverService: ServerService, private route: ActivatedRoute) { }
 
     ngOnInit() {

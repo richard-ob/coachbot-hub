@@ -1,0 +1,78 @@
+<app-spinner *ngIf="isLoading"></app-spinner>
+<ng-container *ngIf="!isLoading">
+    <div class="player-heading">
+        <div class="container">
+            <div class="player-info__title player-info__title--mobile">
+                <h1 class="player-info__name"><span class="player-info__first-name">{{tournamentEdition.name}}</span>
+                </h1>
+            </div>
+            <div class="player-info">
+                <div class="player-info__item player-info__item--details" aria-hidden="false">
+                    <div class="player-info__title player-info__title--desktop">
+                        <h1 class="player-info__name">
+                            <span class="player-info__first-name">{{tournamentEdition.name}}</span>
+                        </h1>
+                    </div>
+                    <div class="player-info-details">
+                        <div class="player-info-details__item player-info-details__item--height">
+                            <h6 class="player-info-details__title">Start Date</h6>
+                            <div class="player-info-details__value">
+                                <ng-container *ngIf="tournamentEdition.startDate; else noStartDate">
+                                    {{tournamentEdition.startDate | date}}
+                                </ng-container>
+                                <ng-template #noStartDate>
+                                    TBC
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="player-info-details__item player-info-details__item--height">
+                            <h6 class="player-info-details__title">End Date</h6>
+                            <div class="player-info-details__value">
+                                <ng-container *ngIf="tournamentEdition.endDate; else noEndDate">
+                                    {{tournamentEdition.endDate | date}}
+                                </ng-container>
+                                <ng-template #noEndDate>
+                                    Unknown
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="content-filter">
+            <div class="container"><a href="#" class="content-filter__toggle"></a>
+                <ul class="content-filter__list">
+                    <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                        <a [routerLink]="['./standings']" class="content-filter__link">
+                            Standings
+                        </a>
+                    </li>
+                    <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                        <a [routerLink]="['./fixtures']" class="content-filter__link">
+                            Fixtures
+                        </a>
+                    </li>
+                    <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                        <a [routerLink]="['./teams']" class="content-filter__link">
+                            Teams
+                        </a>
+                    </li>
+                    <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                        <a [routerLink]="['./players']" class="content-filter__link">
+                            Players
+                        </a>
+                    </li>
+                    <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                        <a [routerLink]="['./staff']" class="content-filter__link">
+                            Staff
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+</ng-container>

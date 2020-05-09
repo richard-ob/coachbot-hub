@@ -7,5 +7,8 @@ namespace CoachBot.Models
         public StatisticsTimePeriod TimePeriod { get; set; }
 
         public int? TeamId { get; set; }
+
+        public int? TournamentEditionId { get; set; }
+
     }
 }

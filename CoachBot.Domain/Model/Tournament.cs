@@ -19,6 +19,10 @@ namespace CoachBot.Domain.Model
 
         public TournamentType TournamentType { get; set; }
 
+        public int? TournamentLogoId { get; set; }
+
+        public AssetImage TournamentLogo { get; set; }
+
         public int? OrganisationId { get; set; }
 
         public Organisation Organisation { get; set; }

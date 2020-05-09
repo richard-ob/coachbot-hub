@@ -10,7 +10,11 @@ namespace CoachBot.Models
 
         public int? TeamId { get; set; }
 
-        public bool UpcomingOnly { get; set; } = false;
+        public int? TournamentEditionId { get; set; }
+
+        public bool IncludeUpcoming { get; set; } = false;
+
+        public bool IncludePast { get; set; } = false;
 
     }
 }

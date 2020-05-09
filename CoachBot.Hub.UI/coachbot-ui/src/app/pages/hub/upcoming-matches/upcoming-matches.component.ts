@@ -19,7 +19,8 @@ export class UpcomingMatchesComponent implements OnInit {
 
     ngOnInit() {
         this.filters.regionId = 2;
-        this.filters.upcomingOnly = true;
+        this.filters.includeUpcoming = true;
+        this.filters.includePast = false;
         this.loadPage(1);
     }
 

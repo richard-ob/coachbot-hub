@@ -69,7 +69,6 @@ export class DiscordChannelEditorComponent {
     }
 
     setPositions(format: number) {
-        console.log(format);
         this.channel.channelPositions = this.channel.channelPositions || [];
         if (this.channel.channelPositions.length > format) {
             this.channel.channelPositions.splice(format);

@@ -20,6 +20,12 @@ namespace CoachBot.Controllers
             _tournamentService = tournamentService;
         }
 
+        [HttpGet("current")]
+        public List<TournamentEdition> GetCurrentTournamentEditions()
+        {
+            return _tournamentService.GetTournamentEditions(true);
+        }
+
         [HttpGet]
         public List<TournamentEdition> GetTournamentEditions()
         {

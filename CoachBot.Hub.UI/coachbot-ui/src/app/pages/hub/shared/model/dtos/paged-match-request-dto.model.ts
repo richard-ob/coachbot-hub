@@ -4,7 +4,9 @@ export class PagedMatchRequestDto {
     regionId: number;
     playerId?: number;
     teamId?: number;
-    upcomingOnly = false;
+    tournamentEditionId?: number;
+    includeUpcoming = false;
+    includePast = false;
     dateFrom?: Date;
     dateTo?: Date;
 }

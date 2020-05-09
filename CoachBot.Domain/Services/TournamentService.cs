@@ -34,6 +34,8 @@ namespace CoachBot.Domain.Services
         public List<TournamentEdition> GetTournamentEditions(bool excludeInactive = false)
         {
             return _coachBotContext.TournamentEditions
+                .Include(t => t.Tournament)
+                .ThenInclude(t => t.Organisation)
                 .Where(t => !excludeInactive || (t.EndDate == null || t.EndDate > DateTime.Now))
                 .ToList();
         }
@@ -41,6 +43,8 @@ namespace CoachBot.Domain.Services
         public TournamentEdition GetTournamentEdition(int tournamentEditionId)
         {
             return _coachBotContext.TournamentEditions
+                .Include(t => t.Tournament)
+                    .ThenInclude(t => t.TournamentLogo)
                 .Include(t => t.TournamentStages)
                     .ThenInclude(t => t.TournamentPhases)
                     .ThenInclude(t => t.TournamentGroupMatches)

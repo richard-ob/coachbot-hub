@@ -14,10 +14,8 @@ import { CircleGraphComponent } from './match-overview/components/circle-graph/c
 import { ServerManagerComponent } from './server-manager/server-manager.component';
 import { RegionManagerComponent } from './region-manager/region-manager.component';
 import { SpinnerModule } from 'src/app/core/components/spinner/spinner.module';
-import { RecentMatchesComponent } from './recent-matches/recent-matches.component';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { PlayerListComponent } from './player-list/player-list.component';
 import { TeamListComponent } from './team-list/team-list.component';
 import { SteamProfileFlagPipe } from './player-list/helpers/steam-profile-flag.pipe';
 import { ProfileEditorComponent } from './profile-editor/profile-editor.component';
@@ -54,6 +52,10 @@ import {
 } from './team-editor/team-editor-discord-integration/discord-guild-editor/discord-guild-editor.component';
 import { ChromeColourPickerModule } from 'src/app/shared/components/chrome-colour-picker/chrome-colour-picker.module';
 import { DiscordEmoteDisplayNamePipe } from './team-editor/team-editor-discord-integration/discord-guild-editor/discord-emote-display-name.pipe';
+import { TournamentTypePipe } from './tournaments/shared/tournament-type/tournament-type.pipe';
+import { TournamentOverviewModule } from './tournaments/tournament-overview/tournament-overview.module';
+import { TeamListModule } from './team-list/team-list.module';
+import { PlayerListModule } from './player-list/player-list.module';
 
 @NgModule({
   declarations: [
@@ -70,8 +72,6 @@ import { DiscordEmoteDisplayNamePipe } from './team-editor/team-editor-discord-i
     ServerManagerComponent,
     RegionManagerComponent,
     UpcomingMatchesComponent,
-    PlayerListComponent,
-    TeamListComponent,
     SteamProfileFlagPipe,
     ProfileEditorComponent,
     SteamIDValidatorComponent,
@@ -87,7 +87,8 @@ import { DiscordEmoteDisplayNamePipe } from './team-editor/team-editor-discord-i
     TeamEditorDiscordIntegrationComponent,
     DiscordChannelEditorComponent,
     DiscordGuildEditorComponent,
-    DiscordEmoteDisplayNamePipe
+    DiscordEmoteDisplayNamePipe,
+    TournamentTypePipe
   ],
   imports: [
     CommonModule,
@@ -99,6 +100,9 @@ import { DiscordEmoteDisplayNamePipe } from './team-editor/team-editor-discord-i
     DlDateTimePickerModule,
     PlayerProfileModule,
     TeamProfileModule,
+    TeamListModule,
+    PlayerListModule,
+    TournamentOverviewModule,
     RecentMatchesModule,
     MatDatepickerModule,
     MatNativeDateModule,

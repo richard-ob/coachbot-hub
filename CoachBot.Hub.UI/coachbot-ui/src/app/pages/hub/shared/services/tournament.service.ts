@@ -8,6 +8,7 @@ import { TournamentEdition } from '../model/tournament-edition.model';
 import { Tournament } from '../tournament.model';
 import { TournamentGroupTeam } from '../model/tournament-group-team.model';
 import { TournamentGroup } from '../model/tournament-group.model';
+import { TournamentEditionStaff } from '../model/tournament-edition-staff.model';
 
 @Injectable({
     providedIn: 'root'
@@ -60,6 +61,22 @@ export class TournamentService {
 
     removeTournamentGroupTeam(teamId: number, tournamentGroupId: number): Observable<void> {
         return this.http.delete<void>(`${environment.apiUrl}/api/tournament-groups/${tournamentGroupId}/teams/${teamId}`);
+    }
+
+    getTournamentEditionStaff(tournamentEditionId: number): Observable<TournamentEditionStaff[]> {
+        return this.http.get<TournamentEditionStaff[]>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/staff`);
+    }
+
+    createTournamentEditionStaff(tournamentEditionStaff: TournamentEditionStaff): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/api/tournament-edition-staff`, tournamentEditionStaff);
+    }
+
+    updateTournamentEditionStaff(tournamentEditionStaff: TournamentEditionStaff): Observable<void> {
+        return this.http.put<void>(`${environment.apiUrl}/api/tournament-edition-staff`, tournamentEditionStaff);
+    }
+
+    deleteTournamentEditionStaff(tournamentEditionStaffId: number): Observable<void> {
+        return this.http.delete<void>(`${environment.apiUrl}/api/tournament-edition-staff/${tournamentEditionStaffId}`);
     }
 
     generateTournamentSchedule(tournamentEditionId: number): Observable<void> {

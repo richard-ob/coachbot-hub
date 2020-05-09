@@ -15,6 +15,7 @@ import { TournamentOverviewRoutingModule } from './tournament-overview.routing-m
 import { TeamListModule } from '../../team-list/team-list.module';
 import { PlayerListModule } from '../../player-list/player-list.module';
 import { RecentMatchesModule } from '../../recent-matches/recent-matches.module';
+import { HubPipesModule } from '../../shared/pipes/hub-pipes.module';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { RecentMatchesModule } from '../../recent-matches/recent-matches.module'
         TournamentOverviewRoutingModule,
         TeamListModule,
         PlayerListModule,
-        RecentMatchesModule
+        RecentMatchesModule,
+        HubPipesModule
     ]
 })
 export class TournamentOverviewModule { }

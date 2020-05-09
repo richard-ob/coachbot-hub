@@ -51,11 +51,13 @@ import {
   DiscordGuildEditorComponent
 } from './team-editor/team-editor-discord-integration/discord-guild-editor/discord-guild-editor.component';
 import { ChromeColourPickerModule } from 'src/app/shared/components/chrome-colour-picker/chrome-colour-picker.module';
-import { DiscordEmoteDisplayNamePipe } from './team-editor/team-editor-discord-integration/discord-guild-editor/discord-emote-display-name.pipe';
-import { TournamentTypePipe } from './tournaments/shared/tournament-type/tournament-type.pipe';
+import {
+  DiscordEmoteDisplayNamePipe
+} from './team-editor/team-editor-discord-integration/discord-guild-editor/discord-emote-display-name.pipe';
 import { TournamentOverviewModule } from './tournaments/tournament-overview/tournament-overview.module';
 import { TeamListModule } from './team-list/team-list.module';
 import { PlayerListModule } from './player-list/player-list.module';
+import { HubPipesModule } from './shared/pipes/hub-pipes.module';
 
 @NgModule({
   declarations: [
@@ -87,8 +89,7 @@ import { PlayerListModule } from './player-list/player-list.module';
     TeamEditorDiscordIntegrationComponent,
     DiscordChannelEditorComponent,
     DiscordGuildEditorComponent,
-    DiscordEmoteDisplayNamePipe,
-    TournamentTypePipe
+    DiscordEmoteDisplayNamePipe
   ],
   imports: [
     CommonModule,
@@ -109,6 +110,7 @@ import { PlayerListModule } from './player-list/player-list.module';
     BrowserAnimationsModule,
     NgPipesModule,
     SweetAlert2Module,
+    HubPipesModule,
     ChromeColourPickerModule
   ],
   providers: [

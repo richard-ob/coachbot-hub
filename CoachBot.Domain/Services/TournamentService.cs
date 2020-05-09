@@ -45,6 +45,8 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.TournamentEditions
                 .Include(t => t.Tournament)
                     .ThenInclude(t => t.TournamentLogo)
+                .Include(t => t.TournamentEditionStaff)
+                    .ThenInclude(t => t.Player)
                 .Include(t => t.TournamentStages)
                     .ThenInclude(t => t.TournamentPhases)
                     .ThenInclude(t => t.TournamentGroupMatches)
@@ -134,6 +136,36 @@ namespace CoachBot.Domain.Services
         public void UpdateTournamentPhase(TournamentPhase tournamentPhase)
         {
             _coachBotContext.TournamentPhases.Update(tournamentPhase);
+            _coachBotContext.SaveChanges();
+        }
+
+        public List<TournamentEditionStaff> GetTournamentEditionStaff(int tournamentEditionId)
+        {
+            return _coachBotContext.TournamentEditionStaff
+                .Include(t => t.Player)
+                .Include(t => t.TournamentEdition)
+                .Where(g => g.TournamentEditionId == tournamentEditionId)
+                .ToList();
+        }
+
+        public void CreateTournamentEditionStaff(TournamentEditionStaff tournamentEditionStaff)
+        {
+            _coachBotContext.TournamentEditionStaff.Add(tournamentEditionStaff);
+            _coachBotContext.SaveChanges();
+        }
+
+        public void UpdateTournamentEditionStaff(TournamentEditionStaff tournamentEditionStaff)
+        {
+            var existing = _coachBotContext.TournamentEditionStaff.Single(t => t.Id == tournamentEditionStaff.Id);
+            existing.Role = tournamentEditionStaff.Role;
+            _coachBotContext.TournamentEditionStaff.Update(existing);
+            _coachBotContext.SaveChanges();
+        }
+
+        public void DeleteTournamentEditionStaff(int id)
+        {
+            var tournamentEditionStaff = _coachBotContext.TournamentEditionStaff.Find(id);
+            _coachBotContext.TournamentEditionStaff.Remove(tournamentEditionStaff);
             _coachBotContext.SaveChanges();
         }
 

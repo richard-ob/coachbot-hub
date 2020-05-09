@@ -51,9 +51,15 @@ namespace CoachBot.Controllers
         }
 
         [HttpGet("{id}/groups")]
-        public List<TournamentGroup> GetTournamentGroups(int tournamentEditionId)
+        public List<TournamentGroup> GetTournamentGroups(int id)
         {
-            return _tournamentService.GetTournamentGroups(tournamentEditionId);
+            return _tournamentService.GetTournamentGroups(id);
+        }
+
+        [HttpGet("{id}/staff")]
+        public List<TournamentEditionStaff> GetTournamentEditionStaff(int id)
+        {
+            return _tournamentService.GetTournamentEditionStaff(id);
         }
 
         [HttpPost("{id}/generate-schedule")]

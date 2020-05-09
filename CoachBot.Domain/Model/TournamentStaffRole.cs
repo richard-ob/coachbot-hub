@@ -2,9 +2,9 @@
 {
     public enum TournamentStaffRole
     {
-        Admin,
-        Streamer,
         Organiser,
+        MatchAdmin,
+        Streamer,
         Commentator
     }
 }

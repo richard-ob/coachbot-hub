@@ -50,6 +50,7 @@
     <Compile Include="Controllers\TeamStatisticsController.cs" />
     <Compile Include="Controllers\TournamentController.cs" />
     <Compile Include="Controllers\TournamentEditionController.cs" />
+    <Compile Include="Controllers\TournamentEditionStaffController.cs" />
     <Compile Include="Controllers\TournamentGroupController.cs" />
     <Compile Include="Controllers\UserController.cs" />
   </ItemGroup>

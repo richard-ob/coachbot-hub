@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TournamentEditionStaff } from '../../../shared/model/tournament-edition-staff.model';
+import { TournamentService } from '../../../shared/services/tournament.service';
 
 @Component({
     selector: 'app-tournament-overview-staff',
@@ -7,14 +9,25 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TournamentOverviewStaffComponent implements OnInit {
 
-    tournamenEditionId: number;
+    tournamentEditionId: number;
+    tournamentEditionStaff: TournamentEditionStaff[];
     isLoading = true;
+    isSaving = false;
 
-    constructor(private route: ActivatedRoute) { }
+    constructor(private route: ActivatedRoute, private tournamentService: TournamentService) { }
 
     ngOnInit() {
         this.route.parent.paramMap.pipe().subscribe(params => {
-            this.tournamenEditionId = +params.get('id');
+            this.tournamentEditionId = +params.get('id');
+            this.loadTournamentEditionStaff();
+        });
+    }
+
+    loadTournamentEditionStaff() {
+        this.isLoading = true;
+        this.tournamentService.getTournamentEditionStaff(this.tournamentEditionId).subscribe(tournamentEditionStaff => {
+            this.tournamentEditionStaff = tournamentEditionStaff;
+            this.isLoading = false;
         });
     }
 

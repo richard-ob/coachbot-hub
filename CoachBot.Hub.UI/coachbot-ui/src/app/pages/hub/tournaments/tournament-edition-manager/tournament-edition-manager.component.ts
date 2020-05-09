@@ -4,6 +4,8 @@ import { TournamentService } from '../../shared/services/tournament.service';
 import { TournamentEdition } from '../../shared/model/tournament-edition.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TournamentGroup } from '../../shared/model/tournament-group.model';
+import { TournamentEditionStaff } from '../../shared/model/tournament-edition-staff.model';
+import { TournamentStaffRole } from '../../shared/model/tournament-staff-role.model';
 
 @Component({
     selector: 'app-tournament-edition-manager',
@@ -14,6 +16,8 @@ export class TournamentEditionManagerComponent implements OnInit {
     tournamentEditionId: number;
     tournamentEdition: TournamentEdition;
     tournamentGroup: TournamentGroup = new TournamentGroup();
+    tournamentStaff = new TournamentEditionStaff();
+    tournamentEditionRole = TournamentStaffRole;
     isSaving = false;
     isLoading = true;
 
@@ -35,6 +39,16 @@ export class TournamentEditionManagerComponent implements OnInit {
         this.tournamentService.getTournamentEdition(this.tournamentEditionId).subscribe(tournamentEdition => {
             this.tournamentEdition = tournamentEdition;
             this.isLoading = false;
+        });
+    }
+
+    createTournamentEditionStaff() {
+        this.isSaving = true;
+        this.tournamentStaff.tournamentEditionId = this.tournamentEditionId;
+        this.tournamentService.createTournamentEditionStaff(this.tournamentStaff).subscribe(() => {
+            this.tournamentStaff = new TournamentEditionStaff();
+            this.isSaving = false;
+            this.loadTournamentEdition();
         });
     }
 

@@ -51,6 +51,7 @@ namespace CoachBot.Domain.Services
                 .Where(m => includePast || m.ScheduledKickOff > DateTime.Now)
                 .Where(m => playerId == null || m.PlayerMatchStatistics.Any(p => p.PlayerId == playerId))
                 .Where(m => teamId == null || m.TeamMatchStatistics.Any(t => t.TeamId == teamId))
+                .Where(m => m.TeamHomeId != null && m.TeamAwayId != null)
                 .Where(m => tournamentEditionId == null || m.TournamentId == tournamentEditionId);
 
             return queryable.GetPaged(page, pageSize, sortOrder);

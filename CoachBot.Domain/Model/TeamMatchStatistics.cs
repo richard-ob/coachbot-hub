@@ -25,6 +25,10 @@ namespace CoachBot.Domain.Model
 
         public Channel Channel { get; set; }
 
+        public int? TournamentEditionId { get; set; }
+
+        public TournamentEdition TournamentEdition { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
     }

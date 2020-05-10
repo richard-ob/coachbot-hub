@@ -41,6 +41,7 @@
                         <th class="team-result__game-overview">Assists</th>
                         <th class="team-result__game-overview">Avg. Passes</th>
                         <th class="team-result__game-overview">Avg. Distance</th>
+                        <th class="team-result__game-overview">Form</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,6 +61,9 @@
                         <td class="team-result__status">{{statistics.assists}}</td>
                         <td class="team-result__status">{{statistics.passes}}</td>
                         <td class="team-result__status"></td>
+                        <td class="team-result__status">
+                            <app-form-indicator [form]="statistics.form"></app-form-indicator>
+                        </td>
                     </tr>
                 </tbody>
             </table>

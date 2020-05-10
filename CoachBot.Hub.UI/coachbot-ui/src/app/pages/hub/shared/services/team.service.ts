@@ -26,10 +26,22 @@ export class TeamService {
         return this.http.get<Team[]>(`${environment.apiUrl}/api/team`);
     }
 
-    getTeamStatistics(page: number): Observable<PagedResult<TeamStatistics>> {
+    getTeamStatistics(
+        page: number,
+        pageSize = 10,
+        tournamentEditionId: number = null,
+        teamId: number = null,
+        sortBy: string = null,
+        sortOrder: string = null
+    ): Observable<PagedResult<TeamStatistics>> {
         const pagedTeamStatisticsRequestDto = new PagedTeamStatisticsRequestDto();
         pagedTeamStatisticsRequestDto.page = page;
+        pagedTeamStatisticsRequestDto.pageSize = pageSize;
         pagedTeamStatisticsRequestDto.timePeriod = TimePeriod.AllTime;
+        pagedTeamStatisticsRequestDto.tournamentEditionId = tournamentEditionId;
+        pagedTeamStatisticsRequestDto.teamId = teamId;
+        pagedTeamStatisticsRequestDto.sortBy = sortBy;
+        pagedTeamStatisticsRequestDto.sortOrder = sortOrder;
 
         return this.http.post<PagedResult<TeamStatistics>>(`${environment.apiUrl}/api/teamstatistics`, pagedTeamStatisticsRequestDto);
     }

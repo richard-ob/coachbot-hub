@@ -1,4 +1,5 @@
 ﻿using CoachBot.Domain.Attributes;
+using System.Collections.Generic;
 
 namespace CoachBot.Domain.Model
 {
@@ -134,6 +135,10 @@ namespace CoachBot.Domain.Model
         [MatchDataStatistic(MatchDataStatisticType.DistanceCovered, MatchDataTotalsType.Average)]
         public double DistanceCoveredAverage { get; set; }
 
+        public int GoalDifference { get; set; }
+
+        public int Points { get; set; }
+
         public int Appearances { get; set; }
 
         public int SubstituteAppearances { get; set; }
@@ -143,6 +148,8 @@ namespace CoachBot.Domain.Model
         public int Draws { get; set; }
 
         public int Losses { get; set; }
+
+        public List<MatchOutcomeType> Form { get; set; } 
 
     }
 }

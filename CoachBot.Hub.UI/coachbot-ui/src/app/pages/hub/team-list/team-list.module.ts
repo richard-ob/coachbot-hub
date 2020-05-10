@@ -5,6 +5,7 @@ import { SpinnerModule } from 'src/app/core/components/spinner/spinner.module';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TeamListComponent } from './team-list.component';
+import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { TeamListComponent } from './team-list.component';
         RouterModule,
         FormsModule,
         SpinnerModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        FormIndicatorModule
     ]
 })
 export class TeamListModule { }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace CoachBot.Domain.Model
 {
@@ -56,11 +57,15 @@ namespace CoachBot.Domain.Model
 
         public DateTime? FoundedDate { get; set; }
 
+        public List<MatchOutcomeType> Form { get; set; } = new List<MatchOutcomeType>();
+
         public bool Inactive { get; set; } = false;
 
         public ICollection<Channel> Channels { get; set; }
 
         public ICollection<PlayerTeam> Players { get; set; }
+
+        public ICollection<TeamMatchStatistics> TeamMatchStatistics { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }

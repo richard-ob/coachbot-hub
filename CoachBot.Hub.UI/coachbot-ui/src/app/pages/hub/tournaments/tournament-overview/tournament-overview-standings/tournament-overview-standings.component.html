@@ -1,1 +1,45 @@
-Standings
+<div class="container my-4">
+    <div class="card card--has-table">
+        <div class="card__header card__header--has-btn">
+            <h4>Standings</h4>
+        </div>
+        <div class="card__content">
+            <app-spinner *ngIf="!teamStatistics"></app-spinner>
+            <table *ngIf="teamStatistics" class="table table--large table-striped table-hover table-clickable">
+                <thead>
+                    <tr>
+                        <th class="team-result__date" style="width: 10px;">Pos</th>
+                        <th class="team-result__date" style="width: 35px;"></th>
+                        <th class="team-result__date">Team</th>
+                        <th class="team-result__status">Played</th>
+                        <th class="team-result__game-overview">Wins</th>
+                        <th class="team-result__game-overview">Draws</th>
+                        <th class="team-result__game-overview">Losses</th>
+                        <th class="team-result__game-overview">GF</th>
+                        <th class="team-result__game-overview">GA</th>
+                        <th class="team-result__game-overview">GD</th>
+                        <th class="team-result__game-overview">Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let statistics of teamStatistics; let i = index;">
+                        <td class="team-result__score" class="text-center">{{i + 1}}</td>
+                        <td class="team-result__score pl-2 pr-1 py-2">
+                            <img *ngIf="statistics.badgeImage" [src]="statistics.badgeImage">
+                        </td>
+                        <td class="team-result__score">{{statistics.teamName}}</td>
+                        <td class="team-result__status">{{statistics.appearances}}</td>
+                        <td class="team-result__status">{{statistics.wins}}</td>
+                        <td class="team-result__status">{{statistics.draws}}</td>
+                        <td class="team-result__status">{{statistics.losses}}</td>
+                        <td class="team-result__status">{{statistics.goals}}</td>
+                        <td class="team-result__status">{{statistics.goalsConceded}}</td>
+                        <td class="team-result__status">{{statistics.goalDifference}}</td>
+                        <td class="team-result__status">{{statistics.points}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Team Latest Results / End -->

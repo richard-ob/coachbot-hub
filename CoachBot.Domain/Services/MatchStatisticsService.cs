@@ -36,9 +36,9 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod, int? teamId)
+        public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod, int? teamId, int? tournamentEditionId)
         {
-            return GetTeamStatisticTotals().GetPaged(page, pageSize, sortOrder);
+            return GetTeamStatisticTotals(tournamentEditionId, teamId).GetPaged(page, pageSize, sortOrder);
         }
 
         public Model.Dtos.PagedResult<PlayerStatisticTotals> GetPlayerStatistics(int page, int pageSize, string sortOrder, PlayerStatisticFilters filters)
@@ -136,6 +136,16 @@ namespace CoachBot.Domain.Services
                     Matches = s.Count(),
                     MatchDayDate = s.Key
                 }).ToList();
+        }
+
+        public void GenerateTeamForm()
+        {
+            foreach (var teamId in _coachBotContext.TeamMatchStatistics.Select(t => t.TeamId).Distinct())
+            {
+                var team = _coachBotContext.Teams.Include(t => t.TeamMatchStatistics).Single(t => t.Id == teamId);
+                team.Form = team.TeamMatchStatistics.OrderByDescending(t => t.CreatedDate).Take(5).Select(m => m.MatchOutcome).ToList();
+            }
+            _coachBotContext.SaveChanges();
         }
 
         #region Private Methods
@@ -325,10 +335,12 @@ namespace CoachBot.Domain.Services
                  });
         }
 
-        private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals()
+        private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals(int? tournamentEditionId = null, int? teamId = null)
         {
             return _coachBotContext
                  .TeamMatchStatistics
+                 .Where(t => tournamentEditionId == null || t.TournamentEditionId == tournamentEditionId)
+                 .Where(t => teamId == null || t.TeamId == teamId)
                  .AsNoTracking()
                  .Select(m => new
                  {
@@ -361,9 +373,10 @@ namespace CoachBot.Domain.Services
                      m.Goals,
                      m.Assists,
                      m.MatchOutcome,
-                     m.Team.BadgeImage.Base64EncodedImage
+                     m.Team.BadgeImage.Base64EncodedImage,
+                     m.Team.Form
                  })
-                 .GroupBy(p => new { p.TeamId, p.ChannelId, p.TeamName, p.Base64EncodedImage }, (key, s) => new TeamStatisticTotals()
+                 .GroupBy(p => new { p.TeamId, p.ChannelId, p.TeamName, p.Base64EncodedImage, p.Form }, (key, s) => new TeamStatisticTotals()
                  {
                      Goals = s.Sum(p => p.Goals),
                      GoalsAverage = s.Average(p => p.Goals),
@@ -416,7 +429,10 @@ namespace CoachBot.Domain.Services
                      TeamId = key.TeamId,
                      TeamName = key.TeamName,
                      ChannelId = key.ChannelId,
-                     BadgeImage = key.Base64EncodedImage
+                     BadgeImage = key.Base64EncodedImage,
+                     Form = key.Form,
+                     GoalDifference = s.Sum(p => p.Goals) - s.Sum(p => p.GoalsConceded),
+                     Points = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 3 : p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)
                  });
         }
 

@@ -1,0 +1,16 @@
+<ng-container *ngIf="form; else spinner">
+    <ng-container *ngFor="let item of form" [ngSwitch]="item">
+        <span *ngSwitchCase="matchOutcomeType.Win" class="form-indicator--circle form-indicator--circle__win" title="Win">
+                W
+        </span>
+        <span *ngSwitchCase="matchOutcomeType.Draw" class="form-indicator--circle form-indicator--circle__draw" title="Draw">
+                D
+        </span>
+        <span *ngSwitchCase="matchOutcomeType.Loss" class="form-indicator--circle form-indicator--circle__loss" title="Loss">
+                L
+        </span>
+    </ng-container>
+</ng-container>
+<ng-template #spinner>
+    <app-spinner></app-spinner>
+</ng-template>

@@ -20,6 +20,7 @@ import {
     TeamProfileActivityHeatmapComponent
 } from './team-profile-statistics/team-profile-activity-heatmap/team-profile-activity-heatmap.component';
 import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
+import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
         RecentMatchesModule,
         TeamProfileRoutingModule,
         CalendarHeatmapModule,
-        HubPipesModule
+        HubPipesModule,
+        FormIndicatorModule
     ]
 })
 export class TeamProfileModule { }

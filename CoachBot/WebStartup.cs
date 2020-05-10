@@ -123,6 +123,7 @@ namespace CoachBot
             //provider.GetService<CoachBotContext>().SeedPreReleaseData();
             //provider.GetService<CoachBotContext>().SeedMatchData();
             //provider.GetService<MatchStatisticsService>().GenerateStatistics();
+            provider.GetService<MatchStatisticsService>().GenerateTeamForm();
 
         }
 

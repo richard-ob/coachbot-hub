@@ -1,7 +1,7 @@
 import { FantasyPlayer } from './fantasy-player.model';
 import { FantasyTeam } from './fantasy-team.model';
 
-export interface FantasyTeamSelection {
+export class FantasyTeamSelection {
     id: number;
     isFlex: boolean;
     fantasyPlayerId: number;

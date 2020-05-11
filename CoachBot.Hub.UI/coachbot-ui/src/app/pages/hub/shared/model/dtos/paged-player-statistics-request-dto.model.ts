@@ -16,9 +16,9 @@ export class PlayerStatisticFilters {
     channelId?: number;
     positionId?: number;
     includeSubstituteAppearances = true;
-    dateFrom: Date;
-    dateTo: Date;
-    minimumRating: number;
-    maximumRating: number;
-    positionGroup: PositionGroup;
+    dateFrom?: Date;
+    dateTo?: Date;
+    minimumRating?: number;
+    maximumRating?: number;
+    positionGroup?: PositionGroup;
 }

@@ -7,10 +7,12 @@ import { PlayerStatisticFilters } from '../../../shared/model/dtos/paged-player-
 import { TournamentService } from '../../../shared/services/tournament.service';
 import { TournamentEdition } from '../../../shared/model/tournament-edition.model';
 import { Team } from '../../../shared/model/team.model';
+import { FantasyTeamSelection } from '../../../shared/model/fantasy-team-selection.model';
 
 @Component({
     selector: 'app-fantasy-team-editor',
-    templateUrl: './fantasy-team-editor.component.html'
+    templateUrl: './fantasy-team-editor.component.html',
+    styleUrls: ['./fantasy-team-editor.component.scss']
 })
 export class FantasyTeamEditorComponent implements OnInit {
 
@@ -52,8 +54,12 @@ export class FantasyTeamEditorComponent implements OnInit {
         console.log(this.filters.maximumRating);
     }
 
-    addFantasyTeamSelection() {
-
+    addFantasyTeamSelection(fantasyPlayer: FantasyPlayer) {
+        const selection = new FantasyTeamSelection();
+        selection.fantasyPlayer = fantasyPlayer;
+        selection.fantasyTeamId = this.fantasyTeamId;
+        selection.isFlex = false;
+        this.fantasyTeam.fantasyTeamSelections.push(selection);
     }
 
     removeFantasyTeamSelection() {

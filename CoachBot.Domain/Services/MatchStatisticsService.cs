@@ -276,9 +276,10 @@ namespace CoachBot.Domain.Services
                      m.Assists,
                      m.MatchOutcome,
                      m.Substitute,
-                     m.MatchId
+                     m.MatchId,
+                     m.Player.Rating
                  })
-                 .GroupBy(p => new { p.PlayerId, p.SteamID, p.Name }, (key, s) => new PlayerStatisticTotals()
+                 .GroupBy(p => new { p.PlayerId, p.SteamID, p.Name, p.Rating }, (key, s) => new PlayerStatisticTotals()
                  {
                      Goals = s.Sum(p => p.Goals),
                      GoalsAverage = s.Average(p => p.Goals),
@@ -327,11 +328,12 @@ namespace CoachBot.Domain.Services
                      PlayerId = key.PlayerId,
                      Appearances = s.Count(),
                      SubstituteAppearances = s.Sum(p => p.Substitute ? 1 : 0),
-                     Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
-                     Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
-                     Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
+                     Wins = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0),
+                     Losses = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0),
+                     Draws = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0),
                      Name = key.Name,
-                     SteamID = key.SteamID
+                     SteamID = key.SteamID,
+                     Rating = key.Rating
                  });
         }
 

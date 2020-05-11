@@ -46,10 +46,21 @@
                             </span>
                         </th>
                         <th class="text-center">Nationality</th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
+                            (click)="loadPage(currentPage, 'Rating')">
+                            <span style=" white-space: nowrap; ">
+                                    Rating&nbsp;
+                                <i *ngIf="sortBy === 'Rating' && sortOrder === 'ASC'"
+                                    class="fas fa-sort-up"></i>
+                                <i *ngIf="sortBy === 'Rating' && sortOrder === 'DESC'"
+                                    class="fas fa-sort-down"></i>
+                                <i *ngIf="sortBy !== 'Rating'" class="fas fa-sort"></i>
+                            </span>
+                        </th>
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'Appearances')">
                             <span style=" white-space: nowrap; ">
-                                Appearances&nbsp;
+                                Apps&nbsp;
                                 <i *ngIf="sortBy === 'Appearances' && sortOrder === 'ASC'"
                                     class="fas fa-sort-up"></i>
                                 <i *ngIf="sortBy === 'Appearances' && sortOrder === 'DESC'"
@@ -57,7 +68,7 @@
                                 <i *ngIf="sortBy !== 'Appearances'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'SubstituteAppearances')">
                             <span style=" white-space: nowrap; ">
                                 As Sub&nbsp;
@@ -68,7 +79,8 @@
                                 <i *ngIf="sortBy !== 'SubstituteAppearances'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status" (click)="loadPage(currentPage, 'Wins')">
+                        <th style="cursor: pointer" class="team-result__status text-center"
+                            (click)="loadPage(currentPage, 'Wins')">
                             <span style=" white-space: nowrap; ">
                                     Wins&nbsp;
                                 <i *ngIf="sortBy === 'Wins' && sortOrder === 'ASC'"
@@ -78,7 +90,7 @@
                                 <i *ngIf="sortBy !== 'Wins'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'Losses')">
                             <span style=" white-space: nowrap; ">
                                     Losses&nbsp;
@@ -89,7 +101,7 @@
                                 <i *ngIf="sortBy !== 'Losses'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'Draws')">
                             <span style=" white-space: nowrap; ">
                                     Draws&nbsp;
@@ -100,7 +112,7 @@
                                 <i *ngIf="sortBy !== 'Draws'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'Goals')">
                             <span style=" white-space: nowrap; ">
                                     Goals&nbsp;
@@ -111,7 +123,7 @@
                                 <i *ngIf="sortBy !== 'Goals'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'GoalsAverage')">
                             <span style=" white-space: nowrap; ">
                                     Avg. Goals&nbsp;
@@ -122,7 +134,7 @@
                                 <i *ngIf="sortBy !== 'GoalsAverage'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'ShotAccuracyPercentage')">
                             <span style=" white-space: nowrap; ">
                                     Shot Accuracy&nbsp;
@@ -133,7 +145,7 @@
                                 <i *ngIf="sortBy !== 'ShotAccuracyPercentage'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'Assists')">
                             <span style=" white-space: nowrap; ">
                                 Assists&nbsp;
@@ -144,7 +156,7 @@
                                 <i *ngIf="sortBy !== 'Assists'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'AssistsAverage')">
                             <span style=" white-space: nowrap; ">
                                 Avg. Assists&nbsp;
@@ -155,7 +167,7 @@
                                 <i *ngIf="sortBy !== 'AssistsAverage'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th style="cursor: pointer" class="team-result__status"
+                        <th style="cursor: pointer" class="team-result__status text-center"
                             (click)="loadPage(currentPage, 'PassesAverage')">
                             <span style=" white-space: nowrap; ">
                                 Avg. Passes&nbsp;
@@ -177,44 +189,50 @@
                                 <i *ngIf="sortBy !== 'PassCompletionPercentageAverage'" class="fas fa-sort"></i>
                             </span>
                         </th>
-                        <th class="team-result__ball-posession">Yellow Cards</th>
-                        <th class="team-result__game-overview">Red Cards</th>
+                        <th class="team-result__ball-posession">Yellows</th>
+                        <th class="team-result__game-overview">Reds</th>
                         <th class="team-result__game-overview">Avg. Distance</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                         (click)="navigateToProfile(statistics.playerId)">
-                        <td class="team-result__vs">
+                        <td class="team-result__vs py-0 px-2" style="vertical-align: middle;">
                             <a *ngIf="statistics.steamUserProfile" [attr.href]="statistics.steamUserProfile.profileurl">
                                 <img [attr.src]="statistics.steamUserProfile.avatar"
                                     style="height: 16px; width: 16px; max-width: unset;">
                             </a>
                         </td>
                         <td class="team-result__score">{{statistics.name}}</td>
-                        <td class="team-result__ball-posession text-center">
+                        <td class="team-result__ball-posession text-center text-center py-0 px-2"
+                            style="vertical-align: middle;">
                             <ng-container *ngIf="statistics.steamUserProfile">
                                 <img *ngIf="statistics.steamUserProfile.loccountrycode; else unknownFlag"
                                     src="https://www.countryflags.io/{{statistics.steamUserProfile.loccountrycode}}/flat/24.png">
                                 <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
                             </ng-container>
                         </td>
-                        <td class="team-result__status">{{statistics.appearances}}</td>
-                        <td class="team-result__status">{{statistics.substituteAppearances}}</td>
-                        <td class="team-result__status">{{statistics.wins}}</td>
-                        <td class="team-result__status">{{statistics.losses}}</td>
-                        <td class="team-result__status">{{statistics.draws}}</td>
-                        <td class="team-result__status">{{statistics.goals}}</td>
-                        <td class="team-result__status">{{statistics.goalsAverage | number : '1.2-2'}}</td>
-                        <td class="team-result__status">{{statistics.shotAccuracyPercentage | percent }}</td>
-                        <td class="team-result__status">{{statistics.assists}}</td>
-                        <td class="team-result__status">{{statistics.assistsAverage | number : '1.2-2'}}</td>
-                        <td class="team-result__status">{{statistics.passesAverage | number : '1.2-2'}}</td>
-                        <td class="team-result__status">{{statistics.passCompletionPercentageAverage | percent }}
+                        <td class="team-result__status text-center">{{statistics.rating}}</td>
+                        <td class="team-result__status text-center">{{statistics.appearances}}</td>
+                        <td class="team-result__status text-center">{{statistics.substituteAppearances}}</td>
+                        <td class="team-result__status text-center">{{statistics.wins}}</td>
+                        <td class="team-result__status text-center">{{statistics.losses}}</td>
+                        <td class="team-result__status text-center">{{statistics.draws}}</td>
+                        <td class="team-result__status text-center">{{statistics.goals}}</td>
+                        <td class="team-result__status text-center">{{statistics.goalsAverage | number : '1.2-2'}}</td>
+                        <td class="team-result__status text-center">{{statistics.shotAccuracyPercentage | percent }}
                         </td>
-                        <td class="team-result__status">{{statistics.yellowCards}}</td>
-                        <td class="team-result__status">{{statistics.redCards}}</td>
-                        <td class="team-result__status">{{statistics.distanceCoveredAverage | number : '1.2-2'}}</td>
+                        <td class="team-result__status text-center">{{statistics.assists}}</td>
+                        <td class="team-result__status text-center">{{statistics.assistsAverage | number : '1.2-2'}}
+                        </td>
+                        <td class="team-result__status text-center">{{statistics.passesAverage | number : '1.2-2'}}</td>
+                        <td class="team-result__status text-center">
+                            {{statistics.passCompletionPercentageAverage | percent }}
+                        </td>
+                        <td class="team-result__status text-center">{{statistics.yellowCards}}</td>
+                        <td class="team-result__status text-center">{{statistics.redCards}}</td>
+                        <td class="team-result__status text-center">
+                            {{statistics.distanceCoveredAverage | number : '1.2-2'}}</td>
                     </tr>
                 </tbody>
             </table>

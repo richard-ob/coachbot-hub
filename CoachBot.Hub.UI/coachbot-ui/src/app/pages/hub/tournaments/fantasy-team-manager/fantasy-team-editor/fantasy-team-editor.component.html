@@ -1,0 +1,81 @@
+<div class="container my-4">
+    <ng-container *ngIf="!isLoading; else spinner">
+
+        <div class="row">
+            <div class="col-8">
+                <div class="widget card widget--sidebar widget-filter-price">
+                    <div class="widget__title card__header">
+                        <h4>Squad</h4>
+                    </div>
+                    <div class="widget__content card__content" style="min-height: 40rem;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <aside class="widget card widget--sidebar widget-filter-price">
+                    <div class="widget__title card__header card__header--has-btn">
+                        <h4>Filter by Price</h4><button
+                            class="btn btn-default btn-outline btn-xs card-header__button">Filter</button>
+                    </div>
+                    <div class="widget__content card__content">
+                        <nouislider [connect]="true" [min]="0" [max]="10" [(ngModel)]="ratingRange" [step]="0.25"
+                            (ngModelChange)="setRatingRange($event)"></nouislider>
+                    </div>
+                </aside>
+                <aside class="widget card widget--sidebar widget-filter-price">
+                    <div class="widget__title card__header card__header--has-btn">
+                        <h4>Filter by Team</h4><button
+                            class="btn btn-default btn-outline btn-xs card-header__button">Filter</button>
+                    </div>
+                    <div class="widget__content card__content">
+                        <select class="form-control" [(ngModel)]="filters.teamId">
+                            <option *ngFor="let team of teams" [ngValue]="team.id">
+                                {{team.name}}
+                            </option>
+                        </select>
+                    </div>
+                </aside>
+                <aside class="widget card widget--sidebar widget-filter-price">
+                    <div class="widget__title card__header card__header--has-btn">
+                        <h4>Filter by Name</h4><button
+                            class="btn btn-default btn-outline btn-xs card-header__button">Filter</button>
+                    </div>
+                    <div class="widget__content card__content">
+                        <input class="form-control" type="text">
+                    </div>
+                </aside>
+
+                <aside class="widget card widget--sidebar widget-filter-price card--has-table">
+                    <div class="widget__title card__header ">
+                        <h4>Players</h4>
+                    </div>
+                    <div class="widget__content card__content">
+                        <table class="table table-striped table-hover table-clickable">
+                            <thead>
+                                <th></th>
+                                <th>Player</th>
+                                <th>Rating</th>
+                                <th>Pos</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let player of fantasyPlayers">
+                                    <td>
+                                        <img [src]="player.player.teams[0].team.badgeImage.base64EncodedImage"
+                                            style="max-height: 15px">
+                                    </td>
+                                    <td>{{player.player.name}}</td>
+                                    <td>{{player.rating | number : '1.2-2'}}</td>
+                                    <td>{{player.positionGroup | positionGroup}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #spinner>
+        <app-spinner></app-spinner>
+    </ng-template>
+
+</div>

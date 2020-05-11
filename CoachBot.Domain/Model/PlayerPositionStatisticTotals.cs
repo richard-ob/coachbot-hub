@@ -13,5 +13,7 @@ namespace CoachBot.Domain.Model
 
         public ulong? SteamID { get; set; }
 
+        public double Rating { get; set; }
+
     }
 }

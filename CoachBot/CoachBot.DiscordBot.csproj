@@ -33,6 +33,7 @@
     <Compile Include="Controllers\ChannelController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DiscordGuildController.cs" />
+    <Compile Include="Controllers\FantasyPlayerController.cs" />
     <Compile Include="Controllers\FantasyTeamController.cs" />
     <Compile Include="Controllers\GuildController.cs" />
     <Compile Include="Controllers\LogController.cs" />

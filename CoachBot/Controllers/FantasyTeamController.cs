@@ -1,5 +1,7 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
+using CoachBot.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,7 +9,10 @@ using System.Text;
 
 namespace CoachBot.Controllers
 {
-    public class FantasyTeamController
+    [Produces("application/json")]
+    [Route("api/fantasy")]
+    [ApiController]
+    public class FantasyTeamController : Controller
     {
         private readonly FantasyService _fantasyService;
 
@@ -50,6 +55,18 @@ namespace CoachBot.Controllers
         public void RemoveFantasyTeamSelection(int fantasyTeamSelectionId)
         {
             _fantasyService.RemoveFantasyTeamSelection(fantasyTeamSelectionId);
+        }
+
+        [HttpPost("tournament/{tournamentEditionId}/players")]
+        public IEnumerable<FantasyPlayer> GetFantasyPlayers([FromBody]PlayerStatisticFilters playerStatisticFilters)
+        {
+            return _fantasyService.GetFantasyPlayers(playerStatisticFilters);
+        }
+
+        [HttpGet("tournament/available")]
+        public IEnumerable<TournamentEdition> GetAvailableTournamentsForUser()
+        {
+            return _fantasyService.GetAvailableTournamentsForUser(User.GetDiscordUserId());
         }
 
     }

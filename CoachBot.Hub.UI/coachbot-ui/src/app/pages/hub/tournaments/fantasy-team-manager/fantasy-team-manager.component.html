@@ -1,0 +1,52 @@
+<div class="container my-4">
+    <ng-container *ngIf="!isLoading; else spinner">
+        <div class="card card--has-table">
+            <div class="card__header">
+                <h4>Fantasy Teams</h4>
+            </div>
+            <div class="card__content">
+                <table class="table table-striped table-hover table-clickable">
+                    <thead>
+                        <th>Name</th>
+                        <th>Tournament</th>
+                        <th>Is Finalised</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let fantasyTeam of fantasyTeams" (click)="navigateToFantasyTeam(fantasyTeam.id)">
+                            <td>{{fantasyTeam.name}}</td>
+                            <td>{{fantasyTeam.tournamentEdition?.name}}</td>
+                            <td>{{fantasyTeam.isFinalised ? 'Yes' : 'No' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card__header">
+                <h4>Fanasy Team Creator</h4>
+            </div>
+            <div class="card__content">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input [(ngModel)]="fantasyTeam.name" name="tournament" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Tournament</label>
+                    <select class="form-control" [(ngModel)]="fantasyTeam.tournamentEditionId">
+                        <option *ngFor="let tournamentEdition of availableTournamentEditions"
+                            [ngValue]="tournamentEdition.id">
+                            {{tournamentEdition.name}}
+                        </option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" (click)="createFantasyTeam()" type="button"
+                    [disabled]="isCreating">Create</button>
+
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #spinner>
+        <app-spinner></app-spinner>
+    </ng-template>
+</div>

@@ -9,6 +9,7 @@ import { Tournament } from '../tournament.model';
 import { TournamentGroupTeam } from '../model/tournament-group-team.model';
 import { TournamentGroup } from '../model/tournament-group.model';
 import { TournamentEditionStaff } from '../model/tournament-edition-staff.model';
+import { Team } from '../model/team.model';
 
 @Injectable({
     providedIn: 'root'
@@ -77,6 +78,10 @@ export class TournamentService {
 
     deleteTournamentEditionStaff(tournamentEditionStaffId: number): Observable<void> {
         return this.http.delete<void>(`${environment.apiUrl}/api/tournament-edition-staff/${tournamentEditionStaffId}`);
+    }
+
+    getTournamentTeams(tournamentEditionId: number): Observable<Team[]> {
+        return this.http.get<Team[]>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/teams`);
     }
 
     generateTournamentSchedule(tournamentEditionId: number): Observable<void> {

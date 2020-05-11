@@ -12,6 +12,10 @@ namespace CoachBot.Domain.Model
         [Key]
         public int Id { get; set; }
 
+        public string Name { get; set; }
+
+        public bool IsFinalised { get; set; } = false;
+
         public int? PlayerId { get; set; }
 
         public Player Player { get; set; }

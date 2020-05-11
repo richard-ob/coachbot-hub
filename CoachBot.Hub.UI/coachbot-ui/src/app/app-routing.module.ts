@@ -27,6 +27,8 @@ import { PlayerTeamHistoryComponent } from './pages/hub/player-profile/player-te
 import { PlayerProfileTournamentsComponent } from './pages/hub/player-profile/player-profile-tournaments/player-profile-tournaments.component';
 import { CurrentTournamentsComponent } from './pages/hub/tournaments/current-tournaments/current-tournaments.component';
 import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component';
+import { FantasyTeamManagerComponent } from './pages/hub/tournaments/fantasy-team-manager/fantasy-team-manager.component';
+import { FantasyTeamEditorComponent } from './pages/hub/tournaments/fantasy-team-manager/fantasy-team-editor/fantasy-team-editor.component';
 
 const routes: Routes = [
   {
@@ -96,6 +98,14 @@ const routes: Routes = [
   {
     path: 'tournaments',
     component: CurrentTournamentsComponent
+  },
+  {
+    path: 'fantasy',
+    component: FantasyTeamManagerComponent
+  },
+  {
+    path: 'fantasy-editor/:id',
+    component: FantasyTeamEditorComponent
   },
   {
     path: 'matchmaking',

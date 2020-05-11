@@ -76,6 +76,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<Region>().HasIndex(r => new { r.RegionName }).IsUnique(true);
             modelBuilder.Entity<PlayerLineupPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.LineupId }).IsUnique(true);
             modelBuilder.Entity<TournamentEditionStaff>().HasIndex(tes => new { tes.PlayerId, tes.TournamentEditionId }).IsUnique(true);
+            modelBuilder.Entity<FantasyTeam>().HasIndex(ft => new { ft.PlayerId, ft.TournamentEditionId }).IsUnique(true);
 
             // Defaults
             modelBuilder.Entity<Channel>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

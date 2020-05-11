@@ -127,6 +127,15 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
+        public List<Team> GetTournamentTeams(int tournamentEditionId)
+        {
+            return _coachBotContext.TournamentGroupTeams
+                .Where(t => t.TournamentGroup.TournamentStage.TournamentEditionId == tournamentEditionId)
+                .Select(t => t.Team)
+                .Distinct()
+                .ToList();                
+        }
+
         public void UpdateTournamentStage(TournamentStage tournamentStage)
         {
             _coachBotContext.TournamentStages.Update(tournamentStage);

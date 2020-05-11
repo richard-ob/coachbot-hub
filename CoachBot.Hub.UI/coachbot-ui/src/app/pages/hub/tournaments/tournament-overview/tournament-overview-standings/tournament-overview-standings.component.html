@@ -11,14 +11,14 @@
                         <th class="team-result__date" style="width: 10px;">Pos</th>
                         <th class="team-result__date" style="width: 35px;"></th>
                         <th class="team-result__date">Team</th>
-                        <th class="team-result__status">Played</th>
-                        <th class="team-result__game-overview">Wins</th>
-                        <th class="team-result__game-overview">Draws</th>
-                        <th class="team-result__game-overview">Losses</th>
-                        <th class="team-result__game-overview">GF</th>
-                        <th class="team-result__game-overview">GA</th>
-                        <th class="team-result__game-overview">GD</th>
-                        <th class="team-result__game-overview">Points</th>
+                        <th class="team-result__status text-center">Played</th>
+                        <th class="team-result__game-overview text-center">Wins</th>
+                        <th class="team-result__game-overview text-center">Draws</th>
+                        <th class="team-result__game-overview text-center">Losses</th>
+                        <th class="team-result__game-overview text-center">GF</th>
+                        <th class="team-result__game-overview text-center">GA</th>
+                        <th class="team-result__game-overview text-center">GD</th>
+                        <th class="team-result__game-overview text-center">Points</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,14 +28,14 @@
                             <img *ngIf="statistics.badgeImage" [src]="statistics.badgeImage">
                         </td>
                         <td class="team-result__score">{{statistics.teamName}}</td>
-                        <td class="team-result__status">{{statistics.appearances}}</td>
-                        <td class="team-result__status">{{statistics.wins}}</td>
-                        <td class="team-result__status">{{statistics.draws}}</td>
-                        <td class="team-result__status">{{statistics.losses}}</td>
-                        <td class="team-result__status">{{statistics.goals}}</td>
-                        <td class="team-result__status">{{statistics.goalsConceded}}</td>
-                        <td class="team-result__status">{{statistics.goalDifference}}</td>
-                        <td class="team-result__status">{{statistics.points}}</td>
+                        <td class="team-result__status text-center">{{statistics.appearances}}</td>
+                        <td class="team-result__statu text-centers">{{statistics.wins}}</td>
+                        <td class="team-result__status text-center">{{statistics.draws}}</td>
+                        <td class="team-result__status text-center">{{statistics.losses}}</td>
+                        <td class="team-result__status text-center">{{statistics.goals}}</td>
+                        <td class="team-result__status text-center">{{statistics.goalsConceded}}</td>
+                        <td class="team-result__status text-center">{{statistics.goalDifference}}</td>
+                        <td class="team-result__status text-center">{{statistics.points}}</td>
                     </tr>
                 </tbody>
             </table>

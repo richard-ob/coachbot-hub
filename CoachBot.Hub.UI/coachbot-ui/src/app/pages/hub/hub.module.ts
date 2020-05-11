@@ -58,6 +58,9 @@ import { TournamentOverviewModule } from './tournaments/tournament-overview/tour
 import { TeamListModule } from './team-list/team-list.module';
 import { PlayerListModule } from './player-list/player-list.module';
 import { HubPipesModule } from './shared/pipes/hub-pipes.module';
+import { FantasyTeamManagerComponent } from './tournaments/fantasy-team-manager/fantasy-team-manager.component';
+import { FantasyTeamEditorComponent } from './tournaments/fantasy-team-manager/fantasy-team-editor/fantasy-team-editor.component';
+import { NouisliderModule } from 'ng2-nouislider';
 
 @NgModule({
   declarations: [
@@ -89,7 +92,9 @@ import { HubPipesModule } from './shared/pipes/hub-pipes.module';
     TeamEditorDiscordIntegrationComponent,
     DiscordChannelEditorComponent,
     DiscordGuildEditorComponent,
-    DiscordEmoteDisplayNamePipe
+    DiscordEmoteDisplayNamePipe,
+    FantasyTeamManagerComponent,
+    FantasyTeamEditorComponent
   ],
   imports: [
     CommonModule,
@@ -111,7 +116,8 @@ import { HubPipesModule } from './shared/pipes/hub-pipes.module';
     NgPipesModule,
     SweetAlert2Module,
     HubPipesModule,
-    ChromeColourPickerModule
+    ChromeColourPickerModule,
+    NouisliderModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

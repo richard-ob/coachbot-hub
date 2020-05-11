@@ -12,6 +12,10 @@ namespace CoachBot.Domain.Model
         [Key]
         public int Id { get; set; }
 
+        public PositionGroup PositionGroup { get; set; }
+
+        public double Rating { get; set; }
+
         public int? PlayerId { get; set; }
 
         public Player Player { get; set; }
@@ -19,8 +23,6 @@ namespace CoachBot.Domain.Model
         public int? TournamentEditionId { get; set; }
 
         public TournamentEdition TournamentEdition { get; set; }
-
-        public FantasyPosition FantasyPosition { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }

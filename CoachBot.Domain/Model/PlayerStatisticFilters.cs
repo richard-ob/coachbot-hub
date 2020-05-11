@@ -24,5 +24,11 @@ namespace CoachBot.Domain.Model
 
         public DateTime? DateTo { get; set; }
 
+        public float? MinimumRating { get; set; }
+
+        public float? MaximumRating { get; set; }
+
+        public PositionGroup? PositionGroup { get; set; }
+
     }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FantasyTeam } from '../../../shared/model/fantasy-team.model';
 
 @Component({
     selector: 'app-tournament-overview-players',
@@ -17,5 +18,4 @@ export class TournamentOverviewPlayersComponent implements OnInit {
             this.tournamenEditionId = +params.get('id');
         });
     }
-
 }

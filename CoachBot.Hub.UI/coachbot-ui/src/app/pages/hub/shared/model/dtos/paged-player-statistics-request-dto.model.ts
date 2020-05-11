@@ -1,4 +1,5 @@
 import { TimePeriod } from '../time-period.enum';
+import { PositionGroup } from '../position-group.enum';
 
 export class PagedPlayerStatisticsRequestDto {
     page = 1;
@@ -15,4 +16,9 @@ export class PlayerStatisticFilters {
     channelId?: number;
     positionId?: number;
     includeSubstituteAppearances = true;
+    dateFrom: Date;
+    dateTo: Date;
+    minimumRating: number;
+    maximumRating: number;
+    positionGroup: PositionGroup;
 }

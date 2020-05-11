@@ -4,11 +4,11 @@ using System.Text;
 
 namespace CoachBot.Domain.Model
 {
-    public enum FantasyPosition
+    public enum PositionGroup
     {
-        GoalKeeper,
-        Defender,
-        Midfielder,
-        Attacker
+        Goalkeeper,
+        Defence,
+        Midfield,
+        Attack
     }
 }

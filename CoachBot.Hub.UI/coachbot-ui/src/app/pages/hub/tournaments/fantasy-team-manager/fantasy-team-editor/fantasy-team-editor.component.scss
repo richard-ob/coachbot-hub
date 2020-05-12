@@ -34,7 +34,7 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	width: $markingWidth;
 	height: 100%;
 	top: 0;
-	left: calc(#{"50% - ${markingWidth}/2"});
+	left: calc(50% - #{$markingWidth} /2);
 }
 
 .center-circle {
@@ -44,8 +44,8 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	border-radius: $size;
 	border: $markingWidth solid $markingColor;
 	background: none;
-	top: calc(#{"50% - ${size}/2"});
-	left: calc(#{"50% - ${size}/2"});
+	top: calc(50% - #{$size} / 2 );
+	left: calc(50% - #{$size} / 2 );
 }
 
 .box {
@@ -98,7 +98,7 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	width: $markingWidth;
 	height: $markingWidth;
 	border-radius: $markingWidth;
-	top: calc(#{"50% - ${markingWidth}/2"});
+	top: calc(50% - #{$markingWidth} / 2);
 	
 	&.left {
 		left: 11%;
@@ -111,7 +111,7 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	&.center {
 		width: $markingWidth*2;
 		height: $markingWidth*2;
-		left: calc(#{"50% - ${markingWidth}"});
+		left: calc(50% - 4px);
 	}
 }
 
@@ -185,10 +185,5 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 }
 .fantasy-pitch--player {
     z-index: 10;
-    height: 50px;
-    width: 50px;
-    background-color: white;
-    color: black;
-    border-radius: 25px;
     margin: 25px;
 }

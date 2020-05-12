@@ -27,10 +27,37 @@
                             <div class="corner bottom right marking"></div>
                             <div class="grass"></div>
                         </div>
-                        <div class="fantasy-pitch--player-container">
-                            <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections"
-                                class="fantasy-pitch--player">
-                                {{selection.fantasyPlayer.player.name}}
+                        <div *ngIf="fantasyTeam && fantasyTeam.fantasyTeamSelections"
+                            class="fantasy-pitch--player-container flex-column">
+                            <div class="d-flex justify-content-around">
+                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
+                                    class="fantasy-pitch--player">
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-around">
+                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
+                                    class="fantasy-pitch--player">
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-around">
+                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
+                                    class="fantasy-pitch--player">
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-around">
+                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
+                                    class="fantasy-pitch--player">
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-around">
+                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:true"
+                                    class="fantasy-pitch--player">
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -92,7 +119,8 @@
                         <h4>Players</h4>
                     </div>
                     <div class="widget__content card__content">
-                        <table class="table table-striped table-hover table-clickable">
+                        <table *ngIf="fantasyPlayers; else spinner"
+                            class="table table-striped table-hover table-clickable">
                             <thead>
                                 <th></th>
                                 <th>Player</th>
@@ -111,6 +139,9 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <ng-template #spinner>
+                            <app-spinner></app-spinner>
+                        </ng-template>
                     </div>
                 </aside>
             </div>

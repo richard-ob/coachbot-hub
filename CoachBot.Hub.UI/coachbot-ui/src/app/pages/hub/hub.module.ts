@@ -61,6 +61,7 @@ import { HubPipesModule } from './shared/pipes/hub-pipes.module';
 import { FantasyTeamManagerComponent } from './tournaments/fantasy-team-manager/fantasy-team-manager.component';
 import { FantasyTeamEditorComponent } from './tournaments/fantasy-team-manager/fantasy-team-editor/fantasy-team-editor.component';
 import { NouisliderModule } from 'ng2-nouislider';
+import { KitComponent } from './tournaments/fantasy-team-manager/shared/components/kit/kit.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,8 @@ import { NouisliderModule } from 'ng2-nouislider';
     DiscordGuildEditorComponent,
     DiscordEmoteDisplayNamePipe,
     FantasyTeamManagerComponent,
-    FantasyTeamEditorComponent
+    FantasyTeamEditorComponent,
+    KitComponent
   ],
   imports: [
     CommonModule,

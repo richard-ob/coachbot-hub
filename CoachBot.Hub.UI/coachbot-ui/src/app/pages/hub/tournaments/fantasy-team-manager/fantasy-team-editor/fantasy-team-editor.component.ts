@@ -8,6 +8,7 @@ import { TournamentService } from '../../../shared/services/tournament.service';
 import { TournamentEdition } from '../../../shared/model/tournament-edition.model';
 import { Team } from '../../../shared/model/team.model';
 import { FantasyTeamSelection } from '../../../shared/model/fantasy-team-selection.model';
+import { PositionGroup } from '../../../shared/model/position-group.enum';
 
 @Component({
     selector: 'app-fantasy-team-editor',
@@ -23,6 +24,7 @@ export class FantasyTeamEditorComponent implements OnInit {
     tournamentEdition: TournamentEdition;
     teams: Team[];
     ratingRange: number[] = [0, 10];
+    positionGroups = PositionGroup;
     isLoading = false;
     isSaving = true;
 
@@ -60,6 +62,7 @@ export class FantasyTeamEditorComponent implements OnInit {
         selection.fantasyTeamId = this.fantasyTeamId;
         selection.isFlex = false;
         this.fantasyTeam.fantasyTeamSelections.push(selection);
+        console.log(this.fantasyTeam);
     }
 
     removeFantasyTeamSelection() {

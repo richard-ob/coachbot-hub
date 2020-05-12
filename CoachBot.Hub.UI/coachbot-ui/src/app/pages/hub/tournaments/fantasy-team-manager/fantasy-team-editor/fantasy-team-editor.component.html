@@ -32,31 +32,36 @@
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
                                     class="fantasy-pitch--player">
-                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
                                     class="fantasy-pitch--player">
-                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
                                     class="fantasy-pitch--player">
-                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
                                     class="fantasy-pitch--player">
-                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:true"
                                     class="fantasy-pitch--player">
-                                    <app-kit [text]="selection.fantasyPlayer.player.name"></app-kit>
+                                    <app-kit [text]="selection.fantasyPlayer.player.name"
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +94,8 @@
                                     <input type="checkbox" id="size-7" value="7">
                                     <span class="checkbox-indicator">MID</span>
                                 </label>
-                                <label class="checkbox checkbox--cell">
+                                <label class="checkbox checkbox--cell"
+                                    (click)="filters.positionGroup = positionGroups.Attack">
                                     <input type="checkbox" id="size-7" value="7">
                                     <span class="checkbox-indicator">ATK</span>
                                 </label>

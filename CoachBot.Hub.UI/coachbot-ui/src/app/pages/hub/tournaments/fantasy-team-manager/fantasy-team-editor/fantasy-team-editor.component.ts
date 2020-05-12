@@ -35,17 +35,23 @@ export class FantasyTeamEditorComponent implements OnInit {
             this.fantasyTeamId = +params.get('id');
             this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
                 this.fantasyTeam = fantasyTeam;
+                this.filters.tournamentEditionId = this.fantasyTeam.tournamentEditionId;
                 this.tournamentService.getTournamentEdition(this.fantasyTeam.tournamentEditionId).subscribe(tournamentEdition => {
                     this.tournamentEdition = tournamentEdition;
                     this.tournamentService.getTournamentTeams(this.tournamentEdition.id).subscribe(teams => {
                         this.teams = teams;
-                        this.fantasyService.getFantasyPlayers(this.fantasyTeam.tournamentEditionId).subscribe(fantasyPlayers => {
-                            this.fantasyPlayers = fantasyPlayers;
-                            this.isLoading = false;
-                        });
+                        this.loadFantasyPlayers();
                     });
                 });
             });
+        });
+    }
+
+    loadFantasyPlayers() {
+        this.isLoading = true;
+        this.fantasyService.getFantasyPlayers(this.filters).subscribe(fantasyPlayers => {
+            this.fantasyPlayers = fantasyPlayers;
+            this.isLoading = false;
         });
     }
 
@@ -57,12 +63,34 @@ export class FantasyTeamEditorComponent implements OnInit {
     }
 
     addFantasyTeamSelection(fantasyPlayer: FantasyPlayer) {
-        const selection = new FantasyTeamSelection();
-        selection.fantasyPlayer = fantasyPlayer;
-        selection.fantasyTeamId = this.fantasyTeamId;
-        selection.isFlex = false;
-        this.fantasyTeam.fantasyTeamSelections.push(selection);
-        console.log(this.fantasyTeam);
+        if (this.canAddToGroup(fantasyPlayer.positionGroup)
+            && !this.fantasyTeam.fantasyTeamSelections.some(f => f.fantasyPlayerId === fantasyPlayer.id)) {
+            const selection = new FantasyTeamSelection();
+            selection.fantasyPlayer = fantasyPlayer;
+            selection.fantasyTeamId = this.fantasyTeamId;
+            selection.isFlex = false;
+            this.fantasyTeam.fantasyTeamSelections.push(selection);
+            this.filters.excludePlayers.push(fantasyPlayer.playerId);
+            this.loadFantasyPlayers();
+        }
+    }
+
+    private canAddToGroup(positionGroup: PositionGroup) {
+        if (positionGroup === PositionGroup.Goalkeeper && this.getPlayerCountForPosition(positionGroup) < 2) {
+            return true;
+        } else if (positionGroup === PositionGroup.Defence && this.getPlayerCountForPosition(positionGroup) < 5) {
+            return true;
+        } else if (positionGroup === PositionGroup.Midfield && this.getPlayerCountForPosition(positionGroup) < 3) {
+            return true;
+        } else if (positionGroup === PositionGroup.Attack && this.getPlayerCountForPosition(positionGroup) < 3) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private getPlayerCountForPosition(positionGroup): number {
+        return this.fantasyTeam.fantasyTeamSelections.filter(f => f.fantasyPlayer.positionGroup === positionGroup).length;
     }
 
     removeFantasyTeamSelection() {

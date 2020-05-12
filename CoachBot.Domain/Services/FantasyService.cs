@@ -82,21 +82,27 @@ namespace CoachBot.Domain.Services
 
         public List<FantasyPlayer> GetFantasyPlayers(PlayerStatisticFilters playerStatisticFilters)
         {
-            return _coachBotContext
-                .FantasyPlayers
-                .Include(fp => fp.Player)
-                .ThenInclude(p => p.Teams)
-                .ThenInclude(t => t.Team)
-                .ThenInclude(t => t.BadgeImage)
-                .Include(fp => fp.Player)
-                .ThenInclude(fp => fp.Country)
-                .Where(p => playerStatisticFilters.MaximumRating == null || p.Player.Rating <= playerStatisticFilters.MaximumRating)
-                .Where(p => playerStatisticFilters.MinimumRating == null || p.Player.Rating >= playerStatisticFilters.MinimumRating)
-                .Where(p => playerStatisticFilters.PositionGroup == null || p.PositionGroup == playerStatisticFilters.PositionGroup)
-                .Where(p => playerStatisticFilters.TeamId == null || p.Player.Teams.Any(t => t.TeamId == playerStatisticFilters.TeamId && t.IsCurrentTeam))
-                .Where(p => p.TournamentEditionId == playerStatisticFilters.TournamentEditionId)
-                .Take(10)
-                .ToList();
+            var queryable =
+                _coachBotContext
+                    .FantasyPlayers
+                    .Include(fp => fp.Player)
+                    .ThenInclude(p => p.Teams)
+                    .ThenInclude(t => t.Team)
+                    .ThenInclude(t => t.BadgeImage)
+                    .Include(fp => fp.Player)
+                    .ThenInclude(fp => fp.Country)
+                    .Where(p => playerStatisticFilters.MaximumRating == null || p.Player.Rating <= playerStatisticFilters.MaximumRating)
+                    .Where(p => playerStatisticFilters.MinimumRating == null || p.Player.Rating >= playerStatisticFilters.MinimumRating)
+                    .Where(p => playerStatisticFilters.PositionGroup == null || p.PositionGroup == playerStatisticFilters.PositionGroup)
+                    .Where(p => playerStatisticFilters.TeamId == null || p.Player.Teams.Any(t => t.TeamId == playerStatisticFilters.TeamId && t.IsCurrentTeam))
+                    .Where(p => p.TournamentEditionId == playerStatisticFilters.TournamentEditionId);
+
+            foreach(var excludedPlayer in playerStatisticFilters.ExcludePlayers)
+            {
+                queryable = queryable.Where(p => p.PlayerId != excludedPlayer);
+            }
+
+            return queryable.Take(10).ToList();
         }
 
         public List<FantasyTeam> GetFantasyTeamsForPlayer(ulong discordUserId)

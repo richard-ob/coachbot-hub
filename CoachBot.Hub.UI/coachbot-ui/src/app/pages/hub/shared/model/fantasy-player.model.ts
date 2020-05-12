@@ -7,7 +7,7 @@ export interface FantasyPlayer {
     playerId: number;
     player: Player;
     rating: number;
-    position: PositionGroup;
+    positionGroup: PositionGroup;
     tournamentEditionId: number;
     tournamentEdition: TournamentEdition;
 }

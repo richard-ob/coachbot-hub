@@ -7,6 +7,7 @@ import { FantasyTeam } from '../model/fantasy-team.model';
 import { FantasyTeamSelection } from '../model/fantasy-team-selection.model';
 import { FantasyPlayer } from '../model/fantasy-player.model';
 import { TournamentEdition } from '../model/tournament-edition.model';
+import { PlayerStatisticFilters } from '../model/dtos/paged-player-statistics-request-dto.model';
 
 @Injectable({
     providedIn: 'root'
@@ -43,9 +44,9 @@ export class FantasyService {
         );
     }
 
-    getFantasyPlayers(tournamentEditionId: number): Observable<FantasyPlayer[]> {
+    getFantasyPlayers(filters: PlayerStatisticFilters): Observable<FantasyPlayer[]> {
         return this.http.post<FantasyPlayer[]>(
-            `${environment.apiUrl}/api/fantasy/tournament/${tournamentEditionId}/players`, { tournamentEditionId }
+            `${environment.apiUrl}/api/fantasy/tournament/${filters.tournamentEditionId}/players`, filters
         );
     }
 

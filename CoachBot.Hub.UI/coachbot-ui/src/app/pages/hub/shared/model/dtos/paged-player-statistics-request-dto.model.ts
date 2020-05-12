@@ -15,10 +15,12 @@ export class PlayerStatisticFilters {
     teamId?: number;
     channelId?: number;
     positionId?: number;
+    tournamentEditionId?: number;
     includeSubstituteAppearances = true;
     dateFrom?: Date;
     dateTo?: Date;
     minimumRating?: number;
     maximumRating?: number;
     positionGroup?: PositionGroup;
+    excludePlayers?: number[] = [];
 }

@@ -1,4 +1,5 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -67,6 +68,8 @@ namespace CoachBot.Domain.Services
         public void AddFantasyTeamSelection(FantasyTeamSelection fantasyTeamSelection)
         {
             CanUpdateTeam((int)fantasyTeamSelection.FantasyTeamId);
+            fantasyTeamSelection.FantasyPlayer = null;
+            fantasyTeamSelection.FantasyTeam = null;
             _coachBotContext.FantasyTeamSelections.Add(fantasyTeamSelection);
             _coachBotContext.SaveChanges();
         }
@@ -80,29 +83,9 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
-        public List<FantasyPlayer> GetFantasyPlayers(PlayerStatisticFilters playerStatisticFilters)
-        {
-            var queryable =
-                _coachBotContext
-                    .FantasyPlayers
-                    .Include(fp => fp.Player)
-                    .ThenInclude(p => p.Teams)
-                    .ThenInclude(t => t.Team)
-                    .ThenInclude(t => t.BadgeImage)
-                    .Include(fp => fp.Player)
-                    .ThenInclude(fp => fp.Country)
-                    .Where(p => playerStatisticFilters.MaximumRating == null || p.Player.Rating <= playerStatisticFilters.MaximumRating)
-                    .Where(p => playerStatisticFilters.MinimumRating == null || p.Player.Rating >= playerStatisticFilters.MinimumRating)
-                    .Where(p => playerStatisticFilters.PositionGroup == null || p.PositionGroup == playerStatisticFilters.PositionGroup)
-                    .Where(p => playerStatisticFilters.TeamId == null || p.Player.Teams.Any(t => t.TeamId == playerStatisticFilters.TeamId && t.IsCurrentTeam))
-                    .Where(p => p.TournamentEditionId == playerStatisticFilters.TournamentEditionId);
-
-            foreach(var excludedPlayer in playerStatisticFilters.ExcludePlayers)
-            {
-                queryable = queryable.Where(p => p.PlayerId != excludedPlayer);
-            }
-
-            return queryable.Take(10).ToList();
+        public Model.Dtos.PagedResult<FantasyPlayer> GetFantasyPlayers(int page, int pageSize, string sortOrder, PlayerStatisticFilters playerStatisticFilters)
+        {          
+            return GetFantasyPlayersQueryable(playerStatisticFilters).GetPaged(page, pageSize, sortOrder);
         }
 
         public List<FantasyTeam> GetFantasyTeamsForPlayer(ulong discordUserId)
@@ -154,7 +137,30 @@ namespace CoachBot.Domain.Services
 
         static PositionGroup GetRandomPositionGroup()
         {
-            return (PositionGroup)new Random().Next(0, 3);
+            return (PositionGroup)new Random().Next(0, 4);
+        }
+
+        private IQueryable<FantasyPlayer> GetFantasyPlayersQueryable(PlayerStatisticFilters playerStatisticFilters)
+        {
+            var queryable = _coachBotContext
+                    .FantasyPlayers
+                    .Include(fp => fp.Player)
+                    .ThenInclude(p => p.Teams)
+                    .ThenInclude(t => t.Team)
+                    .ThenInclude(t => t.BadgeImage)
+                    .Where(p => playerStatisticFilters.MaximumRating == null || p.Player.Rating <= playerStatisticFilters.MaximumRating)
+                    .Where(p => playerStatisticFilters.MinimumRating == null || p.Player.Rating >= playerStatisticFilters.MinimumRating)
+                    .Where(p => playerStatisticFilters.PositionGroup == null || p.PositionGroup == playerStatisticFilters.PositionGroup)
+                    .Where(p => playerStatisticFilters.TeamId == null || p.Player.Teams.Any(t => t.TeamId == playerStatisticFilters.TeamId && t.IsCurrentTeam))
+                    .Where(p => p.TournamentEditionId == playerStatisticFilters.TournamentEditionId);
+
+            // TODO: Fix TeamId filter, as doesn't compile to SQL
+            foreach (var excludedPlayer in playerStatisticFilters.ExcludePlayers)
+            {
+                queryable = queryable.Where(p => p.PlayerId != excludedPlayer);
+            }
+
+            return queryable;
         }
 
         private void CanUpdateTeam(int fantasyTeamId)

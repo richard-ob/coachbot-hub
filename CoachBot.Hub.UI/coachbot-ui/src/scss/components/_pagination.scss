@@ -21,6 +21,11 @@
 				color: $pagination-color-active;
 			}
 		}
+		&.disabled .page-link {
+			cursor: disabled;
+			pointer-events: none;
+			opacity: 0.7;
+		}
 	}
 		.page-link {
 			margin: 0 4px;

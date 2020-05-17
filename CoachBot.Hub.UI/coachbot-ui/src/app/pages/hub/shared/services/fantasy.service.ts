@@ -8,6 +8,8 @@ import { FantasyTeamSelection } from '../model/fantasy-team-selection.model';
 import { FantasyPlayer } from '../model/fantasy-player.model';
 import { TournamentEdition } from '../model/tournament-edition.model';
 import { PlayerStatisticFilters } from '../model/dtos/paged-player-statistics-request-dto.model';
+import { PagedResult } from '../model/dtos/paged-result.model';
+import { PlayerStatisticsFilterHelper } from '../model/helpers/player-statistics-filter.helper';
 
 @Injectable({
     providedIn: 'root'
@@ -44,9 +46,11 @@ export class FantasyService {
         );
     }
 
-    getFantasyPlayers(filters: PlayerStatisticFilters): Observable<FantasyPlayer[]> {
-        return this.http.post<FantasyPlayer[]>(
-            `${environment.apiUrl}/api/fantasy/tournament/${filters.tournamentEditionId}/players`, filters
+    getFantasyPlayers(page: number, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
+        : Observable<PagedResult<FantasyPlayer>> {
+        return this.http.post<PagedResult<FantasyPlayer>>(
+            `${environment.apiUrl}/api/fantasy/tournament/${filters.tournamentEditionId}/players`,
+            PlayerStatisticsFilterHelper.generatePlayerStatisticsFilter(page, sortBy, sortOrder, filters)
         );
     }
 

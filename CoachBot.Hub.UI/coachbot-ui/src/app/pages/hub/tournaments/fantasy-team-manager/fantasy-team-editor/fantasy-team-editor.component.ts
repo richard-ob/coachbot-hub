@@ -25,6 +25,11 @@ export class FantasyTeamEditorComponent implements OnInit {
     teams: Team[];
     ratingRange: number[] = [0, 10];
     positionGroups = PositionGroup;
+    currentPage = 1;
+    totalPages: number;
+    totalItems: number;
+    sortBy: string = null;
+    sortOrder = 'ASC';
     isLoading = false;
     isSaving = true;
 
@@ -40,17 +45,27 @@ export class FantasyTeamEditorComponent implements OnInit {
                     this.tournamentEdition = tournamentEdition;
                     this.tournamentService.getTournamentTeams(this.tournamentEdition.id).subscribe(teams => {
                         this.teams = teams;
-                        this.loadFantasyPlayers();
+                        this.loadFantasyPlayers(1);
                     });
                 });
             });
         });
     }
 
-    loadFantasyPlayers() {
+    loadFantasyPlayers(page: number, sortBy: string = null) {
         this.isLoading = true;
-        this.fantasyService.getFantasyPlayers(this.filters).subscribe(fantasyPlayers => {
-            this.fantasyPlayers = fantasyPlayers;
+        if (sortBy !== null && this.sortBy !== null && this.sortBy === sortBy && this.sortOrder === 'ASC') {
+            this.sortOrder = 'DESC';
+        } else {
+            this.sortOrder = 'ASC';
+        }
+        this.sortBy = sortBy || this.sortBy;
+        this.isLoading = true;
+        this.fantasyService.getFantasyPlayers(page, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
+            this.fantasyPlayers = response.items;
+            this.currentPage = response.page;
+            this.totalPages = response.totalPages;
+            this.totalItems = response.totalItems;
             this.isLoading = false;
         });
     }
@@ -67,11 +82,13 @@ export class FantasyTeamEditorComponent implements OnInit {
             && !this.fantasyTeam.fantasyTeamSelections.some(f => f.fantasyPlayerId === fantasyPlayer.id)) {
             const selection = new FantasyTeamSelection();
             selection.fantasyPlayer = fantasyPlayer;
+            selection.fantasyPlayerId = fantasyPlayer.id;
             selection.fantasyTeamId = this.fantasyTeamId;
             selection.isFlex = false;
             this.fantasyTeam.fantasyTeamSelections.push(selection);
             this.filters.excludePlayers.push(fantasyPlayer.playerId);
-            this.loadFantasyPlayers();
+            this.fantasyService.addFantasyTeamSelection(selection).subscribe();
+            this.loadFantasyPlayers(this.currentPage);
         }
     }
 
@@ -93,8 +110,14 @@ export class FantasyTeamEditorComponent implements OnInit {
         return this.fantasyTeam.fantasyTeamSelections.filter(f => f.fantasyPlayer.positionGroup === positionGroup).length;
     }
 
-    removeFantasyTeamSelection() {
-
+    removeFantasyTeamSelection(fantasyTeamSelection: FantasyTeamSelection) {
+        this.filters.excludePlayers = this.filters.excludePlayers.filter(p => p !== fantasyTeamSelection.fantasyPlayerId);
+        this.fantasyService.removeFantasyTeamSelection(fantasyTeamSelection).subscribe(() => {
+            this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
+                this.fantasyTeam = fantasyTeam;
+                this.loadFantasyPlayers(this.currentPage);
+            });
+        });
     }
 
 }

@@ -1,6 +1,8 @@
 ﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
+using CoachBot.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -46,9 +48,9 @@ namespace CoachBot.Controllers
         }
 
         [HttpPost("{id}/selections")]
-        public void AddFantasyTeamSelection(FantasyTeam fantasyTeam)
+        public void AddFantasyTeamSelection(FantasyTeamSelection fantasySelection)
         {
-            _fantasyService.UpdateFantasyTeam(fantasyTeam);
+            _fantasyService.AddFantasyTeamSelection(fantasySelection);
         }
 
         [HttpDelete("{id}/selections/{fantasyTeamSelectionId}")]
@@ -58,9 +60,9 @@ namespace CoachBot.Controllers
         }
 
         [HttpPost("tournament/{tournamentEditionId}/players")]
-        public IEnumerable<FantasyPlayer> GetFantasyPlayers([FromBody]PlayerStatisticFilters playerStatisticFilters)
+        public PagedResult<FantasyPlayer> GetFantasyPlayers([FromBody]PagedPlayerStatisticsRequestDto pagedRequest)
         {
-            return _fantasyService.GetFantasyPlayers(playerStatisticFilters);
+            return _fantasyService.GetFantasyPlayers(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
         }
 
         [HttpGet("tournament/available")]

@@ -33,35 +33,55 @@
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
                                     class="fantasy-pitch--player">
                                     <app-kit [text]="selection.fantasyPlayer.player.name"
-                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"
+                                        [badge]="selection.fantasyPlayer.player.teams[0].team.badgeImage.base64EncodedImage"
+                                        (click)="removeFantasyTeamSelection(selection)">
+                                    </app-kit>
+                                    <span class="badge badge-primary badge-lg mt-1">{{selection.fantasyPlayer.rating | number : '1.2-2'}}</span>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
                                     class="fantasy-pitch--player">
                                     <app-kit [text]="selection.fantasyPlayer.player.name"
-                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"
+                                        [badge]="selection.fantasyPlayer.player.teams[0].team.badgeImage.base64EncodedImage"
+                                        (click)="removeFantasyTeamSelection(selection)">
+                                    </app-kit>
+                                    <span class="badge badge-primary badge-lg mt-1">{{selection.fantasyPlayer.rating | number : '1.2-2'}}</span>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
                                     class="fantasy-pitch--player">
                                     <app-kit [text]="selection.fantasyPlayer.player.name"
-                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"
+                                        [badge]="selection.fantasyPlayer.player.teams[0].team.badgeImage.base64EncodedImage"
+                                        (click)="removeFantasyTeamSelection(selection)">
+                                    </app-kit>
+                                    <span class="badge badge-primary badge-lg mt-1">{{selection.fantasyPlayer.rating | number : '1.2-2'}}</span>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
                                     class="fantasy-pitch--player">
                                     <app-kit [text]="selection.fantasyPlayer.player.name"
-                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"
+                                        [badge]="selection.fantasyPlayer.player.teams[0].team.badgeImage.base64EncodedImage"
+                                        (click)="removeFantasyTeamSelection(selection)">
+                                    </app-kit>
+                                    <span class="badge badge-primary badge-lg mt-1">{{selection.fantasyPlayer.rating | number : '1.2-2'}}</span>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:true"
                                     class="fantasy-pitch--player">
                                     <app-kit [text]="selection.fantasyPlayer.player.name"
-                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"></app-kit>
+                                        [color]="selection.fantasyPlayer.player.teams[0].team.color"
+                                        [badge]="selection.fantasyPlayer.player.teams[0].team.badgeImage.base64EncodedImage"
+                                        (click)="removeFantasyTeamSelection(selection)">
+                                    </app-kit>
+                                    <span class="badge badge-primary badge-lg mt-1">{{selection.fantasyPlayer.rating | number : '1.2-2'}}</span>
                                 </div>
                             </div>
                         </div>
@@ -72,25 +92,29 @@
                 <aside class="widget card widget--sidebar widget-filter-price">
                     <div class="widget__title card__header card__header--has-btn">
                         <h4>Filters</h4>
-                        <button class="btn btn-default btn-outline btn-xs card-header__button">Filter</button>
+                        <button class="btn btn-default btn-outline btn-xs card-header__button"
+                            (click)="loadFantasyPlayers()">Filter</button>
                     </div>
                     <div class="widget__content card__content">
                         <div class="form-group">
                             <label>Position</label>
                             <div class="checkbox-table w-100">
-                                <label class="checkbox checkbox--cell">
+                                <label class="checkbox checkbox--cell" (click)="filters.positionGroup = null">
                                     <input type="checkbox" id="size-7" value="7">
                                     <span class="checkbox-indicator">All</span>
                                 </label>
-                                <label class="checkbox checkbox--cell">
+                                <label class="checkbox checkbox--cell"
+                                    (click)="filters.positionGroup = positionGroups.GK">
                                     <input type="checkbox" id="size-7" value="7">
                                     <span class="checkbox-indicator">GK</span>
                                 </label>
-                                <label class="checkbox checkbox--cell">
+                                <label class="checkbox checkbox--cell"
+                                    (click)="filters.positionGroup = positionGroups.Defence">
                                     <input type="checkbox" id="size-7" value="7">
                                     <span class="checkbox-indicator">DEF</span>
                                 </label>
-                                <label class="checkbox checkbox--cell">
+                                <label class="checkbox checkbox--cell"
+                                    (click)="filters.positionGroup = positionGroups.Midfield">
                                     <input type="checkbox" id="size-7" value="7">
                                     <span class="checkbox-indicator">MID</span>
                                 </label>
@@ -122,16 +146,49 @@
                 </aside>
                 <aside class="widget card widget--sidebar widget-filter-price card--has-table">
                     <div class="widget__title card__header ">
-                        <h4>Players</h4>
+                        <h4>
+                            Players
+                            <span class="badge badge-primary badge-pill">{{totalItems}}</span>
+                        </h4>
                     </div>
                     <div class="widget__content card__content">
                         <table *ngIf="fantasyPlayers; else spinner"
                             class="table table-striped table-hover table-clickable">
                             <thead>
                                 <th></th>
-                                <th>Player</th>
-                                <th>Rating</th>
-                                <th>Pos</th>
+                                <th style="cursor: pointer" class="team-result__status"
+                                    (click)="loadFantasyPlayers(currentPage, 'Player.Name')">
+                                    <span style=" white-space: nowrap; ">
+                                        Player&nbsp;
+                                        <i *ngIf="sortBy === 'Player.Name' && sortOrder === 'ASC'"
+                                            class="fas fa-sort-up"></i>
+                                        <i *ngIf="sortBy === 'Player.Name' && sortOrder === 'DESC'"
+                                            class="fas fa-sort-down"></i>
+                                        <i *ngIf="sortBy !== 'Player.Name'" class="fas fa-sort"></i>
+                                    </span>
+                                </th>
+                                <th style="cursor: pointer" class="team-result__status"
+                                    (click)="loadFantasyPlayers(currentPage, 'Rating')">
+                                    <span style=" white-space: nowrap; ">
+                                        Player&nbsp;
+                                        <i *ngIf="sortBy === 'Rating' && sortOrder === 'ASC'"
+                                            class="fas fa-sort-up"></i>
+                                        <i *ngIf="sortBy === 'Rating' && sortOrder === 'DESC'"
+                                            class="fas fa-sort-down"></i>
+                                        <i *ngIf="sortBy !== 'Rating'" class="fas fa-sort"></i>
+                                    </span>
+                                </th>
+                                <th style="cursor: pointer" class="team-result__status"
+                                    (click)="loadFantasyPlayers(currentPage, 'PositionGroup')">
+                                    <span style=" white-space: nowrap; ">
+                                        Pos&nbsp;
+                                        <i *ngIf="sortBy === 'PositionGroup' && sortOrder === 'ASC'"
+                                            class="fas fa-sort-up"></i>
+                                        <i *ngIf="sortBy === 'PositionGroup' && sortOrder === 'DESC'"
+                                            class="fas fa-sort-down"></i>
+                                        <i *ngIf="sortBy !== 'PositionGroup'" class="fas fa-sort"></i>
+                                    </span>
+                                </th>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let player of fantasyPlayers" (click)="addFantasyTeamSelection(player)">
@@ -149,6 +206,41 @@
                             <app-spinner></app-spinner>
                         </ng-template>
                     </div>
+                    <footer class="card__footer" style="border-top: 1px solid #e4e7ed;">
+                        <nav class="post-pagination w-100" aria-label="Blog navigation">
+                            <ul
+                                class="pagination pagination--condensed pagination--lg justify-content-center m-0 w-100">
+                                <li class="page-item w-20" [class.disabled]="currentPage == 1">
+                                    <a class="page-link w-100 m-0" (click)="currentPage > 1 && loadFantasyPlayers(1)">
+                                        <i class="fas fa-chevron-left"></i>
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item w-20" [class.disabled]="currentPage == 1">
+                                    <a class="page-link w-100 m-0"
+                                        (click)="currentPage > 1 && loadFantasyPlayers(currentPage - 1)">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item w-20">
+                                    <span class="page-link w-100 m-0">{{currentPage}} of {{totalPages}}</span>
+                                </li>
+                                <li class="page-item w-20" [class.disabled]="currentPage == totalPages">
+                                    <a class="page-link w-100 m-0"
+                                        (click)="currentPage < totalPages && loadFantasyPlayers(currentPage + 1)">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item w-20" [class.disabled]="currentPage == totalPages">
+                                    <a class="page-link w-100 m-0"
+                                        (click)="currentPage < totalPages && loadFantasyPlayers(totalPages)">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </footer>
                 </aside>
             </div>
         </div>

@@ -8,11 +8,9 @@ import { ErrorComponent } from './pages/error/error.component';
 import { RegionManagerComponent } from './pages/hub/region-manager/region-manager.component';
 import { RecentMatchesComponent } from './pages/hub/recent-matches/recent-matches.component';
 import { PlayerListComponent } from './pages/hub/player-list/player-list.component';
-import { PlayerProfileComponent } from './pages/hub/player-profile/player-profile.component';
 import { TeamListComponent } from './pages/hub/team-list/team-list.component';
 import { ProfileEditorComponent } from './pages/hub/profile-editor/profile-editor.component';
 import { SteamIDValidatorComponent } from './pages/hub/profile-editor/steam-id-validator.component';
-import { TeamProfileComponent } from './pages/hub/team-profile/team-profile.component';
 import { ManualComponent } from './pages/manual/manual.component';
 import { TeamComponent } from './pages/team/team.component';
 import { TeamEditorComponent } from './pages/hub/team-editor/team-editor.component';
@@ -21,14 +19,9 @@ import { TournamentEditorComponent } from './pages/hub/tournaments/tournament-ed
 import { TournamentEditionManagerComponent } from './pages/hub/tournaments/tournament-edition-manager/tournament-edition-manager.component';
 import { MatchEditorComponent } from './pages/hub/match-editor/match-editor.component';
 import { UpcomingMatchesComponent } from './pages/hub/upcoming-matches/upcoming-matches.component';
-import { PlayerProfileStatisticsComponent } from './pages/hub/player-profile/player-profile-statistics/player-profile-statistics.component';
-import { PlayerProfileMatchesComponent } from './pages/hub/player-profile/player-profile-matches/player-profile-matches.component';
-import { PlayerTeamHistoryComponent } from './pages/hub/player-profile/player-team-history/player-team-history.component';
-import { PlayerProfileTournamentsComponent } from './pages/hub/player-profile/player-profile-tournaments/player-profile-tournaments.component';
 import { CurrentTournamentsComponent } from './pages/hub/tournaments/current-tournaments/current-tournaments.component';
 import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component';
-import { FantasyTeamManagerComponent } from './pages/hub/tournaments/fantasy-team-manager/fantasy-team-manager.component';
-import { FantasyTeamEditorComponent } from './pages/hub/tournaments/fantasy-team-manager/fantasy-team-editor/fantasy-team-editor.component';
+import { AboutComponent } from '@pages/about/about.component';
 
 const routes: Routes = [
   {
@@ -42,6 +35,10 @@ const routes: Routes = [
   {
     path: 'team',
     component: TeamComponent
+  },
+  {
+    path: 'about',
+    component: AboutComponent
   },
   {
     path: 'match-overview/:id',

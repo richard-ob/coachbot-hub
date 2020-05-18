@@ -14,6 +14,7 @@ import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { LayoutModule } from '@angular/cdk/layout';
+import { AboutComponent } from '@pages/about/about.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     HeroComponent,
     ManualComponent,
     TeamComponent,
-    MatchmakingComponent
+    MatchmakingComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

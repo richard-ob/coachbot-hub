@@ -27,7 +27,9 @@
 			opacity: 0.7;
 		}
 	}
-		.page-link {
+
+
+		.page-link, .page-info {
 			margin: 0 4px;
 			padding: 0;
 			line-height: 36px;
@@ -69,7 +71,7 @@
 			}
 		}
 	}
-		.page-link {
+		.page-link, .page-info {
 			border-radius: 0;
 			margin: 0;
 			margin-left: -1px;
@@ -79,7 +81,7 @@
 // Large
 .pagination--lg {
 
-	.page-link {
+	.page-link, .page-info {
 		width: 50px;
 		height: 50px;
 		line-height: 50px;

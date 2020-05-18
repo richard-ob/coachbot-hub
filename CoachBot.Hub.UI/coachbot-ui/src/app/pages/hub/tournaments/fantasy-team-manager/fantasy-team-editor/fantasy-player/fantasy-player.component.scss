@@ -1,0 +1,50 @@
+.fantasy-player:hover {
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+.fantasy-player:hover + .fantasy-hover-icon {
+    visibility: visible;
+}
+
+.fantasy-player + .fantasy-hover-icon {
+    visibility: hidden;
+}
+
+.fantasy-player-name {
+    color: white;
+    font-size: 11px;
+    width: 134px;
+    height: 22px;
+    background: #124364;
+    font-family: 'Montserrat';
+    line-height: 23px;
+    font-weight: 500;
+    box-shadow: #00000040 1px 1px 10px 1px;
+    z-index: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.fantasy-player-detail {
+    width: 134px;
+    height: 19px;
+    color: black;
+    background: #ffffffe3;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    font-size: 11px !important;
+    line-height: 19px;
+    box-shadow: #00000040 1px 1px 10px 1px;
+    font-size: 11px;
+}
+
+.fantasy-player-badge {
+    max-height: 15px;
+    top: 25px;
+    position: absolute;
+    left: 48px;
+    transform: rotate3d(1, 1, 1, 11deg);
+    border: 1px solid rgba(0, 0, 0, 0);
+    /*filter: blur(0); // This works too for anti aliasing loosely*/
+} 

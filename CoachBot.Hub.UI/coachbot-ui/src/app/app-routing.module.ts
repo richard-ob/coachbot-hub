@@ -100,14 +100,6 @@ const routes: Routes = [
     component: CurrentTournamentsComponent
   },
   {
-    path: 'fantasy',
-    component: FantasyTeamManagerComponent
-  },
-  {
-    path: 'fantasy-editor/:id',
-    component: FantasyTeamEditorComponent
-  },
-  {
     path: 'matchmaking',
     component: MatchmakingComponent
   },

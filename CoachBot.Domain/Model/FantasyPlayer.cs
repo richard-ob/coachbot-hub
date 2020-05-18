@@ -20,6 +20,10 @@ namespace CoachBot.Domain.Model
 
         public Player Player { get; set; }
 
+        public int? TeamId { get; set; }
+
+        public Team Team { get; set; }
+
         public int? TournamentEditionId { get; set; }
 
         public TournamentEdition TournamentEdition { get; set; }

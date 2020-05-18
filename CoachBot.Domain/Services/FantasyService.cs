@@ -28,12 +28,13 @@ namespace CoachBot.Domain.Services
                 .Include(ft => ft.FantasyTeamSelections)
                     .ThenInclude(ft => ft.FantasyPlayer)
                     .ThenInclude(ft => ft.Player)
-                    .ThenInclude(ft => ft.Teams)
-                    .ThenInclude(ft => ft.Team)
-                    .ThenInclude(ft => ft.BadgeImage)
                 .Include(ft => ft.FantasyTeamSelections)
                     .ThenInclude(ft => ft.FantasyPlayer)
                     .ThenInclude(ft => ft.Player.Country)
+                .Include(ft => ft.FantasyTeamSelections)
+                    .ThenInclude(ft => ft.FantasyPlayer)
+                    .ThenInclude(ft => ft.Team)
+                    .ThenInclude(ft => ft.BadgeImage)
                 .First(ft => ft.Id == fantasyTeamId);
         }
 
@@ -111,7 +112,9 @@ namespace CoachBot.Domain.Services
                 throw new Exception("Fantasy season already seeded");
             }
 
-            foreach(var player in _coachBotContext.Players)
+            foreach(var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => p.Teams.Any(pt => pt.IsCurrentTeam 
+                && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentEditionId == tournamentEditionId && tgt.TeamId == pt.TeamId)))
+            )
             {
                 player.Rating = GetRandomRating();
                 var fantasyPlayer = new FantasyPlayer()
@@ -119,7 +122,8 @@ namespace CoachBot.Domain.Services
                     TournamentEditionId = tournamentEditionId,
                     PlayerId = player.Id,
                     PositionGroup = GetRandomPositionGroup(),
-                    Rating = player.Rating
+                    Rating = player.Rating,
+                    TeamId = player.Teams.Where(t => t.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tg => tg.TeamId == t.TeamId && tg.TournamentGroup.TournamentStage.TournamentEditionId == tournamentEditionId)).Select(t => t.TeamId).First()
                 };
                 _coachBotContext.FantasyPlayers.Add(fantasyPlayer);
             }
@@ -145,16 +149,14 @@ namespace CoachBot.Domain.Services
             var queryable = _coachBotContext
                     .FantasyPlayers
                     .Include(fp => fp.Player)
-                    .ThenInclude(p => p.Teams)
-                    .ThenInclude(t => t.Team)
+                    .Include(t => t.Team)
                     .ThenInclude(t => t.BadgeImage)
                     .Where(p => playerStatisticFilters.MaximumRating == null || p.Player.Rating <= playerStatisticFilters.MaximumRating)
                     .Where(p => playerStatisticFilters.MinimumRating == null || p.Player.Rating >= playerStatisticFilters.MinimumRating)
                     .Where(p => playerStatisticFilters.PositionGroup == null || p.PositionGroup == playerStatisticFilters.PositionGroup)
-                    .Where(p => playerStatisticFilters.TeamId == null || p.Player.Teams.Any(t => t.TeamId == playerStatisticFilters.TeamId && t.IsCurrentTeam))
+                    .Where(p => playerStatisticFilters.TeamId == null || p.TeamId == playerStatisticFilters.TeamId)
                     .Where(p => p.TournamentEditionId == playerStatisticFilters.TournamentEditionId);
 
-            // TODO: Fix TeamId filter, as doesn't compile to SQL
             foreach (var excludedPlayer in playerStatisticFilters.ExcludePlayers)
             {
                 queryable = queryable.Where(p => p.PlayerId != excludedPlayer);

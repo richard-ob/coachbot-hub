@@ -1,0 +1,11 @@
+<div class="fantasy-player d-flex flex-column justify-content-center align-items-center" title="Remove player">
+    <div style="width: 80px; height: 80px; position: relative;">
+        <img [src]="kitImage" [ngStyle]="{ 'filter': kitFilter }">
+        <img *ngIf="badge" [src]="badge" class="fantasy-player-badge">
+    </div>
+    <div class="d-block text-center fantasy-player-name">
+        {{playerName}}
+    </div>
+    <div class="fantasy-player-detail">{{rating | number : '1.2-2'}}</div>
+</div>
+<i class="fantasy-hover-icon fas fa-times text-danger mt-2"></i>

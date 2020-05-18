@@ -3,12 +3,11 @@ import { FantasyService } from '../../../shared/services/fantasy.service';
 import { FantasyTeam } from '../../../shared/model/fantasy-team.model';
 import { ActivatedRoute } from '@angular/router';
 import { FantasyPlayer } from '../../../shared/model/fantasy-player.model';
-import { PlayerStatisticFilters } from '../../../shared/model/dtos/paged-player-statistics-request-dto.model';
 import { TournamentService } from '../../../shared/services/tournament.service';
 import { TournamentEdition } from '../../../shared/model/tournament-edition.model';
-import { Team } from '../../../shared/model/team.model';
 import { FantasyTeamSelection } from '../../../shared/model/fantasy-team-selection.model';
 import { PositionGroup } from '../../../shared/model/position-group.enum';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-fantasy-team-editor',
@@ -19,77 +18,55 @@ export class FantasyTeamEditorComponent implements OnInit {
 
     fantasyTeamId: number;
     fantasyTeam: FantasyTeam;
-    fantasyPlayers: FantasyPlayer[];
-    filters: PlayerStatisticFilters = new PlayerStatisticFilters();
     tournamentEdition: TournamentEdition;
-    teams: Team[];
-    ratingRange: number[] = [0, 10];
     positionGroups = PositionGroup;
-    currentPage = 1;
-    totalPages: number;
-    totalItems: number;
-    sortBy: string = null;
-    sortOrder = 'ASC';
-    isLoading = false;
-    isSaving = true;
+    isLoading = true;
+    isUpdating = false;
 
-    constructor(private fantasyService: FantasyService, private tournamentService: TournamentService, private route: ActivatedRoute) { }
+    constructor(
+        private fantasyService: FantasyService,
+        private route: ActivatedRoute,
+        private snackBar: MatSnackBar
+    ) { }
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
             this.fantasyTeamId = +params.get('id');
             this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
                 this.fantasyTeam = fantasyTeam;
-                this.filters.tournamentEditionId = this.fantasyTeam.tournamentEditionId;
-                this.tournamentService.getTournamentEdition(this.fantasyTeam.tournamentEditionId).subscribe(tournamentEdition => {
-                    this.tournamentEdition = tournamentEdition;
-                    this.tournamentService.getTournamentTeams(this.tournamentEdition.id).subscribe(teams => {
-                        this.teams = teams;
-                        this.loadFantasyPlayers(1);
-                    });
-                });
+                this.isLoading = false;
             });
         });
-    }
-
-    loadFantasyPlayers(page: number, sortBy: string = null) {
-        this.isLoading = true;
-        if (sortBy !== null && this.sortBy !== null && this.sortBy === sortBy && this.sortOrder === 'ASC') {
-            this.sortOrder = 'DESC';
-        } else {
-            this.sortOrder = 'ASC';
-        }
-        this.sortBy = sortBy || this.sortBy;
-        this.isLoading = true;
-        this.fantasyService.getFantasyPlayers(page, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
-            this.fantasyPlayers = response.items;
-            this.currentPage = response.page;
-            this.totalPages = response.totalPages;
-            this.totalItems = response.totalItems;
-            this.isLoading = false;
-        });
-    }
-
-    setRatingRange() {
-        this.filters.minimumRating = this.ratingRange[0];
-        this.filters.maximumRating = this.ratingRange[1];
-        console.log(this.filters.minimumRating);
-        console.log(this.filters.maximumRating);
     }
 
     addFantasyTeamSelection(fantasyPlayer: FantasyPlayer) {
         if (this.canAddToGroup(fantasyPlayer.positionGroup)
             && !this.fantasyTeam.fantasyTeamSelections.some(f => f.fantasyPlayerId === fantasyPlayer.id)) {
+            this.isUpdating = true;
             const selection = new FantasyTeamSelection();
             selection.fantasyPlayer = fantasyPlayer;
             selection.fantasyPlayerId = fantasyPlayer.id;
             selection.fantasyTeamId = this.fantasyTeamId;
             selection.isFlex = false;
-            this.fantasyTeam.fantasyTeamSelections.push(selection);
-            this.filters.excludePlayers.push(fantasyPlayer.playerId);
-            this.fantasyService.addFantasyTeamSelection(selection).subscribe();
-            this.loadFantasyPlayers(this.currentPage);
+            this.fantasyService.addFantasyTeamSelection(selection).subscribe(() => {
+                this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
+                    this.fantasyTeam = fantasyTeam;
+                    this.isUpdating = false;
+                });
+            });
+        } else {
+            this.snackBar.open('Cannot add player as they are already added or not available slots', 'Dismiss', { duration: 5000 });
         }
+    }
+
+    removeFantasyTeamSelection(fantasyTeamSelection: FantasyTeamSelection) {
+        this.isUpdating = true;
+        this.fantasyService.removeFantasyTeamSelection(fantasyTeamSelection).subscribe(() => {
+            this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
+                this.fantasyTeam = fantasyTeam;
+                this.isUpdating = false;
+            });
+        });
     }
 
     private canAddToGroup(positionGroup: PositionGroup) {
@@ -108,16 +85,6 @@ export class FantasyTeamEditorComponent implements OnInit {
 
     private getPlayerCountForPosition(positionGroup): number {
         return this.fantasyTeam.fantasyTeamSelections.filter(f => f.fantasyPlayer.positionGroup === positionGroup).length;
-    }
-
-    removeFantasyTeamSelection(fantasyTeamSelection: FantasyTeamSelection) {
-        this.filters.excludePlayers = this.filters.excludePlayers.filter(p => p !== fantasyTeamSelection.fantasyPlayerId);
-        this.fantasyService.removeFantasyTeamSelection(fantasyTeamSelection).subscribe(() => {
-            this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
-                this.fantasyTeam = fantasyTeam;
-                this.loadFantasyPlayers(this.currentPage);
-            });
-        });
     }
 
 }

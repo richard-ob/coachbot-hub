@@ -16,7 +16,6 @@ import { RegionManagerComponent } from './region-manager/region-manager.componen
 import { SpinnerModule } from 'src/app/core/components/spinner/spinner.module';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { TeamListComponent } from './team-list/team-list.component';
 import { SteamProfileFlagPipe } from './player-list/helpers/steam-profile-flag.pipe';
 import { ProfileEditorComponent } from './profile-editor/profile-editor.component';
 import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
@@ -58,10 +57,7 @@ import { TournamentOverviewModule } from './tournaments/tournament-overview/tour
 import { TeamListModule } from './team-list/team-list.module';
 import { PlayerListModule } from './player-list/player-list.module';
 import { HubPipesModule } from './shared/pipes/hub-pipes.module';
-import { FantasyTeamManagerComponent } from './tournaments/fantasy-team-manager/fantasy-team-manager.component';
-import { FantasyTeamEditorComponent } from './tournaments/fantasy-team-manager/fantasy-team-editor/fantasy-team-editor.component';
-import { NouisliderModule } from 'ng2-nouislider';
-import { KitComponent } from './tournaments/fantasy-team-manager/shared/components/kit/kit.component';
+import { FantasyTeamManagerModule } from './tournaments/fantasy-team-manager/fantasy-team-manager.module';
 
 @NgModule({
   declarations: [
@@ -93,10 +89,7 @@ import { KitComponent } from './tournaments/fantasy-team-manager/shared/componen
     TeamEditorDiscordIntegrationComponent,
     DiscordChannelEditorComponent,
     DiscordGuildEditorComponent,
-    DiscordEmoteDisplayNamePipe,
-    FantasyTeamManagerComponent,
-    FantasyTeamEditorComponent,
-    KitComponent
+    DiscordEmoteDisplayNamePipe
   ],
   imports: [
     CommonModule,
@@ -111,6 +104,7 @@ import { KitComponent } from './tournaments/fantasy-team-manager/shared/componen
     TeamListModule,
     PlayerListModule,
     TournamentOverviewModule,
+    FantasyTeamManagerModule,
     RecentMatchesModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -118,8 +112,7 @@ import { KitComponent } from './tournaments/fantasy-team-manager/shared/componen
     NgPipesModule,
     SweetAlert2Module,
     HubPipesModule,
-    ChromeColourPickerModule,
-    NouisliderModule
+    ChromeColourPickerModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

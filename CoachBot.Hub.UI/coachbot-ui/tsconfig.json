@@ -3,19 +3,19 @@
   "compilerOptions": {
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "baseUrl": "src",
+    "baseUrl": "./",
     "paths": {
       "@core/*": [
-        "app/core/*"
+        "src/app/core/*"
       ],
       "@pages/*": [
-        "app/pages/*"
+        "src/app/pages/*"
       ],
       "@container/*": [
-        "app/container/*"
+        "src/app/container/*"
       ],
       "@shared/*": [
-        "app/shared/*"
+        "src/app/shared/*"
       ]
     },
     "outDir": "./dist/out-tsc",

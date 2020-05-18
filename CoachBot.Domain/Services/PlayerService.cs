@@ -6,6 +6,7 @@ using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
+using CoachBot.Domain.Model;
 
 namespace CoachBot.Domain.Services
 {
@@ -92,11 +93,16 @@ namespace CoachBot.Domain.Services
             return player;
         }
 
-        public void UpdatePlayerSteamID(ulong discordUserId, ulong steamId, string playerName)
+        public void UpdateDiscordUserId(ulong discordUserId, ulong steamId)
         {
             // TODO: Ensure player is not an admin for security purposes
-            var player = GetPlayer(discordUserId, createIfNotExists: true, playerName: playerName);
-            player.SteamID = steamId;
+            var player = GetPlayerBySteamId(steamId);
+            if (player.HubRole == PlayerHubRole.Administrator)
+            {
+                throw new Exception("Administrators cannot verify their accounts in this manner");
+            }
+
+            player.DiscordUserId = discordUserId;
             _coachBotContext.SaveChanges();
         }
 

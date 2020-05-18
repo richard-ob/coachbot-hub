@@ -33,6 +33,7 @@
     <Compile Include="Controllers\ChannelController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DiscordGuildController.cs" />
+    <Compile Include="Controllers\DiscordVerificationController.cs" />
     <Compile Include="Controllers\FantasyPlayerController.cs" />
     <Compile Include="Controllers\FantasyTeamController.cs" />
     <Compile Include="Controllers\GuildController.cs" />
@@ -59,6 +60,7 @@
     <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
     <PackageReference Include="Discord.Addons.Interactive" Version="1.0.1" />
     <PackageReference Include="Discord.Addons.InteractiveCommands" Version="1.2.4" />
+    <PackageReference Include="Discord.OAuth2" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.0" />

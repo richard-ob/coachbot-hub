@@ -20,6 +20,8 @@ using CoachBot.Domain.Repositories;
 using CoachBot.Bot;
 using CoachBot.Extensions;
 using CoachBot.Services;
+using AspNet.Security.OpenId.Steam;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoachBot
 {
@@ -107,8 +109,20 @@ namespace CoachBot
                     options.ExpireTimeSpan = new TimeSpan(7, 0, 0, 0);
                     options.LoginPath = "/unauthorized";
                 })
-                .AddSteam();
+                .AddSteam()
+                .AddDiscord(x =>
+                {
+                    x.AppId = config.OAuth2Id;
+                    x.AppSecret = config.OAuth2Secret;
+                });
 
+            /*services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(SteamAuthenticationDefaults.AuthenticationScheme)
+                    .AddAuthenticationSchemes(SteamAuthenticationDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });*/
             var provider = services.BuildServiceProvider();
 
             provider.GetService<LogAdaptor>();

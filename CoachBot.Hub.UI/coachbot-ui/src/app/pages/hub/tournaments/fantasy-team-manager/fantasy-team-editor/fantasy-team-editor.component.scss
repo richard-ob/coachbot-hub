@@ -183,9 +183,17 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
     width: 100%;
     display: flex;
 }
+
 .fantasy-pitch--player {
     z-index: 10;
-	margin: 25px;
+	margin: 15px;
 	text-align: center;
 }
 
+.fantasy-pitch--position-group-label {
+    color: #00000030;
+    font-weight: 600;
+    font-family: "Montserrat";
+    position: absolute;
+    margin-top: -27px;
+}

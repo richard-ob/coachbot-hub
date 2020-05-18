@@ -30,6 +30,7 @@
                         </div>
                         <div *ngIf="fantasyTeam && fantasyTeam.fantasyTeamSelections"
                             class="fantasy-pitch--player-container flex-column">
+                            <span class="fantasy-pitch--position-group-label" style="top: 35px; left: 315px;">Goalkeepers</span>
                             <div class="d-flex justify-content-around">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
                                     class="fantasy-pitch--player">
@@ -38,6 +39,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
+                                <span class="fantasy-pitch--position-group-label">Defenders</span>
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
                                     class="fantasy-pitch--player">
                                     <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
@@ -45,6 +47,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
+                                <span class="fantasy-pitch--position-group-label">Midfielders</span>
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
                                     class="fantasy-pitch--player">
                                     <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
@@ -52,6 +55,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around">
+                                <span class="fantasy-pitch--position-group-label">Attackers</span>
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
                                     class="fantasy-pitch--player">
                                     <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"

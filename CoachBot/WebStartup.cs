@@ -102,16 +102,12 @@ namespace CoachBot
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => 
+                .AddCookie(options =>
                 {
                     options.ExpireTimeSpan = new TimeSpan(7, 0, 0, 0);
                     options.LoginPath = "/unauthorized";
                 })
-                .AddDiscord(x =>
-                {
-                    x.AppId = config.OAuth2Id;
-                    x.AppSecret = config.OAuth2Secret;
-                });
+                .AddSteam();
 
             var provider = services.BuildServiceProvider();
 
@@ -124,7 +120,7 @@ namespace CoachBot
             //provider.GetService<CoachBotContext>().SeedMatchData();
             //provider.GetService<MatchStatisticsService>().GenerateStatistics();
             provider.GetService<MatchStatisticsService>().GenerateTeamForm();
-            provider.GetService<FantasyService>().GenerateFantasyPlayersSnapshot(6);
+            //provider.GetService<FantasyService>().GenerateFantasyPlayersSnapshot(6);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

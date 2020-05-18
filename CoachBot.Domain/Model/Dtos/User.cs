@@ -7,11 +7,11 @@ namespace CoachBot.Model
     [NotMapped]
     public class User
     {
-        public ulong DiscordUserId { get; set; }
+        public ulong SteamId { get; set; }
 
         public string Name { get; set; }
 
-        public string DiscordUserIdString { get { return DiscordUserId.ToString(); } }
+        public string SteamIdString { get { return SteamId.ToString(); } }
 
         public bool IsAdministrator { get; set; }
 

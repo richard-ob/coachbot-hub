@@ -31,10 +31,10 @@ namespace CoachBot.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var discordUserId = User.GetDiscordUserId();
+            var steamUserId = User.GetSteamId();
             var channel = _channelService.GetChannel(id);
 
-            if (!_teamService.IsTeamCaptain(channel.TeamId, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(channel.TeamId, User.GetDiscordUserId()))
+            if (!_teamService.IsTeamCaptain(channel.TeamId, steamUserId) && !_teamService.IsViceCaptain(channel.TeamId, steamUserId))
             {
                 return Forbid();
             }
@@ -45,7 +45,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public IActionResult Create([FromBody]Channel channel)
         {
-            if (!_teamService.IsTeamCaptain(channel.TeamId, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(channel.TeamId, User.GetDiscordUserId()))
+            if (!_teamService.IsTeamCaptain(channel.TeamId, User.GetSteamId()) && !_teamService.IsViceCaptain(channel.TeamId, User.GetSteamId()))
             {
                 return Forbid();
             }
@@ -58,7 +58,7 @@ namespace CoachBot.Controllers
         [HttpPut]
         public IActionResult Update([FromBody]Channel channel)
         {
-            if (!_teamService.IsTeamCaptain(channel.Id, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(channel.Id, User.GetDiscordUserId()))
+            if (!_teamService.IsTeamCaptain(channel.Id, User.GetSteamId()) && !_teamService.IsViceCaptain(channel.Id, User.GetSteamId()))
             {
                 return Forbid();
             }

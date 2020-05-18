@@ -96,12 +96,12 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
-        public List<TournamentEdition> GetAvailableTournamentsForUser(ulong discordUserId)
+        public List<TournamentEdition> GetAvailableTournamentsForUser(ulong steamUserId)
         {
             return _coachBotContext.TournamentEditions
                 .Include(t => t.Tournament)
                 .Where(t => !_coachBotContext.Matches.Any(m => m.TournamentId == t.Id && m.ScheduledKickOff < DateTime.Now))
-                .Where(t => !_coachBotContext.FantasyTeams.Any(ft => ft.Player.DiscordUserId == discordUserId))
+                .Where(t => !_coachBotContext.FantasyTeams.Any(ft => ft.Player.SteamID == steamUserId))
                 .ToList();
         }
 

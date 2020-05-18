@@ -1,4 +1,5 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,10 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.AssetImages.Where(a => ids.Any(i => i == a.Id)).ToList();
         }
 
-        public int CreateAssetImage(string base64encodedImage, string fileName, ulong discordUserId)
+        public int CreateAssetImage(string base64encodedImage, string fileName, ulong steamUserId)
         {
-            var playerId = _coachBotContext.Players.Where(p => p.DiscordUserId == discordUserId).Select(s => s.Id).Single();
-            var currentDailyAssetCount = _coachBotContext.AssetImages.Count(a => a.PlayerId == playerId && a.CreatedDate > DateTime.Now.AddDays(-1));
+            var player = _coachBotContext.GetPlayerBySteamId(steamUserId);
+            var currentDailyAssetCount = _coachBotContext.AssetImages.Count(a => a.PlayerId == player.Id && a.CreatedDate > DateTime.Now.AddDays(-1));
             var fileSize = (Math.Floor((double)base64encodedImage.Length / 3) + 1) * 4 + 1;
 
             if (currentDailyAssetCount > 25)
@@ -51,7 +52,7 @@ namespace CoachBot.Domain.Services
             var assetImage = new AssetImage()
             {
                 Base64EncodedImage = base64encodedImage,
-                PlayerId = playerId,
+                PlayerId = player.Id,
                 FileName = fileName
             };
             _coachBotContext.AssetImages.Add(assetImage);

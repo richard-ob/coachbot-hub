@@ -15,7 +15,5 @@ namespace CoachBot.Controllers
         {
             _fantasyService = fantasyService;
         }
-
-
     }
 }

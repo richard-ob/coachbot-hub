@@ -1,6 +1,7 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
+using CoachBot.Extensions;
 using CoachBot.Model;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -34,7 +35,7 @@ namespace CoachBot.Controllers
         [Route("@me")]
         public Player Get()
         {
-            return _playerService.GetPlayer(ulong.Parse(User.Claims.First().Value), createIfNotExists: true, playerName: User.Identity.Name);
+            return _playerService.GetPlayerBySteamId(User.GetSteamId(), createIfNotExists: true, playerName: User.Identity.Name);
         }
 
         [Authorize]
@@ -42,7 +43,7 @@ namespace CoachBot.Controllers
         [Route("@me")]
         public IActionResult UpdatePlayerProfile([FromBody]Player playerProfileUpdateDto)
         {
-            var player = _playerService.GetPlayer(ulong.Parse(User.Claims.First().Value));
+            var player = _playerService.GetPlayerBySteamId(User.GetSteamId());
 
             if (player == null)
             {
@@ -71,18 +72,6 @@ namespace CoachBot.Controllers
         public List<PlayerTeamStatisticsTotals> GetPlayerTeamStatisticsHistory(int playerId)
         {
             return _matchStatisticsService.GetPlayerTeamStatistics(playerId);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route("update-steam-id")]
-        public IActionResult UpdateSteamId([FromBody]SteamIdDto steamIdDto)
-        {
-            // TODO: encrypt and decrypt SteamID
-            var playerDiscordUserId = ulong.Parse(User.Claims.First().Value);
-            _playerService.UpdatePlayerSteamID(playerDiscordUserId, steamIdDto.SteamId, User.Identity.Name);
-
-            return Ok();
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
 using Discord.WebSocket;
@@ -50,10 +51,11 @@ namespace CoachBot.Domain.Services
             });
         }
 
-        public IEnumerable<DiscordGuild> GetGuildsForUser(ulong userId)
+        public IEnumerable<DiscordGuild> GetGuildsForUser(ulong steamUserId)
         {
+            var discordUserId = _coachBotContext.Players.Single(s => s.SteamID == steamUserId).DiscordUserId;
             return _discordSocketClient.Guilds
-                .Where(g => g.Users.Any(u => u.Id == userId && u.GuildPermissions.Administrator))
+                .Where(g => g.Users.Any(u => u.Id == discordUserId && u.GuildPermissions.Administrator))
                 .Select(g => new DiscordGuild()
                 {
                     Id = g.Id,
@@ -63,21 +65,24 @@ namespace CoachBot.Domain.Services
                 });
         }
 
-        public bool UserIsOwningGuildAdmin(ulong userId)
+        public bool UserIsOwningGuildAdmin(ulong steamUserId)
         {
+            var player = _coachBotContext.GetPlayerBySteamId(steamUserId);
             var owningGuild = _discordSocketClient.GetGuild(_config.OwnerGuildId);
 
-            return owningGuild.Users.FirstOrDefault(u => u.Id == userId).GuildPermissions.Administrator;
+            return owningGuild.Users.FirstOrDefault(u => u.Id == player.DiscordUserId).GuildPermissions.Administrator;
         }
 
-        public bool UserIsGuildAdministrator(ulong userId, ulong guildId)
+        public bool UserIsGuildAdministrator(ulong steamUserId, ulong guildId)
         {
-            return _discordSocketClient.GetGuild(guildId).Users.Any(u => u.Id == userId && u.GuildPermissions.Administrator);
+            var discordUserId = _coachBotContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
+            return _discordSocketClient.GetGuild(guildId).Users.Any(u => u.Id == discordUserId && u.GuildPermissions.Administrator);
         }
 
-        public bool UserIsPresentOnGuild(ulong userId, ulong guildId)
+        public bool UserIsPresentOnGuild(ulong steamUserId, ulong guildId)
         {
-            return _discordSocketClient.GetGuild(guildId).Users.Any(u => u.Id == userId);
+            var discordUserId = _coachBotContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
+            return _discordSocketClient.GetGuild(guildId).Users.Any(u => u.Id == steamUserId);
         }
     }
 }

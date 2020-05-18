@@ -26,7 +26,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public IActionResult Create(PlayerTeam playerTeam)
         {
-            if (!_teamService.IsTeamCaptain(playerTeam.TeamId, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(playerTeam.TeamId, User.GetDiscordUserId()))
+            if (!_teamService.IsTeamCaptain(playerTeam.TeamId, User.GetSteamId()) && !_teamService.IsViceCaptain(playerTeam.TeamId, User.GetSteamId()))
             {
                 return Forbid();
             }
@@ -39,9 +39,9 @@ namespace CoachBot.Controllers
         [HttpPut]
         public IActionResult Update(PlayerTeam playerTeam)
         {
-            var hasCaptainPermissions = _teamService.IsTeamCaptain(playerTeam.TeamId, User.GetDiscordUserId()) || _teamService.IsViceCaptain(playerTeam.TeamId, User.GetDiscordUserId());
+            var hasCaptainPermissions = _teamService.IsTeamCaptain(playerTeam.TeamId, User.GetSteamId()) || _teamService.IsViceCaptain(playerTeam.TeamId, User.GetSteamId());
 
-            if (hasCaptainPermissions || _playerService.GetPlayer(User.GetDiscordUserId()).Id == playerTeam.PlayerId)
+            if (hasCaptainPermissions || _playerService.GetPlayerBySteamId(User.GetSteamId()).Id == playerTeam.PlayerId)
             {
                 _playerTeamService.Update(playerTeam, hasCaptainPermissions);
 

@@ -5,6 +5,7 @@ using Discord;
 using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CoachBot.Domain.Services
 {
@@ -72,6 +73,25 @@ namespace CoachBot.Domain.Services
             return player;
         }
 
+        public Player GetPlayerBySteamId(ulong steamUserId, bool createIfNotExists = false, string playerName = null)
+        {
+            var player = _coachBotContext.Players
+                .Include(p => p.Positions)
+                    .ThenInclude(p => p.Position)
+                .Include(p => p.Teams)
+                    .ThenInclude(t => t.Team)
+                    .ThenInclude(t => t.BadgeImage)
+                .Include(p => p.Country)
+                .FirstOrDefault(p => p.SteamID == steamUserId);
+
+            if (createIfNotExists && player == null)
+            {
+                player = CreatePlayer(playerName, steamUserId);
+            }
+
+            return player;
+        }
+
         public void UpdatePlayerSteamID(ulong discordUserId, ulong steamId, string playerName)
         {
             // TODO: Ensure player is not an admin for security purposes
@@ -99,6 +119,11 @@ namespace CoachBot.Domain.Services
                 DiscordUserId = discordUserId,
                 SteamID = steamId
             };
+
+            if (steamId.HasValue && _coachBotContext.Players.Any(p => p.SteamID == steamId) || steamId == 0)
+            {
+                throw new Exception("Player already exists with given SteamID");
+            }
 
             _coachBotContext.Players.Add(player);
             _coachBotContext.SaveChanges();

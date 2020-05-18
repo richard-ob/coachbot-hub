@@ -1,4 +1,5 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,9 +33,9 @@ namespace CoachBot.Domain.Services
             return _dbContext.Teams.ToList();
         }
 
-        public void CreateTeam(Team team, ulong captainDiscordUserId)
+        public void CreateTeam(Team team, ulong captainSteamUserId)
         {
-            var player = _dbContext.Players.Single(p => p.DiscordUserId == captainDiscordUserId);
+            var player = _dbContext.GetPlayerBySteamId(captainSteamUserId);
 
             team.FoundedDate = team.FoundedDate ?? DateTime.Now;
             _dbContext.Teams.Add(team);
@@ -64,13 +65,15 @@ namespace CoachBot.Domain.Services
             _dbContext.SaveChanges();
         }
 
-        public bool IsTeamCaptain(int teamId, ulong discordUserId)
+        public bool IsTeamCaptain(int teamId, ulong steamUserId)
         {
+            var discordUserId = _dbContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
             return _dbContext.PlayerTeams.Any(pt => pt.Player.DiscordUserId == discordUserId && pt.TeamRole == TeamRole.Captain && pt.LeaveDate == null);
         }
 
-        public bool IsViceCaptain(int teamId, ulong discordUserId)
+        public bool IsViceCaptain(int teamId, ulong steamUserId)
         {
+            var discordUserId = _dbContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
             return _dbContext.PlayerTeams.Any(pt => pt.Player.DiscordUserId == discordUserId && pt.TeamRole == TeamRole.ViceCaptain && pt.LeaveDate == null);
         }
     }

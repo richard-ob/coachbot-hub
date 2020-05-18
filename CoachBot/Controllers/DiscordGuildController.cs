@@ -21,14 +21,14 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_discordService.GetGuildsForUser(User.GetDiscordUserId()));
+            return Ok(_discordService.GetGuildsForUser(User.GetSteamId()));
         }
 
         [HttpGet("{id}/channels")]
         public IActionResult GetForGuild(ulong id)
         {
-            var discordUserId = User.GetDiscordUserId();
-            if (!_discordService.UserIsGuildAdministrator(discordUserId, id) && !_discordService.UserIsOwningGuildAdmin(discordUserId))
+            var steamId = User.GetSteamId();
+            if (!_discordService.UserIsGuildAdministrator(steamId, id) && !_discordService.UserIsOwningGuildAdmin(steamId))
             {
                 return Unauthorized();
             }

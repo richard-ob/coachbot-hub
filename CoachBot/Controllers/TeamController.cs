@@ -51,7 +51,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public IActionResult Create(Team team)
         {
-            _teamService.CreateTeam(team, User.GetDiscordUserId());
+            _teamService.CreateTeam(team, User.GetSteamId());
 
             return Ok();
         }
@@ -60,7 +60,7 @@ namespace CoachBot.Controllers
         [HttpPut]
         public IActionResult Update(Team team)
         {
-            if (!_teamService.IsTeamCaptain(team.Id, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(team.Id, User.GetDiscordUserId()))
+            if (!_teamService.IsTeamCaptain(team.Id, User.GetSteamId()) && !_teamService.IsViceCaptain(team.Id, User.GetSteamId()))
             {
                 return Forbid();
             }
@@ -75,7 +75,7 @@ namespace CoachBot.Controllers
         [Route("update-guild-id")]
         public IActionResult UpdateGuildId([FromBody]UpdateGuildIdDto updateGuildIdDto)
         {
-            if (!_teamService.IsTeamCaptain(updateGuildIdDto.TeamId, User.GetDiscordUserId()) && !_teamService.IsViceCaptain(updateGuildIdDto.TeamId, User.GetDiscordUserId()))
+            if (!_teamService.IsTeamCaptain(updateGuildIdDto.TeamId, User.GetSteamId()) && !_teamService.IsViceCaptain(updateGuildIdDto.TeamId, User.GetSteamId()))
             {
                 return Forbid();
             }

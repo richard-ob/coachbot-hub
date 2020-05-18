@@ -21,7 +21,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public int CreateAssetImage(AssetImage assetImage)
         {
-            return _assetImageService.CreateAssetImage(assetImage.Base64EncodedImage, assetImage.FileName, HttpContext.User.GetDiscordUserId());
+            return _assetImageService.CreateAssetImage(assetImage.Base64EncodedImage, assetImage.FileName, HttpContext.User.GetSteamId());
         }
 
         [HttpGet("{id}")]

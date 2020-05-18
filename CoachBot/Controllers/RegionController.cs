@@ -28,7 +28,7 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IEnumerable<RegionDto> Get()
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }
@@ -38,7 +38,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Add(Region region)
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }
@@ -54,7 +54,7 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()))
+            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }

@@ -1,4 +1,5 @@
-﻿using CoachBot.Domain.Services;
+﻿using AspNet.Security.OpenId.Steam;
+using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Model;
 using CoachBot.Services;
@@ -31,16 +32,16 @@ namespace CoachBot.Controllers
             return new User
             {
                 Name = User.Identity.Name,
-                DiscordUserId = User.GetDiscordUserId(),
-                IsAdministrator = _discordService.UserIsOwningGuildAdmin(User.GetDiscordUserId()),
-                PlayerId = _playerService.GetPlayer(User.GetDiscordUserId(), createIfNotExists: true, playerName: User.Identity.Name).Id
+                SteamId = User.GetSteamId(),
+                IsAdministrator = _discordService.UserIsOwningGuildAdmin(User.GetSteamId()),
+                PlayerId = _playerService.GetPlayerBySteamId(User.GetSteamId(), createIfNotExists: true, playerName: User.Identity.Name).Id // TODO: Figure out if this works for Steam
             };
         }
 
         [HttpGet("/login")]
         public IActionResult LogIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = _configService.Config.ClientUrl }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
+            return Challenge(new AuthenticationProperties { RedirectUri = _configService.Config.ClientUrl }, SteamAuthenticationDefaults.AuthenticationScheme);
         }
 
         [HttpGet("/logout")]

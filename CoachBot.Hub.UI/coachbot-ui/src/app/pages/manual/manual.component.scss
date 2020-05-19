@@ -1,38 +1,23 @@
-.manual a {
-    text-decoration: underline;
-    color: #333;
+.card__content {
+    padding-left: 5rem;
+    .text-content {
+        margin-left: -2.3em;
+    }
+    h4 {
+        margin-left: -3rem;
+    }
+    
+    h5 {
+        margin-left: -2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    h6 {
+       margin-left: -1rem;
+       margin-bottom: 1em;
+    }
+    iframe {
+        border: none;
+    }
 }
 
-.manual a:hover {
-    color: #ddd;
-    text-decoration: none;
-}
-
-.manual {
-    display: block;
-    font-size: 0.85rem;
-    padding: 5rem;
-    padding-top: 0.25rem;
-    background-color: #fff;
-    color: #535353;
-    width: 75%;
-    margin: 0 auto;
-}
-
-.manual h1 {
-    font-size: 1.2rem;
-    margin-top: 2.5rem;
-    margin-left: -3rem;
-}
-
-.manual h2 {
-    font-size: 1rem;
-    margin-top: 2rem;
-    margin-left: -2rem;
-}
-
-.manual h3 {
-    font-size: 0.85rem;
-    margin-top: 1.5rem;
-    margin-left: -1rem;
-}

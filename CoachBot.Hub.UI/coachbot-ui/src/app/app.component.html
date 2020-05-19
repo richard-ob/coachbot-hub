@@ -129,7 +129,7 @@
                                     Home
                                 </a>
                             </li>
-                            <li routerLinkActive="active"><a href="#">News</a></li>
+                            <li routerLinkActive="active"><a routerLink="/news">News</a></li>
                             <li routerLinkActive="active"><a href="https://store.steampowered.com/app/673560/IOSoccer/"
                                     target="_blank">Download</a></li>
                             <li routerLinkActive="active" (click)="toggleSectionOpen(manualsSection, manualsToggle)">
@@ -137,7 +137,7 @@
                                 <span class="main-nav__toggle" #manualsToggle></span>
                                 <ul class="main-nav__sub" #manualsSection>
                                     <li><a routerLink="/manual">Player Manual</a></li>
-                                    <li><a routerLink="/manual">Server Admin Manual</a></li>
+                                    <li><a routerLink="/server-manual">Server Admin Manual</a></li>
                                 </ul>
                             </li>
                             <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"

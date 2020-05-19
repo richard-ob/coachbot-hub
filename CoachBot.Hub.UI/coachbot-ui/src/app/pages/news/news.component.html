@@ -1,0 +1,37 @@
+<div class="container py-4">
+    <ng-container *ngIf="news; else spinner">
+
+        <div class="row">
+            <!-- Content -->
+            <div class="content col-md-12">
+                <!-- Posts Grid -->
+                <div class="posts posts--cards post-grid row">
+                    <div *ngFor="let newsItem of news" class="post-grid__item col-md-6 col-lg-4">
+                        <div class="posts__item posts__item--card posts__item--category-1 card">
+                            <figure class="posts__thumb">
+                                <div class="posts__cat"><span class="label posts__cat-label">News</span></div>
+                                <a href="#"><img [src]="getFirstImage(newsItem.contents)" alt=""></a>
+                            </figure>
+                            <div class="posts__inner card__content">
+                                <a href="#" class="posts__cta"></a> <time
+                                    class="posts__date">{{newsItem.date | date}}</time>
+                                <h6 class="posts__title"><a href="{{newsItem.url}}">{{newsItem.title}}</a></h6>
+                            </div>
+                            <footer class="posts__footer card__footer">
+                                <div class="post-author">
+                                    <div class="post-author__info">
+                                        <h4 class="post-author__name">{{newsItem.author}}</h4>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Content / End -->
+        </div>
+    </ng-container>
+    <ng-template #spinner>
+        <app-spinner></app-spinner>
+    </ng-template>
+</div>

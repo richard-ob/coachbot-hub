@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Player } from '../shared/model/player.model';
 import { PlayerService } from '../shared/services/player.service';
 import { ActivatedRoute } from '@angular/router';
-import { SteamService } from '../shared/services/steam.service.';
+import { SteamService } from '../../../shared/services/steam.service.';
 import { SteamUserProfile } from '../shared/model/steam-user-profile.model';
 import * as humanizeDuration from 'humanize-duration';
 import { PlayerProfile } from '../shared/model/player-profile.model';

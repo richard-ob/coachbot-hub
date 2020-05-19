@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerService } from '../shared/services/player.service';
 import { PlayerStatistics } from '../shared/model/player-statistics.model';
-import { SteamService } from '../shared/services/steam.service.';
+import { SteamService } from '../../../shared/services/steam.service.';
 import { Router } from '@angular/router';
 import { PlayerStatisticFilters } from '../shared/model/dtos/paged-player-statistics-request-dto.model';
 

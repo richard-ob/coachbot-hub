@@ -22,6 +22,8 @@ import { UpcomingMatchesComponent } from './pages/hub/upcoming-matches/upcoming-
 import { CurrentTournamentsComponent } from './pages/hub/tournaments/current-tournaments/current-tournaments.component';
 import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component';
 import { AboutComponent } from '@pages/about/about.component';
+import { ServerManualComponent } from '@pages/server-manual/server-manual.component';
+import { NewsComponent } from '@pages/news/news.component';
 
 const routes: Routes = [
   {
@@ -31,6 +33,14 @@ const routes: Routes = [
   {
     path: 'manual',
     component: ManualComponent
+  },
+  {
+    path: 'server-manual',
+    component: ServerManualComponent
+  },
+  {
+    path: 'news',
+    component: NewsComponent
   },
   {
     path: 'team',

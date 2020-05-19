@@ -1,0 +1,88 @@
+<div class="py-4 container">
+    <div class="card">
+        <div class="card__header">
+            <h4>Server Manual</h4>
+        </div>
+        <div class="card__content">
+            <h5>Introduction</h5>
+            <p>
+                This manual is primary aimed at those wishing to host a dedicated IOSoccer server. If you have any
+                queries, or issues, please
+                feel free to ask in <code>#helpdesk</code> on <a href="https://discord.gg/FkT6Q3N">our Discord
+                    Server</a>.
+            </p>
+            <h5>Server console commands and variables</h5>
+            <p><em>Note: If you execute these commands from the client console you need to set
+                    <code>rcon_password x</code> in <code>cfg\server.cfg</code> and write <code>rcon</code> before
+                    the actual command.</em></p>
+            <ul>
+                <li>
+                    <strong><code>exec x.cfg</code></strong>: Executes a config file in the <code>cfg</code> folder
+                    named x.</li>
+                <li>
+                    <strong><code>sv_restart x</code></strong>: Resets the match and goes into warm up mode with an
+                    x minutes countdown. Use <code>-1</code> to stay in warm up mode forever.</li>
+                <li>
+                    <strong><code>mp_maxplayers x</code></strong>: Sets x number of players per side.</li>
+                <li>
+                    <strong><code>benchall 0</code></strong>: Move all players from field to bench.</li>
+                <li>
+                    <strong><code>mp_botkeepers x</code></strong>: 1 to enable AI keepers, 0 for human keepers.</li>
+            </ul>
+
+            <h5>Windows dedicated server installation example</h5>
+            <ol>
+                <li>
+                    <a href="https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
+                        rel="nofollow noopener">Download SteamCMD</a> and extract
+                    <code>steamcmd.exe</code> to a folder</li>
+                <li>Open the folder in Explorer, hold shift, right-click in an empty area and click
+                    <code>Open command/PowerShell window here</code>. Enter the following commands in the terminal:
+                </li>
+                <li><code>.\steamcmd +login anonymous +force_install_dir iosoccer +app_update 673990 validate +quit</code>
+                </li>
+                <li><code>cd iosoccer</code></li>
+                <li>
+                    <code>.\srcds.exe -console -game iosoccer -condebug -port 27015 +maxplayers 32 +fps_max 500 -tickrate 100 +map 8v8_vienna</code><br>
+                    <em>You may need to use <code>+ip xxx.xxx.xxx.xxx</code> if the server has multiple network
+                        adapters, or is a more complex setup, otherwise this is not necessary.</em>
+                </li>
+            </ol>
+            <p>The server should now be running. You can enter server commands in the console.</p>
+
+            <h5>Linux dedicated server installation example</h5>
+            <ol>
+                <li>See <a href="https://developer.valvesoftware.com/wiki/SteamCMD" rel="nofollow noopener">here</a>
+                    for
+                    instructions on how to install SteamCMD on Linux.</li>
+                <li><code>steamcmd +login anonymous +force_install_dir iosoccer +app_update 673990 validate +quit</code>
+                </li>
+                <li><code>cd iosoccer</code></li>
+                <li>
+                    <code>./srcds_run -console -game iosoccer -condebug -port 27015 +maxplayers 32 +fps_max 500 -tickrate 100 +map 8v8_vienna</code><br>
+                    <em>You may need to use <code>+ip xxx.xxx.xxx.xxx</code> if the server has multiple network
+                        adapters, or is a more complex setup, otherwise this is not necessary.</em>
+                </li>
+            </ol>
+            <p>The server should now be running. You can enter server commands in the console.</p>
+
+            <h5>Enabling custom assets</h5>
+            <p>If you want to use custom assets on your dedicated server you need a <a
+                    href="https://developer.valvesoftware.com/wiki/Sv_downloadurl" rel="nofollow noopener">fastdl></a>
+                setup on a
+                webserver, because sending the files to players directly through the game server is extremely slow.
+            </p>
+            <p>To enable custom assets open iosoccer\cfg\autoexec.cfg and change <code>sv_custom_assets 0</code> to
+                <code>sv_custom_assets 1</code>.</p>
+            <h5>External resources</h5>
+            <ul>
+                <li><a href="https://developer.valvesoftware.com/wiki/SteamCMD"
+                        rel="nofollow noopener">https://developer.valvesoftware.com/wiki/SteamCMD</a></li>
+                <li><a href="https://developer.valvesoftware.com/wiki/SRCDS"
+                        rel="nofollow noopener">https://developer.valvesoftware.com/wiki/SRCDS</a></li>
+                <li><a href="https://developer.valvesoftware.com/wiki/Sv_downloadurl"
+                        rel="nofollow noopener">https://developer.valvesoftware.com/wiki/Sv_downloadurl</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -4,7 +4,7 @@ import { PlayerService } from '../shared/services/player.service';
 import { SteamUserProfile } from '../shared/model/steam-user-profile.model';
 import { CountryService } from '../shared/services/country.service';
 import { Country } from '../shared/model/country.model';
-import { SteamService } from '../shared/services/steam.service.';
+import { SteamService } from '../../../shared/services/steam.service.';
 import { PositionService } from '../shared/services/position.service';
 import { Position } from '../shared/model/position';
 import { PlayerPosition } from '../shared/model/player-position.model';
@@ -65,14 +65,14 @@ export class ProfileEditorComponent implements OnInit {
     }
 
     leaveTeam(playerTeam: PlayerTeam) {
-       /* playerTeam.leaveDate = new Date();
-        this.isLoading = true;
-        this.playerTeamService.updatePlayerTeam(playerTeam).subscribe(() => {
-            this.playerService.getCurrentPlayer().subscribe(player => {
-                this.player = player;
-                this.isLoading = false;
-            });
-        });*/
+        /* playerTeam.leaveDate = new Date();
+         this.isLoading = true;
+         this.playerTeamService.updatePlayerTeam(playerTeam).subscribe(() => {
+             this.playerService.getCurrentPlayer().subscribe(player => {
+                 this.player = player;
+                 this.isLoading = false;
+             });
+         });*/
     }
 
     saveChanges() {

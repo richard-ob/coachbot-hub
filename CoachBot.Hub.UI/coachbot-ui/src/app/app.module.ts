@@ -15,6 +15,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { LayoutModule } from '@angular/cdk/layout';
 import { AboutComponent } from '@pages/about/about.component';
+import { ServerManualComponent } from '@pages/server-manual/server-manual.component';
+import { NewsComponent } from '@pages/news/news.component';
+import { SpinnerModule } from '@core/components/spinner/spinner.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import { AboutComponent } from '@pages/about/about.component';
     ManualComponent,
     TeamComponent,
     MatchmakingComponent,
-    AboutComponent
+    AboutComponent,
+    ServerManualComponent,
+    NewsComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +40,8 @@ import { AboutComponent } from '@pages/about/about.component';
     ErrorModule,
     BrowserAnimationsModule,
     SweetAlert2Module.forRoot(),
-    LayoutModule
+    LayoutModule,
+    SpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

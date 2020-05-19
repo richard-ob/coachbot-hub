@@ -19,5 +19,8 @@
     iframe {
         border: none;
     }
+    strong + em {
+        margin-left: 0.25rem;
+    }
 }
 

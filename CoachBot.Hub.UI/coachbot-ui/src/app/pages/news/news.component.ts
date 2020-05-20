@@ -3,7 +3,8 @@ import { SteamService } from '@shared/services/steam.service.';
 
 @Component({
     selector: 'app-news',
-    templateUrl: './news.component.html'
+    templateUrl: './news.component.html',
+    styleUrls: ['./news.component.scss']
 })
 export class NewsComponent implements OnInit {
 
@@ -23,7 +24,6 @@ export class NewsComponent implements OnInit {
 
     getFirstImage(content: string) {
         if (content.indexOf('[img]') > -1) {
-            console.log(content);
             const image = content.split('[img]')[1].split('[/img]')[0];
             return image.replace('{STEAM_CLAN_IMAGE}', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/clans/');
         }

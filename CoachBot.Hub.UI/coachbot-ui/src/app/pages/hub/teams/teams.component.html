@@ -1,4 +1,8 @@
-<div class="container py-4">
+<div class="container position-relative py-4">
+    <a [routerLink]="['/create-team']" class="btn btn-outline-secondary btn-xs"
+        style="position: absolute; top: 25px; right: 25px;">
+        Create New Team
+    </a>
     <h4>Current</h4>
     <div class="sponsors-grid row">
         <div *ngFor="let team of teams | filterBy:['inactive']:false" class="col-sm-6 col-lg-4">
@@ -6,18 +10,16 @@
                 <header class="card__header sponsor-card__header"
                     [style.background-color]="team.color ? team.color : '#292c31'">
                     <figure class="sponsor-card__logo">
-                        <a href="#">
-                            <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage">
-                            <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
-                                style="max-height: 140px">
-                        </a>
+                        <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage">
+                        <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                            style="max-height: 140px">
                     </figure>
                 </header>
                 <div class="card__content text-center p-2">
                     <h6 class="m-0">{{team.name}}</h6>
                 </div>
                 <footer class="card__footer sponsor-card__footer p-2">
-                    <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team/' + team.id]">
+                    <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
                         View Team Profile</a>
                 </footer>
             </div>
@@ -40,7 +42,7 @@
                 <h6 class="m-0">{{team.name}}</h6>
             </div>
             <footer class="card__footer sponsor-card__footer p-2">
-                <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team/' + team.id]">
+                <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
                     View Team Profile</a>
             </footer>
         </div>

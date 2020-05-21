@@ -24,6 +24,8 @@ import { MatchmakingComponent } from './pages/matchmaking/matchmaking.component'
 import { AboutComponent } from '@pages/about/about.component';
 import { ServerManualComponent } from '@pages/server-manual/server-manual.component';
 import { NewsComponent } from '@pages/news/news.component';
+import { TeamsComponent } from '@pages/hub/teams/teams.component';
+import { TeamCreatorComponent } from '@pages/hub/team-creator/team-creator.component';
 
 const routes: Routes = [
   {
@@ -85,6 +87,14 @@ const routes: Routes = [
   {
     path: 'edit-team',
     component: TeamEditorComponent
+  },
+  {
+    path: 'create-team',
+    component: TeamCreatorComponent
+  },
+  {
+    path: 'teams',
+    component: TeamsComponent
   },
   {
     path: 'validate-steamid',

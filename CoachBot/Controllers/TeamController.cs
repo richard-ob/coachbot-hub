@@ -41,10 +41,10 @@ namespace CoachBot.Controllers
             return _matchStatisticsService.GetPlayerTeamStatistics(null, id, false);
         }
 
-        [HttpGet]
-        public List<Team> GetAll()
+        [HttpGet("region/{regionId}")]
+        public List<Team> GetAll(int regionId)
         {
-            return _teamService.GetTeams();
+            return _teamService.GetTeams(regionId);
         }
 
         [Authorize]

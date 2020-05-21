@@ -20,7 +20,7 @@ export class TournamentGroupTeamManagerComponent implements OnInit {
     constructor(private tournamentService: TournamentService, private teamService: TeamService) { }
 
     ngOnInit() {
-        this.teamService.getTeams().subscribe(teams => {
+        this.teamService.getTeams(2).subscribe(teams => {
             this.teams = teams;
             this.isLoading = false;
         });

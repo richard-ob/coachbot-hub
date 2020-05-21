@@ -58,6 +58,8 @@ import { TeamListModule } from './team-list/team-list.module';
 import { PlayerListModule } from './player-list/player-list.module';
 import { HubPipesModule } from './shared/pipes/hub-pipes.module';
 import { FantasyTeamManagerModule } from './tournaments/fantasy-team-manager/fantasy-team-manager.module';
+import { TeamsComponent } from './teams/teams.component';
+import { TeamCreatorComponent } from './team-creator/team-creator.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,9 @@ import { FantasyTeamManagerModule } from './tournaments/fantasy-team-manager/fan
     TeamEditorDiscordIntegrationComponent,
     DiscordChannelEditorComponent,
     DiscordGuildEditorComponent,
-    DiscordEmoteDisplayNamePipe
+    DiscordEmoteDisplayNamePipe,
+    TeamsComponent,
+    TeamCreatorComponent
   ],
   imports: [
     CommonModule,

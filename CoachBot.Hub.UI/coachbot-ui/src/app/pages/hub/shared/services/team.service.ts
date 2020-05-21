@@ -22,8 +22,8 @@ export class TeamService {
         return this.http.get<Team>(`${environment.apiUrl}/api/team/${teamId}`);
     }
 
-    getTeams(): Observable<Team[]> {
-        return this.http.get<Team[]>(`${environment.apiUrl}/api/team`);
+    getTeams(regionId: number): Observable<Team[]> {
+        return this.http.get<Team[]>(`${environment.apiUrl}/api/team/region/${regionId}`);
     }
 
     getTeamStatistics(

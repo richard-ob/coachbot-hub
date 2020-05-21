@@ -28,9 +28,12 @@ namespace CoachBot.Domain.Services
                 .Single(t => t.Id == teamId);
         }
 
-        public List<Team> GetTeams()
+        public List<Team> GetTeams(int regionId)
         {
-            return _dbContext.Teams.ToList();
+            return _dbContext.Teams
+                .Include(t => t.BadgeImage)
+                .Where(t => t.RegionId == regionId)
+                .ToList();
         }
 
         public void CreateTeam(Team team, ulong captainSteamUserId)

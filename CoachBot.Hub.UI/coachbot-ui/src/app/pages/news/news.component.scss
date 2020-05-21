@@ -1,4 +1,7 @@
 .posts__thumb {
     background-color: #e4e7ed;
     height: 195px;
+    img {
+        filter: blur(0px);
+    }
 }

@@ -7,7 +7,7 @@
         </div>
     </div>
 </ng-template>
-<div *ngIf="matchData; else matchPending" class="page-heading p-0">
+<div *ngIf="!isLoading && matchData; else matchPending" class="page-heading p-0">
     <div class="container">
         <div class="row">
             <div class="col-md-10 offset-md-1">

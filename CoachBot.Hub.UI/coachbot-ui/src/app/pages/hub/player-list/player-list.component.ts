@@ -22,9 +22,14 @@ export class PlayerListComponent implements OnInit {
     timePeriod = 0;
     isLoading = true;
 
-    constructor(private playerService: PlayerService, private steamService: SteamService, private router: Router) { }
+    constructor(
+        private playerService: PlayerService,
+        private steamService: SteamService,
+        private router: Router
+    ) { }
 
     ngOnInit() {
+
         this.loadPage(1);
     }
 

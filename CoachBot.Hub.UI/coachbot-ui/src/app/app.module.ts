@@ -18,6 +18,7 @@ import { AboutComponent } from '@pages/about/about.component';
 import { ServerManualComponent } from '@pages/server-manual/server-manual.component';
 import { NewsComponent } from '@pages/news/news.component';
 import { SpinnerModule } from '@core/components/spinner/spinner.module';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { SpinnerModule } from '@core/components/spinner/spinner.module';
     BrowserAnimationsModule,
     SweetAlert2Module.forRoot(),
     LayoutModule,
-    SpinnerModule
+    SpinnerModule,
+    NgxSkeletonLoaderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

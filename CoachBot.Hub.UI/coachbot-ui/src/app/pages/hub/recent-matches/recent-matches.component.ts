@@ -3,6 +3,7 @@ import { MatchService } from '../shared/services/match.service';
 import { Match } from '../shared/model/match.model';
 import { MatchTypes } from '../shared/model/match-types.enum';
 import { PagedMatchRequestDto } from '../shared/model/dtos/paged-match-request-dto.model';
+import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 @Component({
     selector: 'app-recent-matches',
     templateUrl: './recent-matches.component.html',
@@ -23,10 +24,10 @@ export class RecentMatchesComponent implements OnInit {
     totalPages: number;
     totalItems: number;
 
-    constructor(private matchService: MatchService) { }
+    constructor(private matchService: MatchService, private userPreferenceService: UserPreferenceService) { }
 
     ngOnInit() {
-        this.filters.regionId = 2;
+        this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.playerId = this.playerId;
         this.filters.teamId = this.teamId;
         this.filters.tournamentEditionId = this.tournamentEditionId;

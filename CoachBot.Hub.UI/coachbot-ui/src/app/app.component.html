@@ -29,10 +29,25 @@
                     <ul class="nav-account">
                         <li class="nav-account__item"><a href="#" routerLink="./edit-profile">Your Account</a>
                         </li>
-                        <!--<li class="nav-account__item"><a href="#">Language: <span class="highlight">EN</span></a>
-                        </li>-->
+                        <li class="nav-account__item has-children">
+                            <ng-container *ngIf="selectedRegion; else regionsSkeleton">
+                                <span class="main-nav__toggle"></span>
+                                <a href="#">Region:
+                                    <span class="highlight ml-1">{{selectedRegion.regionCode}}</span>
+                                </a>
+                                <ul class="main-nav__sub">
+                                    <li *ngFor="let region of regions">
+                                        <a href="javascript:void(0);"
+                                            (click)="setRegion(region.regionId)">{{region.regionName}}</a>
+                                    </li>
+                                </ul>
+                            </ng-container>
+                            <ng-template #regionsSkeleton>
+                                <ngx-skeleton-loader animation="progress-dark" appearance="line"></ngx-skeleton-loader>
+                            </ng-template>
+                        </li>
                         <li *ngIf="!player" class="nav-account__item nav-account__item--login">
-                            <a routerLink="./login">Login</a>
+                            <a href="javascript:void(0);" routerLink="./login">Login</a>
                         </li>
                         <li *ngIf="player" class="nav-account__item nav-account__item--logout">
                             <a href="{{apiUrl}}/logout">Logout</a>

@@ -5,6 +5,9 @@ import { environment } from 'src/environments/environment';
 import { Player } from './pages/hub/shared/model/player.model';
 import { PlayerService } from './pages/hub/shared/services/player.service';
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
+import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
+import { Region } from '@pages/hub/shared/model/region.model';
+import { RegionService } from '@pages/hub/shared/services/region.service';
 
 @Component({
   selector: 'app-root',
@@ -13,17 +16,30 @@ import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/l
 })
 export class AppComponent implements OnInit {
 
+  selectedRegion: Region;
+  regions: Region[];
   player: Player;
   apiUrl = environment.apiUrl;
 
-  constructor(private playerService: PlayerService) { }
+  constructor(
+    private playerService: PlayerService,
+    private userPreferenceService: UserPreferenceService,
+    private regionService: RegionService
+  ) { }
 
   ngOnInit() {
-    this.playerService.getCurrentPlayer().subscribe(player => {
-      this.player = player;
+    this.regionService.getRegions().subscribe(regions => {
+      this.regions = regions;
+      this.selectedRegion = regions.find(r => r.regionId === this.userPreferenceService.getUserPreference(UserPreferenceType.Region));
+      this.playerService.getCurrentPlayer().subscribe(player => {
+        this.player = player;
+      });
     });
   }
 
+  setRegion(regionId: number) {
+    this.userPreferenceService.setUserPreference(UserPreferenceType.Region, regionId);
+  }
 
   toggleSectionOpen(section: Element, toggle: Element) {
     section.classList.toggle('main-nav__section--opened');

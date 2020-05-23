@@ -1,5 +1,5 @@
 <div class="container py-4">
-    <ng-container *ngIf="news; else spinner">
+    <ng-container *ngIf="isLoading; else spinner">
 
         <div class="row">
             <!-- Content -->
@@ -10,12 +10,17 @@
                         <div class="posts__item posts__item--card posts__item--category-1 card">
                             <figure class="posts__thumb">
                                 <div class="posts__cat"><span class="label posts__cat-label">News</span></div>
-                                <a href="#"><img [src]="getFirstImage(newsItem.contents)" alt=""></a>
+                                <a [attr.href]="newsItem.url" target="_blank">
+                                    <img [src]="newsItem.image" alt="">
+                                </a>
                             </figure>
                             <div class="posts__inner card__content">
-                                <a href="#" class="posts__cta"></a> <time
-                                    class="posts__date">{{newsItem.date | date}}</time>
-                                <h6 class="posts__title"><a href="{{newsItem.url}}">{{newsItem.title}}</a></h6>
+                                <a href="#" class="posts__cta"></a>
+                                <time class="posts__date">{{newsItem.date | date}}</time>
+                                <h6 class="posts__title"><a [attr.href]="newsItem.url">{{newsItem.title}}</a></h6>
+                                <div class="posts__content text-muted">
+                                    {{newsItem.summary}}
+                                </div>
                             </div>
                             <footer class="posts__footer card__footer">
                                 <div class="post-author">

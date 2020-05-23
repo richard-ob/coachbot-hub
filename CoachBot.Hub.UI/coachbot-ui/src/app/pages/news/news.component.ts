@@ -9,6 +9,7 @@ import { SteamService } from '@shared/services/steam.service.';
 export class NewsComponent implements OnInit {
 
     news: any[];
+    isLoading = true;
 
     constructor(private steamService: SteamService) { }
 
@@ -19,6 +20,11 @@ export class NewsComponent implements OnInit {
                 console.log(item.date);
             }
             this.news = response.appnews.newsitems;
+            for (const newsItem of this.news) {
+                newsItem.summary = this.getContentSummary(newsItem.contents);
+                newsItem.image = this.getFirstImage(newsItem.contents);
+            }
+            this.isLoading = false;
         });
     }
 
@@ -28,6 +34,16 @@ export class NewsComponent implements OnInit {
             return image.replace('{STEAM_CLAN_IMAGE}', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/clans/');
         }
         return 'https://iosoccer.com/assets/stadium-3.jpg';
+    }
+
+    getContentSummary(content: string) {
+        let readableContent = content;
+        readableContent = readableContent
+            .replace(/\[.*?\]/g, ' ') // Steam markup
+            .replace(/(?:https?|ftp):\/\/[\n\S]+/g, '') // links
+            .replace(/^(.+)\/([^/]+)/g, ''); // file paths
+
+        return readableContent.trim();
     }
 
 }

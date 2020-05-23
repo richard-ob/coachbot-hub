@@ -19,6 +19,7 @@ export class MatchOverviewComponent implements OnInit {
   eventType = EventType;
   displayValueModes = DisplayValueMode;
   matchDate: Date;
+  isLoading = true;
 
   constructor(private matchService: MatchService, private route: ActivatedRoute) { }
 
@@ -26,6 +27,7 @@ export class MatchOverviewComponent implements OnInit {
     this.route.paramMap.pipe().subscribe(params => {
       this.matchService.getMatch(+params.get('id')).subscribe(response => {
         this.loadJson(response.matchStatistics.matchData);
+        this.isLoading = false;
       });
     });
   }

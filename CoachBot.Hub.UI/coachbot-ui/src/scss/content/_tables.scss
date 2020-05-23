@@ -126,6 +126,47 @@ td.highlight {
 	}
 }
 
+.table-inner-border {
+	td:not(.no-left-border), th:not(.no-left-border) {
+		border-left: 1px solid #f5f5f5;
+	}
+}
+
+.table-column-hover {	
+	th {
+		padding: 10px;
+		position: relative;    
+	}
+	
+	th:hover::after  { 
+		background-color: #e0e0e024;
+		content: '';  
+		height: 10000px;
+		left: 0;
+		position: absolute;  
+		top: -5000px;
+		width: 100%;
+		z-index: 8;       
+		pointer-events: none;
+		border-left: 1px #00000026 solid;
+		border-right: 1px #00000026 solid;
+		-webkit-animation: fadeIn 0.2s ease; 
+		-moz-animation: fadeIn 0.2s ease; 
+		-ms-animation: fadeIn 0.2s ease;
+		-o-animation: fadeIn 0.2s ease; 
+			animation: fadeIn 0.2s ease;
+	}
+
+	&.table-hover tr:hover td {		
+		border-top: 1px #00000026 solid;
+		border-bottom: 1px #00000026 solid;
+	}
+}
+
+.table-responsive {
+	overflow-y: hidden;
+}
+
 .table-clickable tbody tr {
 	cursor: pointer;
 }

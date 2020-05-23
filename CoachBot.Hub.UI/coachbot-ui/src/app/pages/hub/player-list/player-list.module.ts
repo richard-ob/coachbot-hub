@@ -5,6 +5,8 @@ import { SpinnerModule } from 'src/app/core/components/spinner/spinner.module';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PlayerListComponent } from './player-list.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
 
 @NgModule({
     declarations: [
@@ -18,7 +20,9 @@ import { PlayerListComponent } from './player-list.component';
         RouterModule,
         FormsModule,
         SpinnerModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        NgxSkeletonLoaderModule,
+        ThSorterModule
     ]
 })
 export class PlayerListModule { }

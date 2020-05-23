@@ -151,6 +151,7 @@ namespace CoachBot.Domain.Services
                     .Include(fp => fp.Player)
                     .Include(t => t.Team)
                     .ThenInclude(t => t.BadgeImage)
+                    .Where(p => string.IsNullOrWhiteSpace(playerStatisticFilters.PlayerName) || p.Player.Name.Contains(playerStatisticFilters.PlayerName))
                     .Where(p => playerStatisticFilters.MaximumRating == null || p.Player.Rating <= playerStatisticFilters.MaximumRating)
                     .Where(p => playerStatisticFilters.MinimumRating == null || p.Player.Rating >= playerStatisticFilters.MinimumRating)
                     .Where(p => playerStatisticFilters.PositionGroup == null || p.PositionGroup == playerStatisticFilters.PositionGroup)

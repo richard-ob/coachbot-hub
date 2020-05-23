@@ -30,6 +30,8 @@ namespace CoachBot.Domain.Model
 
         public PositionGroup? PositionGroup { get; set; }
 
+        public string PlayerName { get; set; }
+
         public List<int> ExcludePlayers { get; set; } = new List<int>();
 
     }

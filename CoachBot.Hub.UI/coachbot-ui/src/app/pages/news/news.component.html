@@ -1,5 +1,5 @@
 <div class="container py-4">
-    <ng-container *ngIf="isLoading; else spinner">
+    <ng-container *ngIf="!isLoading; else spinner">
 
         <div class="row">
             <!-- Content -->
@@ -15,9 +15,9 @@
                                 </a>
                             </figure>
                             <div class="posts__inner card__content">
-                                <a href="#" class="posts__cta"></a>
                                 <time class="posts__date">{{newsItem.date | date}}</time>
-                                <h6 class="posts__title"><a [attr.href]="newsItem.url">{{newsItem.title}}</a></h6>
+                                <h6 class="posts__title"><a [attr.href]="newsItem.url"
+                                        target="_blank">{{newsItem.title}}</a></h6>
                                 <div class="posts__content text-muted">
                                     {{newsItem.summary}}
                                 </div>

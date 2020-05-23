@@ -51,6 +51,9 @@ label {
 	}
 }
 
+textarea.form-control {
+	resize: none;
+}
 
 // Feedback states
 .has-success {
@@ -139,6 +142,15 @@ select.form-control--clean {
 	}
 }
 
+.input-xs {
+	padding: 8px 12px;
+	font-size: $input-font-size-xs;
+
+	&:not([size]):not([multiple]):not(textarea) {
+		height: $input-height-base-xs;
+	}
+}
+ 
 
 // Form groups
 .form-group {

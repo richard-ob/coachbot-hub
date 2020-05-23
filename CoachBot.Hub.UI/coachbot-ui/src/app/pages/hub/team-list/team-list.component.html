@@ -24,9 +24,11 @@
                 </li>
             </ul>
         </div>
-        <div class="card__content">
+        <div class="card__content table-responsive">
             <app-spinner *ngIf="!teamStatistics"></app-spinner>
-            <table *ngIf="teamStatistics" class="table table--large table-striped table-hover table-clickable">
+            <table *ngIf="teamStatistics"
+                class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
+                [class.widget__content--loading]="isLoadingPage">
                 <thead>
                     <tr>
                         <th class="team-result__date" style="width: 35px;"></th>
@@ -41,7 +43,7 @@
                         <th class="team-result__game-overview text-center">Assists</th>
                         <th class="team-result__game-overview text-center">Avg. Passes</th>
                         <th class="team-result__game-overview text-center">Avg. Passes Completed</th>
-                        <th class="team-result__game-overview text-center">Form</th>
+                        <th class="team-result__game-overview text-center" style="min-width: 175px">Form</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,9 +70,9 @@
                 </tbody>
             </table>
         </div>
-        <div *ngIf="totalPages > 1" class="card__footer border-top pt-3 text-center">
-            <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
-        </div>
+    </div>
+    <div *ngIf="totalPages > 1" class="mb-4 text-center">
+        <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
     </div>
 </div>
 <!-- Team Latest Results / End -->

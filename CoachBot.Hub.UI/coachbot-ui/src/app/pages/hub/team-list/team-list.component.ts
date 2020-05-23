@@ -13,6 +13,7 @@ export class TeamListComponent implements OnInit {
     currentPage = 1;
     totalPages: number;
     totalItems: number;
+    isLoadingPage = false;
 
     constructor(private teamService: TeamService, private router: Router) {
 
@@ -23,11 +24,13 @@ export class TeamListComponent implements OnInit {
     }
 
     loadPage(page: number) {
+        this.isLoadingPage = true;
         this.teamService.getTeamStatistics(page).subscribe(response => {
             this.teamStatistics = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;
             this.totalItems = response.totalItems;
+            this.isLoadingPage = false;
         });
     }
 

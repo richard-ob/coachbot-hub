@@ -21,6 +21,7 @@ export class PlayerListComponent implements OnInit {
     sortOrder = 'ASC';
     timePeriod = 0;
     isLoading = true;
+    isLoadingPage = false;
 
     constructor(
         private playerService: PlayerService,
@@ -34,7 +35,7 @@ export class PlayerListComponent implements OnInit {
     }
 
     loadPage(page: number, sortBy: string = null) {
-        this.isLoading = true;
+        this.isLoadingPage = true;
         if (sortBy !== null && this.sortBy !== null && this.sortBy === sortBy && this.sortOrder === 'ASC') {
             this.sortOrder = 'DESC';
         } else {
@@ -47,6 +48,7 @@ export class PlayerListComponent implements OnInit {
             this.totalPages = response.totalPages;
             this.totalItems = response.totalItems;
             this.isLoading = false;
+            this.isLoadingPage = false;
             this.getSteamUserProfiles(this.playerStatistics);
         });
     }

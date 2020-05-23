@@ -1,10 +1,14 @@
-<div class="container my-4">
+<div class="container-fluid my-4">
     <!-- Team Latest Results -->
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Players</h4>
             <!-- Result Filter -->
             <ul class="team-result-filter">
+                <li class="team-result-filter__item">
+                    <input type="text" class="form-control input-xs" placeholder="Player Name"
+                        [(ngModel)]="filters.playerName">
+                </li>
                 <li class="team-result-filter__item">
                     <label class="checkbox checkbox-inline mr-2">
                         <input [(ngModel)]="filters.includeSubstituteAppearances" type="checkbox"
@@ -21,7 +25,7 @@
                     </select>
                 </li>
                 <li class="team-result-filter__item">
-                    <button type="button" class="btn btn-default btn-outline btn-xs card-header__button"
+                    <button type="button" class="btn btn-outline-secondary btn-xs card-header__button"
                         (click)="setFilters()">
                         Filter
                     </button>
@@ -31,188 +35,88 @@
         </div>
         <div class="card__content table-responsive">
             <app-spinner *ngIf="isLoading"></app-spinner>
-            <table *ngIf="!isLoading" class="table table--large table-striped table-hover table-clickable">
+            <table *ngIf="!isLoading"
+                class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
+                [class.widget__content--loading]="isLoadingPage">
                 <thead>
                     <tr>
                         <th class="team-result__vs" style="width: 40px;"></th>
-                        <th style="cursor: pointer" class="team-result__status" (click)="loadPage(currentPage, 'Name')">
-                            <span style=" white-space: nowrap; ">
-                                Name&nbsp;
-                                <i *ngIf="sortBy === 'Name' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'Name' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'Name'" class="fas fa-sort"></i>
-                            </span>
-                        </th>
+                        <th sorter [sortByColumn]="'Name'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)"></th>
                         <th class="text-center">Nationality</th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'Rating')">
-                            <span style=" white-space: nowrap; ">
-                                    Rating&nbsp;
-                                <i *ngIf="sortBy === 'Rating' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'Rating' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'Rating'" class="fas fa-sort"></i>
-                            </span>
+                        <th sorter [sortByColumn]="'Rating'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'Appearances'" [sortByColumnName]="'Apps'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'SubstituteAppearances'" [sortByColumnName]="'As Sub'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
                         </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'Appearances')">
-                            <span style=" white-space: nowrap; ">
-                                Apps&nbsp;
-                                <i *ngIf="sortBy === 'Appearances' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'Appearances' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'Appearances'" class="fas fa-sort"></i>
-                            </span>
+                        <th sorter [sortByColumn]="'Wins'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'Losses'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'Draws'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Avg. Goals'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
                         </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'SubstituteAppearances')">
-                            <span style=" white-space: nowrap; ">
-                                As Sub&nbsp;
-                                <i *ngIf="sortBy === 'SubstituteAppearances' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'SubstituteAppearances' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'SubstituteAppearances'" class="fas fa-sort"></i>
-                            </span>
+                        <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
                         </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'Wins')">
-                            <span style=" white-space: nowrap; ">
-                                    Wins&nbsp;
-                                <i *ngIf="sortBy === 'Wins' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'Wins' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'Wins'" class="fas fa-sort"></i>
-                            </span>
+                        <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'AssistsAverage'" [sortByColumnName]="'Avg. Assists'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
                         </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'Losses')">
-                            <span style=" white-space: nowrap; ">
-                                    Losses&nbsp;
-                                <i *ngIf="sortBy === 'Losses' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'Losses' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'Losses'" class="fas fa-sort"></i>
-                            </span>
+                        <th sorter [sortByColumn]="'PassesAverage'" [sortByColumnName]="'Avg. Passes'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
                         </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'Draws')">
-                            <span style=" white-space: nowrap; ">
-                                    Draws&nbsp;
-                                <i *ngIf="sortBy === 'Draws' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'Draws' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'Draws'" class="fas fa-sort"></i>
-                            </span>
+                        <th sorter [sortByColumn]="'PassCompletionPercentageAverage'"
+                            [sortByColumnName]="'Pass Completion'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"></th>
+                        <th sorter [sortByColumn]="'DistanceCoveredAverage'" [sortByColumnName]="'Avg. Distance'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
                         </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'Goals')">
-                            <span style=" white-space: nowrap; ">
-                                    Goals&nbsp;
-                                <i *ngIf="sortBy === 'Goals' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'Goals' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'Goals'" class="fas fa-sort"></i>
-                            </span>
-                        </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'GoalsAverage')">
-                            <span style=" white-space: nowrap; ">
-                                    Avg. Goals&nbsp;
-                                <i *ngIf="sortBy === 'GoalsAverage' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'GoalsAverage' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'GoalsAverage'" class="fas fa-sort"></i>
-                            </span>
-                        </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'ShotAccuracyPercentage')">
-                            <span style=" white-space: nowrap; ">
-                                    Shot Accuracy&nbsp;
-                                <i *ngIf="sortBy === 'ShotAccuracyPercentage' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'ShotAccuracyPercentage' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'ShotAccuracyPercentage'" class="fas fa-sort"></i>
-                            </span>
-                        </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'Assists')">
-                            <span style=" white-space: nowrap; ">
-                                Assists&nbsp;
-                                <i *ngIf="sortBy === 'Assists' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'Assists' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'Assists'" class="fas fa-sort"></i>
-                            </span>
-                        </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'AssistsAverage')">
-                            <span style=" white-space: nowrap; ">
-                                Avg. Assists&nbsp;
-                                <i *ngIf="sortBy === 'AssistsAverage' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'AssistsAverage' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'AssistsAverage'" class="fas fa-sort"></i>
-                            </span>
-                        </th>
-                        <th style="cursor: pointer" class="team-result__status text-center"
-                            (click)="loadPage(currentPage, 'PassesAverage')">
-                            <span style=" white-space: nowrap; ">
-                                Avg. Passes&nbsp;
-                                <i *ngIf="sortBy === 'PassesAverage' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'PassesAverage' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'PassesAverage'" class="fas fa-sort"></i>
-                            </span>
-                        </th>
-                        <th style="cursor: pointer" class="team-result__status"
-                            (click)="loadPage(currentPage, 'PassCompletionPercentageAverage')">
-                            <span style=" white-space: nowrap; ">
-                                    Pass Completion&nbsp;
-                                <i *ngIf="sortBy === 'PassCompletionPercentageAverage' && sortOrder === 'ASC'"
-                                    class="fas fa-sort-up"></i>
-                                <i *ngIf="sortBy === 'PassCompletionPercentageAverage' && sortOrder === 'DESC'"
-                                    class="fas fa-sort-down"></i>
-                                <i *ngIf="sortBy !== 'PassCompletionPercentageAverage'" class="fas fa-sort"></i>
-                            </span>
-                        </th>
-                        <th class="team-result__ball-posession">Yellows</th>
-                        <th class="team-result__game-overview">Reds</th>
-                        <th class="team-result__game-overview">Avg. Distance</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
+                    <tr *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let odd = odd"
                         (click)="navigateToProfile(statistics.playerId)">
-                        <td class="team-result__vs py-0 px-2" style="vertical-align: middle;">
-                            <a *ngIf="statistics.steamUserProfile" [attr.href]="statistics.steamUserProfile.profileurl">
+                        <td class="py-0 px-2" style="vertical-align: middle;">
+                            <a *ngIf="statistics.steamUserProfile; else avatarSkeleton"
+                                [attr.href]="statistics.steamUserProfile.profileurl">
                                 <img [attr.src]="statistics.steamUserProfile.avatar"
                                     style="height: 16px; width: 16px; max-width: unset;">
                             </a>
+                            <ng-template #avatarSkeleton>
+                                <ngx-skeleton-loader class="mt-2" [animation]="odd ? 'progress' : 'progress-dark'"
+                                    appearance="circle"
+                                    [theme]="{ 'border-radius': '2px', 'height': '16px', 'width': '16px' }">
+                                </ngx-skeleton-loader>
+                            </ng-template>
                         </td>
-                        <td class="team-result__score">{{statistics.name}}</td>
+                        <td class="no-left-border">{{statistics.name}}</td>
                         <td class="team-result__ball-posession text-center text-center py-0 px-2"
                             style="vertical-align: middle;">
-                            <ng-container *ngIf="statistics.steamUserProfile">
+                            <ng-container *ngIf="statistics.steamUserProfile; else flagSkeleton">
                                 <img *ngIf="statistics.steamUserProfile.loccountrycode; else unknownFlag"
                                     src="https://www.countryflags.io/{{statistics.steamUserProfile.loccountrycode}}/flat/24.png">
                                 <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
                             </ng-container>
+                            <ng-template #flagSkeleton>
+                                <ngx-skeleton-loader class="mt-2" [animation]="odd ? 'progress' : 'progress-dark'"
+                                    appearance="circle"
+                                    [theme]="{ 'border-radius': '5px', 'height': '22px', 'width': '24px' }">
+                                </ngx-skeleton-loader>
+                            </ng-template>
                         </td>
-                        <td class="team-result__status text-center">{{statistics.rating}}</td>
+                        <td class="team-result__status text-center">{{statistics.rating | number : '1.1-1'}}</td>
                         <td class="team-result__status text-center">{{statistics.appearances}}</td>
                         <td class="team-result__status text-center">{{statistics.substituteAppearances}}</td>
                         <td class="team-result__status text-center">{{statistics.wins}}</td>

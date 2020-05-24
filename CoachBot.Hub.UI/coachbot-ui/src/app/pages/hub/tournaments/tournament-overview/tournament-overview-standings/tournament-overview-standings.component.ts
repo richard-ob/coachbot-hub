@@ -19,10 +19,11 @@ export class TournamentOverviewStandingsComponent implements OnInit {
     ngOnInit() {
         this.route.parent.paramMap.pipe().subscribe(params => {
             this.tournamentEditionId = +params.get('id');
-            this.teamService.getTeamStatistics(1, 100, this.tournamentEditionId, undefined, 'Points', 'DESC').subscribe(response => {
-                this.teamStatistics = response.items;
-                this.isLoading = false;
-            });
+            this.teamService.getTeamStatistics(1, 100, this.tournamentEditionId, undefined, undefined, 'Points', 'DESC')
+                .subscribe(response => {
+                    this.teamStatistics = response.items;
+                    this.isLoading = false;
+                });
         });
     }
 

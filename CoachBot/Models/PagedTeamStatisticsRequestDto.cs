@@ -10,5 +10,7 @@ namespace CoachBot.Models
 
         public int? TournamentEditionId { get; set; }
 
+        public int? RegionId { get; set; }
+
     }
 }

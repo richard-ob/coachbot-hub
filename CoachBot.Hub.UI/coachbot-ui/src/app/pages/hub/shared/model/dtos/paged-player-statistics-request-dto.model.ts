@@ -15,6 +15,7 @@ export class PlayerStatisticFilters {
     teamId?: number;
     channelId?: number;
     positionId?: number;
+    regionId?: number;
     tournamentEditionId?: number;
     includeSubstituteAppearances = true;
     dateFrom?: Date;

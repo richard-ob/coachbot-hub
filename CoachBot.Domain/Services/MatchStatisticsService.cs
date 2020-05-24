@@ -36,9 +36,9 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod, int? teamId, int? tournamentEditionId)
+        public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod, int? teamId, int? tournamentEditionId, int? regionId)
         {
-            return GetTeamStatisticTotals(tournamentEditionId, teamId).GetPaged(page, pageSize, sortOrder);
+            return GetTeamStatisticTotals(tournamentEditionId, teamId, regionId).GetPaged(page, pageSize, sortOrder);
         }
 
         public Model.Dtos.PagedResult<PlayerStatisticTotals> GetPlayerStatistics(int page, int pageSize, string sortOrder, PlayerStatisticFilters filters)
@@ -239,6 +239,7 @@ namespace CoachBot.Domain.Services
                  .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
                  .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
                  .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
+                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                  .Where(p => filters.TournamentEditionId == null || p.Match.TournamentId == filters.TournamentEditionId)
                  .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
@@ -338,12 +339,13 @@ namespace CoachBot.Domain.Services
                  });
         }
 
-        private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals(int? tournamentEditionId = null, int? teamId = null)
+        private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals(int? tournamentEditionId = null, int? teamId = null, int? regionId = null)
         {
             return _coachBotContext
                  .TeamMatchStatistics
                  .Where(t => tournamentEditionId == null || t.TournamentEditionId == tournamentEditionId)
                  .Where(t => teamId == null || t.TeamId == teamId)
+                 .Where(t => regionId == null || t.Team.RegionId == regionId)
                  .AsNoTracking()
                  .Select(m => new
                  {

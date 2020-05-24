@@ -31,6 +31,7 @@ export class TeamService {
         pageSize = 10,
         tournamentEditionId: number = null,
         teamId: number = null,
+        regionId: number = null,
         sortBy: string = null,
         sortOrder: string = null
     ): Observable<PagedResult<TeamStatistics>> {
@@ -40,6 +41,7 @@ export class TeamService {
         pagedTeamStatisticsRequestDto.timePeriod = TimePeriod.AllTime;
         pagedTeamStatisticsRequestDto.tournamentEditionId = tournamentEditionId;
         pagedTeamStatisticsRequestDto.teamId = teamId;
+        pagedTeamStatisticsRequestDto.regionId = regionId;
         pagedTeamStatisticsRequestDto.sortBy = sortBy;
         pagedTeamStatisticsRequestDto.sortOrder = sortOrder;
 

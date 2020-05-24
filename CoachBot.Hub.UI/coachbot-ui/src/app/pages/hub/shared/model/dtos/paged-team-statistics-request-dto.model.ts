@@ -8,4 +8,5 @@ export class PagedTeamStatisticsRequestDto {
     timePeriod: TimePeriod;
     teamId: number;
     tournamentEditionId: number;
+    regionId: number;
 }

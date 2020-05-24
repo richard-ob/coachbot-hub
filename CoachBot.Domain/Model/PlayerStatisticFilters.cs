@@ -16,6 +16,8 @@ namespace CoachBot.Domain.Model
 
         public int? PositionId { get; set; }
 
+        public int? RegionId { get; set; }
+
         public int? TournamentEditionId { get; set; }
 
         public bool IncludeSubstituteAppearances { get; set; } = true;

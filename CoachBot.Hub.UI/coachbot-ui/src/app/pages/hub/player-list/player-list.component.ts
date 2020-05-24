@@ -5,6 +5,7 @@ import { SteamService } from '../../../shared/services/steam.service.';
 import { Router } from '@angular/router';
 import { PlayerStatisticFilters } from '../shared/model/dtos/paged-player-statistics-request-dto.model';
 import SortingUtils from '@shared/utilities/sorting-utilities';
+import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 
 @Component({
     selector: 'app-player-list',
@@ -27,10 +28,12 @@ export class PlayerListComponent implements OnInit {
     constructor(
         private playerService: PlayerService,
         private steamService: SteamService,
-        private router: Router
+        private router: Router,
+        private userPreferenceService: UserPreferenceService
     ) { }
 
     ngOnInit() {
+        this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.loadPage(1);
     }
 

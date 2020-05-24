@@ -3,6 +3,7 @@ import { TeamStatistics } from '../shared/model/team-statistics.model';
 import { TeamService } from '../shared/services/team.service';
 import { Router } from '@angular/router';
 import SortingUtils from '@shared/utilities/sorting-utilities';
+import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 @Component({
     selector: 'app-team-list',
     templateUrl: './team-list.component.html',
@@ -11,7 +12,7 @@ import SortingUtils from '@shared/utilities/sorting-utilities';
 export class TeamListComponent implements OnInit {
 
     teamStatistics: TeamStatistics[];
-    filters;
+    regionId: number;
     currentPage = 1;
     totalPages: number;
     totalItems: number;
@@ -21,9 +22,10 @@ export class TeamListComponent implements OnInit {
     isLoading = true;
     isLoadingPage = false;
 
-    constructor(private teamService: TeamService, private router: Router) { }
+    constructor(private teamService: TeamService, private router: Router, private userPreferenceService: UserPreferenceService) { }
 
     ngOnInit() {
+        this.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.loadPage(1);
     }
 
@@ -31,13 +33,14 @@ export class TeamListComponent implements OnInit {
         this.isLoadingPage = true;
         this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
         this.sortBy = sortBy;
-        this.teamService.getTeamStatistics(page, undefined, undefined, undefined, this.sortBy, this.sortOrder).subscribe(response => {
-            this.teamStatistics = response.items;
-            this.currentPage = response.page;
-            this.totalPages = response.totalPages;
-            this.totalItems = response.totalItems;
-            this.isLoadingPage = false;
-        });
+        this.teamService.getTeamStatistics(page, undefined, undefined, undefined, this.regionId, this.sortBy, this.sortOrder)
+            .subscribe(response => {
+                this.teamStatistics = response.items;
+                this.currentPage = response.page;
+                this.totalPages = response.totalPages;
+                this.totalItems = response.totalItems;
+                this.isLoadingPage = false;
+            });
     }
 
     navigatetoProfile(teamId: number) {

@@ -53,7 +53,7 @@ export class PlayerListComponent implements OnInit {
     }
 
     setFilters() {
-        this.loadPage(this.currentPage, this.sortBy);
+        this.loadPage(1, this.sortBy);
     }
 
     getSteamProfileLink(steamId: string) {

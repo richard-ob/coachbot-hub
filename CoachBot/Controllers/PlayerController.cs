@@ -74,5 +74,11 @@ namespace CoachBot.Controllers
             return _matchStatisticsService.GetPlayerTeamStatistics(playerId);
         }
 
+        [HttpGet("search")]
+        public List<Player> SearchFor(string playerName)
+        {
+            return _playerService.SearchPlayersByName(playerName);
+        }
+
     }
 }

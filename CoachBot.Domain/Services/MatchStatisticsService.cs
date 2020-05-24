@@ -56,12 +56,15 @@ namespace CoachBot.Domain.Services
             var playerTeams = _coachBotContext.PlayerTeams
                 .AsNoTracking()
                 .Include(p => p.Team)
+                    .ThenInclude(p => p.BadgeImage)
                 .Include(p => p.Player)
                     .ThenInclude(p => p.Country)
                 .Where(p => playerId == null || p.PlayerId == playerId)
                 .Where(p => teamId == null || p.TeamId == teamId)
+                .Where(p => !p.IsPending)
                 .Where(p => !activeOnly || p.LeaveDate == null)
                 .OrderByDescending(p => p.JoinDate);
+
             var allPlayerTeamStatisticTotals = new List<PlayerTeamStatisticsTotals>();
 
             foreach (var playerTeam in playerTeams.Take(30))

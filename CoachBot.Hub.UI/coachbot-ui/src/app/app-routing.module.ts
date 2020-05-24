@@ -26,6 +26,7 @@ import { ServerManualComponent } from '@pages/server-manual/server-manual.compon
 import { NewsComponent } from '@pages/news/news.component';
 import { TeamsComponent } from '@pages/hub/teams/teams.component';
 import { TeamCreatorComponent } from '@pages/hub/team-creator/team-creator.component';
+import { TeamEditorListComponent } from '@pages/hub/team-editor-list/team-editor-list.component';
 
 const routes: Routes = [
   {
@@ -85,8 +86,12 @@ const routes: Routes = [
     component: ProfileEditorComponent
   },
   {
-    path: 'edit-team',
+    path: 'team/:id/manage',
     component: TeamEditorComponent
+  },
+  {
+    path: 'team-editor-list',
+    component: TeamEditorListComponent
   },
   {
     path: 'create-team',

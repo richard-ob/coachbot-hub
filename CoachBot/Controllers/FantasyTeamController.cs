@@ -62,7 +62,8 @@ namespace CoachBot.Controllers
         [HttpPost("tournament/{tournamentEditionId}/players")]
         public PagedResult<FantasyPlayer> GetFantasyPlayers([FromBody]PagedPlayerStatisticsRequestDto pagedRequest)
         {
-            return _fantasyService.GetFantasyPlayers(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
+            var players = _fantasyService.GetFantasyPlayers(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
+            return players;
         }
 
         [HttpGet("tournament/available")]

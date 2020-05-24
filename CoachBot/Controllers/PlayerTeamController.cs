@@ -40,10 +40,11 @@ namespace CoachBot.Controllers
         public IActionResult Update(PlayerTeam playerTeam)
         {
             var hasCaptainPermissions = _teamService.IsTeamCaptain(playerTeam.TeamId, User.GetSteamId()) || _teamService.IsViceCaptain(playerTeam.TeamId, User.GetSteamId());
+            var currentPlayer = _playerService.GetPlayerBySteamId(User.GetSteamId());
 
-            if (hasCaptainPermissions || _playerService.GetPlayerBySteamId(User.GetSteamId()).Id == playerTeam.PlayerId)
+            if (hasCaptainPermissions || currentPlayer.Id == playerTeam.PlayerId)
             {
-                _playerTeamService.Update(playerTeam, hasCaptainPermissions);
+                _playerTeamService.Update(playerTeam, currentPlayer, hasCaptainPermissions);
 
                 return Ok();
             }

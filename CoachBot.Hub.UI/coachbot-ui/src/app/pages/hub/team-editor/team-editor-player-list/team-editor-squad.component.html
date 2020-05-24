@@ -1,0 +1,47 @@
+<div class="card card--has-table" [class.card--has-table]="!isAddPlayerWizardOpen">
+    <div class="card__header card__header--has-btn">
+        <h4>Squad</h4>
+        <button *ngIf="!isAddPlayerWizardOpen" type="button" (click)="toggleAddPlayerWizard()"
+            class="btn btn-primary-inverse btn-xs card-header__button">Add Player</button>
+    </div>
+    <div class="card__content">
+        <div *ngIf="!isLoading; else spinner" class="table-responsive">
+            <table *ngIf="!isAddPlayerWizardOpen" class="table table-striped team-roster-table"
+                [class.widget__content--loading]="isUpdating">
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>SteamID</th>
+                        <th>Join Date</th>
+                        <th class="text-center">Role</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let teamPlayer of teamPlayers">
+                        <td>
+                            <a [routerLink]="['/player/' + teamPlayer.playerId]">{{teamPlayer.player.displayName}}</a>
+                        </td>
+                        <td>
+                            <a href="https://steamcommunity.com/profiles/{{teamPlayer.player.steamID}}"
+                                target="_blank">{{teamPlayer.player.steamID}}&nbsp;
+                                <i class="fas fa-external-link-alt text-muted"></i>
+                            </a>
+                        </td>
+                        <td>{{teamPlayer.joinDate | date:'short'}}</td>
+                        <td class="text-center">{{teamPlayer.teamRole | teamRole}}</td>
+                        <td class="text-center">
+                            <button class="btn btn-xs btn-primary" (click)="kickPlayer(teamPlayer)">Kick</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <app-team-editor-squad-add-player *ngIf="isAddPlayerWizardOpen" [teamId]="teamId"
+                (wizardClose)="toggleAddPlayerWizard()">
+            </app-team-editor-squad-add-player>
+        </div>
+        <ng-template #spinner>
+            <app-spinner></app-spinner>
+        </ng-template>
+    </div>
+</div>

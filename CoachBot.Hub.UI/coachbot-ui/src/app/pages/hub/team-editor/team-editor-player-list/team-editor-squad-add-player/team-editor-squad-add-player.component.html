@@ -1,0 +1,66 @@
+<ng-container>
+    <h5>Add Player</h5>
+    <div class="form-group">
+        <label>Search Players</label>
+        <div class="input-group mb-3">
+            <input class="form-control" type="text" #searchQuery>
+            <div class="input-group-append clickable" (click)="search(searchQuery.value)">
+                <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <table *ngIf="playerSearchResults && playerSearchResults.length"
+        class="table table-striped table-clickable table-hover">
+        <thead>
+            <th>Player</th>
+            <th>SteamID</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let player of playerSearchResults" (click)="selectPlayer(player)">
+                <td>
+                    <a [routerLink]="['/player/' + player.id]" target="_blank">{{player.displayName}}</a>
+                </td>
+                <td>
+                    <a href="https://steamcommunity.com/profiles/{{player.steamID}}"
+                        target="_blank">{{player.steamID}}&nbsp;
+                        <i class="fas fa-external-link-alt text-muted"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="playerSearchResults && !playerSearchResults.length" class="alert alert-warning">
+        No players found matching the name provided
+    </div>
+    <div *ngIf="player" class="form-group">
+        <label>Selected Player</label>
+        <div>
+            <a [routerLink]="['/player/' + player.id]" target="_blank">{{player.displayName}}</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Role</label>
+        <select class="form-control" [(ngModel)]="role">
+            <option [ngValue]="teamRoles.Captain">Captain</option>
+            <option [ngValue]="teamRoles.ViceCaptain">Vice Captain</option>
+            <option [ngValue]="teamRoles.Player">Player</option>
+            <option [ngValue]="teamRoles.Loaned">Loaned</option>
+            <option [ngValue]="teamRoles.Loanee">Loanee</option>
+            <option [ngValue]="teamRoles.Reserve">Reserve</option>
+            <option [ngValue]="teamRoles.Trialist">Trialist</option>
+        </select>
+    </div>
+    <div *ngIf="playerAddFailure" class="alert alert-danger">
+        Couldn't add player. Players can only belong to one club team at any one time.
+    </div>
+    <div class="float-right">
+        <button class="btn btn-outline-primary mr-2" type="button" (click)="toggleAddPlayerForm()">
+            Cancel
+        </button>
+        <button class="btn btn-primary" type="button" [disabled]="isSaving || !role || !player" (click)="addPlayer()">
+            <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i> Add
+        </button>
+    </div>
+</ng-container>

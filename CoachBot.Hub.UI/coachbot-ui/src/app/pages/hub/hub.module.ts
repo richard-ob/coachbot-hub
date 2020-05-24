@@ -21,7 +21,7 @@ import { ProfileEditorComponent } from './profile-editor/profile-editor.componen
 import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
 import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
 import { TeamEditorComponent } from './team-editor/team-editor.component';
-import { TeamEditorPlayerListComponent } from './team-editor/team-editor-player-list/team-editor-player-list.component';
+import { TeamEditorSquadComponent } from './team-editor/team-editor-player-list/team-editor-squad.component';
 import { TournamentCreatorComponent } from './tournaments/tournament-creator/tournament-creator.component';
 import { TournamentEditorComponent } from './tournaments/tournament-editor/tournament-editor.component';
 import { TournamentEditionManagerComponent } from './tournaments/tournament-edition-manager/tournament-edition-manager.component';
@@ -60,6 +60,8 @@ import { HubPipesModule } from './shared/pipes/hub-pipes.module';
 import { FantasyTeamManagerModule } from './tournaments/fantasy-team-manager/fantasy-team-manager.module';
 import { TeamsComponent } from './teams/teams.component';
 import { TeamCreatorComponent } from './team-creator/team-creator.component';
+import { TeamEditorListModule } from './team-editor-list/team-editor-list.module';
+import { TeamEditorSquadAddPlayerComponent } from './team-editor/team-editor-player-list/team-editor-squad-add-player/team-editor-squad-add-player.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,8 @@ import { TeamCreatorComponent } from './team-creator/team-creator.component';
     ProfileEditorComponent,
     SteamIDValidatorComponent,
     TeamEditorComponent,
-    TeamEditorPlayerListComponent,
+    TeamEditorSquadComponent,
+    TeamEditorSquadAddPlayerComponent,
     TournamentCreatorComponent,
     TournamentEditorComponent,
     TournamentEditionManagerComponent,
@@ -110,6 +113,7 @@ import { TeamCreatorComponent } from './team-creator/team-creator.component';
     TournamentOverviewModule,
     FantasyTeamManagerModule,
     RecentMatchesModule,
+    TeamEditorListModule,
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserAnimationsModule,

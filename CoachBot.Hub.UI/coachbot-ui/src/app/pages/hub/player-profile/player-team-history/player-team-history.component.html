@@ -1,28 +1,34 @@
 <div class="container my-4">
-    <div class="card card--has-table">
+    <app-spinner *ngIf="isLoading"></app-spinner>
+    <div *ngIf="!isLoading && !playerTeamStatisticsTotals">This play hasn't joined a team yet!</div>
+    <div *ngIf="!isLoading && playerTeamStatisticsTotals" class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Teams</h4>
         </div>
         <div class="card__content">
-            <app-spinner *ngIf="!playerTeamStatisticsTotals"></app-spinner>
-            <table *ngIf="playerTeamStatisticsTotals" class="table table-striped table--large">
+            <table class="table table-striped table--large">
                 <thead>
                     <tr>
+                        <th class="team-result__date"></th>
                         <th class="team-result__date">Team</th>
                         <th class="team-result__vs">Team Type</th>
                         <th class="team-result__vs">Role</th>
                         <th class="team-result__score">Positions</th>
                         <th class="team-result__status">Date From</th>
                         <th class="team-result__status">Date Until</th>
-                        <th class="team-result__status">Appearances</th>
-                        <th class="team-result__status">Goals</th>
-                        <th class="team-result__status">Assists</th>
-                        <th class="team-result__status">Yellow Cards</th>
-                        <th class="team-result__status">Red Cards</th>
+                        <th class="text-center">Appearances</th>
+                        <th class="text-center">Goals</th>
+                        <th class="text-center">Assists</th>
+                        <th class="text-center">Yellow Cards</th>
+                        <th class="text-center">Red Cards</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals">
+                        <td class="pl-2 pr-1 py-2">
+                            <img *ngIf="playerTeamStatisticsTotal.playerTeam.team.badgeImage"
+                                [src]="statistics.badgeImage">
+                        </td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.team.name}}</td>
                         <td class="team-result__date">Club</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.teamRole | teamRole}}</td>
@@ -36,11 +42,11 @@
                                 Present
                             </ng-template>
                         </td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.appearances}}</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.goals}}</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.assists}}</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.yellowCards}}</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.redCards}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.appearances}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.goals}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.assists}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.yellowCards}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.redCards}}</td>
                     </tr>
                 </tbody>
             </table>

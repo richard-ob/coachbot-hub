@@ -30,7 +30,7 @@ namespace CoachBot.Extensions
 
         public override void WriteJson(JsonWriter writer, ulong? value, JsonSerializer serializer)
         {
-            if (value != null && value > 0)
+            if (value != null)
             {
                 writer.WriteValue(value.ToString());
             }

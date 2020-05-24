@@ -16,6 +16,7 @@ import {
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { CalendarHeatmapModule } from 'src/app/shared/components/calendar-heatmap/calendar-heatmap.module';
 import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
+import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
         PlayerProfileRoutingModule,
         SweetAlert2Module,
         CalendarHeatmapModule,
-        HubPipesModule
+        HubPipesModule,
+        ThSorterModule
     ]
 })
 export class PlayerProfileModule { }

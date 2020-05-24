@@ -22,6 +22,8 @@ namespace CoachBot.Domain.Model
 
         public bool IsCurrentTeam => LeaveDate == null;
 
+        public bool IsPending { get; set; } = true;
+
         public DateTime JoinDate { get; set; }
 
         public DateTime? LeaveDate { get; set; }

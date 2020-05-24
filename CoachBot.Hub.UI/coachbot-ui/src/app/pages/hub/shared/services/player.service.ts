@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { PagedResult } from '../model/dtos/paged-result.model';
@@ -63,6 +63,11 @@ export class PlayerService {
 
     getCurrentPlayer(): Observable<Player> {
         return this.http.get<Player>(`${environment.apiUrl}/api/player/@me`);
+    }
+
+    searchPlayerByName(playerName: string): Observable<Player[]> {
+        const params = new HttpParams().set('playerName', playerName);
+        return this.http.get<Player[]>(`${environment.apiUrl}/api/player/search`, { params });
     }
 
     updateCurrentPlayer(player: Player) {

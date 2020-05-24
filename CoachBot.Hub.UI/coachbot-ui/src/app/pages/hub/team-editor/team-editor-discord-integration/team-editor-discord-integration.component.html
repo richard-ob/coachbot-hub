@@ -1,5 +1,5 @@
 <div id="team-profile-discord">
-    <div class="card">
+    <div class="card" [class.card--has-table]="!isChannelWizardOpen && !isGuildEditorOpen">
         <div class="card__header card__header--has-btn">
             <h4>Manage Discord Integration</h4>
             <ng-container *ngIf="isDiscordGuildSet && !isChannelWizardOpen && !isGuildEditorOpen">

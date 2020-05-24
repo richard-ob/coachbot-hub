@@ -1,71 +1,75 @@
 <div class="container my-4">
-    <!-- Team Latest Results -->
-    <div *ngIf="noTeamsAvailable" class="alert alert-warning">
-        You do not currently manage any teams.
+    <div *ngIf="accessDenied" class="alert alert-danger">
+        You do not have access to manage this team
     </div>
-    <div *ngIf="!noTeamsAvailable" id="team-profile-info">
-        <div class="card">
-            <div class="card__header">
-                <h4>Edit Team Info</h4>
-            </div>
-            <div class="card__content">
-                <div class="row">
-                    <app-spinner *ngIf="isLoading" class="m-auto"></app-spinner>
-                    <div *ngIf="!isLoading" class="col-md-12">
-                        <div class="form-group">
-                            <label class="control-label" for="input-default">Team Name</label>
-                            <input type="text" class="form-control" id="input-default" [(ngModel)]="team.name"
-                                placeholder="Full team name">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="input-default">Team Code</label>
-                            <input type="text" class="form-control" id="input-default" [(ngModel)]="team.teamCode"
-                                placeholder="Short team code">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="input-default">Team Badge</label>
-                            <app-asset-image-uploader (imageUploaded)="updateBadgeImageId($event)"
-                                [currentAssetImageId]="team.badgeImageId">
-                            </app-asset-image-uploader>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="input-default">Team Colour</label>
-                            <div style="width: 25px; height: 25px; border-radius: 15px;"
-                                [style.background-color]="team.color" (click)="colourPicker.showColorPicker()"></div>
-                            <app-chrome-colour-picker [color]="team.color" (colorChange)="team.color = $event"
-                                #colourPicker>
-                            </app-chrome-colour-picker>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="input-default">Date Founded</label>
-                            <mat-datepicker #picker></mat-datepicker>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend clickable">
-                                    <span class="input-group-text" id="basic-addon1" (click)="picker.open()">
+    <ng-container *ngIf="!accessDenied && !isLoading">
+        <div *ngIf="!isLoading; else spinner" id="team-profile-info">
+            <div class="card">
+                <div class="card__header">
+                    <h4>Edit Team Info</h4>
+                </div>
+                <div class="card__content">
+                    <div class="row">
+                        <app-spinner *ngIf="isLoading" class="m-auto"></app-spinner>
+                        <div *ngIf="!isLoading" class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label" for="input-default">Team Name</label>
+                                <input type="text" class="form-control" id="input-default" [(ngModel)]="team.name"
+                                    placeholder="Full team name">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="input-default">Team Code</label>
+                                <input type="text" class="form-control" id="input-default" [(ngModel)]="team.teamCode"
+                                    placeholder="Short team code">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="input-default">Team Badge</label>
+                                <app-asset-image-uploader (imageUploaded)="updateBadgeImageId($event)"
+                                    [currentAssetImageId]="team.badgeImageId">
+                                </app-asset-image-uploader>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="input-default">Team Colour</label>
+                                <div style="width: 25px; height: 25px; border-radius: 15px;"
+                                    [style.background-color]="team.color" (click)="colourPicker.showColorPicker()">
+                                </div>
+                                <app-chrome-colour-picker [color]="team.color" (colorChange)="team.color = $event"
+                                    #colourPicker>
+                                </app-chrome-colour-picker>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="input-default">Date Founded</label>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend clickable">
+                                        <span class="input-group-text" id="basic-addon1" (click)="picker.open()">
                                         <i class="fas fa-calendar"></i>
                                     </span>
+                                    </div>
+                                    <input matInput class="form-control" [matDatepicker]="picker"
+                                        (click)="picker.open()" [(ngModel)]="team.foundedDate">
                                 </div>
-                                <input matInput class="form-control" [matDatepicker]="picker" (click)="picker.open()"
-                                    [(ngModel)]="team.foundedDate">
                             </div>
+                            <div class="form-group">
+                                <label class="control-label" for="input-default">Region</label>
+                                <select class="form-control" id="input-default" [(ngModel)]="team.regionId"
+                                    placeholder="Select region...">
+                                    <option *ngFor="let region of regions" [ngValue]="region.regionId">
+                                        {{region.regionName}}
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-primary" (click)="saveTeamProfile()"
+                                [disabled]="isSaving">
+                                <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i>
+                                Save
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label" for="input-default">Region</label>
-                            <select class="form-control" id="input-default" [(ngModel)]="team.regionId"
-                                placeholder="Select region...">
-                                <option *ngFor="let region of regions" [ngValue]="region.regionId">{{region.regionName}}
-                                </option>
-                            </select>
-                        </div>
-                        <button type="button" class="btn btn-primary" (click)="saveTeamProfile()" [disabled]="isSaving">
-                            <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i>
-                            Save
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <app-team-editor-discord-integration [teamId]="team?.id"></app-team-editor-discord-integration>
-    <app-team-editor-player-list [teamId]="team?.id"></app-team-editor-player-list>
+        <app-team-editor-discord-integration [teamId]="team?.id"></app-team-editor-discord-integration>
+        <app-team-editor-squad [teamId]="team?.id"></app-team-editor-squad>
+    </ng-container>
 </div>

@@ -3,7 +3,7 @@ import { Team } from './team.model';
 import { TeamRole } from './team-role.enum';
 
 export interface PlayerTeam {
-    id: number;
+    id?: number;
     playerId: number;
     player?: Player;
     teamId: number;
@@ -11,5 +11,6 @@ export interface PlayerTeam {
     teamRole: TeamRole;
     joinDate?: Date;
     leaveDate?: Date;
-    isCurrentTeam: boolean;
+    isCurrentTeam?: boolean;
+    isPending?: boolean;
 }

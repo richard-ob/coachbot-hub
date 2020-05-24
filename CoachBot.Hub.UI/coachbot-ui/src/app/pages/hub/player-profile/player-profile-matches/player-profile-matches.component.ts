@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../../shared/services/player.service';
 import { PlayerStatisticFilters } from '../../shared/model/dtos/paged-player-statistics-request-dto.model';
 import { PlayerPositionMatchStatistics } from '../../shared/model/player-match-statistics.model';
+import SortingUtils from '@shared/utilities/sorting-utilities';
 
 @Component({
     selector: 'app-player-profile-matches',
@@ -33,11 +34,7 @@ export class PlayerProfileMatchesComponent implements OnInit {
 
     loadPage(page: number, sortBy: string = null) {
         this.isLoading = true;
-        if (sortBy !== null && this.sortBy !== null && this.sortBy === sortBy && this.sortOrder === 'ASC') {
-            this.sortOrder = 'DESC';
-        } else {
-            this.sortOrder = 'ASC';
-        }
+        this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
         this.sortBy = sortBy;
         this.playerService.getPlayerMatchStatistics(page, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
             this.matches = response.items;
@@ -49,7 +46,7 @@ export class PlayerProfileMatchesComponent implements OnInit {
     }
 
     navigateToMatch(matchId: number) {
-        this.router.navigate(['/match', matchId]);
+        this.router.navigate(['/match-overview', matchId]);
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
+using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace CoachBot.Domain.Services
             _dbContext.SaveChanges();
         }
 
-        public void Update(PlayerTeam playerTeam, bool hasCaptainPermissions)
+        public void Update(PlayerTeam playerTeam, Player player, bool hasCaptainPermissions)
         {
             var current = _dbContext.PlayerTeams.Single(pt => pt.Id == playerTeam.Id);
 
@@ -62,6 +63,16 @@ namespace CoachBot.Domain.Services
             if (current.TeamRole != playerTeam.TeamRole && current.TeamRole == TeamRole.Captain && currentCaptainCount == 1)
             {
                 throw new UnauthorizedAccessException("You cannot remove yourself as a captain of a team without closing the team");
+            }
+
+            if (current.PlayerId == player.Id && !playerTeam.IsPending && current.IsPending)
+            {
+                current.IsPending = false;
+            }
+
+            if (playerTeam.LeaveDate != null && current.JoinDate > playerTeam.LeaveDate)
+            {
+                throw new Exception("Leave date cannot be before join date");
             }
 
             current.LeaveDate = playerTeam.LeaveDate;

@@ -19,6 +19,7 @@ export class PlayerTeamHistoryComponent implements OnInit {
             const playerId = +params.get('id');
             this.playerService.getPlayerTeamStatisticsHistory(playerId).subscribe((playerTeamStatisticsTotals) => {
                 this.playerTeamStatisticsTotals = playerTeamStatisticsTotals;
+                this.isLoading = false;
             });
         });
     }

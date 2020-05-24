@@ -7,6 +7,8 @@ import { RegionService } from '../shared/services/region.service';
 import { Region } from '../shared/model/region.model';
 import { TeamService } from '../shared/services/team.service';
 import { DiscordService } from '../shared/services/discord.service';
+import { ActivatedRoute } from '@angular/router';
+import { TeamRole } from '../shared/model/team-role.enum';
 
 @Component({
     selector: 'app-team-editor',
@@ -15,35 +17,35 @@ import { DiscordService } from '../shared/services/discord.service';
 })
 export class TeamEditorComponent implements OnInit {
 
-    teams: PlayerTeam[];
     team: Team;
-    teamPlayers: PlayerTeam[];
     regions: Region[];
     isLoading = true;
     isSaving = false;
-    noTeamsAvailable = false;
+    accessDenied = false;
 
     constructor(
-        private playerTeamservice: PlayerTeamService,
         private playerService: PlayerService,
         private teamService: TeamService,
         private regionService: RegionService,
-        private discordService: DiscordService
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
-        this.playerService.getCurrentPlayer().subscribe(player => {
-            this.playerTeamservice.getForPlayer(player.id).subscribe((teams) => {
-                this.teams = teams;
-                if (this.teams && this.teams.length) {
-                    this.team = this.teams[0].team;
+        this.route.paramMap.pipe().subscribe(params => {
+            const teamId = +params.get('id');
+            this.playerService.getCurrentPlayer().subscribe(player => {
+                if (player.teams.some(t => t.teamId === teamId && [TeamRole.Captain, TeamRole.ViceCaptain].some(tr => tr === t.teamRole))) {
+                    this.teamService.getTeam(teamId).subscribe(team => {
+                        this.team = team;
+                        this.regionService.getRegions().subscribe(regions => {
+                            this.regions = regions;
+                            this.isLoading = false;
+                        });
+                    });
                 } else {
-                    this.noTeamsAvailable = true;
-                }
-                this.regionService.getRegions().subscribe(regions => {
-                    this.regions = regions;
+                    this.accessDenied = true;
                     this.isLoading = false;
-                });
+                }
             });
         });
     }

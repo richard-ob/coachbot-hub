@@ -1,10 +1,14 @@
-<div class="container my-4">
+<div *ngIf="isLoading || !matches.length" class="my-4">
+    <app-spinner *ngIf="isLoading"></app-spinner>
+    <div *ngIf="!isLoading && !matches.length" class="alert alert-info">
+        Hold tight! This player has not played in matches yet</div>
+</div>
+<div *ngIf="!isLoading && matches.length" class="container-fluid my-4">
     <div class="row">
-        <!-- Team Latest Results -->
         <div class="card card--has-table w-100">
             <div class="card__header card__header--has-btn">
                 <h4>Matches</h4>
-                <!-- Result Filter -->
+                <!-- Filter -->
                 <ul class="team-result-filter">
                     <li class="team-result-filter__item">
                         <label class="checkbox checkbox-inline mr-2">
@@ -23,11 +27,10 @@
                         </button>
                     </li>
                 </ul>
-                <!-- Result Filter / End -->
+                <!-- Filter / End -->
             </div>
             <div class="card__content table-responsive">
-                <app-spinner *ngIf="isLoading"></app-spinner>
-                <table *ngIf="!isLoading" class="table table--large table-striped table-hover table-clickable">
+                <table class="table table--large table-striped table-hover table-clickable">
                     <thead>
                         <tr>
                             <th class="team-result__ball-posession">Team</th>
@@ -35,25 +38,34 @@
                             <th class="team-result__ball-posession">Result</th>
                             <th class="team-result__ball-posession">Position</th>
                             <th class="team-result__ball-posession">Substitute?</th>
-                            <th style="cursor: pointer" class="team-result__status"
-                                (click)="loadPage(currentPage, 'Goals')">
-                                <span style=" white-space: nowrap; ">
-                                        Goals&nbsp;
-                                    <i *ngIf="sortBy === 'Goals' && sortOrder === 'ASC'"
-                                        class="fas fa-sort-up"></i>
-                                    <i *ngIf="sortBy === 'Goals' && sortOrder === 'DESC'"
-                                        class="fas fa-sort-down"></i>
-                                    <i *ngIf="sortBy !== 'Goals'" class="fas fa-sort"></i>
-                                </span>
+                            <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                            <th sorter [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Avg. Goals'"
+                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                                class="text-center">
                             </th>
-                            <th class="team-result__ball-posession">Shots</th>
-                            <th class="team-result__ball-posession">Shots on Goal</th>
-                            <th class="team-result__ball-posession">Assists</th>
-                            <th class="team-result__ball-posession">Passes</th>
-                            <th class="team-result__ball-posession">Passes Completed</th>
-                            <th class="team-result__ball-posession">Yellow Cards</th>
-                            <th class="team-result__game-overview">Red Cards</th>
-                            <th class="team-result__game-overview">Distance</th>
+                            <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
+                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                                class="text-center">
+                            </th>
+                            <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                            <th sorter [sortByColumn]="'PassesAverage'" [sortByColumnName]="'Avg. Passes'"
+                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                                class="text-center">
+                            </th>
+                            <th sorter [sortByColumn]="'PassCompletionPercentageAverage'"
+                                [sortByColumnName]="'Pass Completion'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                            <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'"
+                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                                class="text-center"></th>
+                            <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
+                                [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
+                            </th>
+                            <th sorter [sortByColumn]="'DistanceCoveredAverage'" [sortByColumnName]="'Avg. Distance'"
+                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                                class="text-center">
                         </tr>
                     </thead>
                     <tbody>
@@ -61,18 +73,22 @@
                             (click)="navigateToMatch(match.matchId)">
                             <td class="team-result__score">{{match.match.readiedDate | date}}</td>
                             <td class="team-result__score">{{match.nickname}}</td>
-                            <td class="team-result__score">{{match.matchOutcome}}</td>
+                            <td class="team-result__score">{{match.matchOutcome | matchOutcome}}</td>
                             <td class="team-result__status">{{match.position.name}}</td>
-                            <td class="team-result__status">{{match.substitute}}</td>
-                            <td class="team-result__status">{{match.goals}}</td>
-                            <td class="team-result__status">{{match.shots}}</td>
-                            <td class="team-result__status">{{match.shotsOnGoal}}</td>
-                            <td class="team-result__status">{{match.assists}}</td>
-                            <td class="team-result__status">{{match.passes}}</td>
-                            <td class="team-result__status">{{match.passesCompleted}}</td>
-                            <td class="team-result__status">{{match.yellowCards}}</td>
-                            <td class="team-result__status">{{match.redCards}}</td>
-                            <td class="team-result__status">{{match.distanceCovered}}</td>
+                            <td class="text-center">
+                                <span *ngIf="match.substitute">
+                                    <i class="fas fa-check text-success"></i>
+                                </span>
+                            </td>
+                            <td class="text-center">{{match.goals}}</td>
+                            <td class="text-center">{{match.shots}}</td>
+                            <td class="text-center">{{match.shotsOnGoal}}</td>
+                            <td class="text-center">{{match.assists}}</td>
+                            <td class="text-center">{{match.passes}}</td>
+                            <td class="text-center">{{match.passesCompleted}}</td>
+                            <td class="text-center">{{match.yellowCards}}</td>
+                            <td class="text-center">{{match.redCards}}</td>
+                            <td class="text-center">{{match.distanceCovered}}</td>
                         </tr>
                     </tbody>
                 </table>

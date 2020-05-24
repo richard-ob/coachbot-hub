@@ -1,0 +1,58 @@
+<div class="container my-4">
+    <!-- Team Latest Results -->
+    <app-spinner *ngIf="isLoading"></app-spinner>
+    <div *ngIf="!isLoading && player && !player.teams.length" class="alert alert-info">
+        You are not currently a member of any teams
+    </div>
+    <div *ngIf="!isLoading && player && player.teams.length" class="card card--has-table">
+        <div class="card__header card__header--has-btn">
+            <h4>My Teams</h4>
+        </div>
+        <div class="card__content table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <th style="width: 35px;"></th>
+                    <th>Team</th>
+                    <th>Role</th>
+                    <th>Date Joined</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let playerTeam of player.teams | filterBy: ['isCurrentTeam']:'true'">
+                        <td class="pl-2 pr-1 py-2">
+                            <img *ngIf="playerTeam.team.badgeImage"
+                                [src]="playerTeam.team.badgeImage.base64EncodedImage">
+                        </td>
+                        <td>{{playerTeam.team.name}}</td>
+                        <td>{{playerTeam.teamRole | teamRole}}</td>
+                        <td>{{playerTeam.joinDate | date}}</td>
+                        <td>
+                            <ng-container *ngIf="playerTeam.isPending">
+                                <button class="btn btn-xs btn-outline-success" type="button"
+                                    (click)="acceptInvite(playerTeam)">
+                                    Accept Invite
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="!playerTeam.isPending">
+                                <ng-container
+                                    *ngIf="playerTeam.teamRole === teamRoles.Captain || playerTeam.teamRole === teamRoles.ViceCaptain; else playerRole">
+                                    <a class="btn btn-xs btn-outline-primary" type="button"
+                                        [routerLink]="['/team/' + playerTeam.team.id + '/manage']">
+                                        Manage
+                                    </a>
+                                </ng-container>
+                                <ng-template playerRole>
+                                    <button class="btn btn-xs btn-outline-danger" type="button"
+                                        (click)="leaveTeam(playerTeam)">
+                                        Leave
+                                    </button>
+                                </ng-template>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Team Latest Results / End -->

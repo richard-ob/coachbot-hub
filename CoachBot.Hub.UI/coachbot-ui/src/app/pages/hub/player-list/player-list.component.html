@@ -37,7 +37,7 @@
             <app-spinner *ngIf="isLoading"></app-spinner>
             <table *ngIf="!isLoading"
                 class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
-                [class.widget__content--loading]="isLoadingPage">
+                [class.widget__content--loading]="isUpdating">
                 <thead>
                     <tr>
                         <th class="team-result__vs" style="width: 40px;"></th>

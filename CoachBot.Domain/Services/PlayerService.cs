@@ -7,6 +7,7 @@ using CoachBot.Domain.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using CoachBot.Domain.Model;
+using System.Collections.Generic;
 
 namespace CoachBot.Domain.Services
 {
@@ -91,6 +92,14 @@ namespace CoachBot.Domain.Services
             }
 
             return player;
+        }
+
+        public List<Player> SearchPlayersByName(string playerName)
+        {
+            return _coachBotContext.Players
+                .Where(p => p.Name.Contains(playerName))
+                .Take(10)
+                .ToList();
         }
 
         public void UpdateDiscordUserId(ulong discordUserId, ulong steamId)

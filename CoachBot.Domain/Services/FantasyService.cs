@@ -148,6 +148,7 @@ namespace CoachBot.Domain.Services
         {
             var queryable = _coachBotContext
                     .FantasyPlayers
+                    .AsNoTracking()
                     .Include(fp => fp.Player)
                     .Include(t => t.Team)
                     .ThenInclude(t => t.BadgeImage)

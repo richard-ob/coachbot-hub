@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TeamListComponent } from './team-list.component';
 import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
+import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { FormIndicatorModule } from '../shared/components/form-indictator/form-i
         FormsModule,
         SpinnerModule,
         NgxPaginationModule,
-        FormIndicatorModule
+        FormIndicatorModule,
+        ThSorterModule
     ]
 })
 export class TeamListModule { }

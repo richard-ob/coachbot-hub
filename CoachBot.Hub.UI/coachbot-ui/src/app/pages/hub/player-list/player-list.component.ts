@@ -4,6 +4,7 @@ import { PlayerStatistics } from '../shared/model/player-statistics.model';
 import { SteamService } from '../../../shared/services/steam.service.';
 import { Router } from '@angular/router';
 import { PlayerStatisticFilters } from '../shared/model/dtos/paged-player-statistics-request-dto.model';
+import SortingUtils from '@shared/utilities/sorting-utilities';
 
 @Component({
     selector: 'app-player-list',
@@ -30,17 +31,12 @@ export class PlayerListComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-
         this.loadPage(1);
     }
 
     loadPage(page: number, sortBy: string = null) {
         this.isLoadingPage = true;
-        if (sortBy !== null && this.sortBy !== null && this.sortBy === sortBy && this.sortOrder === 'ASC') {
-            this.sortOrder = 'DESC';
-        } else {
-            this.sortOrder = 'ASC';
-        }
+        this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
         this.sortBy = sortBy;
         this.playerService.getPlayerStatistics(page, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
             this.playerStatistics = response.items;

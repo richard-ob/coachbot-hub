@@ -42,46 +42,52 @@
                     <tr>
                         <th class="team-result__vs" style="width: 40px;"></th>
                         <th sorter [sortByColumn]="'Name'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)"></th>
+                            (sort)="loadPage(currentPage, $event)" class="no-left-border"></th>
                         <th class="text-center">Nationality</th>
                         <th sorter [sortByColumn]="'Rating'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)"></th>
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Appearances'" [sortByColumnName]="'Apps'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"></th>
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'SubstituteAppearances'" [sortByColumnName]="'As Sub'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'Wins'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)"></th>
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Losses'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)"></th>
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Draws'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)"></th>
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)"></th>
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Avg. Goals'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)"></th>
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'AssistsAverage'" [sortByColumnName]="'Avg. Assists'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'PassesAverage'" [sortByColumnName]="'Avg. Passes'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'PassCompletionPercentageAverage'"
                             [sortByColumnName]="'Pass Completion'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)"></th>
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"></th>
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"></th>
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'DistanceCoveredAverage'" [sortByColumnName]="'Avg. Distance'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)">
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center">
                         </th>
                     </tr>
                 </thead>

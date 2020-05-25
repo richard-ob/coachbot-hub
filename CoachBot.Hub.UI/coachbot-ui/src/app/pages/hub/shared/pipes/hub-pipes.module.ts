@@ -5,6 +5,7 @@ import { TournamentTypePipe } from './tournament-type.pipe';
 import { PositionGroupPipe } from './position-group.pipe';
 import { ArrayFilterPipe } from './array-filter.pipe';
 import { MatchOutcomePipe } from './match-outcome.pipe';
+import { TeamTypePipe } from './team-type.pipe';
 
 @NgModule({
     declarations: [
@@ -13,7 +14,8 @@ import { MatchOutcomePipe } from './match-outcome.pipe';
         TournamentTypePipe,
         PositionGroupPipe,
         ArrayFilterPipe,
-        MatchOutcomePipe
+        MatchOutcomePipe,
+        TeamTypePipe
     ],
     exports: [
         TeamRolePipe,
@@ -21,7 +23,8 @@ import { MatchOutcomePipe } from './match-outcome.pipe';
         TournamentTypePipe,
         PositionGroupPipe,
         ArrayFilterPipe,
-        MatchOutcomePipe
+        MatchOutcomePipe,
+        TeamTypePipe
     ]
 })
 export class HubPipesModule { }

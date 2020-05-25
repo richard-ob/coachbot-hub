@@ -47,7 +47,9 @@ namespace CoachBot.Domain.Services
             {
                 PlayerId = player.Id,
                 TeamId = team.Id,
-                TeamRole = TeamRole.Captain
+                TeamRole = TeamRole.Captain,
+                IsPending = false,
+                JoinDate = DateTime.Now
             };
             _dbContext.PlayerTeams.Add(playerTeam);
 
@@ -56,6 +58,7 @@ namespace CoachBot.Domain.Services
 
         public void UpdateTeam(Team team)
         {
+            // TODO: implement save logic
             team.UpdatedDate = DateTime.Now;
             _dbContext.Teams.Update(team);
             _dbContext.SaveChanges();

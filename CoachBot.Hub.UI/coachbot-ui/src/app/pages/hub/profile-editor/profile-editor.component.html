@@ -56,20 +56,6 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label" for="input-default">Teams</label>
-                            <ul *ngIf="(player.teams | filterBy: ['isCurrentTeam']:'true').length; else unteamed">
-                                <li *ngFor="let playerTeam of player.teams | filterBy: ['isCurrentTeam']:'true'">
-                                    <span class="mr-2">{{playerTeam.team.name}}</span>
-                                    <button href="#" class="btn btn-danger btn-xs" type="button"
-                                        [swal]="{ title: 'Are you sure?', text: 'You will leave the team immediately', icon: 'warning', showCancelButton: true}"
-                                        (confirm)="leaveTeam(playerTeam)">Leave</button>
-                                </li>
-                            </ul>
-                            <ng-template #unteamed>
-                                <div class="text-muted">You are no part of any teams currently.</div>
-                            </ng-template>
-                        </div>
                         <div class="float-right">
                             <button class="btn btn-primary btn-sm" (click)="saveChanges()">Save</button>
                         </div>

@@ -13,7 +13,6 @@ import { ProfileEditorComponent } from './pages/hub/profile-editor/profile-edito
 import { SteamIDValidatorComponent } from './pages/hub/profile-editor/steam-id-validator.component';
 import { ManualComponent } from './pages/manual/manual.component';
 import { TeamComponent } from './pages/team/team.component';
-import { TeamEditorComponent } from './pages/hub/team-editor/team-editor.component';
 import { TournamentCreatorComponent } from './pages/hub/tournaments/tournament-creator/tournament-creator.component';
 import { TournamentEditorComponent } from './pages/hub/tournaments/tournament-editor/tournament-editor.component';
 import { TournamentEditionManagerComponent } from './pages/hub/tournaments/tournament-edition-manager/tournament-edition-manager.component';
@@ -25,7 +24,6 @@ import { AboutComponent } from '@pages/about/about.component';
 import { ServerManualComponent } from '@pages/server-manual/server-manual.component';
 import { NewsComponent } from '@pages/news/news.component';
 import { TeamsComponent } from '@pages/hub/teams/teams.component';
-import { TeamCreatorComponent } from '@pages/hub/team-creator/team-creator.component';
 import { TeamEditorListComponent } from '@pages/hub/team-editor-list/team-editor-list.component';
 
 const routes: Routes = [
@@ -86,16 +84,8 @@ const routes: Routes = [
     component: ProfileEditorComponent
   },
   {
-    path: 'team/:id/manage',
-    component: TeamEditorComponent
-  },
-  {
     path: 'team-editor-list',
     component: TeamEditorListComponent
-  },
-  {
-    path: 'create-team',
-    component: TeamCreatorComponent
   },
   {
     path: 'teams',

@@ -34,7 +34,7 @@ namespace CoachBot.Domain.Model
 
         public Region Region { get; set; }
 
-        public int GuildId { get; set; }
+        public int? GuildId { get; set; }
 
         public Guild Guild { get; set; }
 

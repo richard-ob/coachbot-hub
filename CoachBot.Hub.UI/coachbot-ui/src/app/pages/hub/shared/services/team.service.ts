@@ -64,6 +64,10 @@ export class TeamService {
         return this.http.put<void>(`${environment.apiUrl}/api/team`, team);
     }
 
+    createTeam(team: Team) {
+        return this.http.post<void>(`${environment.apiUrl}/api/team`, team);
+    }
+
     updateGuildId(teamId: number, guildId: number) {
         const updateGuildIdDto = {
             teamId,

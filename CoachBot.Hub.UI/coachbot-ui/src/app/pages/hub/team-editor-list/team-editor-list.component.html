@@ -13,6 +13,7 @@
                 <thead>
                     <th style="width: 35px;"></th>
                     <th>Team</th>
+                    <th>Team Type</th>
                     <th>Role</th>
                     <th>Date Joined</th>
                     <th>Actions</th>
@@ -24,6 +25,7 @@
                                 [src]="playerTeam.team.badgeImage.base64EncodedImage">
                         </td>
                         <td>{{playerTeam.team.name}}</td>
+                        <td>{{playerTeam.team.teamType | teamType}}</td>
                         <td>{{playerTeam.teamRole | teamRole}}</td>
                         <td>{{playerTeam.joinDate | date}}</td>
                         <td>

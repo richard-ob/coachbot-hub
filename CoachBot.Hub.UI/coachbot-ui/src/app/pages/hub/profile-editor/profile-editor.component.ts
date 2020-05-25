@@ -28,8 +28,7 @@ export class ProfileEditorComponent implements OnInit {
         private playerService: PlayerService,
         private countryService: CountryService,
         private steamService: SteamService,
-        private positionService: PositionService,
-        private playerTeamService: PlayerTeamService
+        private positionService: PositionService
     ) { }
 
     ngOnInit() {
@@ -62,17 +61,6 @@ export class ProfileEditorComponent implements OnInit {
             this.player.positions = [];
         }
         this.player.positions.push(playerPosition);
-    }
-
-    leaveTeam(playerTeam: PlayerTeam) {
-        /* playerTeam.leaveDate = new Date();
-         this.isLoading = true;
-         this.playerTeamService.updatePlayerTeam(playerTeam).subscribe(() => {
-             this.playerService.getCurrentPlayer().subscribe(player => {
-                 this.player = player;
-                 this.isLoading = false;
-             });
-         });*/
     }
 
     saveChanges() {

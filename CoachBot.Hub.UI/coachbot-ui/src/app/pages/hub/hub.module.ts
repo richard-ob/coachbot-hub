@@ -20,8 +20,6 @@ import { SteamProfileFlagPipe } from './player-list/helpers/steam-profile-flag.p
 import { ProfileEditorComponent } from './profile-editor/profile-editor.component';
 import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
 import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
-import { TeamEditorComponent } from './team-editor/team-editor.component';
-import { TeamEditorSquadComponent } from './team-editor/team-editor-player-list/team-editor-squad.component';
 import { TournamentCreatorComponent } from './tournaments/tournament-creator/tournament-creator.component';
 import { TournamentEditorComponent } from './tournaments/tournament-editor/tournament-editor.component';
 import { TournamentEditionManagerComponent } from './tournaments/tournament-edition-manager/tournament-edition-manager.component';
@@ -32,7 +30,6 @@ import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 import { PlayerProfileModule } from './player-profile/player-profile.module';
 import { CurrentTournamentsComponent } from './tournaments/current-tournaments/current-tournaments.component';
-import { AssetImageUploaderComponent } from 'src/app/shared/components/asset-image-uploader/asset-image-uploader.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -40,28 +37,16 @@ import { NgPipesModule } from 'ngx-pipes';
 import { TeamProfileModule } from './team-profile/team-profile.module';
 import { RecentMatchesModule } from './recent-matches/recent-matches.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import {
-  TeamEditorDiscordIntegrationComponent
-} from './team-editor/team-editor-discord-integration/team-editor-discord-integration.component';
-import {
-  DiscordChannelEditorComponent
-} from './team-editor/team-editor-discord-integration/discord-channel-editor/discord-channel-editor.component';
-import {
-  DiscordGuildEditorComponent
-} from './team-editor/team-editor-discord-integration/discord-guild-editor/discord-guild-editor.component';
 import { ChromeColourPickerModule } from 'src/app/shared/components/chrome-colour-picker/chrome-colour-picker.module';
-import {
-  DiscordEmoteDisplayNamePipe
-} from './team-editor/team-editor-discord-integration/discord-guild-editor/discord-emote-display-name.pipe';
 import { TournamentOverviewModule } from './tournaments/tournament-overview/tournament-overview.module';
 import { TeamListModule } from './team-list/team-list.module';
 import { PlayerListModule } from './player-list/player-list.module';
 import { HubPipesModule } from './shared/pipes/hub-pipes.module';
 import { FantasyTeamManagerModule } from './tournaments/fantasy-team-manager/fantasy-team-manager.module';
 import { TeamsComponent } from './teams/teams.component';
-import { TeamCreatorComponent } from './team-creator/team-creator.component';
 import { TeamEditorListModule } from './team-editor-list/team-editor-list.module';
-import { TeamEditorSquadAddPlayerComponent } from './team-editor/team-editor-player-list/team-editor-squad-add-player/team-editor-squad-add-player.component';
+import { TeamEditorModule } from './team-editor/team-editor.module';
+import { AssetImageUploaderModule } from '@shared/components/asset-image-uploader/asset-image-uploader.module';
 
 @NgModule({
   declarations: [
@@ -81,22 +66,13 @@ import { TeamEditorSquadAddPlayerComponent } from './team-editor/team-editor-pla
     SteamProfileFlagPipe,
     ProfileEditorComponent,
     SteamIDValidatorComponent,
-    TeamEditorComponent,
-    TeamEditorSquadComponent,
-    TeamEditorSquadAddPlayerComponent,
     TournamentCreatorComponent,
     TournamentEditorComponent,
     TournamentEditionManagerComponent,
     TournamentGroupTeamManagerComponent,
     MatchEditorComponent,
     CurrentTournamentsComponent,
-    AssetImageUploaderComponent,
-    TeamEditorDiscordIntegrationComponent,
-    DiscordChannelEditorComponent,
-    DiscordGuildEditorComponent,
-    DiscordEmoteDisplayNamePipe,
-    TeamsComponent,
-    TeamCreatorComponent
+    TeamsComponent
   ],
   imports: [
     CommonModule,
@@ -114,13 +90,15 @@ import { TeamEditorSquadAddPlayerComponent } from './team-editor/team-editor-pla
     FantasyTeamManagerModule,
     RecentMatchesModule,
     TeamEditorListModule,
+    TeamEditorModule,
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserAnimationsModule,
     NgPipesModule,
     SweetAlert2Module,
     HubPipesModule,
-    ChromeColourPickerModule
+    ChromeColourPickerModule,
+    AssetImageUploaderModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

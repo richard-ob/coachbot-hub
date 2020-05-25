@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TeamService } from '../shared/services/team.service';
-import { Team } from '../shared/model/team.model';
+import { Team } from '@pages/hub/shared/model/team.model';
+import { TeamService } from '@pages/hub/shared/services/team.service';
 
 @Component({
     selector: 'app-team-creator',
@@ -8,9 +8,8 @@ import { Team } from '../shared/model/team.model';
 })
 export class TeamCreatorComponent {
 
-    teams: Team;
+    team: Team = new Team();
 
     constructor(private teamService: TeamService) {
-
     }
 }

@@ -37,10 +37,7 @@ export class TeamEditorComponent implements OnInit {
                 if (player.teams.some(t => t.teamId === teamId && [TeamRole.Captain, TeamRole.ViceCaptain].some(tr => tr === t.teamRole))) {
                     this.teamService.getTeam(teamId).subscribe(team => {
                         this.team = team;
-                        this.regionService.getRegions().subscribe(regions => {
-                            this.regions = regions;
-                            this.isLoading = false;
-                        });
+                        this.isLoading = false;
                     });
                 } else {
                     this.accessDenied = true;
@@ -48,19 +45,5 @@ export class TeamEditorComponent implements OnInit {
                 }
             });
         });
-    }
-
-    saveTeamProfile() {
-        this.isSaving = true;
-        this.teamService.updateTeam(this.team).subscribe(() => {
-            this.isSaving = false;
-            this.teamService.getTeam(this.team.id).subscribe(team => {
-                this.team = team;
-            });
-        });
-    }
-
-    updateBadgeImageId(assetImageId: number) {
-        this.team.badgeImageId = assetImageId;
     }
 }

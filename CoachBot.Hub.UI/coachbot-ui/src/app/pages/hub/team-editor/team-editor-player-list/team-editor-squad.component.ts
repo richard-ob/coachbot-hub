@@ -3,6 +3,7 @@ import { PlayerTeamService } from '../../shared/services/player-team.service';
 import { PlayerTeam } from '../../shared/model/player-team.model';
 import { TeamRole } from '@pages/hub/shared/model/team-role.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-team-editor-squad',
@@ -20,12 +21,16 @@ export class TeamEditorSquadComponent implements OnInit {
 
     constructor(
         private playerTeamService: PlayerTeamService,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
         this.isLoading = true;
-        this.loadPlayers();
+        this.route.parent.paramMap.pipe().subscribe(params => {
+            this.teamId = +params.get('id');
+            this.loadPlayers();
+        });
     }
 
     loadPlayers() {

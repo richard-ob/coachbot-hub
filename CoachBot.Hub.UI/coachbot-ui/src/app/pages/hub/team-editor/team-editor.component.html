@@ -1,10 +1,23 @@
+<nav class="content-filter">
+    <div class="container">
+        <a href="#" class="content-filter__toggle"></a>
+        <ul class="content-filter__list">
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./info']" class="content-filter__link">Info</a>
+            </li>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./squad']" class="content-filter__link">Squad</a>
+            </li>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./discord']" class="content-filter__link">Discord</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div class="container my-4">
     <div *ngIf="accessDenied" class="alert alert-danger">
         You do not have access to manage this team
     </div>
-    <ng-container *ngIf="!accessDenied && !isLoading">
-        <app-team-editor-info [team]="team"></app-team-editor-info>
-        <app-team-editor-discord-integration [teamId]="team?.id"></app-team-editor-discord-integration>
-        <app-team-editor-squad [teamId]="team?.id"></app-team-editor-squad>
-    </ng-container>
+    <router-outlet *ngIf="!isLoading && !accessDenied"></router-outlet>
+    <app-spinner *ngIf="isLoading"></app-spinner>
 </div>

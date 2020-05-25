@@ -55,7 +55,7 @@ export class FantasyTeamEditorComponent implements OnInit {
                 });
             });
         } else {
-            this.snackBar.open('Cannot add player as they are already added or not available slots', 'Dismiss', { duration: 5000 });
+            this.snackBar.open('Cannot add player as they are already added or no available slots', 'Dismiss', { duration: 5000 });
         }
     }
 

@@ -7,7 +7,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
 import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
 import { TeamEditorComponent } from './team-editor.component';
-import { TeamEditorInfoComponent } from './team-editor-info/team-editor-info.component';
 import { TeamEditorDiscordIntegrationComponent } from './team-editor-discord-integration/team-editor-discord-integration.component';
 import { DiscordChannelEditorComponent } from './team-editor-discord-integration/discord-channel-editor/discord-channel-editor.component';
 import { DiscordGuildEditorComponent } from './team-editor-discord-integration/discord-guild-editor/discord-guild-editor.component';
@@ -23,9 +22,12 @@ import { ChromeColourPickerModule } from '@shared/components/chrome-colour-picke
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
 import { TeamEditorRoutingModule } from './team-editor.routing-module';
+import { TeamInfoEditorComponent } from './shared/team-info-editor/team-info-editor.component';
+import { TeamEditorInfoComponent } from './team-editor-info/team-editor-info.component';
 
 @NgModule({
     declarations: [
+        TeamInfoEditorComponent,
         TeamEditorComponent,
         TeamCreatorComponent,
         TeamEditorInfoComponent,

@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerTeamService } from '../shared/services/player-team.service';
 import { PlayerService } from '../shared/services/player.service';
-import { PlayerTeam } from '../shared/model/player-team.model';
 import { Team } from '../shared/model/team.model';
-import { RegionService } from '../shared/services/region.service';
 import { Region } from '../shared/model/region.model';
 import { TeamService } from '../shared/services/team.service';
-import { DiscordService } from '../shared/services/discord.service';
 import { ActivatedRoute } from '@angular/router';
 import { TeamRole } from '../shared/model/team-role.enum';
 
@@ -26,13 +22,13 @@ export class TeamEditorComponent implements OnInit {
     constructor(
         private playerService: PlayerService,
         private teamService: TeamService,
-        private regionService: RegionService,
         private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
             const teamId = +params.get('id');
+            console.log(teamId);
             this.playerService.getCurrentPlayer().subscribe(player => {
                 if (player.teams.some(t => t.teamId === teamId && [TeamRole.Captain, TeamRole.ViceCaptain].some(tr => tr === t.teamRole))) {
                     this.teamService.getTeam(teamId).subscribe(team => {

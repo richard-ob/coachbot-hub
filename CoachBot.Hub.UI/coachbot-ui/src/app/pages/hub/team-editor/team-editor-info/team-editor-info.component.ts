@@ -1,10 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Team } from '@pages/hub/shared/model/team.model';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TeamService } from '@pages/hub/shared/services/team.service';
-import { Region } from '@pages/hub/shared/model/region.model';
-import { RegionService } from '@pages/hub/shared/services/region.service';
-import { TeamType } from '@pages/hub/shared/model/team-type.enum';
-import { Router } from '@angular/router';
+import { Team } from '@pages/hub/shared/model/team.model';
 
 @Component({
     selector: 'app-team-editor-info',
@@ -12,40 +9,19 @@ import { Router } from '@angular/router';
 })
 export class TeamEditorInfoComponent implements OnInit {
 
-    @Input() team: Team;
-    regions: Region[];
-    teamTypes = TeamType;
-    isSaving = false;
+    team: Team;
     isLoading = true;
 
-    constructor(private teamService: TeamService, private regionService: RegionService, private router: Router) {
-
-    }
+    constructor(private teamService: TeamService, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.regionService.getRegions().subscribe(regions => {
-            this.regions = regions;
-            this.isLoading = false;
+        this.route.parent.paramMap.pipe().subscribe(params => {
+            const teamId = +params.get('id');
+            this.teamService.getTeam(teamId).subscribe(team => {
+                this.team = team;
+                this.isLoading = false;
+            });
         });
     }
 
-    saveTeamProfile() {
-        this.isSaving = true;
-        if (!this.team.id) {
-            this.teamService.createTeam(this.team).subscribe(() => {
-                this.router.navigate(['team-editor-list']);
-            });
-        } else {
-            this.teamService.updateTeam(this.team).subscribe(() => {
-                this.teamService.getTeam(this.team.id).subscribe(team => {
-                    this.team = team;
-                    this.isSaving = false;
-                });
-            });
-        }
-    }
-
-    updateBadgeImageId(assetImageId: number) {
-        this.team.badgeImageId = assetImageId;
-    }
 }

@@ -1,0 +1,82 @@
+<div *ngIf="team && !isLoading; else spinner" id="team-profile-info">
+    <div class="card">
+        <div class="card__header">
+            <h4 *ngIf="team.id">Edit Team Info</h4>
+            <h4 *ngIf="!team.id">Create Team</h4>
+        </div>
+        <div class="card__content">
+            <form #teamInfoForm="ngForm">
+                <div *ngIf="team.inactive" class="alert alert-warning">This team is not active</div>
+                <div class="form-group">
+                    <label class="control-label" for="teamName">Team Name</label>
+                    <input type="text" class="form-control" id="teamName" required [(ngModel)]="team.name"
+                        placeholder="Full team name" name="teamName">
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="teamCode">Team Code</label>
+                    <input type="text" class="form-control" id="teamCode" required [(ngModel)]="team.teamCode"
+                        name="teamCode" placeholder="Short team code">
+                </div>
+                <div *ngIf="!team.id" class="form-group">
+                    <label class="control-label" for="teamType">Team Type</label>
+                    <select class="form-control" id="teamType" [(ngModel)]="team.teamType" name="teamType" required>
+                        <option [ngValue]="teamTypes.Club">Club</option>
+                        <option [ngValue]="teamTypes.National">National</option>
+                        <option [ngValue]="teamTypes.Mix">Mix</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="teamBadge">Team Badge</label>
+                    <app-asset-image-uploader (imageUploaded)="updateBadgeImageId($event)"
+                        [currentAssetImageId]="team.badgeImageId">
+                    </app-asset-image-uploader>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="teamColour">Team Colour</label>
+                    <div class="clickable"
+                        style="width: 100%; height: 50px; border-radius: 2px; border: 1px #dedede solid"
+                        [style.background-color]="team.color" (click)="colourPicker.showColorPicker()">
+                    </div>
+                    <app-chrome-colour-picker [color]="team.color" (colorChange)="team.color = $event" #colourPicker>
+                    </app-chrome-colour-picker>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="dateFounded">Date Founded</label>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend clickable">
+                            <span class="input-group-text" (click)="picker.open()">
+                                <i class="fas fa-calendar"></i>
+                            </span>
+                        </div>
+                        <input matInput class="form-control" required [matDatepicker]="picker" (click)="picker.open()"
+                            name="dateFounded" [(ngModel)]="team.foundedDate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="region">Region</label>
+                    <select class="form-control" id="region" [(ngModel)]="team.regionId" required
+                        placeholder="Select region..." name="regionId">
+                        <option *ngFor="let region of regions" [ngValue]="region.regionId">
+                            {{region.regionName}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="inactive">Inactive</label>
+                    <div>
+                        <label class="checkbox checkbox-inline">
+                            <input [(ngModel)]="team.inactive" type="checkbox" name="inactive" id="inactive">
+                            <span class="checkbox-indicator"></span>
+                        </label>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" (click)="saveTeamProfile()"
+                    [disabled]="isSaving || teamInfoForm.invalid">
+                    <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i>
+                    Save
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

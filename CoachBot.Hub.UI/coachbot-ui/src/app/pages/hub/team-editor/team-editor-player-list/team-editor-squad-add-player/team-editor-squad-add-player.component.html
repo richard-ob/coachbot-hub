@@ -16,17 +16,21 @@
         <thead>
             <th>Player</th>
             <th>SteamID</th>
+            <th style="width: 30px" class="text-center"></th>
         </thead>
         <tbody>
             <tr *ngFor="let player of playerSearchResults" (click)="selectPlayer(player)">
                 <td>
-                    <a [routerLink]="['/player/' + player.id]" target="_blank">{{player.displayName}}</a>
+                    <a [routerLink]="['/player-profile/' + player.id]" target="_blank">{{player.displayName}}</a>
                 </td>
                 <td>
                     <a href="https://steamcommunity.com/profiles/{{player.steamID}}"
                         target="_blank">{{player.steamID}}&nbsp;
                         <i class="fas fa-external-link-alt text-muted"></i>
                     </a>
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-xs btn-primary" (click)="selectPlayer(player)">Select</button>
                 </td>
             </tr>
         </tbody>
@@ -37,7 +41,7 @@
     <div *ngIf="player" class="form-group">
         <label>Selected Player</label>
         <div>
-            <a [routerLink]="['/player/' + player.id]" target="_blank">{{player.displayName}}</a>
+            <a [routerLink]="['/player-profile/' + player.id]" target="_blank">{{player.displayName}}</a>
         </div>
     </div>
     <div class="form-group">
@@ -56,7 +60,7 @@
         Couldn't add player. Players can only belong to one club team at any one time.
     </div>
     <div class="float-right">
-        <button class="btn btn-outline-primary mr-2" type="button" (click)="toggleAddPlayerForm()">
+        <button class="btn btn-outline-primary mr-2" type="button" (click)="wizardClosed.emit()">
             Cancel
         </button>
         <button class="btn btn-primary" type="button" [disabled]="isSaving || !role || !player" (click)="addPlayer()">

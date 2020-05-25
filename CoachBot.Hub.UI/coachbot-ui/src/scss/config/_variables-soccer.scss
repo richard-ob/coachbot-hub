@@ -363,7 +363,7 @@ $state-info-text:                $color-info;
 $state-info-bg:                  #fff;
 $state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%);
 
-$state-warning-text:             $color-primary-darken;
+$state-warning-text:             $color-warning;
 $state-warning-bg:               #fff;
 $state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%);
 

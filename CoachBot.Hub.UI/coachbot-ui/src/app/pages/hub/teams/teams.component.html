@@ -29,28 +29,30 @@
         </div>
     </div>
     <h4>Past</h4>
-    <div *ngFor="let team of teams | filterBy:['inactive']:true" class="col-sm-6 col-lg-4">
-        <div class="card sponsor-card">
-            <header class="card__header sponsor-card__header"
-                [style.background-color]="team.color ? team.color : '#292c31'">
-                <figure class="sponsor-card__logo">
-                    <a href="#">
-                        <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage">
-                        <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
-                            style="max-height: 140px">
-                    </a>
-                </figure>
-            </header>
-            <div class="card__content text-center p-2">
-                <h6 class="m-0">{{team.name}}</h6>
+    <div class="sponsors-grid row">
+        <div *ngFor="let team of teams | filterBy:['inactive']:true" class="col-sm-6 col-lg-4">
+            <div class="card sponsor-card">
+                <header class="card__header sponsor-card__header"
+                    [style.background-color]="team.color ? team.color : '#292c31'">
+                    <figure class="sponsor-card__logo">
+                        <a href="#">
+                            <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage">
+                            <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                                style="max-height: 140px">
+                        </a>
+                    </figure>
+                </header>
+                <div class="card__content text-center p-2">
+                    <h6 class="m-0">{{team.name}}</h6>
+                </div>
+                <footer class="card__footer sponsor-card__footer p-2">
+                    <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
+                        View Team Profile</a>
+                </footer>
             </div>
-            <footer class="card__footer sponsor-card__footer p-2">
-                <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
-                    View Team Profile</a>
-            </footer>
         </div>
     </div>
-    <div class="alert alert-info">
+    <div *ngIf="!(teams | filterBy:['inactive']:true).length" class="alert alert-info">
         No teams have died yet. Great!
     </div>
 </div>

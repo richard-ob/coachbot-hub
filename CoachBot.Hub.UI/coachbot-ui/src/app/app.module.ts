@@ -19,6 +19,7 @@ import { ServerManualComponent } from '@pages/server-manual/server-manual.compon
 import { NewsComponent } from '@pages/news/news.component';
 import { SpinnerModule } from '@core/components/spinner/spinner.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     SweetAlert2Module.forRoot(),
     LayoutModule,
     SpinnerModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

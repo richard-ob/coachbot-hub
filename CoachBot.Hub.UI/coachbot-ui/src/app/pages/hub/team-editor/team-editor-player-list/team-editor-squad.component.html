@@ -6,16 +6,14 @@
     </div>
     <div class="card__content">
         <div *ngIf="!isLoading; else spinner" class="table-responsive">
-            <table *ngIf="!isAddPlayerWizardOpen" class="table table-striped team-roster-table"
+            <table *ngIf="!isAddPlayerWizardOpen" class="table table-striped"
                 [class.widget__content--loading]="isUpdating">
                 <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>SteamID</th>
-                        <th>Join Date</th>
-                        <th class="text-center">Role</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
+                    <th>Player</th>
+                    <th>SteamID</th>
+                    <th>Join Date</th>
+                    <th class="text-center">Role</th>
+                    <th class="text-center">Actions</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let teamPlayer of teamPlayers">
@@ -29,15 +27,29 @@
                             </a>
                         </td>
                         <td>{{teamPlayer.joinDate | date:'short'}}</td>
-                        <td class="text-center">{{teamPlayer.teamRole | teamRole}}</td>
                         <td class="text-center">
-                            <button class="btn btn-xs btn-primary" (click)="kickPlayer(teamPlayer)">Kick</button>
+                            <select class="form-control input-xs" [(ngModel)]="teamPlayer.teamRole"
+                                (ngModelChange)="updatePlayerRole(teamPlayer, $event)" style="padding: 2px 10px;"
+                                name="teamPlayerRole">
+                                <option [ngValue]="teamRoles.Captain">Captain</option>
+                                <option [ngValue]="teamRoles.ViceCaptain">Vice Captain</option>
+                                <option [ngValue]="teamRoles.Player">Player</option>
+                                <option [ngValue]="teamRoles.Loaned">Loaned</option>
+                                <option [ngValue]="teamRoles.Loanee">Loanee</option>
+                                <option [ngValue]="teamRoles.Reserve">Reserve</option>
+                                <option [ngValue]="teamRoles.Trialist">Trialist</option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-xs btn-primary"
+                                [swal]="{ title: 'Are you sure?', text: 'This player will be kicked immediately', icon: 'warning', showCancelButton: true }"
+                                (confirm)="kickPlayer(teamPlayer)">Kick</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <app-team-editor-squad-add-player *ngIf="isAddPlayerWizardOpen" [teamId]="teamId"
-                (wizardClose)="toggleAddPlayerWizard()">
+                (wizardClosed)="toggleAddPlayerWizard()">
             </app-team-editor-squad-add-player>
         </div>
         <ng-template #spinner>

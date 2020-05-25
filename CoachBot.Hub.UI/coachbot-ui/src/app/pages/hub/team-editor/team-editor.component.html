@@ -4,6 +4,7 @@
     </div>
     <ng-container *ngIf="!accessDenied && !isLoading">
         <div *ngIf="!isLoading; else spinner" id="team-profile-info">
+            <div *ngIf="team.inactive" class="alert alert-warning">This team is not active</div>
             <div class="card">
                 <div class="card__header">
                     <h4>Edit Team Info</h4>
@@ -58,6 +59,16 @@
                                         {{region.regionName}}
                                     </option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="chk-inactive">Inactive</label>
+                                <div>
+                                    <label class="checkbox checkbox-inline">
+                                        <input [(ngModel)]="team.inactive" type="checkbox" name="inactive"
+                                            id="chk-inactive">
+                                        <span class="checkbox-indicator"></span>
+                                    </label>
+                                </div>
                             </div>
                             <button type="button" class="btn btn-primary" (click)="saveTeamProfile()"
                                 [disabled]="isSaving">

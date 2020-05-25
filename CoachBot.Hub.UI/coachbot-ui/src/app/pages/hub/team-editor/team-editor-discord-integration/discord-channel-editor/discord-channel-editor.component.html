@@ -12,7 +12,8 @@
         <button class="btn btn-outline-primary mr-2" type="button" (click)="abortWizard()">
             Cancel
         </button>
-        <button class="btn btn-primary" type="button" (click)="wizardStep = wizardSteps.Configuration">
+        <button class="btn btn-primary" type="button" [disabled]="!channel.discordChannelId"
+            (click)="wizardStep = wizardSteps.Configuration">
             Next
         </button>
     </div>
@@ -28,7 +29,7 @@
             </option>
         </select>
     </div>
-    <div class=" form-group">
+    <div class="form-group">
         <label class="control-label" for="input-default">Positions</label>
         <div class="d-block">
             <span *ngFor="let position of channel.channelPositions" class="badge badge-pill badge-primary mr-2">

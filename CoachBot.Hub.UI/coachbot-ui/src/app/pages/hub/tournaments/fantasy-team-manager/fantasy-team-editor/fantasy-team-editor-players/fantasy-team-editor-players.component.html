@@ -7,27 +7,31 @@
     <div class="widget__content card__content">
         <div class="form-group">
             <label>Position</label>
-            <div class="checkbox-table w-100 justify-content-center">
-                <label class="checkbox checkbox--cell" (click)="filters.positionGroup = null">
-                    <input type="checkbox" id="size-7" value="7">
-                    <span class="checkbox-indicator">All</span>
-                </label>
-                <label class="checkbox checkbox--cell" (click)="filters.positionGroup = positionGroups.GK">
-                    <input type="checkbox" id="size-7" value="7">
-                    <span class="checkbox-indicator">GK</span>
-                </label>
-                <label class="checkbox checkbox--cell" (click)="filters.positionGroup = positionGroups.Defence">
-                    <input type="checkbox" id="size-7" value="7">
-                    <span class="checkbox-indicator">DEF</span>
-                </label>
-                <label class="checkbox checkbox--cell" (click)="filters.positionGroup = positionGroups.Midfield">
-                    <input type="checkbox" id="size-7" value="7">
-                    <span class="checkbox-indicator">MID</span>
-                </label>
-                <label class="checkbox checkbox--cell" (click)="filters.positionGroup = positionGroups.Attack">
-                    <input type="checkbox" id="size-7" value="7">
-                    <span class="checkbox-indicator">ATK</span>
-                </label>
+            <div class="fantasy-player-filters--container">
+                <div class="fantasy-player-filters--position-group" (click)="filters.positionGroup = null"
+                    [class.active]="filters.positionGroup == null">
+                    All
+                </div>
+                <div class="fantasy-player-filters--position-group"
+                    (click)="filters.positionGroup = positionGroups.Goalkeeper"
+                    [class.active]="filters.positionGroup === positionGroups.Goalkeeper">
+                    GK
+                </div>
+                <div class="fantasy-player-filters--position-group"
+                    (click)="filters.positionGroup = positionGroups.Defence"
+                    [class.active]="filters.positionGroup === positionGroups.Defence">
+                    DEF
+                </div>
+                <div class="fantasy-player-filters--position-group"
+                    (click)="filters.positionGroup = positionGroups.Midfield"
+                    [class.active]="filters.positionGroup === positionGroups.Midfield">
+                    MID
+                </div>
+                <div class="fantasy-player-filters--position-group"
+                    (click)="filters.positionGroup = positionGroups.Attack"
+                    [class.active]="filters.positionGroup === positionGroups.Attack">
+                    ATK
+                </div>
             </div>
         </div>
         <div class="form-group">

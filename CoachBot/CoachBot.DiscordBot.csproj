@@ -34,7 +34,6 @@
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DiscordGuildController.cs" />
     <Compile Include="Controllers\DiscordVerificationController.cs" />
-    <Compile Include="Controllers\FantasyPlayerController.cs" />
     <Compile Include="Controllers\FantasyTeamController.cs" />
     <Compile Include="Controllers\GuildController.cs" />
     <Compile Include="Controllers\LogController.cs" />
@@ -46,6 +45,7 @@
     <Compile Include="Controllers\PlayerTeamController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="Controllers\RegionController.cs" />
+    <Compile Include="Controllers\ScorePredictionController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\TeamActivityController.cs" />
     <Compile Include="Controllers\TeamController.cs" />

@@ -142,6 +142,14 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
+        public List<Match> GetTournamentPhaseMatches(int tournamentPhaseId, bool futureOnly = false)
+        {
+            return _coachBotContext.Matches
+                .Where(m => _coachBotContext.TournamentPhases.Any(p => p.TournamentGroupMatches.Any(gm => gm.TournamentPhaseId == tournamentPhaseId)))
+                .Where(m => !futureOnly || m.ScheduledKickOff > DateTime.Now)
+                .ToList();
+        }
+
         public void UpdateTournamentPhase(TournamentPhase tournamentPhase)
         {
             _coachBotContext.TournamentPhases.Update(tournamentPhase);

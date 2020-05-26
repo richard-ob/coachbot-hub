@@ -1,5 +1,6 @@
 <div class="fantasy-player d-flex flex-column justify-content-center align-items-center" title="Remove player">
-    <div style="width: 80px; height: 80px; position: relative;">
+    <div class="fantasy-kit-container">
+        <div class="fantasy-player-position-group">{{positionGroup | positionGroup}}</div>
         <img [src]="kitImage" [ngStyle]="{ 'filter': kitFilter }">
         <img *ngIf="badge" [src]="badge" class="fantasy-player-badge">
     </div>

@@ -48,3 +48,27 @@
     border: 1px solid rgba(0, 0, 0, 0);
     /*filter: blur(0); // This works too for anti aliasing loosely*/
 } 
+
+.fantasy-player-position-group {
+    width: 29px;
+    height: 20px;
+    background: black;
+    float: right;
+    text-align: right;
+    margin-left: 106px;
+    color: white;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 18px;
+    border-radius: 3px;
+    position: absolute;
+    right: -26px;
+    text-align: center;
+}
+
+.fantasy-kit-container {
+    width: 80px;
+    height: 80px;
+    position: relative
+}

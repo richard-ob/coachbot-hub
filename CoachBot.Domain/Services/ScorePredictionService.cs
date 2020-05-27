@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,46 @@ namespace CoachBot.Domain.Services
             existing.UpdatedDate = DateTime.Now;
 
             _coachBotContext.SaveChanges();
+        }
+
+        public List<ScorePrediction> GetScorePredictions(ulong steamId, int tournamentEditionId)
+        {
+            return _coachBotContext.ScorePredictions
+                .Where(s => s.Player.SteamID == steamId)
+                .Include(m => m.Match)
+                    .ThenInclude(m => m.TeamHome)
+                    .ThenInclude(m => m.BadgeImage)
+                .Include(m => m.Match)
+                    .ThenInclude(m => m.TeamAway)
+                    .ThenInclude(m => m.BadgeImage)
+                .Include(s => s.TournamentPhase)
+                .ToList();
+        }
+
+        public List<ScorePredictionLeaderboardPlayer> GetLeaderboard(int tournamentEditionId)
+        {
+            return _coachBotContext
+                 .ScorePredictions
+                 .Where(s => s.TournamentPhase.TournamentStage.TournamentEditionId == tournamentEditionId)
+                 .Where(s => s.Match.MatchStatistics != null)
+                 .AsNoTracking()
+                 .Select(m => new
+                 {
+                     m.PlayerId,
+                     m.Player.Name,
+                     m.Match.MatchStatistics.HomeGoals,
+                     m.Match.MatchStatistics.AwayGoals,
+                     HomeGoalsPrediction = m.HomeGoals,
+                     AwayGoalsPrediction = m.AwayGoals,
+                     m.MatchId,
+                     m.Player.Rating
+                 })
+                 .GroupBy(p => new { p.PlayerId, p.Name }, (key, s) => new ScorePredictionLeaderboardPlayer() {
+                     PlayerId = key.PlayerId,
+                     PlayerName = key.Name,
+                     Points = s.Sum(p => p.HomeGoals == p.HomeGoalsPrediction && p.AwayGoals == p.AwayGoalsPrediction ? 1 : 0)
+                 })
+                 .ToList();
         }
     }
 }

@@ -150,6 +150,38 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
+        public TournamentPhase GetCurrentTournamentPhase(int tournamentEditionId)
+        {
+            return =_coachBotContext.TournamentGroupMatches
+                .Where(tg => tg.TournamentGroup.TournamentStage.TournamentEditionId == tournamentEditionId)
+                .Where(m => m.Match.ScheduledKickOff > DateTime.Now)
+                .OrderBy(m => m.Match.ScheduledKickOff)
+                .Take(1)
+                .Select(m => m.TournamentPhase);
+        }
+
+        public List<TournamentGroupMatch> GetCurrentTournamentPhaseMatches(int tournamentEditionId)
+        {
+            var currentTournamentPhase = GetCurrentTournamentPhase(tournamentEditionId);
+
+            if (currentTournamentPhase == null)
+            {
+                return null;
+            }
+
+            return _coachBotContext.TournamentGroupMatches
+                .Include(m => m.Match)
+                    .ThenInclude(m => m.TeamHome)
+                    .ThenInclude(m => m.BadgeImage)
+                .Include(m => m.Match)
+                    .ThenInclude(m => m.TeamAway)
+                    .ThenInclude(m => m.BadgeImage)
+                .Include(m => m.TournamentPhase)
+                .Include(m => m.TournamentGroup)
+                .Where(m => m.TournamentPhaseId == currentTournamentPhase.Id)
+                .ToList();
+        }
+
         public void UpdateTournamentPhase(TournamentPhase tournamentPhase)
         {
             _coachBotContext.TournamentPhases.Update(tournamentPhase);

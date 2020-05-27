@@ -24,9 +24,15 @@ namespace CoachBot.Controllers
         }
 
         [HttpGet]
-        public List<ScorePrediction> GetScorePredictions(int id)
+        public List<ScorePrediction> GetScorePredictions(int tournamentEditionId)
         {
-            return null;
+            return _scorePredictionService.GetScorePredictions(User.GetSteamId(), tournamentEditionId);
+        }
+
+        [HttpGet]
+        public List<ScorePredictionLeaderboardPlayer> GetScorePredictionLeaderboard(int tournamentEditionId)
+        {
+            return _scorePredictionService.GetLeaderboard(tournamentEditionId);
         }
 
         [HttpPost]

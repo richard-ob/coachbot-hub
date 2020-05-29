@@ -11,11 +11,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ScorePredictorComponent } from './score-predictor.component';
 import { ScorePredictorRoutingModule } from './score-predictor.routing-module';
 import { ScorePredictorPlayerComponent } from './score-predictor-player/score-predictor-player.component';
+import { ScorePredictorMatchComponent } from './score-predictor-match/score-predictor-match.component';
 
 @NgModule({
     declarations: [
         ScorePredictorComponent,
-        ScorePredictorPlayerComponent
+        ScorePredictorPlayerComponent,
+        ScorePredictorMatchComponent
     ],
     imports: [
         CommonModule,

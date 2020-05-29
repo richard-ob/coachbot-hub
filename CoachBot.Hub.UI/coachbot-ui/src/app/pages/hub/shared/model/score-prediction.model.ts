@@ -4,8 +4,8 @@ import { TournamentPhase } from './tournament-phase.model';
 
 export class ScorePrediction {
     id: number;
-    homeGoalsPrediction: number;
-    awayGoalsPrediction: number;
+    homeGoalsPrediction = 0;
+    awayGoalsPrediction = 0;
     matchId: number;
     match?: Match;
     playerId: number;

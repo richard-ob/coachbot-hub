@@ -34,6 +34,8 @@ export class ScorePredictorComponent implements OnInit {
             this.tournamentEditionId = +params.get('id');
             this.tournamentService.getCurrentPhase(this.tournamentEditionId).subscribe(phase => {
                 this.phase = phase;
+                this.phase.tournamentGroupMatches =
+                    this.phase.tournamentGroupMatches.filter(m => new Date(m.match.scheduledKickOff) > new Date());
                 this.scorePredictionService.getScorePredictions(this.tournamentEditionId).subscribe(scorePredictions => {
                     this.scorePredictions = scorePredictions;
                     this.scorePredictionService.getScorePredictionLeaderboard(this.tournamentEditionId).subscribe(leaderboard => {
@@ -41,18 +43,6 @@ export class ScorePredictorComponent implements OnInit {
                         this.isLoading = false;
                     });
                 });
-            });
-        });
-    }
-
-    submitPrediction() {
-        this.isLoading = true;
-        this.newPrediction.tournamentPhaseId = this.phase.id;
-        this.scorePredictionService.createScorePrediction(this.newPrediction).subscribe(() => {
-            this.scorePredictionService.getScorePredictions(this.tournamentEditionId).subscribe(scorePredictions => {
-                this.scorePredictions = scorePredictions;
-                this.newPrediction = new ScorePrediction();
-                this.isLoading = false;
             });
         });
     }

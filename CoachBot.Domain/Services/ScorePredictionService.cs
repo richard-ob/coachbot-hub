@@ -30,11 +30,17 @@ namespace CoachBot.Domain.Services
 
             if (_coachBotContext.ScorePredictions.Any(s => s.PlayerId == scorePrediction.PlayerId && s.MatchId == scorePrediction.MatchId))
             {
-                throw new Exception("A prediction already exists for this player and match");
+                var existing = _coachBotContext.ScorePredictions.Single(s => s.PlayerId == scorePrediction.PlayerId && s.MatchId == scorePrediction.MatchId);
+                existing.HomeGoalsPrediction = scorePrediction.HomeGoalsPrediction;
+                existing.AwayGoalsPrediction = scorePrediction.AwayGoalsPrediction;
+                _coachBotContext.SaveChanges();
+            }
+            else
+            {
+                _coachBotContext.Add(scorePrediction);
+                _coachBotContext.SaveChanges();
             }
                         
-            _coachBotContext.Add(scorePrediction);
-            _coachBotContext.SaveChanges();
         }
 
         public void UpdateScorePrediction(ScorePrediction scorePrediction, ulong steamId)

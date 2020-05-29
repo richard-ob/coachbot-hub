@@ -1,0 +1,58 @@
+<div class="container py-4">
+    <ng-container *ngIf="!isLoading; else spinner">
+        <div class="card card--has-table">
+            <div class="card__header">
+                <h4>Predictions</h4>
+            </div>
+            <div class="card__content">
+                <app-spinner *ngIf="!scorePredictions"></app-spinner>
+                <div *ngIf="scorePredictions && !scorePredictions.length" class="alert alert-info">
+                    This player hasn't made any predictions yet!
+                </div>
+                <ng-container *ngIf="scorePredictions && scorePredictions.length">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>Prediction Date</th>
+                            <th>Match</th>
+                            <th>Prediction</th>
+                            <th>Actual</th>
+                            <th>Outcome</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let prediction of scorePredictions">
+                                <td>{{prediction.createdDate | date:'short'}}</td>
+                                <td>
+                                    {{prediction.match.teamHome.name}} vs {{prediction.match.teamAway.name}}
+                                </td>
+                                <td>
+                                    {{prediction.homeGoalsPrediction}} - {{prediction.awayGoalsPrediction}}
+                                </td>
+                                <td>
+                                    <ng-container *ngIf="prediction.match.matchStatistics; else tbc">
+                                        {{prediction.match.matchStatistics.homeGoals}} -
+                                        {{prediction.match.matchStatistics.awayGoals}}
+                                    </ng-container>
+                                    <ng-template #tbc><span class="text-muted">TBC</span></ng-template>
+                                </td>
+                                <td>
+                                    <ng-container *ngIf="prediction.match.matchStatistics; else tbc">
+                                        <ng-container
+                                            *ngIf="prediction.match.matchStatistics 
+                                        && prediction.homeGoalsPrediction === prediction.match.matchStatistics.homeGoals
+                                        && prediction.awayGoalsPrediction === prediction.match.matchStatistics.awayGoals; else incorrect">
+                                            Exact Result
+                                        </ng-container>
+                                        <ng-template #incorrect><span class="text-muted">Incorrect</span></ng-template>
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template spinner>
+        <app-spinner></app-spinner>
+    </ng-template>
+</div>

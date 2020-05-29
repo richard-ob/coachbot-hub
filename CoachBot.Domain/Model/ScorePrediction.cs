@@ -10,9 +10,9 @@ namespace CoachBot.Domain.Model
         [Key]
         public int Id { get; set; }
 
-        public int HomeGoals { get; set; }
+        public int HomeGoalsPrediction { get; set; }
 
-        public int AwayGoals { get; set; }
+        public int AwayGoalsPrediction { get; set; }
 
         public int MatchId { get; set; }
 

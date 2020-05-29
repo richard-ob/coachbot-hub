@@ -6,10 +6,10 @@ import { Injectable } from '@angular/core';
 import { TournamentGroupTeamDto } from '../model/dtos/tournament-group-team-dto.model';
 import { TournamentEdition } from '../model/tournament-edition.model';
 import { Tournament } from '../tournament.model';
-import { TournamentGroupTeam } from '../model/tournament-group-team.model';
 import { TournamentGroup } from '../model/tournament-group.model';
 import { TournamentEditionStaff } from '../model/tournament-edition-staff.model';
 import { Team } from '../model/team.model';
+import { TournamentPhase } from '../model/tournament-phase.model';
 
 @Injectable({
     providedIn: 'root'
@@ -82,6 +82,10 @@ export class TournamentService {
 
     getTournamentTeams(tournamentEditionId: number): Observable<Team[]> {
         return this.http.get<Team[]>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/teams`);
+    }
+
+    getCurrentPhase(tournamentEditionId: number): Observable<TournamentPhase> {
+        return this.http.get<TournamentPhase>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/current-phase`);
     }
 
     generateTournamentSchedule(tournamentEditionId: number): Observable<void> {

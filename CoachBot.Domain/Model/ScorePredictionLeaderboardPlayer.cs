@@ -12,5 +12,7 @@ namespace CoachBot.Domain.Model
 
         public int Points { get; set; }
 
+        public int Predictions { get; set; }
+
     }
 }

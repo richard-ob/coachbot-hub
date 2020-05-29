@@ -1,0 +1,71 @@
+<div class="container py-4">
+    <ng-container *ngIf="!isLoading; else spinner">
+        <div class="card" [class.card--has-table]="leaderboard && leaderboard.length">
+            <div class="card__header">
+                <h4>Leaderboard</h4>
+            </div>
+            <div class="card__content">
+                <app-spinner *ngIf="!leaderboard"></app-spinner>
+                <div *ngIf="leaderboard && !leaderboard.length" class="alert alert-info">
+                    No leaderboard yet!
+                </div>
+                <ng-container *ngIf="leaderboard && leaderboard.length">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>Prediction Date</th>
+                            <th>Match</th>
+                            <th>Prediction</th>
+                            <th>Actual</th>
+                            <th>Outcome</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let player of leaderboard; let index = index">
+                                <td>{{index + 1}}</td>
+                                <td>
+                                    <a [routerLink]="['/player-profile/' + player.playerId]">{{player.playerName}}</a>
+                                </td>
+                                <td>{{player.predictions}}</td>
+                                <td>{{player.points}}</td>
+                                <td>
+                                    <a type="button" class="btn btn-xs btn-primary"
+                                        [routerLink]="['./player/' + player.playerId]">
+                                        View Predictions
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+            </div>
+        </div>
+        <div class="card card--has-table">
+            <div class="card__header">
+                <h4>Your Predictions</h4>
+            </div>
+            <div class="card__content">
+                <div *ngFor="let scorePrediction of scorePredictions">
+                    {{scorePrediction.match.teamHome.name}} [{{scorePrediction.homeGoalsPrediction}}] vs
+                    [{{scorePrediction.awayGoalsPrediction}}] {{scorePrediction.match.teamAway.name}}
+                </div>
+            </div>
+        </div>
+        <div class="card card--has-table">
+            <div class="card__header">
+                <h4>S</h4>
+            </div>
+            <div class="card__content">
+                <select [(ngModel)]="newPrediction.matchId">
+                    <option *ngFor="let phaseMatch of phase.tournamentGroupMatches" [ngValue]="phaseMatch.matchId">
+                        {{phaseMatch.match.teamHome.name}} vs {{phaseMatch.match.teamAway.name}}
+                    </option>
+                </select>
+                <input type="number" [(ngModel)]="newPrediction.homeGoalsPrediction" class="form-control">
+                <input type="number" [(ngModel)]="newPrediction.awayGoalsPrediction" class="form-control">
+                <button type="button" class="btn btn-primary" (click)="submitPrediction()">Submit</button>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template spinner>
+        <app-spinner></app-spinner>
+    </ng-template>
+</div>

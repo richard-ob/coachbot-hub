@@ -20,15 +20,21 @@ namespace CoachBot.Domain.Services
         public void CreateScorePrediction(ScorePrediction scorePrediction, ulong steamId)
         {
             var player = _coachBotContext.Players.Single(p => p.SteamID == steamId);
-            var tournamentPhase = _coachBotContext.TournamentPhases.Single(p => p.Id == scorePrediction.Id);
+            var tournamentPhase = _coachBotContext.TournamentPhases.Single(p => p.Id == scorePrediction.TournamentPhaseId);
             scorePrediction.PlayerId = player.Id;
 
             if (_coachBotContext.TournamentPhases.Any(tp => tp.Id == scorePrediction.TournamentPhaseId && tp.TournamentGroupMatches.Any(g => g.Match.ScheduledKickOff < DateTime.Now)))
             {
                 throw new Exception("This tournament phase has already started");
             }
+
+            if (_coachBotContext.ScorePredictions.Any(s => s.PlayerId == scorePrediction.PlayerId && s.MatchId == scorePrediction.MatchId))
+            {
+                throw new Exception("A prediction already exists for this player and match");
+            }
                         
             _coachBotContext.Add(scorePrediction);
+            _coachBotContext.SaveChanges();
         }
 
         public void UpdateScorePrediction(ScorePrediction scorePrediction, ulong steamId)
@@ -41,23 +47,27 @@ namespace CoachBot.Domain.Services
                 throw new Exception("Predictions can only be updated by the player they belong to");
             }
 
-            existing.HomeGoals = scorePrediction.HomeGoals;
-            existing.AwayGoals = scorePrediction.AwayGoals;
+            existing.HomeGoalsPrediction = scorePrediction.HomeGoalsPrediction;
+            existing.AwayGoalsPrediction = scorePrediction.AwayGoalsPrediction;
             existing.UpdatedDate = DateTime.Now;
 
             _coachBotContext.SaveChanges();
         }
 
-        public List<ScorePrediction> GetScorePredictions(ulong steamId, int tournamentEditionId)
+        public List<ScorePrediction> GetScorePredictions(int tournamentEditionId, ulong? steamId = null, int? playerId = null)
         {
             return _coachBotContext.ScorePredictions
-                .Where(s => s.Player.SteamID == steamId)
+                .AsNoTracking()
+                .Where(s => steamId == null || s.Player.SteamID == steamId)
+                .Where(s => playerId == null || s.PlayerId == playerId)
                 .Include(m => m.Match)
                     .ThenInclude(m => m.TeamHome)
                     .ThenInclude(m => m.BadgeImage)
                 .Include(m => m.Match)
                     .ThenInclude(m => m.TeamAway)
                     .ThenInclude(m => m.BadgeImage)
+                .Include(m => m.Match)
+                    .ThenInclude(m => m.MatchStatistics)
                 .Include(s => s.TournamentPhase)
                 .ToList();
         }
@@ -67,7 +77,6 @@ namespace CoachBot.Domain.Services
             return _coachBotContext
                  .ScorePredictions
                  .Where(s => s.TournamentPhase.TournamentStage.TournamentEditionId == tournamentEditionId)
-                 .Where(s => s.Match.MatchStatistics != null)
                  .AsNoTracking()
                  .Select(m => new
                  {
@@ -75,15 +84,16 @@ namespace CoachBot.Domain.Services
                      m.Player.Name,
                      m.Match.MatchStatistics.HomeGoals,
                      m.Match.MatchStatistics.AwayGoals,
-                     HomeGoalsPrediction = m.HomeGoals,
-                     AwayGoalsPrediction = m.AwayGoals,
+                     m.HomeGoalsPrediction,
+                     m.AwayGoalsPrediction,
                      m.MatchId,
                      m.Player.Rating
                  })
                  .GroupBy(p => new { p.PlayerId, p.Name }, (key, s) => new ScorePredictionLeaderboardPlayer() {
                      PlayerId = key.PlayerId,
                      PlayerName = key.Name,
-                     Points = s.Sum(p => p.HomeGoals == p.HomeGoalsPrediction && p.AwayGoals == p.AwayGoalsPrediction ? 1 : 0)
+                     Points = s.Sum(p => p.HomeGoals == p.HomeGoalsPrediction && p.AwayGoals == p.AwayGoalsPrediction ? 1 : 0),
+                     Predictions = s.Count()
                  })
                  .ToList();
         }

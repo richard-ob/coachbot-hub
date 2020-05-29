@@ -47,6 +47,7 @@ import { TeamsComponent } from './teams/teams.component';
 import { TeamEditorListModule } from './team-editor-list/team-editor-list.module';
 import { TeamEditorModule } from './team-editor/team-editor.module';
 import { AssetImageUploaderModule } from '@shared/components/asset-image-uploader/asset-image-uploader.module';
+import { ScorePredictorModule } from './tournaments/score-predictor/score-predictor.module';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { AssetImageUploaderModule } from '@shared/components/asset-image-uploade
     PlayerListModule,
     TournamentOverviewModule,
     FantasyTeamManagerModule,
+    ScorePredictorModule,
     RecentMatchesModule,
     TeamEditorListModule,
     TeamEditorModule,

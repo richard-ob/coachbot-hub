@@ -152,15 +152,27 @@ namespace CoachBot.Domain.Services
 
         public TournamentPhase GetCurrentTournamentPhase(int tournamentEditionId)
         {
-            return =_coachBotContext.TournamentGroupMatches
+            return _coachBotContext.TournamentGroupMatches
                 .Where(tg => tg.TournamentGroup.TournamentStage.TournamentEditionId == tournamentEditionId)
                 .Where(m => m.Match.ScheduledKickOff > DateTime.Now)
                 .OrderBy(m => m.Match.ScheduledKickOff)
-                .Take(1)
-                .Select(m => m.TournamentPhase);
+                .Select(m => m.TournamentPhase)
+                .Include(p => p.TournamentStage)
+                .Include(t => t.TournamentGroupMatches)
+                    .ThenInclude(m => m.Match)
+                    .ThenInclude(m => m.TeamHome)
+                    .ThenInclude(m => m.BadgeImage)
+                .Include(t => t.TournamentGroupMatches)
+                    .ThenInclude(m => m.Match)
+                    .ThenInclude(m => m.TeamAway)
+                    .ThenInclude(m => m.BadgeImage)
+                .Include(t => t.TournamentGroupMatches)
+                    .ThenInclude(t => t.TournamentGroup)
+                .FirstOrDefault();
         }
 
-        public List<TournamentGroupMatch> GetCurrentTournamentPhaseMatches(int tournamentEditionId)
+        // TODO: Remove this
+        /*public List<TournamentGroupMatch> GetCurrentTournamentPhaseMatches(int tournamentEditionId)
         {
             var currentTournamentPhase = GetCurrentTournamentPhase(tournamentEditionId);
 
@@ -180,7 +192,7 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.TournamentGroup)
                 .Where(m => m.TournamentPhaseId == currentTournamentPhase.Id)
                 .ToList();
-        }
+        }*/
 
         public void UpdateTournamentPhase(TournamentPhase tournamentPhase)
         {

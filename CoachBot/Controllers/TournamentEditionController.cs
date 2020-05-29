@@ -74,10 +74,10 @@ namespace CoachBot.Controllers
             _tournamentService.GenerateTournamentSchedule(id);
         }
 
-        [HttpGet("{id}/current-phase-matches")]
-        public List<TournamentGroupMatch> GetCurrentPhaseMatches(int id)
+        [HttpGet("{id}/current-phase")]
+        public TournamentPhase GetCurrentPhase(int id)
         {
-            return _tournamentService.GetCurrentTournamentPhaseMatches(id);
+            return _tournamentService.GetCurrentTournamentPhase(id);
         }
 
     }

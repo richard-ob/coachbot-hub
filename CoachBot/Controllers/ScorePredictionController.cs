@@ -23,13 +23,19 @@ namespace CoachBot.Controllers
             _scorePredictionService = scorePredictionService;
         }
 
-        [HttpGet]
+        [HttpGet("tournament/{tournamentEditionId}")]
         public List<ScorePrediction> GetScorePredictions(int tournamentEditionId)
         {
-            return _scorePredictionService.GetScorePredictions(User.GetSteamId(), tournamentEditionId);
+            return _scorePredictionService.GetScorePredictions(tournamentEditionId, User.GetSteamId());
         }
 
-        [HttpGet]
+        [HttpGet("tournament/{tournamentEditionId}/player/{playerId}")]
+        public List<ScorePrediction> GetScorePredictions(int tournamentEditionId, int playerId)
+        {
+            return _scorePredictionService.GetScorePredictions(tournamentEditionId, null, playerId);
+        }
+
+        [HttpGet("tournament/{tournamentEditionId}/leaderboard")]
         public List<ScorePredictionLeaderboardPlayer> GetScorePredictionLeaderboard(int tournamentEditionId)
         {
             return _scorePredictionService.GetLeaderboard(tournamentEditionId);

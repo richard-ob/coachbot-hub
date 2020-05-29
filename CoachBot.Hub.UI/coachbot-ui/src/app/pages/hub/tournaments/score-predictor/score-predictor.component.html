@@ -38,30 +38,74 @@
                 </ng-container>
             </div>
         </div>
-        <div class="card card--has-table">
-            <div class="card__header">
-                <h4>Your Predictions</h4>
-            </div>
-            <div class="card__content">
-                <div *ngFor="let scorePrediction of scorePredictions">
-                    {{scorePrediction.match.teamHome.name}} [{{scorePrediction.homeGoalsPrediction}}] vs
-                    [{{scorePrediction.awayGoalsPrediction}}] {{scorePrediction.match.teamAway.name}}
+        <div class="row">
+            <div class="col-sm-6" *ngFor="let phaseMatch of phase.tournamentGroupMatches">
+                <div class="card">
+                    <div class="card__header">
+                        <h4>{{phase.name}}
+                            <span class="text-muted float-right">{{phaseMatch.match.scheduledKickOff | date:'medium'}}</span>
+                        </h4>
+                    </div>
+                    <div class="card__content pt-1">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-column justify-content-center align-items-center p-2">
+                                <div class="py-3">
+                                    <img *ngIf="phaseMatch.match.teamHome.badgeImage"
+                                        [src]="phaseMatch.match.teamHome.badgeImage.base64EncodedImage">
+                                    <img *ngIf="!phaseMatch.match.teamHome.badgeImage"
+                                        src="./assets/images/soccer/blank-crest.png" style="max-height: 140px">
+                                </div>
+                                <div>
+                                    <h6>{{phaseMatch.match.teamHome.teamCode}}</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center align-items-center"
+                                style="flex: 0 0 50px;">
+                                <button class="btn btn-primary-inverse btn-block">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <div class="d-flex align-items-center pt-3 justify-content-center">
+                                    <h5>2</h5>
+                                </div>
+                                <button class="btn btn-primary-inverse btn-block">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center text-bold">
+                                <H6 class="text-muted mb-0">vs</H6>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center align-items-center"
+                                style="flex: 0 0 50px;">
+                                <div class="w-100">
+                                    <button class="btn btn-primary-inverse btn-block">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="pt-3">
+                                    <h5>1</h5>
+                                </div>
+                                <div class="w-100">
+                                    <button class="btn btn-primary-inverse btn-block">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center align-items-center p-2">
+                                <div class="py-3">
+                                    <img *ngIf="phaseMatch.match.teamAway.badgeImage"
+                                        [src]="phaseMatch.match.teamAway.badgeImage.base64EncodedImage">
+                                    <img *ngIf="!phaseMatch.match.teamAway.badgeImage"
+                                        src="./assets/images/soccer/blank-crest.png" style="max-height: 140px">
+                                </div>
+                                <div>
+                                    <h6>{{phaseMatch.match.teamAway.teamCode}}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-block"
+                            (click)="submitPrediction()">Submit</button>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="card card--has-table">
-            <div class="card__header">
-                <h4>S</h4>
-            </div>
-            <div class="card__content">
-                <select [(ngModel)]="newPrediction.matchId">
-                    <option *ngFor="let phaseMatch of phase.tournamentGroupMatches" [ngValue]="phaseMatch.matchId">
-                        {{phaseMatch.match.teamHome.name}} vs {{phaseMatch.match.teamAway.name}}
-                    </option>
-                </select>
-                <input type="number" [(ngModel)]="newPrediction.homeGoalsPrediction" class="form-control">
-                <input type="number" [(ngModel)]="newPrediction.awayGoalsPrediction" class="form-control">
-                <button type="button" class="btn btn-primary" (click)="submitPrediction()">Submit</button>
             </div>
         </div>
     </ng-container>

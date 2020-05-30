@@ -8,7 +8,9 @@ namespace CoachBot.Services
         public enum CacheItemType
         {
             LastMention,
-            LastUserStatusChangeCheck
+            LastUserStatusChangeCheck,
+            EncryptionIv,
+            EncryptionKey
         }
 
         private Dictionary<CacheItemType, Dictionary<string, object>> _cacheStore = new Dictionary<CacheItemType, Dictionary<string, object>>();

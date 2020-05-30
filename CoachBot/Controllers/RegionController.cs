@@ -17,28 +17,24 @@ namespace CoachBot.Controllers
     public class RegionController : Controller
     {
         private readonly RegionService _regionService;
-        private readonly DiscordService _discordService;
+        private readonly PlayerService _playerService;
 
-        public RegionController(RegionService regionService, DiscordService discordService)
+        public RegionController(RegionService regionService, PlayerService playerService)
         {
             _regionService = regionService;
-            _discordService = discordService;
+            _playerService = playerService;
         }
 
         [HttpGet]
         public IEnumerable<RegionDto> Get()
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             return _regionService.GetRegions();
         }
 
         [HttpPost]
         public void Add(Region region)
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
+            if (!_playerService.IsAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }
@@ -54,7 +50,7 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
+            if (!_playerService.IsAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }

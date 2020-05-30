@@ -23,6 +23,7 @@ export class TournamentCreatorComponent implements OnInit {
         this.isCreating = true;
         this.tournamentService.createTournament(this.tournament).subscribe(() => {
             this.isCreating = false;
+            this.tournament = new Tournament();
             this.loadTournaments();
         });
     }

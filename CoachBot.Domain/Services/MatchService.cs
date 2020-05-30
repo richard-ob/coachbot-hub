@@ -33,7 +33,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.GetMatchById(matchId);
         }
 
-        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId = null, int? teamId = null, int? tournamentEditionId = null, bool includePast = false, bool includeUpcoming = false)
+        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId = null, int? teamId = null, int? tournamentEditionId = null, bool includePast = false, bool includeUpcoming = false, bool includeUnpublished = false)
         {
             var queryable = _coachBotContext.Matches
                 .Include(m => m.LineupHome)
@@ -52,7 +52,8 @@ namespace CoachBot.Domain.Services
                 .Where(m => playerId == null || m.PlayerMatchStatistics.Any(p => p.PlayerId == playerId))
                 .Where(m => teamId == null || m.TeamMatchStatistics.Any(t => t.TeamId == teamId))
                 .Where(m => m.TeamHomeId != null && m.TeamAwayId != null)
-                .Where(m => tournamentEditionId == null || m.TournamentId == tournamentEditionId);
+                .Where(m => tournamentEditionId == null || m.TournamentId == tournamentEditionId)
+                .Where(m => includeUnpublished || m.TournamentId == null || m.Tournament.IsPublic);
 
             return queryable.GetPaged(page, pageSize, sortOrder);
         }
@@ -158,6 +159,7 @@ namespace CoachBot.Domain.Services
             {
                 ChannelId = channelId
             };
+            match.TeamHomeId = channel.TeamId;
             match.CreatedDate = DateTime.UtcNow;
             match.LineupHome.TeamType = MatchTeamType.Home; // This is necessary to ensure that if a team is unchallenged that they become the Home team after
 
@@ -168,10 +170,12 @@ namespace CoachBot.Domain.Services
                     TeamType = MatchTeamType.Away,
                     ChannelId = channelId
                 };
+                match.TeamHomeId = channel.TeamId;
             }
             else
             {
                 match.LineupAway = null;
+                match.TeamAwayId = null;
             }
 
             if (existingMatch == null)
@@ -347,10 +351,11 @@ namespace CoachBot.Domain.Services
                 CombineMixLineups(oppositionMatch, opposition);
             }
 
-            _searchService.StopSearch(challenger.Id);
-            _searchService.StopSearch(opposition.Id);
+            _searchService.StopSearch(challenger.Id).Wait();
+            _searchService.StopSearch(opposition.Id).Wait();
             challengerMatch.LineupAway = oppositionMatch.LineupHome;
             challengerMatch.LineupAway.TeamType = MatchTeamType.Away;
+            challengerMatch.TeamAwayId = opposition.TeamId;
             _coachBotContext.Matches.Remove(oppositionMatch);
             _coachBotContext.SaveChanges();
 
@@ -367,6 +372,7 @@ namespace CoachBot.Domain.Services
 
             CreateMatch((int)match.LineupAway.ChannelId, match.LineupAway);
             match.LineupAwayId = null;
+            match.TeamAwayId = null;
             _coachBotContext.SaveChanges();
 
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Team successfully unchallenged");

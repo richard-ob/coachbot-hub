@@ -43,9 +43,10 @@
                                         Manage
                                     </a>
                                 </ng-container>
-                                <ng-template playerRole>
+                                <ng-template #playerRole>
                                     <button class="btn btn-xs btn-outline-danger" type="button"
-                                        (click)="leaveTeam(playerTeam)">
+                                        [swal]="{ title: 'Are you sure?', text: 'You will leave the team immediately', icon: 'warning', showCancelButton: true }"
+                                        (confirm)="leaveTeam(playerTeam)">
                                         Leave
                                     </button>
                                 </ng-template>

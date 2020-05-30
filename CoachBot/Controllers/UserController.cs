@@ -1,4 +1,5 @@
 ﻿using AspNet.Security.OpenId.Steam;
+using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Model;
@@ -29,12 +30,14 @@ namespace CoachBot.Controllers
         [Authorize]
         public User Get()
         {
+            var player = _playerService.GetPlayerBySteamId(User.GetSteamId(), createIfNotExists: true, playerName: User.Identity.Name);
+
             return new User
             {
                 Name = User.Identity.Name,
                 SteamId = User.GetSteamId(),
-                IsAdministrator = _discordService.UserIsOwningGuildAdmin(User.GetSteamId()),
-                PlayerId = _playerService.GetPlayerBySteamId(User.GetSteamId(), createIfNotExists: true, playerName: User.Identity.Name).Id // TODO: Figure out if this works for Steam
+                PlayerId = player.Id, // TODO: Figure out if this works for Steam
+                IsAdministrator = player.HubRole.Equals(PlayerHubRole.Administrator)
             };
         }
 

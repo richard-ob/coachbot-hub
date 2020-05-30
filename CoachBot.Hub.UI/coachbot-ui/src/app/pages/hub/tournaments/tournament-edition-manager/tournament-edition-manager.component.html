@@ -19,7 +19,9 @@
                 <h4>Tournament Staff</h4>
             </div>
             <div class="card__content">
-                <table class="table table-striped">
+                <div *ngIf="!tournamentEdition.tournamentEditionStaff.length" class="alert alert-info">There are no
+                    staff added yet</div>
+                <table *ngIf="tournamentEdition.tournamentEditionStaff.length" class="table table-striped">
                     <thead>
                         <th>Name</th>
                         <th>Role</th>
@@ -33,25 +35,29 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="form-group">
-                    <label class="control-label" for="input-default">Player</label>
-                    <input class="form-control" type="number" [(ngModel)]="tournamentStaff.playerId">
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="input-default">Staff Role</label>
-                    <select class="form-control" id="input-default" [(ngModel)]="tournamentStaff.role"
-                        placeholder="Select role..">
-                        <option [ngValue]="tournamentEditionRole.Organiser">Organiser</option>
-                        <option [ngValue]="tournamentEditionRole.MatchAdmin">Match Admin</option>
-                        <option [ngValue]="tournamentEditionRole.Streamer">Streamer</option>
-                        <option [ngValue]="tournamentEditionRole.Commentator">Commentator</option>
-                    </select>
-                </div>
-                <button type="button" class="btn btn-primary float-right" (click)="createTournamentEditionStaff()"
-                    [disabled]="isSaving || isLoading">
-                    <i *ngIf="isSaving || isLoading" class="fas fa-circle-notch fa-spin"></i>
-                    Save
-                </button>
+                <form (ngSubmit)="createTournamentEditionStaff()" #addStaffForm="ngForm">
+                    <h5>Add Staff</h5>
+                    <div class="form-group">
+                        <label class="control-label" for="input-default">Player</label>
+                        <input class="form-control" type="number" [(ngModel)]="tournamentStaff.playerId"
+                            name="staffPlayerId" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-default">Staff Role</label>
+                        <select class="form-control" id="input-default" [(ngModel)]="tournamentStaff.role"
+                            name="staffRole" required placeholder="Select role..">
+                            <option [ngValue]="tournamentEditionRole.Organiser">Organiser</option>
+                            <option [ngValue]="tournamentEditionRole.MatchAdmin">Match Admin</option>
+                            <option [ngValue]="tournamentEditionRole.Streamer">Streamer</option>
+                            <option [ngValue]="tournamentEditionRole.Commentator">Commentator</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary float-right"
+                        [disabled]="isSaving || isLoading || addStaffForm.invalid">
+                        <i *ngIf="isSaving || isLoading" class="fas fa-circle-notch fa-spin"></i>
+                        Save
+                    </button>
+                </form>
             </div>
         </div>
         <div class="card" *ngFor="let stage of tournamentEdition.tournamentStages">
@@ -60,14 +66,16 @@
             </div>
             <div class="card__content">
                 <h5>New Group</h5>
-                <div class="form-group">
-                    <label>Name</label>
-                    <input [(ngModel)]="tournamentGroup.name" name="tournamentGroupName" type="text"
-                        class="form-control">
-                </div>
-                <button type="button" class="btn btn-primary mx-1" (click)="createTournamentGroup(stage.id)">
-                    Add Group
-                </button>
+                <form (ngSubmit)="createTournamentGroup(stage.id)" #newGroupForm="ngForm">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input [(ngModel)]="tournamentGroup.name" name="tournamentGroupName" type="text"
+                            class="form-control" required placeholder="e.g. A Tier, Premier, etc">
+                    </div>
+                    <button type="submit" class="btn btn-primary mx-1" [disabled]="newGroupForm.invalid">
+                        Add Group
+                    </button>
+                </form>
                 <h5 class="mt-3">Groups </h5>
                 <div *ngIf="!stage.tournamentGroups || !stage.tournamentGroups.length" class="alert alert-info">
                     No groups added yet. A tournament must have at least one group.

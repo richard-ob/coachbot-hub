@@ -5,11 +5,11 @@ import { ScorePredictorPlayerComponent } from './score-predictor-player/score-pr
 
 const routes: Routes = [
     {
-        path: 'score-predictor/:id',
+        path: 'tournament/:id/score-predictor',
         component: ScorePredictorComponent
     },
     {
-        path: 'score-predictor/:tournamentEditionId/player/:playerId',
+        path: 'tournament/:tournamentEditionId/score-predictor/player/:playerId',
         component: ScorePredictorPlayerComponent
     }
 ];

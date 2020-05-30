@@ -7,6 +7,7 @@ export class PagedMatchRequestDto {
     tournamentEditionId?: number;
     includeUpcoming = false;
     includePast = false;
+    includeUnpublished = false;
     dateFrom?: Date;
     dateTo?: Date;
 }

@@ -1,7 +1,8 @@
+<div *ngIf="!isLoading && !playerTeamStatisticsTotals.length" class="alert alert-info">This player hasn't joined a
+    team yet!</div>
 <div class="container my-4">
     <app-spinner *ngIf="isLoading"></app-spinner>
-    <div *ngIf="!isLoading && !playerTeamStatisticsTotals">This play hasn't joined a team yet!</div>
-    <div *ngIf="!isLoading && playerTeamStatisticsTotals" class="card card--has-table">
+    <div *ngIf="!isLoading && playerTeamStatisticsTotals.length" class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Teams</h4>
         </div>

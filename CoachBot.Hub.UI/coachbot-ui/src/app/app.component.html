@@ -27,24 +27,20 @@
                 <div class="header__top-bar-inner">
                     <!-- Account Navigation -->
                     <ul class="nav-account">
-                        <li class="nav-account__item"><a href="#" routerLink="./edit-profile">Your Account</a>
+                        <li *ngIf="player" class="nav-account__item"><a href="#" routerLink="./edit-profile">Your
+                                Account</a>
                         </li>
-                        <li class="nav-account__item has-children">
-                            <ng-container *ngIf="selectedRegion; else regionsSkeleton">
-                                <span class="main-nav__toggle"></span>
-                                <a href="javascript:void(0);">Region:
-                                    <span class="highlight ml-1">{{selectedRegion.regionCode}}</span>
-                                </a>
-                                <ul class="main-nav__sub">
-                                    <li *ngFor="let region of regions">
-                                        <a href="javascript:void(0);"
-                                            (click)="setRegion(region.regionId)">{{region.regionName}}</a>
-                                    </li>
-                                </ul>
-                            </ng-container>
-                            <ng-template #regionsSkeleton>
-                                <ngx-skeleton-loader animation="progress-dark" appearance="line"></ngx-skeleton-loader>
-                            </ng-template>
+                        <li *ngIf="selectedRegion" class="nav-account__item has-children">
+                            <span class="main-nav__toggle"></span>
+                            <a href="javascript:void(0);">Region:
+                                <span class="highlight ml-1">{{selectedRegion.regionCode}}</span>
+                            </a>
+                            <ul class="main-nav__sub">
+                                <li *ngFor="let region of regions">
+                                    <a href="javascript:void(0);"
+                                        (click)="setRegion(region.regionId)">{{region.regionName}}</a>
+                                </li>
+                            </ul>
                         </li>
                         <li *ngIf="!player" class="nav-account__item nav-account__item--login">
                             <a href="javascript:void(0);" routerLink="./login">Login</a>
@@ -184,15 +180,14 @@
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Competitions</li>
-                                        <li *ngIf="player">
-                                            <a routerLink="./tournament-creator">My Competitions</a>
-                                        </li>
                                         <li><a routerLink="/tournaments">Current Competitions</a></li>
                                         <li><a routerLink="./match-overview">Past Competitions</a></li>
                                         <li><a routerLink="/fantasy">Fantasy</a></li>
                                     </ul>
-                                    <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                    <ul *ngIf="player && player.hubRole === 0"
+                                        class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Management</li>
+                                        <li><a routerLink="./tournament-creator">Competitions</a></li>
                                         <li><a routerLink="./server-manager">Servers</a></li>
                                         <li><a routerLink="./region-manager">Regions</a></li>
                                     </ul>

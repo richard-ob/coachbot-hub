@@ -24,6 +24,8 @@ namespace CoachBot.Domain.Model
 
         public MatchFormat Format { get; set; } = MatchFormat.EightVsEight;
 
+        public int FantasyPointsLimit { get; set; } = 75;
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 

@@ -1,8 +1,11 @@
 <div class="container my-4">
     <ng-container *ngIf="tournamentEdition && !isLoading; else spinner">
-        <div class="card card--has-table">
+        <div class="alert alert-info" *ngIf="!tournament.tournamentEditions.length">
+            There are no editions of this tournament yet. Create one below.
+        </div>
+        <div *ngIf="tournament.tournamentEditions.length" class="card card--has-table">
             <div class="card__header">
-                <h4>Tournament Editor</h4>
+                <h4>Tournament Editions</h4>
             </div>
             <div class="card__content">
 
@@ -28,49 +31,49 @@
         </div>
         <div class="card">
             <div class="card__header">
-                <h4>Tournament Creator</h4>
+                <h4>Create Tournament Edition</h4>
             </div>
             <div class="card__content">
-                <div class="form-group">
-                    <label>Name</label>
-                    <input [(ngModel)]="tournamentEdition.name" name="tournament" type="text" class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label>Tournament Format</label>
-                    <select [(ngModel)]="tournamentEdition.format" name="tournamentFormat" class="form-control">
-                        <option [ngValue]="1">1v1</option>
-                        <option [ngValue]="2">2v2</option>
-                        <option [ngValue]="3">3v3</option>
-                        <option [ngValue]="4">4v4</option>
-                        <option [ngValue]="5">5v5</option>
-                        <option [ngValue]="6">6v6</option>
-                        <option [ngValue]="7">7v7</option>
-                        <option [ngValue]="8">8v8</option>
-                        <option [ngValue]="9">9v9</option>
-                        <option [ngValue]="10">10v10</option>
-                        <option [ngValue]="11">11v11</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Start Date</label>
-                    <mat-datepicker #startDatePicker></mat-datepicker>
-                    <div class="input-group">
-                        <div class="input-group-prepend clickable">
-                            <span class="input-group-text" id="basic-addon1" (click)="startDatePicker.open()">
-                                <i class="fas fa-calendar"></i>
-                            </span>
-                        </div>
-                        <input matInput class="form-control" [matDatepicker]="startDatePicker"
-                            [(ngModel)]="tournamentEdition.startDate" placeholder="Start Date">
+                <form (ngSubmit)="createTournamentEdition()" #tournamentEditionForm="ngForm">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input [(ngModel)]="tournamentEdition.name" name="tournament" type="text"
+                            placeholder="e.g. IOSF Season 1" class="form-control" required>
                     </div>
-                </div>
-
-                <button class="btn btn-primary" (click)="createTournamentEdition()" type="button"
-                    [disabled]="isCreating">Create</button>
-
-
+                    <div class="form-group">
+                        <label>Tournament Format</label>
+                        <select [(ngModel)]="tournamentEdition.format" name="tournamentFormat" class="form-control"
+                            required>
+                            <option [ngValue]="1">1v1</option>
+                            <option [ngValue]="2">2v2</option>
+                            <option [ngValue]="3">3v3</option>
+                            <option [ngValue]="4">4v4</option>
+                            <option [ngValue]="5">5v5</option>
+                            <option [ngValue]="6">6v6</option>
+                            <option [ngValue]="7">7v7</option>
+                            <option [ngValue]="8">8v8</option>
+                            <option [ngValue]="9">9v9</option>
+                            <option [ngValue]="10">10v10</option>
+                            <option [ngValue]="11">11v11</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <mat-datepicker #startDatePicker></mat-datepicker>
+                        <div class="input-group">
+                            <div class="input-group-prepend clickable">
+                                <span class="input-group-text" id="basic-addon1" (click)="startDatePicker.open()">
+                                            <i class="fas fa-calendar"></i>
+                                        </span>
+                            </div>
+                            <input matInput class="form-control" [matDatepicker]="startDatePicker"
+                                [(ngModel)]="tournamentEdition.startDate"
+                                placeholder="The date the first match should happen" required>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit"
+                        [disabled]="isCreating || !tournamentEditionForm.valid">Create</button>
+                </form>
             </div>
         </div>
     </ng-container>

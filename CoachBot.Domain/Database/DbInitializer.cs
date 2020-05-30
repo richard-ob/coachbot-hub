@@ -32,30 +32,7 @@ namespace CoachBot.Database
                 context.Players.RemoveRange(context.Players);
                 //context.PlayerTeamPositions.RemoveRange(context.PlayerTeamPositions.Where(ptp => ptp.CreatedDate < DateTime.Now.AddDays(-1)).Where(ptp => ptp.Team == null || ptp.Team.Match == null || ptp.Team.Match.ReadiedDate == null)); // Clear any signings older than a day
                 context.SaveChanges();
-
-                    /*public DbSet<Server> Servers { get; set; }
-                    public DbSet<Region> Regions { get; set; }
-                    public DbSet<Channel> Channels { get; set; }
-                    public DbSet<Team> Teams { get; set; }
-                    public DbSet<Country> Countries { get; set; }
-                    public DbSet<Guild> Guilds { get; set; }
-                    public DbSet<Player> Players { get; set; }
-                    public DbSet<Position> Positions { get; set; }
-                    public DbSet<PlayerTeam> PlayerTeams { get; set; }
-                    public DbSet<PlayerPosition> PlayerPositions { get; set; }
-                    public DbSet<PlayerLineupPosition> PlayerLineupPositions { get; set; }
-                    public DbSet<PlayerLineupSubstitute> PlayerLineupSubstitutes { get; set; }
-                    public DbSet<ChannelPosition> ChannelPositions { get; set; }
-                    public DbSet<Lineup> Lineups { get; set; }
-                    public DbSet<Match> Matches { get; set; }
-                    public DbSet<SubstitutionRequest> SubstitutionRequests { get; set; }
-                    public DbSet<Search> Searches { get; set; }
-                    public DbSet<MatchStatistics> MatchStatistics { get; set; }
-                    public DbSet<TeamMatchStatistics> TeamMatchStatistics { get; set; }
-                    public DbSet<PlayerPositionMatchStatistics> PlayerPositionMatchStatistics { get; set; }
-                    public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
-                    public DbSet<PlayerRating> PlayerRatings { get; set; }*/
-    }
+            }
             catch
             {
 
@@ -207,7 +184,9 @@ namespace CoachBot.Database
                             ChannelId = context.Channels.First(c => c.Id != context.Channels.First().Id).Id,
                             TeamType = MatchTeamType.Away,
                             PlayerLineupPositions = new List<PlayerLineupPosition>()
-                        }
+                        },
+                        TeamHomeId = context.Teams.First().Id,
+                        TeamAwayId = context.Teams.First().Id
                     };
 
                     int currentPlayer = 1;

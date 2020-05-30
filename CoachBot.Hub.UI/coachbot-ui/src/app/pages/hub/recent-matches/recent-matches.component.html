@@ -1,6 +1,10 @@
 <div class="container my-4">
     <!-- Team Latest Results -->
-    <div class="card card--has-table">
+    <div *ngIf="matches && !matches.length" class="alert alert-info">
+        No matches have been played yet. Hang tight!
+    </div>
+    <app-spinner *ngIf="!matches"></app-spinner>
+    <div *ngIf="matches && matches.length" class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Matches</h4>
             <ul *ngIf="showFilters" class="team-result-filter">
@@ -44,8 +48,7 @@
             </ul>
         </div>
         <div class="card__content">
-            <app-spinner *ngIf="!matches"></app-spinner>
-            <table *ngIf="matches" class="table table--large">
+            <table *ngIf="matches && matches.length" class="table table--large">
                 <thead>
                     <tr>
                         <th class="team-result__date">Date</th>

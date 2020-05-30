@@ -16,5 +16,7 @@ namespace CoachBot.Models
 
         public bool IncludePast { get; set; } = false;
 
+        public bool IncludeUnpublished { get; set; } = false;
+
     }
 }

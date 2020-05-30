@@ -2,7 +2,6 @@
     <div class="card card--has-table">
         <div class="widget__title card__header card__header--has-btn">
             <h4>Servers</h4>
-            <a href="#" class="btn btn-primary-inverse btn-xs card-header__button">Add Server</a>
         </div>
         <div class="card__content">
             <div class="table-responsive">
@@ -25,8 +24,7 @@
                                 <td>{{server.region.regionName}}</td>
                                 <td>{{server.rconPassword}}</td>
                                 <td>
-                                    <button class="btn btn-outline-primary btn-xs mr-2"
-                                        (click)="removeServer(server.id)">
+                                    <button class="btn btn-outline-primary btn-xs mr-2" (click)="editServer(server.id)">
                                         <i class="fa fa-times"></i> Edit</button>
                                     <button class="btn btn-outline-danger btn-xs" (click)="removeServer(server.id)">
                                         <i class="fa fa-times"></i> Remove</button>

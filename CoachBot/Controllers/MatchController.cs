@@ -36,7 +36,8 @@ namespace CoachBot.Controllers
                 pagedRequest.TeamId,
                 pagedRequest.TournamentEditionId,
                 pagedRequest.IncludePast,
-                pagedRequest.IncludeUpcoming
+                pagedRequest.IncludeUpcoming,
+                pagedRequest.IncludeUnpublished
             );
         }
 

@@ -6,6 +6,7 @@ using Effortless.Net.Encryption;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace CoachBot.Controllers
 {
@@ -23,11 +24,6 @@ namespace CoachBot.Controllers
             _playerService = playerService;
             _configService = configService;
             _cacheService = cacheService;
-            if (_cacheService.Get(CacheService.CacheItemType.EncryptionKey, "") == null)
-            {
-                _cacheService.Set(CacheService.CacheItemType.EncryptionIv, "", EncryptionTools.GetRandomData(128));
-                _cacheService.Set(CacheService.CacheItemType.EncryptionKey, "", EncryptionTools.GetRandomData(256));
-            }
         }
 
         [Authorize]
@@ -35,33 +31,25 @@ namespace CoachBot.Controllers
         public IActionResult Verify()
         {
             var steamId = User.GetSteamId();
-            byte[] key = GetKey();
-            byte[] iv = GetIv();
-            string encrypted = EncryptionTools.Encrypt(steamId.ToString(), key, iv);
 
-            return Challenge(new AuthenticationProperties { RedirectUri = "/verification-complete?steamId=" + encrypted }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
+            _cacheService.Set(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString(), DateTime.Now.AddMinutes(5));
+
+            return Challenge(new AuthenticationProperties { RedirectUri = "/verification-complete?steamId=" + steamId }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
         }
 
         [HttpGet("/verification-complete")]
-        public IActionResult VerificationComplete(string encryptedSteamId)
+        public IActionResult VerificationComplete(ulong steamId)
         {
-            byte[] key = GetKey();
-            byte[] iv = GetIv();
-            var steamId = EncryptionTools.Decrypt(encryptedSteamId, key, iv);
-            _playerService.UpdateDiscordUserId(User.GetDiscordUserId(), ulong.Parse(steamId));
+            DateTime? verificationSessionExpiry = _cacheService.Get(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString()) as DateTime?;
+            if (verificationSessionExpiry != null && verificationSessionExpiry.Value > DateTime.Now)
+            {
+                _playerService.UpdateDiscordUserId(User.GetDiscordUserId(), steamId);
+                _cacheService.Remove(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString());
+            }
+
             HttpContext.SignOutAsync("Cookies").Wait();
 
             return new RedirectResult(_configService.Config.ClientUrl + PROFILE_EDITOR_PATH);
-        }
-
-        private byte[] GetKey()
-        {
-            return _cacheService.Get(CacheService.CacheItemType.EncryptionKey, "") as byte[];
-        }
-
-        private byte[] GetIv()
-        {
-            return _cacheService.Get(CacheService.CacheItemType.EncryptionIv, "") as byte[];
         }
     }
 }

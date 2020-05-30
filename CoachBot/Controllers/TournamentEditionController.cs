@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
+using CoachBot.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void CreateTournamentEdition(TournamentEdition tournamentEdition)
         {
-            _tournamentService.CreateTournamentEdition(tournamentEdition);
+            _tournamentService.CreateTournamentEdition(tournamentEdition, User.GetSteamId());
         }
 
         [HttpPut]

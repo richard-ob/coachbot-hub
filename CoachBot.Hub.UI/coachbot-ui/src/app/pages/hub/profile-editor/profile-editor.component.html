@@ -16,16 +16,21 @@
                         <div class="form-group">
                             <label class="control-label" for="input-default">Discord Account</label>
                             <ng-container *ngIf="player.discordUserId">
-                                <div><i class="fas fa-check text-success mr-2"></i>&nbsp;Discord account linked
+                                <div>
+                                    <i class="fas fa-check text-success mr-2"></i>&nbsp;Discord account linked
                                     <p>
-                                        <a class="btn btn-xs btn-secondary" href="http://localhost/verify-discord">
-                                            Relink Discord Account
-                                        </a>
+                                        <button type="button" class="btn btn-xs btn-secondary"
+                                            [swal]="{ title: 'Please note', text: 'After verifying via Discord, you\'ll need to log back in via Steam', icon: 'info', showCancelButton: false }"
+                                            (confirm)="startDiscordVerification()">Relink Discord Account</button>
                                     </p>
                                 </div>
                             </ng-container>
                             <ng-container *ngIf="!player.discordUserId">
-                                <p><a href="http://localhost/verify-discord">Link Discord Account</a></p>
+                                <p>
+                                    <button type="button" class="btn btn-xs btn-secondary"
+                                        [swal]="{ title: 'Please note', text: 'After verifying via Discord, you\'ll need to log back in via Steam', icon: 'info', showCancelButton: false }"
+                                        (confirm)="startDiscordVerification()">Link Discord Account</button>
+                                </p>
                             </ng-container>
                         </div>
                         <div class="form-group">

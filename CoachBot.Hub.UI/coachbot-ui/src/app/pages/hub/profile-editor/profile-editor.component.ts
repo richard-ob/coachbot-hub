@@ -72,4 +72,8 @@ export class ProfileEditorComponent implements OnInit {
             });
         });
     }
+
+    startDiscordVerification() {
+        window.location.href = 'http://localhost/verify-discord';
+    }
 }

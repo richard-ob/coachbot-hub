@@ -91,11 +91,25 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
-        public void CreateTournamentEdition(TournamentEdition tournamentEdition)
+        public void CreateTournamentEdition(TournamentEdition tournamentEdition, ulong? steamId = null)
         {
+
             tournamentEdition.IsPublic = false;
             _coachBotContext.TournamentEditions.Add(tournamentEdition);
             _coachBotContext.SaveChanges();
+
+            if (steamId != null)
+            {
+                var player = _coachBotContext.Players.Single(p => p.SteamID == steamId);
+                var staff = new TournamentEditionStaff()
+                    {
+                        PlayerId = player.Id,
+                        TournamentEditionId = tournamentEdition.Id,
+                        Role = TournamentStaffRole.Organiser
+                    };
+                _coachBotContext.TournamentEditionStaff.Add(staff);
+                _coachBotContext.SaveChanges();
+            }
 
             var tournament = _coachBotContext.TournamentEditions
                 .Include(t => t.Tournament)

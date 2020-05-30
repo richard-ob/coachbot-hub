@@ -9,8 +9,7 @@ namespace CoachBot.Services
         {
             LastMention,
             LastUserStatusChangeCheck,
-            EncryptionIv,
-            EncryptionKey
+            DiscordVerificationSessionExpiry
         }
 
         private Dictionary<CacheItemType, Dictionary<string, object>> _cacheStore = new Dictionary<CacheItemType, Dictionary<string, object>>();

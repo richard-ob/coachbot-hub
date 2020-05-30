@@ -33,7 +33,7 @@ namespace CoachBot.Domain.Model
 
         public ICollection<TournamentEditionMatchDay> TournamentEditionMatchDays { get; set; }
 
-        public ICollection<TournamentEditionStaff> TournamentEditionStaff { get; set; }
+        public ICollection<TournamentEditionStaff> TournamentEditionStaff { get; set; } n
 
     }
 }

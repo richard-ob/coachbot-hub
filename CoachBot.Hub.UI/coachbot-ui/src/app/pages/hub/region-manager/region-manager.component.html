@@ -46,22 +46,21 @@
                     <h4>Add Region</h4>
                 </div>
                 <div class="card__content">
-                    <form class="d-flex">
+                    <form class="d-flex" #addRegionForm="ngForm">
                         <div class="form-group flex-fill pr-2">
                             <label for="regionName">Region Name</label>
-                            <input type="text" class="form-control" id="regionName" name="regionName"
+                            <input type="text" class="form-control" id="regionName" name="regionName" required
                                 [(ngModel)]="newRegion.regionName">
                         </div>
                         <div class="form-group flex-fill">
                             <label for="regionName">Region Code</label>
                             <input type="text" maxlength="4" class="form-control" id="regionCode" name="regionCode"
-                                [(ngModel)]="newRegion.regionCode">
+                                required [(ngModel)]="newRegion.regionCode">
                         </div>
                     </form>
-                    <div class="form-group float-right">
-                        <button type="submit" class="btn btn-primary btn-sm float-right" (click)="addRegion()">
-                            <i class="fa fa-check"></i> Add</button>
-                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm float-right" [disabled]="addRegionForm.invalid"
+                        (click)="addRegion()">
+                        <i *ngIf="isAdding" class="fa fa-circle-notch fa-spin"></i>&nbsp;Add</button>
                 </div>
             </div>
         </div>

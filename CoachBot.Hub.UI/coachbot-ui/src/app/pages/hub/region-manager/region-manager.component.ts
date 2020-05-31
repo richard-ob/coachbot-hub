@@ -10,15 +10,18 @@ export class RegionManagerComponent {
 
     newRegion: Region = new Region();
     regions: Region[];
+    isAdding = false;
 
     constructor(private regionService: RegionService) {
         this.regionService.getRegions().subscribe(regions => this.regions = regions);
     }
 
     addRegion() {
+        this.isAdding = true;
         this.regionService.addRegion(this.newRegion).subscribe(() => {
             this.regionService.getRegions().subscribe(regions => this.regions = regions);
             this.newRegion = new Region();
+            this.isAdding = false;
         });
     }
 

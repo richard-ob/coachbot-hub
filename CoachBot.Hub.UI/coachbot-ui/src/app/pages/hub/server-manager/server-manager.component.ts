@@ -24,6 +24,7 @@ export class ServerManagerComponent {
   isLoading = true;
   isAdding = false;
   isRemoving = false;
+  isUpdating = false;
 
   constructor(
     private serverService: ServerService,
@@ -68,11 +69,13 @@ export class ServerManagerComponent {
   }
 
   updateServer() {
+    this.isUpdating = true;
     this.serverService.updateServer(this.serverToEdit).subscribe(() => {
       this.editServerModal.dismiss();
       this.serverToEdit = null;
       this.serverService.getServers().subscribe((servers) => {
         this.servers = servers;
+        this.isUpdating = false;
       });
     });
   }

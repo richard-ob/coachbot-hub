@@ -1,5 +1,6 @@
 <div class="py-4 container">
-    <div class="card card--has-table">
+    <app-spinner *ngIf="isLoading"></app-spinner>
+    <div *ngIf="!isLoading" class="card card--has-table">
         <div class="widget__title card__header card__header--has-btn">
             <h4>Servers</h4>
         </div>
@@ -24,9 +25,11 @@
                                 <td>{{server.region.regionName}}</td>
                                 <td>{{server.rconPassword}}</td>
                                 <td>
-                                    <button class="btn btn-outline-primary btn-xs mr-2" (click)="editServer(server.id)">
-                                        <i class="fa fa-times"></i> Edit</button>
-                                    <button class="btn btn-outline-danger btn-xs" (click)="removeServer(server.id)">
+                                    <button class="btn btn-outline-primary btn-xs mr-2" (click)="editServer(server)"
+                                        [disabled]="isRemoving">
+                                        <i class="fa fa-times"></i> Edit RCON</button>
+                                    <button class="btn btn-outline-danger btn-xs" (click)="removeServer(server.id)"
+                                        [disabled]="isRemoving">
                                         <i class="fa fa-times"></i> Remove</button>
                                 </td>
                             </tr>
@@ -44,18 +47,19 @@
             </h4>
         </div>
         <div class="card__content">
-            <form class="d-flex">
+            <form class="d-flex" #serverForm="ngForm">
                 <div class="form-group flex-fill p-2">
                     <label for="serverName">Server Name</label>
                     <input type="text" class="form-control" id="serverName" name="serverName"
-                        [(ngModel)]="newServer.name">
+                        [(ngModel)]="newServer.name" required>
                 </div>
                 <div class="form-group flex-fill p-2">
                     <label for="ipAddress">IP Address</label>
                     <input type="text" class="form-control" id="ipAddress" name="ipAddress"
-                        [(ngModel)]="newServer.address">
+                        [(ngModel)]="newServer.address"
+                        pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$"
+                        required>
                 </div>
-
                 <div class="form-group flex-fill p-2">
                     <label for="rconPassword">RCON Password</label>
                     <input type="text" class="form-control" id="rconPassword" name="rconPassword"
@@ -63,7 +67,8 @@
                 </div>
                 <div class="form-group flex-fill p-2">
                     <label for="countryId">Country</label>
-                    <select class="form-control" [(ngModel)]="newServer.countryId" name="countryId" id="countryId">
+                    <select class="form-control" [(ngModel)]="newServer.countryId" name="countryId" id="countryId"
+                        required>
                         <option *ngFor="let country of countries" [ngValue]="country.id">
                             {{country.name}}
                         </option>
@@ -71,7 +76,8 @@
                 </div>
                 <div class="form-group flex-fill p-2">
                     <label for="regionId">Region</label>
-                    <select class="form-control" [(ngModel)]="newServer.regionId" name="regionId" id="regionId">
+                    <select class="form-control" [(ngModel)]="newServer.regionId" name="regionId" id="regionId"
+                        required>
                         <option *ngFor="let region of regions" [ngValue]="region.regionId">
                             {{region.regionName}}
                         </option>
@@ -79,9 +85,29 @@
                 </div>
             </form>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary float-right" (click)="addServer()">
-                    <i class="fa fa-check"></i> Add</button>
+                <button type="submit" class="btn btn-primary float-right" (click)="addServer()"
+                    [disabled]="serverForm.invalid || isAdding">
+                    <i *ngIf="isAdding" class="fa fa-circle-notch fa-spin"></i>&nbsp;
+                    Add
+                </button>
             </div>
         </div>
     </div>
 </div>
+<swal #editServerModal (confirm)="updateServer()">
+    <ng-container *swalPortal="swalTargets.title">
+        <h5>Update Server</h5>
+    </ng-container>
+    <form *swalPortal>
+        <div class="form-group">
+            <label>RCON Password</label>
+            <input type="text" class="form-control" name="rconPasswordEdit" [(ngModel)]="serverToEdit.rconPassword">
+        </div>
+    </form>
+    <ng-container *swalPortal="swalTargets.cancelButton">
+        Cancel
+    </ng-container>
+    <ng-container *swalPortal="swalTargets.confirmButton">
+        Save
+    </ng-container>
+</swal>

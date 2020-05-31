@@ -23,6 +23,10 @@ export class ServerService {
         return this.http.post(`${environment.apiUrl}/api/server`, server).pipe();
     }
 
+    updateServer(server: Server) {
+        return this.http.put(`${environment.apiUrl}/api/server`, server).pipe();
+    }
+
     removeServer(id: number) {
         return this.http.delete(`${environment.apiUrl}/api/server/${id}`).pipe();
     }

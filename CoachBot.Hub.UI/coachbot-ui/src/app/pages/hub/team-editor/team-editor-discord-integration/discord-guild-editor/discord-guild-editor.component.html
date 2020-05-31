@@ -1,70 +1,79 @@
 <ng-container *ngIf="isEditing">
     <ng-container *ngIf="!isLoading; else spinner">
-        <div class="alert alert-info" role="alert">
-            To add a channel, you must have
-            <a href="https://discordapp.com/oauth2/authorize?client_id=310871748562386954&scope=bot">invited CoachBot to
-                your Discord server</a>, and it must have access
-            to your channel
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="input-default">Discord Server</label>
-            <select class="form-control" id="input-default" [(ngModel)]="selectedDiscordGuildId"
-                placeholder="Select Discord server..." required>
-                <option *ngFor="let guild of discordGuilds" [ngValue]="guild.id">{{guild.name}}
-                </option>
-            </select>
-        </div>
-        <div class="form-group ">
-            <label class="control-label" for="input-default">Badge Emote</label>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend clickable">
-                    <span class="input-group-text">
+        <form #editGuildForm="ngForm">
+            <div *ngIf="!userDiscordAccountLinked" class="alert alert-warning" role="alert">
+                You must link your Discord account to your own profile first, via the <a routerLink="/edit-profile"
+                    href="#">edit
+                    profile screen</a>
+            </div>
+            <div class="alert alert-info" role="alert">
+                To add a channel, you must have
+                <a href="https://discordapp.com/oauth2/authorize?client_id=310871748562386954&scope=bot">invited
+                    CoachBot to
+                    your Discord server</a>, and it must have access
+                to your channel
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="input-default">Discord Server</label>
+                <select class="form-control" id="input-default" [(ngModel)]="selectedDiscordGuildId"
+                    placeholder="Select Discord server..." required>
+                    <option *ngFor="let guild of discordGuilds" [ngValue]="guild.id">{{guild.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group ">
+                <label class="control-label" for="input-default">Badge Emote</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend clickable">
+                        <span class="input-group-text">
                             <img *ngIf="team.badgeEmote" style="width: 20px"
                                 [src]="((discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes | arrayFilter:'key':team.badgeEmote)[0].value">
                     </span>
+                    </div>
+                    <select [(ngModel)]="team.badgeEmote" name="badgeEmote" class="form-control">
+                        <option [ngValue]="null">None</option>
+                        <ng-container *ngIf="team.guild && team.guild.discordGuildId">
+                            <option
+                                *ngFor="let emote of (discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes"
+                                [ngValue]="emote.key">
+                                {{emote.key | emoteDisplayName}}
+                            </option>
+                        </ng-container>
+                    </select>
                 </div>
-                <select [(ngModel)]="team.badgeEmote" name="badgeEmote" class="form-control">
-                    <option [ngValue]="null">None</option>
-                    <ng-container *ngIf="team.guild && team.guild.discordGuildId">
-                        <option
-                            *ngFor="let emote of (discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes"
-                            [ngValue]="emote.key">
-                            {{emote.key | emoteDisplayName}}
-                        </option>
-                    </ng-container>
-                </select>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="input-default">Kit Emote</label>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend clickable">
-                    <span class="input-group-text">
+            <div class="form-group">
+                <label class="control-label" for="input-default">Kit Emote</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend clickable">
+                        <span class="input-group-text">
                                 <img *ngIf="team.kitEmote" style="width: 20px"
                                     [src]="((discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes | arrayFilter:'key':team.kitEmote)[0].value">
                         </span>
+                    </div>
+                    <select [(ngModel)]="team.kitEmote" name="kitEmote" class="form-control">
+                        <option [ngValue]="null">None</option>
+                        <ng-container *ngIf="team.guild && team.guild.discordGuildId">
+                            <option
+                                *ngFor="let emote of (discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes"
+                                [ngValue]="emote.key">
+                                {{emote.key | emoteDisplayName}}
+                            </option>
+                        </ng-container>
+                    </select>
                 </div>
-                <select [(ngModel)]="team.kitEmote" name="kitEmote" class="form-control">
-                    <option [ngValue]="null">None</option>
-                    <ng-container *ngIf="team.guild && team.guild.discordGuildId">
-                        <option
-                            *ngFor="let emote of (discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes"
-                            [ngValue]="emote.key">
-                            {{emote.key | emoteDisplayName}}
-                        </option>
-                    </ng-container>
-                </select>
             </div>
-        </div>
-        <div class="float-right">
-            <button class="btn btn-outline-primary mr-2" type="button" (click)="closeEditor()"
-                *ngIf="discordGuildPreviouslySet">
-                Cancel
-            </button>
-            <button class="btn btn-primary" type="button" (click)="updateDiscordGuild()" [disabled]="isLoading">
-                Save
-            </button>
-        </div>
+            <div class="float-right">
+                <button class="btn btn-outline-primary mr-2" type="button" (click)="closeEditor()"
+                    *ngIf="discordGuildPreviouslySet">
+                    Cancel
+                </button>
+                <button class="btn btn-primary" type="button" (click)="updateDiscordGuild()"
+                    [disabled]="isLoading || editGuildForm.invalid">
+                    Save
+                </button>
+            </div>
+        </form>
     </ng-container>
     <ng-template #spinner>
         <app-spinner></app-spinner>

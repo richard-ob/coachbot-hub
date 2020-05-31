@@ -51,7 +51,7 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">
-                                        <i *ngIf="player.country" class="flag-icon flag-icon-squared" [ngClass]="'flag-icon-' + (countries | filterBy:['id']:player.countryId)[0].code.toLowerCase()"></i>
+                                        <i *ngIf="player.country" class="flag-icon flag-icon-squared" [ngClass]="'flag-icon-' + getCountryCode(player.countryId)"></i>
                                     </span>
                                 </div>
                                 <select class="form-control" id="input-default" [(ngModel)]="player.countryId"

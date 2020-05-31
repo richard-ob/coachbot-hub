@@ -76,4 +76,16 @@ export class ProfileEditorComponent implements OnInit {
     startDiscordVerification() {
         window.location.href = 'http://localhost/verify-discord';
     }
+
+    getCountryCode(countryId: number) {
+        console.log(countryId);
+        console.log(this.countries);
+        const country = this.countries.find(c => c.id === countryId);
+        console.log(country);
+        if (!country) {
+            return;
+        }
+
+        return country.code.toLowerCase();
+    }
 }

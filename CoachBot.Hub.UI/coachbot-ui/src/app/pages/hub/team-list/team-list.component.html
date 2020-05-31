@@ -50,22 +50,48 @@
                         <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center">
                         </th>
-                        <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
-                        </th>
-                        <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
+                        <th sorter [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Goals'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
                         </th>
                         <th sorter [sortByColumn]="'Assists'" [sortByColumnName]="'Assists'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
                         </th>
-                        <th sorter [sortByColumn]="'PassesAverage'" [sortByColumnName]="'Avg. Passes'"
+                        <th sorter [sortByColumn]="'AssistsAverage'" [sortByColumnName]="'Assists'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center" [average]="true">
+                        </th>
+                        <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center">
                         </th>
-                        <th sorter [sortByColumn]="'PassesCompletedAverage'"
-                            [sortByColumnName]="'Avg. Passes Completed'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
+                        <th sorter [sortByColumn]="'PassesAverage'" [sortByColumnName]="'Passes'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
+                        </th>
+                        <th sorter [sortByColumn]="'PassesCompletedAverage'" [sortByColumnName]="'Passes Completed'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center" [average]="true">
+                        </th>
+                        <th sorter [sortByColumn]="'InterceptionsAverage'" [sortByColumnName]="'Interceptions'"
+                            [sortByColumnName]="'Interceptions'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
+                        </th>
+                        <th sorter [sortByColumn]="'OffsidesAverage'" [sortByColumnName]="'Offsides'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center" [average]="true">
+                        </th>
+                        <th sorter [sortByColumn]="'PossessionAverage'" [sortByColumnName]="'Possession'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center" [average]="true">
+                        </th>
+                        <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
+                        </th>
+                        <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
                         </th>
                         <th class="team-result__game-overview text-center" style="min-width: 175px" class="text-center">
                             Form</th>
@@ -76,6 +102,8 @@
                         (click)="navigatetoProfile(statistics.teamId)">
                         <td class="team-result__score pl-2 pr-1 py-2">
                             <img *ngIf="statistics.badgeImage" [src]="statistics.badgeImage">
+                            <img *ngIf="!statistics.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                                style="max-height: 20px">
                         </td>
                         <td class="team-result__score no-left-border">{{statistics.teamName}}</td>
                         <td class="team-result__status text-center">{{statistics.appearances}}</td>
@@ -83,12 +111,26 @@
                         <td class="team-result__status text-center">{{statistics.losses}}</td>
                         <td class="team-result__status text-center">{{statistics.draws}}</td>
                         <td class="team-result__status text-center">{{statistics.goals}}</td>
-                        <td class="team-result__status text-center">{{statistics.yellowCards}}</td>
-                        <td class="team-result__status text-center">{{statistics.redCards}}</td>
+                        <td class="team-result__status text-center">{{statistics.goalsAverage | number : '1.2-2'}}</td>
                         <td class="team-result__status text-center">{{statistics.assists}}</td>
-                        <td class="team-result__status text-center">{{statistics.passes}}</td>
-                        <td class="team-result__status text-center">{{statistics.passesCompleted}}</td>
+                        <td class="team-result__status text-center">{{statistics.assistsAverage | number : '1.2-2'}}
+                        </td>
+                        <td class="team-result__status text-center">{{statistics.shotAccuracyPercentage | percent }}
+                        </td>
+                        <td class="team-result__status text-center">{{statistics.passesAverage | number : '1.2-2'}}</td>
                         <td class="team-result__status text-center">
+                            {{statistics.passesCompletedAverage | number : '1.2-2'}}</td>
+                        <td class="team-result__status text-center">
+                            {{statistics.interceptionsAverage | number : '1.2-2'}}</td>
+                        <td class="team-result__status text-center">{{statistics.offsidesAverage | number : '1.2-2'}}
+                        </td>
+                        <td class="team-result__status text-center">{{statistics.possessionAverage | number : '1.2-2'}}
+                        </td>
+                        <td class="team-result__status text-center">{{statistics.yellowCardsAverage | number : '1.2-2'}}
+                        </td>
+                        <td class="team-result__status text-center">{{statistics.redCardsAverage | number : '1.2-2'}}
+                        </td>
+                        <td class="team-result__status text-center" style="min-width: 175px">
                             <app-form-indicator [form]="statistics.form"></app-form-indicator>
                         </td>
                     </tr>

@@ -11,6 +11,9 @@ import { EventEmitter, Output, Input, Component } from '@angular/core';
             <i *ngIf="currentSort === sortByColumn && currentOrder === 'DESC'"
                 class="fas fa-sort-down"></i>
             <i *ngIf="currentSort !== sortByColumn" class="fas fa-sort"></i>
+            <sup *ngIf="average" style="float: left; text-align: center; width: 100%; top: 2px; left: -3px; color: #6c757d73;">
+                Average
+            </sup>
         </span>
     `
 })
@@ -20,4 +23,5 @@ export class ThSorterComponent {
     @Input() sortByColumnName: string;
     @Input() currentSort: string;
     @Input() currentOrder: string;
+    @Input() average = false;
 }

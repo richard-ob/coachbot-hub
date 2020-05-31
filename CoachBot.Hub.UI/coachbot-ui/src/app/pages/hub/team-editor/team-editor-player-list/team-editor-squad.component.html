@@ -18,7 +18,7 @@
                 <tbody>
                     <tr *ngFor="let teamPlayer of teamPlayers">
                         <td>
-                            <a [routerLink]="['/player/' + teamPlayer.playerId]">{{teamPlayer.player.displayName}}</a>
+                            <a [routerLink]="['/player-profile/' + teamPlayer.playerId]">{{teamPlayer.player.name}}</a>
                         </td>
                         <td>
                             <a href="https://steamcommunity.com/profiles/{{teamPlayer.player.steamID}}"

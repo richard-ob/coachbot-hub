@@ -1,7 +1,7 @@
 <!-- Add some code kind of team coloured gradients as background colour -->
 <app-spinner *ngIf="isLoading"></app-spinner>
 <ng-container *ngIf="!isLoading">
-    <div class="player-heading" [ngStyle]="generateGradient(team.color)">
+    <div class="player-heading" [ngStyle]="{ 'background-image': generateGradient(team.color) }">
         <div class="container">
             <div class="player-info__title player-info__title--mobile">
                 <h1 class="player-info__name"><span class="player-info__first-name">{{team.name}}</span></h1>
@@ -9,6 +9,8 @@
             <div class="player-info">
                 <div class="player-info__item player-info__item--details" aria-hidden="false">
                     <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage"
+                        style="position: absolute; right: 30px; top: 33px; max-height: 150px;">
+                    <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                         style="position: absolute; right: 30px; top: 33px; max-height: 150px;">
                     <div class="player-info__title player-info__title--desktop">
                         <h1 class="player-info__name">
@@ -90,7 +92,7 @@
             </div>
         </nav>
     </div>
-    <div class="container">
+    <div class="my-4">
         <router-outlet></router-outlet>
     </div>
 </ng-container>

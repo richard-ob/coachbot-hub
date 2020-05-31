@@ -25,7 +25,10 @@ export class TeamProfileComponent implements OnInit {
     }
 
     generateGradient(colour: string) {
-        // return 'background-image: linear-gradient(90deg,' + this.hexToRgbA(colour, 0.8) + ',' + this.hexToRgbA(colour, 0.3) + ');';
+        const gradientSrc =
+            'linear-gradient(90deg,' + this.hexToRgbA(colour, 0.6) + ',' + this.hexToRgbA(colour, 0.3) + ')';
+        console.log(gradientSrc);
+        return gradientSrc;
     }
 
     private hexToRgbA(hex: string, opacity: number = 1) {

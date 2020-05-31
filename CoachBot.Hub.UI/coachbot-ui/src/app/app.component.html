@@ -153,36 +153,36 @@
                             </li>
                             <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
                                 (click)="toggleSectionOpen(matchHubSection, matchHubToggle)">
-                                <a href="javascript:void(0);">Match Hub</a>
+                                <a href="javascript:void(0);">Hub</a>
                                 <span class="main-nav__toggle" #matchHubToggle></span>
                                 <div class="main-nav__megamenu clearfix" #matchHubSection>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Matches</li>
-                                        <li><a routerLink="./recent-matches">Recent Matches</a></li>
-                                        <li><a routerLink="./upcoming-matches">Upcoming Matches</a></li>
+                                        <li><a routerLink="./recent-matches">Results</a></li>
+                                        <li><a routerLink="./upcoming-matches">Fixtures</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Teams</li>
-                                        <li *ngIf="player">
-                                            <a routerLink="./team-editor-list">My Teams</a>
-                                        </li>
                                         <li>
                                             <a routerLink="./teams">Teams</a>
                                         </li>
-                                        <li><a routerLink="./team-list">Team Statistics</a></li>
+                                        <li><a routerLink="./team-list">Statistics</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Players</li>
-                                        <li *ngIf="player">
-                                            <a routerLink="./player-profile/{{player.id}}">My Profile</a>
-                                        </li>
-                                        <li><a routerLink="./player-list">Player Statistics</a></li>
+                                        <li><a routerLink="./player-list">Statistics</a></li>
+                                        <li><a routerLink="./hall-of-fame">Hall of Fame</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Competitions</li>
-                                        <li><a routerLink="/tournaments">Current Competitions</a></li>
-                                        <li><a routerLink="./match-overview">Past Competitions</a></li>
+                                        <li><a routerLink="/tournaments">Current</a></li>
+                                        <li><a routerLink="./match-overview">Past</a></li>
                                         <li><a routerLink="/fantasy">Fantasy</a></li>
+                                    </ul>
+                                    <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">My Hub</li>
+                                        <li><a routerLink="./player-profile/{{player.id}}">Profile</a></li>
+                                        <li><a routerLink="./team-editor-list">Teams</a></li>
                                     </ul>
                                     <ul *ngIf="player && player.hubRole === 0"
                                         class="col-lg-2 col-md-3 col-12 main-nav__ul">

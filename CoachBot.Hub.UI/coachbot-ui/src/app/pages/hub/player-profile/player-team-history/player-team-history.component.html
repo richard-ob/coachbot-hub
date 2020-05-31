@@ -27,8 +27,8 @@
                 <tbody>
                     <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals">
                         <td class="pl-2 pr-1 py-2">
-                            <img *ngIf="playerTeamStatisticsTotal.playerTeam.team.badgeImage"
-                                [src]="statistics.badgeImage">
+                            <img *ngIf="playerTeamStatisticsTotal.playerTeam.team.badgeImage.base64EncodedImage"
+                                [src]="playerTeamStatisticsTotal.playerTeam.team.badgeImage.base64EncodedImage">
                         </td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.team.name}}</td>
                         <td class="team-result__date">Club</td>

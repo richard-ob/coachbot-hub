@@ -13,7 +13,8 @@
                 <header class="card__header sponsor-card__header"
                     [style.background-color]="team.color ? team.color : '#292c31'">
                     <figure class="sponsor-card__logo">
-                        <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage">
+                        <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage"
+                            style="max-height: 140px">
                         <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                             style="max-height: 140px">
                     </figure>

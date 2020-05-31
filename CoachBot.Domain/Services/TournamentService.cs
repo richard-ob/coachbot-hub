@@ -93,7 +93,6 @@ namespace CoachBot.Domain.Services
 
         public void CreateTournamentEdition(TournamentEdition tournamentEdition, ulong? steamId = null)
         {
-
             tournamentEdition.IsPublic = false;
             _coachBotContext.TournamentEditions.Add(tournamentEdition);
             _coachBotContext.SaveChanges();

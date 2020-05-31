@@ -499,7 +499,8 @@ namespace CoachBot.Domain.Services
                 },
                 Team = new Team()
                 {
-                    Name = playerTeam.Team.Name
+                    Name = playerTeam.Team.Name,
+                    BadgeImage = playerTeam.Team.BadgeImage
                 }
             };
         }

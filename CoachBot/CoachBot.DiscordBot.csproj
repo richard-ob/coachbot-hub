@@ -32,6 +32,7 @@
     <Compile Include="Controllers\AssetImageController.cs" />
     <Compile Include="Controllers\ChannelController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\DiscordUserController.cs" />
     <Compile Include="Controllers\DiscordGuildController.cs" />
     <Compile Include="Controllers\DiscordVerificationController.cs" />
     <Compile Include="Controllers\FantasyTeamController.cs" />

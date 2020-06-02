@@ -20,9 +20,11 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let playerTeam of player.teams | filterBy: ['isCurrentTeam']:'true'">
-                        <td class="pl-2 pr-1 py-2">
+                        <td class="pr-0">
                             <img *ngIf="playerTeam.team.badgeImage"
-                                [src]="playerTeam.team.badgeImage.base64EncodedImage">
+                                [src]="playerTeam.team.badgeImage.base64EncodedImage" style="width: 16px;">
+                            <img *ngIf="!playerTeam.team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                                style="width: 16px;">
                         </td>
                         <td>{{playerTeam.team.name}}</td>
                         <td>{{playerTeam.team.teamType | teamType}}</td>

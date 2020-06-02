@@ -15,18 +15,18 @@ namespace CoachBot.Controllers
     public class ServerController : Controller
     {
         private readonly ServerService _serverService;
-        private readonly DiscordService _discordService;
+        private readonly PlayerService _playerService;
 
-        public ServerController(ServerService serverService, DiscordService discordService)
+        public ServerController(ServerService serverService, PlayerService playerService)
         {
             _serverService = serverService;
-            _discordService = discordService;
+            _playerService = playerService;
         }
 
         [HttpGet("{id}")]
         public Server Get(int id)
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
+            if (!_playerService.IsAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }
@@ -36,7 +36,7 @@ namespace CoachBot.Controllers
         [HttpGet]
         public IEnumerable<Server> GetAll()
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
+            if (!_playerService.IsAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }
@@ -46,7 +46,7 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
+            if (!_playerService.IsAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }
@@ -56,7 +56,7 @@ namespace CoachBot.Controllers
         [HttpPut]
         public void Update(Server server)
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
+            if (!_playerService.IsAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }
@@ -66,7 +66,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void Create(Server server)
         {
-            if (!_discordService.UserIsOwningGuildAdmin(User.GetSteamId()))
+            if (!_playerService.IsAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }

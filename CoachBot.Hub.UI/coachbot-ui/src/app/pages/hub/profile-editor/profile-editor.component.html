@@ -16,14 +16,15 @@
                         <div class="form-group">
                             <label class="control-label" for="input-default">Discord Account</label>
                             <ng-container *ngIf="player.discordUserId">
-                                <div>
-                                    <i class="fas fa-check text-success mr-2"></i>&nbsp;Discord account linked
-                                    <p>
-                                        <button type="button" class="btn btn-xs btn-secondary"
-                                            [swal]="{ title: 'Please note', text: 'After verifying via Discord, you\'ll need to log back in via Steam', icon: 'info', showCancelButton: false }"
-                                            (confirm)="startDiscordVerification()">Relink Discord Account</button>
-                                    </p>
+                                <div class="mb-2">
+                                    <img [src]="discordUser.avatarUrl" class="profile-editor--discord-avatar mr-1"
+                                        title="Discord Avatar">
+                                    <span class="mr-1" title="Discord Username">{{discordUser.name}}</span>
+                                    <span class="text-muted" title="Discord User Id">{{discordUser.id}}</span>
                                 </div>
+                                <button type="button" class="btn btn-xs btn-secondary"
+                                    [swal]="{ title: 'Please note', text: 'After verifying via Discord, you\'ll need to log back in via Steam', icon: 'info', showCancelButton: false }"
+                                    (confirm)="startDiscordVerification()">Relink Discord Account</button>
                             </ng-container>
                             <ng-container *ngIf="!player.discordUserId">
                                 <p>

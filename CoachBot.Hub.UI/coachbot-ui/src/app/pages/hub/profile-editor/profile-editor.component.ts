@@ -1,15 +1,13 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Player } from '../shared/model/player.model';
 import { PlayerService } from '../shared/services/player.service';
 import { SteamUserProfile } from '../shared/model/steam-user-profile.model';
 import { CountryService } from '../shared/services/country.service';
 import { Country } from '../shared/model/country.model';
-import { SteamService } from '../../../shared/services/steam.service.';
 import { PositionService } from '../shared/services/position.service';
 import { Position } from '../shared/model/position';
-import { PlayerPosition } from '../shared/model/player-position.model';
-import { PlayerTeamService } from '../shared/services/player-team.service';
-import { PlayerTeam } from '../shared/model/player-team.model';
+import { DiscordService } from '../shared/services/discord.service';
+import { DiscordUser } from '../shared/model/discord-user.model';
 
 @Component({
     selector: 'app-profile-editor',
@@ -20,6 +18,7 @@ export class ProfileEditorComponent implements OnInit {
 
     player: Player;
     steamUserProfile: SteamUserProfile;
+    discordUser: DiscordUser;
     countries: Country[];
     positions: Position[];
     isLoading = true;
@@ -27,7 +26,7 @@ export class ProfileEditorComponent implements OnInit {
     constructor(
         private playerService: PlayerService,
         private countryService: CountryService,
-        private steamService: SteamService,
+        private discordService: DiscordService,
         private positionService: PositionService
     ) { }
 
@@ -38,13 +37,13 @@ export class ProfileEditorComponent implements OnInit {
                 this.player = player;
                 this.positionService.getPositions().subscribe(positions => {
                     this.positions = positions;
-                    this.isLoading = false;
-                    if (this.player.steamID && this.player.steamID.length > 5) {
-                        this.steamService.getUserProfiles([this.player.steamID]).subscribe(steamResponse => {
-                            if (steamResponse && steamResponse.response.players) {
-                                this.steamUserProfile = steamResponse.response.players[0];
-                            }
+                    if (this.player.discordUserId.length) {
+                        this.discordService.getUser(this.player.discordUserId).subscribe(discordUser => {
+                            this.discordUser = discordUser;
+                            this.isLoading = false;
                         });
+                    } else {
+                        this.isLoading = false;
                     }
                 });
             });

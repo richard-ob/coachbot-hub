@@ -39,6 +39,23 @@ namespace CoachBot.Domain.Services
             };
         }
 
+        public DiscordUser GetDiscordUser(ulong userId)
+        {
+            var user = _discordSocketClient.GetUser(userId);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new DiscordUser()
+            {
+                Id = user.Id,
+                Name = user.Username,
+                AvatarUrl = user.GetAvatarUrl()
+            };
+        }
+
         public IEnumerable<DiscordChannel> GetChannelsForGuild(ulong guildId)
         {
             var guild = _discordSocketClient.GetGuild(guildId);

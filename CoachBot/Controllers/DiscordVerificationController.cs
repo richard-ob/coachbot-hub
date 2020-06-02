@@ -31,17 +31,20 @@ namespace CoachBot.Controllers
         public IActionResult Verify()
         {
             var steamId = User.GetSteamId();
+            var token = Guid.NewGuid().ToString();
 
             _cacheService.Set(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString(), DateTime.Now.AddMinutes(5));
+            _cacheService.Set(CacheService.CacheItemType.DiscordVerificationSessionToken, steamId.ToString(), token);
 
-            return Challenge(new AuthenticationProperties { RedirectUri = "/verification-complete?steamId=" + steamId }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
+            return Challenge(new AuthenticationProperties { RedirectUri = "/verification-complete?steamId=" + steamId + "&token=" + token }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
         }
 
         [HttpGet("/verification-complete")]
-        public IActionResult VerificationComplete(ulong steamId)
+        public IActionResult VerificationComplete(ulong steamId, string token)
         {
-            DateTime? verificationSessionExpiry = _cacheService.Get(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString()) as DateTime?;
-            if (verificationSessionExpiry != null && verificationSessionExpiry.Value > DateTime.Now)
+            var verificationSessionExpiry = _cacheService.Get(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString()) as DateTime?;
+            var verificationSessionToken = _cacheService.Get(CacheService.CacheItemType.DiscordVerificationSessionToken, steamId.ToString()) as string;
+            if (verificationSessionExpiry != null && verificationSessionExpiry.Value > DateTime.Now && !string.IsNullOrEmpty(verificationSessionToken) && verificationSessionToken == token)
             {
                 _playerService.UpdateDiscordUserId(User.GetDiscordUserId(), steamId);
                 _cacheService.Remove(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString());

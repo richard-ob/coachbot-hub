@@ -52,8 +52,7 @@
                 <thead>
                     <tr>
                         <th class="team-result__date">Date</th>
-                        <th class="team-result__vs">Match</th>
-                        <th class="team-result__score">Score</th>
+                        <th class="team-result__vs text-center">Result</th>
                         <th class="team-result__status">Match Type</th>
                         <th class="team-result__status">Match Format</th>
                         <th class="team-result__ball-posession">Location</th>
@@ -66,21 +65,30 @@
                         <td class="team-result__date">
                             {{(match.readiedDate || match.scheduledKickOff)| date:'medium'}}
                         </td>
-                        <td class="team-result__vs">
-                            <div class="team-meta">
-                                <strong [attr.title]="match.teamHome.name">{{match.teamHome.teamCode}}</strong>
-                                vs
-                                <strong [attr.title]="match.teamAway.name">{{match.teamAway.teamCode}}</strong>
-                            </div>
-                        </td>
-                        <td class="team-result__score">
-                            <ng-container *ngIf="match.matchStatistics; else matchNotPlayed">
-                                {{match?.matchStatistics?.matchGoalsHome}} -
-                                {{match?.matchStatistics?.matchGoalsAway}}
-                            </ng-container>
+                        <td class="team-result__vs text-center">
+                            <strong [attr.title]="match.teamHome.name">{{match.teamHome.teamCode}}</strong>
+                            <span class="mx-1">
+                                    <img *ngIf="match.teamHome.badgeImage"
+                                        [src]="match.teamHome.badgeImage.base64EncodedImage">
+                                    <img *ngIf="!match.teamHome.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                                        style="max-height: 20px">
+                                </span>
+                            <span *ngIf="match.matchStatistics; else matchNotPlayed" class="mx-1">
+                                <span class="team-result--score">{{match?.matchStatistics?.matchGoalsHome}}</span>
+                            <span class="team-result--score">{{match?.matchStatistics?.matchGoalsAway}}</span>
+                            </span>
                             <ng-template #matchNotPlayed>
-                                TBC
+                                <span style="background-color: black; padding: .2rem .4rem; color: white;">
+                                        TBC
+                                    </span>
                             </ng-template>
+                            <span class="mx-1">
+                                    <img *ngIf="match.teamAway.badgeImage"
+                                        [src]="match.teamAway.badgeImage.base64EncodedImage">
+                                    <img *ngIf="!match.teamAway.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                                        style="max-height: 20px">
+                                </span>
+                            <strong [attr.title]="match.teamAway.name">{{match.teamAway.teamCode}}</strong>
                         </td>
                         <td class="team-result__status">
                             <ng-container [ngSwitch]="match.matchType">

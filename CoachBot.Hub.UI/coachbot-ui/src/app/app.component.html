@@ -182,7 +182,7 @@
                                         <li><a routerLink="./player-profile/{{player.id}}">Profile</a></li>
                                         <li><a routerLink="./team-editor-list">Teams</a></li>
                                     </ul>
-                                    <ul *ngIf="player && player.hubRole === 0"
+                                    <ul *ngIf="player && player.hubRole === 2"
                                         class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Management</li>
                                         <li><a routerLink="./tournament-creator">Competitions</a></li>

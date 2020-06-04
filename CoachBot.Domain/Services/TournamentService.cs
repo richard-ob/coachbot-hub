@@ -318,7 +318,7 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        #region Round Robin
+        #region Knockout
         private void GenerateKnockoutTournament(int tournamentEditionId)
         {
             var tournament = _coachBotContext.TournamentEditions.Include(t => t.Tournament).First(t => t.Id == tournamentEditionId);
@@ -373,8 +373,9 @@ namespace CoachBot.Domain.Services
             }
 
             var brackets = BracketsHelper.GenerateBrackets(teams);
+            var groupId = stage.TournamentGroups.First().Id;
             var phases = new List<TournamentPhase>();
-            var matches = new List<Match>();
+            var matches = new List<TournamentGroupMatch>();
             var currentMatchDay = DateTime.Now;
             foreach (var round in brackets.Select(b => b.RoundNo).Distinct())
             {
@@ -384,26 +385,38 @@ namespace CoachBot.Domain.Services
                 };
                 phases.Add(phase);
                 currentMatchDay = currentMatchDay.AddDays(1);
+                var lastRoundByes = brackets.Where(b => brackets.Any(x => x.Bye == true && b.RoundNo == round - 1) && b.RoundNo == round - 1 && b.Bye == false).Count();
                 foreach (var matchup in brackets.Where(b => b.RoundNo == round && b.Bye == false))
                 {
-                    var match = new Match()
+                    var homeTeamId = teams.Select(t => t.Id).LastOrDefault(t => !matches.Any(m => t == m.Match.TeamHomeId || t == m.Match.TeamAwayId));
+                    int? awayTeamId = null;
+                    if (lastRoundByes == 0)
                     {
-                        TeamHome = new Team()
+                        awayTeamId = teams.Select(t => t.Id).LastOrDefault(t => !matches.Any(m => t == m.Match.TeamHomeId || t == m.Match.TeamAwayId) && t != homeTeamId);
+                    }
+                    else
+                    {
+                        lastRoundByes--;
+                    }
+                    var match = new TournamentGroupMatch()
+                    {
+                        TournamentGroupId = groupId,
+                        TournamentPhaseId = phase.Id,
+                        TeamHomePlaceholder = "",
+                        TeamAwayPlaceholder = "",
+                        Match = new Match()
                         {
-                            Name = matchup.TeamNames != null ? matchup.TeamNames.Item1 : null
-                        },
-                        TeamAway = new Team()
-                        {
-                            Name = matchup.TeamNames != null ? matchup.TeamNames.Item2 : null
-                        },
-                        MatchType = MatchType.Competition,
-                        ScheduledKickOff = currentMatchDay,
-                        Format = tournamentEdition.Format,
-                        TournamentId = tournamentEdition.Id
+                            TeamHomeId = homeTeamId > 0 ? homeTeamId : (int?)null,
+                            TeamAwayId = awayTeamId,
+                            MatchType = MatchType.Competition,
+                            ScheduledKickOff = currentMatchDay,
+                            Format = tournamentEdition.Format,
+                            TournamentId = tournamentEdition.Id
+                        }
                     };
                     matches.Add(match);
                 }
-            }
+            }            
         }
         #endregion
 

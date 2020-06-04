@@ -23,6 +23,10 @@ namespace CoachBot.Domain.Model
 
         public TournamentPhase TournamentPhase { get; set; }
 
+        public string TeamHomePlaceholder { get; set; }
+
+        public string TeamAwayPlaceholder { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 

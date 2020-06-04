@@ -40,28 +40,12 @@ namespace CoachBot.Domain.Helpers
                     byes--;
                 }
 
-                var last = brackets.Where(x => x.NextGame == i).Select(x => new Matchup() { Game = x.BracketNo, Teams = x.TeamNames });
-                Tuple<string, string> teamNames = null;
-                if (round == 1 && teamMark < teams.Count)
-                {
-                    teamNames = new Tuple<string, string>(teams.ElementAt(teamMark).Name, teams.ElementAt(teamMark + 1).Name);
-                }
-                else if (round > 1)
-                {
-                    if (last.Count() >= 2)
-                    {
-                        var team1 = last.ElementAt(0).Teams != null ? last.ElementAt(0).Teams.Item1 : null;
-                        var team2 = last.ElementAt(1).Teams != null ? last.ElementAt(1).Teams.Item1 : null;
-                        teamNames = new Tuple<string, string>(team1, team2);
-                    }
-                    //[last[0].teams[_.random(1)],last[1].teams[_.random(1)]]
-                }
+                var last = brackets.Where(x => x.NextGame == i).Select(x => new Matchup() { Game = x.BracketNo });
 
                 var newBracket = new Bracket()
                 {
                     LastGames = round == 1 ? null : new Tuple<int, int>(last.ElementAt(0).Game, last.ElementAt(1).Game),
                     NextGame = nextInc + 1 > Convert.ToDecimal(baseNum) - 1 ? (decimal?)null : nextInc + i,
-                    TeamNames = teamNames, // This isn't actually for picking teams, but emulating
                     BracketNo = i,
                     RoundNo = round,
                     Bye = isBye
@@ -91,8 +75,6 @@ namespace CoachBot.Domain.Helpers
         public class Matchup
         {
             public int Game { get; set; }
-
-            public Tuple<string, string> Teams { get; set; }
         }
 
         public class Bracket
@@ -104,8 +86,6 @@ namespace CoachBot.Domain.Helpers
             public Tuple<int, int> LastGames { get; set; }
 
             public decimal? NextGame { get; set; }
-
-            public Tuple<string, string> TeamNames { get; set; }
 
             public int RoundNo { get; set; }
 

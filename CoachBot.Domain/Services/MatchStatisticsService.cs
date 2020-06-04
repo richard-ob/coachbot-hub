@@ -361,7 +361,6 @@ namespace CoachBot.Domain.Services
                  {
                      m.TeamId,
                      m.ChannelId,
-                     m.TeamName,
                      m.RedCards,
                      m.YellowCards,
                      m.Fouls,
@@ -390,9 +389,10 @@ namespace CoachBot.Domain.Services
                      m.Assists,
                      m.MatchOutcome,
                      m.Team.BadgeImage.Base64EncodedImage,
-                     m.Team.Form
+                     m.Team.Form,
+                     m.Team.Name
                  })
-                 .GroupBy(p => new { p.TeamId, p.ChannelId, p.TeamName, p.Base64EncodedImage, p.Form }, (key, s) => new TeamStatisticTotals()
+                 .GroupBy(p => new { p.TeamId, p.ChannelId, p.Name, p.Base64EncodedImage, p.Form }, (key, s) => new TeamStatisticTotals()
                  {
                      Goals = s.Sum(p => p.Goals),
                      GoalsAverage = s.Average(p => p.Goals),
@@ -444,7 +444,7 @@ namespace CoachBot.Domain.Services
                      Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
                      Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
                      TeamId = key.TeamId,
-                     TeamName = key.TeamName,
+                     TeamName = key.Name,
                      ChannelId = key.ChannelId,
                      BadgeImage = key.Base64EncodedImage,
                      Form = key.Form,

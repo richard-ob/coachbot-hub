@@ -37,7 +37,7 @@ export class ProfileEditorComponent implements OnInit {
                 this.player = player;
                 this.positionService.getPositions().subscribe(positions => {
                     this.positions = positions;
-                    if (this.player.discordUserId.length) {
+                    if (this.player.discordUserId && this.player.discordUserId.length) {
                         this.discordService.getUser(this.player.discordUserId).subscribe(discordUser => {
                             this.discordUser = discordUser;
                             this.isLoading = false;

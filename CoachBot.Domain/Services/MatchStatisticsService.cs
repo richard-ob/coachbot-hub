@@ -157,6 +157,8 @@ namespace CoachBot.Domain.Services
         {
             foreach (var matchDataPlayer in match.MatchStatistics.MatchData.Players.Where(p => p.MatchPeriodData != null && p.MatchPeriodData.Any()))
             {
+                if (matchDataPlayer.Info.SteamId == "BOT") continue;
+
                 var player = GetOrCreatePlayer(matchDataPlayer);
                 foreach (var teamType in matchDataPlayer.MatchPeriodData.Select(m => m.Info.Team).Distinct())
                 {
@@ -174,6 +176,7 @@ namespace CoachBot.Domain.Services
                             PositionId = positionId > 0 ? positionId : _coachBotContext.Positions.FirstOrDefault().Id,
                             MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                             SecondsPlayed = matchDataPlayer.GetPlayerPositionSeconds(teamType, position),
+                            PossessionPercentage = match.MatchStatistics.MatchData.GetPlayerPositionPossession(matchDataPlayer, teamType, position),
                             Nickname = matchDataPlayer.Info.Name,
                             Substitute = matchDataPlayer.WasPlayerSubstitute(teamType, position)
                         };
@@ -188,6 +191,7 @@ namespace CoachBot.Domain.Services
                         TeamId = team.Channel.TeamId,
                         MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                         SecondsPlayed = matchDataPlayer.GetPlayerSeconds(teamType),
+                        PossessionPercentage = match.MatchStatistics.MatchData.GetPlayerPossession(matchDataPlayer),
                         Nickname = matchDataPlayer.Info.Name,
                         Substitute = matchDataPlayer.WasPlayerSubstitute(teamType)
                     };
@@ -210,6 +214,7 @@ namespace CoachBot.Domain.Services
                     ChannelId = (int)team.ChannelId,
                     TeamId = team.Channel.TeamId,
                     MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
+                    PossessionPercentage = match.MatchStatistics.MatchData.GetTeamPosession(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                     TeamName = matchDataTeam.MatchTotal.Name
                 };
                 teamMatchStatistics.AddMatchDataStatistics(matchDataTeam.MatchTotal.Statistics);
@@ -275,6 +280,7 @@ namespace CoachBot.Domain.Services
                      m.KeeperSavesCaught,
                      m.Penalties,
                      m.Possession,
+                     m.PossessionPercentage,
                      m.ThrowIns,
                      m.Corners,
                      m.Goals,
@@ -324,6 +330,7 @@ namespace CoachBot.Domain.Services
                      Penalties = s.Sum(p => p.Penalties),
                      PenaltiesAverage = s.Average(p => p.Penalties),
                      PossessionAverage = s.Average(p => p.Possession),
+                     PossessionPercentageAverage = s.Average(p => p.PossessionPercentage),
                      RedCards = s.Sum(p => p.RedCards),
                      RedCardsAverage = s.Average(p => p.RedCards),
                      YellowCards = s.Sum(p => p.YellowCards),
@@ -376,6 +383,7 @@ namespace CoachBot.Domain.Services
                      m.KeeperSavesCaught,
                      m.Penalties,
                      m.Possession,
+                     m.PossessionPercentage,
                      m.ThrowIns,
                      m.Corners,
                      m.Goals,
@@ -424,6 +432,7 @@ namespace CoachBot.Domain.Services
                      Penalties = s.Sum(p => p.Penalties),
                      PenaltiesAverage = s.Average(p => p.Penalties),
                      PossessionAverage = s.Average(p => p.Possession),
+                     PossessionPercentageAverage = s.Average(p => p.PossessionPercentage),
                      RedCards = s.Sum(p => p.RedCards),
                      RedCardsAverage = s.Average(p => p.RedCards),
                      YellowCards = s.Sum(p => p.YellowCards),

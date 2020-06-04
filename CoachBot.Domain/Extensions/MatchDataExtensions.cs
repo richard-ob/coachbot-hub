@@ -67,6 +67,45 @@ namespace CoachBot.Domain.Extensions
             return statistics;
         }
 
+        public static int GetTotalPosession(this MatchData matchData)
+        {
+            var homePossession = GetMatchStatistic(matchData, MatchDataStatisticType.Possession, MatchDataTeamType.Home);
+            var awayPossession = GetMatchStatistic(matchData, MatchDataStatisticType.Possession, MatchDataTeamType.Away);
+            var totalPosession = homePossession + awayPossession;
+
+            return totalPosession;
+        }
+
+        public static int GetPlayerPositionPossession(this MatchData matchData, MatchDataPlayer matchDataPlayer, string team, string position)
+        {
+            var playerPositionPossession = matchDataPlayer.GetMatchStatisticPlayerTotal(MatchDataStatisticType.Possession, team, position);
+
+            return (playerPositionPossession / GetTotalPosession(matchData)) * 100;
+        }
+
+        public static int GetPlayerPossession(this MatchData matchData, MatchDataPlayer matchDataPlayer)
+        {
+            var playerPossession = GetMatchStatisticPlayerTotal(matchDataPlayer, MatchDataStatisticType.Possession);
+
+            return (playerPossession / GetTotalPosession(matchData)) * 100;
+        }
+
+        public static int GetTeamPosession(this MatchData matchData, MatchDataTeamType matchDataTeamType)
+        {
+            var homePossession = GetMatchStatistic(matchData, MatchDataStatisticType.Possession, MatchDataTeamType.Home);
+            var awayPossession = GetMatchStatistic(matchData, MatchDataStatisticType.Possession, MatchDataTeamType.Away);
+            var totalPosession = homePossession + awayPossession;
+
+            if (matchDataTeamType == MatchDataTeamType.Home)
+            {
+                return (homePossession / totalPosession) * 100;
+            }
+            else
+            {
+                return (awayPossession / totalPosession) * 100;
+            }
+        }
+
         public static bool IsValid(this MatchData matchData, Match match, bool manualSave)
         {
             // Validate match has correct player counts

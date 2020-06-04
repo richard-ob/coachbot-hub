@@ -60,9 +60,9 @@
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Avg. Goals'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                            class="text-center">
+                        <th sorter [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Goals'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
                         </th>
                         <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
@@ -70,24 +70,27 @@
                         </th>
                         <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'AssistsAverage'" [sortByColumnName]="'Avg. Assists'"
+                        <th sorter [sortByColumn]="'AssistsAverage'" [sortByColumnName]="'Assists'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                            class="text-center">
+                            class="text-center" [average]="true">
                         </th>
-                        <th sorter [sortByColumn]="'PassesAverage'" [sortByColumnName]="'Avg. Passes'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                            class="text-center">
+                        <th sorter [sortByColumn]="'PassesAverage'" [sortByColumnName]="'Passes'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
                         </th>
                         <th sorter [sortByColumn]="'PassCompletionPercentageAverage'"
                             [sortByColumnName]="'Pass Completion'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                        <th sorter [sortByColumn]="'PossessionPercentageAverage'" [sortByColumnName]="'Possession'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center" [average]="true"></th>
                         <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'DistanceCoveredAverage'" [sortByColumnName]="'Avg. Distance'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                            class="text-center">
+                            class="text-center" [average]="true">
                         </th>
                     </tr>
                 </thead>
@@ -122,7 +125,14 @@
                                 </ngx-skeleton-loader>
                             </ng-template>
                         </td>
-                        <td class="team-result__status text-center">{{statistics.rating | number : '1.1-1'}}</td>
+                        <td class="team-result__status text-center">
+                            <ng-container *ngIf="statistics.rating > 0; else notRated">
+                                {{statistics.rating | number : '1.1-1'}}
+                            </ng-container>
+                            <ng-template #notRated>
+                                N/A
+                            </ng-template>
+                        </td>
                         <td class="team-result__status text-center">{{statistics.appearances}}</td>
                         <td class="team-result__status text-center">{{statistics.substituteAppearances}}</td>
                         <td class="team-result__status text-center">{{statistics.wins}}</td>
@@ -138,6 +148,9 @@
                         <td class="team-result__status text-center">{{statistics.passesAverage | number : '1.2-2'}}</td>
                         <td class="team-result__status text-center">
                             {{statistics.passCompletionPercentageAverage | percent }}
+                        </td>
+                        <td class="team-result__status text-center">
+                            {{statistics.possessionPercentageAverage | percent }}
                         </td>
                         <td class="team-result__status text-center">{{statistics.yellowCards}}</td>
                         <td class="team-result__status text-center">{{statistics.redCards}}</td>

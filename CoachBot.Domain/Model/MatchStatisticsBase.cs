@@ -82,6 +82,10 @@ namespace CoachBot.Domain.Model
         [MatchDataStatistic(MatchDataStatisticType.KeeperSavesCaught)]
         public int KeeperSavesCaught { get; set; }
 
+        // Manually generated stats
+
+        public int PossessionPercentage { get; set; }
+
         public MatchOutcomeType MatchOutcome { get; set; }
     }
 }

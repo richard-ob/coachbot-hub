@@ -67,7 +67,7 @@
                         </th>
                         <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                            class="text-center" [average]="true">
+                            class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'PassesAverage'" [sortByColumnName]="'Passes'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
@@ -75,7 +75,7 @@
                         </th>
                         <th sorter [sortByColumn]="'PassCompletionPercentageAverage'"
                             [sortByColumnName]="'Pass Completion'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true"></th>
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'InterceptionsAverage'" [sortByColumnName]="'Interceptions'"
                             [sortByColumnName]="'Interceptions'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
@@ -84,9 +84,9 @@
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center" [average]="true">
                         </th>
-                        <th sorter [sortByColumn]="'PossessionAverage'" [sortByColumnName]="'Possession'"
+                        <th sorter [sortByColumn]="'PossessionPercentageAverage'" [sortByColumnName]="'Possession'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                            class="text-center" [average]="true">
+                            class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
@@ -131,7 +131,8 @@
                             {{statistics.interceptionsAverage | number : '1.2-2'}}</td>
                         <td class="team-result__status text-center">{{statistics.offsidesAverage | number : '1.2-2'}}
                         </td>
-                        <td class="team-result__status text-center">{{statistics.possessionAverage | number : '1.2-2'}}
+                        <td class="team-result__status text-center">
+                            {{statistics.possessionPercentageAverage | percent }}
                         </td>
                         <td class="team-result__status text-center">{{statistics.yellowCardsAverage | number : '1.2-2'}}
                         </td>

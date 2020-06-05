@@ -31,7 +31,7 @@ namespace CoachBot.Domain.Model
 
         public ICollection<TournamentStage> TournamentStages { get; set; }
 
-        public ICollection<TournamentEditionMatchDay> TournamentEditionMatchDays { get; set; }
+        public ICollection<TournamentEditionMatchDaySlot> TournamentEditionMatchDays { get; set; }
 
         public ICollection<TournamentEditionStaff> TournamentEditionStaff { get; set; }
 

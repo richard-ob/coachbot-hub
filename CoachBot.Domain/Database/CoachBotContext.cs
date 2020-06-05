@@ -45,7 +45,7 @@ namespace CoachBot.Database
         public DbSet<TournamentGroup> TournamentGroups { get; set; }
         public DbSet<TournamentGroupMatch> TournamentGroupMatches { get; set; }
         public DbSet<TournamentGroupTeam> TournamentGroupTeams { get; set; }
-        public DbSet<TournamentEditionMatchDay> TournamentEditionMatchDays { get; set; }
+        public DbSet<TournamentEditionMatchDaySlot> TournamentEditionMatchDays { get; set; }
         public DbSet<TournamentEditionStaff> TournamentEditionStaff { get; set; }
         public DbSet<FantasyTeam> FantasyTeams { get; set; }
         public DbSet<FantasyPlayer> FantasyPlayers { get; set; }
@@ -106,7 +106,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<TournamentGroup>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentGroupMatch>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentGroupTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<TournamentEditionMatchDay>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentEditionMatchDaySlot>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentEditionStaff>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<FantasyPlayer>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<FantasyTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

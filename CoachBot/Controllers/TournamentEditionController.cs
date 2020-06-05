@@ -1,6 +1,7 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -39,15 +40,19 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournamentEdition(id);
         }
 
+        [Authorize]
         [HttpPost]
         public void CreateTournamentEdition(TournamentEdition tournamentEdition)
         {
+            // TODO: Check player is tournament organiser
             _tournamentService.CreateTournamentEdition(tournamentEdition, User.GetSteamId());
         }
 
+        [Authorize]
         [HttpPut]
         public void UpdateTournamentEdition(TournamentEdition tournamentEdition)
         {
+            // TODO: Check player is tournament organiser
             _tournamentService.UpdateTournamentEdition(tournamentEdition);
         }
 
@@ -69,9 +74,11 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournamentEditionStaff(id);
         }
 
+        [Authorize]
         [HttpPost("{id}/generate-schedule")]
         public void GenerateTournamentEditionSchedule(int id)
         {
+            // TODO: Check player is tournament organiser
             _tournamentService.GenerateTournamentSchedule(id);
         }
 
@@ -81,5 +88,25 @@ namespace CoachBot.Controllers
             return _tournamentService.GetCurrentTournamentPhase(id);
         }
 
+        [HttpGet("{id}/match-day-slots")]
+        public List<TournamentEditionMatchDaySlot> GetTournamentEditionMatchDayslots(int id)
+        {
+            return _tournamentService.GetTournamentMatchDaySlots(id);
+        }
+
+        [Authorize]
+        [HttpPost("{id}/match-day-slots")]
+        public void CreateTournamentMatchDaySlot(TournamentEditionMatchDaySlot tournamentEditionMatchDaySlot)
+        {
+            // TODO: Check player is tournament organiser
+            _tournamentService.CreateTournamentMatchDaySlot(tournamentEditionMatchDaySlot);
+        }
+
+        [Authorize]
+        [HttpDelete("{id}/match-day-slots/{matchDaySlotId}")]
+        public void DeleteTournamentMatchDaySlot(int matchDaySlotId)
+        {
+            _tournamentService.DeleteTournamentMatchDaySlot(matchDaySlotId);
+        }
     }
 }

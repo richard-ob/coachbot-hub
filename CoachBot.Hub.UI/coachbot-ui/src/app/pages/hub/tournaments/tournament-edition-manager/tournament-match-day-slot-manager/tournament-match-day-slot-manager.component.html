@@ -1,0 +1,43 @@
+<div class="card">
+    <div class="card__header">
+        <h4>Tournament Match Day Slots</h4>
+    </div>
+    <div class="card__content">
+        <app-spinner *ngIf="isLoading"></app-spinner>
+        <ng-container *ngIf="!isLoading">
+            <h5>Current Slots</h5>
+            <div *ngIf="!matchDaySlots.length" class="alert alert-info">
+                There are no slots added yet
+            </div>
+            <ul>
+                <li *ngFor="let slot of matchDaySlots">{{slot.matchDay | tournamentMatchDay}}
+                    {{slot.matchTime | date:'shortTime'}} <button type="button" class="btn btn-outline-danger btn-xs"
+                        (click)="deleteMatchDaySlot(slot.id)">Delete</button></li>
+            </ul>
+            <form (ngSubmit)="createMatchDaySlot()" #addSlotForm="ngForm">
+                <h5>Add Match Day Slot</h5>
+                <div class="form-group">
+                    <label class="control-label" for="input-default">Day</label>
+                    <select class="form-control" [(ngModel)]="matchDaySlot.matchDay" name="matchDay" required>
+                        <option [ngValue]="0">Monday</option>
+                        <option [ngValue]="1">Tuesday</option>
+                        <option [ngValue]="2">Wednesday</option>
+                        <option [ngValue]="3">Thursday</option>
+                        <option [ngValue]="4">Friday</option>
+                        <option [ngValue]="5">Saturday</option>
+                        <option [ngValue]="6">Sunday</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="input-default">Time</label>
+                    <timepicker [(ngModel)]="matchDaySlot.matchTime" name="matchTime" required></timepicker>
+                </div>
+                <button type="button" class="btn btn-primary float-right" type="submit"
+                    [disabled]="isSaving || isLoading || addSlotForm.invalid">
+                    <i *ngIf="isSaving || isLoading" class="fas fa-circle-notch fa-spin"></i>
+                    Save
+                </button>
+            </form>
+        </ng-container>
+    </div>
+</div>

@@ -60,6 +60,8 @@
                 </form>
             </div>
         </div>
+        <app-tournament-match-day-slot-manager [tournamentEditionId]="tournamentEditionId">
+        </app-tournament-match-day-slot-manager>
         <div class="card" *ngFor="let stage of tournamentEdition.tournamentStages">
             <div class="card__header card__header--has-btn">
                 <h4>{{stage.name}}</h4>
@@ -83,7 +85,8 @@
                 <div *ngFor="let group of stage.tournamentGroups" class="mt-4">
                     <h6>
                         {{group.name}}
-                        <button class="btn btn-danger btn-xs" type="button" (click)="deleteTournamentGroup(group.id)">
+                        <button class="btn btn-outline-danger btn-xs" type="button"
+                            (click)="deleteTournamentGroup(group.id)">
                             Remove
                         </button>
                     </h6>
@@ -92,7 +95,7 @@
                         <ul>
                             <li *ngFor="let groupTeam of group.tournamentGroupTeams">
                                 {{groupTeam.team.name}}
-                                <button class="btn btn-danger btn-xs" type="button"
+                                <button class="btn btn-outline-danger btn-xs" type="button"
                                     (click)="removeTournamentGroupTeam(groupTeam.team.id, group.id)">
                                     Remove
                                 </button>

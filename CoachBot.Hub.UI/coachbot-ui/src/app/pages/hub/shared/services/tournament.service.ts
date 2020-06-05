@@ -10,6 +10,7 @@ import { TournamentGroup } from '../model/tournament-group.model';
 import { TournamentEditionStaff } from '../model/tournament-edition-staff.model';
 import { Team } from '../model/team.model';
 import { TournamentPhase } from '../model/tournament-phase.model';
+import { TournamentEditionMatchDaySlot } from '../model/tournament-edition-match-day-slot.model';
 
 @Injectable({
     providedIn: 'root'
@@ -86,6 +87,25 @@ export class TournamentService {
 
     getCurrentPhase(tournamentEditionId: number): Observable<TournamentPhase> {
         return this.http.get<TournamentPhase>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/current-phase`);
+    }
+
+    getTournamentEditionMatchDaySlots(tournamentEditionId: number): Observable<TournamentEditionMatchDaySlot[]> {
+        return this.http.get<TournamentEditionMatchDaySlot[]>(
+            `${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/match-day-slots`
+        );
+    }
+
+    createTournamentEditionMatchDaySlot(tournamentEditionMatchDaySlot: TournamentEditionMatchDaySlot) {
+        return this.http.post<TournamentEditionMatchDaySlot[]>(
+            `${environment.apiUrl}/api/tournament-editions/${tournamentEditionMatchDaySlot.tournamentEditionId}/match-day-slots`,
+            tournamentEditionMatchDaySlot
+        );
+    }
+
+    deleteTournamentEditionMatchDaySlot(tournamentEditionId: number, tournamentEditionMatchDaySlotId: number) {
+        return this.http.delete<void>(
+            `${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/match-day-slots/${tournamentEditionMatchDaySlotId}`
+        );
     }
 
     generateTournamentSchedule(tournamentEditionId: number): Observable<void> {

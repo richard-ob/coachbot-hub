@@ -302,6 +302,24 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
+        public List<TournamentEditionMatchDaySlot> GetTournamentMatchDaySlots(int tournamentEditionId)
+        {
+            return _coachBotContext.TournamentEditionMatchDays.Where(t => t.TournamentEditionId == tournamentEditionId).ToList();
+        }
+
+        public void CreateTournamentMatchDaySlot(TournamentEditionMatchDaySlot tournamentEditionMatchDaySlot)
+        {
+            _coachBotContext.TournamentEditionMatchDays.Add(tournamentEditionMatchDaySlot);
+            _coachBotContext.SaveChanges();
+        }
+
+        public void DeleteTournamentMatchDaySlot(int tournamentEditionMatchDaySlot)
+        {
+            var matchDaySlot = _coachBotContext.TournamentEditionMatchDays.Find(tournamentEditionMatchDaySlot);
+            _coachBotContext.TournamentEditionMatchDays.Remove(matchDaySlot);
+            _coachBotContext.SaveChanges();
+        }
+
         public void GenerateTournamentSchedule(int tournamentEditionId, int? tournamentStageId = null)
         {
             var tournament = _coachBotContext.TournamentEditions.Where(t => t.Id == tournamentEditionId).Select(t => t.Tournament).First();
@@ -356,27 +374,18 @@ namespace CoachBot.Domain.Services
             }
 
             var stage = tournamentEdition.TournamentStages.First();
-            var numberOfTeams = _coachBotContext.TournamentGroupTeams
-                .Where(t => t.TournamentGroup.TournamentStageId == stage.Id)
-                .GroupBy(t => t.TournamentGroupId)
-                .Max(t => t.Count());
-
             var teams = _coachBotContext.TournamentGroupTeams
                 .Where(t => t.TournamentGroup.TournamentStageId == stage.Id)
                 .Select(t => t.Team)
                 .Distinct()
                 .ToList();
 
-            if (teams.Count != numberOfTeams)
-            {
-                throw new Exception("ERROR");
-            }
-
             var brackets = BracketsHelper.GenerateBrackets(teams);
             var groupId = stage.TournamentGroups.First().Id;
             var phases = new List<TournamentPhase>();
             var matches = new List<TournamentGroupMatch>();
             var currentMatchDay = DateTime.Now;
+            var rounds = brackets.Max(b => b.RoundNo);
             foreach (var round in brackets.Select(b => b.RoundNo).Distinct())
             {
                 var phase = new TournamentPhase()
@@ -386,6 +395,9 @@ namespace CoachBot.Domain.Services
                 phases.Add(phase);
                 currentMatchDay = currentMatchDay.AddDays(1);
                 var lastRoundByes = brackets.Where(b => brackets.Any(x => x.Bye == true && b.RoundNo == round - 1) && b.RoundNo == round - 1 && b.Bye == false).Count();
+                var currentMatchNumberOfRound = 1;
+                var matchesInRound = brackets.Where(b => b.RoundNo == round && b.Bye == false).Count();
+                var matchesInLastRound = brackets.Where(b => b.RoundNo == round - 1 && b.Bye == false).Count();
                 foreach (var matchup in brackets.Where(b => b.RoundNo == round && b.Bye == false))
                 {
                     var homeTeamId = teams.Select(t => t.Id).LastOrDefault(t => !matches.Any(m => t == m.Match.TeamHomeId || t == m.Match.TeamAwayId));
@@ -398,12 +410,30 @@ namespace CoachBot.Domain.Services
                     {
                         lastRoundByes--;
                     }
+
+                    var roundsFromFinal = rounds - round;
+                    string homePlaceholder = "TBC";
+                    string awayPlaceholder = "TBC";
+                    switch (roundsFromFinal)
+                    {
+                        case 0:
+                            homePlaceholder = "Winner of SF1";
+                            awayPlaceholder = "Winner of SF2";
+                            break;
+                        case 1:
+                            homePlaceholder = currentMatchNumberOfRound == 1 ? "Winner of QF1" : "Winner of QF3";
+                            awayPlaceholder = currentMatchNumberOfRound == 1 ? "Winner of QF2" : "Winner of QF4";
+                            break;
+                        default:
+                            break;
+                    }
+
                     var match = new TournamentGroupMatch()
                     {
                         TournamentGroupId = groupId,
                         TournamentPhaseId = phase.Id,
-                        TeamHomePlaceholder = "",
-                        TeamAwayPlaceholder = "",
+                        TeamHomePlaceholder = homePlaceholder,
+                        TeamAwayPlaceholder = awayPlaceholder,
                         Match = new Match()
                         {
                             TeamHomeId = homeTeamId > 0 ? homeTeamId : (int?)null,
@@ -415,6 +445,7 @@ namespace CoachBot.Domain.Services
                         }
                     };
                     matches.Add(match);
+                    currentMatchNumberOfRound++;
                 }
             }            
         }

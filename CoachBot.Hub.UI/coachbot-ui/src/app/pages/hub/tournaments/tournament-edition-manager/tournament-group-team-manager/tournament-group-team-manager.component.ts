@@ -3,6 +3,7 @@ import { TournamentGroupTeamDto } from '../../../shared/model/dtos/tournament-gr
 import { TournamentService } from '../../../shared/services/tournament.service';
 import { TeamService } from '../../../shared/services/team.service';
 import { Team } from '../../../shared/model/team.model';
+import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 
 @Component({
     selector: 'app-tournament-group-team-manager',
@@ -17,10 +18,15 @@ export class TournamentGroupTeamManagerComponent implements OnInit {
     isSaving = false;
     isLoading = true;
 
-    constructor(private tournamentService: TournamentService, private teamService: TeamService) { }
+    constructor(
+        private tournamentService: TournamentService,
+        private teamService: TeamService,
+        private userPreferencsService: UserPreferenceService
+    ) { }
 
     ngOnInit() {
-        this.teamService.getTeams(2).subscribe(teams => {
+        const regionId = this.userPreferencsService.getUserPreference(UserPreferenceType.Region);
+        this.teamService.getTeams(regionId).subscribe(teams => {
             this.teams = teams;
             this.isLoading = false;
         });

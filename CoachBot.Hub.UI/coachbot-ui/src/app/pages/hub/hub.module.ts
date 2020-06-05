@@ -48,6 +48,10 @@ import { TeamEditorListModule } from './team-editor-list/team-editor-list.module
 import { TeamEditorModule } from './team-editor/team-editor.module';
 import { AssetImageUploaderModule } from '@shared/components/asset-image-uploader/asset-image-uploader.module';
 import { ScorePredictorModule } from './tournaments/score-predictor/score-predictor.module';
+import {
+  TournamentMatchDaySlotManagerComponent
+} from './tournaments/tournament-edition-manager/tournament-match-day-slot-manager/tournament-match-day-slot-manager.component';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 @NgModule({
   declarations: [
@@ -71,6 +75,7 @@ import { ScorePredictorModule } from './tournaments/score-predictor/score-predic
     TournamentEditorComponent,
     TournamentEditionManagerComponent,
     TournamentGroupTeamManagerComponent,
+    TournamentMatchDaySlotManagerComponent,
     MatchEditorComponent,
     CurrentTournamentsComponent,
     TeamsComponent
@@ -100,7 +105,8 @@ import { ScorePredictorModule } from './tournaments/score-predictor/score-predic
     SweetAlert2Module,
     HubPipesModule,
     ChromeColourPickerModule,
-    AssetImageUploaderModule
+    AssetImageUploaderModule,
+    TimepickerModule.forRoot()
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

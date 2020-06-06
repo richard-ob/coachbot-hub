@@ -118,10 +118,11 @@
                             <th>Actions</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let groupMatch of group.tournamentGroupMatches">
+                            <tr
+                                *ngFor="let groupMatch of group.tournamentGroupMatches | orderBy: 'match.scheduledKickOff'">
                                 <td>{{groupMatch.match.scheduledKickOff | date}}</td>
-                                <td>{{groupMatch.match.teamHome.name}}</td>
-                                <td>{{groupMatch.match.teamAway.name}}</td>
+                                <td>{{groupMatch.match.teamHome?.name || groupMatch.teamHomePlaceholder || 'TBC'}}</td>
+                                <td>{{groupMatch.match.teamAway?.name || groupMatch.teamAwayPlaceholder || 'TBC'}}</td>
                                 <td>{{groupMatch.tournamentPhase.name}}</td>
                                 <td>
                                     <button class="btn btn-primary btn-xs" type="button"

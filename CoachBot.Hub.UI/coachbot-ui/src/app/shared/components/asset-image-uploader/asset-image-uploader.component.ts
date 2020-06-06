@@ -15,6 +15,7 @@ export class AssetImageUploaderComponent implements OnInit {
     invalidImage = false;
     uploadSuccessful = false;
     isUploading = false;
+    hasUploaded = true;
     PNG_BASE64_REGEX = new RegExp('^data:image//(?:png)(?:;charset=utf-8)?;base64,(?:[A-Za-z0-9]|[+//])+={0,2}');
 
     constructor(private assetImageService: AssetImageService) { }
@@ -42,6 +43,7 @@ export class AssetImageUploaderComponent implements OnInit {
             }
         });
         fileReader.readAsDataURL(file);
+        this.hasUploaded = false;
     }
 
     uploadFile() {
@@ -52,10 +54,12 @@ export class AssetImageUploaderComponent implements OnInit {
                 this.imageUploaded.emit(assetImageId);
                 this.isUploading = false;
                 this.uploadSuccessful = true;
+                this.hasUploaded = true;
             },
                 error => {
                     this.invalidImage = true;
                     this.isUploading = false;
+                    this.hasUploaded = false;
                 }
             );
         }

@@ -1,4 +1,5 @@
-<div>
+<div class="mb-2 position-relative" style="max-width: 200px;">
+    <span *ngIf="!hasUploaded" class="badge badge-primary" style="position: absolute; top: 0; left: 0;">Pending Upload</span>
     <img *ngIf="!file && currentAssetImage" [src]="currentAssetImage">
     <img *ngIf="file && file.base64EncodedImage && !invalidImage" [src]="file.base64EncodedImage">
 </div>

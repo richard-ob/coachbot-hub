@@ -43,10 +43,10 @@
                             </ul>
                         </li>
                         <li *ngIf="!player" class="nav-account__item nav-account__item--login">
-                            <a href="javascript:void(0);" routerLink="./login">Login</a>
+                            <a class="text-primary" href="javascript:void(0);" routerLink="./login">Login</a>
                         </li>
                         <li *ngIf="player" class="nav-account__item nav-account__item--logout">
-                            <a href="{{apiUrl}}/logout">Logout</a>
+                            <a class="text-primary" href="{{apiUrl}}/logout">Logout</a>
                         </li>
                     </ul>
                     <!-- Account Navigation / End -->
@@ -154,7 +154,7 @@
                             <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
                                 (click)="toggleSectionOpen(matchHubSection, matchHubToggle)">
                                 <a href="javascript:void(0);">Hub</a>
-                                <span class="badge badge-pill badge-warning" style="
+                                <span class="badge badge-pill badge-warning d-none d-xl-inline" style="
                                 position: absolute;
                                 top: 8px;
                                 margin-left: 11px;

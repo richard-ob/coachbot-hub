@@ -29,17 +29,12 @@ th {
 		> tr {
 			> th,
 			> td {
-				padding: $table-cell-padding/2;
 				vertical-align: top;
 				border-top: 1px solid $table-border-color;
 				font-family: $font-family-accent;
-				font-size: 10px;
 				line-height: 1.42857143em;
-
-				@media (min-width: 992px) {
-					padding: $table-cell-padding 10px;
-					font-size: 11px;
-				}
+				padding: $table-cell-padding 10px;
+				font-size: 11px;
 			}
 		}
 	}
@@ -81,11 +76,7 @@ th {
 		> tr {
 			> th,
 			> td {
-				padding: $table-cell-padding-lg/2;
-
-				@media (min-width: 992px) {
 					padding: $table-cell-padding-lg 12px;
-				}
 			}
 		}
 	}

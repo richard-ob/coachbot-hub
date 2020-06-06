@@ -7,6 +7,8 @@ export class TournamentTypePipe implements PipeTransform {
         switch (tournamentType) {
             case TournamentType.RoundRobinLadder:
                 return 'Ladder';
+            case TournamentType.Knockout:
+                return 'Knockout';
             default:
                 return '';
         }

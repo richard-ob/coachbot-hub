@@ -4,7 +4,7 @@
         <div class="card__header card__header--has-btn">
             <h4>Players</h4>
             <!-- Result Filter -->
-            <ul class="team-result-filter">
+            <ul class="team-result-filter d-none d-md-inline float-right">
                 <li class="team-result-filter__item">
                     <input type="text" class="form-control input-xs" placeholder="Player Name"
                         [(ngModel)]="filters.playerName">
@@ -37,7 +37,7 @@
             <app-spinner *ngIf="isLoading"></app-spinner>
             <table *ngIf="!isLoading"
                 class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
-                [class.widget__content--loading]="isUpdating">
+                [class.widget__content--loading]="isLoadingPage">
                 <thead>
                     <tr>
                         <th class="team-result__vs" style="width: 40px;"></th>

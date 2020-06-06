@@ -45,6 +45,9 @@
     li.pagination-previous, li.pagination-next {
         width: 82px;
         transition: none;
+        @media (max-width: 991px) {
+            display: none;
+        }
     }
 
    

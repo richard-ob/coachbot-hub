@@ -23,6 +23,7 @@ export class RecentMatchesComponent implements OnInit {
     currentPage = 1;
     totalPages: number;
     totalItems: number;
+    isLoadingPage = false;
 
     constructor(private matchService: MatchService, private userPreferenceService: UserPreferenceService) { }
 
@@ -37,12 +38,14 @@ export class RecentMatchesComponent implements OnInit {
     }
 
     loadPage(page: number) {
+        this.isLoadingPage = true;
         this.filters.page = page;
         this.matchService.getMatches(this.filters).subscribe(response => {
             this.matches = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;
             this.totalItems = response.totalItems;
+            this.isLoadingPage = false;
         });
     }
 

@@ -1,10 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { TournamentService } from '../../../shared/services/tournament.service';
 import { TournamentEditionMatchDaySlot, TournamentMatchDay } from '@pages/hub/shared/model/tournament-edition-match-day-slot.model';
 
 @Component({
     selector: 'app-tournament-match-day-slot-manager',
-    templateUrl: './tournament-match-day-slot-manager.component.html'
+    templateUrl: './tournament-match-day-slot-manager.component.html',
+    styleUrls: ['./tournament-match-day-slot-manager.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class TournamentMatchDaySlotManagerComponent implements OnInit {
 

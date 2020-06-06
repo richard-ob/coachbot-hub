@@ -242,7 +242,7 @@
 	z-index: 1001;
 	bottom: 67px;
     left: 78px;
-    display: block;
+	display: block;
 
 	@media (max-width: 991px) {
 		display: none;
@@ -251,7 +251,7 @@
 }
 
 .header-logo__img {
-	max-width: 50%;
+	width: 256px;
 	position: relative;
 }
 
@@ -362,7 +362,7 @@
 		z-index: 5;
 	}
 	#page-content {
-		margin-top: $header-mobile-height;
+		margin-top: calc(#{$header-mobile-height} + 25px);
 	}
 
 		.header-mobile__inner {
@@ -389,8 +389,8 @@
 
 		.header-mobile__logo-img {
 			width: auto;
-			height: 58px;
-			margin-top: 15px;
+			height: 45px;
+			margin-top: 7px;
 		}
 
 		/* Header Mobile Burger Icon */
@@ -400,7 +400,7 @@
 			display: block;
 			position: absolute;
 			right: 34px;
-			top: 39px;
+			top: 25px;
 			cursor: pointer;
 			width: 26px;
 			height: 19px;

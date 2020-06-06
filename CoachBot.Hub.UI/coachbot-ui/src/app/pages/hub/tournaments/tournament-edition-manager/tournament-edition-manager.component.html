@@ -6,7 +6,9 @@
                 <h4>Manage</h4>
             </div>
             <div class="card__content">
-                <button type="button" class="btn btn-primary mx-1" (click)="generateSchedule()">Generate
+                <button type="button" class="btn btn-primary mx-1"
+                    [swal]="{ title: 'Are you sure?', text: 'This will generate the schedule of matches, and if the schedule is already generated, will clear the existing schedule and matches.', icon: 'warning', showCancelButton: true }"
+                    (confirm)="generateSchedule()">Generate
                     Schedule</button>
                 <button *ngIf="!tournamentEdition.isPublic" type="button" class="btn btn-primary mx-1"
                     (click)="toggleIsPublic()">Make Public</button>

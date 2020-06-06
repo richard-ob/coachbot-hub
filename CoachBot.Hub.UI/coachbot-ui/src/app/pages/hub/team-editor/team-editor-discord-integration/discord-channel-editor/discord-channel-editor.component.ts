@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
 import { DiscordService } from '../../../shared/services/discord.service';
 import { TeamService } from '../../../shared/services/team.service';
 import { ChannelService } from '../../../shared/services/channel.service';
@@ -7,6 +7,8 @@ import { Channel } from '../../../shared/model/channel.model';
 import { Team } from '../../../shared/model/team.model';
 import { Position } from '../../../shared/model/position';
 import { ChannelPosition } from '../../../shared/model/channel-position';
+import { FormatPositions } from './format-positions';
+import { SwalComponent, SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
     selector: 'app-discord-channel-editor',
@@ -14,11 +16,13 @@ import { ChannelPosition } from '../../../shared/model/channel-position';
 })
 export class DiscordChannelEditorComponent {
 
+    @ViewChild('editPositionModal', { static: false }) editPositionModal: SwalComponent;
     @Output() wizardClosed = new EventEmitter<void>();
     team: Team;
     channel: Channel = new Channel();
     discordChannels: DiscordChannel[];
     discordGuildId: string;
+    positionToEdit: ChannelPosition;
     wizardMode: WizardMode;
     wizardStep: WizardStep;
     wizardModes = WizardMode;
@@ -29,7 +33,8 @@ export class DiscordChannelEditorComponent {
     constructor(
         private discordService: DiscordService,
         private teamService: TeamService,
-        private channelService: ChannelService
+        private channelService: ChannelService,
+        public readonly swalTargets: SwalPortalTargets
     ) { }
 
     startCreateWizard(teamId: number) {
@@ -42,17 +47,19 @@ export class DiscordChannelEditorComponent {
             this.team = team;
             this.discordService.getChannelsForGuild(this.team.guild.discordGuildId).subscribe(discordChannels => {
                 this.discordChannels = discordChannels;
+
                 this.isLoading = false;
             });
         });
     }
 
     startEditWizard(channelId: number) {
-        this.isLoading = false;
+        this.isLoading = true;
         this.wizardMode = WizardMode.Editing;
         this.wizardStep = WizardStep.Configuration;
         this.channelService.getChannel(channelId).subscribe(channel => {
             this.channel = channel;
+            this.channel.channelPositions = channel.channelPositions.sort((a, b) => a.ordinal - b.ordinal);
             this.isLoading = false;
         });
     }
@@ -77,10 +84,47 @@ export class DiscordChannelEditorComponent {
                 const channelPosition = new ChannelPosition();
                 channelPosition.position = new Position();
                 channelPosition.channelId = this.channel.id;
-                channelPosition.position.name = (this.channel.channelPositions.length + 1).toString();
                 this.channel.channelPositions.push(channelPosition);
             }
         }
+        this.usePositionNames();
+    }
+
+    usePositionNames() {
+        const format = this.channel.channelPositions.length;
+        console.log(format);
+        const positionNames = FormatPositions.names;
+        for (let i = 0; i < format; i++) {
+            const channelPosition = this.channel.channelPositions[i];
+            channelPosition.positionId = 0;
+            channelPosition.position = new Position();
+            channelPosition.position.id = 0;
+            channelPosition.position.name = positionNames[format][i];
+            channelPosition.ordinal = i + 1;
+        }
+    }
+
+    usePositionNumbers() {
+        const format = this.channel.channelPositions.length;
+        for (let i = 1; i <= format; i++) {
+            const channelPosition = this.channel.channelPositions[i - 1];
+            channelPosition.positionId = 0;
+            channelPosition.position = new Position();
+            channelPosition.position.id = 0;
+            channelPosition.position.name = i.toString();
+            channelPosition.ordinal = i;
+        }
+    }
+
+    editPosition(channelPosition: ChannelPosition) {
+        this.positionToEdit = channelPosition;
+        this.editPositionModal.fire();
+    }
+
+    updatePosition() {
+        this.positionToEdit.positionId = 0;
+        this.positionToEdit.position.id = 0;
+        this.editPositionModal.dismiss();
     }
 
     addSearchIgnoreChannel(discordChannelId: string) {

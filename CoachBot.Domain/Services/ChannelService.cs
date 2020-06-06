@@ -23,26 +23,61 @@ namespace CoachBot.Domain.Services
 
         public void UpdateChannel(Channel channel)
         {
-            channel.UpdatedDate = DateTime.UtcNow;
-            _dbContext.Update(channel);
+            var existingChannel = channel;
 
-            if (channel.ChannelPositions.Any(cp => channel.ChannelPositions.Any(cpd => cp.Position.Name == cpd.Position.Name && cp.PositionId != cpd.PositionId)))
+            existingChannel.DisableSearchNotifications = channel.DisableSearchNotifications;
+            existingChannel.DiscordChannelId = channel.DiscordChannelId;
+            existingChannel.DiscordChannelName = channel.DiscordChannelName;
+            existingChannel.DuplicityProtection = channel.DuplicityProtection;
+            existingChannel.Formation = channel.Formation;
+            existingChannel.Inactive = channel.Inactive;
+            existingChannel.IsMixChannel = channel.IsMixChannel;
+            existingChannel.SearchIgnoreList = channel.SearchIgnoreList;
+            existingChannel.SubTeamName = channel.SubTeamName;
+            existingChannel.UseClassicLineup = channel.UseClassicLineup;
+            existingChannel.UpdatedDate = DateTime.Now;
+
+            if (channel.ChannelPositions.GroupBy(cp => cp.Position.Name).Select(s => s.Count()).Max() >  1)
                 throw new Exception("Positions must be unique");
+
+            if (channel.ChannelPositions.GroupBy(cp => cp.Ordinal).Select(s => s.Count()).Max() > 1)
+                throw new Exception("Position ordinals must be unique");
 
             if (!channel.ChannelPositions.Any())
                 throw new Exception("No positions provided");
 
+            if (channel.ChannelPositions.Any(cp => string.IsNullOrWhiteSpace(cp.Position.Name)))
+                throw new Exception("No position name provided");
+
+            // Remove deleted positions
             var deletedPositions = _dbContext.ChannelPositions
                 .Where(c => c.ChannelId == channel.Id)
                 .Where(cp => !channel.ChannelPositions.Any(cpt => cpt.PositionId == cp.PositionId));
-            if (deletedPositions.Any()) _dbContext.ChannelPositions.RemoveRange(deletedPositions);
-
-            // Ensure we don't have duplicate positions in the DB
-            var newPositions = channel.ChannelPositions.Where(cp => !_dbContext.Positions.Any(p => cp.PositionId == p.Id));
-            foreach(var duplicatePosition in newPositions.Where(np => _dbContext.Positions.Any(p => p.Name == np.Position.Name)))
+            if (deletedPositions.Any())
             {
-                duplicatePosition.PositionId = _dbContext.Positions.First(p => p.Name == duplicatePosition.Position.Name).Id;
-                duplicatePosition.Position = null;
+                _dbContext.ChannelPositions.RemoveRange(deletedPositions);
+            }
+
+            // Add new positions
+            var newChannelPositions = channel.ChannelPositions.Where(c => c.PositionId <= 0);
+            foreach(var newChannelPosition in newChannelPositions)
+            {
+                var position = _dbContext.Positions.FirstOrDefault(p => p.Name.ToUpper() == newChannelPosition.Position.Name.ToUpper());
+                if (position == null)
+                {
+                    position = new Position()
+                    {
+                        Name = newChannelPosition.Position.Name
+                    };
+                    _dbContext.Positions.Add(position);
+                }
+                var channelPositionToAdd = new ChannelPosition()
+                {
+                    ChannelId = channel.Id,
+                    PositionId = position.Id,
+                    Ordinal = newChannelPosition.Ordinal
+                };
+                _dbContext.ChannelPositions.Add(channelPositionToAdd);
             }
 
             _dbContext.SaveChanges();
@@ -50,6 +85,9 @@ namespace CoachBot.Domain.Services
 
         public void CreateChannel(Channel channel)
         {
+            if (_dbContext.Channels.Any(c => c.DiscordChannelId == channel.DiscordChannelId))
+                throw new Exception("A Discord channel can only be to one team");
+
             channel.UpdatedDate = DateTime.UtcNow;
             channel.CreatedDate = DateTime.UtcNow;
             _dbContext.Channels.Add(channel);

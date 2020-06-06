@@ -35,5 +35,4 @@ export class TeamEditorListComponent implements OnInit {
         playerTeam.leaveDate = new Date();
         this.playerTeamService.updatePlayerTeam(playerTeam).subscribe(() => this.isLoading = false);
     }
-
 }

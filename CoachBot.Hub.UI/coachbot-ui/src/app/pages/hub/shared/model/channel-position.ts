@@ -6,4 +6,5 @@ export class ChannelPosition {
     channel?: Channel;
     positionId: number;
     position?: Position;
+    ordinal: number;
 }

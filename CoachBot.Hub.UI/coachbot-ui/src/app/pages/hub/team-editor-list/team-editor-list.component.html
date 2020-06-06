@@ -7,6 +7,9 @@
     <div *ngIf="!isLoading && player && player.teams.length" class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>My Teams</h4>
+            <a [routerLink]="['/create-team']" class="btn btn-primary btn-xs float-right">
+                Create New Team
+            </a>
         </div>
         <div class="card__content table-responsive">
             <table class="table table-striped">

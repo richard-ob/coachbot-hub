@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label class="control-label" for="input-default">Discord Server</label>
                 <select class="form-control" id="input-default" [(ngModel)]="selectedDiscordGuildId"
-                    placeholder="Select Discord server..." required>
+                    placeholder="Select Discord server..." name="selectedDiscordGuildId" required>
                     <option *ngFor="let guild of discordGuilds" [ngValue]="guild.id">{{guild.name}}
                     </option>
                 </select>

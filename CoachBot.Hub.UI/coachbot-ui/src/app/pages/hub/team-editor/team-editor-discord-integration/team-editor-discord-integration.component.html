@@ -21,6 +21,7 @@
                         <th>Sub Team</th>
                         <th>Format</th>
                         <th>Is Mix</th>
+                        <th></th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let channel of channels"
@@ -41,14 +42,18 @@
                                 <i *ngIf="channel.isMixChannel" class="text-success fa fa-check"></i>
                                 <i *ngIf="!channel.isMixChannel" class="text-danger fa fa-times"></i>
                             </td>
+                            <td><button type="button" class="btn btn-xs btn-outline-primary"
+                                    (click)="channelEditor.startEditWizard(channel.id); isChannelWizardOpen = true;">Edit
+                                    Channel</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <app-spinner *ngIf="isLoading"></app-spinner>
-            <app-discord-channel-editor (wizardClosed)="isChannelWizardOpen = false; loadChannels();" #channelEditor>
+            <app-discord-channel-editor (wizardClosed)=" loadChannels(); isChannelWizardOpen = false;" #channelEditor>
             </app-discord-channel-editor>
-            <app-discord-guild-editor (guildEditorClosed)="isGuildEditorOpen = false; loadChannels();" #guildEditor>
+            <app-discord-guild-editor (guildEditorClosed)="loadTeam(); isGuildEditorOpen = false;" #guildEditor>
             </app-discord-guild-editor>
         </div>
     </div>

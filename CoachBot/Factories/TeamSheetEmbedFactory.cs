@@ -60,117 +60,117 @@ namespace CoachBot.Factories
             if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeThreeOne)
             {
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player8 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[7].Position.Name);
-                builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[7].Position.Name));
+                var player8 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(7).Position.Name);
+                builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(7).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player7 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[6].Position.Name);
-                builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[6].Position.Name));
-                var player6 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[5].Position.Name);
-                builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[5].Position.Name));
-                var player5 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[4].Position.Name);
-                builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[4].Position.Name));
-                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[3].Position.Name);
-                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[3].Position.Name));
-                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[2].Position.Name);
-                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
-                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
-                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
+                var player7 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(6).Position.Name);
+                builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(6).Position.Name));
+                var player6 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(5).Position.Name);
+                builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(5).Position.Name));
+                var player5 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(4).Position.Name);
+                builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(4).Position.Name));
+                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name);
+                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name));
+                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name);
+                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name));
+                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name);
+                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
-                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
+                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name);
+                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeTwoTwo)
             {
-                var player8 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[7].Position.Name);
-                builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[7].Position.Name));
+                var player8 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(7).Position.Name);
+                builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(7).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player7 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[6].Position.Name);
-                builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[6].Position.Name));
-                var player6 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[5].Position.Name);
-                builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[5].Position.Name));
+                var player7 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(6).Position.Name);
+                builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(6).Position.Name));
+                var player6 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(5).Position.Name);
+                builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(5).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player5 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[4].Position.Name);
-                builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[4].Position.Name));
-                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[3].Position.Name);
-                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[3].Position.Name));
-                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[2].Position.Name);
-                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
-                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
-                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
+                var player5 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(4).Position.Name);
+                builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(4).Position.Name));
+                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name);
+                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name));
+                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name);
+                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name));
+                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name);
+                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
-                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
+                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name);
+                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeOneTwoOne)
             {
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player8 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[7].Position.Name);
-                builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[7].Position.Name));
+                var player8 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(7).Position.Name);
+                builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(7).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player7 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[6].Position.Name);
-                builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[6].Position.Name));
+                var player7 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(6).Position.Name);
+                builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(6).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player6 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[5].Position.Name);
-                builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[5].Position.Name));
+                var player6 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(5).Position.Name);
+                builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(5).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player5 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[4].Position.Name);
-                builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[4].Position.Name));
+                var player5 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(4).Position.Name);
+                builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(4).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[3].Position.Name);
-                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[3].Position.Name));
-                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[2].Position.Name);
-                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
-                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
-                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
+                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name);
+                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name));
+                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name);
+                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name));
+                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name);
+                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
-                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
+                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name);
+                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else if (channel.ChannelPositions.Count() == 8 && channel.Formation == Formation.ThreeOneThree)
             {
-                var player8 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[7].Position.Name);
-                builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[7].Position.Name));
-                var player7 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[6].Position.Name);
-                builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[6].Position.Name));
-                var player6 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[5].Position.Name);
-                builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[5].Position.Name));
+                var player8 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(7).Position.Name);
+                builder.AddInlineField(player8 != null ? player8.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(7).Position.Name));
+                var player7 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(6).Position.Name);
+                builder.AddInlineField(player7 != null ? player7.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(6).Position.Name));
+                var player6 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(5).Position.Name);
+                builder.AddInlineField(player6 != null ? player6.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(5).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player5 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[4].Position.Name);
-                builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[4].Position.Name));
+                var player5 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(4).Position.Name);
+                builder.AddInlineField(player5 != null ? player5.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(4).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[3].Position.Name);
-                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[3].Position.Name));
-                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[2].Position.Name);
-                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
-                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
-                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
+                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name);
+                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name));
+                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name);
+                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name));
+                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name);
+                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
-                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
+                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name);
+                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else if (channel.ChannelPositions.Count() == 4 && channel.Formation == Formation.TwoOne)
             {
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[3].Position.Name);
-                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[3].Position.Name));
+                var player4 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name);
+                builder.AddInlineField(player4 != null ? player4.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(3).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[2].Position.Name);
-                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[2].Position.Name));
+                var player3 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name);
+                builder.AddInlineField(player3 != null ? player3.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(2).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[1].Position.Name);
-                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[1].Position.Name));
+                var player2 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name);
+                builder.AddInlineField(player2 != null ? player2.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(1).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
-                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.ToArray()[0].Position.Name);
-                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.ToArray()[0].Position.Name));
+                var player1 = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name);
+                builder.AddInlineField(player1 != null ? player1.Player.Name : availablePlaceholderText, AddNumericPrefix(channel.ChannelPositions.OrderBy(cp => cp.Ordinal).ElementAt(0).Position.Name));
                 builder.AddInlineField(UNICODE_SPACE, UNICODE_SPACE);
             }
             else
             {
-                foreach (var position in channel.ChannelPositions)
+                foreach (var position in channel.ChannelPositions.OrderBy(cp => cp.Ordinal))
                 {
                     var player = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == position.Position.Name);
                     builder.AddInlineField(player != null ? player.Player.Name : availablePlaceholderText, AddNumericPrefix(position.Position.Name));

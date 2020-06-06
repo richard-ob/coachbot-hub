@@ -19,90 +19,145 @@
     </div>
 </ng-container>
 <ng-container *ngIf="wizardMode !== wizardModes.Disabled && wizardStep === wizardSteps.Configuration">
-    <div class="form-group">
-        <label class="control-label" for="input-default">Format</label>
-        <select class="form-control" (change)="setPositions($event.target.value)">
-            <option value="">Select a format</option>
-            <option *ngFor="let format of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"
-                [selected]="channel.channelPositions.length === format" [value]="format">
-                {{format}}v{{format}}
-            </option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label class="control-label" for="input-default">Positions</label>
-        <div class="d-block">
-            <span *ngFor="let position of channel.channelPositions" class="badge badge-pill badge-primary mr-2">
-                {{position.position.name}}
-            </span>
+    <form *ngIf="!isLoading" #editChannelForm="ngForm">
+        <div class="form-group">
+            <label class="control-label" for="input-default">Format</label>
+            <select class="form-control" (change)="setPositions($event.target.value)"
+                placeholder="Select match format.." name="format" required>
+                <option *ngFor="let format of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"
+                    [selected]="channel.channelPositions.length === format" [value]="format">
+                    {{format}}v{{format}}
+                </option>
+            </select>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label" for="input-default">Sub Team Name</label>
-        <input class="form-control" [(ngModel)]="channel.subTeamName" type="text">
-    </div>
 
-    <div class="form-group">
-        <label class="control-label" for="input-default">Search Message Ignore List</label>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend clickable">
-                <span class="input-group-text">
+        <div class="form-group">
+            <label class="control-label" for="input-default">Positions</label>
+            <div class="d-block mb-2">
+                <span *ngFor="let position of channel.channelPositions" class="badge badge-pill badge-primary mr-2 clickable" (click)="editPosition(position)" title="Edit position">
+                    {{position.position.name}}
+                    <i class="fas fa-pencil-alt fa-sm ml-1 show-on-parent-hover"></i>
+                </span>
+            </div>
+            <div class="d-block">
+                <button type="button" (click)="usePositionNumbers()" class="btn btn-xs btn-primary mr-2">Use
+                    Numbers</button>
+                <button type="button" (click)="usePositionNames()" class="btn btn-xs btn-primary">Use Names</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label mb-0" for="input-default">Sub Team Name</label>
+            <small class="label-subtitle mb-2">If this is a secondary channel (i.e. not your team's main channel) then
+                you
+                will want to use populate this with an appropriate name</small>
+            <input class="form-control" [(ngModel)]="channel.subTeamName" name="subTeamName" type="text">
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="input-default">Search Message Ignore List</label>
+            <span class="badge badge-pill badge-warning ml-2">Beta</span>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend clickable">
+                    <span class="input-group-text">
                     <button class="btn btn-light btn-xs" (click)="addSearchIgnoreChannel(channelId.value); channelId.value = null;" title="Add channel ID">
                         <i class="fas fa-plus"></i>
                     </button>
                 </span>
+                </div>
+                <input class="form-control" type=" number" placeholder="Opposition Channel ID" #channelId>
             </div>
-            <input class="form-control" type=" number" placeholder="Channel ID" #channelId>
+            <span *ngFor="let ignoreChannel of channel.searchIgnoreList" class="badge badge-pill badge-primary mr-2">{{ignoreChannel}}</span>
         </div>
-        <span *ngFor="let ignoreChannel of channel.searchIgnoreList" class="badge badge-pill badge-primary mr-2">{{ignoreChannel}}</span>
-    </div>
 
-    <div class="form-group">
-        <label class="control-label" for="input-default">Is Mix Channel?</label>
-        <div>
-            <label class="checkbox mr-2">
-                <input [(ngModel)]="channel.isMixChannel" type="checkbox" name="isMixChannel">
-                <span class="checkbox-indicator"></span>
-            </label>
+        <div class="form-group">
+            <label class="control-label mb-0" for="input-default">Is Mix Channel?</label>
+            <small class="label-subtitle">The default opponent will be a second mix team that players can sign up
+                to</small>
+            <div>
+                <label class="checkbox mr-2">
+                    <input [(ngModel)]="channel.isMixChannel" type="checkbox" name="isMixChannel">
+                    <span class="checkbox-indicator"></span>
+                </label>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label class="control-label" for="input-default">Disable Search Notifications</label>
-        <div>
-            <label class="checkbox mr-2">
-                <input [(ngModel)]="channel.disableSearchNotifications" type="checkbox"
-                    name="disableSearchNotifications">
-                <span class="checkbox-indicator"></span>
-            </label>
+        <div class="form-group">
+            <label class="control-label mb-0" for="disableSearchNotifications">Disable Search Notifications </label>
+            <small class="label-subtitle">Selecting this will stop Coach from sending messages to your channel when
+                teams are looking for an
+                opponent</small>
+            <div>
+                <label class="checkbox mr-2">
+                    <input [(ngModel)]="channel.disableSearchNotifications" type="checkbox"
+                        name="disableSearchNotifications">
+                    <span class="checkbox-indicator"></span>
+                </label>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label class="control-label" for="input-default">Duplicity Protection</label>
-        <div>
-            <label class="checkbox mr-2">
-                <input [(ngModel)]="channel.duplicityProtection" type="checkbox" name="duplicityProtection">
-                <span class="checkbox-indicator"></span>
-            </label>
+        <div class="form-group">
+            <label class="control-label mb-0" for="duplicityProtection">Duplicity Protection</label>
+            <small class="label-subtitle">Selecting this will enable Coach removing a player from the line-up when they
+                go to play another
+                match in a different channel</small>
+            <div>
+                <label class="checkbox mr-2">
+                    <input [(ngModel)]="channel.duplicityProtection" type="checkbox" name="duplicityProtection">
+                    <span class="checkbox-indicator"></span>
+                </label>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label class="control-label" for="input-default">Use Classic Lineup?</label>
-        <div>
-            <label class="checkbox mr-2">
-                <input [(ngModel)]="channel.useClassicLineup" type="checkbox" name="useClassicLineup">
-                <span class="checkbox-indicator"></span>
-            </label>
+        <div class="form-group">
+            <label class="control-label mb-0" for="useClassicLineup">Use Classic Lineup?</label>
+            <small class="label-subtitle"> Shows the team list in Discord in a single line, without kits or
+                formations</small>
+            <div>
+                <label class="checkbox mr-2">
+                    <input [(ngModel)]="channel.useClassicLineup" type="checkbox" name="useClassicLineup">
+                    <span class="checkbox-indicator"></span>
+                </label>
+            </div>
         </div>
-    </div>
-    <div class="float-right">
-        <button class="btn btn-outline-primary mr-2" type="button" (click)="abortWizard()">
-            Cancel
-        </button>
-        <button class="btn btn-primary" type="button" [disabled]="isSaving" (click)="saveChannel()">
-            Save
-        </button>
-    </div>
+
+        <div class="form-group" *ngIf="!channel.useClassicLineup">
+            <label class="control-label mb-0" for="formation">Formation</label>
+            <select [(ngModel)]="channel.formation" name="formation" class="form-control">
+                <option [ngValue]="0">None</option>
+                <option *ngIf="channel.channelPositions.length === 8" [ngValue]="1">3-3-1</option>
+                <option *ngIf="channel.channelPositions.length === 8" [ngValue]="2">3-2-2</option>
+                <option *ngIf="channel.channelPositions.length === 8" [ngValue]="3">3-1-2-1</option>
+                <option *ngIf="channel.channelPositions.length === 8" [ngValue]="4">3-1-3</option>
+                <option *ngIf="channel.channelPositions.length === 4" [ngValue]="5">2-1</option>
+            </select>
+        </div>
+
+        <div class="float-right">
+            <button class="btn btn-outline-primary mr-2" type="button" (click)="abortWizard()">
+                Cancel
+            </button>
+            <button class="btn btn-primary" type="button" [disabled]="isSaving || editChannelForm.invalid"
+                (click)="saveChannel()">
+                Save
+            </button>
+        </div>
+
+    </form>
+    <app-spinner *ngIf="isLoading"></app-spinner>
 </ng-container>
+<swal #editPositionModal (confirm)="updatePosition()">
+    <ng-container *swalPortal="swalTargets.title">
+        <h5>Update Position</h5>
+    </ng-container>
+    <form *swalPortal>
+        <div class="form-group">
+            <label>Position Name</label>
+            <input type="text" class="form-control" name="positionToEditName" [(ngModel)]="positionToEdit.position.name"
+                maxlength="4">
+        </div>
+    </form>
+    <ng-container *swalPortal="swalTargets.confirmButton">
+        Done
+    </ng-container>
+</swal>

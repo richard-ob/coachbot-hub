@@ -41,7 +41,7 @@ namespace CoachBot.Factories
             }        
 
             var embedBuilder = new EmbedBuilder().WithTitle($"{channel.Team.BadgeEmote ?? channel.Team.Name}{(match.IsMixMatch && teamType == MatchTeamType.Away ? " #2" : "")} Team List");
-            foreach (var channelPosition in channel.ChannelPositions)
+            foreach (var channelPosition in channel.ChannelPositions.OrderBy(cp => cp.Ordinal))
             {
                 var playerTeamPosition = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channelPosition.Position.Name);
                 var playerName = playerTeamPosition?.Player.DiscordUserMention ?? playerTeamPosition?.Player.Name ?? emptyPos;

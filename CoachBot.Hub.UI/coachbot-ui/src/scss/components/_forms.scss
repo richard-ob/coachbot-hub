@@ -18,6 +18,13 @@ label {
 	}
 }
 
+small.label-subtitle {
+	line-height: 8px;
+	padding: 0;
+	display: block;
+	color: $color-gray;
+}
+
 // Form Control
 .form-control {
 	appearance: none;
@@ -46,6 +53,8 @@ label {
 	fieldset[disabled] & {
 		background-color: $input-bg-disabled;
 		border-color: $input-border-disabled;
+		color: rgba(0, 0, 0, 0.6);
+		cursor: not-allowed;
 
 		@include placeholder(rgba(154,157,162,0.4));
 	}
@@ -92,7 +101,6 @@ select.form-control {
 	background-size: 6px 4px;
 	-moz-appearance: none;
 	-webkit-appearance: none;
-	color: rgba(154,157,162,0.4);
 
 	&::-ms-expand {
 		display: none;

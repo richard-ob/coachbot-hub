@@ -14,6 +14,8 @@ namespace CoachBot.Domain.Model
 
         public Position Position { get; set; }
 
+        public int Ordinal { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
     }

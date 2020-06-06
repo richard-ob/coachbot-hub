@@ -26,18 +26,23 @@ export class TeamEditorDiscordIntegrationComponent implements OnInit {
     ngOnInit() {
         this.route.parent.paramMap.pipe().subscribe(params => {
             this.teamId = +params.get('id');
-            this.teamService.getTeam(this.teamId).subscribe(team => {
-                this.team = team;
-                if (this.team.guild && this.team.guild.discordGuildId) {
-                    this.isDiscordGuildSet = true;
-                    this.loadChannels();
-                } else {
-                    this.isDiscordGuildSet = false;
-                    this.isLoading = false;
-                    this.isGuildEditorOpen = true;
-                    this.guildEditor.openGuildEditor(this.teamId);
-                }
-            });
+            this.loadTeam();
+        });
+    }
+
+    loadTeam() {
+        this.isLoading = true;
+        this.teamService.getTeam(this.teamId).subscribe(team => {
+            this.team = team;
+            if (this.team.guild && this.team.guild.discordGuildId) {
+                this.isDiscordGuildSet = true;
+                this.loadChannels();
+            } else {
+                this.isDiscordGuildSet = false;
+                this.isLoading = false;
+                this.isGuildEditorOpen = true;
+                this.guildEditor.openGuildEditor(this.teamId);
+            }
         });
     }
 

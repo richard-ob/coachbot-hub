@@ -5,7 +5,6 @@ export class ArrayFilterPipe implements PipeTransform {
     transform(
         baseArray: any[], comparisonProperty: string, comparisonValue: string, mode: ArrayFilterPipeMode = ArrayFilterPipeMode.Equals
     ): any[] {
-        console.log('HELLO???????????????????');
         if (mode === ArrayFilterPipeMode.NotEquals) {
             return baseArray.filter(b => b[comparisonProperty] !== comparisonValue);
         }

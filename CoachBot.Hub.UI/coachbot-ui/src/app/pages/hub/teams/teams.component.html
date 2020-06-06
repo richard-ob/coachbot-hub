@@ -1,9 +1,5 @@
 <app-spinner *ngIf="isLoading"></app-spinner>
 <div *ngIf="!isLoading" class="container position-relative py-4">
-    <a [routerLink]="['/create-team']" class="btn btn-outline-secondary btn-xs"
-        style="position: absolute; top: 25px; right: 25px;">
-        Create New Team
-    </a>
     <h4>Current</h4>
     <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet in this region
     </div>

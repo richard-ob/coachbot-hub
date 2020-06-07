@@ -5,6 +5,7 @@ import { TeamType } from './model/team-type.enum.js';
 import { DisplayValueMode } from './components/horizontal-bar-graph/horizontal-bar-graph.component.js';
 import { MatchService } from '../shared/services/match.service';
 import { ActivatedRoute } from '@angular/router';
+import { Match } from '../shared/model/match.model';
 
 @Component({
   selector: 'app-match-overview',
@@ -14,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 export class MatchOverviewComponent implements OnInit {
 
   matchData: any;
+  match: Match;
   statisticType = StatisticType;
   teamType = TeamType;
   eventType = EventType;
@@ -25,8 +27,9 @@ export class MatchOverviewComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.pipe().subscribe(params => {
-      this.matchService.getMatch(+params.get('id')).subscribe(response => {
-        this.loadJson(response.matchStatistics.matchData);
+      this.matchService.getMatch(+params.get('id')).subscribe(match => {
+        this.match = match;
+        this.loadJson(match.matchStatistics.matchData);
         this.isLoading = false;
       });
     });

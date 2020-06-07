@@ -62,6 +62,8 @@ namespace CoachBot.Domain.Extensions
         {
             return coachBotContext.Matches
                 .Include(m => m.LineupHome)
+                    .ThenInclude(th => th.Channel)
+                .Include(m => m.LineupHome)
                     .ThenInclude(th => th.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Player)
                 .Include(m => m.LineupHome)
@@ -73,6 +75,8 @@ namespace CoachBot.Domain.Extensions
                 .Include(m => m.LineupHome)
                     .ThenInclude(ta => ta.PlayerSubstitutes)
                     .ThenInclude(ps => ps.Player)
+                .Include(m => m.LineupAway)
+                    .ThenInclude(th => th.Channel)
                 .Include(m => m.LineupAway)
                     .ThenInclude(ta => ta.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Player)

@@ -12,81 +12,78 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10 offset-md-1">
-                <section class="game-result__section">
-                    <header class="game-result__header game-result__header--alt">
-                        <span class="game-result__league">{{matchData.matchInfo.type}}</span>
-                        <h3 class="game-result__title">{{matchData.matchInfo.serverName}}</h3>
-                        <time class="game-result__date">{{matchDate | date:'medium'}}</time>
-                    </header>
-                    <div class="game-result__content">
-                        <!-- 1st Team -->
-                        <div class="game-result__team game-result__team--first">
-                            <figure class="game-result__team-logo">
+                <section class="d-flex flex-column text-white my-4">
+                    <div id="match-meta-data" class="match-meta-data d-flex justify-content-between mb-4">
+                        <div id="match-meta-data-type">{{matchData.matchInfo.type}}</div>
+                        <div id="match-meta-data-server"></div>
+                        <div id="match-meta-data-date">{{matchDate | date:'medium'}}</div>
+                    </div>
+                    <div id="match-headline-items" class="d-flex align-items-center mt-2 mb-4">
+                        <div id="match-headline-items-home" class="text-left" style="flex: 0 1 50%">
+                            <span class="d-none d-md-inline-block pr-4">
                                 <ng-container
                                     *ngIf="(matchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
-                                    <img
+                                    <img 
                                         src="https://www.countryflags.io/{{matchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
                                 </ng-container>
                                 <ng-template #blankCrest>
-                                    <img src="./assets/images/soccer/blank-crest.png" style="max-width: 64px;">
+                                    <img src="./assets/images/soccer/blank-crest.png"
+                                        style="max-width: 64px;">
                                 </ng-template>
-                            </figure>
-                            <div class="game-result__team-info">
-                                <h5 class="game-result__team-name">
-                                    {{matchData.teams[teamType.Home].matchTotal.name}}</h5>
-                            </div>
-                            <div class="game-result__team-events--first">
-                                <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'home' | arrayFilter:'event':eventType.Goal">
-                                    {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
-                                    ({{goalEvents.second | secondsToMinutes}}’)
-                                    <i class="icon-svg icon-soccer-ball"></i>
-                                </span>
-                            </div>
+                            </span>
+                            <h5 class="d-inline-block text-white">
+                                {{matchData.teams[teamType.Home].matchTotal.name}}</h5>
                         </div>
-                        <!-- 1st Team / End -->
-
-                        <div class="game-result__score-wrap">
-                            <div class="game-result__score game-result__score--lg">
-                                <span class="game-result__score-result">{{matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Goals]}}</span>
-                                <span class="game-result__score-dash">-</span>
-                                <span class="game-result__score-result">{{matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
-                            </div>
-                            <div [ngSwitch]="matchData.matchInfo.periods" class="game-result__score-label">
-                                <span *ngSwitchCase="2">FT</span>
-                                <span *ngSwitchCase="3">AET</span>
-                                <span *ngSwitchCase="4">AET</span>
-                                <span *ngSwitchCase="5">PENS</span>
-                            </div>
-                            <div class="game-result__score-label">Final Score</div>
+                        <div id="match-headline-score"
+                            class="game-result__score game-result__score--lg text-center text-white"
+                            style="flex: 0 0 150px">
+                            <span class="game-result__score-result">{{matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Goals]}}</span>
+                            <span class="game-result__score-dash">-</span>
+                            <span class="game-result__score-result">{{matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
                         </div>
-
-                        <!-- 2nd Team -->
-                        <div class="game-result__team game-result__team--second">
-                            <figure class="game-result__team-logo">
-                                <ng-container
-                                    *ngIf="(matchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
-                                    <img
-                                        src="https://www.countryflags.io/{{matchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
-                                </ng-container>
-                                <ng-template #blankCrest>
-                                    <img src="./assets/images/soccer/blank-crest.png" style="max-width: 64px;">
-                                </ng-template>
-                            </figure>
-                            <div class="game-result__team-info">
-                                <h5 class="game-result__team-name">
-                                    {{matchData.teams[teamType.Away].matchTotal.name}}</h5>
-                            </div>
-                            <div class="game-result__team-events--second">
-                                <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'away' | arrayFilter:'event':eventType.Goal">
-                                    {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
-                                    ({{goalEvents.second | secondsToMinutes}}’)
-                                    <i class="icon-svg icon-soccer-ball"></i>
-                                </span>
-                            </div>
+                        <div id="match-headline-items-away" class="text-right" style="flex: 0 1 50%">
+                            <h5 class="d-inline-block text-white">
+                                {{matchData.teams[teamType.Away].matchTotal.name}}</h5>
+                            <span class="d-none d-md-inline-block pl-4">
+                            <ng-container
+                                *ngIf="(matchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
+                                <img
+                                    src="https://www.countryflags.io/{{matchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
+                            </ng-container>
+                            <ng-template #blankCrest>
+                                <img src="./assets/images/soccer/blank-crest.png"
+                                    style="max-width: 64px;">
+                            </ng-template>
+                            </span>
                         </div>
-                        <!-- 2nd Team / End -->
                     </div>
-
+                    <div id="match-footer-items" class="d-flex align-items-start">
+                        <div id="match-footer-items-home" style="flex: 0 1 50%; overflow-y: auto; max-height: 210px;"
+                            class="match-footer-events  px-2 text-right">
+                            <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'home' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
+                                {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
+                                ({{goalEvents.second | secondsToMinutes}}’)
+                            </span>
+                        </div>
+                        <div id="match-score-footer" class="d-flex flex-column text-center" style="flex: 0 0 150px">
+                            <div id="match-score-final-period" class="game-result__score-label text-white">
+                                <ng-container [ngSwitch]="matchData.matchInfo.periods">
+                                    <span *ngSwitchCase="2">FT</span>
+                                    <span *ngSwitchCase="3">AET</span>
+                                    <span *ngSwitchCase="4">AET</span>
+                                    <span *ngSwitchCase="5">PENS</span>
+                                </ng-container>
+                            </div>
+                            <div id="match-score-status" class="game-result__score-label text-white">Final Score</div>
+                        </div>
+                        <div id="match-footer-items-away" class="match-footer-events px-2 text-left"
+                            style="flex: 0 1 50%; overflow-y: auto; max-height: 210px;">
+                            <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'away' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
+                                {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
+                                ({{goalEvents.second | secondsToMinutes}}’)
+                            </span>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>
@@ -104,90 +101,34 @@
 
             <!-- Content -->
             <div class="content col-lg-8">
-
                 <div class="row">
 
                     <div class="col-md-6">
-
-                        <!-- Widget: Lineup Table -->
                         <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
                             <div class="widget__title card__header">
                                 <h4>{{matchData.teams[teamType.Home].matchTotal.name}} Lineup</h4>
                             </div>
-                            <div class="widget__content card__content">
-
-                                <!-- Lineup Table -->
-                                <div class="table-responsive">
-                                    <table class="table lineup-table">
-                                        <thead>
-                                            <tr>
-                                                <th class="lineup__pos">POS</th>
-                                                <th class="lineup__name">Player Name</th>
-                                                <th class="lineup__info"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <ng-container *ngFor="let player of matchData.players">
-                                                <tr
-                                                    *ngIf="player.matchPeriodData && player.matchPeriodData.length && player.matchPeriodData[0].info.team === 'home'">
-                                                    <td class="lineup__pos">{{player.matchPeriodData[0].info.position}}
-                                                    </td>
-                                                    <td class="lineup__name">{{player.info.name}}</td>
-                                                    <td class="lineup__info"><i class="icon-svg "></i></td>
-                                                </tr>
-                                            </ng-container>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- Lineup Table / End -->
-
+                            <div class="widget__content card__content position-relative">
+                                <app-match-overview-lineup [matchId]="match.id"
+                                    [channelId]="match.lineupHome.channelId"></app-match-overview-lineup>
                             </div>
                         </aside>
-                        <!-- Widget: Lineup Table / End -->
-
                     </div>
 
                     <div class="col-md-6">
-
-                        <!-- Widget: Lineup Table Alt -->
-                        <aside class="widget card card--alt-color card--has-table widget--sidebar widget-lineup-table">
+                        <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
                             <div class="widget__title card__header">
                                 <h4>{{matchData.teams[teamType.Away].matchTotal.name}} Lineup</h4>
                             </div>
-                            <div class="widget__content card__content">
-
-                                <!-- Lineup Table -->
-                                <div class="table-responsive">
-                                    <table class="table lineup-table">
-                                        <thead>
-                                            <tr>
-                                                <th class="lineup__pos">POS</th>
-                                                <th class="lineup__name">Player Name</th>
-                                                <th class="lineup__info"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <ng-container *ngFor="let player of matchData.players">
-                                                <tr
-                                                    *ngIf="player.matchPeriodData && player.matchPeriodData.length && player.matchPeriodData[0].info.team === 'away'">
-                                                    <td class="lineup__pos">{{player.matchPeriodData[0].info.position}}
-                                                    </td>
-                                                    <td class="lineup__name">{{player.info.name}}</td>
-                                                    <td class="lineup__info"><i class="icon-svg "></i></td>
-                                                </tr>
-                                            </ng-container>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- Lineup Table / End -->
-
+                            <div class="widget__content card__content position-relative">
+                                <app-match-overview-lineup [matchId]="match.id"
+                                    [channelId]="match.lineupAway.channelId"></app-match-overview-lineup>
                             </div>
                         </aside>
-                        <!-- Widget: Lineup Table Alt / End -->
-
                     </div>
                 </div>
-
+                <app-match-overview-player-statistics [matchId]="match.id">
+                </app-match-overview-player-statistics>
                 <!-- Game Scoreboard -->
                 <div class="card">
                     <header class="card__header">
@@ -197,6 +138,18 @@
 
                         <!-- Game Result -->
                         <div class="game-result">
+                            <div class="d-flex justify-content-around align-items-center">
+                                <div>
+                                    <h5 class="float-left text-muted">
+                                        {{matchData.teams[teamType.Home].matchTotal.name}}
+                                    </h5>
+                                </div>
+                                <div>
+                                    <h5 class="float-right text-muted">
+                                        {{matchData.teams[teamType.Away].matchTotal.name}}
+                                    </h5>
+                                </div>
+                            </div>
                             <section class="game-result__section">
                                 <div class="game-result__content mb-5">
                                     <div class="game-result__stats">
@@ -252,6 +205,7 @@
 
                             <!-- Ball Posession -->
                             <section class="game-result__section">
+
 
                                 <app-horizontal-bar-graph
                                     [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Possession]"
@@ -369,6 +323,7 @@
 
             </div>
             <!-- Sidebar / End -->
+
         </div>
     </div>
 </div>

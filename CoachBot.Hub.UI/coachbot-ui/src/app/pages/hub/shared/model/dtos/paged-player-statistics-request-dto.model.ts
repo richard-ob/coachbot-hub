@@ -14,6 +14,7 @@ export class PlayerStatisticFilters {
     playerId?: number;
     teamId?: number;
     channelId?: number;
+    matchId?: number;
     positionId?: number;
     regionId?: number;
     tournamentEditionId?: number;

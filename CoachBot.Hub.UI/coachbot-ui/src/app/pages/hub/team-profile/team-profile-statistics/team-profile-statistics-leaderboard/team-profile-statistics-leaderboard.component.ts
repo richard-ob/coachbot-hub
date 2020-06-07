@@ -23,7 +23,7 @@ export class TeamProfileStatisticsLeaderboardComponent implements OnInit {
         this.isLoading = true;
         const filters = new PlayerStatisticFilters();
         filters.teamId = this.teamId;
-        this.playerService.getPlayerStatistics(1, this.statisticSortColumn, 'DESC', filters).subscribe(response => {
+        this.playerService.getPlayerStatistics(1, undefined, this.statisticSortColumn, 'DESC', filters).subscribe(response => {
             this.playerStatistics = response.items;
             this.isLoading = false;
         });

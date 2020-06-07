@@ -1,0 +1,43 @@
+<app-spinner *ngIf="isLoading"></app-spinner>
+<ng-container *ngIf="!isLoading">
+    <div class="football-pitch">
+        <div class="outline marking"></div>
+        <div class="box left marking"></div>
+        <div class="box-d left marking"></div>
+        <div class="box left small marking"></div>
+        <div class="box right marking"></div>
+        <div class="box-d right marking"></div>
+        <div class="box right small marking"></div>
+        <div class="spot left marking"></div>
+        <div class="spot right marking"></div>
+        <div class="spot center marking"></div>
+        <div class="center-line marking"></div>
+        <div class="center-circle marking"></div>
+        <div class="corner top left marking"></div>
+        <div class="corner top right marking"></div>
+        <div class="corner bottom left marking"></div>
+        <div class="corner bottom right marking"></div>
+        <div class="grass"></div>
+    </div>
+    <div class="position-absolute" style="top: 0; left: 0; z-index: 2; width: 100%;">
+        <div class="d-flex justify-content-around align-items-center" style="height: 120px;">
+            <div *ngFor="let player of starters | filterBy:['position.name']:'GK'">
+                <span class="badge badge-primary m-2">{{player.nickname}}</span></div>
+        </div>
+        <div class="d-flex justify-content-around align-items-center" style="height: 120px;">
+            <div *ngFor="let player of starters | filterBy:['position.name']:defPositions">
+                <span class="badge badge-primary m-2">{{player.nickname}}</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-around align-items-center" style="height: 120px;">
+            <div *ngFor="let player of starters | filterBy:['position.name']:midPositions">
+                <span class="badge badge-primary m-2">{{player.nickname}}</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-around align-items-center" style="height: 120px;">
+            <div *ngFor="let player of starters | filterBy:['position.name']:atkPositions">
+                <span class="badge badge-primary m-2">{{player.nickname}}</span>
+            </div>
+        </div>
+    </div>
+</ng-container>

@@ -53,7 +53,7 @@ export class FantasyTeamEditorPlayersComponent implements OnChanges, OnInit {
         }
         this.sortBy = sortBy || this.sortBy;
         this.isLoading = true;
-        this.fantasyService.getFantasyPlayers(page, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
+        this.fantasyService.getFantasyPlayers(page, undefined, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
             this.fantasyPlayers = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;

@@ -227,6 +227,18 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.PlayerPositionMatchStatistics
                 .AsNoTracking()
+                .Where(p => filters.MatchId == null || p.MatchId == filters.MatchId)
+                .Where(p => filters.IncludeSubstituteAppearances || !p.Substitute)
+                .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId)
+                .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
+                .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
+                .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
+                .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
+                .Where(p => filters.TournamentEditionId == null || p.Match.TournamentId == filters.TournamentEditionId)
+                .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
                 .Include(p => p.Match)
                     .ThenInclude(p => p.TeamHome)
                 .Include(p => p.Match)
@@ -243,6 +255,7 @@ namespace CoachBot.Domain.Services
                  .PlayerPositionMatchStatistics
                  .AsNoTracking()
                  .Where(p => filters.IncludeSubstituteAppearances || !p.Substitute)
+                 .Where(p => filters.MatchId == null || p.MatchId == filters.MatchId)
                  .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId)
                  .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
                  .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)

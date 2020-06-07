@@ -41,7 +41,7 @@ export class PlayerListComponent implements OnInit {
         this.isLoadingPage = true;
         this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
         this.sortBy = sortBy;
-        this.playerService.getPlayerStatistics(page, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
+        this.playerService.getPlayerStatistics(page, undefined, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
             this.playerStatistics = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;

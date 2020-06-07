@@ -1,0 +1,73 @@
+<div class="card card--has-table">
+    <header class="card__header">
+        <h4>Player Statistics</h4>
+    </header>
+    <div class="card__content table-responsive">
+        <app-spinner *ngIf="isLoading"></app-spinner>
+        <table *ngIf="!isLoading" class="table table--large table-striped table-hover table-clickable"
+            [class.widget__content--loading]="isSorting">
+            <thead>
+                <tr>
+                    <th class="team-result__ball-posession">Player</th>
+                    <th class="team-result__ball-posession"></th>
+                    <th sorter [sortByColumn]="'Team.TeamCode'" [sortByColumnName]="'Team'" [currentSort]="sortBy"
+                        [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
+                    <th sorter [sortByColumn]="'Position.Name'" [sortByColumnName]="'Position'" [currentSort]="sortBy"
+                        [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
+                    <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        (sort)="loadResults($event)" class="text-center"></th>
+                    <th sorter [sortByColumn]="'Shots'" [sortByColumnName]="'Shots'" [currentSort]="sortBy"
+                        [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center">
+                    </th>
+                    <th sorter [sortByColumn]="'ShotsOnGoal'" [sortByColumnName]="'On Target'" [currentSort]="sortBy"
+                        [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center">
+                    </th>
+                    <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        (sort)="loadResults($event)" class="text-center"></th>
+                    <th sorter [sortByColumn]="'Passes'" [sortByColumnName]="'Passes'" [currentSort]="sortBy"
+                        [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center">
+                    </th>
+                    <th sorter [sortByColumn]="'PassesCompleted'" [sortByColumnName]="'Completed'"
+                        [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                        class="text-center"></th>
+                    <th sorter [sortByColumn]="'Interceptions'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        (sort)="loadResults($event)" class="text-center"></th>
+                    <th sorter [sortByColumn]="'PossessionPercentage'" [sortByColumnName]="'Possession'"
+                        [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                        class="text-center"></th>
+                    <th sorter [sortByColumn]="'DistanceCoveredAverage'" [sortByColumnName]="'Distance'"
+                        [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                        class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let player of players" (click)="navigateToPlayerProfile(player.playerId)"
+                    title="View player's profile">
+                    <td class="team-result__score">{{player.nickname}}</td>
+                    <td class="text-right">
+                        <span *ngIf="!player.substitute" title="Substitute">
+                            <i class="icon-svg icon-substitution mr-1"></i>
+                        </span>
+                        <span *ngIf="player.yellowCards > 0">
+                            <i class="icon-svg icon-yellow-card mr-1"></i>
+                        </span>
+                        <span *ngIf="player.redCards > 0">
+                            <i class="icon-svg icon-red-card"></i>
+                        </span>
+                    </td>
+                    <td class="team-result__status">{{player.channel.subTeamName || player.team.teamCode}}</td>
+                    <td class="team-result__status">{{player.position.name}}</td>
+                    <td class="text-center">{{player.goals}}</td>
+                    <td class="text-center">{{player.shots}}</td>
+                    <td class="text-center">{{player.shotsOnGoal}}</td>
+                    <td class="text-center">{{player.assists}}</td>
+                    <td class="text-center">{{player.passes}}</td>
+                    <td class="text-center">{{player.passesCompleted}}</td>
+                    <td class="text-center">{{player.interceptions}}</td>
+                    <td class="text-center">{{player.possessionPercentage | percentage}}</td>
+                    <td class="text-center">{{player.distanceCovered}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

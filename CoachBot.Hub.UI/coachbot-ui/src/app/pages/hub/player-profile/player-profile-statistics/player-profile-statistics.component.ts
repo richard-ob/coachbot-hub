@@ -75,7 +75,7 @@ export class PlayerProfileStatisticsComponent implements OnInit {
             timePeriod: TimePeriod.AllTime,
             includeSubstituteAppearances: true
         };
-        this.playerService.getPlayerStatistics(1, undefined, undefined, filters)
+        this.playerService.getPlayerStatistics(1, undefined, undefined, undefined, filters)
             .pipe(map(result => result.items[0])).subscribe(playerStatistics => {
                 this.playerStatistics = playerStatistics;
                 this.isLoading = false;

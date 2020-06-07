@@ -1,3 +1,49 @@
-export interface PlayerPositionMatchStatistics {
+import { Channel } from './channel.model';
+import { Match } from './match.model';
+import { Position } from './position';
+import { Team } from './team.model';
 
+export interface PlayerPositionMatchStatistics {
+    id: number;
+    secondsPlayed: number;
+    nickname: string;
+    substitute: boolean;
+    matchId: number;
+    match: Match;
+    teamId: number;
+    team: Team;
+    channelId: number;
+    channel: Channel;
+    playerId: number;
+    player?: any;
+    positionId: number;
+    position: Position;
+    createdDate: Date;
+    redCards: number;
+    yellowCards: number;
+    fouls: number;
+    foulsSuffered: number;
+    slidingTackles: number;
+    slidingTacklesCompleted: number;
+    goalsConceded: number;
+    shots: number;
+    shotsOnGoal: number;
+    passesCompleted: number;
+    interceptions: number;
+    offsides: number;
+    goals: number;
+    ownGoals: number;
+    assists: number;
+    passes: number;
+    freeKicks: number;
+    penalties: number;
+    corners: number;
+    throwIns: number;
+    keeperSaves: number;
+    goalKicks: number;
+    possession: number;
+    distanceCovered: number;
+    keeperSavesCaught: number;
+    possessionPercentage: number;
+    matchOutcome: number;
 }

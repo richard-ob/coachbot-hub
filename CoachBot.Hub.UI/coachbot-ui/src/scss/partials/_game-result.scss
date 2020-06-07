@@ -547,9 +547,7 @@
 				}
 
 				.game-result__score-dash {
-					@media (max-width: 991px) {
-						display: none;
-					}
+						padding: 0 5px;
 				}
 
 				.game-result__score-label {

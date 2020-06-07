@@ -33,19 +33,19 @@ export class PlayerService {
         return this.http.get<Player>(`${environment.apiUrl}/api/player/${playerId}`);
     }
 
-    getPlayerStatistics(page: number, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
+    getPlayerStatistics(page: number, pageSize = 10, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
         : Observable<PagedResult<PlayerStatistics>> {
         return this.http.post<PagedResult<PlayerStatistics>>(
             `${environment.apiUrl}/api/player-statistics`,
-            PlayerStatisticsFilterHelper.generatePlayerStatisticsFilter(page, sortBy, sortOrder, filters)
+            PlayerStatisticsFilterHelper.generatePlayerStatisticsFilter(page, pageSize, sortBy, sortOrder, filters)
         );
     }
 
-    getPlayerMatchStatistics(page: number, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
-        : Observable<PagedResult<PlayerPositionMatchStatistics[]>> {
-        return this.http.post<PagedResult<PlayerPositionMatchStatistics[]>>(
+    getPlayerMatchStatistics(page: number, pageSize = 10, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
+        : Observable<PagedResult<PlayerPositionMatchStatistics>> {
+        return this.http.post<PagedResult<PlayerPositionMatchStatistics>>(
             `${environment.apiUrl}/api/player-statistics/matches`,
-            PlayerStatisticsFilterHelper.generatePlayerStatisticsFilter(page, sortBy, sortOrder, filters)
+            PlayerStatisticsFilterHelper.generatePlayerStatisticsFilter(page, pageSize, sortBy, sortOrder, filters)
         );
     }
 

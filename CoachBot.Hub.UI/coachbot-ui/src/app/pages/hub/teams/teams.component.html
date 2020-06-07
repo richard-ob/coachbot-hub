@@ -1,4 +1,4 @@
-<app-spinner *ngIf="isLoading"></app-spinner>
+<app-spinner *ngIf="isLoading" class="py-4"></app-spinner>
 <div *ngIf="!isLoading" class="container position-relative py-4">
     <h4>Current</h4>
     <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet in this region

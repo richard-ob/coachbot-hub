@@ -29,10 +29,10 @@
                                 <td>{{server.region.regionName}}</td>
                                 <td>{{server.rconPassword}}</td>
                                 <td>
-                                    <button class="btn btn-outline-primary btn-xs mr-2" (click)="editServer(server)"
-                                        [disabled]="isRemoving">
+                                    <button class="btn btn-outline-primary btn-xs mr-2 mb-2"
+                                        (click)="editServer(server)" [disabled]="isRemoving">
                                         <i class="fa fa-times"></i> Edit RCON</button>
-                                    <button class="btn btn-outline-danger btn-xs" (click)="removeServer(server.id)"
+                                    <button class="btn btn-outline-danger btn-xs mb-2" (click)="removeServer(server.id)"
                                         [disabled]="isRemoving">
                                         <i class="fa fa-times"></i> Remove</button>
                                 </td>
@@ -43,7 +43,6 @@
             </div>
         </div>
     </div>
-    <br />
     <div class="card">
         <div class="card__header">
             <h4>

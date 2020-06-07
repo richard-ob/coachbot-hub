@@ -362,7 +362,7 @@
 		z-index: 5;
 	}
 	#page-content {
-		margin-top: calc(#{$header-mobile-height} + 25px);
+		margin-top: $header-mobile-height;
 	}
 
 		.header-mobile__inner {

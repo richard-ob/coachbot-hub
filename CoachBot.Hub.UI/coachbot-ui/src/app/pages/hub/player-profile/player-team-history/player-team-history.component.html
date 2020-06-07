@@ -1,6 +1,6 @@
 <div *ngIf="!isLoading && !playerTeamStatisticsTotals.length" class="alert alert-info">This player hasn't joined a
     team yet!</div>
-<div class="container my-4">
+<div class="container py-4">
     <app-spinner *ngIf="isLoading"></app-spinner>
     <div *ngIf="!isLoading && playerTeamStatisticsTotals.length" class="card card--has-table">
         <div class="card__header card__header--has-btn">

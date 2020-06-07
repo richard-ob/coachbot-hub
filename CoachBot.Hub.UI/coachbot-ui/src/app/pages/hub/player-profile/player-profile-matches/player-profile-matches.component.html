@@ -1,9 +1,9 @@
-<div *ngIf="isLoading || !matches.length" class="my-4">
+<div *ngIf="isLoading || !matches.length" class="py-4">
     <app-spinner *ngIf="isLoading"></app-spinner>
     <div *ngIf="!isLoading && !matches.length" class="alert alert-info">
         Hold tight! This player has not played in matches yet</div>
 </div>
-<div *ngIf="!isLoading && matches.length" class="container-fluid my-4">
+<div *ngIf="!isLoading && matches.length" class="container-fluid py-4">
     <div class="row">
         <div class="card card--has-table w-100">
             <div class="card__header card__header--has-btn">

@@ -8,6 +8,8 @@ import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/l
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import { Region } from '@pages/hub/shared/model/region.model';
 import { RegionService } from '@pages/hub/shared/services/region.service';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +26,8 @@ export class AppComponent implements OnInit {
   constructor(
     private playerService: PlayerService,
     private userPreferenceService: UserPreferenceService,
-    private regionService: RegionService
+    private regionService: RegionService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -34,6 +37,10 @@ export class AppComponent implements OnInit {
       this.playerService.getCurrentPlayer().subscribe(player => {
         this.player = player;
       });
+    });
+    this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd)).subscribe(() => {
+      console.log('closing');
+      this.closeSidebar();
     });
   }
 
@@ -55,6 +62,15 @@ export class AppComponent implements OnInit {
     } else {
       menu.classList.add('main-nav--opened');
       backdrop.classList.remove('d-none');
+    }
+  }
+
+  closeSidebar() {
+    const menu = document.querySelector('.main-nav');
+    const backdrop = document.querySelector('.main-nav--backdrop');
+    if (menu.classList.contains('main-nav--opened')) {
+      menu.classList.remove('main-nav--opened');
+      backdrop.classList.add('d-none');
     }
   }
 }

@@ -1,4 +1,4 @@
-<div class="container-fluid my-4">
+<div class="container-fluid py-4">
     <!-- Team Latest Results -->
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
@@ -35,7 +35,10 @@
         </div>
         <div class="card__content table-responsive">
             <app-spinner *ngIf="isLoading"></app-spinner>
-            <table *ngIf="!isLoading"
+            <div *ngIf="!isLoading && !playerStatistics.length" class="m-3 alert alert-info">No matches have been played
+                yet
+                in this region. Hang tight!</div>
+            <table *ngIf="!isLoading && playerStatistics.length"
                 class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
                 [class.widget__content--loading]="isLoadingPage">
                 <thead>

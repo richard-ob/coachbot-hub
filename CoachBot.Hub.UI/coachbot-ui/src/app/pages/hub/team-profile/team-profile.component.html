@@ -61,7 +61,8 @@
             </div>
         </div>
         <nav class="content-filter">
-            <div class="container"><a href="#" class="content-filter__toggle"></a>
+            <div class="container">
+                <a href="#" class="content-filter__toggle"></a>
                 <ul class="content-filter__list">
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
                         <a [routerLink]="['./statistics']" class="content-filter__link">
@@ -92,7 +93,7 @@
             </div>
         </nav>
     </div>
-    <div class="my-4">
+    <div class="py-4">
         <router-outlet></router-outlet>
     </div>
 </ng-container>

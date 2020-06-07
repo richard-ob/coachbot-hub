@@ -158,8 +158,7 @@
                                 position: absolute;
                                 top: 8px;
                                 margin-left: 11px;
-                                font-size: 9px;
-                            ">Beta</span>
+                                font-size: 9px;">Beta</span>
                                 <span class="main-nav__toggle" #matchHubToggle></span>
                                 <div class="main-nav__megamenu clearfix" #matchHubSection>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
@@ -206,8 +205,12 @@
                                 </ul>
                             </li>
                             <li class=""><a href="https://discord.gg/FkT6Q3N" target="_blank">Discord Chat</a></li>
+                            <li class="d-block d-lg-none">
+                                <a *ngIf="player" class="text-primary" href="javascript:void(0);"
+                                    routerLink="./login">Login</a>
+                                <a *ngIf="!player" class="text-primary" href="{{apiUrl}}/logout">Logout</a>
+                            </li>
                         </ul>
-
                     </nav>
                     <!-- Main Navigation / End -->
                 </div>

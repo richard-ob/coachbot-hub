@@ -4,7 +4,8 @@
     </header>
     <div class="card__content table-responsive">
         <app-spinner *ngIf="isLoading"></app-spinner>
-        <table *ngIf="!isLoading" class="table table--large table-striped table-hover table-clickable"
+        <table *ngIf="!isLoading"
+            class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
             [class.widget__content--loading]="isSorting">
             <thead>
                 <tr>
@@ -12,8 +13,9 @@
                     <th class="team-result__ball-posession"></th>
                     <th sorter [sortByColumn]="'Team.TeamCode'" [sortByColumnName]="'Team'" [currentSort]="sortBy"
                         [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
-                    <th sorter [sortByColumn]="'Position.Name'" [sortByColumnName]="'Position'" [currentSort]="sortBy"
-                        [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
+                    <th sorter [sortByColumn]="'Position.Name'" [sortByColumnName]="'Pos'" [currentSort]="sortBy"
+                        [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center" title="Position">
+                    </th>
                     <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                         (sort)="loadResults($event)" class="text-center"></th>
                     <th sorter [sortByColumn]="'Shots'" [sortByColumnName]="'Shots'" [currentSort]="sortBy"
@@ -30,8 +32,8 @@
                     <th sorter [sortByColumn]="'PassesCompleted'" [sortByColumnName]="'Completed'"
                         [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                         class="text-center"></th>
-                    <th sorter [sortByColumn]="'Interceptions'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                        (sort)="loadResults($event)" class="text-center"></th>
+                    <th sorter [sortByColumn]="'Ints'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        (sort)="loadResults($event)" class="text-center" title="Interceptions"></th>
                     <th sorter [sortByColumn]="'PossessionPercentage'" [sortByColumnName]="'Possession'"
                         [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                         class="text-center"></th>

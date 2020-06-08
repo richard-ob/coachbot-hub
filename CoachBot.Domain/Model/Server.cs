@@ -1,4 +1,5 @@
 ﻿using CoachBot.Domain.Model;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +16,10 @@ namespace CoachBot.Model
 
         public string Address { get; set; }
 
+        [JsonIgnore]
         public string RconPassword { get; set; }
+
+        public bool HasRconPassword => !string.IsNullOrEmpty(RconPassword);
 
         public int RegionId { get; set; }
 

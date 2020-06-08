@@ -56,6 +56,7 @@ namespace CoachBot.Controllers
         [HttpPut]
         public void Update(Server server)
         {
+            // TO DO: Add new DTO that just updates RCON only, as we no longer serialise
             if (!_playerService.IsAdmin(User.GetSteamId()))
             {
                 throw new Exception();

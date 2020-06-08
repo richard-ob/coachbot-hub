@@ -27,7 +27,10 @@
                                     {{server.country.name}}
                                 </td>
                                 <td>{{server.region.regionName}}</td>
-                                <td>{{server.rconPassword}}</td>
+                                <td>
+                                    <i *ngIf="server.hasRconPassword" class="fas fa-check text-success"></i>
+                                    <i *ngIf="!server.hasRconPassword" class="fas fa-times text-danger"></i>
+                                </td>
                                 <td>
                                     <button class="btn btn-outline-primary btn-xs mr-2 mb-2"
                                         (click)="editServer(server)" [disabled]="isRemoving">

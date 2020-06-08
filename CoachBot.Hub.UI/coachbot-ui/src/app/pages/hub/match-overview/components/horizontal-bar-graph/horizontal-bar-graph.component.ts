@@ -13,7 +13,9 @@ export enum DisplayValueMode {
 export class HorizontalBarGraphComponent implements OnInit {
 
   @Input() homeValue: number;
+  @Input() homeColour = '#dc3545';
   @Input() awayValue: number;
+  @Input() awayColour = '#38a9ff';
   @Input() title: string;
   @Input() displayValueMode: DisplayValueMode = DisplayValueMode.Value;
   displayValueModes = DisplayValueMode;
@@ -21,8 +23,7 @@ export class HorizontalBarGraphComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.homeValue);
-    console.log(this.awayValue);
+
   }
 
 }

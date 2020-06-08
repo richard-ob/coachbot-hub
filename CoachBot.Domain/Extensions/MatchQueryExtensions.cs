@@ -63,6 +63,8 @@ namespace CoachBot.Domain.Extensions
             return coachBotContext.Matches
                 .Include(m => m.LineupHome)
                     .ThenInclude(th => th.Channel)
+                    .ThenInclude(c => c.Team)
+                    .ThenInclude(t => t.BadgeImage)
                 .Include(m => m.LineupHome)
                     .ThenInclude(th => th.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Player)

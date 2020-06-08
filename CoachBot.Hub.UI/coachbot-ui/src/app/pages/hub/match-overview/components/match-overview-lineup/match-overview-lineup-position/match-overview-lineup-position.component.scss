@@ -1,0 +1,32 @@
+.lineup-player--position {
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 12px;
+    pointer-events: none;
+}
+.lineup-player--position-container {
+    width: 120px;
+}
+.lineup-player--position-player-name {
+    max-width: 120px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-top: 3px;
+}
+.lineup-player--yellow-card {
+    position: absolute;
+    right: -14px;
+    top: -16px;
+}
+.lineup-player--red-card {
+    position: absolute;
+    right: -18px;
+    top: -16px;
+}
+.lineup-player--substitution {
+    position: absolute;
+    left: -21px;
+    transform: scale(0.85);
+    top: 2px;
+}

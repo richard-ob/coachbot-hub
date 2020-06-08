@@ -26,6 +26,7 @@ export enum EventType {
     Penalty = 'PENALTY',
     Foul = 'FOUL',
     OwnGoal = 'OWN GOAL',
+    Celebration = 'CELEBRATION',
     Null = '(null)'
 }
 

@@ -30,9 +30,6 @@
     bottom: 0;
     width: 43%;
 }
-.card__header::before {
-    background-color: #131313;
-}
 .progress__bar--success {
     background-color: #dc3545;
 }
@@ -43,4 +40,8 @@
 .match-footer-events, .match-meta-data {
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
     font-size: 12px;
+}
+.widget-commentary > .widget__content {
+    overflow: auto;
+    max-height: 1720px;
 }

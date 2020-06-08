@@ -13,7 +13,7 @@ import { Match } from '../shared/model/match.model';
   styleUrls: ['./match-overview.component.scss']
 })
 export class MatchOverviewComponent implements OnInit {
-
+  // TODO: ADD SUBSTITUTES TO EVENTS LIST
   matchData: any;
   match: Match;
   statisticType = StatisticType;

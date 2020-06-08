@@ -14,9 +14,11 @@ export class MatchOverviewLineupComponent implements OnInit {
 
     @Input() matchId: number;
     @Input() channelId: number;
+    @Input() color: string;
     filters = new PlayerStatisticFilters();
     players: PlayerPositionMatchStatistics[];
     starters: PlayerPositionMatchStatistics[];
+    substitutes: PlayerPositionMatchStatistics[];
     defPositions = Positions.DEF;
     midPositions = Positions.MID;
     atkPositions = Positions.ATK;
@@ -30,6 +32,7 @@ export class MatchOverviewLineupComponent implements OnInit {
         this.playerService.getPlayerMatchStatistics(1, undefined, undefined, undefined, this.filters).subscribe(players => {
             this.players = players.items;
             this.starters = this.players.filter(p => p.substitute); // TODO: invert this.. the original statistic generation was wrong
+            this.substitutes = this.players.filter(p => !p.substitute);
             this.isLoading = false;
         });
     }

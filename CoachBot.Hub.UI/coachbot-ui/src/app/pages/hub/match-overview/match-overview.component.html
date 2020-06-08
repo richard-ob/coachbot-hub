@@ -8,324 +8,401 @@
 <div *ngIf="isLoading" class="container py-4">
     <app-spinner></app-spinner>
 </div>
-<div *ngIf="!isLoading && matchData" class="page-heading p-0">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 offset-md-1">
-                <section class="d-flex flex-column text-white my-4">
-                    <div id="match-meta-data" class="match-meta-data d-flex justify-content-between mb-4">
-                        <div id="match-meta-data-type">{{matchData.matchInfo.type}}</div>
-                        <div id="match-meta-data-server"></div>
-                        <div id="match-meta-data-date">{{matchDate | date:'medium'}}</div>
-                    </div>
-                    <div id="match-headline-items" class="d-flex align-items-center mt-2 mb-4">
-                        <div id="match-headline-items-home" class="text-left" style="flex: 0 1 50%">
-                            <span class="d-none d-md-inline-block pr-4">
+<ng-container *ngIf="!isLoading && matchData">
+    <div class="page-heading p-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <section class="d-flex flex-column text-white my-4">
+                        <div id="match-meta-data" class="match-meta-data d-flex justify-content-between mb-4">
+                            <div id="match-meta-data-type">{{matchData.matchInfo.type}}</div>
+                            <div id="match-meta-data-server"></div>
+                            <div id="match-meta-data-date">{{matchDate | date:'medium'}}</div>
+                        </div>
+                        <div id="match-headline-items" class="d-flex align-items-center mt-2 mb-4">
+                            <div id="match-headline-items-home" class="text-left" style="flex: 0 1 50%">
+                                <span class="d-none d-md-inline-block pr-4">
                                 <ng-container
-                                    *ngIf="(matchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
+                                    *ngIf="match.lineupHome.channel.team.badgeImage; else blankCrest">
                                     <img 
-                                        src="https://www.countryflags.io/{{matchData.teams[teamType.Home].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
+                                        [src]="match.lineupHome.channel.team.badgeImage.base64EncodedImage">
                                 </ng-container>
                                 <ng-template #blankCrest>
                                     <img src="./assets/images/soccer/blank-crest.png"
                                         style="max-width: 64px;">
                                 </ng-template>
                             </span>
-                            <h5 class="d-inline-block text-white">
-                                {{matchData.teams[teamType.Home].matchTotal.name}}</h5>
-                        </div>
-                        <div id="match-headline-score"
-                            class="game-result__score game-result__score--lg text-center text-white"
-                            style="flex: 0 0 150px">
-                            <span class="game-result__score-result">{{matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Goals]}}</span>
-                            <span class="game-result__score-dash">-</span>
-                            <span class="game-result__score-result">{{matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
-                        </div>
-                        <div id="match-headline-items-away" class="text-right" style="flex: 0 1 50%">
-                            <h5 class="d-inline-block text-white">
-                                {{matchData.teams[teamType.Away].matchTotal.name}}</h5>
-                            <span class="d-none d-md-inline-block pl-4">
-                            <ng-container
-                                *ngIf="(matchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter) != null; else blankCrest">
-                                <img
-                                    src="https://www.countryflags.io/{{matchData.teams[teamType.Away].matchTotal.name | countryNameToCodeConverter}}/flat/64.png">
-                            </ng-container>
-                            <ng-template #blankCrest>
-                                <img src="./assets/images/soccer/blank-crest.png"
-                                    style="max-width: 64px;">
-                            </ng-template>
-                            </span>
-                        </div>
-                    </div>
-                    <div id="match-footer-items" class="d-flex align-items-start">
-                        <div id="match-footer-items-home" style="flex: 0 1 50%; overflow-y: auto; max-height: 210px;"
-                            class="match-footer-events  px-2 text-right">
-                            <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'home' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
-                                {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
-                                ({{goalEvents.second | secondsToMinutes}}’)
-                            </span>
-                        </div>
-                        <div id="match-score-footer" class="d-flex flex-column text-center" style="flex: 0 0 150px">
-                            <div id="match-score-final-period" class="game-result__score-label text-white">
-                                <ng-container [ngSwitch]="matchData.matchInfo.periods">
-                                    <span *ngSwitchCase="2">FT</span>
-                                    <span *ngSwitchCase="3">AET</span>
-                                    <span *ngSwitchCase="4">AET</span>
-                                    <span *ngSwitchCase="5">PENS</span>
-                                </ng-container>
+                                <h5 class="d-inline-block text-white">
+                                    {{match.lineupHome.channel.subteamName || match.lineupHome.channel.team.name}}
+                                </h5>
                             </div>
-                            <div id="match-score-status" class="game-result__score-label text-white">Final Score</div>
+                            <div id="match-headline-score"
+                                class="game-result__score game-result__score--lg text-center text-white"
+                                style="flex: 0 0 150px">
+                                <span class="game-result__score-result">{{matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Goals]}}</span>
+                                <span class="game-result__score-dash">-</span>
+                                <span class="game-result__score-result">{{matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
+                            </div>
+                            <div id="match-headline-items-away" class="text-right" style="flex: 0 1 50%">
+                                <h5 class="d-inline-block text-white">
+                                    {{match.lineupAway.channel.subteamName || match.lineupAway.channel.team.name}}
+                                </h5>
+                                <span class="d-none d-md-inline-block pl-4">
+                                    <ng-container
+                                        *ngIf="match.lineupAway.channel.team.badgeImage; else blankCrest">
+                                        <img 
+                                            [src]="match.lineupAway.channel.team.badgeImage.base64EncodedImage">
+                                    </ng-container>
+                                    <ng-template #blankCrest>
+                                        <img src="./assets/images/soccer/blank-crest.png"
+                                            style="max-width: 64px;">
+                                    </ng-template>
+                            </span>
+                            </div>
                         </div>
-                        <div id="match-footer-items-away" class="match-footer-events px-2 text-left"
-                            style="flex: 0 1 50%; overflow-y: auto; max-height: 210px;">
-                            <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'away' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
+                        <div id="match-footer-items" class="d-flex align-items-start">
+                            <div id="match-footer-items-home"
+                                style="flex: 0 1 50%; overflow-y: auto; max-height: 210px;"
+                                class="match-footer-events  px-2 text-right">
+                                <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'home' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
                                 {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
                                 ({{goalEvents.second | secondsToMinutes}}’)
                             </span>
+                            </div>
+                            <div id="match-score-footer" class="d-flex flex-column text-center" style="flex: 0 0 150px">
+                                <div id="match-score-final-period" class="game-result__score-label text-white">
+                                    <ng-container [ngSwitch]="matchData.matchInfo.periods">
+                                        <span *ngSwitchCase="2">FT</span>
+                                        <span *ngSwitchCase="3">AET</span>
+                                        <span *ngSwitchCase="4">AET</span>
+                                        <span *ngSwitchCase="5">PENS</span>
+                                    </ng-container>
+                                </div>
+                                <div id="match-score-status" class="game-result__score-label text-white">Final Score
+                                </div>
+                            </div>
+                            <div id="match-footer-items-away" class="match-footer-events px-2 text-left"
+                                style="flex: 0 1 50%; overflow-y: auto; max-height: 210px;">
+                                <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'away' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
+                                {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
+                                ({{goalEvents.second | secondsToMinutes}}’)
+                            </span>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Page Heading / End -->
+    <!-- Page Heading / End -->
 
 
-<!-- Content
+    <!-- Content
 ================================================== -->
-<div *ngIf="matchData" class="site-content">
-    <div class="container">
+    <div *ngIf="matchData" class="site-content">
+        <div class="container">
 
-        <div class="row">
+            <div class="row">
 
-            <!-- Content -->
-            <div class="content col-lg-8">
-                <div class="row">
+                <!-- Content -->
+                <div class="content col-lg-12">
+                    <div class="row">
 
-                    <div class="col-md-6">
-                        <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
-                            <div class="widget__title card__header">
-                                <h4>{{matchData.teams[teamType.Home].matchTotal.name}} Lineup</h4>
-                            </div>
-                            <div class="widget__content card__content position-relative">
-                                <app-match-overview-lineup [matchId]="match.id"
-                                    [channelId]="match.lineupHome.channelId"></app-match-overview-lineup>
-                            </div>
-                        </aside>
-                    </div>
-
-                    <div class="col-md-6">
-                        <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
-                            <div class="widget__title card__header">
-                                <h4>{{matchData.teams[teamType.Away].matchTotal.name}} Lineup</h4>
-                            </div>
-                            <div class="widget__content card__content position-relative">
-                                <app-match-overview-lineup [matchId]="match.id"
-                                    [channelId]="match.lineupAway.channelId"></app-match-overview-lineup>
-                            </div>
-                        </aside>
-                    </div>
-                </div>
-                <app-match-overview-player-statistics [matchId]="match.id">
-                </app-match-overview-player-statistics>
-                <!-- Game Scoreboard -->
-                <div class="card">
-                    <header class="card__header">
-                        <h4>Match Statistics</h4>
-                    </header>
-                    <div class="card__content">
-
-                        <!-- Game Result -->
-                        <div class="game-result">
-                            <div class="d-flex justify-content-around align-items-center">
-                                <div>
-                                    <h5 class="float-left text-muted">
-                                        {{matchData.teams[teamType.Home].matchTotal.name}}
-                                    </h5>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
+                                        <div class="widget__title card__header">
+                                            <h4>
+                                                {{match.lineupAway.channel.subteamName || match.lineupAway.channel.team.name}}
+                                                Lineup</h4>
+                                        </div>
+                                        <div class="widget__content card__content position-relative">
+                                            <app-match-overview-lineup [matchId]="match.id"
+                                                [channelId]="match.lineupHome.channelId" [color]="'#dc3545'">
+                                            </app-match-overview-lineup>
+                                        </div>
+                                    </aside>
                                 </div>
-                                <div>
-                                    <h5 class="float-right text-muted">
-                                        {{matchData.teams[teamType.Away].matchTotal.name}}
-                                    </h5>
+
+                                <div class="col-md-6">
+                                    <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
+                                        <div class="widget__title card__header">
+                                            <h4>{{match.lineupAway.channel.subteamName || match.lineupAway.channel.team.name}}
+                                                Lineup</h4>
+                                        </div>
+                                        <div class="widget__content card__content position-relative">
+                                            <app-match-overview-lineup [matchId]="match.id"
+                                                [channelId]="match.lineupAway.channelId" [color]="'#ffc107'">
+                                            </app-match-overview-lineup>
+                                        </div>
+                                    </aside>
                                 </div>
                             </div>
-                            <section class="game-result__section">
-                                <div class="game-result__content mb-5">
-                                    <div class="game-result__stats">
-                                        <div class="row">
-                                            <div class="col-6 col-md-6 order-md-1 game-result__stats-team-1">
+                            <div class="row">
+                                <div class="col-md-12">
 
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <app-circle-graph
-                                                            [totalValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]"
-                                                            [partValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]"
-                                                            [title]="'Shot Accuracy'" [fillColour]="'#38a9ff'">
-                                                        </app-circle-graph>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <app-circle-graph
-                                                            [totalValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Passes]"
-                                                            [partValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.PassesCompleted]"
-                                                            [title]="'Pass Accuracy'" [fillColour]="'#38a9ff'">
-                                                        </app-circle-graph>
-                                                    </div>
+                                    <div class="card">
+                                        <header class="card__header">
+                                            <h4>Team Statistics</h4>
+                                        </header>
+                                        <div class="card__content">
 
-                                                    <div class="spacer"></div>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-6 col-md-6 order-md-3 game-result__stats-team-2">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <app-circle-graph
-                                                            [totalValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
-                                                            [partValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
-                                                            [title]="'Shot Accuracy'" [fillColour]="'#dc3545'">
-                                                        </app-circle-graph>
+                                            <!-- Game Result -->
+                                            <div class="game-result">
+                                                <div class="d-flex justify-content-around align-items-center">
+                                                    <div>
+                                                        <h5 class="float-left text-muted">
+                                                            <ng-container
+                                                                *ngIf="match.lineupHome.channel.team.badgeImage; else blankCrest">
+                                                                <img
+                                                                    [src]="match.lineupHome.channel.team.badgeImage.base64EncodedImage">
+                                                            </ng-container>
+                                                            <ng-template #blankCrest>
+                                                                <img src="./assets/images/soccer/blank-crest.png"
+                                                                    style="max-height: 25px;">
+                                                            </ng-template>
+                                                            {{match.lineupHome.channel.subteamName || match.lineupHome.channel.team.name}}
+                                                        </h5>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <app-circle-graph
-                                                            [totalValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
-                                                            [partValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
-                                                            [title]="'Pass Accuracy'" [fillColour]="'#dc3545'">
-                                                        </app-circle-graph>
+                                                    <div>
+                                                        <h5 class="float-right text-muted">
+                                                            <ng-container
+                                                                *ngIf="match.lineupAway.channel.team.badgeImage; else blankCrest">
+                                                                <img
+                                                                    [src]="match.lineupAway.channel.team.badgeImage.base64EncodedImage">
+                                                            </ng-container>
+                                                            <ng-template #blankCrest>
+                                                                <img src="./assets/images/soccer/blank-crest.png"
+                                                                    style="max-height: 25px;">
+                                                            </ng-template>
+                                                            {{match.lineupAway.channel.subteamName || match.lineupAway.channel.team.name}}
+                                                        </h5>
                                                     </div>
                                                 </div>
+                                                <section class="game-result__section">
+                                                    <div class="game-result__content mb-5">
+                                                        <div class="game-result__stats">
+                                                            <div class="row">
+                                                                <div
+                                                                    class="col-6 col-md-6 order-md-1 game-result__stats-team-1">
+
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <app-circle-graph
+                                                                                [totalValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]"
+                                                                                [partValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]"
+                                                                                [title]="'Shot Accuracy'"
+                                                                                [fillColour]="'#38a9ff'">
+                                                                            </app-circle-graph>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <app-circle-graph
+                                                                                [totalValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Passes]"
+                                                                                [partValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.PassesCompleted]"
+                                                                                [title]="'Pass Accuracy'"
+                                                                                [fillColour]="'#38a9ff'">
+                                                                            </app-circle-graph>
+                                                                        </div>
+
+                                                                        <div class="spacer"></div>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div
+                                                                    class="col-6 col-md-6 order-md-3 game-result__stats-team-2">
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <app-circle-graph
+                                                                                [totalValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
+                                                                                [partValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
+                                                                                [title]="'Shot Accuracy'"
+                                                                                [fillColour]="match.lineupHome.channel.team.color ? match.lineupHome.channel.team.color  : '#dc3545'">
+                                                                            </app-circle-graph>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <app-circle-graph
+                                                                                [totalValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
+                                                                                [partValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
+                                                                                [title]="'Pass Accuracy'"
+                                                                                [fillColour]="match.lineupAway.channel.team.color ? match.lineupAway.channel.team.color : '#dc3545'">
+                                                                            </app-circle-graph>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="spacer"></div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+
+                                                <!-- Ball Posession -->
+                                                <section class="game-result__section">
+
+
+                                                    <app-horizontal-bar-graph
+                                                        [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Possession]"
+                                                        [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Possession]"
+                                                        [homeColour]="match.lineupHome.channel.team.color"
+                                                        [awayColour]="'match.lineupHome.channel.team.color'"
+                                                        [title]="'Possession'"
+                                                        [displayValueMode]="displayValueModes.Percentage">
+                                                    </app-horizontal-bar-graph>
+
+                                                    <app-horizontal-bar-graph
+                                                        [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]"
+                                                        [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
+                                                        [homeColour]="match.lineupHome.channel.team.color"
+                                                        [awayColour]="'match.lineupHome.channel.team.color'"
+                                                        [title]="'Shots'" [displayValueMode]="displayValueModes.Value">
+                                                    </app-horizontal-bar-graph>
+
+                                                    <app-horizontal-bar-graph
+                                                        [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]"
+                                                        [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
+                                                        [homeColour]="match.lineupHome.channel.team.color"
+                                                        [awayColour]="'match.lineupHome.channel.team.color'"
+                                                        [title]="'Shots On Goal'"
+                                                        [displayValueMode]="displayValueModes.Value">
+                                                    </app-horizontal-bar-graph>
+
+                                                    <app-horizontal-bar-graph
+                                                        [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.KeeperSaves]"
+                                                        [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.KeeperSaves]"
+                                                        [homeColour]="match.lineupHome.channel.team.color"
+                                                        [awayColour]="'match.lineupHome.channel.team.color'"
+                                                        [title]="'Saves'" [displayValueMode]="displayValueModes.Value">
+                                                    </app-horizontal-bar-graph>
+
+                                                    <app-horizontal-bar-graph
+                                                        [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Passes]"
+                                                        [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
+                                                        [homeColour]="match.lineupHome.channel.team.color"
+                                                        [awayColour]="'match.lineupHome.channel.team.color'"
+                                                        [title]="'Passes'" [displayValueMode]="displayValueModes.Value">
+                                                    </app-horizontal-bar-graph>
+
+                                                    <app-horizontal-bar-graph
+                                                        [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.PassesCompleted]"
+                                                        [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
+                                                        [homeColour]="match.lineupHome.channel.team.color"
+                                                        [awayColour]="'match.lineupHome.channel.team.color'"
+                                                        [title]="'Passes Completed'"
+                                                        [displayValueMode]="displayValueModes.Value">
+                                                    </app-horizontal-bar-graph>
+
+                                                    <app-horizontal-bar-graph
+                                                        [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Corners]"
+                                                        [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Corners]"
+                                                        [homeColour]="match.lineupHome.channel.team.color"
+                                                        [awayColour]="'match.lineupHome.channel.team.color'"
+                                                        [title]="'Corners'"
+                                                        [displayValueMode]="displayValueModes.Value">
+                                                    </app-horizontal-bar-graph>
+
+                                                    <app-horizontal-bar-graph
+                                                        [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Fouls]"
+                                                        [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Fouls]"
+                                                        [homeColour]="match.lineupHome.channel.team.color"
+                                                        [awayColour]="'match.lineupHome.channel.team.color'"
+                                                        [title]="'Fouls'" [displayValueMode]="displayValueModes.Value">
+                                                    </app-horizontal-bar-graph>
+
+                                                </section>
+                                                <!-- Ball Posession / End -->
+
+                                                <!-- Game Timeline -->
+
+                                                <!-- Ball Posession / End -->
                                             </div>
-
-                                            <div class="spacer"></div>
-
+                                            <!-- Game Timeline / End -->
 
                                         </div>
                                     </div>
                                 </div>
-                            </section>
 
-                            <!-- Ball Posession -->
-                            <section class="game-result__section">
+                            </div>
 
-
-                                <app-horizontal-bar-graph
-                                    [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Possession]"
-                                    [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Possession]"
-                                    [title]="'Possession'" [displayValueMode]="displayValueModes.Percentage">
-                                </app-horizontal-bar-graph>
-
-                                <app-horizontal-bar-graph
-                                    [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]"
-                                    [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
-                                    [title]="'Shots'" [displayValueMode]="displayValueModes.Value">
-                                </app-horizontal-bar-graph>
-
-                                <app-horizontal-bar-graph
-                                    [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]"
-                                    [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
-                                    [title]="'Shots On Goal'" [displayValueMode]="displayValueModes.Value">
-                                </app-horizontal-bar-graph>
-
-                                <app-horizontal-bar-graph
-                                    [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.KeeperSaves]"
-                                    [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.KeeperSaves]"
-                                    [title]="'Saves'" [displayValueMode]="displayValueModes.Value">
-                                </app-horizontal-bar-graph>
-
-                                <app-horizontal-bar-graph
-                                    [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Passes]"
-                                    [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
-                                    [title]="'Passes'" [displayValueMode]="displayValueModes.Value">
-                                </app-horizontal-bar-graph>
-
-                                <app-horizontal-bar-graph
-                                    [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.PassesCompleted]"
-                                    [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
-                                    [title]="'Passes Completed'" [displayValueMode]="displayValueModes.Value">
-                                </app-horizontal-bar-graph>
-
-                                <app-horizontal-bar-graph
-                                    [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Corners]"
-                                    [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Corners]"
-                                    [title]="'Corners'" [displayValueMode]="displayValueModes.Value">
-                                </app-horizontal-bar-graph>
-
-                                <app-horizontal-bar-graph
-                                    [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Fouls]"
-                                    [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Fouls]"
-                                    [title]="'Fouls'" [displayValueMode]="displayValueModes.Value">
-                                </app-horizontal-bar-graph>
-
-                            </section>
-                            <!-- Ball Posession / End -->
-
-                            <!-- Game Timeline -->
-
-                            <!-- Ball Posession / End -->
                         </div>
-                        <!-- Game Timeline / End -->
 
-                    </div>
-                </div>
-                <!-- Game Scoreboard / End -->
+                        <!-- Sidebar -->
+                        <div class=" col-md-4">
 
-            </div>
-            <!-- Content / End -->
+                            <!-- Widget: Lineup -->
 
-            <!-- Sidebar -->
-            <div class="sidebar col-lg-4">
+                            <!-- Widget: Lineup / End -->
 
-                <!-- Widget: Lineup -->
-
-                <!-- Widget: Lineup / End -->
-
-                <!-- Widget: Game Commentary -->
-                <aside class="widget card card--no-paddings widget--sidebar widget-commentary">
-                    <div class="widget__title card__header">
-                        <h4>Game Highlights</h4>
-                    </div>
-                    <div class="widget__content card__content">
-                        <ul class="commentary">
-                            <ng-container *ngFor="let matchEvent of matchData.matchEvents">
-                                <li *ngIf="matchEvent.event !== eventType.Null" class="commentary__item">
-                                    <span class="commentary__time">{{matchEvent.second | secondsToMinutes}}'</span>
-                                    <div [ngSwitch]="matchEvent.event" class="commentary__icon">
-                                        <i *ngSwitchCase="eventType.Foul" class="icon-svg icon-whistle"></i>
-                                        <i *ngSwitchCase="eventType.Goal" class="icon-svg icon-soccer-ball"></i>
-                                        <i *ngSwitchCase="eventType.OwnGoal"
-                                            class="icon-svg icon-soccer-ball-own-goal"></i>
-                                        <i *ngSwitchCase="eventType.YellowCard" class="icon-svg icon-yellow-card"></i>
-                                        <i *ngSwitchCase="eventType.SecondYellow" class="icon-svg icon-red-card"></i>
-                                        <i *ngSwitchCase="eventType.RedCard" class="icon-svg icon-red-card"></i>
-                                        <i *ngSwitchCase="eventType.Penalty"
-                                            class="icon-svg icon-soccer-ball-penalty"></i>
-                                        <i *ngSwitchCase="eventType.Miss" class="icon-svg icon-soccer-shots"></i>
-                                        <i *ngSwitchCase="eventType.Save" class="icon-svg icon-keepers-glove"></i>
-                                    </div>
-                                    {{matchEvent.event}}
-                                    <strong>{{matchEvent.player1SteamId | steamIdToPlayerName:matchData.players}}</strong>
-                                    <span *ngIf="matchEvent.event === eventType.SecondYellow">Received a second yellow card</span>
-                                    <ng-container *ngIf="matchEvent.player2SteamId">
-                                        <ng-container [ngSwitch]="matchEvent.event">
-                                            <span *ngSwitchCase="eventType.Goal">&nbsp;Assist by
+                            <!-- Widget: Game Commentary -->
+                            <aside class="widget card card--no-paddings widget--sidebar widget-commentary">
+                                <div class="widget__title card__header">
+                                    <h4>Game Highlights</h4>
+                                </div>
+                                <div class="widget__content card__content">
+                                    <ul class="commentary">
+                                        <ng-container *ngFor="let matchEvent of matchData.matchEvents">
+                                            <li *ngIf="matchEvent.event !== eventType.Null && matchEvent.event !== eventType.Celebration"
+                                                class="commentary__item">
+                                                <span class="commentary__time">{{matchEvent.second | secondsToMinutes}}'</span>
+                                                <div [ngSwitch]="matchEvent.event" class="commentary__icon">
+                                                    <i *ngSwitchCase="eventType.Foul" class="icon-svg icon-whistle"></i>
+                                                    <i *ngSwitchCase="eventType.Goal"
+                                                        class="icon-svg icon-soccer-ball"></i>
+                                                    <i *ngSwitchCase="eventType.OwnGoal"
+                                                        class="icon-svg icon-soccer-ball-own-goal"></i>
+                                                    <i *ngSwitchCase="eventType.YellowCard"
+                                                        class="icon-svg icon-yellow-card"></i>
+                                                    <i *ngSwitchCase="eventType.SecondYellow"
+                                                        class="icon-svg icon-red-card"></i>
+                                                    <i *ngSwitchCase="eventType.RedCard"
+                                                        class="icon-svg icon-red-card"></i>
+                                                    <i *ngSwitchCase="eventType.Penalty"
+                                                        class="icon-svg icon-soccer-ball-penalty"></i>
+                                                    <i *ngSwitchCase="eventType.Miss"
+                                                        class="icon-svg icon-soccer-shots"></i>
+                                                    <i *ngSwitchCase="eventType.Save"
+                                                        class="icon-svg icon-keepers-glove"></i>
+                                                </div>
+                                                {{matchEvent.event}}
+                                                <strong>{{matchEvent.player1SteamId | steamIdToPlayerName:matchData.players}}</strong>
+                                                <span *ngIf="matchEvent.event === eventType.SecondYellow">Received a second yellow card</span>
+                                                <ng-container *ngIf="matchEvent.player2SteamId">
+                                                    <ng-container [ngSwitch]="matchEvent.event">
+                                                        <span *ngSwitchCase="eventType.Goal">&nbsp;Assist by
+                                                        <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:matchData.players}}</strong></span>
+                                                        <span *ngSwitchCase="eventType.Save">&nbsp;Shot by
+                                                        <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:matchData.players}}</strong></span>
+                                                        <span *ngSwitchCase="eventType.Foul">&nbsp;Foul on
                                                     <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:matchData.players}}</strong></span>
-                                            <span *ngSwitchCase="eventType.Save">&nbsp;Shot by
-                                                    <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:matchData.players}}</strong></span>
-                                            <span *ngSwitchCase="eventType.Foul">&nbsp;Foul on
-                                                <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:matchData.players}}</strong></span>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </li>
                                         </ng-container>
-                                    </ng-container>
-                                </li>
-                            </ng-container>
-                        </ul>
+                                    </ul>
+                                </div>
+                            </aside>
+                            <!-- Widget: Game Commentary / End -->
+
+                        </div>
+                        <!-- Sidebar / End -->
                     </div>
-                </aside>
-                <!-- Widget: Game Commentary / End -->
+                    <!-- Game Scoreboard / End -->
+
+                </div>
+                <!-- Content / End -->
+                <div class="col-12">
+
+
+                    <app-match-overview-player-statistics [matchId]="match.id">
+                    </app-match-overview-player-statistics>
+                </div>
 
             </div>
-            <!-- Sidebar / End -->
-
         </div>
     </div>
-</div>
 
-<!-- Content / End -->
+    <!-- Content / End -->
+
+</ng-container>

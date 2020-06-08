@@ -53,8 +53,13 @@ import {
 } from './tournaments/tournament-edition-manager/tournament-match-day-slot-manager/tournament-match-day-slot-manager.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { MatchOverviewLineupComponent } from './match-overview/components/match-overview-lineup/match-overview-lineup.component';
-import { MatchOverviewPlayerStatisticsComponent } from './match-overview/components/match-overview-player-statistics/match-overview-player-statistics.component';
+import {
+  MatchOverviewPlayerStatisticsComponent
+} from './match-overview/components/match-overview-player-statistics/match-overview-player-statistics.component';
 import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
+import {
+  MatchOverviewLineupPositionComponent
+} from './match-overview/components/match-overview-lineup/match-overview-lineup-position/match-overview-lineup-position.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +87,7 @@ import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
     MatchEditorComponent,
     MatchOverviewLineupComponent,
     MatchOverviewPlayerStatisticsComponent,
+    MatchOverviewLineupPositionComponent,
     CurrentTournamentsComponent,
     TeamsComponent
   ],

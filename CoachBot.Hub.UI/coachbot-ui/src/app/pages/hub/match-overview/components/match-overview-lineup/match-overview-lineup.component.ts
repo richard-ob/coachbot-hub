@@ -22,6 +22,7 @@ export class MatchOverviewLineupComponent implements OnInit {
     defPositions = Positions.DEF;
     midPositions = Positions.MID;
     atkPositions = Positions.ATK;
+    allPositions = [...Positions.GK, ...this.defPositions, ...this.midPositions, ...this.atkPositions];
     isLoading = true;
 
     constructor(private playerService: PlayerService) { }
@@ -31,8 +32,13 @@ export class MatchOverviewLineupComponent implements OnInit {
         this.filters.channelId = this.channelId;
         this.playerService.getPlayerMatchStatistics(1, undefined, undefined, undefined, this.filters).subscribe(players => {
             this.players = players.items;
-            this.starters = this.players.filter(p => p.substitute); // TODO: invert this.. the original statistic generation was wrong
-            this.substitutes = this.players.filter(p => !p.substitute);
+            // TODO: invert this.. the original statistic generation was wrong
+            this.starters = this.players
+                .filter(p => p.substitute)
+                .sort((a, b) => this.allPositions.indexOf(a.position.name) - this.allPositions.indexOf(b.position.name));
+            this.substitutes = this.players
+                .filter(p => !p.substitute)
+                .sort((a, b) => this.allPositions.indexOf(a.position.name) - this.allPositions.indexOf(b.position.name));
             this.isLoading = false;
         });
     }

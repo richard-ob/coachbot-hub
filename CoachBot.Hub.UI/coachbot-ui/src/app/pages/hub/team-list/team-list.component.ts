@@ -4,6 +4,7 @@ import { TeamService } from '../shared/services/team.service';
 import { Router } from '@angular/router';
 import SortingUtils from '@shared/utilities/sorting-utilities';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
+import { TeamStatisticFilters } from '../shared/model/dtos/paged-team-statistics-request-dto.model';
 @Component({
     selector: 'app-team-list',
     templateUrl: './team-list.component.html',
@@ -12,6 +13,7 @@ import { UserPreferenceService, UserPreferenceType } from '@shared/services/user
 export class TeamListComponent implements OnInit {
 
     teamStatistics: TeamStatistics[];
+    filters: TeamStatisticFilters = new TeamStatisticFilters();
     regionId: number;
     currentPage = 1;
     totalPages: number;
@@ -26,6 +28,7 @@ export class TeamListComponent implements OnInit {
 
     ngOnInit() {
         this.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
+        this.filters.regionId = this.regionId;
         this.loadPage(1);
     }
 
@@ -33,7 +36,7 @@ export class TeamListComponent implements OnInit {
         this.isLoadingPage = true;
         this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
         this.sortBy = sortBy;
-        this.teamService.getTeamStatistics(page, undefined, undefined, undefined, this.regionId, this.sortBy, this.sortOrder)
+        this.teamService.getTeamStatistics(page, undefined, this.sortBy, this.sortOrder, this.filters)
             .subscribe(response => {
                 this.teamStatistics = response.items;
                 this.currentPage = response.page;
@@ -41,6 +44,10 @@ export class TeamListComponent implements OnInit {
                 this.totalItems = response.totalItems;
                 this.isLoadingPage = false;
             });
+    }
+
+    setFilters() {
+        this.loadPage(this.currentPage);
     }
 
     navigatetoProfile(teamId: number) {

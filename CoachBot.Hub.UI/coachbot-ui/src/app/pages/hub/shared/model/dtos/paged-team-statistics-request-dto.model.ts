@@ -5,8 +5,13 @@ export class PagedTeamStatisticsRequestDto {
     pageSize = 10;
     sortBy: string;
     sortOrder: string;
-    timePeriod: TimePeriod;
+    filters: TeamStatisticFilters;
+}
+
+export class TeamStatisticFilters {
+    timePeriod: TimePeriod = TimePeriod.AllTime;
     teamId: number;
     tournamentEditionId: number;
     regionId: number;
+    includeInactive = true;
 }

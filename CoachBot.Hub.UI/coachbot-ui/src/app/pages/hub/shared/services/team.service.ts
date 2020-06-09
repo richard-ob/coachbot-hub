@@ -5,11 +5,12 @@ import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { PagedResult } from '../model/dtos/paged-result.model';
 import { TeamStatistics } from '../model/team-statistics.model';
-import { PagedTeamStatisticsRequestDto } from '../model/dtos/paged-team-statistics-request-dto.model';
+import { PagedTeamStatisticsRequestDto, TeamStatisticFilters } from '../model/dtos/paged-team-statistics-request-dto.model';
 import { TimePeriod } from '../model/time-period.enum';
 import { Team } from '../model/team.model';
 import { PlayerTeamStatisticsTotals } from '../model/player-team-statistics-totals.model';
 import { MatchDayTotals } from '../model/team-match-day-totals';
+import { TeamStatisticsFilterHelper } from '../model/helpers/team-statistics-filter.helper';
 
 @Injectable({
     providedIn: 'root'
@@ -29,23 +30,13 @@ export class TeamService {
     getTeamStatistics(
         page: number,
         pageSize = 10,
-        tournamentEditionId: number = null,
-        teamId: number = null,
-        regionId: number = null,
         sortBy: string = null,
-        sortOrder: string = null
+        sortOrder: string = null,
+        filters: TeamStatisticFilters
     ): Observable<PagedResult<TeamStatistics>> {
-        const pagedTeamStatisticsRequestDto = new PagedTeamStatisticsRequestDto();
-        pagedTeamStatisticsRequestDto.page = page;
-        pagedTeamStatisticsRequestDto.pageSize = pageSize;
-        pagedTeamStatisticsRequestDto.timePeriod = TimePeriod.AllTime;
-        pagedTeamStatisticsRequestDto.tournamentEditionId = tournamentEditionId;
-        pagedTeamStatisticsRequestDto.teamId = teamId;
-        pagedTeamStatisticsRequestDto.regionId = regionId;
-        pagedTeamStatisticsRequestDto.sortBy = sortBy;
-        pagedTeamStatisticsRequestDto.sortOrder = sortOrder;
-
-        return this.http.post<PagedResult<TeamStatistics>>(`${environment.apiUrl}/api/teamstatistics`, pagedTeamStatisticsRequestDto);
+        return this.http.post<PagedResult<TeamStatistics>>(`${environment.apiUrl}/api/teamstatistics`,
+            TeamStatisticsFilterHelper.generatePlayerStatisticsFilter(page, pageSize, sortBy, sortOrder, filters)
+        );
     }
 
     getTeamMatchDayTotals(teamId: number): Observable<MatchDayTotals[]> {

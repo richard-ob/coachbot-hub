@@ -22,7 +22,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public PagedResult<TeamStatisticTotals> PagedTeamStatistics([FromBody]PagedTeamStatisticsRequestDto pagedRequest)
         {
-            return _matchStatisticsService.GetTeamStatistics(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.TimePeriod, pagedRequest.TeamId, pagedRequest.TournamentEditionId, pagedRequest.RegionId);
+            return _matchStatisticsService.GetTeamStatistics(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
         }
 
         [HttpGet("match-totals/{teamId}")]

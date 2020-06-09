@@ -17,6 +17,7 @@ export class MatchOverviewPlayerStatisticsComponent implements OnInit {
     currentPage = 1;
     sortBy: string = null;
     sortOrder = 'ASC';
+    showMoreStats = false;
     isLoading = true;
     isSorting = false;
 

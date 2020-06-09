@@ -93,6 +93,7 @@
                 </div>
             </div>
         </div>
+
     </div>
     <!-- Page Heading / End -->
 
@@ -152,7 +153,7 @@
                                             <div class="game-result">
                                                 <div class="d-flex justify-content-around align-items-center">
                                                     <div>
-                                                        <h5 class="float-left text-muted">
+                                                        <h5 class="float-left">
                                                             <ng-container
                                                                 *ngIf="match.lineupHome.channel.team.badgeImage; else blankCrest">
                                                                 <img
@@ -166,7 +167,7 @@
                                                         </h5>
                                                     </div>
                                                     <div>
-                                                        <h5 class="float-right text-muted">
+                                                        <h5 class="float-right">
                                                             <ng-container
                                                                 *ngIf="match.lineupAway.channel.team.badgeImage; else blankCrest">
                                                                 <img
@@ -395,12 +396,13 @@
                 <div class="col-12">
 
 
-                    <app-match-overview-player-statistics [matchId]="match.id">
-                    </app-match-overview-player-statistics>
                 </div>
 
             </div>
         </div>
+
+        <app-match-overview-player-statistics [matchId]="match.id">
+        </app-match-overview-player-statistics>
     </div>
 
     <!-- Content / End -->

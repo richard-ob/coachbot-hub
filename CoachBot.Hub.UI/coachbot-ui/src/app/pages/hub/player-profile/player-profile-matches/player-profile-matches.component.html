@@ -1,102 +1,157 @@
-<div *ngIf="isLoading || !matches.length" class="py-4">
-    <app-spinner *ngIf="isLoading"></app-spinner>
-    <div *ngIf="!isLoading && !matches.length" class="alert alert-info">
-        Hold tight! This player has not played in matches yet</div>
-</div>
-<div *ngIf="!isLoading && matches.length" class="container-fluid py-4">
-    <div class="row">
-        <div class="card card--has-table w-100">
-            <div class="card__header card__header--has-btn">
-                <h4>Matches</h4>
-                <!-- Filter -->
-                <ul class="team-result-filter">
-                    <li class="team-result-filter__item">
-                        <label class="checkbox checkbox-inline mr-2">
-                            <input type="checkbox" name="includeSubstituteAppearances"> Include Sub Appearances
-                            <span class="checkbox-indicator"></span>
-                        </label>
-                    </li>
-                    <li class="team-result-filter__item">
-                        <select name="timePeriod" class="form-control">
-                            <option>All Time</option>
-                        </select>
-                    </li>
-                    <li class="team-result-filter__item">
-                        <button type="button" class="btn btn-default btn-outline btn-xs card-header__button">
-                            Filter
-                        </button>
-                    </li>
-                </ul>
-                <!-- Filter / End -->
-            </div>
-            <div class="card__content table-responsive">
-                <table class="table table--large table-striped table-hover table-clickable">
-                    <thead>
-                        <tr>
-                            <th class="team-result__ball-posession">Team</th>
-                            <th class="team-result__ball-posession">Nickname</th>
-                            <th class="team-result__ball-posession">Result</th>
-                            <th class="team-result__ball-posession">Position</th>
-                            <th class="team-result__ball-posession">Substitute?</th>
-                            <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                                (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                            <th sorter [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Avg. Goals'"
-                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                                class="text-center">
-                            </th>
-                            <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
-                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                                class="text-center">
-                            </th>
-                            <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                                (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                            <th sorter [sortByColumn]="'PassesAverage'" [sortByColumnName]="'Avg. Passes'"
-                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                                class="text-center">
-                            </th>
-                            <th sorter [sortByColumn]="'PassCompletionPercentageAverage'"
-                                [sortByColumnName]="'Pass Completion'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                                (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                            <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'"
-                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                                class="text-center"></th>
-                            <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
-                                [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
-                            </th>
-                            <th sorter [sortByColumn]="'DistanceCoveredAverage'" [sortByColumnName]="'Avg. Distance'"
-                                [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                                class="text-center">
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
-                            (click)="navigateToMatch(match.matchId)">
-                            <td class="team-result__score">{{match.match.readiedDate | date}}</td>
-                            <td class="team-result__score">{{match.nickname}}</td>
-                            <td class="team-result__score">{{match.matchOutcome | matchOutcome}}</td>
-                            <td class="team-result__status">{{match.position.name}}</td>
-                            <td class="text-center">
-                                <span *ngIf="match.substitute">
-                                    <i class="fas fa-check text-success"></i>
-                                </span>
-                            </td>
-                            <td class="text-center">{{match.goals}}</td>
-                            <td class="text-center">{{match.shots}}</td>
-                            <td class="text-center">{{match.shotsOnGoal}}</td>
-                            <td class="text-center">{{match.assists}}</td>
-                            <td class="text-center">{{match.passes}}</td>
-                            <td class="text-center">{{match.passesCompleted}}</td>
-                            <td class="text-center">{{match.yellowCards}}</td>
-                            <td class="text-center">{{match.redCards}}</td>
-                            <td class="text-center">{{match.distanceCovered}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div *ngIf="!isLoading && totalPages > 1" class="text-center w-100 mb-4">
-            <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
-        </div>
+<div class="container">
+    <div *ngIf="isLoading || !matches.length">
+        <app-spinner *ngIf="isLoading"></app-spinner>
+        <div *ngIf="!isLoading && !matches.length && !hasFiltered" class="alert alert-info">
+            Hold tight! This player has not played in matches yet</div>
     </div>
-    <!-- Team Latest Results / End -->
+</div>
+<div class="container-fluid">
+    <div *ngIf="!isLoading && (matches.length || hasFiltered)" class="container-fluid">
+        <div class="row">
+            <div class="card card--has-table w-100">
+                <div class="card__header card__header--has-btn">
+                    <h4>Matches</h4>
+                    <!-- Filter -->
+                    <ul class="team-result-filter">
+                        <li class="team-result-filter__item">
+                            <label class="checkbox checkbox-inline mr-2">
+                                <input type="checkbox" name="includeSubstituteAppearances"
+                                    [(ngModel)]="filters.includeSubstituteAppearances"> Include Sub Appearances
+                                <span class="checkbox-indicator"></span>
+                            </label>
+                        </li>
+                        <li class="team-result-filter__item">
+                            <select [(ngModel)]="filters.timePeriod" name="timePeriod" class="form-control"
+                                style="font-size: 11px;" #timePeriodSelect>
+                                <option [ngValue]="0">All Time</option>
+                                <option [ngValue]="365">Year</option>
+                                <option [ngValue]="31">Month</option>
+                                <option [ngValue]="7">Week</option>
+                            </select>
+                        </li>
+                        <li class="team-result-filter__item">
+                            <button type="button" class="btn btn-outline-secondary btn-xs card-header__button"
+                                (click)="setFilters()">
+                                Filter
+                            </button>
+                        </li>
+                    </ul>
+                    <!-- Filter / End -->
+                </div>
+                <div class="card__content table-responsive">
+                    <table
+                        class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover">
+                        <thead>
+                            <tr>
+                                <th class="team-result__ball-posession">Date</th>
+                                <th sorter [sortByColumn]="'Position.Name'" [sortByColumnName]="'Pos'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder" title="Position"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th sorter [sortByColumn]="'Team.Name'" [sortByColumnName]="'Team'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)"></th>
+                                <th sorter [sortByColumn]="'MatchOutcome'" [sortByColumnName]="'Result'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th></th>
+                                <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+
+                                <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th sorter [sortByColumn]="'Shots'" [sortByColumnName]="'Shots'" [currentSort]="sortBy"
+                                    [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                                    class="text-center">
+                                </th>
+                                <th sorter [sortByColumn]="'ShotsOnGoal'" [sortByColumnName]="'“ On Target'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center">
+                                </th>
+                                <th sorter [sortByColumn]="'Passes'" [sortByColumnName]="'Passes'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center">
+                                </th>
+                                <th sorter [sortByColumn]="'PassesCompleted'" [sortByColumnName]="'“ Completed'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th sorter [sortByColumn]="'Interceptions'" [sortByColumnName]="'Interceptions'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th sorter [sortByColumn]="'PossessionPercentage'" [sortByColumnName]="'Possession'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th sorter [sortByColumn]="'KeeperSaves'" [sortByColumnName]="'Saves'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th sorter [sortByColumn]="'GoalsConceded'" [sortByColumnName]="'Conceded'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th sorter [sortByColumn]="'Offsides'" [sortByColumnName]="'Offsides'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                                <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center">
+                                </th>
+                                <th sorter [sortByColumn]="'DistanceCoveredAverage'"
+                                    [sortByColumnName]="'Avg. Distance'" [currentSort]="sortBy"
+                                    [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                                    class="text-center">
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
+                                (click)="navigateToMatch(match.matchId)">
+                                <td class="team-result__score">{{match.match.readiedDate | date:'medium'}}</td>
+                                <td>{{match.position.name}}</td>
+                                <td class="team-result__score">
+                                    <img *ngIf="match.team.badgeImage" [src]="match.team.badgeImage.base64EncodedImage"
+                                        style="width: 13px;">
+                                    <img *ngIf="!match.team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                                        style="width: 13px;">
+                                    {{match.team.name}}
+                                </td>
+                                <td>{{match.matchOutcome | matchOutcome}}</td>
+                                <td class="text-center">
+                                    <span *ngIf="!match.substitute" title="Substitute">
+                                            <i class="icon-svg icon-substitution mr-1"></i>
+                                        </span>
+                                    <span *ngIf="match.yellowCards > 0" title="Yellow carded">
+                                            <i class="icon-svg icon-yellow-card mr-1"></i>
+                                        </span>
+                                    <span *ngIf="match.redCards > 0" title="Red carded">
+                                            <i class="icon-svg icon-red-card"></i>
+                                        </span>
+                                    <span *ngIf="match.position.name == 'GK' && match.goalsConceded == 0" title="Clean sheet">
+                                            <i  class="icon-svg icon-keepers-glove"></i>
+                                        </span>
+                                </td>
+                                <td class="text-center">{{match.goals}}</td>
+                                <td class="text-center">{{match.assists}}</td>
+                                <td class="text-center">{{match.shots}}</td>
+                                <td class="text-center">{{match.shotsOnGoal}}</td>
+                                <td class="text-center">{{match.passes}}</td>
+                                <td class="text-center">{{match.passesCompleted}}</td>
+                                <td class="text-center">{{match.interceptions}}</td>
+                                <td class="text-center">{{match.possessionPercentage | percent}}</td>
+                                <td class="text-center">{{match.keeperSaves}}</td>
+                                <td class="text-center">{{match.goalsConceded}}</td>
+                                <td class="text-center">{{match.offsides}}</td>
+                                <td class="text-center">{{match.yellowCards}}</td>
+                                <td class="text-center">{{match.redCards}}</td>
+                                <td class="text-center">{{match.distanceCovered}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div *ngIf="!isLoading && totalPages > 1" class="text-center w-100 mb-4">
+                <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
+            </div>
+        </div>
+        <!-- Team Latest Results / End -->
+    </div>
 </div>

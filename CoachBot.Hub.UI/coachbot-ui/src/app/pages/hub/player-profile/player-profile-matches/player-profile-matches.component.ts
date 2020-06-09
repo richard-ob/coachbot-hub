@@ -20,6 +20,7 @@ export class PlayerProfileMatchesComponent implements OnInit {
     sortBy: string = null;
     sortOrder = 'ASC';
     timePeriod = 0;
+    hasFiltered = false;
     isLoading = true;
 
     constructor(private playerService: PlayerService, private route: ActivatedRoute, private router: Router) { }
@@ -43,6 +44,11 @@ export class PlayerProfileMatchesComponent implements OnInit {
             this.totalItems = response.totalItems;
             this.isLoading = false;
         });
+    }
+
+    setFilters() {
+        this.hasFiltered = true;
+        this.loadPage(this.currentPage);
     }
 
     navigateToMatch(matchId: number) {

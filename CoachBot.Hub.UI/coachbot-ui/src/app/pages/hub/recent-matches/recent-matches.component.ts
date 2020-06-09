@@ -4,6 +4,7 @@ import { Match } from '../shared/model/match.model';
 import { MatchTypes } from '../shared/model/match-types.enum';
 import { PagedMatchRequestDto } from '../shared/model/dtos/paged-match-request-dto.model';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
+import { Router } from '@angular/router';
 @Component({
     selector: 'app-recent-matches',
     templateUrl: './recent-matches.component.html',
@@ -25,7 +26,7 @@ export class RecentMatchesComponent implements OnInit {
     totalItems: number;
     isLoadingPage = false;
 
-    constructor(private matchService: MatchService, private userPreferenceService: UserPreferenceService) { }
+    constructor(private matchService: MatchService, private userPreferenceService: UserPreferenceService, private router: Router) { }
 
     ngOnInit() {
         this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
@@ -47,6 +48,10 @@ export class RecentMatchesComponent implements OnInit {
             this.totalItems = response.totalItems;
             this.isLoadingPage = false;
         });
+    }
+
+    navigateToMatchOverview(matchId: number) {
+        this.router.navigate(['/match-overview/' + matchId]);
     }
 
 }

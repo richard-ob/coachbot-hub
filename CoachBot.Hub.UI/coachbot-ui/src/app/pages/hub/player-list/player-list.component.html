@@ -2,11 +2,10 @@
     <!-- Team Latest Results -->
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>Players</h4>
-            <!-- Result Filter -->
+            <h4>Player Statistics</h4>
             <ul class="team-result-filter d-none d-md-inline float-right">
                 <li class="team-result-filter__item">
-                    <input type="text" class="form-control input-xs" placeholder="Player Name"
+                    <input type="text" class="form-control input-xs" placeholder="Filter By Player Name"
                         [(ngModel)]="filters.playerName">
                 </li>
                 <li class="team-result-filter__item">
@@ -25,13 +24,11 @@
                     </select>
                 </li>
                 <li class="team-result-filter__item">
-                    <button type="button" class="btn btn-outline-secondary btn-xs card-header__button"
-                        (click)="setFilters()">
+                    <button type="button" class="btn btn-secondary btn-xs card-header__button" (click)="setFilters()">
                         Filter
                     </button>
                 </li>
             </ul>
-            <!-- Result Filter / End -->
         </div>
         <div class="card__content table-responsive">
             <app-spinner *ngIf="isLoading"></app-spinner>

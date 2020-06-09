@@ -8,17 +8,22 @@
             <ul class="team-result-filter d-none d-md-inline float-right">
                 <li class="team-result-filter__item">
                     <label class="checkbox checkbox-inline mr-2">
-                        <input type="checkbox" name="includeSubstituteAppearances"> Include Inactive
+                        <input type="checkbox" name="includeSubstituteAppearances"
+                            [(ngModel)]="filters.includeInactive"> Include Inactive
                         <span class="checkbox-indicator"></span>
                     </label>
                 </li>
                 <li class="team-result-filter__item">
-                    <select name="timePeriod" class="form-control" #timePeriodSelect>
-                        <option>All Time</option>
+                    <select [(ngModel)]="filters.timePeriod" name="timePeriod" style="font-size: 11px;"
+                        class="form-control" #timePeriodSelect>
+                        <option [ngValue]="0">All Time</option>
+                        <option [ngValue]="365">Year</option>
+                        <option [ngValue]="31">Month</option>
+                        <option [ngValue]="7">Week</option>
                     </select>
                 </li>
                 <li class="team-result-filter__item">
-                    <button type="button" class="btn btn-default btn-outline btn-xs card-header__button">
+                    <button type="button" class="btn btn-secondary btn-xs card-header__button" (click)="setFilters()">
                         Filter
                     </button>
                 </li>

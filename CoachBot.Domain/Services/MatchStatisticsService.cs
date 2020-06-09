@@ -36,9 +36,9 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, StatisticsTimePeriod timePeriod, int? teamId, int? tournamentEditionId, int? regionId)
+        public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, TeamStatisticsFilters filters)
         {
-            return GetTeamStatisticTotals(tournamentEditionId, teamId, regionId).GetPaged(page, pageSize, sortOrder);
+            return GetTeamStatisticTotals(filters).GetPaged(page, pageSize, sortOrder);
         }
 
         public Model.Dtos.PagedResult<PlayerStatisticTotals> GetPlayerStatistics(int page, int pageSize, string sortOrder, PlayerStatisticFilters filters)
@@ -152,7 +152,7 @@ namespace CoachBot.Domain.Services
         }
 
         #region Private Methods
-
+        
         private void GeneratePlayerMatchStatistics(Match match)
         {
             foreach (var matchDataPlayer in match.MatchStatistics.MatchData.Players.Where(p => p.MatchPeriodData != null && p.MatchPeriodData.Any()))
@@ -362,13 +362,18 @@ namespace CoachBot.Domain.Services
                  });
         }
 
-        private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals(int? tournamentEditionId = null, int? teamId = null, int? regionId = null)
+        private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals(TeamStatisticsFilters filters)
         {
             return _coachBotContext
                  .TeamMatchStatistics
-                 .Where(t => tournamentEditionId == null || t.TournamentEditionId == tournamentEditionId)
-                 .Where(t => teamId == null || t.TeamId == teamId)
-                 .Where(t => regionId == null || t.Team.RegionId == regionId)
+                 .Where(t => filters.TournamentEditionId == null || t.TournamentEditionId == filters.TournamentEditionId)
+                 .Where(t => filters.TeamId == null || t.TeamId == filters.TeamId)
+                 .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
+                 .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
+                 .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
                  .AsNoTracking()
                  .Select(m => new
                  {

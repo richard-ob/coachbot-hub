@@ -55,14 +55,14 @@
                         <th class="team-result__date">Date</th>
                         <th class="team-result__vs text-center">Result</th>
                         <th class="team-result__status">Match Type</th>
-                        <th class="team-result__status">Match Format</th>
-                        <th class="team-result__ball-posession">Location</th>
-                        <th class="team-result__game-overview">Match Overview</th>
+                        <th class="team-result__status text-center">Match Format</th>
+                        <th class="team-result__ball-posession text-center">Location</th>
+                        <th class="team-result__game-overview text-center">Match Overview</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
+                    <tr *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
+                        (click)="navigateToMatchOverview(match.id)">
                         <td class="team-result__date">
                             {{(match.readiedDate || match.scheduledKickOff)| date:'medium'}}
                         </td>
@@ -100,13 +100,13 @@
                                 </span>
                             </ng-container>
                         </td>
-                        <td class="team-result__status">{{match.format}}v{{match.format}}</td>
-                        <td class="team-result__ball-posession" title="{{match.server.country.name}}">
+                        <td class="team-result__status text-center">{{match.format}}v{{match.format}}</td>
+                        <td class="team-result__ball-posession text-center" title="{{match.server.country.name}}">
                             <img src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png">
 
                         </td>
-                        <td class="team-result__game-overview">
-                            <a [routerLink]="['../match-overview', match.id]" class="btn btn-xs btn-primary">Match
+                        <td class="team-result__game-overview text-center">
+                            <a [routerLink]="['/match-overview', match.id]" class="btn btn-xs btn-primary">Match
                                 Overview</a>
                         </td>
                     </tr>

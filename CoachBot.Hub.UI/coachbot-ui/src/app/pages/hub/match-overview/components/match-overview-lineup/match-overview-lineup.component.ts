@@ -30,7 +30,7 @@ export class MatchOverviewLineupComponent implements OnInit {
     ngOnInit() {
         this.filters.matchId = this.matchId;
         this.filters.channelId = this.channelId;
-        this.playerService.getPlayerMatchStatistics(1, undefined, undefined, undefined, this.filters).subscribe(players => {
+        this.playerService.getPlayerMatchStatistics(1, 30, undefined, undefined, this.filters).subscribe(players => {
             this.players = players.items;
             // TODO: invert this.. the original statistic generation was wrong
             this.starters = this.players

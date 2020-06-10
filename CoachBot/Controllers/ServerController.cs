@@ -53,15 +53,14 @@ namespace CoachBot.Controllers
             _serverService.RemoveServer(id);
         }
 
-        [HttpPut]
-        public void Update(Server server)
+        [HttpPatch("{id}")]
+        public void UpdateRconPassword(int id, [FromForm]string rconPassword)
         {
-            // TO DO: Add new DTO that just updates RCON only, as we no longer serialise
             if (!_playerService.IsAdmin(User.GetSteamId()))
             {
                 throw new Exception();
             }
-            _serverService.UpdateServer(server);
+            _serverService.UpdateServerRconPassword(id, rconPassword);
         }
 
         [HttpPost]

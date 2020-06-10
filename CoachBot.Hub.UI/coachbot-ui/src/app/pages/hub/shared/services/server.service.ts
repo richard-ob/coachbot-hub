@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Server } from '../model/server.model';
 import { environment } from 'src/environments/environment';
 
@@ -25,6 +25,14 @@ export class ServerService {
 
     updateServer(server: Server) {
         return this.http.put(`${environment.apiUrl}/api/server`, server).pipe();
+    }
+
+    updateServerRconPassword(serverId: number, rconPassword: string) {
+        const formData = new FormData();
+        if (rconPassword && rconPassword.length) {
+            formData.append('rconPassword', rconPassword);
+        }
+        return this.http.patch(`${environment.apiUrl}/api/server/${serverId}`, formData).pipe();
     }
 
     removeServer(id: number) {

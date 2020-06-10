@@ -64,6 +64,14 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
+        public void UpdateServerRconPassword(int id, string rconPassword)
+        {
+            var currentServer = _coachBotContext.Servers.Single(s => s.Id == id);
+            currentServer.RconPassword = rconPassword;
+            currentServer.DateModified = DateTime.Now;
+            _coachBotContext.SaveChanges();
+        }
+
         public void RemoveServer(int id)
         {
             var server = _coachBotContext.Servers.Single(s => s.Id == id);

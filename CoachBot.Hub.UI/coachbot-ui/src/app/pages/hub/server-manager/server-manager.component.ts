@@ -70,7 +70,7 @@ export class ServerManagerComponent {
 
   updateServer() {
     this.isUpdating = true;
-    this.serverService.updateServer(this.serverToEdit).subscribe(() => {
+    this.serverService.updateServerRconPassword(this.serverToEdit.id, this.serverToEdit.rconPassword).subscribe(() => {
       this.editServerModal.dismiss();
       this.serverToEdit = null;
       this.serverService.getServers().subscribe((servers) => {

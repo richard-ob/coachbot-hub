@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { Match } from '../model/match.model';
-import { PagedMatchRequestDto } from '../model/dtos/paged-match-request-dto.model';
+import { PagedMatchRequestDto, MatchFilters } from '../model/dtos/paged-match-request-dto.model';
 import { PagedResult } from '../model/dtos/paged-result.model';
 
 @Injectable({
@@ -14,7 +14,11 @@ export class MatchService {
 
     constructor(private http: HttpClient) { }
 
-    getMatches(pagedMatchRequestDto: PagedMatchRequestDto): Observable<PagedResult<Match>> {
+    getMatches(page: number, pageSize = 10, filters: MatchFilters): Observable<PagedResult<Match>> {
+        const pagedMatchRequestDto = new PagedMatchRequestDto();
+        pagedMatchRequestDto.page = page;
+        pagedMatchRequestDto.pageSize = pageSize;
+        pagedMatchRequestDto.filters = filters;
         return this.http.post<PagedResult<Match>>(`${environment.apiUrl}/api/match`, pagedMatchRequestDto);
     }
 

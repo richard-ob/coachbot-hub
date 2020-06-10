@@ -27,18 +27,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public PagedResult<Match> PagedMatchList([FromBody]PagedMatchRequestDto pagedRequest)
         {
-            return _matchService.GetMatches(
-                pagedRequest.RegionId,
-                pagedRequest.Page,
-                pagedRequest.PageSize,
-                pagedRequest.SortOrderFull,
-                pagedRequest.PlayerId,
-                pagedRequest.TeamId,
-                pagedRequest.TournamentEditionId,
-                pagedRequest.IncludePast,
-                pagedRequest.IncludeUpcoming,
-                pagedRequest.IncludeUnpublished
-            );
+            return _matchService.GetMatches(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
         }
 
         [HttpPut("{id}")]

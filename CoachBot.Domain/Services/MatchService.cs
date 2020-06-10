@@ -33,7 +33,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.GetMatchById(matchId);
         }
 
-        public PagedResult<Match> GetMatches(int regionId, int page, int pageSize, string sortOrder, int? playerId = null, int? teamId = null, int? tournamentEditionId = null, bool includePast = false, bool includeUpcoming = false, bool includeUnpublished = false)
+        public PagedResult<Match> GetMatches(int page, int pageSize, string sortOrder, MatchFilters filters)
         {
             var queryable = _coachBotContext.Matches
                 .Include(m => m.LineupHome)
@@ -46,14 +46,19 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.Tournament)
                 .Include(s => s.Server)
                     .ThenInclude(s => s.Country)
-                .Where(m => m.Server.RegionId == regionId)
-                .Where(m => includeUpcoming || m.ReadiedDate != null)
-                .Where(m => includePast || m.ScheduledKickOff > DateTime.Now)
-                .Where(m => playerId == null || m.PlayerMatchStatistics.Any(p => p.PlayerId == playerId))
-                .Where(m => teamId == null || m.TeamMatchStatistics.Any(t => t.TeamId == teamId))
+                .Where(m => filters.RegionId == null || m.Server.RegionId == filters.RegionId)
+                .Where(m => filters.IncludeUpcoming || m.ReadiedDate != null)
+                .Where(m => filters.IncludePast || m.ScheduledKickOff > DateTime.Now)
+                .Where(m => filters.PlayerId == null || m.PlayerMatchStatistics.Any(p => p.PlayerId == filters.PlayerId))
+                .Where(m => filters.TeamId == null || m.TeamMatchStatistics.Any(t => t.TeamId == filters.TeamId))
                 .Where(m => m.TeamHomeId != null && m.TeamAwayId != null)
-                .Where(m => tournamentEditionId == null || m.TournamentId == tournamentEditionId)
-                .Where(m => includeUnpublished || m.TournamentId == null || m.Tournament.IsPublic);
+                .Where(m => filters.TournamentEditionId == null || m.TournamentId == filters.TournamentEditionId)
+                .Where(m => filters.IncludeUnpublished || m.TournamentId == null || m.Tournament.IsPublic)
+                .Where(m => filters.DateFrom == null || m.ReadiedDate > filters.DateFrom)
+                .Where(m => filters.DateTo == null || m.ReadiedDate < filters.DateTo)
+                .Where(m => filters.TimePeriod != StatisticsTimePeriod.Week || m.ReadiedDate > DateTime.Now.AddDays(-7))
+                .Where(m => filters.TimePeriod != StatisticsTimePeriod.Month || m.ReadiedDate > DateTime.Now.AddMonths(-1))
+                .Where(m => filters.TimePeriod != StatisticsTimePeriod.Year || m.ReadiedDate > DateTime.Now.AddYears(-1));
 
             return queryable.GetPaged(page, pageSize, sortOrder);
         }

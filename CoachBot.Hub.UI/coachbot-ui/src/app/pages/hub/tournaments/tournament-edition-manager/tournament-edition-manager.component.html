@@ -18,6 +18,15 @@
         </div>
         <div class="card">
             <div class="card__header">
+                <h4>Start Date</h4>
+            </div>
+            <input class="form-control" type="date" [(ngModel)]="tournamentEdition.startDate" name="startDate">
+            <div class="card__content">
+                <button type="button" class="btn btn-primary mx-1" (click)="updateStartDate()">Save</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card__header">
                 <h4>Tournament Staff</h4>
             </div>
             <div class="card__content">

@@ -16,6 +16,10 @@ import { TeamListModule } from '../../team-list/team-list.module';
 import { PlayerListModule } from '../../player-list/player-list.module';
 import { RecentMatchesModule } from '../../recent-matches/recent-matches.module';
 import { HubPipesModule } from '../../shared/pipes/hub-pipes.module';
+import {
+    TournamentStandingsKnockoutComponent
+} from './tournament-overview-standings/tournament-standings-knockout/tournament-standings-knockout.component';
+import { NgPipesModule } from 'ngx-pipes';
 
 @NgModule({
     declarations: [
@@ -24,7 +28,8 @@ import { HubPipesModule } from '../../shared/pipes/hub-pipes.module';
         TournamentOverviewFixturesComponent,
         TournamentOverviewPlayersComponent,
         TournamentOverviewTeamsComponent,
-        TournamentOverviewStaffComponent
+        TournamentOverviewStaffComponent,
+        TournamentStandingsKnockoutComponent
     ],
     imports: [
         CommonModule,
@@ -37,7 +42,8 @@ import { HubPipesModule } from '../../shared/pipes/hub-pipes.module';
         TeamListModule,
         PlayerListModule,
         RecentMatchesModule,
-        HubPipesModule
+        HubPipesModule,
+        NgPipesModule
     ]
 })
 export class TournamentOverviewModule { }

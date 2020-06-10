@@ -89,6 +89,13 @@ export class TournamentEditionManagerComponent implements OnInit {
         });
     }
 
+    updateStartDate() {
+        this.isLoading = true;
+        this.tournamentService.updateTournamentEdition(this.tournamentEdition).subscribe(() => {
+            this.loadTournamentEdition();
+        });
+    }
+
     editMatch(matchId: number) {
         this.router.navigate(['/match-editor/', matchId]);
     }

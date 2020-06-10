@@ -1,0 +1,42 @@
+<div *ngIf="!isLoading" class="tournament-bracket">
+    <div *ngFor="let phase of tournamentEdition.tournamentStages[0].tournamentPhases" class="tournament-bracket__round">
+        <h6 class="tournament-bracket__round-title d-block d-lg-none d-xl-none">Quarterfinals</h6>
+        <ul class="tournament-bracket__list">
+            <li *ngFor="let match of tournamentEdition.tournamentStages[0].tournamentGroups[0].tournamentGroupMatches | filterBy:['tournamentPhaseId']:phase.id"
+                class="tournament-bracket__item">
+                <div class="tournament-bracket__match" tabindex="0">
+                    <table class="tournament-bracket__table">
+                        <tbody class="tournament-bracket__content">
+                            <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                                <td class="tournament-bracket__inner">
+                                    <figure class="tournament-bracket__team-thumb"><img
+                                            src="assets/images/samples/logos/pirates_shield.png" alt=""></figure>
+                                    <div class="tournament-bracket__team-info text-truncate">
+                                        <h6 class="tournament-bracket__team-name text-truncate">
+                                            {{(match.match.teamHome ? match.match.teamHome.name : match.teamHomePlaceholder)}}
+                                        </h6>
+                                    </div>
+                                </td>
+                                <td class="tournament-bracket__score"><span class="tournament-bracket__number">2</span>
+                                </td>
+                            </tr>
+                            <tr class="tournament-bracket__team">
+                                <td class="tournament-bracket__inner">
+                                    <figure class="tournament-bracket__team-thumb"><img
+                                            src="assets/images/samples/logos/icarus_wings_shield.png" alt=""></figure>
+                                    <div class="tournament-bracket__team-info text-truncate">
+                                        <h6 class="tournament-bracket__team-name text-truncate">
+                                            {{(match.match.teamAway ? match.match.teamAway.name : match.teamAwayPlaceholder)}}
+                                        </h6>
+                                    </div>
+                                </td>
+                                <td class="tournament-bracket__score"><span class="tournament-bracket__number">0</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

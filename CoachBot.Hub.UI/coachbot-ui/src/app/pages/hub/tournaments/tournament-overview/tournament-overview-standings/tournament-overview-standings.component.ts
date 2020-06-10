@@ -15,8 +15,7 @@ export class TournamentOverviewStandingsComponent implements OnInit {
     filters: TeamStatisticFilters = new TeamStatisticFilters();
     isLoading = true;
 
-    constructor(private route: ActivatedRoute, private teamService: TeamService) {
-    }
+    constructor(private route: ActivatedRoute, private teamService: TeamService) { }
 
     ngOnInit() {
         this.route.parent.paramMap.pipe().subscribe(params => {

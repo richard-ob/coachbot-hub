@@ -24,9 +24,9 @@ namespace CoachBot.Domain.Model
 
         public Team Team { get; set; }
 
-        public int? TournamentEditionId { get; set; }
+        public int? TournamentId { get; set; }
 
-        public Tournament TournamentEdition { get; set; }
+        public Tournament Tournament { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }

@@ -17,9 +17,9 @@ namespace CoachBot.Domain.Services
             _coachBotContext = coachBotContext;
         }
 
-        public IEnumerable<FantasyTeam> GetFantasyTeams(int tournamentEditionId)
+        public IEnumerable<FantasyTeam> GetFantasyTeams(int tournamentId)
         {
-            return _coachBotContext.FantasyTeams.Where(ft => ft.TournamentEditionId == tournamentEditionId).ToList();
+            return _coachBotContext.FantasyTeams.Where(ft => ft.TournamentId == tournamentId).ToList();
         }
 
         public FantasyTeam GetFantasyTeam(int fantasyTeamId)
@@ -40,10 +40,10 @@ namespace CoachBot.Domain.Services
 
         public void CreateFantasyTeam(FantasyTeam fantasyTeam)
         {
-            CheckHasTournamentStarted((int)fantasyTeam.TournamentEditionId);
+            CheckHasTournamentStarted((int)fantasyTeam.TournamentId);
             fantasyTeam.IsFinalised = false;
             fantasyTeam.FantasyTeamSelections = null;
-            fantasyTeam.TournamentEdition = null;
+            fantasyTeam.Tournament = null;
             _coachBotContext.FantasyTeams.Add(fantasyTeam);
             _coachBotContext.SaveChanges();
         }
@@ -98,32 +98,32 @@ namespace CoachBot.Domain.Services
 
         public List<Tournament> GetAvailableTournamentsForUser(ulong steamUserId)
         {
-            return _coachBotContext.TournamentEditions
+            return _coachBotContext.Tournaments
                 .Include(t => t.TournamentSeries)
                 .Where(t => !_coachBotContext.Matches.Any(m => m.TournamentId == t.Id && m.ScheduledKickOff < DateTime.Now))
                 .Where(t => !_coachBotContext.FantasyTeams.Any(ft => ft.Player.SteamID == steamUserId))
                 .ToList();
         }
 
-        public void GenerateFantasyPlayersSnapshot(int tournamentEditionId)
+        public void GenerateFantasyPlayersSnapshot(int tournamentId)
         {
-            if (_coachBotContext.FantasyPlayers.Any(t => t.TournamentEditionId == tournamentEditionId))
+            if (_coachBotContext.FantasyPlayers.Any(t => t.TournamentId == tournamentId))
             {
                 throw new Exception("Fantasy season already seeded");
             }
 
             foreach(var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => p.Teams.Any(pt => pt.IsCurrentTeam 
-                && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentEditionId && tgt.TeamId == pt.TeamId)))
+                && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)))
             )
             {
                 player.Rating = GetRandomRating();
                 var fantasyPlayer = new FantasyPlayer()
                 {
-                    TournamentEditionId = tournamentEditionId,
+                    TournamentId = tournamentId,
                     PlayerId = player.Id,
                     PositionGroup = GetRandomPositionGroup(),
                     Rating = player.Rating,
-                    TeamId = player.Teams.Where(t => t.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tg => tg.TeamId == t.TeamId && tg.TournamentGroup.TournamentStage.TournamentId == tournamentEditionId)).Select(t => t.TeamId).First()
+                    TeamId = player.Teams.Where(t => t.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tg => tg.TeamId == t.TeamId && tg.TournamentGroup.TournamentStage.TournamentId == tournamentId)).Select(t => t.TeamId).First()
                 };
                 _coachBotContext.FantasyPlayers.Add(fantasyPlayer);
             }
@@ -157,7 +157,7 @@ namespace CoachBot.Domain.Services
                     .Where(p => playerStatisticFilters.MinimumRating == null || p.Player.Rating >= playerStatisticFilters.MinimumRating)
                     .Where(p => playerStatisticFilters.PositionGroup == null || p.PositionGroup == playerStatisticFilters.PositionGroup)
                     .Where(p => playerStatisticFilters.TeamId == null || p.TeamId == playerStatisticFilters.TeamId)
-                    .Where(p => p.TournamentEditionId == playerStatisticFilters.TournamentEditionId);
+                    .Where(p => p.TournamentId == playerStatisticFilters.TournamentId);
 
             foreach (var excludedPlayer in playerStatisticFilters.ExcludePlayers)
             {
@@ -176,12 +176,12 @@ namespace CoachBot.Domain.Services
                 throw new Exception("Teams cannot be updated after they have been finalised");
             }
 
-            CheckHasTournamentStarted((int)fantasyTeam.TournamentEditionId);
+            CheckHasTournamentStarted((int)fantasyTeam.TournamentId);
         }
 
-        private void CheckHasTournamentStarted(int tournamentEditionId)
+        private void CheckHasTournamentStarted(int tournamentId)
         {
-            if (_coachBotContext.Matches.Any(m => m.TournamentId == tournamentEditionId && m.ScheduledKickOff < DateTime.Now))
+            if (_coachBotContext.Matches.Any(m => m.TournamentId == tournamentId && m.ScheduledKickOff < DateTime.Now))
             {
                 throw new Exception("The tournament has started. Fantasy teams cannot be updated.");
             }

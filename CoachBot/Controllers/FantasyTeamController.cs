@@ -23,10 +23,10 @@ namespace CoachBot.Controllers
             _fantasyService = fantasyService;
         }
 
-        [HttpGet("tournament/{tournamentEditionId}")]
-        public IEnumerable<FantasyTeam> GetFantasyTeams(int tournamentEditionId)
+        [HttpGet("tournament/{tournamentId}")]
+        public IEnumerable<FantasyTeam> GetFantasyTeams(int tournamentId)
         {
-            return _fantasyService.GetFantasyTeams(tournamentEditionId);
+            return _fantasyService.GetFantasyTeams(tournamentId);
         }
 
         [HttpGet("{id}")]
@@ -59,7 +59,7 @@ namespace CoachBot.Controllers
             _fantasyService.RemoveFantasyTeamSelection(fantasyTeamSelectionId);
         }
 
-        [HttpPost("tournament/{tournamentEditionId}/players")]
+        [HttpPost("tournament/{tournamentId}/players")]
         public PagedResult<FantasyPlayer> GetFantasyPlayers([FromBody]PagedPlayerStatisticsRequestDto pagedRequest)
         {
             var players = _fantasyService.GetFantasyPlayers(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);

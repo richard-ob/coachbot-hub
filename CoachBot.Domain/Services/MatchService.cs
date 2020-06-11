@@ -52,7 +52,7 @@ namespace CoachBot.Domain.Services
                 .Where(m => filters.PlayerId == null || m.PlayerMatchStatistics.Any(p => p.PlayerId == filters.PlayerId))
                 .Where(m => filters.TeamId == null || m.TeamMatchStatistics.Any(t => t.TeamId == filters.TeamId))
                 .Where(m => m.TeamHomeId != null && m.TeamAwayId != null)
-                .Where(m => filters.TournamentEditionId == null || m.TournamentId == filters.TournamentEditionId)
+                .Where(m => filters.TournamentId == null || m.TournamentId == filters.TournamentId)
                 .Where(m => filters.IncludeUnpublished || m.TournamentId == null || m.Tournament.IsPublic)
                 .Where(m => filters.DateFrom == null || m.ReadiedDate > filters.DateFrom)
                 .Where(m => filters.DateTo == null || m.ReadiedDate < filters.DateTo)

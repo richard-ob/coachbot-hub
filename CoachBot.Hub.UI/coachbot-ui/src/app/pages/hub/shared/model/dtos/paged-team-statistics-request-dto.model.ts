@@ -11,7 +11,7 @@ export class PagedTeamStatisticsRequestDto {
 export class TeamStatisticFilters {
     timePeriod: TimePeriod = TimePeriod.AllTime;
     teamId: number;
-    tournamentEditionId: number;
+    tournamentId: number;
     regionId: number;
     includeInactive = true;
 }

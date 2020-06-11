@@ -23,21 +23,21 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}")]
         public void DeleteTournamentStaffMember(int id)
         {
-            _tournamentService.DeleteTournamentEditionStaff(id);
+            _tournamentService.DeleteTournamentStaff(id);
         }
 
         [HttpPost]
-        public void CreateTournamentStaffMember(TournamentStaff tournamentEditionStaff)
+        public void CreateTournamentStaffMember(TournamentStaff tournamentStaff)
         {
             // TODO: MUST BE ADMIN OF TOURNAMENT
-            _tournamentService.CreateTournamentEditionStaff(tournamentEditionStaff);
+            _tournamentService.CreateTournamentStaff(tournamentStaff);
         }
 
         [HttpPut("{id}")]
-        public void UpdateTournamentStaffMember(TournamentStaff tournamentEditionStaff)
+        public void UpdateTournamentStaffMember(TournamentStaff tournamentStaff)
         {
             // TODO: MUST BE ADMIN OF TOURNAMENT
-            _tournamentService.UpdateTournamentEditionStaff(tournamentEditionStaff);
+            _tournamentService.UpdateTournamentStaff(tournamentStaff);
         }
 
     }

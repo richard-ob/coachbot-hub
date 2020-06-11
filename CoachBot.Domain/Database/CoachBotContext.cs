@@ -38,15 +38,15 @@ namespace CoachBot.Database
         public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
         public DbSet<PlayerRating> PlayerRatings { get; set; }
         public DbSet<Organisation> Organisations { get; set; }
-        public DbSet<TournamentSeries> Tournaments { get; set; }
-        public DbSet<Tournament> TournamentEditions { get; set; }
+        public DbSet<TournamentSeries> TournamentSeries { get; set; }
+        public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<TournamentStage> TournamentStages { get; set; }
         public DbSet<TournamentPhase> TournamentPhases { get; set; }
         public DbSet<TournamentGroup> TournamentGroups { get; set; }
         public DbSet<TournamentGroupMatch> TournamentGroupMatches { get; set; }
         public DbSet<TournamentGroupTeam> TournamentGroupTeams { get; set; }
-        public DbSet<TournamentMatchDaySlot> TournamentEditionMatchDays { get; set; }
-        public DbSet<TournamentStaff> TournamentEditionStaff { get; set; }
+        public DbSet<TournamentMatchDaySlot> TournamentMatchDays { get; set; }
+        public DbSet<TournamentStaff> TournamentStaff { get; set; }
         public DbSet<FantasyTeam> FantasyTeams { get; set; }
         public DbSet<FantasyPlayer> FantasyPlayers { get; set; }
         public DbSet<FantasyTeamSelection> FantasyTeamSelections { get; set; }
@@ -77,7 +77,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<Region>().HasIndex(r => new { r.RegionName }).IsUnique(true);
             modelBuilder.Entity<PlayerLineupPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.LineupId }).IsUnique(true);
             modelBuilder.Entity<TournamentStaff>().HasIndex(tes => new { tes.PlayerId, tes.TournamentId }).IsUnique(true);
-            modelBuilder.Entity<FantasyTeam>().HasIndex(ft => new { ft.PlayerId, ft.TournamentEditionId }).IsUnique(true);
+            modelBuilder.Entity<FantasyTeam>().HasIndex(ft => new { ft.PlayerId, ft.TournamentId }).IsUnique(true);
 
             // Defaults
             modelBuilder.Entity<Channel>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

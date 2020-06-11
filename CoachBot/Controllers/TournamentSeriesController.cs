@@ -23,19 +23,19 @@ namespace CoachBot.Controllers
         [HttpGet]
         public List<TournamentSeries> GetTournaments()
         {
-            return _tournamentService.GetTournaments();
+            return _tournamentService.GetTournamentSeries();
         }
 
         [HttpGet("{id}")]
         public TournamentSeries GetTournament(int id)
         {
-            return _tournamentService.GetTournament(id);
+            return _tournamentService.GetTournamentSeries(id);
         }
 
         [HttpPost]
         public void CreateTournament(TournamentSeries tournament)
         {
-            _tournamentService.CreateTournament(tournament);
+            _tournamentService.CreateTournamentSeries(tournament);
         }
     }
 }

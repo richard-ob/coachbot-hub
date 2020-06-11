@@ -17,7 +17,7 @@ export class PlayerStatisticFilters {
     matchId?: number;
     positionId?: number;
     regionId?: number;
-    tournamentEditionId?: number;
+    tournamentId?: number;
     includeSubstituteAppearances = true;
     dateFrom?: Date;
     dateTo?: Date;

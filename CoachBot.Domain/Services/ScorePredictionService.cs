@@ -60,7 +60,7 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
-        public List<ScorePrediction> GetScorePredictions(int tournamentEditionId, ulong? steamId = null, int? playerId = null)
+        public List<ScorePrediction> GetScorePredictions(int tournamentId, ulong? steamId = null, int? playerId = null)
         {
             return _coachBotContext.ScorePredictions
                 .AsNoTracking()
@@ -78,11 +78,11 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
-        public List<ScorePredictionLeaderboardPlayer> GetLeaderboard(int tournamentEditionId)
+        public List<ScorePredictionLeaderboardPlayer> GetLeaderboard(int tournamentId)
         {
             return _coachBotContext
                  .ScorePredictions
-                 .Where(s => s.TournamentPhase.TournamentStage.TournamentId == tournamentEditionId)
+                 .Where(s => s.TournamentPhase.TournamentStage.TournamentId == tournamentId)
                  .AsNoTracking()
                  .Select(m => new
                  {

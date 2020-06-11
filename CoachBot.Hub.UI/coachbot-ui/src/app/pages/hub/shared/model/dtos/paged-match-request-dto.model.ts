@@ -11,7 +11,7 @@ export class MatchFilters {
     regionId?: number;
     playerId?: number;
     teamId?: number;
-    tournamentEditionId?: number;
+    tournamentId?: number;
     includeUpcoming = false;
     includePast = false;
     includeUnpublished = false;

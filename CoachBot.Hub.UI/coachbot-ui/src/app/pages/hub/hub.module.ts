@@ -21,7 +21,6 @@ import { ProfileEditorComponent } from './profile-editor/profile-editor.componen
 import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
 import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
 import { TournamentCreatorComponent } from './tournaments/tournament-creator/tournament-creator.component';
-import { TournamentEditorComponent } from './tournaments/tournament-editor/tournament-editor.component';
 import { TournamentEditionManagerComponent } from './tournaments/tournament-edition-manager/tournament-edition-manager.component';
 import {
   TournamentGroupTeamManagerComponent
@@ -60,6 +59,7 @@ import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
 import {
   MatchOverviewLineupPositionComponent
 } from './match-overview/components/match-overview-lineup/match-overview-lineup-position/match-overview-lineup-position.component';
+import { TournamentSeriesEditorComponent } from './tournaments/tournament-series-editor/tournament-series-editor.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +80,7 @@ import {
     ProfileEditorComponent,
     SteamIDValidatorComponent,
     TournamentCreatorComponent,
-    TournamentEditorComponent,
+    TournamentSeriesEditorComponent,
     TournamentEditionManagerComponent,
     TournamentGroupTeamManagerComponent,
     TournamentMatchDaySlotManagerComponent,

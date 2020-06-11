@@ -23,37 +23,37 @@ namespace CoachBot.Controllers
         }
 
         [HttpGet("current")]
-        public List<Tournament> GetCurrentTournamentEditions()
+        public List<Tournament> GetCurrentTournaments()
         {
-            return _tournamentService.GetTournamentEditions(true);
+            return _tournamentService.GetTournaments(true);
         }
 
         [HttpGet]
-        public List<Tournament> GetTournamentEditions()
+        public List<Tournament> GetTournaments()
         {
-            return _tournamentService.GetTournamentEditions();
+            return _tournamentService.GetTournaments();
         }
 
         [HttpGet("{id}")]
-        public Tournament GetTournamentEdition(int id)
+        public Tournament GetTournament(int id)
         {
-            return _tournamentService.GetTournamentEdition(id);
+            return _tournamentService.GetTournament(id);
         }
 
         [Authorize]
         [HttpPost]
-        public void CreateTournamentEdition(Tournament tournamentEdition)
+        public void CreateTournament(Tournament tournament)
         {
             // TODO: Check player is tournament organiser
-            _tournamentService.CreateTournamentEdition(tournamentEdition, User.GetSteamId());
+            _tournamentService.CreateTournament(tournament, User.GetSteamId());
         }
 
         [Authorize]
         [HttpPut]
-        public void UpdateTournamentEdition(Tournament tournamentEdition)
+        public void UpdateTournament(Tournament tournament)
         {
             // TODO: Check player is tournament organiser
-            _tournamentService.UpdateTournamentEdition(tournamentEdition);
+            _tournamentService.UpdateTournament(tournament);
         }
 
         [HttpGet("{id}/groups")]
@@ -69,14 +69,14 @@ namespace CoachBot.Controllers
         }
 
         [HttpGet("{id}/staff")]
-        public List<TournamentStaff> GetTournamentEditionStaff(int id)
+        public List<TournamentStaff> GetTournamentStaff(int id)
         {
-            return _tournamentService.GetTournamentEditionStaff(id);
+            return _tournamentService.GetTournamentStaff(id);
         }
 
         [Authorize]
         [HttpPost("{id}/generate-schedule")]
-        public void GenerateTournamentEditionSchedule(int id)
+        public void GenerateTournamentSchedule(int id)
         {
             // TODO: Check player is tournament organiser
             _tournamentService.GenerateTournamentSchedule(id);
@@ -89,17 +89,17 @@ namespace CoachBot.Controllers
         }
 
         [HttpGet("{id}/match-day-slots")]
-        public List<TournamentMatchDaySlot> GetTournamentEditionMatchDayslots(int id)
+        public List<TournamentMatchDaySlot> GetTournamentMatchDayslots(int id)
         {
             return _tournamentService.GetTournamentMatchDaySlots(id);
         }
 
         [Authorize]
         [HttpPost("{id}/match-day-slots")]
-        public void CreateTournamentMatchDaySlot(TournamentMatchDaySlot tournamentEditionMatchDaySlot)
+        public void CreateTournamentMatchDaySlot(TournamentMatchDaySlot tournamentMatchDaySlot)
         {
             // TODO: Check player is tournament organiser
-            _tournamentService.CreateTournamentMatchDaySlot(tournamentEditionMatchDaySlot);
+            _tournamentService.CreateTournamentMatchDaySlot(tournamentMatchDaySlot);
         }
 
         [Authorize]

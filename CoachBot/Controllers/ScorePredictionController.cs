@@ -23,22 +23,22 @@ namespace CoachBot.Controllers
             _scorePredictionService = scorePredictionService;
         }
 
-        [HttpGet("tournament/{tournamentEditionId}")]
-        public List<ScorePrediction> GetScorePredictions(int tournamentEditionId)
+        [HttpGet("tournament/{tournamentId}")]
+        public List<ScorePrediction> GetScorePredictions(int tournamentId)
         {
-            return _scorePredictionService.GetScorePredictions(tournamentEditionId, User.GetSteamId());
+            return _scorePredictionService.GetScorePredictions(tournamentId, User.GetSteamId());
         }
 
-        [HttpGet("tournament/{tournamentEditionId}/player/{playerId}")]
-        public List<ScorePrediction> GetScorePredictions(int tournamentEditionId, int playerId)
+        [HttpGet("tournament/{tournamentId}/player/{playerId}")]
+        public List<ScorePrediction> GetScorePredictions(int tournamentId, int playerId)
         {
-            return _scorePredictionService.GetScorePredictions(tournamentEditionId, null, playerId);
+            return _scorePredictionService.GetScorePredictions(tournamentId, null, playerId);
         }
 
-        [HttpGet("tournament/{tournamentEditionId}/leaderboard")]
-        public List<ScorePredictionLeaderboardPlayer> GetScorePredictionLeaderboard(int tournamentEditionId)
+        [HttpGet("tournament/{tournamentId}/leaderboard")]
+        public List<ScorePredictionLeaderboardPlayer> GetScorePredictionLeaderboard(int tournamentId)
         {
-            return _scorePredictionService.GetLeaderboard(tournamentEditionId);
+            return _scorePredictionService.GetLeaderboard(tournamentId);
         }
 
         [HttpPost]

@@ -5,10 +5,10 @@ import { TournamentEdition } from '../../shared/model/tournament-edition.model';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    selector: 'app-tournament-editor',
-    templateUrl: './tournament-editor.component.html'
+    selector: 'app-tournament-series-editor',
+    templateUrl: './tournament-series-editor.component.html'
 })
-export class TournamentEditorComponent implements OnInit {
+export class TournamentSeriesEditorComponent implements OnInit {
 
     tournamentId: number;
     tournamentEdition: TournamentEdition = new TournamentEdition();

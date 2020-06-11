@@ -20,7 +20,7 @@ namespace CoachBot.Domain.Model
 
         public int? RegionId { get; set; }
 
-        public int? TournamentEditionId { get; set; }
+        public int? TournamentId { get; set; }
 
         public bool IncludeSubstituteAppearances { get; set; } = true;
 

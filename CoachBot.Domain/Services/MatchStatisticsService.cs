@@ -234,7 +234,7 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
                 .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
-                .Where(p => filters.TournamentEditionId == null || p.Match.TournamentId == filters.TournamentEditionId)
+                .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                 .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
@@ -261,7 +261,7 @@ namespace CoachBot.Domain.Services
                  .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
                  .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
                  .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
-                 .Where(p => filters.TournamentEditionId == null || p.Match.TournamentId == filters.TournamentEditionId)
+                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                  .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
@@ -366,7 +366,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamMatchStatistics
-                 .Where(t => filters.TournamentEditionId == null || t.TournamentEditionId == filters.TournamentEditionId)
+                 .Where(t => filters.TournamentId == null || t.TournamentId == filters.TournamentId)
                  .Where(t => filters.TeamId == null || t.TeamId == filters.TeamId)
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)

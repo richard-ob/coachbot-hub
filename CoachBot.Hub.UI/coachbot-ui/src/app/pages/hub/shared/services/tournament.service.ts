@@ -20,31 +20,31 @@ export class TournamentService {
     constructor(private http: HttpClient) { }
 
     getTournaments(): Observable<Tournament[]> {
-        return this.http.get<Tournament[]>(`${environment.apiUrl}/api/tournaments`);
+        return this.http.get<Tournament[]>(`${environment.apiUrl}/api/tournament-series`);
     }
 
     getTournament(tournamentId: number): Observable<Tournament> {
-        return this.http.get<Tournament>(`${environment.apiUrl}/api/tournaments/${tournamentId}`);
+        return this.http.get<Tournament>(`${environment.apiUrl}/api/tournament-series/${tournamentId}`);
     }
 
     getTournamentEditions(): Observable<TournamentEdition[]> {
-        return this.http.get<TournamentEdition[]>(`${environment.apiUrl}/api/tournament-editions`);
+        return this.http.get<TournamentEdition[]>(`${environment.apiUrl}/api/tournaments`);
     }
 
     getTournamentEdition(tournamentEditionId: number): Observable<TournamentEdition> {
-        return this.http.get<TournamentEdition>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}`);
+        return this.http.get<TournamentEdition>(`${environment.apiUrl}/api/tournaments/${tournamentEditionId}`);
     }
 
     createTournament(tournament: Tournament): Observable<void> {
-        return this.http.post<void>(`${environment.apiUrl}/api/tournaments`, tournament);
+        return this.http.post<void>(`${environment.apiUrl}/api/tournament-series`, tournament);
     }
 
     createTournamentEdition(tournamentEdition: TournamentEdition): Observable<void> {
-        return this.http.post<void>(`${environment.apiUrl}/api/tournament-editions`, tournamentEdition);
+        return this.http.post<void>(`${environment.apiUrl}/api/tournaments`, tournamentEdition);
     }
 
     updateTournamentEdition(tournamentEdition: TournamentEdition): Observable<void> {
-        return this.http.put<void>(`${environment.apiUrl}/api/tournament-editions`, tournamentEdition);
+        return this.http.put<void>(`${environment.apiUrl}/api/tournaments`, tournamentEdition);
     }
 
     createTournamentGroup(tournamentGroup: TournamentGroup): Observable<void> {
@@ -65,50 +65,50 @@ export class TournamentService {
         return this.http.delete<void>(`${environment.apiUrl}/api/tournament-groups/${tournamentGroupId}/teams/${teamId}`);
     }
 
-    getTournamentEditionStaff(tournamentEditionId: number): Observable<TournamentEditionStaff[]> {
-        return this.http.get<TournamentEditionStaff[]>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/staff`);
+    getTournamentEditionStaff(tournamentId: number): Observable<TournamentEditionStaff[]> {
+        return this.http.get<TournamentEditionStaff[]>(`${environment.apiUrl}/api/tournaments/${tournamentId}/staff`);
     }
 
-    createTournamentEditionStaff(tournamentEditionStaff: TournamentEditionStaff): Observable<void> {
-        return this.http.post<void>(`${environment.apiUrl}/api/tournament-edition-staff`, tournamentEditionStaff);
+    createTournamentEditionStaff(tournamentStaff: TournamentEditionStaff): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/api/tournament-staff`, tournamentStaff);
     }
 
-    updateTournamentEditionStaff(tournamentEditionStaff: TournamentEditionStaff): Observable<void> {
-        return this.http.put<void>(`${environment.apiUrl}/api/tournament-edition-staff`, tournamentEditionStaff);
+    updateTournamentEditionStaff(tournamentStaff: TournamentEditionStaff): Observable<void> {
+        return this.http.put<void>(`${environment.apiUrl}/api/tournament-staff`, tournamentStaff);
     }
 
-    deleteTournamentEditionStaff(tournamentEditionStaffId: number): Observable<void> {
-        return this.http.delete<void>(`${environment.apiUrl}/api/tournament-edition-staff/${tournamentEditionStaffId}`);
+    deleteTournamentEditionStaff(tournamentStaffId: number): Observable<void> {
+        return this.http.delete<void>(`${environment.apiUrl}/api/tournament-staff/${tournamentStaffId}`);
     }
 
     getTournamentTeams(tournamentEditionId: number): Observable<Team[]> {
-        return this.http.get<Team[]>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/teams`);
+        return this.http.get<Team[]>(`${environment.apiUrl}/api/tournaments/${tournamentEditionId}/teams`);
     }
 
     getCurrentPhase(tournamentEditionId: number): Observable<TournamentPhase> {
-        return this.http.get<TournamentPhase>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/current-phase`);
+        return this.http.get<TournamentPhase>(`${environment.apiUrl}/api/tournaments/${tournamentEditionId}/current-phase`);
     }
 
     getTournamentEditionMatchDaySlots(tournamentEditionId: number): Observable<TournamentEditionMatchDaySlot[]> {
         return this.http.get<TournamentEditionMatchDaySlot[]>(
-            `${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/match-day-slots`
+            `${environment.apiUrl}/api/tournaments/${tournamentEditionId}/match-day-slots`
         );
     }
 
     createTournamentEditionMatchDaySlot(tournamentEditionMatchDaySlot: TournamentEditionMatchDaySlot) {
         return this.http.post<TournamentEditionMatchDaySlot[]>(
-            `${environment.apiUrl}/api/tournament-editions/${tournamentEditionMatchDaySlot.tournamentEditionId}/match-day-slots`,
+            `${environment.apiUrl}/api/tournaments/${tournamentEditionMatchDaySlot.tournamentEditionId}/match-day-slots`,
             tournamentEditionMatchDaySlot
         );
     }
 
     deleteTournamentEditionMatchDaySlot(tournamentEditionId: number, tournamentEditionMatchDaySlotId: number) {
         return this.http.delete<void>(
-            `${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/match-day-slots/${tournamentEditionMatchDaySlotId}`
+            `${environment.apiUrl}/api/tournaments/${tournamentEditionId}/match-day-slots/${tournamentEditionMatchDaySlotId}`
         );
     }
 
     generateTournamentSchedule(tournamentEditionId: number): Observable<void> {
-        return this.http.post<void>(`${environment.apiUrl}/api/tournament-editions/${tournamentEditionId}/generate-schedule`, null);
+        return this.http.post<void>(`${environment.apiUrl}/api/tournaments/${tournamentEditionId}/generate-schedule`, null);
     }
 }

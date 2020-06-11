@@ -6,23 +6,29 @@ using System.Text;
 
 namespace CoachBot.Domain.Model
 {
-    public class TournamentStage
+    public class TournamentSeries
     {
         [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public int TournamentId { get; set; }
+        public bool IsPublic { get; set; }
 
-        public Tournament Tournament { get; set; }
+        public bool IsActive { get; set; }
 
-        public ICollection<TournamentPhase> TournamentPhases { get; set; }
+        public int? TournamentLogoId { get; set; }
 
-        public ICollection<TournamentGroup> TournamentGroups { get; set; }
+        public AssetImage TournamentLogo { get; set; }
+
+        public int? OrganisationId { get; set; }
+
+        public Organisation Organisation { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
+        public ICollection<Tournament> Tournaments { get; set; }
 
     }
 }

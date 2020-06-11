@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CoachBot.Domain.Model
 {
-    public class TournamentEditionStaff
+    public class TournamentStaff
     {
         [Key]
         public int Id { get; set; }
@@ -13,9 +13,9 @@ namespace CoachBot.Domain.Model
 
         public Player Player { get; set; }
 
-        public int TournamentEditionId { get; set; }
+        public int TournamentId { get; set; }
 
-        public TournamentEdition TournamentEdition { get; set; }
+        public Tournament Tournament { get; set; }
 
         public TournamentStaffRole Role { get; set; }
 

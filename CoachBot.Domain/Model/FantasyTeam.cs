@@ -22,7 +22,7 @@ namespace CoachBot.Domain.Model
 
         public int? TournamentEditionId { get; set; }
 
-        public TournamentEdition TournamentEdition { get; set; }
+        public Tournament TournamentEdition { get; set; }
 
         public ICollection<FantasyTeamSelection> FantasyTeamSelections { get; set; }
 

@@ -9,13 +9,13 @@ using System.Text;
 namespace CoachBot.Controllers
 {
     [Produces("application/json")]
-    [Route("api/tournament-edition-staff")]
+    [Route("api/tournament-staff")]
     [ApiController]
-    public class TournamentEditionStaffController : Controller
+    public class TournamentStaffController : Controller
     {
         private readonly TournamentService _tournamentService;
 
-        public TournamentEditionStaffController(TournamentService tournamentService)
+        public TournamentStaffController(TournamentService tournamentService)
         {
             _tournamentService = tournamentService;
         }
@@ -27,14 +27,14 @@ namespace CoachBot.Controllers
         }
 
         [HttpPost]
-        public void CreateTournamentStaffMember(TournamentEditionStaff tournamentEditionStaff)
+        public void CreateTournamentStaffMember(TournamentStaff tournamentEditionStaff)
         {
             // TODO: MUST BE ADMIN OF TOURNAMENT
             _tournamentService.CreateTournamentEditionStaff(tournamentEditionStaff);
         }
 
         [HttpPut("{id}")]
-        public void UpdateTournamentStaffMember(TournamentEditionStaff tournamentEditionStaff)
+        public void UpdateTournamentStaffMember(TournamentStaff tournamentEditionStaff)
         {
             // TODO: MUST BE ADMIN OF TOURNAMENT
             _tournamentService.UpdateTournamentEditionStaff(tournamentEditionStaff);

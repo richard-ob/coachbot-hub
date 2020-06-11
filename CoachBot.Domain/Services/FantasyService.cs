@@ -96,10 +96,10 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
-        public List<TournamentEdition> GetAvailableTournamentsForUser(ulong steamUserId)
+        public List<Tournament> GetAvailableTournamentsForUser(ulong steamUserId)
         {
             return _coachBotContext.TournamentEditions
-                .Include(t => t.Tournament)
+                .Include(t => t.TournamentSeries)
                 .Where(t => !_coachBotContext.Matches.Any(m => m.TournamentId == t.Id && m.ScheduledKickOff < DateTime.Now))
                 .Where(t => !_coachBotContext.FantasyTeams.Any(ft => ft.Player.SteamID == steamUserId))
                 .ToList();
@@ -113,7 +113,7 @@ namespace CoachBot.Domain.Services
             }
 
             foreach(var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => p.Teams.Any(pt => pt.IsCurrentTeam 
-                && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentEditionId == tournamentEditionId && tgt.TeamId == pt.TeamId)))
+                && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentEditionId && tgt.TeamId == pt.TeamId)))
             )
             {
                 player.Rating = GetRandomRating();
@@ -123,7 +123,7 @@ namespace CoachBot.Domain.Services
                     PlayerId = player.Id,
                     PositionGroup = GetRandomPositionGroup(),
                     Rating = player.Rating,
-                    TeamId = player.Teams.Where(t => t.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tg => tg.TeamId == t.TeamId && tg.TournamentGroup.TournamentStage.TournamentEditionId == tournamentEditionId)).Select(t => t.TeamId).First()
+                    TeamId = player.Teams.Where(t => t.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tg => tg.TeamId == t.TeamId && tg.TournamentGroup.TournamentStage.TournamentId == tournamentEditionId)).Select(t => t.TeamId).First()
                 };
                 _coachBotContext.FantasyPlayers.Add(fantasyPlayer);
             }

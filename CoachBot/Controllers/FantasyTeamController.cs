@@ -67,7 +67,7 @@ namespace CoachBot.Controllers
         }
 
         [HttpGet("tournament/available")]
-        public IEnumerable<TournamentEdition> GetAvailableTournamentsForUser()
+        public IEnumerable<Tournament> GetAvailableTournamentsForUser()
         {
             return _fantasyService.GetAvailableTournamentsForUser(User.GetSteamId());
         }

@@ -38,15 +38,15 @@ namespace CoachBot.Database
         public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
         public DbSet<PlayerRating> PlayerRatings { get; set; }
         public DbSet<Organisation> Organisations { get; set; }
-        public DbSet<Tournament> Tournaments { get; set; }
-        public DbSet<TournamentEdition> TournamentEditions { get; set; }
+        public DbSet<TournamentSeries> Tournaments { get; set; }
+        public DbSet<Tournament> TournamentEditions { get; set; }
         public DbSet<TournamentStage> TournamentStages { get; set; }
         public DbSet<TournamentPhase> TournamentPhases { get; set; }
         public DbSet<TournamentGroup> TournamentGroups { get; set; }
         public DbSet<TournamentGroupMatch> TournamentGroupMatches { get; set; }
         public DbSet<TournamentGroupTeam> TournamentGroupTeams { get; set; }
-        public DbSet<TournamentEditionMatchDaySlot> TournamentEditionMatchDays { get; set; }
-        public DbSet<TournamentEditionStaff> TournamentEditionStaff { get; set; }
+        public DbSet<TournamentMatchDaySlot> TournamentEditionMatchDays { get; set; }
+        public DbSet<TournamentStaff> TournamentEditionStaff { get; set; }
         public DbSet<FantasyTeam> FantasyTeams { get; set; }
         public DbSet<FantasyPlayer> FantasyPlayers { get; set; }
         public DbSet<FantasyTeamSelection> FantasyTeamSelections { get; set; }
@@ -76,7 +76,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<Server>().HasIndex(s => new { s.Address }).IsUnique(true);
             modelBuilder.Entity<Region>().HasIndex(r => new { r.RegionName }).IsUnique(true);
             modelBuilder.Entity<PlayerLineupPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.LineupId }).IsUnique(true);
-            modelBuilder.Entity<TournamentEditionStaff>().HasIndex(tes => new { tes.PlayerId, tes.TournamentEditionId }).IsUnique(true);
+            modelBuilder.Entity<TournamentStaff>().HasIndex(tes => new { tes.PlayerId, tes.TournamentId }).IsUnique(true);
             modelBuilder.Entity<FantasyTeam>().HasIndex(ft => new { ft.PlayerId, ft.TournamentEditionId }).IsUnique(true);
 
             // Defaults
@@ -99,15 +99,15 @@ namespace CoachBot.Database
             modelBuilder.Entity<PlayerLineupSubstitute>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<PlayerTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<ChannelPosition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentSeries>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Tournament>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<TournamentEdition>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentStage>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentPhase>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentGroup>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentGroupMatch>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentGroupTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<TournamentEditionMatchDaySlot>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<TournamentEditionStaff>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentMatchDaySlot>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentStaff>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<FantasyPlayer>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<FantasyTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<FantasyTeamSelection>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

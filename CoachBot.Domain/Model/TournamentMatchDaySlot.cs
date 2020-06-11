@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
-    public class TournamentEditionMatchDaySlot
+    public class TournamentMatchDaySlot
     {
         [Key]
         public int Id { get; set; }
 
-        public int TournamentEditionId { get; set; }
+        public int TournamentId { get; set; }
 
-        public TournamentEdition TournamentEdition { get; set; }
+        public Tournament Tournament { get; set; }
 
         public TournamentMatchDay MatchDay { get; set; }
 

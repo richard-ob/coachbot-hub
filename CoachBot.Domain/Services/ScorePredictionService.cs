@@ -82,7 +82,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .ScorePredictions
-                 .Where(s => s.TournamentPhase.TournamentStage.TournamentEditionId == tournamentEditionId)
+                 .Where(s => s.TournamentPhase.TournamentStage.TournamentId == tournamentEditionId)
                  .AsNoTracking()
                  .Select(m => new
                  {

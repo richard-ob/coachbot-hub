@@ -59,7 +59,7 @@ namespace CoachBot.Domain.Model
 
         public int? TournamentId { get; set; }
 
-        public TournamentEdition Tournament { get; set; }
+        public Tournament Tournament { get; set; }
 
         public ICollection<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
 

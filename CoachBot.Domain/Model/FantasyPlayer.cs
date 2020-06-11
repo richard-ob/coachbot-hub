@@ -26,7 +26,7 @@ namespace CoachBot.Domain.Model
 
         public int? TournamentEditionId { get; set; }
 
-        public TournamentEdition TournamentEdition { get; set; }
+        public Tournament TournamentEdition { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }

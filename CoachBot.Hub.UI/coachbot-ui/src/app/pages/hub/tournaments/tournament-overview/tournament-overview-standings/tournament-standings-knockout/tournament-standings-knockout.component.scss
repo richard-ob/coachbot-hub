@@ -1,0 +1,18 @@
+.tournament-bracket__team--champ {
+    min-width: 175px;
+}
+
+.tournament-bracket__item.tournament-bracket__next-round-includes-byes:nth-child(even)::after {
+    bottom: 25%;
+    border-bottom: 2px solid #fff;
+    border-top: 2px solid #fff;
+}
+
+.tournament-bracket__item.tournament-bracket__next-round-includes-byes:nth-child(odd)::after {
+    top: 25%;
+    border-bottom: 2px solid #fff;
+}
+
+.tournament-bracket__item.tournament-bracket__next-round-includes-byes::after {
+    height: 50%;
+}

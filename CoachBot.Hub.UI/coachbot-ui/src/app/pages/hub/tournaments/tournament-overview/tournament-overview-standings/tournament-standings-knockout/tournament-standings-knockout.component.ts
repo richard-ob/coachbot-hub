@@ -5,7 +5,8 @@ import { TournamentGroupMatch } from '@pages/hub/shared/model/tournament-group-m
 
 @Component({
     selector: 'app-tournament-standings-knockout',
-    templateUrl: './tournament-standings-knockout.component.html'
+    templateUrl: './tournament-standings-knockout.component.html',
+    styleUrls: ['./tournament-standings-knockout.component.scss']
 })
 export class TournamentStandingsKnockoutComponent implements OnInit {
 
@@ -29,5 +30,22 @@ export class TournamentStandingsKnockoutComponent implements OnInit {
         });
     }
 
+    nextRoundIncludesByedTeams(phaseIndex: number) {
+        console.log(phaseIndex);
+        const phases = this.tournamentEdition.tournamentStages[0].tournamentPhases;
+        const currentPhase = phases[phaseIndex];
+        const nextPhase = phases.length > phaseIndex + 1 ? phases[phaseIndex + 1] : null;
+        if (nextPhase) {
+            const matches = this.tournamentEdition.tournamentStages[0].tournamentGroups[0].tournamentGroupMatches;
+            const currentPhaseMatches = matches.filter(m => m.tournamentPhaseId === currentPhase.id);
+            const nextPhaseMatches = matches.filter(m => m.tournamentPhaseId === nextPhase.id);
+            console.log(currentPhaseMatches);
+            console.log(nextPhaseMatches);
+            if (currentPhaseMatches && nextPhaseMatches && currentPhaseMatches.length === nextPhaseMatches.length) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

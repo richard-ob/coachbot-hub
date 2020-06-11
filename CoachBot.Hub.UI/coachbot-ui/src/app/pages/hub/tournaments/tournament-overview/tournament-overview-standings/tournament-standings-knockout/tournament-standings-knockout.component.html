@@ -1,36 +1,79 @@
 <div *ngIf="!isLoading" class="tournament-bracket">
-    <div *ngFor="let phase of tournamentEdition.tournamentStages[0].tournamentPhases" class="tournament-bracket__round">
+    <div *ngFor="let phase of tournamentEdition.tournamentStages[0].tournamentPhases; let i = index"
+        class="tournament-bracket__round">
         <h6 class="tournament-bracket__round-title d-block d-lg-none d-xl-none">Quarterfinals</h6>
         <ul class="tournament-bracket__list">
             <li *ngFor="let match of tournamentEdition.tournamentStages[0].tournamentGroups[0].tournamentGroupMatches | filterBy:['tournamentPhaseId']:phase.id"
+                [class.tournament-bracket__next-round-includes-byes]="nextRoundIncludesByedTeams(i)"
                 class="tournament-bracket__item">
                 <div class="tournament-bracket__match" tabindex="0">
                     <table class="tournament-bracket__table">
                         <tbody class="tournament-bracket__content">
-                            <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                            <tr class="tournament-bracket__team"
+                                [class.tournament-bracket__team--winner]="false === true">
                                 <td class="tournament-bracket__inner">
-                                    <figure class="tournament-bracket__team-thumb"><img
-                                            src="assets/images/samples/logos/pirates_shield.png" alt=""></figure>
+                                    <figure class="tournament-bracket__team-thumb">
+                                        <img *ngIf="match.match.teamHome && match.match.teamHome.badgeImage"
+                                            [src]="playerTeam.team.badgeImage.base64EncodedImage" style="width: 25px">
+                                        <img *ngIf="!match.match.teamHome || !match.match.teamHome.badgeImage"
+                                            style="width: 25px" src="./assets/images/soccer/blank-crest.png">
+                                    </figure>
                                     <div class="tournament-bracket__team-info text-truncate">
                                         <h6 class="tournament-bracket__team-name text-truncate">
                                             {{(match.match.teamHome ? match.match.teamHome.name : match.teamHomePlaceholder)}}
                                         </h6>
                                     </div>
                                 </td>
-                                <td class="tournament-bracket__score"><span class="tournament-bracket__number">2</span>
+                                <td class="tournament-bracket__score">
+                                    <span class="tournament-bracket__number">?</span>
                                 </td>
                             </tr>
                             <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__inner">
-                                    <figure class="tournament-bracket__team-thumb"><img
-                                            src="assets/images/samples/logos/icarus_wings_shield.png" alt=""></figure>
+                                    <figure class="tournament-bracket__team-thumb">
+                                        <img *ngIf="match.match.teamHome && match.match.teamHome.badgeImage"
+                                            style="width: 25px" [src]="playerTeam.team.badgeImage.base64EncodedImage">
+                                        <img *ngIf="!match.match.teamHome || !match.match.teamHome.badgeImage"
+                                            style="width: 25px" src="./assets/images/soccer/blank-crest.png">
+                                    </figure>
                                     <div class="tournament-bracket__team-info text-truncate">
                                         <h6 class="tournament-bracket__team-name text-truncate">
                                             {{(match.match.teamAway ? match.match.teamAway.name : match.teamAwayPlaceholder)}}
                                         </h6>
                                     </div>
                                 </td>
-                                <td class="tournament-bracket__score"><span class="tournament-bracket__number">0</span>
+                                <td class="tournament-bracket__score">
+                                    <span class="tournament-bracket__number">?</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="tournament-bracket__round">
+        <h6 class="tournament-bracket__round-title d-block d-lg-none d-xl-none">Champion</h6>
+        <ul class="tournament-bracket__list">
+            <li class="tournament-bracket__item">
+                <div class="tournament-bracket__match" tabindex="0">
+                    <table class="tournament-bracket__table">
+                        <tbody class="tournament-bracket__content">
+                            <tr class="tournament-bracket__team tournament-bracket__team--champ">
+                                <td class="tournament-bracket__inner">
+                                    <figure class="tournament-bracket__team-thumb">
+                                        <img style="width: 25px" src="./assets/images/soccer/blank-crest.png">
+                                    </figure>
+                                    <div class="tournament-bracket__team-info text-truncate">
+                                        <h6 class="tournament-bracket__team-name text-truncate">TBC</h6>
+                                        <span class="tournament-bracket__team-desc text-truncate">Winner</span>
+                                    </div>
+                                </td>
+                                <td class="tournament-bracket__score">
+                                    <svg role="img" class="df-icon df-icon--trophy">
+                                        <use xlink:href="assets/images/icons.svg#trophy"></use>
+                                    </svg>
                                 </td>
                             </tr>
                         </tbody>

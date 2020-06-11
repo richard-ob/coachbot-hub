@@ -9,7 +9,7 @@ using System.Text;
 namespace CoachBot.Controllers
 {
     [Produces("application/json")]
-    [Route("api/tournaments-series")]
+    [Route("api/tournament-series")]
     [ApiController]
     public class TournamentSeriesController : Controller
     {

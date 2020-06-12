@@ -32,7 +32,7 @@ export class RecentMatchesComponent implements OnInit {
         this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.playerId = this.playerId;
         this.filters.teamId = this.teamId;
-        this.filters.tournamentEditionId = this.tournamentEditionId;
+        this.filters.tournamentId = this.tournamentEditionId;
         this.filters.includePast = this.includePast;
         this.filters.includeUpcoming = this.includeUpcoming;
         this.loadPage(1);

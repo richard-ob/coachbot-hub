@@ -49,7 +49,7 @@ export class FantasyService {
     getFantasyPlayers(page: number, pageSize = 10, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
         : Observable<PagedResult<FantasyPlayer>> {
         return this.http.post<PagedResult<FantasyPlayer>>(
-            `${environment.apiUrl}/api/fantasy/tournament/${filters.tournamentEditionId}/players`,
+            `${environment.apiUrl}/api/fantasy/tournament/${filters.tournamentId}/players`,
             PlayerStatisticsFilterHelper.generatePlayerStatisticsFilter(page, pageSize, sortBy, sortOrder, filters)
         );
     }

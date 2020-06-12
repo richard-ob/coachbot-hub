@@ -23,7 +23,7 @@ export class TournamentOverviewStandingsComponent implements OnInit {
     ngOnInit() {
         this.route.parent.paramMap.pipe().subscribe(params => {
             this.tournamentEditionId = +params.get('id');
-            this.filters.tournamentEditionId = this.tournamentEditionId;
+            this.filters.tournamentId = this.tournamentEditionId;
             this.tournamentService.getTournamentEdition(this.tournamentEditionId).subscribe(tournamentEdition => {
                 this.tournamentEdition = tournamentEdition;
                 this.teamService.getTeamStatistics(1, 100, 'Points', 'DESC', this.filters)

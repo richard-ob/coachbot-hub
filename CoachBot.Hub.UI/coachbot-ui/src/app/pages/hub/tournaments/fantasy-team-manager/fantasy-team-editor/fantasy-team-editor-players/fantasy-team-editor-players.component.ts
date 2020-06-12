@@ -40,7 +40,7 @@ export class FantasyTeamEditorPlayersComponent implements OnChanges, OnInit {
     }
 
     ngOnChanges() {
-        this.filters.tournamentEditionId = this.tournamentEditionId;
+        this.filters.tournamentId = this.tournamentEditionId;
         this.loadFantasyPlayers(this.currentPage);
     }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { TournamentService } from '../../../shared/services/tournament.service';
-import { TournamentEditionMatchDaySlot, TournamentMatchDay } from '@pages/hub/shared/model/tournament-edition-match-day-slot.model';
+import { TournamentMatchDay, TournamentMatchDaySlot } from '@pages/hub/shared/model/tournament-match-day-slot.model';
 
 @Component({
     selector: 'app-tournament-match-day-slot-manager',
@@ -10,9 +10,9 @@ import { TournamentEditionMatchDaySlot, TournamentMatchDay } from '@pages/hub/sh
 })
 export class TournamentMatchDaySlotManagerComponent implements OnInit {
 
-    @Input() tournamentEditionId: number;
-    matchDaySlots: TournamentEditionMatchDaySlot[];
-    matchDaySlot: TournamentEditionMatchDaySlot;
+    @Input() tournamentId: number;
+    matchDaySlots: TournamentMatchDaySlot[];
+    matchDaySlot: TournamentMatchDaySlot;
     matchDays = TournamentMatchDay;
     isLoading = true;
 
@@ -24,7 +24,7 @@ export class TournamentMatchDaySlotManagerComponent implements OnInit {
     }
 
     loadMatchDaySlots() {
-        this.tournamentService.getTournamentEditionMatchDaySlots(this.tournamentEditionId).subscribe(matchDaySlots => {
+        this.tournamentService.getTournamentMatchDaySlots(this.tournamentId).subscribe(matchDaySlots => {
             this.matchDaySlots = matchDaySlots;
             this.isLoading = false;
         });
@@ -32,7 +32,7 @@ export class TournamentMatchDaySlotManagerComponent implements OnInit {
 
     createMatchDaySlot() {
         this.isLoading = true;
-        this.tournamentService.createTournamentEditionMatchDaySlot(this.matchDaySlot).subscribe(() => {
+        this.tournamentService.createTournamentMatchDaySlot(this.matchDaySlot).subscribe(() => {
             this.initialiseMatchDaySlot();
             this.loadMatchDaySlots();
         });
@@ -40,7 +40,7 @@ export class TournamentMatchDaySlotManagerComponent implements OnInit {
 
     deleteMatchDaySlot(matchDaySlotId: number) {
         this.isLoading = true;
-        this.tournamentService.deleteTournamentEditionMatchDaySlot(this.tournamentEditionId, matchDaySlotId).subscribe(() => {
+        this.tournamentService.deleteTournamentMatchDaySlot(this.tournamentId, matchDaySlotId).subscribe(() => {
             this.initialiseMatchDaySlot();
             this.loadMatchDaySlots();
         });
@@ -50,7 +50,7 @@ export class TournamentMatchDaySlotManagerComponent implements OnInit {
         this.matchDaySlot = {
             matchDay: 1,
             matchTime: new Date(),
-            tournamentEditionId: this.tournamentEditionId
+            tournamentId: this.tournamentId
         };
     }
 

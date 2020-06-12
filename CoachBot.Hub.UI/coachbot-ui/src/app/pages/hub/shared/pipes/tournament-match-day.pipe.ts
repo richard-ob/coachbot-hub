@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TournamentMatchDay } from '../model/tournament-edition-match-day-slot.model';
+import { TournamentMatchDay } from '../model/tournament-match-day-slot.model';
 
 @Pipe({ name: 'tournamentMatchDay' })
 export class TournamentMatchDayPipe implements PipeTransform {

@@ -1,11 +1,14 @@
 import { MatchFormat } from './match-format.enum';
 import { TournamentStage } from './tournament-stage.model';
+import { TournamentSeries } from './tournament-series.model';
 
-export class TournamentEdition {
+export class Tournament {
     id: number;
     isPublic: boolean;
-    tournamentId: number;
-    startDate?: Date;
+    tournamentType: number;
+    tournamentSeriesId: number;
+    tournamentSeries: TournamentSeries;
+    startDate?: Date = new Date();
     endDate?: Date;
     format: MatchFormat;
     tournamentStages?: TournamentStage[];

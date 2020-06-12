@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TournamentEdition } from '@pages/hub/shared/model/tournament-edition.model';
 import { TournamentService } from '@pages/hub/shared/services/tournament.service';
 import { ScorePredictorService } from '@pages/hub/shared/services/score-predictor.service';
 import { ScorePrediction } from '@pages/hub/shared/model/score-prediction.model';
 import { TournamentPhase } from '@pages/hub/shared/model/tournament-phase.model';
 import { ScorePredictionLeaderboardPlayer } from '@pages/hub/shared/model/score-prediction-leaderboard-player.model';
+import { Tournament } from '@pages/hub/shared/model/tournament.model';
 
 @Component({
     selector: 'app-score-predictor',
@@ -14,8 +13,8 @@ import { ScorePredictionLeaderboardPlayer } from '@pages/hub/shared/model/score-
 })
 export class ScorePredictorComponent implements OnInit {
 
-    tournamentEditionId: number;
-    tournamentEdition: TournamentEdition;
+    tournamentId: number;
+    tournament: Tournament;
     phase: TournamentPhase;
     leaderboard: ScorePredictionLeaderboardPlayer[];
     scorePredictions: ScorePrediction[];
@@ -25,20 +24,19 @@ export class ScorePredictorComponent implements OnInit {
     constructor(
         private scorePredictionService: ScorePredictorService,
         private tournamentService: TournamentService,
-        private route: ActivatedRoute,
-        private snackBar: MatSnackBar
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
-            this.tournamentEditionId = +params.get('id');
-            this.tournamentService.getCurrentPhase(this.tournamentEditionId).subscribe(phase => {
+            this.tournamentId = +params.get('id');
+            this.tournamentService.getCurrentPhase(this.tournamentId).subscribe(phase => {
                 this.phase = phase;
                 this.phase.tournamentGroupMatches =
                     this.phase.tournamentGroupMatches.filter(m => new Date(m.match.scheduledKickOff) > new Date());
-                this.scorePredictionService.getScorePredictions(this.tournamentEditionId).subscribe(scorePredictions => {
+                this.scorePredictionService.getScorePredictions(this.tournamentId).subscribe(scorePredictions => {
                     this.scorePredictions = scorePredictions;
-                    this.scorePredictionService.getScorePredictionLeaderboard(this.tournamentEditionId).subscribe(leaderboard => {
+                    this.scorePredictionService.getScorePredictionLeaderboard(this.tournamentId).subscribe(leaderboard => {
                         this.leaderboard = leaderboard;
                         this.isLoading = false;
                     });

@@ -14,7 +14,7 @@
                     <tbody>
                         <tr *ngFor="let fantasyTeam of fantasyTeams" (click)="navigateToFantasyTeam(fantasyTeam.id)">
                             <td>{{fantasyTeam.name}}</td>
-                            <td>{{fantasyTeam.tournamentEdition?.name}}</td>
+                            <td>{{fantasyTeam.tournament?.name}}</td>
                             <td>{{fantasyTeam.isFinalised ? 'Yes' : 'No' }}</td>
                         </tr>
                     </tbody>
@@ -32,10 +32,9 @@
                 </div>
                 <div class="form-group">
                     <label>Tournament</label>
-                    <select class="form-control" [(ngModel)]="fantasyTeam.tournamentEditionId">
-                        <option *ngFor="let tournamentEdition of availableTournamentEditions"
-                            [ngValue]="tournamentEdition.id">
-                            {{tournamentEdition.name}}
+                    <select class="form-control" [(ngModel)]="fantasyTeam.tournamentId">
+                        <option *ngFor="let tournament of availableTournaments" [ngValue]="tournament.id">
+                            {{tournament.name}}
                         </option>
                     </select>
                 </div>

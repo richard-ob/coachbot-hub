@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TournamentService } from '@pages/hub/shared/services/tournament.service';
 import { ScorePredictorService } from '@pages/hub/shared/services/score-predictor.service';
 import { ScorePrediction } from '@pages/hub/shared/model/score-prediction.model';
-import { TournamentEdition } from '@pages/hub/shared/model/tournament-edition.model';
+import { Tournament } from '@pages/hub/shared/model/tournament.model';
 import { PlayerService } from '@pages/hub/shared/services/player.service';
 import { Player } from '@pages/hub/shared/model/player.model';
 
@@ -13,7 +13,7 @@ import { Player } from '@pages/hub/shared/model/player.model';
 })
 export class ScorePredictorPlayerComponent implements OnInit {
 
-    tournamentEdition: TournamentEdition;
+    tournament: Tournament;
     scorePredictions: ScorePrediction[];
     player: Player;
     isLoading = true;
@@ -27,11 +27,11 @@ export class ScorePredictorPlayerComponent implements OnInit {
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
-            const tournamentEditionId = +params.get('tournamentEditionId');
+            const tournamentId = +params.get('tournamentId');
             const playerId = +params.get('playerId');
-            this.tournamentService.getTournamentEdition(tournamentEditionId).subscribe(tournamentEdition => {
-                this.tournamentEdition = tournamentEdition;
-                this.scorePredictionService.getScorePredictionsForPlayer(tournamentEditionId, playerId).subscribe(predictions => {
+            this.tournamentService.getTournament(tournamentId).subscribe(tournament => {
+                this.tournament = tournament;
+                this.scorePredictionService.getScorePredictionsForPlayer(tournamentId, playerId).subscribe(predictions => {
                     this.scorePredictions = predictions;
                     this.playerService.getPlayer(playerId).subscribe(player => {
                         this.player = player;

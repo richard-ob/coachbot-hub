@@ -1,20 +1,20 @@
 <div class="container py-4">
-    <ng-container *ngIf="tournaments; else spinner">
+    <ng-container *ngIf="existingTournamentSeries; else spinner">
         <div class="card card--has-table">
             <div class="card__header">
-                <h4>Tournaments</h4>
+                <h4>Tournament Series</h4>
             </div>
             <div class="card__content">
                 <table class="table table-striped">
                     <thead>
                         <th>Name</th>
-                        <th>Type</th>
+                        <th>Created Date</th>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let tournament of tournaments">
-                            <td><a [routerLink]="['/tournament-editor/', tournament.id]">{{tournament.name}}</a>
+                        <tr *ngFor="let series of existingTournamentSeries">
+                            <td><a [routerLink]="['/tournament-editor/', series.id]">{{series.name}}</a>
                             </td>
-                            <td>{{tournament.tournamentType}}</td>
+                            <td>{{series.createdDate | date}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -28,17 +28,8 @@
                 <form (ngSubmit)="createTournament()" #tournamentForm="ngForm">
                     <div class="form-group">
                         <label>Name</label>
-                        <input [(ngModel)]="tournament.name" name="tournament" type="text" class="form-control"
+                        <input [(ngModel)]="tournamentSeries.name" name="tournament" type="text" class="form-control"
                             placeholder="e.g. IOSF" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Tournament Type</label>
-                        <select [(ngModel)]="tournament.tournamentType" name="tournamentType" class="form-control"
-                            required>
-                            <option [ngValue]="4">Round Robbin Ladder</option>
-                            <option [ngValue]="0">Knockout Cup</option>
-                        </select>
                     </div>
                     <button class="btn btn-primary" type="submit"
                         [disabled]="isCreating || !tournamentForm.valid">Create</button>

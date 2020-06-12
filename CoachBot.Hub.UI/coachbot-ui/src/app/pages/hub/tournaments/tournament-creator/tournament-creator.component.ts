@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Tournament } from '../../shared/tournament.model';
 import { TournamentService } from '../../shared/services/tournament.service';
+import { TournamentSeries } from '@pages/hub/shared/model/tournament-series.model';
 
 @Component({
     selector: 'app-tournament-creator',
@@ -8,8 +8,8 @@ import { TournamentService } from '../../shared/services/tournament.service';
 })
 export class TournamentCreatorComponent implements OnInit {
 
-    tournament: Tournament = new Tournament();
-    tournaments: Tournament[];
+    tournamentSeries: TournamentSeries = new TournamentSeries();
+    existingTournamentSeries: TournamentSeries[];
     isCreating = false;
     isLoading = true;
 
@@ -21,17 +21,17 @@ export class TournamentCreatorComponent implements OnInit {
 
     createTournament() {
         this.isCreating = true;
-        this.tournamentService.createTournament(this.tournament).subscribe(() => {
+        this.tournamentService.createTournamentSeries(this.tournamentSeries).subscribe(() => {
             this.isCreating = false;
-            this.tournament = new Tournament();
+            this.tournamentSeries = new TournamentSeries();
             this.loadTournaments();
         });
     }
 
     loadTournaments() {
         this.isLoading = true;
-        this.tournamentService.getTournaments().subscribe(tournaments => {
-            this.tournaments = tournaments;
+        this.tournamentService.getTournamentSeries().subscribe(existingTournamentSeries => {
+            this.existingTournamentSeries = existingTournamentSeries;
             this.isLoading = false;
         });
     }

@@ -1,6 +1,6 @@
 import { Player } from './player.model';
-import { TournamentEdition } from './tournament-edition.model';
 import { FantasyTeamSelection } from './fantasy-team-selection.model';
+import { Tournament } from './tournament.model';
 
 export class FantasyTeam {
     id: number;
@@ -8,7 +8,7 @@ export class FantasyTeam {
     isFinalised: boolean;
     playerId: number;
     player: Player;
-    tournamentEditionId: number;
-    tournamentEdition: TournamentEdition;
+    tournamentId: number;
+    tournament: Tournament;
     fantasyTeamSelections: FantasyTeamSelection[];
 }

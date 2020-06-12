@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TournamentService } from '@pages/hub/shared/services/tournament.service';
-import { TournamentEdition } from '@pages/hub/shared/model/tournament-edition.model';
+import { Tournament } from '@pages/hub/shared/model/tournament.model';
 import { TournamentGroupMatch } from '@pages/hub/shared/model/tournament-group-match.model';
 
 @Component({
@@ -10,8 +10,8 @@ import { TournamentGroupMatch } from '@pages/hub/shared/model/tournament-group-m
 })
 export class TournamentStandingsKnockoutComponent implements OnInit {
 
-    @Input() tournamentEditionId: number;
-    tournamentEdition: TournamentEdition;
+    @Input() tournamentId: number;
+    tournament: Tournament;
     matches: TournamentGroupMatch;
     isLoading = true;
 
@@ -19,24 +19,24 @@ export class TournamentStandingsKnockoutComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loadTournamentEdition();
+        this.loadTournament();
     }
 
-    loadTournamentEdition() {
+    loadTournament() {
         this.isLoading = true;
-        this.tournamentService.getTournamentEdition(this.tournamentEditionId).subscribe(tournamentEdition => {
-            this.tournamentEdition = tournamentEdition;
+        this.tournamentService.getTournament(this.tournamentId).subscribe(tournament => {
+            this.tournament = tournament;
             this.isLoading = false;
         });
     }
 
     nextRoundIncludesByedTeams(phaseIndex: number) {
         console.log(phaseIndex);
-        const phases = this.tournamentEdition.tournamentStages[0].tournamentPhases;
+        const phases = this.tournament.tournamentStages[0].tournamentPhases;
         const currentPhase = phases[phaseIndex];
         const nextPhase = phases.length > phaseIndex + 1 ? phases[phaseIndex + 1] : null;
         if (nextPhase) {
-            const matches = this.tournamentEdition.tournamentStages[0].tournamentGroups[0].tournamentGroupMatches;
+            const matches = this.tournament.tournamentStages[0].tournamentGroups[0].tournamentGroupMatches;
             const currentPhaseMatches = matches.filter(m => m.tournamentPhaseId === currentPhase.id);
             const nextPhaseMatches = matches.filter(m => m.tournamentPhaseId === nextPhase.id);
             console.log(currentPhaseMatches);

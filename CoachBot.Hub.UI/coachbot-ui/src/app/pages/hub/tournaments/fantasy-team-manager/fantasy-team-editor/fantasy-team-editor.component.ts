@@ -3,11 +3,10 @@ import { FantasyService } from '../../../shared/services/fantasy.service';
 import { FantasyTeam } from '../../../shared/model/fantasy-team.model';
 import { ActivatedRoute } from '@angular/router';
 import { FantasyPlayer } from '../../../shared/model/fantasy-player.model';
-import { TournamentService } from '../../../shared/services/tournament.service';
-import { TournamentEdition } from '../../../shared/model/tournament-edition.model';
 import { FantasyTeamSelection } from '../../../shared/model/fantasy-team-selection.model';
 import { PositionGroup } from '../../../shared/model/position-group.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Tournament } from '@pages/hub/shared/model/tournament.model';
 
 @Component({
     selector: 'app-fantasy-team-editor',
@@ -18,7 +17,7 @@ export class FantasyTeamEditorComponent implements OnInit {
 
     fantasyTeamId: number;
     fantasyTeam: FantasyTeam;
-    tournamentEdition: TournamentEdition;
+    tournament: Tournament;
     positionGroups = PositionGroup;
     isLoading = true;
     isUpdating = false;

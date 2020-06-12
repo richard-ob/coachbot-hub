@@ -14,7 +14,7 @@ namespace CoachBot.Domain.Model
 
         public bool IsPublic { get; set; } = false;
 
-        public int TournamentId { get; set; }
+        public int TournamentSeriesId { get; set; }
 
         public TournamentSeries TournamentSeries { get; set; }
 

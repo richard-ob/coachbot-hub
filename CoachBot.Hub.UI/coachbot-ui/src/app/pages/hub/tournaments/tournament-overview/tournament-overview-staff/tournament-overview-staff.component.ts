@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TournamentEditionStaff } from '../../../shared/model/tournament-edition-staff.model';
 import { TournamentService } from '../../../shared/services/tournament.service';
+import { TournamentStaff } from '@pages/hub/shared/model/tournament-staff.model';
 
 @Component({
     selector: 'app-tournament-overview-staff',
@@ -9,8 +9,8 @@ import { TournamentService } from '../../../shared/services/tournament.service';
 })
 export class TournamentOverviewStaffComponent implements OnInit {
 
-    tournamentEditionId: number;
-    tournamentEditionStaff: TournamentEditionStaff[];
+    tournamentId: number;
+    tournamentStaff: TournamentStaff[];
     isLoading = true;
     isSaving = false;
 
@@ -18,15 +18,15 @@ export class TournamentOverviewStaffComponent implements OnInit {
 
     ngOnInit() {
         this.route.parent.paramMap.pipe().subscribe(params => {
-            this.tournamentEditionId = +params.get('id');
-            this.loadTournamentEditionStaff();
+            this.tournamentId = +params.get('id');
+            this.loadTournamentStaff();
         });
     }
 
-    loadTournamentEditionStaff() {
+    loadTournamentStaff() {
         this.isLoading = true;
-        this.tournamentService.getTournamentEditionStaff(this.tournamentEditionId).subscribe(tournamentEditionStaff => {
-            this.tournamentEditionStaff = tournamentEditionStaff;
+        this.tournamentService.getTournamentStaff(this.tournamentId).subscribe(tournamentStaff => {
+            this.tournamentStaff = tournamentStaff;
             this.isLoading = false;
         });
     }

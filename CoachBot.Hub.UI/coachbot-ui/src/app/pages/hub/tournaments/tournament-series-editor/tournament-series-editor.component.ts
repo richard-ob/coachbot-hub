@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Tournament } from '../../shared/tournament.model';
 import { TournamentService } from '../../shared/services/tournament.service';
-import { TournamentEdition } from '../../shared/model/tournament-edition.model';
+import { Tournament } from '../../shared/model/tournament.model';
 import { ActivatedRoute } from '@angular/router';
+import { TournamentSeries } from '@pages/hub/shared/model/tournament-series.model';
 
 @Component({
     selector: 'app-tournament-series-editor',
@@ -10,9 +10,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TournamentSeriesEditorComponent implements OnInit {
 
-    tournamentId: number;
-    tournamentEdition: TournamentEdition = new TournamentEdition();
-    tournament: Tournament;
+    tournamentSeriesId: number;
+    tournament: Tournament = new Tournament();
+    tournamentSeries: TournamentSeries;
     isCreating = false;
     isLoading = true;
 
@@ -20,25 +20,25 @@ export class TournamentSeriesEditorComponent implements OnInit {
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
-            this.tournamentId = +params.get('id');
-            this.loadTournament();
+            this.tournamentSeriesId = +params.get('id');
+            this.loadTournamentSeries();
         });
     }
 
-    createTournamentEdition() {
+    createTournament() {
         this.isCreating = true;
-        this.tournamentEdition.tournamentId = this.tournamentId;
-        this.tournamentService.createTournamentEdition(this.tournamentEdition).subscribe(() => {
+        this.tournament.tournamentSeriesId = this.tournamentSeriesId;
+        this.tournamentService.createTournament(this.tournament).subscribe(() => {
             this.isCreating = false;
-            this.loadTournament();
-            this.tournamentEdition = new TournamentEdition();
+            this.loadTournamentSeries();
+            this.tournament = new Tournament();
         });
     }
 
-    loadTournament() {
+    loadTournamentSeries() {
         this.isLoading = true;
-        this.tournamentService.getTournament(this.tournamentId).subscribe(tournament => {
-            this.tournament = tournament;
+        this.tournamentService.getTournamentSeriesById(this.tournamentSeriesId).subscribe(tournamentSeries => {
+            this.tournamentSeries = tournamentSeries;
             this.isLoading = false;
         });
     }

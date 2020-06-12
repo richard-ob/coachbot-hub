@@ -1,7 +1,7 @@
 import { Player } from './player.model';
-import { TournamentEdition } from './tournament-edition.model';
 import { PositionGroup } from './position-group.enum';
 import { Team } from './team.model';
+import { Tournament } from './tournament.model';
 
 export interface FantasyPlayer {
     id: number;
@@ -11,6 +11,6 @@ export interface FantasyPlayer {
     team: Team;
     rating: number;
     positionGroup: PositionGroup;
-    tournamentEditionId: number;
-    tournamentEdition: TournamentEdition;
+    tournamentId: number;
+    tournament: Tournament;
 }

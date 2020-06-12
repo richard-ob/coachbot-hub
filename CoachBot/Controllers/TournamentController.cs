@@ -16,10 +16,12 @@ namespace CoachBot.Controllers
     public class TournamentController : Controller
     {
         private readonly TournamentService _tournamentService;
+        private readonly FantasyService _fantasyService;
 
-        public TournamentController(TournamentService tournamentService)
+        public TournamentController(TournamentService tournamentService, FantasyService fantasyService)
         {
             _tournamentService = tournamentService;
+            _fantasyService = fantasyService;
         }
 
         [HttpGet("current")]
@@ -107,6 +109,13 @@ namespace CoachBot.Controllers
         public void DeleteTournamentMatchDaySlot(int matchDaySlotId)
         {
             _tournamentService.DeleteTournamentMatchDaySlot(matchDaySlotId);
+        }
+
+        [Authorize]
+        [HttpPost("{id}/generate-fantasy-snapshots")]
+        public void GenerateFantasyTeamSnapshots(int id)
+        {
+            _fantasyService.GenerateFantasyPlayersSnapshot(id);
         }
     }
 }

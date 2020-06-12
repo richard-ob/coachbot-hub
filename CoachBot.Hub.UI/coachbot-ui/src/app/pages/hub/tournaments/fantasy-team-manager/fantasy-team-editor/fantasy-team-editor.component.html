@@ -69,8 +69,7 @@
                 </div>
             </div>
             <div class="col-4">
-                <app-fantasy-team-editor-players *ngIf="fantasyTeam"
-                    [tournamentEditionId]="fantasyTeam.tournamentEditionId"
+                <app-fantasy-team-editor-players *ngIf="fantasyTeam" [tournamentId]="fantasyTeam.tournamentId"
                     (playerSelected)="addFantasyTeamSelection($event)">
                 </app-fantasy-team-editor-players>
             </div>

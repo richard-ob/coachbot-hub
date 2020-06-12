@@ -6,10 +6,10 @@ import { Injectable } from '@angular/core';
 import { FantasyTeam } from '../model/fantasy-team.model';
 import { FantasyTeamSelection } from '../model/fantasy-team-selection.model';
 import { FantasyPlayer } from '../model/fantasy-player.model';
-import { TournamentEdition } from '../model/tournament-edition.model';
 import { PlayerStatisticFilters } from '../model/dtos/paged-player-statistics-request-dto.model';
 import { PagedResult } from '../model/dtos/paged-result.model';
 import { PlayerStatisticsFilterHelper } from '../model/helpers/player-statistics-filter.helper';
+import { Tournament } from '../model/tournament.model';
 
 @Injectable({
     providedIn: 'root'
@@ -18,8 +18,8 @@ export class FantasyService {
 
     constructor(private http: HttpClient) { }
 
-    getFantasyTeams(tournamentEditionId: number): Observable<FantasyTeam[]> {
-        return this.http.get<FantasyTeam[]>(`${environment.apiUrl}/api/fantasy/tournament/${tournamentEditionId}`);
+    getFantasyTeams(tournamentId: number): Observable<FantasyTeam[]> {
+        return this.http.get<FantasyTeam[]>(`${environment.apiUrl}/api/fantasy/tournament/${tournamentId}`);
     }
 
     getFantasyTeam(fantasyTeamId: number): Observable<FantasyTeam> {
@@ -54,8 +54,12 @@ export class FantasyService {
         );
     }
 
-    getAvailableFantasyTournamentsForUser(): Observable<TournamentEdition[]> {
-        return this.http.get<TournamentEdition[]>(`${environment.apiUrl}/api/fantasy/tournament/available`);
+    generateFantasySnapshots(tournamentId: number): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/api/fantasy/tournament/${tournamentId}/generate-fantasy-snapshots`, null);
+    }
+
+    getAvailableFantasyTournamentsForUser(): Observable<Tournament[]> {
+        return this.http.get<Tournament[]>(`${environment.apiUrl}/api/fantasy/tournament/available`);
     }
 
 }

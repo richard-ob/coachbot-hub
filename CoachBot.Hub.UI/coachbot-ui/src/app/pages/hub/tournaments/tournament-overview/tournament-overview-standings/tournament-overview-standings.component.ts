@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TeamService } from '../../../shared/services/team.service';
 import { TeamStatistics } from '../../../shared/model/team-statistics.model';
 import { TeamStatisticFilters } from '@pages/hub/shared/model/dtos/paged-team-statistics-request-dto.model';
-import { TournamentEdition } from '@pages/hub/shared/model/tournament-edition.model';
+import { Tournament } from '@pages/hub/shared/model/tournament.model';
 import { TournamentService } from '@pages/hub/shared/services/tournament.service';
 
 @Component({
@@ -12,8 +12,8 @@ import { TournamentService } from '@pages/hub/shared/services/tournament.service
 })
 export class TournamentOverviewStandingsComponent implements OnInit {
 
-    tournamentEditionId: number;
-    tournamentEdition: TournamentEdition;
+    tournamentId: number;
+    tournament: Tournament;
     teamStatistics: TeamStatistics[];
     filters: TeamStatisticFilters = new TeamStatisticFilters();
     isLoading = true;
@@ -22,10 +22,10 @@ export class TournamentOverviewStandingsComponent implements OnInit {
 
     ngOnInit() {
         this.route.parent.paramMap.pipe().subscribe(params => {
-            this.tournamentEditionId = +params.get('id');
-            this.filters.tournamentId = this.tournamentEditionId;
-            this.tournamentService.getTournamentEdition(this.tournamentEditionId).subscribe(tournamentEdition => {
-                this.tournamentEdition = tournamentEdition;
+            this.tournamentId = +params.get('id');
+            this.filters.tournamentId = this.tournamentId;
+            this.tournamentService.getTournament(this.tournamentId).subscribe(tournament => {
+                this.tournament = tournament;
                 this.teamService.getTeamStatistics(1, 100, 'Points', 'DESC', this.filters)
                     .subscribe(response => {
                         this.teamStatistics = response.items;

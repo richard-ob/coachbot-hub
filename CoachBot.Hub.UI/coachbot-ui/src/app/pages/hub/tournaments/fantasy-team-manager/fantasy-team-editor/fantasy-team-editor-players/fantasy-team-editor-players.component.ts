@@ -14,7 +14,7 @@ import { FantasyService } from '@pages/hub/shared/services/fantasy.service';
 })
 export class FantasyTeamEditorPlayersComponent implements OnChanges, OnInit {
 
-    @Input() tournamentEditionId: number;
+    @Input() tournamentId: number;
     @Output() playerSelected = new EventEmitter<FantasyPlayer>();
     filters: PlayerStatisticFilters = new PlayerStatisticFilters();
     fantasyPlayers: FantasyPlayer[];
@@ -32,15 +32,15 @@ export class FantasyTeamEditorPlayersComponent implements OnChanges, OnInit {
     constructor(private fantasyService: FantasyService, private tournamentService: TournamentService, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.tournamentService.getTournamentEdition(this.tournamentEditionId).subscribe(tournamentEdition => {
-            this.tournamentService.getTournamentTeams(tournamentEdition.id).subscribe(teams => {
+        this.tournamentService.getTournament(this.tournamentId).subscribe(tournament => {
+            this.tournamentService.getTournamentTeams(tournament.id).subscribe(teams => {
                 this.teams = teams;
             });
         });
     }
 
     ngOnChanges() {
-        this.filters.tournamentId = this.tournamentEditionId;
+        this.filters.tournamentId = this.tournamentId;
         this.loadFantasyPlayers(this.currentPage);
     }
 

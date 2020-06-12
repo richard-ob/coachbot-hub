@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Tournament } from '../../shared/tournament.model';
 import { TournamentService } from '../../shared/services/tournament.service';
-import { TournamentEdition } from '../../shared/model/tournament-edition.model';
+import { Tournament } from '../../shared/model/tournament.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TournamentGroup } from '../../shared/model/tournament-group.model';
-import { TournamentEditionStaff } from '../../shared/model/tournament-edition-staff.model';
+import { TournamentStaff } from '../../shared/model/tournament-staff.model';
 import { TournamentStaffRole } from '../../shared/model/tournament-staff-role.model';
+import { FantasyService } from '@pages/hub/shared/services/fantasy.service';
 
 @Component({
     selector: 'app-tournament-edition-manager',
@@ -13,42 +13,43 @@ import { TournamentStaffRole } from '../../shared/model/tournament-staff-role.mo
 })
 export class TournamentEditionManagerComponent implements OnInit {
 
-    tournamentEditionId: number;
-    tournamentEdition: TournamentEdition;
+    tournamentId: number;
+    tournament: Tournament;
     tournamentGroup: TournamentGroup = new TournamentGroup();
-    tournamentStaff = new TournamentEditionStaff();
-    tournamentEditionRole = TournamentStaffRole;
+    tournamentStaff = new TournamentStaff();
+    tournamentRole = TournamentStaffRole;
     isSaving = false;
     isLoading = true;
 
     constructor(
         private tournamentService: TournamentService,
+        private fantasyService: FantasyService,
         private route: ActivatedRoute,
         private router: Router
     ) { }
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
-            this.tournamentEditionId = +params.get('id');
-            this.loadTournamentEdition();
+            this.tournamentId = +params.get('id');
+            this.loadTournament();
         });
     }
 
-    loadTournamentEdition() {
+    loadTournament() {
         this.isLoading = true;
-        this.tournamentService.getTournamentEdition(this.tournamentEditionId).subscribe(tournamentEdition => {
-            this.tournamentEdition = tournamentEdition;
+        this.tournamentService.getTournament(this.tournamentId).subscribe(tournament => {
+            this.tournament = tournament;
             this.isLoading = false;
         });
     }
 
-    createTournamentEditionStaff() {
+    createTournamentStaff() {
         this.isSaving = true;
-        this.tournamentStaff.tournamentEditionId = this.tournamentEditionId;
-        this.tournamentService.createTournamentEditionStaff(this.tournamentStaff).subscribe(() => {
-            this.tournamentStaff = new TournamentEditionStaff();
+        this.tournamentStaff.tournamentId = this.tournamentId;
+        this.tournamentService.createTournamentStaff(this.tournamentStaff).subscribe(() => {
+            this.tournamentStaff = new TournamentStaff();
             this.isSaving = false;
-            this.loadTournamentEdition();
+            this.loadTournament();
         });
     }
 
@@ -56,7 +57,7 @@ export class TournamentEditionManagerComponent implements OnInit {
         this.isLoading = true;
         this.tournamentGroup.tournamentStageId = tournamentStageId;
         this.tournamentService.createTournamentGroup(this.tournamentGroup).subscribe(() => {
-            this.loadTournamentEdition();
+            this.loadTournament();
             this.tournamentGroup = new TournamentGroup();
         });
     }
@@ -64,35 +65,42 @@ export class TournamentEditionManagerComponent implements OnInit {
     deleteTournamentGroup(tournamentGroupId: number) {
         this.isLoading = true;
         this.tournamentService.deleteTournamentGroup(tournamentGroupId).subscribe(() => {
-            this.loadTournamentEdition();
+            this.loadTournament();
         });
     }
 
     removeTournamentGroupTeam(teamId: number, tournamentGroupId: number) {
         this.tournamentService.removeTournamentGroupTeam(teamId, tournamentGroupId).subscribe(() => {
-            this.loadTournamentEdition();
+            this.loadTournament();
         });
     }
 
     generateSchedule() {
         this.isLoading = true;
-        this.tournamentService.generateTournamentSchedule(this.tournamentEditionId).subscribe(() => {
-            this.loadTournamentEdition();
+        this.tournamentService.generateTournamentSchedule(this.tournamentId).subscribe(() => {
+            this.loadTournament();
         });
     }
 
     toggleIsPublic() {
         this.isLoading = true;
-        this.tournamentEdition.isPublic = !this.tournamentEdition.isPublic;
-        this.tournamentService.updateTournamentEdition(this.tournamentEdition).subscribe(() => {
-            this.loadTournamentEdition();
+        this.tournament.isPublic = !this.tournament.isPublic;
+        this.tournamentService.updateTournament(this.tournament).subscribe(() => {
+            this.loadTournament();
+        });
+    }
+
+    generateFantasyTeamSnapshots() {
+        this.isLoading = true;
+        this.fantasyService.generateFantasySnapshots(this.tournamentId).subscribe(() => {
+            this.loadTournament();
         });
     }
 
     updateStartDate() {
         this.isLoading = true;
-        this.tournamentService.updateTournamentEdition(this.tournamentEdition).subscribe(() => {
-            this.loadTournamentEdition();
+        this.tournamentService.updateTournament(this.tournament).subscribe(() => {
+            this.loadTournament();
         });
     }
 

@@ -1,9 +1,9 @@
 <div class="container py-4">
-    <ng-container *ngIf="tournamentEdition && !isLoading; else spinner">
-        <div class="alert alert-info" *ngIf="!tournament.tournamentEditions.length">
+    <ng-container *ngIf="tournamentSeries && !isLoading; else spinner">
+        <div class="alert alert-info" *ngIf="!tournamentSeries.tournaments || !tournamentSeries.tournaments.length">
             There are no editions of this tournament yet. Create one below.
         </div>
-        <div *ngIf="tournament.tournamentEditions.length" class="card card--has-table">
+        <div *ngIf="tournamentSeries.tournaments && tournamentSeries.tournaments.length" class="card card--has-table">
             <div class="card__header">
                 <h4>Tournament Editions</h4>
             </div>
@@ -18,7 +18,7 @@
                         <th>End Date</th>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let edition of tournament.tournamentEditions">
+                        <tr *ngFor="let edition of tournamentSeries.tournaments">
                             <td><a [routerLink]="['/tournament-edition-manager/', edition.id]">{{edition.name}}</a></td>
                             <td>{{edition.format}}vs{{edition.format}}</td>
                             <td>{{edition.isPublic ? 'Yes' : 'No' }}</td>
@@ -31,19 +31,18 @@
         </div>
         <div class="card">
             <div class="card__header">
-                <h4>Create Tournament Edition</h4>
+                <h4>Create Tournament</h4>
             </div>
             <div class="card__content">
-                <form (ngSubmit)="createTournamentEdition()" #tournamentEditionForm="ngForm">
+                <form (ngSubmit)="createTournament()" #tournamentForm="ngForm">
                     <div class="form-group">
                         <label>Name</label>
-                        <input [(ngModel)]="tournamentEdition.name" name="tournament" type="text"
+                        <input [(ngModel)]="tournament.name" name="tournament" type="text"
                             placeholder="e.g. IOSF Season 1" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Tournament Format</label>
-                        <select [(ngModel)]="tournamentEdition.format" name="tournamentFormat" class="form-control"
-                            required>
+                        <select [(ngModel)]="tournament.format" name="tournamentFormat" class="form-control" required>
                             <option [ngValue]="1">1v1</option>
                             <option [ngValue]="2">2v2</option>
                             <option [ngValue]="3">3v3</option>
@@ -58,6 +57,14 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label>Tournament Type</label>
+                        <select [(ngModel)]="tournament.tournamentType" name="tournamentType" class="form-control"
+                            required>
+                            <option [ngValue]="4">Round Robbin Ladder</option>
+                            <option [ngValue]="0">Knockout Cup</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>Start Date</label>
                         <mat-datepicker #startDatePicker></mat-datepicker>
                         <div class="input-group">
@@ -67,12 +74,12 @@
                                         </span>
                             </div>
                             <input matInput class="form-control" [matDatepicker]="startDatePicker"
-                                [(ngModel)]="tournamentEdition.startDate"
-                                placeholder="The date the first match should happen" required>
+                                [(ngModel)]="tournament.startDate" placeholder="The date the first match should happen"
+                                required>
                         </div>
                     </div>
                     <button class="btn btn-primary" type="submit"
-                        [disabled]="isCreating || !tournamentEditionForm.valid">Create</button>
+                        [disabled]="isCreating || !tournamentForm.valid">Create</button>
                 </form>
             </div>
         </div>

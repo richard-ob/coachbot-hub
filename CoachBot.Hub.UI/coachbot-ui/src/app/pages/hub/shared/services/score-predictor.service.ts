@@ -12,19 +12,19 @@ export class ScorePredictorService {
 
     constructor(private http: HttpClient) { }
 
-    getScorePredictions(tournamentEditionId: number): Observable<ScorePrediction[]> {
-        return this.http.get<ScorePrediction[]>(`${environment.apiUrl}/api/score-predictions/tournament/${tournamentEditionId}`);
+    getScorePredictions(tournamentId: number): Observable<ScorePrediction[]> {
+        return this.http.get<ScorePrediction[]>(`${environment.apiUrl}/api/score-predictions/tournament/${tournamentId}`);
     }
 
-    getScorePredictionsForPlayer(tournamentEditionId: number, playerId: number): Observable<ScorePrediction[]> {
+    getScorePredictionsForPlayer(tournamentId: number, playerId: number): Observable<ScorePrediction[]> {
         return this.http.get<ScorePrediction[]>(
-            `${environment.apiUrl}/api/score-predictions/tournament/${tournamentEditionId}/player/${playerId}`
+            `${environment.apiUrl}/api/score-predictions/tournament/${tournamentId}/player/${playerId}`
         );
     }
 
-    getScorePredictionLeaderboard(tournamentEditionId: number): Observable<ScorePredictionLeaderboardPlayer[]> {
+    getScorePredictionLeaderboard(tournamentId: number): Observable<ScorePredictionLeaderboardPlayer[]> {
         return this.http.get<ScorePredictionLeaderboardPlayer[]>(
-            `${environment.apiUrl}/api/score-predictions/tournament/${tournamentEditionId}/leaderboard`
+            `${environment.apiUrl}/api/score-predictions/tournament/${tournamentId}/leaderboard`
         );
     }
 

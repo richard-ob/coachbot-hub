@@ -1,6 +1,6 @@
 <div class="container py-4">
-    <ng-container *ngIf="tournamentEditionStaff && !isLoading; else spinner">
-        <div *ngIf="tournamentEditionStaff.length" class="card card--has-table">
+    <ng-container *ngIf="tournamentStaff && !isLoading; else spinner">
+        <div *ngIf="tournamentStaff.length" class="card card--has-table">
             <div class="card__header">
                 <h4>Tournament Staff</h4>
             </div>
@@ -12,7 +12,7 @@
                         <th>Date Since</th>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let staff of tournamentEditionStaff">
+                        <tr *ngFor="let staff of tournamentStaff">
                             <td>{{staff.player.name}}</td>
                             <td>{{staff.role | tournamentStaffRole}}</td>
                             <td>{{staff.createdDate | date}}</td>
@@ -21,7 +21,7 @@
                 </table>
             </div>
         </div>
-        <div *ngIf="!tournamentEditionStaff.length" class="alert alert-info">
+        <div *ngIf="!tournamentStaff.length" class="alert alert-info">
             No staff members added yet
         </div>
     </ng-container>

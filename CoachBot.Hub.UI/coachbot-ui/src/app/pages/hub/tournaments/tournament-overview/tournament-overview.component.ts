@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TournamentService } from '../../shared/services/tournament.service';
-import { TournamentEdition } from '../../shared/model/tournament-edition.model';
+import { Tournament } from '../../shared/model/tournament.model';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -9,17 +9,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TournamentOverviewComponent implements OnInit {
 
-    tournamenEditionId: number;
-    tournamentEdition: TournamentEdition;
+    tournamentId: number;
+    tournament: Tournament;
     isLoading = true;
 
     constructor(private tournamentService: TournamentService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
-            this.tournamenEditionId = +params.get('id');
-            this.tournamentService.getTournamentEdition(this.tournamenEditionId).subscribe(tournamentEdition => {
-                this.tournamentEdition = tournamentEdition;
+            this.tournamentId = +params.get('id');
+            this.tournamentService.getTournament(this.tournamentId).subscribe(tournament => {
+                this.tournament = tournament;
                 this.isLoading = false;
             });
         });

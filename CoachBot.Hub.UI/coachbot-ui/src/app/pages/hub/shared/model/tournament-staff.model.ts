@@ -1,13 +1,13 @@
 import { Player } from './player.model';
-import { TournamentEdition } from './tournament-edition.model';
 import { TournamentStaffRole } from './tournament-staff-role.model';
+import { Tournament } from './tournament.model';
 
-export class TournamentEditionStaff {
+export class TournamentStaff {
     id: number;
     playerId: number;
     player: Player;
-    tournamentEditionId: number;
-    tournamentEdition: TournamentEdition;
+    tournamentId: number;
+    tournament: Tournament;
     role: TournamentStaffRole;
     createdDate: Date;
 }

@@ -493,7 +493,7 @@ namespace CoachBot.Domain.Services
                         Match = new Match()
                         {
                             TeamHomeId = homeTeamId > 0 ? homeTeamId : (int?)null,
-                            TeamAwayId = awayTeamId,
+                            TeamAwayId = awayTeamId > 0 ? awayTeamId : (int?)null,
                             MatchType = MatchType.Competition,
                             ScheduledKickOff = scheduledKickOff,
                             Format = tournament.Format,

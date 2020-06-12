@@ -5,8 +5,8 @@
             <h4>Current Tournaments</h4>
         </div>
         <div class="card__content">
-            <app-spinner *ngIf="!tournamentEditions"></app-spinner>
-            <table *ngIf="tournamentEditions" class="table table-striped table-clickable table-hover table--large">
+            <app-spinner *ngIf="!tournaments"></app-spinner>
+            <table *ngIf="tournaments" class="table table-striped table-clickable table-hover table--large">
                 <thead>
                     <tr>
                         <th class="team-result__date">Tournament</th>
@@ -18,15 +18,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let tournamentEdition of tournamentEditions | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
-                        (click)="navigateToTournamentEdition(tournamentEdition.id)">
-                        <td class="team-result__status">{{tournamentEdition.name}}</td>
+                    <tr *ngFor="let tournament of tournaments | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
+                        (click)="navigateToTournament(tournament.id)">
+                        <td class="team-result__status">{{tournament.name}}</td>
                         <td class="team-result__status">
-                            {{tournamentEdition.tournament?.tournamentType | tournamentType}}</td>
+                            {{tournament.tournament?.tournamentType | tournamentType}}</td>
                         <td class="team-result__status">Club</td>
-                        <td class="team-result__status">{{tournamentEdition.format}}v{{tournamentEdition.format}}</td>
-                        <td class="team-result__date">{{tournamentEdition.startDate | date:'mediumDate'}}</td>
-                        <td class="team-result__date">{{tournamentEdition.endDate | date:'mediumDate'}}</td>
+                        <td class="team-result__status">{{tournament.format}}v{{tournament.format}}</td>
+                        <td class="team-result__date">{{tournament.startDate | date:'mediumDate'}}</td>
+                        <td class="team-result__date">{{tournament.endDate | date:'mediumDate'}}</td>
                     </tr>
                 </tbody>
             </table>

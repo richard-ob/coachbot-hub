@@ -107,6 +107,11 @@ namespace CoachBot.Domain.Services
 
         public void GenerateFantasyPlayersSnapshot(int tournamentId)
         {
+            if (!_coachBotContext.TournamentGroupTeams.Any(t => t.TournamentGroup.TournamentStage.TournamentId == tournamentId))
+            {
+                throw new Exception("There are no teams added to this tournament yet");
+            }
+
             if (_coachBotContext.FantasyPlayers.Any(t => t.TournamentId == tournamentId))
             {
                 throw new Exception("Fantasy season already seeded");

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FantasyService } from '../../shared/services/fantasy.service';
 import { FantasyTeam } from '../../shared/model/fantasy-team.model';
-import { TournamentEdition } from '../../shared/model/tournament-edition.model';
 import { Router } from '@angular/router';
+import { Tournament } from '@pages/hub/shared/model/tournament.model';
 
 @Component({
     selector: 'app-fantasy-team-manager',
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class FantasyTeamManagerComponent implements OnInit {
 
-    availableTournamentEditions: TournamentEdition[];
+    availableTournament: Tournament[];
     fantasyTeams: FantasyTeam[];
     fantasyTeam: FantasyTeam = new FantasyTeam();
     isCreating = false;
@@ -22,8 +22,8 @@ export class FantasyTeamManagerComponent implements OnInit {
         // TODO: Get for user
         this.fantasyService.getFantasyTeams(6).subscribe(fantasyTeams => {
             this.fantasyTeams = fantasyTeams;
-            this.fantasyService.getAvailableFantasyTournamentsForUser().subscribe(tournamentEditions => {
-                this.availableTournamentEditions = tournamentEditions;
+            this.fantasyService.getAvailableFantasyTournamentsForUser().subscribe(availableTournament => {
+                this.availableTournament = availableTournament;
                 this.isLoading = false;
             });
         });

@@ -8,14 +8,14 @@ import { FantasyTeam } from '../../../shared/model/fantasy-team.model';
 })
 export class TournamentOverviewPlayersComponent implements OnInit {
 
-    tournamenEditionId: number;
+    tournamentId: number;
     isLoading = true;
 
     constructor(private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.route.parent.paramMap.pipe().subscribe(params => {
-            this.tournamenEditionId = +params.get('id');
+            this.tournamentId = +params.get('id');
         });
     }
 }

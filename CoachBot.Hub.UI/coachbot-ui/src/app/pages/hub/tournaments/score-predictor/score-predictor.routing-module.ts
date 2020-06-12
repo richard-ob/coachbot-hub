@@ -9,7 +9,7 @@ const routes: Routes = [
         component: ScorePredictorComponent
     },
     {
-        path: 'tournament/:tournamentEditionId/score-predictor/player/:playerId',
+        path: 'tournament/:tournamentId/score-predictor/player/:playerId',
         component: ScorePredictorPlayerComponent
     }
 ];

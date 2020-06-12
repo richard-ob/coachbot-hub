@@ -1,9 +1,9 @@
-import { TournamentEdition } from './tournament-edition.model';
+import { Tournament } from './tournament.model';
 
-export class TournamentEditionMatchDaySlot {
+export class TournamentMatchDaySlot {
     id?: number;
-    tournamentEditionId: number;
-    tournamentEdition?: TournamentEdition;
+    tournamentId: number;
+    tournament?: Tournament;
     matchDay: TournamentMatchDay;
     matchTime: Date;
     createdDate?: Date;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TournamentService } from '../../shared/services/tournament.service';
-import { TournamentEdition } from '../../shared/model/tournament-edition.model';
 import { Router } from '@angular/router';
+import { Tournament } from '@pages/hub/shared/model/tournament.model';
 
 @Component({
     selector: 'app-current-tournaments',
@@ -9,18 +9,18 @@ import { Router } from '@angular/router';
 })
 export class CurrentTournamentsComponent implements OnInit {
 
-    tournamentEditions: TournamentEdition[];
+    tournaments: Tournament[];
     isLoading = true;
 
     constructor(private tournamentService: TournamentService, private router: Router) { }
 
     ngOnInit() {
-        this.tournamentService.getTournamentEditions().subscribe(tournamentEditions => {
-            this.tournamentEditions = tournamentEditions;
+        this.tournamentService.getTournaments().subscribe(tournaments => {
+            this.tournaments = tournaments;
         });
     }
 
-    navigateToTournamentEdition(tournamentEditionId: number) {
-        this.router.navigate(['/tournament', tournamentEditionId]);
+    navigateToTournament(tournamentId: number) {
+        this.router.navigate(['/tournament', tournamentId]);
     }
 }

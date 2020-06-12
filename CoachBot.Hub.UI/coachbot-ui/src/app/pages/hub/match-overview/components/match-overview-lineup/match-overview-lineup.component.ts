@@ -34,10 +34,10 @@ export class MatchOverviewLineupComponent implements OnInit {
             this.players = players.items;
             // TODO: invert this.. the original statistic generation was wrong
             this.starters = this.players
-                .filter(p => p.substitute)
+                .filter(p => !p.substitute)
                 .sort((a, b) => this.allPositions.indexOf(a.position.name) - this.allPositions.indexOf(b.position.name));
             this.substitutes = this.players
-                .filter(p => !p.substitute)
+                .filter(p => p.substitute)
                 .sort((a, b) => this.allPositions.indexOf(a.position.name) - this.allPositions.indexOf(b.position.name));
             this.isLoading = false;
         });

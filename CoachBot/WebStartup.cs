@@ -133,9 +133,10 @@ namespace CoachBot
             //provider.GetService<CoachBotContext>().Initialize();
             //provider.GetService<CoachBotContext>().SeedPreReleaseData();
             //provider.GetService<CoachBotContext>().SeedMatchData();
+            //provider.GetService<CoachBotContext>().SeedTeams();
             //provider.GetService<MatchStatisticsService>().GenerateStatistics();
+
             provider.GetService<MatchStatisticsService>().GenerateTeamForm();
-            //provider.GetService<FantasyService>().GenerateFantasyPlayersSnapshot(6);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

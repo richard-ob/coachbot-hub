@@ -58,7 +58,6 @@ namespace CoachBot.Database
                 }
             };
             context.Regions.AddRange(regions);
-
             var servers = new List<Server>()
             {
                 new Server()
@@ -249,6 +248,99 @@ namespace CoachBot.Database
             }
 
             return player;
+        }
+
+        public static void SeedTeams(this CoachBotContext context)
+        {
+            context.Teams.Add(
+                new Team()
+                {
+                    Name = "Ball Breakers",
+                    TeamCode = "BB",
+                    TeamType = TeamType.Club,
+                    RegionId = 1,
+                    FoundedDate = DateTime.Now
+                }
+            );
+
+            context.Teams.Add(
+                new Team()
+                {
+                    Name = "Masters of Football",
+                    TeamCode = "MOF",
+                    TeamType = TeamType.Club,
+                    RegionId = 1,
+                    FoundedDate = DateTime.Now
+                }
+            );
+
+            context.Teams.Add(
+                new Team()
+                {
+                    Name = "nextGen",
+                    TeamCode = "nG",
+                    TeamType = TeamType.Club,
+                    RegionId = 1,
+                    FoundedDate = DateTime.Now
+                }
+            );
+
+            context.Teams.Add(
+                new Team()
+                {
+                    Name = "Phoenix",
+                    TeamCode = "phx",
+                    TeamType = TeamType.Club,
+                    RegionId = 1,
+                    FoundedDate = DateTime.Now
+                }
+            );
+
+            context.Teams.Add(
+                new Team()
+                {
+                    Name = "Arrow",
+                    TeamCode = "Arrow",
+                    TeamType = TeamType.Club,
+                    RegionId = 1,
+                    FoundedDate = DateTime.Now
+                }
+            );
+
+            context.Teams.Add(
+                new Team()
+                {
+                    Name = "ProSoccer",
+                    TeamCode = "PS",
+                    TeamType = TeamType.Club,
+                    RegionId = 1,
+                    FoundedDate = DateTime.Now
+                }
+            );
+
+            context.Teams.Add(
+                new Team()
+                {
+                    Name = "Chefs",
+                    TeamCode = "Chefs",
+                    TeamType = TeamType.Club,
+                    RegionId = 1,
+                    FoundedDate = DateTime.Now
+                }
+            );
+
+            context.Teams.Add(
+                new Team()
+                {
+                    Name = "Real Talent",
+                    TeamCode = "RT",
+                    TeamType = TeamType.Club,
+                    RegionId = 1,
+                    FoundedDate = DateTime.Now
+                }
+            );
+
+            context.SaveChanges();
         }
     }
 

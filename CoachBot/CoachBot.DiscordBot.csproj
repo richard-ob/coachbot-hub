@@ -40,6 +40,7 @@
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\MatchStatisticController.cs" />
+    <Compile Include="Controllers\OrganisationController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerProfileController.cs" />
     <Compile Include="Controllers\PlayerStatisticsController.cs" />

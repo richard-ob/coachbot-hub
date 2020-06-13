@@ -80,9 +80,21 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.Organisations.ToList();
         }
 
+        public Organisation GetOrganisation(int id)
+        {
+            return _coachBotContext.Organisations.Single(o => o.Id == id);
+        }
+
         public void CreateOrganisation(Organisation organisation)
         {
             _coachBotContext.Organisations.Add(organisation);
+            _coachBotContext.SaveChanges();
+        }
+
+        public void RemoveOrganisation(int id)
+        {
+            var organisation = _coachBotContext.Organisations.Single(o => o.Id == id);
+            _coachBotContext.Organisations.Remove(organisation);
             _coachBotContext.SaveChanges();
         }
 

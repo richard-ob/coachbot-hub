@@ -60,6 +60,9 @@ import {
   MatchOverviewLineupPositionComponent
 } from './match-overview/components/match-overview-lineup/match-overview-lineup-position/match-overview-lineup-position.component';
 import { TournamentSeriesEditorComponent } from './tournaments/tournament-series-editor/tournament-series-editor.component';
+import { OrganisationsComponent } from './tournaments/organisations/organisations.component';
+import { OrganisationEditorComponent } from './tournaments/organisations/organisation-editor/organisation-editor.component';
+import { PreviousTournamentsComponent } from './tournaments/previous-tournaments/previous-tournaments.component';
 
 @NgModule({
   declarations: [
@@ -84,11 +87,14 @@ import { TournamentSeriesEditorComponent } from './tournaments/tournament-series
     TournamentEditionManagerComponent,
     TournamentGroupTeamManagerComponent,
     TournamentMatchDaySlotManagerComponent,
+    OrganisationsComponent,
+    OrganisationEditorComponent,
     MatchEditorComponent,
     MatchOverviewLineupComponent,
     MatchOverviewPlayerStatisticsComponent,
     MatchOverviewLineupPositionComponent,
     CurrentTournamentsComponent,
+    PreviousTournamentsComponent,
     TeamsComponent
   ],
   imports: [

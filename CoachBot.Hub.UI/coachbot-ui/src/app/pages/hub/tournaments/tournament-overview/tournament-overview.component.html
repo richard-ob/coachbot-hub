@@ -1,20 +1,25 @@
 <app-spinner *ngIf="isLoading"></app-spinner>
 <ng-container *ngIf="!isLoading">
-    <div class="player-heading">
+    <div class="player-heading"
+        [ngStyle]="{ 'background-image': generateGradient(tournament.tournamentSeries.organisation.brandColour) }">
         <div class="container">
             <div class="player-info__title player-info__title--mobile">
-                <h1 class="player-info__name"><span class="player-info__first-name">{{tournament.name}}</span>
+                <h1 class="player-info__name">
+                    <span class="player-info__first-name">{{tournament.tournamentSeries.name}} - {{tournament.name}}</span>
                 </h1>
             </div>
-            <div class="player-info">
+            <div class="player-info d-flex justify-content-between align-items-center">
                 <div class="player-info__item player-info__item--details" aria-hidden="false">
                     <div class="player-info__title player-info__title--desktop">
+                        <h4 _ngcontent-cvc-c1="" class="pt-2 mb-0 text-white-50">
+                            {{tournament.tournamentSeries.organisation.acronym}}</h4>
                         <h1 class="player-info__name">
-                            <span class="player-info__first-name">{{tournament.name}}</span>
+                            <span class="player-info__first-name">{{tournament.tournamentSeries.name}} - {{tournament.name}}</span>
                         </h1>
                     </div>
                     <div class="player-info-details">
-                        <div class="player-info-details__item player-info-details__item--height">
+                        <div class="player-info-details__item player-info-details__item--height"
+                            style="flex-basis: 30%;">
                             <h6 class="player-info-details__title">Start Date</h6>
                             <div class="player-info-details__value">
                                 <ng-container *ngIf="tournament.startDate; else noStartDate">
@@ -37,6 +42,11 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <img *ngIf="tournament.tournamentSeries.organisation.logoImage"
+                        [src]="tournament.tournamentSeries.organisation.logoImage.base64EncodedImage"
+                        style=" max-height: 150px;">
                 </div>
             </div>
         </div>
@@ -72,7 +82,7 @@
             </div>
         </nav>
     </div>
-    <div class="container">
+    <div>
         <router-outlet></router-outlet>
     </div>
 </ng-container>

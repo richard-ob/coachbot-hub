@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { Tournament } from '@pages/hub/shared/model/tournament.model';
 
 @Component({
-    selector: 'app-current-tournaments',
-    templateUrl: './current-tournaments.component.html'
+    selector: 'app-previous-tournaments',
+    templateUrl: './previous-tournaments.component.html'
 })
-export class CurrentTournamentsComponent implements OnInit {
+export class PreviousTournamentsComponent implements OnInit {
 
     tournaments: Tournament[];
     isLoading = true;
@@ -15,8 +15,9 @@ export class CurrentTournamentsComponent implements OnInit {
     constructor(private tournamentService: TournamentService, private router: Router) { }
 
     ngOnInit() {
-        this.tournamentService.getCurrentTournaments().subscribe(tournaments => {
+        this.tournamentService.getPastTournaments().subscribe(tournaments => {
             this.tournaments = tournaments;
+            this.isLoading = false;
         });
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TeamStatistics } from '../shared/model/team-statistics.model';
 import { TeamService } from '../shared/services/team.service';
 import { Router } from '@angular/router';
@@ -12,6 +12,8 @@ import { TeamStatisticFilters } from '../shared/model/dtos/paged-team-statistics
 })
 export class TeamListComponent implements OnInit {
 
+    @Input() tournamentId: number;
+    @Input() hideFilters = false;
     teamStatistics: TeamStatistics[];
     filters: TeamStatisticFilters = new TeamStatisticFilters();
     regionId: number;
@@ -27,6 +29,7 @@ export class TeamListComponent implements OnInit {
     constructor(private teamService: TeamService, private router: Router, private userPreferenceService: UserPreferenceService) { }
 
     ngOnInit() {
+        this.filters.tournamentId = this.tournamentId;
         this.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.regionId = this.regionId;
         this.loadPage(1);

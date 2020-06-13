@@ -1,0 +1,42 @@
+<div class="container my-4">
+    <div *ngIf="organisation; else spinner" class="card">
+        <div class="card__header">
+            <h4>Edit Organisation</h4>
+        </div>
+        <div class="card__content">
+            <form (ngSubmit)="updateOrganisation()" #organisationForm="ngForm">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input [(ngModel)]="organisation.name" name="organisationName" type="text"
+                        placeholder="e.g. International Online Soccer Federation" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Acronym</label>
+                    <input [(ngModel)]="organisation.acronym" name="organisationAcronym" type="text"
+                        placeholder="e.g. IOSF" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="teamBadge">Organisation Logo</label>
+                    <app-asset-image-uploader (imageUploaded)="updateLogoImageId($event)"
+                        [currentAssetImageId]="organisation.logoImageId">
+                    </app-asset-image-uploader>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="teamColour">Team Colour</label>
+                    <div class="clickable"
+                        style="width: 100%; height: 50px; border-radius: 2px; border: 1px #dedede solid"
+                        [style.background-color]="organisation.brandColour" (click)="colourPicker.showColorPicker()">
+                    </div>
+                    <app-chrome-colour-picker [color]="organisation.brandColour"
+                        (colorChange)="organisation.brandColour = $event" #colourPicker>
+                    </app-chrome-colour-picker>
+                </div>
+                <button class="btn btn-primary" type="submit"
+                    [disabled]="isSaving || !organisationForm.valid">Save</button>
+            </form>
+        </div>
+    </div>
+    <ng-template #spinner>
+        <app-spinner></app-spinner>
+    </ng-template>
+</div>

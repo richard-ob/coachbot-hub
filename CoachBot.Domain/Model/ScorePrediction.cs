@@ -22,7 +22,7 @@ namespace CoachBot.Domain.Model
 
         public Player Player { get; set; }
 
-        public int TournamentPhaseId { get; set; }
+        public int? TournamentPhaseId { get; set; }
 
         public TournamentPhase TournamentPhase { get; set; }
 

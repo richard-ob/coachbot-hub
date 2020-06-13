@@ -30,6 +30,13 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournaments(true);
         }
 
+        [HttpGet("past")]
+        public List<Tournament> GetPastTournaments()
+        {
+            return _tournamentService.GetPastTournaments();
+        }
+
+
         [HttpGet]
         public List<Tournament> GetTournaments()
         {

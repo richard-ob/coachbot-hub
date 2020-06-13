@@ -38,6 +38,17 @@ namespace CoachBot.Domain.Services
                 .Include(t => t.TournamentSeries)
                 .ThenInclude(t => t.Organisation)
                 .Where(t => !excludeInactive || (t.EndDate == null || t.EndDate > DateTime.Now))
+                .Where(t => t.IsPublic)
+                .ToList();
+        }
+
+        public List<Tournament> GetPastTournaments()
+        {
+            return _coachBotContext.Tournaments
+                .Include(t => t.TournamentSeries)
+                .ThenInclude(t => t.Organisation)
+                .Where(t => t.EndDate < DateTime.Now)
+                .Where(t => t.IsPublic)
                 .ToList();
         }
 
@@ -46,6 +57,9 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.Tournaments
                 .Include(t => t.TournamentSeries)
                     .ThenInclude(t => t.TournamentLogo)
+                .Include(t => t.TournamentSeries)
+                    .ThenInclude(t => t.Organisation)
+                    .ThenInclude(t => t.LogoImage)
                 .Include(t => t.TournamentStaff)
                     .ThenInclude(t => t.Player)
                 .Include(t => t.TournamentStages)
@@ -88,6 +102,18 @@ namespace CoachBot.Domain.Services
         public void CreateOrganisation(Organisation organisation)
         {
             _coachBotContext.Organisations.Add(organisation);
+            _coachBotContext.SaveChanges();
+        }
+
+        public void UpdateOrganisation(Organisation organisation)
+        {
+            var existingOrganisation = _coachBotContext.Organisations.Single(o => o.Id == organisation.Id);
+
+            existingOrganisation.LogoImageId = organisation.LogoImageId;
+            existingOrganisation.Name = organisation.Name;
+            existingOrganisation.Acronym = organisation.Acronym;
+            existingOrganisation.BrandColour = organisation.BrandColour;
+
             _coachBotContext.SaveChanges();
         }
 

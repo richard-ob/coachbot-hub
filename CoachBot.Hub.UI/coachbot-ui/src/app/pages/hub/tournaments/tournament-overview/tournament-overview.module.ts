@@ -20,6 +20,9 @@ import {
     TournamentStandingsKnockoutComponent
 } from './tournament-overview-standings/tournament-standings-knockout/tournament-standings-knockout.component';
 import { NgPipesModule } from 'ngx-pipes';
+import {
+    TournamentStandingsRoundRobinComponent
+} from './tournament-overview-standings/tournament-standings-round-robin/tournament-standings-round-robin.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +32,8 @@ import { NgPipesModule } from 'ngx-pipes';
         TournamentOverviewPlayersComponent,
         TournamentOverviewTeamsComponent,
         TournamentOverviewStaffComponent,
-        TournamentStandingsKnockoutComponent
+        TournamentStandingsKnockoutComponent,
+        TournamentStandingsRoundRobinComponent
     ],
     imports: [
         CommonModule,

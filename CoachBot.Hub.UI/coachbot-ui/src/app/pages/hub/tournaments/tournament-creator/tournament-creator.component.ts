@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TournamentService } from '../../shared/services/tournament.service';
 import { TournamentSeries } from '@pages/hub/shared/model/tournament-series.model';
+import { Organisation } from '@pages/hub/shared/model/organisation.model';
 
 @Component({
     selector: 'app-tournament-creator',
@@ -10,13 +11,17 @@ export class TournamentCreatorComponent implements OnInit {
 
     tournamentSeries: TournamentSeries = new TournamentSeries();
     existingTournamentSeries: TournamentSeries[];
+    organisations: Organisation[];
     isCreating = false;
     isLoading = true;
 
     constructor(private tournamentService: TournamentService) { }
 
     ngOnInit() {
-        this.loadTournaments();
+        this.tournamentService.getOrganisations().subscribe(organisations => {
+            this.organisations = organisations;
+            this.loadTournaments();
+        });
     }
 
     createTournament() {

@@ -40,8 +40,8 @@
                     </select>
                 </li>
                 <li class="team-result-filter__item">
-                    <button type="button" class="btn btn-secondary btn-xs card-header__button"
-                        (click)="setFilters()" title="Filter results">
+                    <button type="button" class="btn btn-secondary btn-xs card-header__button" (click)="setFilters()"
+                        title="Filter results">
                         Filter
                     </button>
                 </li>
@@ -101,9 +101,10 @@
                             </ng-container>
                         </td>
                         <td class="team-result__status text-center">{{match.format}}v{{match.format}}</td>
-                        <td class="team-result__ball-posession text-center" title="{{match.server.country.name}}">
-                            <img src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png">
-
+                        <td class="team-result__ball-posession text-center">
+                            <img *ngIf="match.server && match.server.country"
+                                src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png"
+                                title="{{match.server.country.name}}">
                         </td>
                         <td class="team-result__game-overview text-center">
                             <a [routerLink]="['/match-overview', match.id]" class="btn btn-xs btn-primary">Match

@@ -258,7 +258,7 @@ namespace CoachBot.Database
                     Name = "Ball Breakers",
                     TeamCode = "BB",
                     TeamType = TeamType.Club,
-                    RegionId = 1,
+                    RegionId = 2,
                     FoundedDate = DateTime.Now
                 }
             );
@@ -269,7 +269,7 @@ namespace CoachBot.Database
                     Name = "Masters of Football",
                     TeamCode = "MOF",
                     TeamType = TeamType.Club,
-                    RegionId = 1,
+                    RegionId = 2,
                     FoundedDate = DateTime.Now
                 }
             );
@@ -280,7 +280,7 @@ namespace CoachBot.Database
                     Name = "nextGen",
                     TeamCode = "nG",
                     TeamType = TeamType.Club,
-                    RegionId = 1,
+                    RegionId = 2,
                     FoundedDate = DateTime.Now
                 }
             );
@@ -291,7 +291,7 @@ namespace CoachBot.Database
                     Name = "Phoenix",
                     TeamCode = "phx",
                     TeamType = TeamType.Club,
-                    RegionId = 1,
+                    RegionId = 2,
                     FoundedDate = DateTime.Now
                 }
             );
@@ -302,7 +302,7 @@ namespace CoachBot.Database
                     Name = "Arrow",
                     TeamCode = "Arrow",
                     TeamType = TeamType.Club,
-                    RegionId = 1,
+                    RegionId = 2,
                     FoundedDate = DateTime.Now
                 }
             );
@@ -313,7 +313,7 @@ namespace CoachBot.Database
                     Name = "ProSoccer",
                     TeamCode = "PS",
                     TeamType = TeamType.Club,
-                    RegionId = 1,
+                    RegionId = 2,
                     FoundedDate = DateTime.Now
                 }
             );
@@ -324,7 +324,7 @@ namespace CoachBot.Database
                     Name = "Chefs",
                     TeamCode = "Chefs",
                     TeamType = TeamType.Club,
-                    RegionId = 1,
+                    RegionId = 2,
                     FoundedDate = DateTime.Now
                 }
             );
@@ -335,7 +335,7 @@ namespace CoachBot.Database
                     Name = "Real Talent",
                     TeamCode = "RT",
                     TeamType = TeamType.Club,
-                    RegionId = 1,
+                    RegionId = 2,
                     FoundedDate = DateTime.Now
                 }
             );

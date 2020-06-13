@@ -31,6 +31,21 @@
                         <input [(ngModel)]="tournamentSeries.name" name="tournament" type="text" class="form-control"
                             placeholder="e.g. IOSF" required>
                     </div>
+                    <div class="form-group">
+                        <label>Organisation</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">
+                                    <a [routerLink]="['/organisations']"><i class="fas fa-plus"></i></a>
+                                </span>
+                            </div>
+                            <select [(ngModel)]="tournamentSeries.organisationId" name="organisation"
+                                class="form-control">
+                                <option *ngFor="let organisation of organisations" [ngValue]="organisation.id">
+                                    {{organisation.name}} ({{organisation.acronym}})</option>
+                            </select>
+                        </div>
+                    </div>
                     <button class="btn btn-primary" type="submit"
                         [disabled]="isCreating || !tournamentForm.valid">Create</button>
                 </form>

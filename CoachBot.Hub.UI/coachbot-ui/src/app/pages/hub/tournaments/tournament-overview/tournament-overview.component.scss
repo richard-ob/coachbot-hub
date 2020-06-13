@@ -1,0 +1,10 @@
+.player-heading {
+    background-color: #1e2024;
+    background-image: none;
+}
+
+.player-heading::after {
+    background-size: inherit;
+    background-repeat: repeat;
+    opacity: 0.1;
+}

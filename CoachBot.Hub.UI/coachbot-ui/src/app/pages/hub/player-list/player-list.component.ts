@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PlayerService } from '../shared/services/player.service';
 import { PlayerStatistics } from '../shared/model/player-statistics.model';
 import { SteamService } from '../../../shared/services/steam.service.';
@@ -14,6 +14,8 @@ import { UserPreferenceService, UserPreferenceType } from '@shared/services/user
 })
 export class PlayerListComponent implements OnInit {
 
+    @Input() tournamentId: number;
+    @Input() hideFilters = false;
     playerStatistics: PlayerStatistics[];
     filters = new PlayerStatisticFilters();
     currentPage = 1;
@@ -33,6 +35,7 @@ export class PlayerListComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.filters.tournamentId = this.tournamentId;
         this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.loadPage(1);
     }

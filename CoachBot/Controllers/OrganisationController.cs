@@ -66,5 +66,16 @@ namespace CoachBot.Controllers
             }
             _tournamentService.CreateOrganisation(organisation);
         }
+
+        [Authorize]
+        [HttpPut]
+        public void Update(Organisation organisation)
+        {
+            if (!_playerService.IsAdmin(User.GetSteamId()))
+            {
+                throw new Exception();
+            }
+            _tournamentService.UpdateOrganisation(organisation);
+        }
     }
 }

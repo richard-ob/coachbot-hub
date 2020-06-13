@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { TournamentService } from '../../shared/services/tournament.service';
 import { Tournament } from '../../shared/model/tournament.model';
 import { ActivatedRoute } from '@angular/router';
+import ColourUtils from '@shared/utilities/colour-utilities';
 
 @Component({
     selector: 'app-tournament-overview',
-    templateUrl: './tournament-overview.component.html'
+    templateUrl: './tournament-overview.component.html',
+    styleUrls: ['./tournament-overview.component.scss']
 })
 export class TournamentOverviewComponent implements OnInit {
 
@@ -23,6 +25,14 @@ export class TournamentOverviewComponent implements OnInit {
                 this.isLoading = false;
             });
         });
+    }
+
+    generateGradient(colour: string) {
+        const gradientSrc =
+            'linear-gradient(90deg,' + ColourUtils.hexToRgbA(colour, 0.6) + ',' + ColourUtils.hexToRgbA(colour, 0.3) + ')';
+        console.log('yep');
+        console.log(gradientSrc);
+        return gradientSrc;
     }
 
 }

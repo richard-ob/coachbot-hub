@@ -25,6 +25,9 @@ import { NewsComponent } from '@pages/news/news.component';
 import { TeamsComponent } from '@pages/hub/teams/teams.component';
 import { TeamEditorListComponent } from '@pages/hub/team-editor-list/team-editor-list.component';
 import { TournamentSeriesEditorComponent } from '@pages/hub/tournaments/tournament-series-editor/tournament-series-editor.component';
+import { OrganisationsComponent } from '@pages/hub/tournaments/organisations/organisations.component';
+import { OrganisationEditorComponent } from '@pages/hub/tournaments/organisations/organisation-editor/organisation-editor.component';
+import { PreviousTournamentsComponent } from '@pages/hub/tournaments/previous-tournaments/previous-tournaments.component';
 
 const routes: Routes = [
   {
@@ -110,6 +113,18 @@ const routes: Routes = [
   {
     path: 'tournaments',
     component: CurrentTournamentsComponent
+  },
+  {
+    path: 'tournament-history',
+    component: PreviousTournamentsComponent
+  },
+  {
+    path: 'organisations',
+    component: OrganisationsComponent
+  },
+  {
+    path: 'organisation-editor/:id',
+    component: OrganisationEditorComponent
   },
   {
     path: 'matchmaking',

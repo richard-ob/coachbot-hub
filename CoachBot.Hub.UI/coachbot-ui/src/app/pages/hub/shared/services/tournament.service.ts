@@ -11,6 +11,7 @@ import { TournamentMatchDaySlot } from '../model/tournament-match-day-slot.model
 import { TournamentSeries } from '../model/tournament-series.model';
 import { Tournament } from '../model/tournament.model';
 import { TournamentStaff } from '../model/tournament-staff.model';
+import { Organisation } from '../model/organisation.model';
 
 @Injectable({
     providedIn: 'root'
@@ -29,6 +30,14 @@ export class TournamentService {
 
     getTournaments(): Observable<Tournament[]> {
         return this.http.get<Tournament[]>(`${environment.apiUrl}/api/tournaments`);
+    }
+
+    getCurrentTournaments(): Observable<Tournament[]> {
+        return this.http.get<Tournament[]>(`${environment.apiUrl}/api/tournaments/current`);
+    }
+
+    getPastTournaments(): Observable<Tournament[]> {
+        return this.http.get<Tournament[]>(`${environment.apiUrl}/api/tournaments/past`);
     }
 
     getTournament(tournamentId: number): Observable<Tournament> {
@@ -110,5 +119,25 @@ export class TournamentService {
 
     generateTournamentSchedule(tournamentId: number): Observable<void> {
         return this.http.post<void>(`${environment.apiUrl}/api/tournaments/${tournamentId}/generate-schedule`, null);
+    }
+
+    createOrganisation(organisation: Organisation): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/api/organisations`, organisation);
+    }
+
+    updateOrganisation(organisation: Organisation): Observable<void> {
+        return this.http.put<void>(`${environment.apiUrl}/api/organisations`, organisation);
+    }
+
+    deleteOrganisation(organisationId: number): Observable<void> {
+        return this.http.delete<void>(`${environment.apiUrl}/api/organisations/${organisationId}`);
+    }
+
+    getOrganisation(organisationId: number): Observable<Organisation> {
+        return this.http.get<Organisation>(`${environment.apiUrl}/api/organisations/${organisationId}`);
+    }
+
+    getOrganisations(): Observable<Organisation[]> {
+        return this.http.get<Organisation[]>(`${environment.apiUrl}/api/organisations`);
     }
 }

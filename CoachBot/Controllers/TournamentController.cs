@@ -17,11 +17,13 @@ namespace CoachBot.Controllers
     {
         private readonly TournamentService _tournamentService;
         private readonly FantasyService _fantasyService;
+        private readonly PlayerService _playerService;
 
-        public TournamentController(TournamentService tournamentService, FantasyService fantasyService)
+        public TournamentController(TournamentService tournamentService, FantasyService fantasyService, PlayerService playerService)
         {
             _tournamentService = tournamentService;
             _fantasyService = fantasyService;
+            _playerService = playerService;
         }
 
         [HttpGet("current")]
@@ -53,6 +55,10 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void CreateTournament(Tournament tournament)
         {
+            if (!_playerService.IsAdmin(User.GetSteamId()))
+            {
+                throw new Exception();
+            }
             // TODO: Check player is tournament organiser
             _tournamentService.CreateTournament(tournament, User.GetSteamId());
         }
@@ -61,6 +67,10 @@ namespace CoachBot.Controllers
         [HttpPut]
         public void UpdateTournament(Tournament tournament)
         {
+            if (!_playerService.IsAdmin(User.GetSteamId()))
+            {
+                throw new Exception();
+            }
             // TODO: Check player is tournament organiser
             _tournamentService.UpdateTournament(tournament);
         }
@@ -87,6 +97,10 @@ namespace CoachBot.Controllers
         [HttpPost("{id}/generate-schedule")]
         public void GenerateTournamentSchedule(int id)
         {
+            if (!_playerService.IsAdmin(User.GetSteamId()))
+            {
+                throw new Exception();
+            }
             // TODO: Check player is tournament organiser
             _tournamentService.GenerateTournamentSchedule(id);
         }
@@ -107,6 +121,10 @@ namespace CoachBot.Controllers
         [HttpPost("{id}/match-day-slots")]
         public void CreateTournamentMatchDaySlot(TournamentMatchDaySlot tournamentMatchDaySlot)
         {
+            if (!_playerService.IsAdmin(User.GetSteamId()))
+            {
+                throw new Exception();
+            }
             // TODO: Check player is tournament organiser
             _tournamentService.CreateTournamentMatchDaySlot(tournamentMatchDaySlot);
         }
@@ -115,6 +133,10 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}/match-day-slots/{matchDaySlotId}")]
         public void DeleteTournamentMatchDaySlot(int matchDaySlotId)
         {
+            if (!_playerService.IsAdmin(User.GetSteamId()))
+            {
+                throw new Exception();
+            }
             _tournamentService.DeleteTournamentMatchDaySlot(matchDaySlotId);
         }
 
@@ -122,6 +144,10 @@ namespace CoachBot.Controllers
         [HttpPost("{id}/generate-fantasy-snapshots")]
         public void GenerateFantasyTeamSnapshots(int id)
         {
+            if (!_playerService.IsAdmin(User.GetSteamId()))
+            {
+                throw new Exception();
+            }
             _fantasyService.GenerateFantasyPlayersSnapshot(id);
         }
     }

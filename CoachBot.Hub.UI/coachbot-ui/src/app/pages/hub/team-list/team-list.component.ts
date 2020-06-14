@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import SortingUtils from '@shared/utilities/sorting-utilities';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import { TeamStatisticFilters } from '../shared/model/dtos/paged-team-statistics-request-dto.model';
+import EnumUtils from '@shared/utilities/enum-utilities';
+import { TeamType } from '../shared/model/team-type.enum';
 @Component({
     selector: 'app-team-list',
     templateUrl: './team-list.component.html',
@@ -16,6 +18,7 @@ export class TeamListComponent implements OnInit {
     @Input() hideFilters = false;
     teamStatistics: TeamStatistics[];
     filters: TeamStatisticFilters = new TeamStatisticFilters();
+    teamTypes = TeamType;
     regionId: number;
     currentPage = 1;
     totalPages: number;

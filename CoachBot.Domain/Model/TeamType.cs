@@ -2,7 +2,7 @@
 {
     public enum TeamType
     {
-        Club,
+        Club = 1,
         National,
         Mix
     }

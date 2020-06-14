@@ -5,12 +5,12 @@ import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { PagedResult } from '../model/dtos/paged-result.model';
 import { TeamStatistics } from '../model/team-statistics.model';
-import { PagedTeamStatisticsRequestDto, TeamStatisticFilters } from '../model/dtos/paged-team-statistics-request-dto.model';
-import { TimePeriod } from '../model/time-period.enum';
+import { TeamStatisticFilters } from '../model/dtos/paged-team-statistics-request-dto.model';
 import { Team } from '../model/team.model';
 import { PlayerTeamStatisticsTotals } from '../model/player-team-statistics-totals.model';
 import { MatchDayTotals } from '../model/team-match-day-totals';
 import { TeamStatisticsFilterHelper } from '../model/helpers/team-statistics-filter.helper';
+import { TeamType } from '../model/team-type.enum';
 
 @Injectable({
     providedIn: 'root'
@@ -23,8 +23,14 @@ export class TeamService {
         return this.http.get<Team>(`${environment.apiUrl}/api/team/${teamId}`);
     }
 
-    getTeams(regionId: number): Observable<Team[]> {
-        return this.http.get<Team[]>(`${environment.apiUrl}/api/team/region/${regionId}`);
+    getTeams(regionId: number, teamType: TeamType = null): Observable<Team[]> {
+        let params = {};
+        console.log(teamType);
+        if (teamType) {
+            params = { teamType };
+        }
+        console.log(params);
+        return this.http.get<Team[]>(`${environment.apiUrl}/api/team/region/${regionId}`, { params });
     }
 
     getTeamStatistics(

@@ -1,4 +1,5 @@
 import { TimePeriod } from '../time-period.enum';
+import { TeamType } from '../team-type.enum';
 
 export class PagedTeamStatisticsRequestDto {
     page = 1;
@@ -11,6 +12,7 @@ export class PagedTeamStatisticsRequestDto {
 export class TeamStatisticFilters {
     timePeriod: TimePeriod = TimePeriod.AllTime;
     teamId: number;
+    teamType: TeamType;
     tournamentId: number;
     regionId: number;
     includeInactive = true;

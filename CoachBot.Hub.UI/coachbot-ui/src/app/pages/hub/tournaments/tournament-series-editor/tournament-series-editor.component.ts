@@ -3,6 +3,7 @@ import { TournamentService } from '../../shared/services/tournament.service';
 import { Tournament } from '../../shared/model/tournament.model';
 import { ActivatedRoute } from '@angular/router';
 import { TournamentSeries } from '@pages/hub/shared/model/tournament-series.model';
+import { TeamType } from '@pages/hub/shared/model/team-type.enum';
 
 @Component({
     selector: 'app-tournament-series-editor',
@@ -13,6 +14,7 @@ export class TournamentSeriesEditorComponent implements OnInit {
     tournamentSeriesId: number;
     tournament: Tournament = new Tournament();
     tournamentSeries: TournamentSeries;
+    teamTypes = TeamType;
     isCreating = false;
     isLoading = true;
 

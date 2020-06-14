@@ -25,5 +25,6 @@ export class PlayerStatisticFilters {
     maximumRating?: number;
     positionGroup?: PositionGroup;
     playerName?: string;
+    positionName?: string;
     excludePlayers?: number[] = [];
 }

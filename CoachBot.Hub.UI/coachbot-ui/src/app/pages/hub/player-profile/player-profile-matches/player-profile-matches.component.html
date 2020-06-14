@@ -142,7 +142,7 @@
                                 <td class="text-center">{{match.offsides}}</td>
                                 <td class="text-center">{{match.yellowCards}}</td>
                                 <td class="text-center">{{match.redCards}}</td>
-                                <td class="text-center">{{match.distanceCovered}}</td>
+                                <td class="text-center">{{(match.distanceCovered / 1000) | number : '1.2-2'}}km</td>
                             </tr>
                         </tbody>
                     </table>

@@ -24,6 +24,8 @@ namespace CoachBot.Domain.Model
 
         public TournamentType TournamentType { get; set; }
 
+        public TeamType TeamType { get; set; }
+
         public MatchFormat Format { get; set; } = MatchFormat.EightVsEight;
 
         public int FantasyPointsLimit { get; set; } = 75;

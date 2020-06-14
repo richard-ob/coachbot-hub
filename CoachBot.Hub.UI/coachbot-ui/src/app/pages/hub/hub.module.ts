@@ -63,6 +63,7 @@ import { TournamentSeriesEditorComponent } from './tournaments/tournament-series
 import { OrganisationsComponent } from './tournaments/organisations/organisations.component';
 import { OrganisationEditorComponent } from './tournaments/organisations/organisation-editor/organisation-editor.component';
 import { PreviousTournamentsComponent } from './tournaments/previous-tournaments/previous-tournaments.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { PreviousTournamentsComponent } from './tournaments/previous-tournaments
     NgxPaginationModule,
     DlDateTimeDateModule,
     DlDateTimePickerModule,
+    BsDropdownModule.forRoot(),
     PlayerProfileModule,
     TeamProfileModule,
     TeamListModule,

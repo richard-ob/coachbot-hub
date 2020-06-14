@@ -28,11 +28,12 @@ namespace CoachBot.Domain.Services
                 .Single(t => t.Id == teamId);
         }
 
-        public List<Team> GetTeams(int regionId)
+        public List<Team> GetTeams(int regionId, TeamType? teamType = null)
         {
             return _dbContext.Teams
                 .Include(t => t.BadgeImage)
                 .Where(t => t.RegionId == regionId)
+                .Where(t => teamType == null || t.TeamType == teamType)
                 .ToList();
         }
 

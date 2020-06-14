@@ -42,9 +42,9 @@ namespace CoachBot.Controllers
         }
 
         [HttpGet("region/{regionId}")]
-        public List<Team> GetAll(int regionId)
+        public List<Team> GetAll(int regionId, [FromQuery]TeamType? teamType = null)
         {
-            return _teamService.GetTeams(regionId);
+            return _teamService.GetTeams(regionId, teamType);
         }
 
         [Authorize]

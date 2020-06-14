@@ -13,6 +13,7 @@ import { HubPipesModule } from '@pages/hub/shared/pipes/hub-pipes.module';
 import { FantasyTeamManagerRoutingModule } from './fantasy-team-manager.routing-module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FantasyPlayerComponent } from './fantasy-team-editor/fantasy-player/fantasy-player.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { FantasyPlayerComponent } from './fantasy-team-editor/fantasy-player/fan
         NgPipesModule,
         NouisliderModule,
         HubPipesModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        SweetAlert2Module
     ]
 })
 export class FantasyTeamManagerModule { }

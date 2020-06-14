@@ -1,6 +1,25 @@
 <app-spinner *ngIf="isLoading" class="py-4"></app-spinner>
 <div *ngIf="!isLoading" class="container position-relative py-4">
     <h4>Current</h4>
+    <div class="btn-group" dropdown style="position: absolute; top: 15px; right: 15px;">
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle"
+            aria-controls="dropdown-basic">
+            <ng-container [ngSwitch]="teamType">
+                <span *ngSwitchCase="teamTypes.Club">Club Teams</span>
+                <span *ngSwitchCase="teamTypes.National">National Teams</span>
+                <span *ngSwitchCase="teamTypes.Mix">Mix Teams</span>
+            </ng-container>
+            <span class="caret"></span>
+        </button>
+        <ul id="dropdown-teamtype" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Club)">Club Teams</a>
+            </li>
+            <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.National)">National
+                    Teams</a>
+            </li>
+            <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Mix)">Mix Teams</a></li>
+        </ul>
+    </div>
     <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet in this region
     </div>
     <div class="sponsors-grid row">

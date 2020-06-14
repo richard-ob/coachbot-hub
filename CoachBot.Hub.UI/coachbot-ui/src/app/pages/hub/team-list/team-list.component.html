@@ -14,6 +14,15 @@
                     </label>
                 </li>
                 <li class="team-result-filter__item">
+                    <select [(ngModel)]="filters.teamType" name="teamType" class="form-control" style="font-size: 11px;"
+                        #teamTypeSelect>
+                        <option [ngValue]="undefined">All Team Types</option>
+                        <option [ngValue]="teamTypes.Club">Club</option>
+                        <option [ngValue]="teamTypes.National">National</option>
+                        <option [ngValue]="teamTypes.Mix">Mix</option>
+                    </select>
+                </li>
+                <li class="team-result-filter__item">
                     <select [(ngModel)]="filters.timePeriod" name="timePeriod" style="font-size: 11px;"
                         class="form-control" #timePeriodSelect>
                         <option [ngValue]="0">All Time</option>

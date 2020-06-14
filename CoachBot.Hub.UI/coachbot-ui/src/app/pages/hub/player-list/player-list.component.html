@@ -16,6 +16,13 @@
                     </label>
                 </li>
                 <li class="team-result-filter__item">
+                    <select [(ngModel)]="filters.positionName" name="position" class="form-control" style="text-align-last: center;
+                    text-align: center;" #positionSelect>
+                        <option [ngValue]="undefined">All Positions</option>
+                        <option *ngFor="let position of positions" [ngValue]="position">{{position}}</option>
+                    </select>
+                </li>
+                <li class="team-result-filter__item">
                     <select [(ngModel)]="filters.timePeriod" name="timePeriod" class="form-control" #timePeriodSelect>
                         <option [ngValue]="0">All Time</option>
                         <option [ngValue]="365">Year</option>
@@ -60,9 +67,9 @@
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Goals'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
-                            [average]="true">
+                        <th *ngIf="filters.positionName !== 'GK'" sorter [sortByColumn]="'GoalsAverage'"
+                            [sortByColumnName]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
                         </th>
                         <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
@@ -88,9 +95,21 @@
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'DistanceCoveredAverage'" [sortByColumnName]="'Avg. Distance'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                            class="text-center" [average]="true">
+                        <th *ngIf="filters.positionName === 'GK'" sorter [sortByColumn]="'KeeperSavesAverage'"
+                            [sortByColumnName]="'Saves'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
+                        </th>
+                        <th *ngIf="filters.positionName === 'GK'" sorter [sortByColumn]="'KeeperSavesCaughtAverage'"
+                            [sortByColumnName]="'Saves Caught'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
+                        </th>
+                        <th *ngIf="filters.positionName === 'GK'" sorter [sortByColumn]="'GoalsConcededAverage'"
+                            [sortByColumnName]="'Goals Conceded'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
+                        </th>
+                        <th *ngIf="filters.positionName !== 'GK'" sorter [sortByColumn]="'DistanceCoveredAverage'"
+                            [sortByColumnName]="'Distance'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
                         </th>
                     </tr>
                 </thead>
@@ -139,7 +158,8 @@
                         <td class="team-result__status text-center">{{statistics.losses}}</td>
                         <td class="team-result__status text-center">{{statistics.draws}}</td>
                         <td class="team-result__status text-center">{{statistics.goals}}</td>
-                        <td class="team-result__status text-center">{{statistics.goalsAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="filters.positionName !== 'GK'" class="team-result__status text-center">
+                            {{statistics.goalsAverage | number : '1.2-2'}}</td>
                         <td class="team-result__status text-center">{{statistics.shotAccuracyPercentage | percent }}
                         </td>
                         <td class="team-result__status text-center">{{statistics.assists}}</td>
@@ -154,8 +174,14 @@
                         </td>
                         <td class="team-result__status text-center">{{statistics.yellowCards}}</td>
                         <td class="team-result__status text-center">{{statistics.redCards}}</td>
-                        <td class="team-result__status text-center">
-                            {{statistics.distanceCoveredAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="filters.positionName === 'GK'" class="text-center">
+                            {{statistics.keeperSavesAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="filters.positionName === 'GK'" class="text-center">
+                            {{statistics.keeperSavesCaughtAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="filters.positionName === 'GK'" class="text-center">
+                            {{statistics.goalsConcededAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="filters.positionName !== 'GK'" class="team-result__status text-center">
+                            {{(statistics.distanceCoveredAverage / 1000) | number : '1.2-2'}}km</td>
                     </tr>
                 </tbody>
             </table>

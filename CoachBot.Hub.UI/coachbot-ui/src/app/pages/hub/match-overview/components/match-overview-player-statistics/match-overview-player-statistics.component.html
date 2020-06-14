@@ -57,7 +57,7 @@
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Offsides'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'DistanceCoveredAverage'"
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'DistanceCovered'"
                             [sortByColumnName]="'Distance'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
                         <th *ngIf="showMoreStats" sorter [sortByColumn]="'Fouls'" [currentSort]="sortBy"
@@ -120,7 +120,7 @@
                         <td class="text-center">{{player.passes}}</td>
                         <td class="text-center">{{player.passesCompleted}}</td>
                         <td class="text-center">{{player.interceptions}}</td>
-                        <td class="text-center">{{player.possessionPercentage | percentage}}</td>
+                        <td class="text-center">{{player.possessionPercentage}}%</td>
                         <td class="text-center">
                             <ng-container *ngIf="player.position.name === 'GK'; else notGk">
                                 {{player.keeperSaves}}
@@ -130,7 +130,8 @@
                             </ng-template>
                         </td>
                         <td class="text-center">{{player.offsides}}</td>
-                        <td *ngIf="showMoreStats" class="text-center">{{player.distanceCovered}}</td>
+                        <td *ngIf="showMoreStats" class="text-center">
+                            {{(player.distanceCovered / 1000) | number : '1.2-2'}}km</td>
                         <td *ngIf="showMoreStats" class="text-center">{{player.fouls}}</td>
                         <td *ngIf="showMoreStats" class="text-center">{{player.foulsSuffered}}</td>
                         <td *ngIf="showMoreStats" class="text-center">{{player.ownGoals}}</td>

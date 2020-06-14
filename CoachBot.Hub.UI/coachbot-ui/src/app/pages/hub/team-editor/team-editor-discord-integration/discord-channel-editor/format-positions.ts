@@ -2,31 +2,31 @@ export abstract class FormatPositions {
     public static names = [,
         // 1 v 1
         [
-            'CF'
+            'GK'
         ],
         // 2 v 2
         [
-            'GK', 'CF'
+            'GK', 'CM'
         ],
         // 3 v 3
         [
-            'GK', 'CB', 'CF'
+            'GK', 'LM', 'RM'
         ],
         // 4 v 4
         [
-            'GK', 'CB', 'CM', 'CF'
+            'GK', 'CB', 'LM', 'RM'
         ],
         // 5 v 5
         [
-            'GK', 'CB', 'CM', 'LF', 'RF'
+            'GK', 'CB', 'LM', 'RM', 'CF'
         ],
         // 6 v 6
         [
-            'GK', 'LCB', 'RCB', 'LW', 'CF', 'RW'
+            'GK', 'LB', 'RB', 'CM', 'LW', 'RW'
         ],
         // 7 v 7
         [
-            'GK', 'LB', 'CB', 'RB', 'LW', 'CF', 'RW'
+            'GK', 'LB', 'RB', 'CM', 'LW', 'CF', 'RW'
         ],
         // 8 v 8
         [
@@ -38,11 +38,11 @@ export abstract class FormatPositions {
         ],
         // 10 v 10
         [
-            'GK', 'LB', 'LCB', 'RCB', 'RB', 'LW', 'LCM', 'RCM', 'RW', 'CF'
+            'GK', 'LB', 'CB', 'RB', 'LW', 'LCM', 'CM', 'RCM', 'RW', 'CF'
         ],
         // 11 v 11
         [
-            'GK', 'LB', 'LCB', 'RCB', 'RB', 'LW', 'LCM', 'RCM', 'RW', 'LF', 'RF'
+            'GK', 'LB', 'LCB', 'RCB', 'RB', 'LW', 'LCM', 'CM', 'RCM', 'RW', 'CF'
         ]
     ];
 }

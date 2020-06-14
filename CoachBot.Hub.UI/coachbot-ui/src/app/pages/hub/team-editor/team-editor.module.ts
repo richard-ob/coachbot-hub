@@ -24,6 +24,8 @@ import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
 import { TeamEditorRoutingModule } from './team-editor.routing-module';
 import { TeamInfoEditorComponent } from './shared/team-info-editor/team-info-editor.component';
 import { TeamEditorInfoComponent } from './team-editor-info/team-editor-info.component';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgPipesModule } from 'ngx-pipes';
 
 @NgModule({
     declarations: [
@@ -51,7 +53,9 @@ import { TeamEditorInfoComponent } from './team-editor-info/team-editor-info.com
         TeamEditorRoutingModule,
         ChromeColourPickerModule,
         MatDatepickerModule,
-        HubPipesModule
+        HubPipesModule,
+        NgbTypeaheadModule,
+        NgPipesModule
     ]
 })
 export class TeamEditorModule { }

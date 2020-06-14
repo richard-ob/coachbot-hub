@@ -16,5 +16,7 @@ namespace CoachBot.Domain.Model
 
         public bool IncludeInactive { get; set; } = true;
 
+        public TeamType? TeamType { get; set; }
+
     }
 }

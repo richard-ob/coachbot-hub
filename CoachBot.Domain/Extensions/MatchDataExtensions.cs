@@ -67,7 +67,7 @@ namespace CoachBot.Domain.Extensions
             return statistics;
         }
 
-        public static int GetTotalPosession(this MatchData matchData)
+        public static int GetTotalTeamPosession(this MatchData matchData)
         {
             var homePossession = GetMatchStatistic(matchData, MatchDataStatisticType.Possession, MatchDataTeamType.Home);
             var awayPossession = GetMatchStatistic(matchData, MatchDataStatisticType.Possession, MatchDataTeamType.Away);
@@ -76,18 +76,27 @@ namespace CoachBot.Domain.Extensions
             return totalPosession;
         }
 
+        public static int GetTotalPlayerPosession(this MatchData matchData)
+        {
+            return matchData.Players.Sum(player => GetMatchStatisticPlayerTotal(player, MatchDataStatisticType.Possession));
+        }
+
         public static int GetPlayerPositionPossession(this MatchData matchData, MatchDataPlayer matchDataPlayer, string team, string position)
         {
             var playerPositionPossession = matchDataPlayer.GetMatchStatisticPlayerTotal(MatchDataStatisticType.Possession, team, position);
+            var totalGamePossession = GetTotalPlayerPosession(matchData);
+            var roundedPercentage = (int)(((float)playerPositionPossession / (float)totalGamePossession) * 100);
 
-            return (playerPositionPossession / GetTotalPosession(matchData)) * 100;
+            return roundedPercentage;
         }
 
         public static int GetPlayerPossession(this MatchData matchData, MatchDataPlayer matchDataPlayer)
         {
-            var playerPossession = GetMatchStatisticPlayerTotal(matchDataPlayer, MatchDataStatisticType.Possession);
+            var playerPositionPossession = GetMatchStatisticPlayerTotal(matchDataPlayer, MatchDataStatisticType.Possession);
+            var totalGamePossession = GetTotalPlayerPosession(matchData);
+            var roundedPercentage = (int)(((float)playerPositionPossession / (float)totalGamePossession) * 100);
 
-            return (playerPossession / GetTotalPosession(matchData)) * 100;
+            return roundedPercentage;
         }
 
         public static int GetTeamPosession(this MatchData matchData, MatchDataTeamType matchDataTeamType)

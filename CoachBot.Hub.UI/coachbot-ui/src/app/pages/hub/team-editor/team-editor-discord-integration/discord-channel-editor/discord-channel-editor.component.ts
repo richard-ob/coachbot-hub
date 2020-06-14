@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
 import { DiscordService } from '../../../shared/services/discord.service';
 import { TeamService } from '../../../shared/services/team.service';
 import { ChannelService } from '../../../shared/services/channel.service';
@@ -9,16 +9,20 @@ import { Position } from '../../../shared/model/position';
 import { ChannelPosition } from '../../../shared/model/channel-position';
 import { FormatPositions } from './format-positions';
 import { SwalComponent, SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
+import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, debounceTime, map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-discord-channel-editor',
     templateUrl: './discord-channel-editor.component.html'
 })
-export class DiscordChannelEditorComponent {
+export class DiscordChannelEditorComponent implements OnInit {
 
     @ViewChild('editPositionModal', { static: false }) editPositionModal: SwalComponent;
     @Output() wizardClosed = new EventEmitter<void>();
     team: Team;
+    teams: Team[];
     channel: Channel = new Channel();
     discordChannels: DiscordChannel[];
     discordGuildId: string;
@@ -29,13 +33,30 @@ export class DiscordChannelEditorComponent {
     wizardSteps = WizardStep;
     isLoading = true;
     isSaving = false;
+    selectedIgnoreTeam: Team;
+    search = (text$: Observable<string>) =>
+        text$.pipe(
+            debounceTime(200),
+            distinctUntilChanged(),
+            map(term => term.length < 1 ? [] : this.teams.filter(v =>
+                v.name.toLowerCase().indexOf(term.toLowerCase()) > -1 || v.teamCode.toLowerCase().indexOf(term.toLowerCase()) > -1
+            ).slice(0, 10))
+        )
+    formatter = (x: { name: string }) => x.name;
 
     constructor(
         private discordService: DiscordService,
         private teamService: TeamService,
         private channelService: ChannelService,
-        public readonly swalTargets: SwalPortalTargets
+        public readonly swalTargets: SwalPortalTargets,
+        private userPreferenceService: UserPreferenceService
     ) { }
+
+    ngOnInit() {
+        this.teamService.getTeams(this.userPreferenceService.getUserPreference(UserPreferenceType.Region)).subscribe(teams => {
+            this.teams = teams;
+        });
+    }
 
     startCreateWizard(teamId: number) {
         this.isLoading = true;
@@ -127,8 +148,15 @@ export class DiscordChannelEditorComponent {
         this.editPositionModal.dismiss();
     }
 
-    addSearchIgnoreChannel(discordChannelId: string) {
-        this.channel.searchIgnoreList.push(discordChannelId);
+    addSearchIgnoreChannel() {
+        if (this.selectedIgnoreTeam && this.selectedIgnoreTeam.id) {
+            this.channel.searchIgnoreList.push(this.selectedIgnoreTeam.id);
+            this.selectedIgnoreTeam = null;
+        }
+    }
+
+    removeSearchIgnoreChannel(teamId: number) {
+        this.channel.searchIgnoreList = this.channel.searchIgnoreList.filter(t => t !== teamId);
     }
 
     saveChannel() {

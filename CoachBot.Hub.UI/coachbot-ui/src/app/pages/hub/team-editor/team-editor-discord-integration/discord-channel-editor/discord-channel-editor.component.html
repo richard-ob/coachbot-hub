@@ -54,20 +54,28 @@
             <input class="form-control" [(ngModel)]="channel.subTeamName" name="subTeamName" type="text">
         </div>
 
-        <div class="form-group">
+        <div *ngIf="teams && teams.length" class="form-group">
             <label class="control-label" for="input-default">Search Message Ignore List</label>
             <span class="badge badge-pill badge-warning ml-2">Beta</span>
             <div class="input-group mb-3">
-                <div class="input-group-prepend clickable">
+                <div class="input-group-prepend clickable w-100">
                     <span class="input-group-text">
-                    <button class="btn btn-light btn-xs" (click)="addSearchIgnoreChannel(channelId.value); channelId.value = null;" title="Add channel ID">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </span>
+                        <button class="btn btn-secondary btn-xs" (click)="addSearchIgnoreChannel()" title="Add team" [disabled]="!selectedIgnoreTeam">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </span>
+                    <input id="teamIgnoreTypeahead" name="teamIgnoreTypeahead" type="text" class="form-control"
+                        placeholder="Type team name here" [(ngModel)]="selectedIgnoreTeam" [ngbTypeahead]="search"
+                        [resultTemplate]="rt" [inputFormatter]="formatter" />
                 </div>
-                <input class="form-control" type=" number" placeholder="Opposition Channel ID" #channelId>
+                <ng-template #rt let-r="result" let-t="term">
+                    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                </ng-template>
             </div>
-            <span *ngFor="let ignoreChannel of channel.searchIgnoreList" class="badge badge-pill badge-primary mr-2">{{ignoreChannel}}</span>
+            <span *ngFor="let ignoreChannel of channel.searchIgnoreList" class="badge badge-pill badge-primary mr-2">
+                {{(teams | filterBy:['id']:ignoreChannel)[0].name}}
+                <i class="fas fa-times pl-1 clickable show-on-parent-hover" (click)="removeSearchIgnoreChannel(ignoreChannel)"></i>
+            </span>
         </div>
 
         <div class="form-group">
@@ -146,6 +154,7 @@
     </form>
     <app-spinner *ngIf="isLoading"></app-spinner>
 </ng-container>
+
 <swal #editPositionModal (confirm)="updatePosition()">
     <ng-container *swalPortal="swalTargets.title">
         <h5>Update Position</h5>

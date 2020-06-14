@@ -63,7 +63,16 @@
                             <option [ngValue]="4">Round Robbin Ladder</option>
                             <option [ngValue]="0">Knockout Cup</option>
                         </select>
-                    </div>
+                    </div>                    
+                    <div class="form-group">
+                            <label>Team Type</label>
+                            <select [(ngModel)]="tournament.teamType" name="teamType" class="form-control"
+                                required>
+                                <option [ngValue]="teamType.Club">Club</option>
+                                <option [ngValue]="teamType.National">National</option>
+                                <option [ngValue]="teamType.National">National</option>
+                            </select>
+                        </div>
                     <div class="form-group">
                         <label>Start Date</label>
                         <mat-datepicker #startDatePicker></mat-datepicker>

@@ -7,6 +7,7 @@ import { FantasyTeamSelection } from '../../../shared/model/fantasy-team-selecti
 import { PositionGroup } from '../../../shared/model/position-group.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Tournament } from '@pages/hub/shared/model/tournament.model';
+import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
     selector: 'app-fantasy-team-editor',
@@ -25,7 +26,8 @@ export class FantasyTeamEditorComponent implements OnInit {
     constructor(
         private fantasyService: FantasyService,
         private route: ActivatedRoute,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        public readonly swalTargets: SwalPortalTargets
     ) { }
 
     ngOnInit() {
@@ -35,6 +37,14 @@ export class FantasyTeamEditorComponent implements OnInit {
                 this.fantasyTeam = fantasyTeam;
                 this.isLoading = false;
             });
+        });
+    }
+
+    updateTeamName(teamName: string) {
+        this.isLoading = true;
+        this.fantasyTeam.name = teamName;
+        this.fantasyService.updateFantasyTeam(this.fantasyTeam).subscribe(() => {
+            this.isLoading = false;
         });
     }
 

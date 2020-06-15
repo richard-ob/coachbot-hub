@@ -89,6 +89,7 @@ export class DiscordChannelEditorComponent implements OnInit {
         this.wizardMode = WizardMode.Disabled;
         this.isLoading = true;
         this.isSaving = false;
+        this.selectedIgnoreTeam = null;
         this.wizardClosed.emit();
     }
 

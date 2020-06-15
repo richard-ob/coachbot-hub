@@ -61,7 +61,7 @@ namespace CoachBot.Domain.Services
             var regionChannels = _coachBotContext.Channels
                 .Where(c => c.Team.RegionId == challenger.Team.RegionId)
                 .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
-                .Where(c => c.SearchIgnoreList == null || !c.SearchIgnoreList.Any(i => i == challenger.DiscordChannelId))
+                .Where(c => c.SearchIgnoreList == null || !c.SearchIgnoreList.Any(i => i == challenger.TeamId))
                 .Select(c => c.DiscordChannelId)
                 .ToList();
 

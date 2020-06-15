@@ -29,7 +29,7 @@ namespace CoachBot.Domain.Model
 
         public bool IsMixChannel { get; set; }
 
-        public List<ulong> SearchIgnoreList { get; set; } = new List<ulong>();
+        public List<int> SearchIgnoreList { get; set; } = new List<int>();
 
         public bool DisableSearchNotifications { get; set; }
 

@@ -23,7 +23,7 @@ namespace CoachBot.Domain.Services
 
         public void UpdateChannel(Channel channel)
         {
-            var existingChannel = channel;
+            var existingChannel = _dbContext.Channels.Find(channel.Id);
 
             existingChannel.DisableSearchNotifications = channel.DisableSearchNotifications;
             existingChannel.DiscordChannelId = channel.DiscordChannelId;

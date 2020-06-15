@@ -12,6 +12,7 @@ import { PlayerTeam } from '@pages/hub/shared/model/player-team.model';
 export class TeamEditorSquadAddPlayerComponent {
 
     @Output() wizardClosed = new EventEmitter<void>();
+    @Output() playerAdded = new EventEmitter<void>();
     @Input() teamId: number;
     playerSearchResults: Player[];
     player: Player;
@@ -34,6 +35,7 @@ export class TeamEditorSquadAddPlayerComponent {
             () => {
                 this.isSaving = false;
                 this.wizardClosed.emit();
+                this.playerAdded.emit();
             },
             error => {
                 this.playerAddFailure = true;

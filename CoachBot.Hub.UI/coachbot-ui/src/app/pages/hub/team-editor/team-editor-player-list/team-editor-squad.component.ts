@@ -4,6 +4,7 @@ import { PlayerTeam } from '../../shared/model/player-team.model';
 import { TeamRole } from '@pages/hub/shared/model/team-role.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { PlayerService } from '@pages/hub/shared/services/player.service';
 
 @Component({
     selector: 'app-team-editor-squad',
@@ -13,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 export class TeamEditorSquadComponent implements OnInit {
 
     @Input() teamId: number;
+    currentPlayer: Player;
     teamPlayers: PlayerTeam[];
     teamRoles = TeamRole;
     isLoading = true;
@@ -21,6 +23,7 @@ export class TeamEditorSquadComponent implements OnInit {
 
     constructor(
         private playerTeamService: PlayerTeamService,
+        private playerService: PlayerService,
         private snackBar: MatSnackBar,
         private route: ActivatedRoute
     ) { }
@@ -29,7 +32,10 @@ export class TeamEditorSquadComponent implements OnInit {
         this.isLoading = true;
         this.route.parent.paramMap.pipe().subscribe(params => {
             this.teamId = +params.get('id');
-            this.loadPlayers();
+            this.playerService.getCurrentPlayer().subscribe(currentPlayer => {
+                this.currentPlayer = currentPlayer;
+                this.loadPlayers();
+            });
         });
     }
 

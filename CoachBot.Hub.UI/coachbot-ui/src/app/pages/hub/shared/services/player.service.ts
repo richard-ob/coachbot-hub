@@ -22,6 +22,10 @@ export class PlayerService {
 
     constructor(private http: HttpClient) { }
 
+    getCurrentPlayer(): Observable<Player> {
+        return this.http.get<Player>(`${environment.apiUrl}/api/player/@me`);
+    }
+
     getPlayers(page: number): Observable<PagedResult<Player>> {
         const pagedPlayerRequestDto = new PagedPlayerRequestDto();
         pagedPlayerRequestDto.page = page;
@@ -59,10 +63,6 @@ export class PlayerService {
 
     getPlayerProfile(playerId: number): Observable<PlayerProfile> {
         return this.http.get<PlayerProfile>(`${environment.apiUrl}/api/player-profiles/${playerId}`);
-    }
-
-    getCurrentPlayer(): Observable<Player> {
-        return this.http.get<Player>(`${environment.apiUrl}/api/player/@me`);
     }
 
     searchPlayerByName(playerName: string): Observable<Player[]> {

@@ -26,6 +26,7 @@ import { TeamInfoEditorComponent } from './shared/team-info-editor/team-info-edi
 import { TeamEditorInfoComponent } from './team-editor-info/team-editor-info.component';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgPipesModule } from 'ngx-pipes';
+import { CoreModule } from '@core/core.module';
 
 @NgModule({
     declarations: [
@@ -42,6 +43,7 @@ import { NgPipesModule } from 'ngx-pipes';
     ],
     imports: [
         CommonModule,
+        CoreModule,
         RouterModule,
         FormsModule,
         SpinnerModule,

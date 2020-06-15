@@ -6,18 +6,14 @@
             <div class="player-info__title player-info__title--mobile">
                 <h1 class="player-info__name"><span class="player-info__first-name">{{team.name}}</span></h1>
             </div>
-            <div class="player-info">
+            <div class="player-info d-flex justify-content-between align-items-center px-2">
                 <div class="player-info__item player-info__item--details" aria-hidden="false">
-                    <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage"
-                        style="position: absolute; right: 30px; top: 33px; max-height: 150px;">
-                    <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
-                        style="position: absolute; right: 30px; top: 33px; max-height: 150px;">
                     <div class="player-info__title player-info__title--desktop">
                         <h1 class="player-info__name">
                             <span class="player-info__first-name">{{team.name}}</span>
                         </h1>
                     </div>
-                    <div class="player-info-details">
+                    <div class="player-info-details mb-2">
                         <div class="player-info-details__item player-info-details__item--height">
                             <h6 class="player-info-details__title">Team Code</h6>
                             <div class="player-info-details__value">{{team.teamCode}}</div>
@@ -46,12 +42,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="d-none d-lg-block">
+                    <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage" style="max-height: 150px;">
+                    <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                        style="max-height: 150px;">
+                </div>
             </div>
         </div>
         <nav class="content-filter">
             <div class="container">
-                <a href="#" class="content-filter__toggle"></a>
-                <ul class="content-filter__list">
+                <a href="javascript:void(0);" (click)="tabNav.toggle()" class="content-filter__toggle"></a>
+                <ul class="content-filter__list" appTabNavMobile #tabNav>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
                         <a [routerLink]="['./statistics']" class="content-filter__link">
                             Statistics

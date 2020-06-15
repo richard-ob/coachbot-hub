@@ -8,7 +8,7 @@
                     <span class="player-info__first-name">{{tournament.tournamentSeries.name}} - {{tournament.name}}</span>
                 </h1>
             </div>
-            <div class="player-info d-flex justify-content-between align-items-center">
+            <div class="player-info d-flex justify-content-between align-items-center pb-2 px-2">
                 <div class="player-info__item player-info__item--details" aria-hidden="false">
                     <div class="player-info__title player-info__title--desktop">
                         <h4 _ngcontent-cvc-c1="" class="pt-2 mb-0 text-white-50">
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div class="d-none d-lg-block">
                     <img *ngIf="tournament.tournamentSeries.organisation.logoImage"
                         [src]="tournament.tournamentSeries.organisation.logoImage.base64EncodedImage"
                         style=" max-height: 150px;">
@@ -51,8 +51,9 @@
             </div>
         </div>
         <nav class="content-filter">
-            <div class="container"><a href="#" class="content-filter__toggle"></a>
-                <ul class="content-filter__list">
+            <div class="container">
+                <a href="javascript:void(0);" (click)="tabNav.toggle()" class="content-filter__toggle"></a>
+                <ul class="content-filter__list" appTabNavMobile #tabNav>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
                         <a [routerLink]="['./standings']" class="content-filter__link">
                             Standings

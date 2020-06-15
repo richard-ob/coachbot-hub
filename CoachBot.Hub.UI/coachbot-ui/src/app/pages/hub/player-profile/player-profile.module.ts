@@ -17,6 +17,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { CalendarHeatmapModule } from 'src/app/shared/components/calendar-heatmap/calendar-heatmap.module';
 import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
 import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
+import { CoreModule } from '@core/core.module';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
     ],
     imports: [
         CommonModule,
+        CoreModule,
         RouterModule,
         FormsModule,
         SpinnerModule,

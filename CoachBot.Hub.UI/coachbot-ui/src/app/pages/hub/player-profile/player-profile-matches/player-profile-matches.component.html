@@ -12,7 +12,7 @@
                 <div class="card__header card__header--has-btn">
                     <h4>Matches</h4>
                     <!-- Filter -->
-                    <ul class="team-result-filter">
+                    <ul class="team-result-filter d-none d-md-inline">
                         <li class="team-result-filter__item">
                             <label class="checkbox checkbox-inline mr-2">
                                 <input type="checkbox" name="includeSubstituteAppearances"
@@ -43,7 +43,9 @@
                         class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover">
                         <thead>
                             <tr>
-                                <th class="team-result__ball-posession">Date</th>
+                                <th sorter [sortByColumn]="'Match.ReadiedDate'" [sortByColumnName]="'Date'"
+                                    [currentSort]="sortBy" [currentOrder]="sortOrder" title="Match Date"
+                                    (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                                 <th sorter [sortByColumn]="'Position.Name'" [sortByColumnName]="'Pos'"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder" title="Position"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>

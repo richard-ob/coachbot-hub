@@ -17,7 +17,7 @@ export class PlayerProfileMatchesComponent implements OnInit {
     currentPage = 1;
     totalPages: number;
     totalItems: number;
-    sortBy: string = null;
+    sortBy = 'Match.ReadiedDate';
     sortOrder = 'ASC';
     timePeriod = 0;
     hasFiltered = false;
@@ -29,7 +29,7 @@ export class PlayerProfileMatchesComponent implements OnInit {
         this.route.parent.paramMap.pipe().subscribe(params => {
             this.playerId = +params.get('id');
             this.filters.playerId = this.playerId;
-            this.loadPage(1);
+            this.loadPage(1, this.sortBy);
         });
     }
 

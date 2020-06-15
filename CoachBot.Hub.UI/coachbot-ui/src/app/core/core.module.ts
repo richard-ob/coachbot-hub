@@ -4,6 +4,7 @@ import { RequestOptionsInterceptor } from './interceptors/request-options.interc
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UnauthorizedInterceptor } from './interceptors/unauthorized.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { TabNavMobileComponent } from './components/tab-nav-mobile/tab-nav-mobile.component';
 
 @NgModule({
     imports: [
@@ -25,6 +26,12 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
             useClass: ErrorInterceptor,
             multi: true
         }
+    ],
+    declarations: [
+        TabNavMobileComponent
+    ],
+    exports: [
+        TabNavMobileComponent
     ]
 })
 export class CoreModule { }

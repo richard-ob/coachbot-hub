@@ -22,6 +22,7 @@ import {
 import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
 import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { CoreModule } from '@core/core.module';
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     ],
     imports: [
         CommonModule,
+        CoreModule,
         RouterModule,
         FormsModule,
         SpinnerModule,

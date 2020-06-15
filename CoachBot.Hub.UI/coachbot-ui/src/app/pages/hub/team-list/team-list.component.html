@@ -146,7 +146,7 @@
                         <td class="team-result__status text-center">{{statistics.offsidesAverage | number : '1.2-2'}}
                         </td>
                         <td class="team-result__status text-center">
-                            {{statistics.possessionPercentageAverage | percent }}
+                            {{(statistics.possessionPercentageAverage | number : '1.2-2')  + '%' }}
                         </td>
                         <td class="team-result__status text-center">{{statistics.yellowCardsAverage | number : '1.2-2'}}
                         </td>

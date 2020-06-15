@@ -5,6 +5,7 @@ import { TeamRole } from '@pages/hub/shared/model/team-role.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { PlayerService } from '@pages/hub/shared/services/player.service';
+import { Player } from '@pages/hub/shared/model/player.model';
 
 @Component({
     selector: 'app-team-editor-squad',

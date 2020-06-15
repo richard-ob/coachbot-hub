@@ -27,7 +27,7 @@
                 <tbody>
                     <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals">
                         <td class="pr-0">
-                            <img *ngIf="playerTeamStatisticsTotal.playerTeam.team.badgeImage.base64EncodedImage"
+                            <img *ngIf="playerTeamStatisticsTotal.playerTeam.team.badgeImage && playerTeamStatisticsTotal.playerTeam.team.badgeImage.base64EncodedImage"
                                 [src]="playerTeamStatisticsTotal.playerTeam.team.badgeImage.base64EncodedImage"
                                 style="width: 16px;">
                             <img *ngIf="!playerTeamStatisticsTotal.playerTeam.team.badgeImage"

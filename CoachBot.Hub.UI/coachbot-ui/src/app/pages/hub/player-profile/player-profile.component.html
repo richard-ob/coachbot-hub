@@ -12,7 +12,8 @@
                     <div class="player-info__title player-info__title--desktop">
                         <h1 class="player-info__name">
                             <span class="player-info__first-name">{{player.name}} 
-                                    <a class="btn btn-primary-inverse btn-xs ml-2" routerLink="/edit-profile">Edit Profile</a></span>
+                                <a *ngIf="currentPlayer && player && currentPlayer.id === player.id" class="btn btn-primary-inverse btn-xs ml-2" routerLink="/edit-profile">Edit Profile</a>
+                            </span>
                         </h1>
                     </div>
                     <div class="player-info-details">

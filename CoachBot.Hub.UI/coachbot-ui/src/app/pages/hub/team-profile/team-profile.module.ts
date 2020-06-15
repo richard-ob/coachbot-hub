@@ -21,6 +21,7 @@ import {
 } from './team-profile-statistics/team-profile-activity-heatmap/team-profile-activity-heatmap.component';
 import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
 import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { FormIndicatorModule } from '../shared/components/form-indictator/form-i
         TeamProfileRoutingModule,
         CalendarHeatmapModule,
         HubPipesModule,
-        FormIndicatorModule
+        FormIndicatorModule,
+        NgxSkeletonLoaderModule
     ]
 })
 export class TeamProfileModule { }

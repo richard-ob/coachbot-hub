@@ -18,6 +18,7 @@ export class RecentMatchesComponent implements OnInit {
     @Input() includePast = true;
     @Input() includeUpcoming = false;
     @Input() showFilters = true;
+    @Input() verticalPadding = true;
     filters = new MatchFilters();
     matchTypes = MatchTypes;
     matches: Match[];

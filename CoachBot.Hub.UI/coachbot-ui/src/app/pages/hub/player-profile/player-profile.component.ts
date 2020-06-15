@@ -19,6 +19,7 @@ import { PlayerProfile } from '../shared/model/player-profile.model';
 })
 export class PlayerProfileComponent implements OnInit {
 
+    currentPlayer: Player;
     player: Player;
     playerProfile: PlayerProfile;
     steamUserProfile: SteamUserProfile;
@@ -32,6 +33,7 @@ export class PlayerProfileComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.playerService.getCurrentPlayer().subscribe(currentPlayer => this.currentPlayer = currentPlayer);
         this.route.paramMap.pipe().subscribe(params => {
             this.playerService.getPlayer(+params.get('id')).subscribe(player => {
                 this.player = player;

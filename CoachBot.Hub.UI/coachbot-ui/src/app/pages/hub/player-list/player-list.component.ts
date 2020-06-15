@@ -8,6 +8,8 @@ import SortingUtils from '@shared/utilities/sorting-utilities';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import EnumUtils from '@shared/utilities/enum-utilities';
 import { FormatPositions } from '../team-editor/team-editor-discord-integration/discord-channel-editor/format-positions';
+import { Team } from '../shared/model/team.model';
+import { TeamService } from '../shared/services/team.service';
 
 @Component({
     selector: 'app-player-list',
@@ -20,6 +22,7 @@ export class PlayerListComponent implements OnInit {
     @Input() hideFilters = false;
     playerStatistics: PlayerStatistics[];
     filters = new PlayerStatisticFilters();
+    teams: Team[];
     positions = ['GK', 'LB', 'CB', 'RB', 'LW', 'LM', 'CM', 'RM', 'RW', 'CF'];
     currentPage = 1;
     totalPages: number;
@@ -29,18 +32,24 @@ export class PlayerListComponent implements OnInit {
     timePeriod = 0;
     isLoading = true;
     isLoadingPage = false;
+    filtersApplied = false;
 
     constructor(
         private playerService: PlayerService,
         private steamService: SteamService,
+        private teamService: TeamService,
         private router: Router,
         private userPreferenceService: UserPreferenceService
     ) { }
 
     ngOnInit() {
+        const regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.tournamentId = this.tournamentId;
-        this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
-        this.loadPage(1);
+        this.filters.regionId = regionId;
+        this.teamService.getTeams(regionId).subscribe(teams => {
+            this.teams = teams;
+            this.loadPage(1);
+        });
     }
 
     loadPage(page: number, sortBy: string = null) {
@@ -60,6 +69,7 @@ export class PlayerListComponent implements OnInit {
 
     setFilters() {
         this.loadPage(1, this.sortBy);
+        this.filtersApplied = true;
     }
 
     getSteamProfileLink(steamId: string) {

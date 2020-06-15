@@ -120,7 +120,7 @@
                         <td class="text-center">{{player.passes}}</td>
                         <td class="text-center">{{player.passesCompleted}}</td>
                         <td class="text-center">{{player.interceptions}}</td>
-                        <td class="text-center">{{player.possessionPercentage}}%</td>
+                        <td class="text-center">{{player.possessionPercentage | number : '1.2-2'}}%</td>
                         <td class="text-center">
                             <ng-container *ngIf="player.position.name === 'GK'; else notGk">
                                 {{player.keeperSaves}}

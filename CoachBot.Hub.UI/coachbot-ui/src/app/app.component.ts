@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { UserService } from './core/services/user.service';
 import { User } from './core/models/user.model';
 import { environment } from 'src/environments/environment';
 import { Player } from './pages/hub/shared/model/player.model';

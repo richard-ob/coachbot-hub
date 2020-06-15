@@ -27,18 +27,6 @@
                             <div class="player-info-details__value">{{team.region.regionName}}</div>
                         </div>
                         <div class="player-info-details__item player-info-details__item--height">
-                            <h6 class="player-info-details__title">Matches</h6>
-                            <div class="player-info-details__value">
-                                <span class="badge badge-pill badge-light">7</span>
-                            </div>
-                        </div>
-                        <div class="player-info-details__item player-info-details__item--height">
-                            <h6 class="player-info-details__title">Players</h6>
-                            <div class="player-info-details__value">
-                                <span class="badge badge-pill badge-light">7</span>
-                            </div>
-                        </div>
-                        <div class="player-info-details__item player-info-details__item--height">
                             <h6 class="player-info-details__title">Founded</h6>
                             <div class="player-info-details__value">
                                 <ng-container *ngIf="team.dateFounded; else noFoundedDate">
@@ -50,7 +38,7 @@
                             </div>
                         </div>
                         <div class="player-info-details__item player-info-details__item--height"
-                            style="flex-basis: 40%;">
+                            style="flex-basis: 50%;">
                             <h6 class="player-info-details__title">Form</h6>
                             <div class="player-info-details__value my-2">
                                 <app-form-indicator [form]="team.form"></app-form-indicator>

@@ -16,6 +16,13 @@
                     </label>
                 </li>
                 <li class="team-result-filter__item">
+                    <select [(ngModel)]="filters.teamId" name="position" class="form-control" style="text-align-last: center;
+                    text-align: center;" #teamSelect>
+                        <option [ngValue]="undefined">All Teams</option>
+                        <option *ngFor="let team of teams" [ngValue]="team.id">{{team.name}}</option>
+                    </select>
+                </li>
+                <li class="team-result-filter__item">
                     <select [(ngModel)]="filters.positionName" name="position" class="form-control" style="text-align-last: center;
                     text-align: center;" #positionSelect>
                         <option [ngValue]="undefined">All Positions</option>
@@ -39,9 +46,14 @@
         </div>
         <div class="card__content table-responsive">
             <app-spinner *ngIf="isLoading"></app-spinner>
-            <div *ngIf="!isLoading && !playerStatistics.length" class="m-3 alert alert-info">No matches have been played
-                yet
-                in this region. Hang tight!</div>
+            <div *ngIf="!isLoading && !playerStatistics.length" class="m-3 alert alert-info">
+                <ng-container *ngIf="filtersApplied">
+                    No matching player data available
+                </ng-container>
+                <ng-container *ngIf="!filtersApplied">
+                    No matches have been played yet in this region. Hang tight!
+                </ng-container>
+            </div>
             <table *ngIf="!isLoading && playerStatistics.length"
                 class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
                 [class.widget__content--loading]="isLoadingPage">
@@ -170,7 +182,7 @@
                             {{statistics.passCompletionPercentageAverage | percent }}
                         </td>
                         <td class="team-result__status text-center">
-                            {{statistics.possessionPercentageAverage | percent }}
+                            {{(statistics.possessionPercentageAverage | number : '1.2-2') + '%' }}
                         </td>
                         <td class="team-result__status text-center">{{statistics.yellowCards}}</td>
                         <td class="team-result__status text-center">{{statistics.redCards}}</td>

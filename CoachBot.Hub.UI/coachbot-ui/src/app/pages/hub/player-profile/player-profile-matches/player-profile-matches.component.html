@@ -116,7 +116,7 @@
                                 </td>
                                 <td>{{match.matchOutcome | matchOutcome}}</td>
                                 <td class="text-center">
-                                    <span *ngIf="!match.substitute" title="Substitute">
+                                    <span *ngIf="match.substitute" title="Substitute">
                                             <i class="icon-svg icon-substitution mr-1"></i>
                                         </span>
                                     <span *ngIf="match.yellowCards > 0" title="Yellow carded">
@@ -136,7 +136,7 @@
                                 <td class="text-center">{{match.passes}}</td>
                                 <td class="text-center">{{match.passesCompleted}}</td>
                                 <td class="text-center">{{match.interceptions}}</td>
-                                <td class="text-center">{{match.possessionPercentage | percent}}</td>
+                                <td class="text-center">{{(match.possessionPercentage  | number : '1.2-2') + '%'}}</td>
                                 <td class="text-center">{{match.keeperSaves}}</td>
                                 <td class="text-center">{{match.goalsConceded}}</td>
                                 <td class="text-center">{{match.offsides}}</td>

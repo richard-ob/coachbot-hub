@@ -1,5 +1,6 @@
 import { PlayerTeam } from './player-team.model';
 import { Position } from './position';
+import { SteamUserProfile } from './steam-user-profile.model';
 
 export interface PlayerTeamStatisticsTotals {
     playerTeam: PlayerTeam;
@@ -9,4 +10,6 @@ export interface PlayerTeamStatisticsTotals {
     assists: number;
     yellowCards: number;
     redCards: number;
+
+    steamUserProfile: SteamUserProfile;
 }

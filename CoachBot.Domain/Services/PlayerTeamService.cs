@@ -26,6 +26,7 @@ namespace CoachBot.Domain.Services
                 PlayerId = playerId,
                 TeamId = teamId,
                 TeamRole = teamRole,
+                JoinDate = DateTime.Now,
                 CreatedDate = DateTime.Now
             };
 

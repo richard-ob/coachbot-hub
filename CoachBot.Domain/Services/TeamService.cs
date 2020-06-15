@@ -28,6 +28,17 @@ namespace CoachBot.Domain.Services
                 .Single(t => t.Id == teamId);
         }
 
+        public Team GetTeam(string teamCode, int regionId)
+        {
+            return _dbContext.Teams
+                .Include(t => t.Guild)
+                .Include(t => t.Channels)
+                    .ThenInclude(c => c.ChannelPositions)
+                .Include(t => t.Region)
+                .Include(t => t.BadgeImage)
+                .FirstOrDefault(t => t.TeamCode == teamCode && t.RegionId == regionId);
+        }
+
         public List<Team> GetTeams(int regionId, TeamType? teamType = null)
         {
             return _dbContext.Teams

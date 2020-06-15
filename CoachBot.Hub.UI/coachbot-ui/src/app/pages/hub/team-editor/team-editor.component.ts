@@ -3,7 +3,7 @@ import { PlayerService } from '../shared/services/player.service';
 import { Team } from '../shared/model/team.model';
 import { Region } from '../shared/model/region.model';
 import { TeamService } from '../shared/services/team.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TeamRole } from '../shared/model/team-role.enum';
 
 @Component({

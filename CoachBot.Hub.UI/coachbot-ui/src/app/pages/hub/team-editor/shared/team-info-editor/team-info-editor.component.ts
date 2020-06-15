@@ -15,12 +15,11 @@ export class TeamInfoEditorComponent implements OnInit {
     @Input() team: Team;
     regions: Region[];
     teamTypes = TeamType;
+    duplicateTeamCodeFound = false;
     isSaving = false;
     isLoading = true;
 
-    constructor(private teamService: TeamService, private regionService: RegionService, private router: Router) {
-
-    }
+    constructor(private teamService: TeamService, private regionService: RegionService, private router: Router) { }
 
     ngOnInit() {
         this.regionService.getRegions().subscribe(regions => {
@@ -31,18 +30,27 @@ export class TeamInfoEditorComponent implements OnInit {
 
     saveTeamProfile() {
         this.isSaving = true;
-        if (!this.team.id) {
-            this.teamService.createTeam(this.team).subscribe(() => {
-                this.router.navigate(['team-editor-list']);
-            });
-        } else {
-            this.teamService.updateTeam(this.team).subscribe(() => {
-                this.teamService.getTeam(this.team.id).subscribe(team => {
-                    this.team = team;
-                    this.isSaving = false;
-                });
-            });
-        }
+        this.duplicateTeamCodeFound = false;
+        this.teamService.getTeamByCode(this.team.teamCode, this.team.regionId).subscribe((teamFound) => {
+            if (teamFound && (teamFound.id !== this.team.id)) {
+                this.duplicateTeamCodeFound = true;
+                this.isSaving = false;
+            } else {
+                if (!this.team.id) {
+                    this.teamService.createTeam(this.team).subscribe(() => {
+                        this.router.navigate(['team-editor-list']);
+                    });
+                } else {
+                    this.teamService.updateTeam(this.team).subscribe(() => {
+                        this.teamService.getTeam(this.team.id).subscribe(team => {
+                            this.team = team;
+                            this.isSaving = false;
+                            this.router.navigate(['team-editor-list']);
+                        });
+                    });
+                }
+            }
+        })
     }
 
     updateBadgeImageId(assetImageId: number) {

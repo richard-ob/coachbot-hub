@@ -23,6 +23,10 @@ export class TeamService {
         return this.http.get<Team>(`${environment.apiUrl}/api/team/${teamId}`);
     }
 
+    getTeamByCode(teamCode: string, regionId: number): Observable<Team> {
+        return this.http.get<Team>(`${environment.apiUrl}/api/team/code/${teamCode}/region/${regionId}`);
+    }
+
     getTeams(regionId: number, teamType: TeamType = null): Observable<Team[]> {
         let params = {};
         console.log(teamType);

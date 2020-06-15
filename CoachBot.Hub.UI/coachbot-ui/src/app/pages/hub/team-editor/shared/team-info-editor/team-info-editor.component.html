@@ -10,12 +10,13 @@
                 <div class="form-group">
                     <label class="control-label" for="teamName">Team Name</label>
                     <input type="text" class="form-control" id="teamName" required [(ngModel)]="team.name"
-                        placeholder="Full team name" name="teamName">
+                        placeholder="Full team name, e.g. Ball Breakers" name="teamName">
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="teamCode">Team Code</label>
+                    <small class="label-subtitle mb-2">This must be unique in the region your team plays in</small>
                     <input type="text" class="form-control" id="teamCode" required [(ngModel)]="team.teamCode"
-                        name="teamCode" placeholder="Short team code">
+                        name="teamCode" placeholder="Short team code, e.g. BB">
                 </div>
                 <div *ngIf="!team.id" class="form-group">
                     <label class="control-label" for="teamType">Team Type</label>
@@ -70,6 +71,9 @@
                             <span class="checkbox-indicator"></span>
                         </label>
                     </div>
+                </div>
+                <div *ngIf="duplicateTeamCodeFound" class="alert alert-danger">
+                    A team already exists with this team code in this region. Please enter a unique team code.
                 </div>
                 <button type="button" class="btn btn-primary" (click)="saveTeamProfile()"
                     [disabled]="isSaving || teamInfoForm.invalid">

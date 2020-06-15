@@ -29,6 +29,12 @@ namespace CoachBot.Controllers
             return _teamService.GetTeam(id);
         }
 
+        [HttpGet("code/{teamCode}/region/{regionId}")]
+        public Team GetByCode(string teamCode, int regionId)
+        {
+            return _teamService.GetTeam(teamCode, regionId);
+        }
+
         [HttpGet("{id}/squad")]
         public List<PlayerTeamStatisticsTotals> GetTeamSquad(int id)
         {

@@ -41,6 +41,11 @@ namespace CoachBot.Domain.Services
         {
             var player = _dbContext.GetPlayerBySteamId(captainSteamUserId);
 
+            if (_dbContext.Teams.Any(t => t.Id != team.Id && t.RegionId == team.RegionId && t.TeamCode == team.TeamCode))
+            {
+                throw new Exception("A team code must be unique for a region");
+            }
+
             team.FoundedDate = team.FoundedDate ?? DateTime.Now;
             _dbContext.Teams.Add(team);
 
@@ -59,9 +64,26 @@ namespace CoachBot.Domain.Services
 
         public void UpdateTeam(Team team)
         {
-            // TODO: implement save logic
-            team.UpdatedDate = DateTime.Now;
-            _dbContext.Teams.Update(team);
+            var existingTeam = _dbContext.Teams.Single(t => t.Id == team.Id);
+
+            if (_dbContext.Teams.Any(t => t.Id != team.Id && t.RegionId == team.RegionId && t.TeamCode == team.TeamCode))
+            {
+                throw new Exception("A team code must be unique for a region");
+            }
+
+            existingTeam.BadgeEmote = team.BadgeEmote;
+            existingTeam.BadgeImageId = team.BadgeImageId;
+            existingTeam.Color = team.Color;
+            existingTeam.FoundedDate = team.FoundedDate;
+            existingTeam.Inactive = team.Inactive;
+            existingTeam.KitEmote = team.KitEmote;
+            existingTeam.Name = team.Name;
+            existingTeam.RegionId = team.RegionId;
+            existingTeam.TeamCode = team.TeamCode;
+            existingTeam.TeamType = team.TeamType;
+            existingTeam.GuildId = team.GuildId;
+            existingTeam.UpdatedDate = DateTime.Now;
+
             _dbContext.SaveChanges();
         }
 

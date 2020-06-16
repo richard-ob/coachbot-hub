@@ -1,9 +1,11 @@
-﻿using CoachBot.Domain.Services;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
 using CoachBot.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Text;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -15,13 +17,16 @@ namespace CoachBot.Controllers
     {
         private readonly MatchService _matchService;
         private readonly MatchStatisticsService _matchStatisticsService;
+        private readonly PlayerService _playerService;
 
-        public MatchStatisticController(MatchService matchService, MatchStatisticsService matchStatisticsService)
+        public MatchStatisticController(MatchService matchService, MatchStatisticsService matchStatisticsService, PlayerService playerService)
         {
             _matchService = matchService;
             _matchStatisticsService = matchStatisticsService;
+            _playerService = playerService;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Submit(MatchStatisticsDto matchStatisticsDto)
         {
@@ -59,6 +64,7 @@ namespace CoachBot.Controllers
         }
 
         [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Manager)]
         [HttpPost("{id}")]
         public IActionResult ManualSubmit([FromBody]MatchStatisticsDto matchStatisticsDto, int matchId)
         {

@@ -1,12 +1,12 @@
-﻿using CoachBot.Domain.Model.Dtos;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
-using CoachBot.Extensions;
 using CoachBot.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -17,12 +17,10 @@ namespace CoachBot.Controllers
     public class RegionController : Controller
     {
         private readonly RegionService _regionService;
-        private readonly PlayerService _playerService;
 
-        public RegionController(RegionService regionService, PlayerService playerService)
+        public RegionController(RegionService regionService)
         {
             _regionService = regionService;
-            _playerService = playerService;
         }
 
         [HttpGet]
@@ -31,29 +29,24 @@ namespace CoachBot.Controllers
             return _regionService.GetRegions();
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost]
         public void Add(Region region)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _regionService.Add(region);
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}")]
         public void Update(Region region)
         {
             throw new NotImplementedException();
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _regionService.Delete(id);
         }
     }

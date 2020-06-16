@@ -2,6 +2,7 @@
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -23,6 +24,7 @@ namespace CoachBot.Controllers
             _playerService = playerService;
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(PlayerTeam playerTeam)
         {
@@ -36,6 +38,7 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         public IActionResult Update(PlayerTeam playerTeam)
         {

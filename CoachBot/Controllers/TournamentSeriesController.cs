@@ -1,12 +1,8 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
-using CoachBot.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -16,12 +12,10 @@ namespace CoachBot.Controllers
     public class TournamentSeriesController : Controller
     {
         private readonly TournamentService _tournamentService;
-        private readonly PlayerService _playerService;
 
-        public TournamentSeriesController(TournamentService tournamentService, PlayerService playerService)
+        public TournamentSeriesController(TournamentService tournamentService)
         {
             _tournamentService = tournamentService;
-            _playerService = playerService;
         }
 
         [HttpGet]
@@ -36,14 +30,10 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournamentSeries(id);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost]
         public void CreateTournament(TournamentSeries tournament)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _tournamentService.CreateTournamentSeries(tournament);
         }
     }

@@ -1,9 +1,7 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
-using CoachBot.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -13,66 +11,44 @@ namespace CoachBot.Controllers
     public class TournamentGroupController : Controller
     {
         private readonly TournamentService _tournamentService;
-        private readonly PlayerService _playerService;
 
-        public TournamentGroupController(TournamentService tournamentService, PlayerService playerService)
+        public TournamentGroupController(TournamentService tournamentService)
         {
             _tournamentService = tournamentService;
-            _playerService = playerService;
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpDelete("{id}")]
         public void DeleteTournamentGroup(int id)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _tournamentService.DeleteTournamentGroup(id);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost]
         public void CreateTournamentGroup(TournamentGroup tournamentGroup)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _tournamentService.CreateTournamentGroup(tournamentGroup);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPut("{id}")]
         public void UpdateTournamentGroup(TournamentGroup tournamentGroup)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _tournamentService.UpdateTournamentGroup(tournamentGroup);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/teams")]
         public void AddTournamentGroupTeam(TournamentGroupTeamDto tournamentGroupTeamDto)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _tournamentService.AddTournamentTeam(tournamentGroupTeamDto.TeamId, tournamentGroupTeamDto.TournamentGroupId);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/teams/{teamId}")]
         public void RemoveTournamentGroupTeam(int id, int teamId)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _tournamentService.RemoveTournamentTeam(teamId, id);
         }
     }

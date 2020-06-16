@@ -7,7 +7,6 @@ using CoachBot.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace CoachBot.Controllers
 {
@@ -36,7 +35,7 @@ namespace CoachBot.Controllers
             {
                 Name = User.Identity.Name,
                 SteamId = User.GetSteamId(),
-                PlayerId = player.Id, // TODO: Figure out if this works for Steam
+                PlayerId = player.Id,
                 IsAdministrator = player.HubRole.Equals(PlayerHubRole.Administrator)
             };
         }

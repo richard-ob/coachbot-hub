@@ -1,10 +1,8 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
-using CoachBot.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -14,67 +12,42 @@ namespace CoachBot.Controllers
     public class OrganisationController : Controller
     {
         private readonly TournamentService _tournamentService;
-        private readonly PlayerService _playerService;
 
-        public OrganisationController(TournamentService tournamentService, PlayerService playerService)
+        public OrganisationController(TournamentService tournamentService)
         {
             _tournamentService = tournamentService;
-            _playerService = playerService;
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public Organisation Get(int id)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
-
             return _tournamentService.GetOrganisation(id);
         }
 
-        [Authorize]
         [HttpGet]
         public IEnumerable<Organisation> GetAll()
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             return _tournamentService.GetOrganisations();
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _tournamentService.RemoveOrganisation(id);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost]
         public void Create(Organisation organisation)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _tournamentService.CreateOrganisation(organisation);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPut]
         public void Update(Organisation organisation)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             _tournamentService.UpdateOrganisation(organisation);
         }
     }

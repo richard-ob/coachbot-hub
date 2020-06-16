@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CoachBot.Domain.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Linq;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -11,9 +13,7 @@ namespace CoachBot.Controllers
     [Authorize]
     public class LogController : Controller
     {
-
-        public LogController() { }
-
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpGet]
         public string Get()
         {

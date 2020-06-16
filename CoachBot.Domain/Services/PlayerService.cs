@@ -132,6 +132,12 @@ namespace CoachBot.Domain.Services
             return player.HubRole.Equals(PlayerHubRole.Administrator);
         }
 
+        public PlayerHubRole GetPlayerHubRole(ulong steamId)
+        {
+            var player = GetPlayerBySteamId(steamId);
+            return player.HubRole;
+        }
+
         private Player CreatePlayer(string playerName, ulong? discordUserId = null, string discordUserMention = null, ulong? steamId = null)
         {
             var player = new Player()

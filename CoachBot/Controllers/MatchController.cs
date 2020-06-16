@@ -4,6 +4,7 @@ using CoachBot.Domain.Services;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -30,6 +31,7 @@ namespace CoachBot.Controllers
             return _matchService.GetMatches(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Manager)]
         [HttpPut("{id}")]
         public void UpdateMatch([FromBody]Match match)
         {

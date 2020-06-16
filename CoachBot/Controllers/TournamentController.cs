@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -51,26 +50,18 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournament(id);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost]
         public void CreateTournament(Tournament tournament)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             // TODO: Check player is tournament organiser
             _tournamentService.CreateTournament(tournament, User.GetSteamId());
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPut]
         public void UpdateTournament(Tournament tournament)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             // TODO: Check player is tournament organiser
             _tournamentService.UpdateTournament(tournament);
         }
@@ -93,14 +84,10 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournamentStaff(id);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/generate-schedule")]
         public void GenerateTournamentSchedule(int id)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
-            {
-                throw new Exception();
-            }
             // TODO: Check player is tournament organiser
             _tournamentService.GenerateTournamentSchedule(id);
         }
@@ -117,7 +104,7 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournamentMatchDaySlots(id);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/match-day-slots")]
         public void CreateTournamentMatchDaySlot(TournamentMatchDaySlot tournamentMatchDaySlot)
         {
@@ -129,7 +116,7 @@ namespace CoachBot.Controllers
             _tournamentService.CreateTournamentMatchDaySlot(tournamentMatchDaySlot);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpDelete("{id}/match-day-slots/{matchDaySlotId}")]
         public void DeleteTournamentMatchDaySlot(int matchDaySlotId)
         {
@@ -140,7 +127,7 @@ namespace CoachBot.Controllers
             _tournamentService.DeleteTournamentMatchDaySlot(matchDaySlotId);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/generate-fantasy-snapshots")]
         public void GenerateFantasyTeamSnapshots(int id)
         {

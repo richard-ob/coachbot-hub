@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FantasyService } from '../../shared/services/fantasy.service';
-import { FantasyTeam } from '../../shared/model/fantasy-team.model';
 import { Router } from '@angular/router';
 import { Tournament } from '@pages/hub/shared/model/tournament.model';
+import { FantasyService } from '@pages/hub/shared/services/fantasy.service';
+import { FantasyTeam } from '@pages/hub/shared/model/fantasy-team.model';
 
 @Component({
     selector: 'app-fantasy-team-manager',

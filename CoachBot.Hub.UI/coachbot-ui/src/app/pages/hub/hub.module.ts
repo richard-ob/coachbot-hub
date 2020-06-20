@@ -41,7 +41,6 @@ import { TournamentOverviewModule } from './tournaments/tournament-overview/tour
 import { TeamListModule } from './team-list/team-list.module';
 import { PlayerListModule } from './player-list/player-list.module';
 import { HubPipesModule } from './shared/pipes/hub-pipes.module';
-import { FantasyTeamManagerModule } from './tournaments/fantasy-team-manager/fantasy-team-manager.module';
 import { TeamsComponent } from './teams/teams.component';
 import { TeamEditorListModule } from './team-editor-list/team-editor-list.module';
 import { TeamEditorModule } from './team-editor/team-editor.module';
@@ -64,6 +63,7 @@ import { OrganisationsComponent } from './tournaments/organisations/organisation
 import { OrganisationEditorComponent } from './tournaments/organisations/organisation-editor/organisation-editor.component';
 import { PreviousTournamentsComponent } from './tournaments/previous-tournaments/previous-tournaments.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { FantasyTeamManagerModule } from './tournaments/fantasy/fantasy.module';
 
 @NgModule({
   declarations: [

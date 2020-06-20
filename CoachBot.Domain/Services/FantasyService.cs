@@ -2,6 +2,7 @@
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,14 @@ namespace CoachBot.Domain.Services
     public class FantasyService
     {
         private readonly CoachBotContext _coachBotContext;
+        private readonly IBackgroundTaskQueue _queue;
+        private readonly IServiceProvider serviceProvider;
 
-        public FantasyService(CoachBotContext coachBotContext)
+        public FantasyService(CoachBotContext coachBotContext, IBackgroundTaskQueue queue, IServiceProvider serviceProvider)
         {
             _coachBotContext = coachBotContext;
+            _queue = queue;
+            this.serviceProvider = serviceProvider;
         }
 
         public IEnumerable<FantasyTeam> GetFantasyTeams(int tournamentId)
@@ -114,6 +119,7 @@ namespace CoachBot.Domain.Services
 
             if (_coachBotContext.FantasyPlayers.Any(t => t.TournamentId == tournamentId))
             {
+                GenerateFantasyPhaseSnapshots(1);
                 throw new Exception("Fantasy season already seeded");
             }
 
@@ -147,6 +153,47 @@ namespace CoachBot.Domain.Services
         static PositionGroup GetRandomPositionGroup()
         {
             return (PositionGroup)new Random().Next(0, 4);
+        }
+
+        public void GenerateFantasyPhaseSnapshots(int tournamentPhaseId)
+        {
+            _queue.QueueBackgroundWorkItem(async token =>
+            {
+                using (var scope = this.serviceProvider.CreateScope())
+                {
+                    var context = this.serviceProvider.GetService(typeof(CoachBotContext)) as CoachBotContext;
+                    var tournamentId = context.TournamentPhases.Where(p => p.Id == tournamentPhaseId).Select(t => t.TournamentStage.TournamentId).Single();
+                    context.FantasyPlayerPhases.RemoveRange(_coachBotContext.FantasyPlayerPhases.Where(f => f.TournamentPhaseId == tournamentPhaseId));
+                    await context.SaveChangesAsync();
+
+                    context = this.serviceProvider.GetService(typeof(CoachBotContext)) as CoachBotContext;
+                    foreach (var match in context.TournamentGroupMatches.Include(m => m.Match).ThenInclude(m => m.PlayerMatchStatistics).Where(m => m.TournamentPhaseId == tournamentPhaseId))
+                    {
+                        foreach (var playerMatchStatistics in match.Match.PlayerMatchStatistics)
+                        {
+                            var fantasyPlayer = context.FantasyPlayers.FirstOrDefault(f => f.TournamentId == tournamentId && f.PlayerId == playerMatchStatistics.PlayerId);
+                            if (fantasyPlayer == null) continue;
+
+                            var fantasyPlayerPhase = new FantasyPlayerPhase()
+                            {
+                                PlayerMatchStatisticsId = playerMatchStatistics.Id,
+                                TournamentPhaseId = tournamentPhaseId,
+                                FantasyPlayerId = fantasyPlayer.Id,
+                                Points = CalculateFantasyPoints(playerMatchStatistics)
+                            };
+
+                            context.FantasyPlayerPhases.Add(fantasyPlayerPhase);
+                        }
+                    }
+                    await context.SaveChangesAsync();
+                    context.Dispose();
+                }
+            });
+        }
+
+        private int CalculateFantasyPoints(PlayerMatchStatistics playerMatchStatistics)
+        {
+            return 10;
         }
 
         private IQueryable<FantasyPlayer> GetFantasyPlayersQueryable(PlayerStatisticFilters playerStatisticFilters)

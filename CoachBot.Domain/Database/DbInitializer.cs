@@ -217,8 +217,8 @@ namespace CoachBot.Database
 
                     context.Matches.Add(match);
                 }
+                context.SaveChanges();
             }
-            context.SaveChanges();
             foreach (var player in context.Players)
             {
                 var playerTeam = new PlayerTeam()

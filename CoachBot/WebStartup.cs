@@ -136,6 +136,9 @@ namespace CoachBot
             //provider.GetService<CoachBotContext>().SeedTeams();
             //provider.GetService<MatchStatisticsService>().GenerateStatistics();
 
+            services.AddHostedService<QueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+
             provider.GetService<MatchStatisticsService>().GenerateTeamForm();
         }
 

@@ -13,6 +13,7 @@
                 table--large">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Organisation</th>
                         <th class="team-result__date">Tournament</th>
                         <th class="team-result__status">Tournament Format</th>
@@ -25,6 +26,9 @@
                 <tbody>
                     <tr *ngFor="let tournament of tournaments | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                         (click)="navigateToTournament(tournament.id)">
+                        <td><img *ngIf="tournament.tournamentSeries.organisation.logoImage"
+                                [src]="tournament.tournamentSeries.organisation.logoImage.base64EncodedImage"
+                                style="max-height: 20px;"></td>
                         <td>{{tournament.tournamentSeries.organisation.acronym}}</td>
                         <td class="team-result__status">{{tournament.name}}</td>
                         <td class="team-result__status">

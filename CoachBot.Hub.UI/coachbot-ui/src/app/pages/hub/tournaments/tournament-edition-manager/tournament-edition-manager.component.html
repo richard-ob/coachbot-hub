@@ -16,7 +16,7 @@
                     (click)="toggleIsPublic()">Make Private</button>
                 <button type="button" class="btn btn-primary mx-1"
                     [swal]="{ title: 'Are you sure?', text: 'This will generate the player snapshots for the fantasy game, meaning the fantasy game must be completely reset if further player changes required. Therefore this should only be done after transfer windows end.', icon: 'warning', showCancelButton: true }"
-                    (confirm)="generateFantasySnapshots()">Open Fantasy Game</button>
+                    (confirm)="generateFantasyTeamSnapshots()">Open Fantasy Game</button>
             </div>
         </div>
         <div class="card">

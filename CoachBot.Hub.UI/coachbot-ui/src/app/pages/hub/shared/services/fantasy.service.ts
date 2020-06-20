@@ -55,7 +55,7 @@ export class FantasyService {
     }
 
     generateFantasySnapshots(tournamentId: number): Observable<void> {
-        return this.http.post<void>(`${environment.apiUrl}/api/fantasy/tournament/${tournamentId}/generate-fantasy-snapshots`, null);
+        return this.http.post<void>(`${environment.apiUrl}/api/tournaments/${tournamentId}/generate-fantasy-snapshots`, null);
     }
 
     getAvailableFantasyTournamentsForUser(): Observable<Tournament[]> {

@@ -13,7 +13,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(err => {
             if (err instanceof HttpErrorResponse && window.location.href.indexOf('login') === -1) {
                 if (err.status === 500 || err.status === 0) {
-                    this.router.navigate(['/error']);
+                    this.router.navigate(['/error'], { skipLocationChange: true });
                 }
             }
             return throwError(err);

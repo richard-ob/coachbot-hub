@@ -2,20 +2,20 @@
     <ng-container *ngIf="!isLoading; else spinner">
         <div class="card card--has-table">
             <div class="card__header">
-                <h4>Fantasy Teams</h4>
+                <h4>My Fantasy Teams</h4>
             </div>
             <div class="card__content">
                 <table class="table table-striped table-hover table-clickable">
                     <thead>
                         <th>Name</th>
                         <th>Tournament</th>
-                        <th>Is Finalised</th>
+                        <th>Status</th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let fantasyTeam of fantasyTeams" (click)="navigateToFantasyTeam(fantasyTeam.id)">
                             <td>{{fantasyTeam.name}}</td>
                             <td>{{fantasyTeam.tournament?.name}}</td>
-                            <td>{{fantasyTeam.isFinalised ? 'Yes' : 'No' }}</td>
+                            <td>{{fantasyTeam.isFinalised ? 'In Play' : 'Editable' }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -26,22 +26,26 @@
                 <h4>Fantasy Team Creator</h4>
             </div>
             <div class="card__content">
-                <div class="form-group">
-                    <label>Name</label>
-                    <input [(ngModel)]="fantasyTeam.name" name="tournament" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Tournament</label>
-                    <select class="form-control" [(ngModel)]="fantasyTeam.tournamentId">
-                        <option *ngFor="let tournament of availableTournaments" [ngValue]="tournament.id">
-                            {{tournament.name}}
-                        </option>
-                    </select>
-                </div>
+                <ng-container *ngIf="availableTournaments.length; else noAvailableTournaments">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input [(ngModel)]="fantasyTeam.name" name="tournament" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Tournament</label>
+                        <select class="form-control" [(ngModel)]="fantasyTeam.tournamentId">
+                            <option *ngFor="let tournament of availableTournaments" [ngValue]="tournament.id">
+                                {{tournament.name}}
+                            </option>
+                        </select>
+                    </div>
 
-                <button class="btn btn-primary" (click)="createFantasyTeam()" type="button"
-                    [disabled]="isCreating">Create</button>
-
+                    <button class="btn btn-primary" (click)="createFantasyTeam()" type="button"
+                        [disabled]="isCreating">Create</button>
+                </ng-container>
+                <ng-template #noAvailableTournaments>
+                    <div class="alert alert-info">There are currently no fantasy tournaments to enter</div>
+                </ng-template>
             </div>
         </div>
     </ng-container>

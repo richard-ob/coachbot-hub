@@ -105,7 +105,8 @@
                     <tr *ngFor="let player of fantasyPlayers" (click)="selectFantasyPlayer(player)"
                         title="Add player to your team">
                         <td>
-                            <img [src]="player.team.badgeImage.base64EncodedImage" style="max-height: 15px">
+                            <img *ngIf="player.team.badgeImage" [src]="player.team.badgeImage.base64EncodedImage"
+                                style="max-height: 15px">
                         </td>
                         <td>{{player.player.name}}</td>
                         <td>{{player.rating | number : '1.2-2'}}</td>

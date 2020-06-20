@@ -28,8 +28,37 @@
                     </select>
                 </div>
 
-                <button class="btn btn-primary" (click)="updateMatch()" type="button"
-                    [disabled]="isCreating">Save</button>
+                <button class="btn btn-primary" (click)="updateMatch()" type="button">Save</button>
+            </ng-container>
+            <ng-template #spinner>
+                <app-spinner></app-spinner>
+            </ng-template>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h4>Match Statistics</h4>
+        </div>
+        <div class="card__content">
+            <ng-container *ngIf="!isLoading; else spinner">
+                <ng-container *ngIf="!match.matchStatistics">
+                    <div class="form-group">
+                        <label>Match Data JSON File</label>
+                        <div class="form-control">
+                            <input id="file" type="file" name="matchStatistics" (change)="fileSelected($event)" />
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" (click)="updateMatchStatistics()" [disabled]="!matchStatistics"
+                        type="button">Save</button>
+                </ng-container>
+                <ng-container *ngIf="match.matchStatistics">
+                    <div class="alert alert-info">Match data for this match was uploaded on
+                        {{match.matchStatistics.createdDate | date:'longDate'}}</div>
+                </ng-container>
+                <div *ngIf="isProccessingStatistics" class="alert alert-warning">
+                    The statistics for this match are currently being uploaded. Please do not attempt to re-upload this
+                    data.
+                </div>
             </ng-container>
             <ng-template #spinner>
                 <app-spinner></app-spinner>

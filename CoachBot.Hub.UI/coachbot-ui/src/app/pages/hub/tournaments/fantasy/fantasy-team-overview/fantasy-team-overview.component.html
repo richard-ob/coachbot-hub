@@ -4,8 +4,7 @@
             <div class="col-8">
                 <div class="widget card widget--sidebar widget-filter-price">
                     <div class="widget__title card__header">
-                        <h4>{{fantasyTeam.name}} <a (click)="editTeamNameModal.fire()" class="show-on-parent-hover"><i
-                                    class="fas fa-pencil-alt"></i></a></h4>
+                        <h4>{{fantasyTeam.name}}</h4>
                     </div>
                     <div class="widget__content card__content position-relative" style="min-height: 48rem;"
                         [class.widget__content--loading]="isUpdating">
@@ -30,39 +29,39 @@
                         </div>
                         <div *ngIf="fantasyTeam && fantasyTeam.fantasyTeamSelections"
                             class="fantasy-pitch--player-container flex-column">
-                            <div class="d-flex justify-content-around">
+                            <div class="d-flex justify-content-around mb-3">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    </app-fantasy-player>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-around">
+                            <div class="d-flex justify-content-around mb-3">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    </app-fantasy-player>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-around">
+                            <div class="d-flex justify-content-around mb-3">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    </app-fantasy-player>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-around">
+                            <div class="d-flex justify-content-around mb-3">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    </app-fantasy-player>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-around">
+                            <div class="d-flex justify-content-around mb-3">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:true"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    </app-fantasy-player>
                                 </div>
                             </div>
                         </div>
@@ -70,11 +69,26 @@
                 </div>
             </div>
             <div class="col-4">
-                <app-fantasy-team-editor-players *ngIf="fantasyTeam" [tournamentId]="fantasyTeam.tournamentId"
-                    (playerSelected)="addFantasyTeamSelection($event)">
-                </app-fantasy-team-editor-players>
+                <div class="card">
+                    <div class="card__header">
+                        <h4>Team Info</h4>
+                    </div>
+                    <div class="card__content">
+                        <label class="mb-0">Player</label>
+                        <a class="d-block"
+                            [routerLink]="['/player-profile/', fantasyTeam.playerId]">{{fantasyTeam.player.name}}</a>
+                        <label class="mb-0">Overall Points</label>
+                        <div>?</div>
+                        <label class="mb-0">Rank</label>
+                        <div>?</div>
+                        <label class="mb-0">Tournament</label>
+                        <div>{{fantasyTeam.tournament.name}}</div>
+                        <label class="mb-0">Created</label>
+                        <div>{{fantasyTeam.createdDate | date }}</div>
+                    </div>
+                </div>
                 <a type="button" class="btn btn-primary btn-block"
-                    [routerLink]="['/fantasy-overview/', fantasyTeam.id]">Fantasy Team Profile</a>
+                    [routerLink]="['/fantasy/', fantasyTeam.tournamentId]">Leaderboard</a>
             </div>
         </div>
     </ng-container>
@@ -82,21 +96,3 @@
         <app-spinner></app-spinner>
     </ng-template>
 </div>
-
-<swal #editTeamNameModal (confirm)="updateTeamName(teamName.value)">
-    <ng-container *swalPortal="swalTargets.title">
-        <h5>Update Fantasy Team</h5>
-    </ng-container>
-    <form *swalPortal>
-        <div class="form-group">
-            <label>Team Name</label>
-            <input type="text" class="form-control" name="teamName" #teamName>
-        </div>
-    </form>
-    <ng-container *swalPortal="swalTargets.cancelButton">
-        Cancel
-    </ng-container>
-    <ng-container *swalPortal="swalTargets.confirmButton">
-        Save
-    </ng-container>
-</swal>

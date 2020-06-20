@@ -65,7 +65,7 @@ namespace CoachBot.Controllers
 
         [Authorize]
         [HubRolePermission(HubRole = PlayerHubRole.Manager)]
-        [HttpPost("{id}")]
+        [HttpPost("{matchId}")]
         public IActionResult ManualSubmit([FromBody]MatchStatisticsDto matchStatisticsDto, int matchId)
         {
             var match = _matchService.GetMatch(matchId);

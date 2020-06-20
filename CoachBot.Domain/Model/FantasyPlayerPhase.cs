@@ -10,6 +10,8 @@ namespace CoachBot.Domain.Model
 
         public int Points { get; set; }
 
+        public PositionGroup PositionGroup { get; set; }
+
         public int FantasyPlayerId { get; set; }
 
         public FantasyPlayer FantasyPlayer { get; set; }

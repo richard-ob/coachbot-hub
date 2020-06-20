@@ -35,7 +35,7 @@
     <Compile Include="Controllers\DiscordUserController.cs" />
     <Compile Include="Controllers\DiscordGuildController.cs" />
     <Compile Include="Controllers\DiscordVerificationController.cs" />
-    <Compile Include="Controllers\FantasyTeamController.cs" />
+    <Compile Include="Controllers\FantasyController.cs" />
     <Compile Include="Controllers\GuildController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\MatchController.cs" />

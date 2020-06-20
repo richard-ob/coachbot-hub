@@ -15,6 +15,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { FantasyTeamManagerRoutingModule } from './fantasy.routing-module';
 import { FantasyTeamManagerComponent } from './fantasy-team-manager/fantasy-team-manager.component';
 import { FantasyOverviewComponent } from './fantasy-overview/fantasy-overview.component';
+import { FantasyTeamOverviewComponent } from './fantasy-team-overview/fantasy-team-overview.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { FantasyOverviewComponent } from './fantasy-overview/fantasy-overview.co
         FantasyTeamEditorComponent,
         FantasyTeamEditorPlayersComponent,
         FantasyPlayerComponent,
-        FantasyOverviewComponent
+        FantasyOverviewComponent,
+        FantasyTeamOverviewComponent
     ],
     imports: [
         CommonModule,

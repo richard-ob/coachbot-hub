@@ -15,11 +15,11 @@ namespace CoachBot.Controllers
     [Produces("application/json")]
     [Route("api/fantasy")]
     [ApiController]
-    public class FantasyTeamController : Controller
+    public class FantasyController : Controller
     {
         private readonly FantasyService _fantasyService;
 
-        public FantasyTeamController(FantasyService fantasyService)
+        public FantasyController(FantasyService fantasyService)
         {
             _fantasyService = fantasyService;
         }
@@ -40,7 +40,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public void CreateFantasyTeam(FantasyTeam fantasyTeam)
         {
-            _fantasyService.CreateFantasyTeam(fantasyTeam);
+            _fantasyService.CreateFantasyTeam(fantasyTeam, User.GetSteamId());
         }
 
         [Authorize]
@@ -54,6 +54,7 @@ namespace CoachBot.Controllers
         [HttpPost("{id}/selections")]
         public void AddFantasyTeamSelection(FantasyTeamSelection fantasySelection)
         {
+            // TODO: Implement security to check it is users team
             _fantasyService.AddFantasyTeamSelection(fantasySelection);
         }
 
@@ -61,6 +62,7 @@ namespace CoachBot.Controllers
         [HttpDelete("{id}/selections/{fantasyTeamSelectionId}")]
         public void RemoveFantasyTeamSelection(int fantasyTeamSelectionId)
         {
+            // TODO: Implement security to check it is users selection
             _fantasyService.RemoveFantasyTeamSelection(fantasyTeamSelectionId);
         }
 
@@ -72,10 +74,24 @@ namespace CoachBot.Controllers
             return players;
         }
 
+        [Authorize]
         [HttpGet("tournament/available")]
         public IEnumerable<Tournament> GetAvailableTournamentsForUser()
         {
             return _fantasyService.GetAvailableTournamentsForUser(User.GetSteamId());
+        }
+
+        [Authorize]
+        [HttpGet("teams/@me")]
+        public IEnumerable<FantasyTeam> GetFantasyTeamsForUser()
+        {
+            return _fantasyService.GetFantasyTeamsForPlayer(User.GetSteamId());
+        }
+
+        [HttpGet("tournament/{tournamentId}/rankings")]
+        public IEnumerable<FantasyTeamRank> GetFantasyTeamRankings(int tournamentId)
+        {
+            return _fantasyService.GetFantasyTeamRankings(tournamentId);
         }
 
     }

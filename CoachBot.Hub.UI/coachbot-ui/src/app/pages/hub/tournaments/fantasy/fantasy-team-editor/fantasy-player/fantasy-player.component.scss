@@ -1,13 +1,13 @@
-.fantasy-player:hover {
+.fantasy-player.fantasy-player-deletable:hover {
     opacity: 0.75;
     cursor: pointer;
 }
 
-.fantasy-player:hover + .fantasy-hover-icon {
+.fantasy-player.fantasy-player-deletable:hover + .fantasy-hover-icon {
     visibility: visible;
 }
 
-.fantasy-player + .fantasy-hover-icon {
+.fantasy-player.fantasy-player-deletable + .fantasy-hover-icon {
     visibility: hidden;
 }
 

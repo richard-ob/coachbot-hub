@@ -1,4 +1,5 @@
-<div class="fantasy-player d-flex flex-column justify-content-center align-items-center" title="Remove player">
+<div class="fantasy-player d-flex flex-column justify-content-center align-items-center"
+    [class.fantasy-player-deletable]="!viewMode" title="Remove player">
     <div class="fantasy-kit-container">
         <div class="fantasy-player-position-group">{{positionGroup | positionGroup}}</div>
         <img [src]="kitImage" [ngStyle]="{ 'filter': kitFilter }">
@@ -12,4 +13,4 @@
         <div>{{rating | number : '1.2-2'}}</div>
     </div>
 </div>
-<i class="fantasy-hover-icon fas fa-times text-danger mt-2"></i>
+<i *ngIf="!viewMode" class="fantasy-hover-icon fas fa-times text-danger mt-2"></i>

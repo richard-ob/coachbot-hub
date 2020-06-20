@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { Match } from '../model/match.model';
 import { PagedMatchRequestDto, MatchFilters } from '../model/dtos/paged-match-request-dto.model';
 import { PagedResult } from '../model/dtos/paged-result.model';
+import { MatchStatistics } from '../model/match-statistics.model';
 
 @Injectable({
     providedIn: 'root'
@@ -28,6 +29,10 @@ export class MatchService {
 
     updateMatch(match: Match): Observable<void> {
         return this.http.put<void>(`${environment.apiUrl}/api/match/${match.id}`, match);
+    }
+
+    submitMatchStatistics(matchId: number, matchStatistics: MatchStatistics): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/api/matchstatistic/${matchId}`, matchStatistics);
     }
 
 }

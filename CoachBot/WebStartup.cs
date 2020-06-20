@@ -138,8 +138,6 @@ namespace CoachBot
 
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
-
-            provider.GetService<MatchStatisticsService>().GenerateTeamForm();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -4,6 +4,7 @@ import { Match } from '../shared/model/match.model';
 import { ActivatedRoute } from '@angular/router';
 import { Server } from 'selenium-webdriver/safari';
 import { ServerService } from '../shared/services/server.service';
+import { MatchStatistics } from '../shared/model/match-statistics.model';
 
 @Component({
     selector: 'app-match-editor',
@@ -14,9 +15,12 @@ export class MatchEditorComponent implements OnInit {
     match: Match;
     matchId: number;
     servers: Server[];
+    matchStatistics: MatchStatistics;
     showDatepicker = false;
     isLoading = true;
-    /* TODO: Add custom match events to list, substitutions, half time, etc. See PL.com */
+    isSubmittingStatistics = false;
+    isProccessingStatistics = false;
+
     constructor(private matchService: MatchService, private serverService: ServerService, private route: ActivatedRoute) { }
 
     ngOnInit() {
@@ -45,4 +49,26 @@ export class MatchEditorComponent implements OnInit {
         });
     }
 
+    updateMatchStatistics() {
+        this.isLoading = true;
+        this.matchService.submitMatchStatistics(this.matchId, this.matchStatistics).subscribe(() => {
+            this.isLoading = false;
+            this.isProccessingStatistics = true;
+        });
+    }
+
+    fileSelected(event: any) {
+        console.log('happened');
+        const file = event.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.addEventListener('load', () => {
+            try {
+                this.matchStatistics = JSON.parse(fileReader.result as string);
+                console.log(this.matchStatistics);
+            } catch (e) {
+                return;
+            }
+        });
+        fileReader.readAsText(file, '"UTF-8');
+    }
 }

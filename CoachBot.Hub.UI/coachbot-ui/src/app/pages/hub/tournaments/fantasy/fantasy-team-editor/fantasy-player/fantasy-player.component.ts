@@ -11,6 +11,7 @@ import { cssColouriser } from './css-colouriser.utility';
 export class FantasyPlayerComponent implements OnInit {
 
     @Input() fantasyPlayer: FantasyPlayer;
+    @Input() viewMode = false;
     playerName: string;
     rating: number;
     color: string;
@@ -26,9 +27,13 @@ export class FantasyPlayerComponent implements OnInit {
         this.rating = this.fantasyPlayer.rating;
         this.positionGroup = this.fantasyPlayer.positionGroup;
         this.color = this.fantasyPlayer.team.color;
-        this.badge = this.fantasyPlayer.team.badgeImage.base64EncodedImage;
         this.playerName = this.fantasyPlayer.player.name;
-        this.kitFilter = cssColouriser(this.color).replace('filter: ', '');
+        if (this.fantasyPlayer.team.badgeImage) {
+            this.badge = this.fantasyPlayer.team.badgeImage.base64EncodedImage;
+        }
+        if (this.color) {
+            this.kitFilter = cssColouriser(this.color).replace('filter: ', '');
+        }
     }
 
 }

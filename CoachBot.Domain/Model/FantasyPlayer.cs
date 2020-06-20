@@ -28,6 +28,8 @@ namespace CoachBot.Domain.Model
 
         public Tournament Tournament { get; set; }
 
+        public ICollection<FantasyPlayerPhase> Phases { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 

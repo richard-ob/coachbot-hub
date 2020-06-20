@@ -14,10 +14,12 @@ namespace CoachBot.Domain.Services
     public class MatchStatisticsService
     {
         private readonly CoachBotContext _coachBotContext;
+        private readonly FantasyService _fantasyService;
 
-        public MatchStatisticsService(CoachBotContext coachBotContext)
+        public MatchStatisticsService(CoachBotContext coachBotContext, FantasyService fantasyService)
         {
             _coachBotContext = coachBotContext;
+            _fantasyService = fantasyService;
         }
 
         public void SaveMatchData(MatchData matchData, int matchId, bool manualSave = false)
@@ -30,9 +32,15 @@ namespace CoachBot.Domain.Services
 
             if (matchData.IsValid(match, manualSave))
             {
+                _coachBotContext.SaveChanges();
                 GeneratePlayerMatchStatistics(match);
                 GenerateTeamMatchStatistics(match);
-                _coachBotContext.SaveChanges();
+                GenerateTeamForm();
+                if (match.TournamentId.HasValue && match.TournamentId > 0)
+                {
+                    var tournamentPhaseId = _coachBotContext.TournamentGroupMatches.Single(m => m.MatchId == match.Id).TournamentPhaseId;
+                    _fantasyService.GenerateFantasyPhaseSnapshots(tournamentPhaseId);
+                }
             }
         }
 
@@ -171,8 +179,8 @@ namespace CoachBot.Domain.Services
                         {
                             PlayerId = player.Id,
                             MatchId = match.Id,
-                            ChannelId = (int)team.ChannelId,
-                            TeamId = team.Channel.TeamId,
+                            ChannelId = team != null ? (int)team.ChannelId : 1,
+                            TeamId =  team != null ? team.Channel.TeamId : match.TeamHomeId,
                             PositionId = positionId > 0 ? positionId : _coachBotContext.Positions.FirstOrDefault().Id,
                             MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                             SecondsPlayed = matchDataPlayer.GetPlayerPositionSeconds(teamType, position),
@@ -187,8 +195,8 @@ namespace CoachBot.Domain.Services
                     {
                         PlayerId = player.Id,
                         MatchId = match.Id,
-                        ChannelId = (int)team.ChannelId,
-                        TeamId = team.Channel.TeamId,
+                        ChannelId = team != null ? (int)team.ChannelId : 1,
+                        TeamId = team != null ? team.Channel.TeamId : match.TeamHomeId,
                         MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                         SecondsPlayed = matchDataPlayer.GetPlayerSeconds(teamType),
                         PossessionPercentage = match.MatchStatistics.MatchData.GetPlayerPossession(matchDataPlayer),
@@ -211,8 +219,8 @@ namespace CoachBot.Domain.Services
                 var teamMatchStatistics = new TeamMatchStatistics()
                 {
                     MatchId = match.Id,
-                    ChannelId = (int)team.ChannelId,
-                    TeamId = team.Channel.TeamId,
+                    ChannelId = team != null ? (int)team.ChannelId : 1,
+                    TeamId = team != null ? team.Channel.TeamId : match.TeamHomeId,
                     MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                     PossessionPercentage = match.MatchStatistics.MatchData.GetTeamPosession(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                     TeamName = matchDataTeam.MatchTotal.Name

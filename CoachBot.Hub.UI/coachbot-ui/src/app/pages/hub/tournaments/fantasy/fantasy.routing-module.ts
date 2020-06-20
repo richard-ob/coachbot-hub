@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FantasyTeamEditorComponent } from './fantasy-team-editor/fantasy-team-editor.component';
 import { FantasyTeamManagerComponent } from './fantasy-team-manager/fantasy-team-manager.component';
 import { FantasyOverviewComponent } from './fantasy-overview/fantasy-overview.component';
+import { FantasyTeamOverviewComponent } from './fantasy-team-overview/fantasy-team-overview.component';
 
 const routes: Routes = [
     {
@@ -16,6 +17,10 @@ const routes: Routes = [
     {
         path: 'fantasy-editor/:id',
         component: FantasyTeamEditorComponent
+    },
+    {
+        path: 'fantasy-overview/:id',
+        component: FantasyTeamOverviewComponent
     },
 ];
 @NgModule({

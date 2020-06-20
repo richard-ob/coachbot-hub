@@ -117,12 +117,9 @@ namespace CoachBot.Domain.Extensions
 
         public static bool IsValid(this MatchData matchData, Match match, bool manualSave)
         {
-            // Validate match has correct player counts
-            var expectedPlayerCount = match.SignedPlayers.Count();
-            var actualPlayerCount = matchData.Players.Count();
-            if (expectedPlayerCount * EXPECTED_PLAYERCOUNT_THRESHOLD_MULTIPLIER > actualPlayerCount)
+            if (manualSave)
             {
-                throw new Exception($"Too few players present in match data. Expected at least {expectedPlayerCount}, found {actualPlayerCount}.");
+                return true;
             }
 
             // Validate match took place within an hour of the match ready time
@@ -130,6 +127,19 @@ namespace CoachBot.Domain.Extensions
             {
                 throw new Exception("The match should finish no later than two hours after being readied.");
             }
+
+            if (match.TournamentId.HasValue)
+            {
+                return true;
+            }
+
+            // Validate match has correct player counts
+            var expectedPlayerCount = match.SignedPlayers.Count();
+            var actualPlayerCount = matchData.Players.Count();
+            if (expectedPlayerCount * EXPECTED_PLAYERCOUNT_THRESHOLD_MULTIPLIER > actualPlayerCount)
+            {
+                throw new Exception($"Too few players present in match data. Expected at least {expectedPlayerCount}, found {actualPlayerCount}.");
+            }           
 
             return true;
         }

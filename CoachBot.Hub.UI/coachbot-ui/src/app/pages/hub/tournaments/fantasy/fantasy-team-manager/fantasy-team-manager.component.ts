@@ -10,7 +10,7 @@ import { FantasyTeam } from '@pages/hub/shared/model/fantasy-team.model';
 })
 export class FantasyTeamManagerComponent implements OnInit {
 
-    availableTournament: Tournament[];
+    availableTournaments: Tournament[];
     fantasyTeams: FantasyTeam[];
     fantasyTeam: FantasyTeam = new FantasyTeam();
     isCreating = false;
@@ -19,11 +19,10 @@ export class FantasyTeamManagerComponent implements OnInit {
     constructor(private fantasyService: FantasyService, private router: Router) { }
 
     ngOnInit() {
-        // TODO: Get for user
-        this.fantasyService.getFantasyTeams(6).subscribe(fantasyTeams => {
+        this.fantasyService.getFantasyTeamsForUser().subscribe(fantasyTeams => {
             this.fantasyTeams = fantasyTeams;
-            this.fantasyService.getAvailableFantasyTournamentsForUser().subscribe(availableTournament => {
-                this.availableTournament = availableTournament;
+            this.fantasyService.getAvailableFantasyTournamentsForUser().subscribe(availableTournaments => {
+                this.availableTournaments = availableTournaments;
                 this.isLoading = false;
             });
         });
@@ -31,7 +30,6 @@ export class FantasyTeamManagerComponent implements OnInit {
 
     createFantasyTeam() {
         this.isCreating = true;
-        this.fantasyTeam.playerId = 1;
         this.fantasyService.createFantasyTeam(this.fantasyTeam).subscribe(() => {
             this.isCreating = false;
             this.fantasyTeam = new FantasyTeam();

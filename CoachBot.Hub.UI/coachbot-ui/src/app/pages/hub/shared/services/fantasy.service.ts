@@ -10,6 +10,7 @@ import { PlayerStatisticFilters } from '../model/dtos/paged-player-statistics-re
 import { PagedResult } from '../model/dtos/paged-result.model';
 import { PlayerStatisticsFilterHelper } from '../model/helpers/player-statistics-filter.helper';
 import { Tournament } from '../model/tournament.model';
+import { FantasyTeamRank } from '../model/fantasy-team-rank.model';
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +21,10 @@ export class FantasyService {
 
     getFantasyTeams(tournamentId: number): Observable<FantasyTeam[]> {
         return this.http.get<FantasyTeam[]>(`${environment.apiUrl}/api/fantasy/tournament/${tournamentId}`);
+    }
+
+    getFantasyTeamsForUser(): Observable<FantasyTeam[]> {
+        return this.http.get<FantasyTeam[]>(`${environment.apiUrl}/api/fantasy/teams/@me`);
     }
 
     getFantasyTeam(fantasyTeamId: number): Observable<FantasyTeam> {
@@ -60,6 +65,10 @@ export class FantasyService {
 
     getAvailableFantasyTournamentsForUser(): Observable<Tournament[]> {
         return this.http.get<Tournament[]>(`${environment.apiUrl}/api/fantasy/tournament/available`);
+    }
+
+    getFantasyTeamRankings(tournamentId: number): Observable<FantasyTeamRank[]> {
+        return this.http.get<FantasyTeamRank[]>(`${environment.apiUrl}/api/fantasy/tournament/${tournamentId}/rankings`);
     }
 
 }

@@ -3,7 +3,6 @@ using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,6 +79,7 @@ namespace CoachBot.Domain.Services
         public void AddFantasyTeamSelection(FantasyTeamSelection fantasyTeamSelection)
         {
             CanUpdateTeam((int)fantasyTeamSelection.FantasyTeamId);
+            CanAddPlayer(fantasyTeamSelection);
             fantasyTeamSelection.FantasyPlayer = null;
             fantasyTeamSelection.FantasyTeam = null;
             _coachBotContext.FantasyTeamSelections.Add(fantasyTeamSelection);
@@ -116,6 +116,7 @@ namespace CoachBot.Domain.Services
                 .Where(t => !_coachBotContext.FantasyTeams.Any(ft => ft.Player.SteamID == steamUserId))
                 .ToList();
         }
+
         public IList<FantasyTeamRank> GetFantasyTeamRankings(int tournamentId)
         {
             return _coachBotContext
@@ -123,7 +124,7 @@ namespace CoachBot.Domain.Services
                  .FromSql($@"SELECT FantasyTeams.Id AS FantasyTeamId,
                                     FantasyTeams.Name AS FantasyTeamName,
                                     Players.Id AS PlayerId,
-                                    Players.SteamID AS SteamID,
+                                    Players.Name AS PlayerName,
                                     FantasyTeams.TournamentId, SUM(FantasyPlayerPhases.Points) AS Points,
                                     CONVERT(INT, DENSE_RANK() OVER(ORDER BY SUM(FantasyPlayerPhases.Points) DESC)) AS Rank
                             FROM dbo.FantasyTeams FantasyTeams
@@ -134,32 +135,113 @@ namespace CoachBot.Domain.Services
                             INNER JOIN dbo.Players Players
                                 ON Players.Id = FantasyTeams.PlayerId
                             WHERE FantasyTeams.TournamentId = {tournamentId}
-                            GROUP BY FantasyTeams.Id, FantasyTeams.Name, FantasyTeams.TournamentId, Players.Id, Players.SteamID
+                            GROUP BY FantasyTeams.Id, FantasyTeams.Name, FantasyTeams.TournamentId, Players.Id, Players.Name
                             ORDER BY SUM(POINTS) DESC")
                 .ToList();
         }
 
-        /*public IList<FantasyTeamRank> GetFantasyTeamRankings(int tournamentId)
+        public IList<FantasyTeamRank> GetFantasyTeamPhaseRankings(int tournamentPhaseId)
         {
             return _coachBotContext
-                 .FantasyTeams
-                 .Where(f => f.TournamentId == tournamentId)
-                 .AsNoTracking()
-                 .Select(m => new
-                 {
-                     Id = m.Id,
-                     Name = m.Name,
-                     PlayerId = m.PlayerId,
-                     Points = m.FantasyTeamSelections.Sum(p => p.FantasyPlayer.Phases.Sum(t => t.Points))
-                 })
-                 .GroupBy(p => new { p.Id, p.Name, p.PlayerId }, (key, s) => new FantasyTeamRank()
-                 {
-                     FantasyTeamName = key.Name,
-                     FantasyTeamId = key.Id,
-                     PlayerId = (int)key.PlayerId,
-                     Points = s.Sum(x => x.Points)
-                 }).ToList();
-        }*/
+                    .FantasyTeamRanks
+                    .FromSql($@"SELECT FantasyTeams.Id AS FantasyTeamId,
+                                    FantasyTeams.Name AS FantasyTeamName,
+                                    Players.Id AS PlayerId,
+                                    Players.Name AS PlayerName,
+                                    FantasyTeams.TournamentId, SUM(FantasyPlayerPhases.Points) AS Points,
+                                    CONVERT(INT, DENSE_RANK() OVER(ORDER BY SUM(FantasyPlayerPhases.Points) DESC)) AS Rank
+                            FROM dbo.FantasyTeams FantasyTeams
+                            INNER JOIN dbo.FantasyTeamSelections FantasyTeamSelections
+                                ON FantasyTeams.Id = FantasyTeamSelections.FantasyTeamId
+                            INNER JOIN dbo.FantasyPlayerPhases FantasyPlayerPhases
+                                ON FantasyPlayerPhases.FantasyPlayerId = FantasyTeamSelections.FantasyPlayerId
+                            INNER JOIN dbo.Players Players
+                                ON Players.Id = FantasyTeams.PlayerId
+                            WHERE FantasyPlayerPhases.TournamentPhaseId = {tournamentPhaseId}
+                            GROUP BY FantasyTeams.Id, FantasyTeams.Name, FantasyTeams.TournamentId, FantasyPlayerPhases.TournamentPhaseId, Players.Id, Players.Name
+                            ORDER BY SUM(POINTS) DESC")
+                   .ToList();
+        }
+
+        public IList<FantasyPlayerRank> GetFantasyPlayerRankings(int tournamentId)
+        {
+            return _coachBotContext
+                    .FantasyPlayerRanks
+                    .FromSql($@"SELECT  Players.Id AS PlayerId,
+                                        Players.Name AS PlayerName,
+                                        FantasyPlayers.Rating,
+                                        SUM(FantasyPlayerPhases.Points) AS Points,
+                                        CONVERT(INT, DENSE_RANK() OVER(ORDER BY SUM(FantasyPlayerPhases.Points) DESC)) AS Rank,
+                                        SUM(PlayerMatchStatistics.Goals) AS Goals,
+                                        SUM(PlayerMatchStatistics.Assists) AS Assists,
+                                        SUM(CASE WHEN PlayerMatchStatistics.GoalsConceded = 0 THEN 1 ELSE 0 END) AS CleanSheets,
+                                        SUM(PlayerMatchStatistics.OwnGoals) AS OwnGoals,
+                                        SUM(PlayerMatchStatistics.YellowCards) AS YellowCards,
+                                        SUM(PlayerMatchStatistics.RedCards) AS RedCards,
+                                        SUM(PlayerMatchStatistics.KeeperSaves) AS KeeperSaves,
+                                        SUM(PlayerMatchStatistics.GoalsConceded) AS GoalsConceded,
+                                        SUM(PlayerMatchStatistics.SecondsPlayed) AS SecondsPlayed
+                                FROM dbo.FantasyPlayers FantasyPlayers
+                                INNER JOIN dbo.FantasyPlayerPhases FantasyPlayerPhases
+                                    ON FantasyPlayerPhases.FantasyPlayerId = FantasyPlayers.Id
+                                INNER JOIN dbo.Players Players
+                                    ON Players.Id = FantasyPlayers.PlayerId
+                                INNER JOIN dbo.PlayerMatchStatistics PlayerMatchStatistics
+                                    ON PlayerMatchStatistics.Id = FantasyPlayerPhases.PlayerMatchStatisticsId
+                                WHERE FantasyPlayers.TournamentId = {tournamentId}
+                                GROUP BY Players.Id, Players.Name, FantasyPlayers.Rating
+                                ORDER BY SUM(POINTS) DESC")
+                   .ToList();
+        }
+
+        public IList<FantasyPlayerRank> GetFantasyPlayerPhaseRankings(int tournamentPhaseId)
+        {
+            return _coachBotContext
+                    .FantasyPlayerRanks
+                    .FromSql($@"SELECT  Players.Id AS PlayerId,
+                                        Players.Name AS PlayerName,
+                                        FantasyPlayers.Rating,
+                                        SUM(FantasyPlayerPhases.Points) AS Points,
+                                        CONVERT(INT, DENSE_RANK() OVER(ORDER BY SUM(FantasyPlayerPhases.Points) DESC)) AS Rank,
+                                        SUM(PlayerMatchStatistics.Goals) AS Goals,
+                                        SUM(PlayerMatchStatistics.Assists) AS Assists,
+                                        SUM(CASE WHEN PlayerMatchStatistics.GoalsConceded = 0 THEN 1 ELSE 0 END) AS CleanSheets,
+                                        SUM(PlayerMatchStatistics.OwnGoals) AS OwnGoals,
+                                        SUM(PlayerMatchStatistics.YellowCards) AS YellowCards,
+                                        SUM(PlayerMatchStatistics.RedCards) AS RedCards,
+                                        SUM(PlayerMatchStatistics.KeeperSaves) AS KeeperSaves,
+                                        SUM(PlayerMatchStatistics.GoalsConceded) AS GoalsConceded,
+                                        SUM(PlayerMatchStatistics.SecondsPlayed) AS SecondsPlayed
+                                FROM dbo.FantasyPlayers FantasyPlayers
+                                INNER JOIN dbo.FantasyPlayerPhases FantasyPlayerPhases
+                                    ON FantasyPlayerPhases.FantasyPlayerId = FantasyPlayers.Id
+                                INNER JOIN dbo.Players Players
+                                    ON Players.Id = FantasyPlayers.PlayerId
+                                INNER JOIN dbo.PlayerMatchStatistics PlayerMatchStatistics
+                                    ON PlayerMatchStatistics.Id = FantasyPlayerPhases.PlayerMatchStatisticsId
+                                WHERE FantasyPlayerPhases.TournamentPhaseId = {tournamentPhaseId}
+                                GROUP BY Players.Id, Players.Name, FantasyPlayers.Rating
+                                ORDER BY SUM(POINTS) DESC")
+                   .ToList();
+        }
+
+        public FantasyPlayerRank GetFantasyPlayerRankSpotlight(int tournamentId)
+        {
+            var recentPhase = _coachBotContext.FantasyPlayerPhases.Where(f => f.TournamentPhase.TournamentGroupMatches.Any(m => m.Match.MatchStatistics != null)).OrderByDescending(f => f.Id).FirstOrDefault();
+
+            if (recentPhase == null) return null;
+
+            return GetFantasyPlayerPhaseRankings((int)recentPhase.TournamentPhaseId).FirstOrDefault();
+        }
+
+        public FantasyTeamRank GetFantasyTeamrRankSpotlight(int tournamentId)
+        {
+            var recentPhase = _coachBotContext.FantasyPlayerPhases.Where(f => f.TournamentPhase.TournamentGroupMatches.Any(m => m.Match.MatchStatistics != null)).OrderByDescending(f => f.Id).FirstOrDefault();
+
+            if (recentPhase == null) return null;
+
+            return GetFantasyTeamPhaseRankings((int)recentPhase.TournamentPhaseId).FirstOrDefault();
+        }
 
         public void GenerateFantasyPlayersSnapshot(int tournamentId)
         {
@@ -362,6 +444,64 @@ namespace CoachBot.Domain.Services
             }
 
             CheckHasTournamentStarted((int)fantasyTeam.TournamentId);
+        }
+
+        private void CanAddPlayer(FantasyTeamSelection fantasyTeamSelection)
+        {
+            var fantasyTeam = _coachBotContext.FantasyTeams
+                .Include(f => f.FantasyTeamSelections)
+                .ThenInclude(f => f.FantasyPlayer)
+                .Include(f => f.Tournament)
+                .Single(f => f.Id == fantasyTeamSelection.FantasyTeamId);
+            var fantasyPlayer = _coachBotContext.FantasyPlayers.Find(fantasyTeamSelection.FantasyPlayerId);
+            var positionGroup = fantasyTeamSelection.FantasyPlayer.PositionGroup;
+            var isFlex = fantasyTeamSelection.IsFlex;
+
+            // Check player not already in team
+            if (fantasyTeam.FantasyTeamSelections.Any(f => f.FantasyPlayerId == fantasyPlayer.Id))
+            {
+                throw new Exception("This player is already in the team");
+            }
+
+            // Check no more than 3 players from a given team
+            if (fantasyTeam.FantasyTeamSelections.Count(f => f.FantasyPlayer.TeamId == fantasyPlayer.TeamId) == 3)
+            {                
+                throw new Exception("The limit for players from this team has been exceeded");
+            }
+
+            // Check not over budget
+            if (fantasyTeam.FantasyTeamSelections.Sum(f => f.FantasyPlayer.Rating) + fantasyPlayer.Rating > fantasyTeam.Tournament.FantasyPointsLimit)
+            {
+                throw new Exception("The budget for the team would be exceeded if this player were added");
+            }
+
+            // Check not over position counts
+            if (isFlex && fantasyTeam.FantasyTeamSelections.Count(f => f.IsFlex) == 3)
+            {
+                throw new Exception("The limit of flex players has already been met for this team");
+            }
+            else if (!isFlex && fantasyTeam.FantasyTeamSelections.Count(f => f.FantasyPlayer.PositionGroup == positionGroup && !f.IsFlex) == GetPositionGroupLimit(positionGroup))
+            {
+                throw new Exception($"The limit of {positionGroup.ToString()} players has already been met for this team");
+            }
+
+        }
+
+        private int GetPositionGroupLimit(PositionGroup positionGroup)
+        {
+            switch (positionGroup)
+            {
+                case PositionGroup.Goalkeeper:
+                    return 1;
+                case PositionGroup.Defence:
+                    return 3;
+                case PositionGroup.Midfield:
+                    return 1;
+                case PositionGroup.Attack:
+                    return 3;
+            }
+
+            throw new Exception("Unknown position group");
         }
 
         private void CheckHasTournamentStarted(int tournamentId)

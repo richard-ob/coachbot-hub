@@ -11,5 +11,6 @@ export class Tournament {
     startDate?: Date = new Date();
     endDate?: Date;
     format: MatchFormat;
+    fantasyPointsLimit: number;
     tournamentStages?: TournamentStage[];
 }

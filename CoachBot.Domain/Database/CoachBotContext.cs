@@ -52,6 +52,7 @@ namespace CoachBot.Database
         public DbSet<FantasyTeamSelection> FantasyTeamSelections { get; set; }
         public DbSet<FantasyPlayerPhase> FantasyPlayerPhases { get; set; }
         public DbQuery<FantasyTeamRank> FantasyTeamRanks { get; set; }
+        public DbQuery<FantasyPlayerRank> FantasyPlayerRanks { get; set; }
         public DbSet<ScorePrediction> ScorePredictions { get; set; }
         public DbSet<AssetImage> AssetImages { get; set; }
 

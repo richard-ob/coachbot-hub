@@ -184,17 +184,41 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
     display: flex;
 }
 
+.fantasy-pitch-player-container--row {
+	min-height: 150px;
+}
+
 .fantasy-pitch--player {
     z-index: 10;
-	margin: 15px;
 	text-align: center;
 }
 
 .fantasy-pitch--position-group-label {
     color: #0000006b;
     font-weight: 600;
-    font-family: "Montserrat";
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
     position: absolute;
 	margin-top: -27px;
 	font-size: 11px;
+}
+
+.fantasy-pitch-header--budget {
+	position: absolute;
+	right: 25px;
+	top: 0;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	line-height: 14px;
+	h6 {
+		line-height: 14px;
+	}
+}
+
+.fantasy-pitch-header--status {
+	position: absolute;
+	top: 10px;
+	left: 10px;
 }

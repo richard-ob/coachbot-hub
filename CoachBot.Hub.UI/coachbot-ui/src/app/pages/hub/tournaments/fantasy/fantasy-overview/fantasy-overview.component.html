@@ -3,47 +3,40 @@
         <div class="col-8">
             <div class="card card--has-table">
                 <div class="card__header">
-                    <h4>Fantasy Leaderboard</h4>
+                    <h4>Fantasy Team Leaderboard</h4>
                 </div>
-                <div class="card__content">
+                <div class="card__content" style="overflow-y: auto; max-height: 60vh;">
                     <table class="table table-striped table-hover">
                         <thead>
-                            <th>Rank</th>
-                            <th>Fantasy Team Name</th>
-                            <th>Player</th>
-                            <th>Points</th>
+                            <th class="text-center">Rank</th>
+                            <th>Fantasy Team</th>
+                            <th>Manager</th>
+                            <th class="text-center">Points</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let fantasyTeam of fantasyTeamRankings">
-                                <td>{{fantasyTeam.rank}}</td>
-                                <td>{{fantasyTeam.fantasyTeamName}}</td>
-                                <td>{{fantasyTeam.playerName}}</td>
-                                <td>{{fantasyTeam.points}}</td>
+                            <tr *ngFor="let fantasyTeam of fantasyTeamRankings"
+                                [class.fantasy-team-current-player]="fantasyTeam.playerId === currentPlayer.id">
+                                <td class="text-center">{{fantasyTeam.rank}}</td>
+                                <td><a
+                                        [routerLink]="['/fantasy-overview/', fantasyTeam.fantasyTeamId]">{{fantasyTeam.fantasyTeamName}}</a>
+                                </td>
+                                <td><a
+                                        [routerLink]="['/player-profile/', fantasyTeam.playerId]">{{fantasyTeam.playerName}}</a>
+                                </td>
+                                <td class="text-center">{{fantasyTeam.points}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <app-fantasy-player-leaderboard [tournamentId]="tournamentId" [currentPlayerId]="currentPlayer.id">
+            </app-fantasy-player-leaderboard>
         </div>
+
         <div class="col-4">
-            <div class="card">
-                <div class="card__header">
-                    <h4>Manager Of The Week</h4>
-                </div>
-                <div class="card__content">
-
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card__header">
-                    <h4>Player Of The Week</h4>
-                </div>
-                <div class="card__content">
-
-                </div>
-            </div>
-            <a class="btn btn-primary btn-block" [routerLink]="['/fantasy-manager/']">
+            <app-fantasy-team-spotlight [tournamentId]="tournamentId"></app-fantasy-team-spotlight>
+            <app-fantasy-player-spotlight [tournamentId]="tournamentId"></app-fantasy-player-spotlight>
+            <a class="btn btn-primary btn-block" [routerLink]="['/fantasy/']">
                 Create Fantasy Team
             </a>
         </div>

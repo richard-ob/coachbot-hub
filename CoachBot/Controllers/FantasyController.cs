@@ -94,5 +94,34 @@ namespace CoachBot.Controllers
             return _fantasyService.GetFantasyTeamRankings(tournamentId);
         }
 
+        [HttpGet("tournament/phase/{tournamentPhaseId}/rankings")]
+        public IEnumerable<FantasyTeamRank> GetFantasyTeamPhaseRankings(int tournamentPhaseId)
+        {
+            return _fantasyService.GetFantasyTeamPhaseRankings(tournamentPhaseId);
+        }
+
+        [HttpGet("tournament/{tournamentId}/player-rankings")]
+        public IEnumerable<FantasyPlayerRank> GetFantasyPlayerRankings(int tournamentId)
+        {
+            return _fantasyService.GetFantasyPlayerRankings(tournamentId);
+        }
+
+        [HttpGet("tournament/phase/{tournamentPhaseId}/player-rankings")]
+        public IEnumerable<FantasyPlayerRank> GetFantasyPlayerPhaseRankings(int tournamentPhaseId)
+        {
+            return _fantasyService.GetFantasyPlayerPhaseRankings(tournamentPhaseId);
+        }
+
+        [HttpGet("tournament/{tournamentId}/current-phase-spotlight-player")]
+        public FantasyPlayerRank GetCurrentPhaseSpotlightPlayer(int tournamentId)
+        {
+            return _fantasyService.GetFantasyPlayerRankSpotlight(tournamentId);
+        }
+
+        [HttpGet("tournament/{tournamentId}/current-phase-spotlight-team")]
+        public FantasyTeamRank GetCurrentPhaseSpotlightTeam(int tournamentId)
+        {
+            return _fantasyService.GetFantasyTeamrRankSpotlight(tournamentId);
+        }
     }
 }

@@ -15,7 +15,7 @@ import { FantasyService } from '@pages/hub/shared/services/fantasy.service';
 export class FantasyTeamEditorPlayersComponent implements OnChanges, OnInit {
 
     @Input() tournamentId: number;
-    @Output() playerSelected = new EventEmitter<FantasyPlayer>();
+    @Output() playerSelected = new EventEmitter<[FantasyPlayer, boolean]>();
     filters: PlayerStatisticFilters = new PlayerStatisticFilters();
     fantasyPlayers: FantasyPlayer[];
     teams: Team[];
@@ -62,8 +62,8 @@ export class FantasyTeamEditorPlayersComponent implements OnChanges, OnInit {
         });
     }
 
-    selectFantasyPlayer(fantasyPlayer: FantasyPlayer) {
-        this.playerSelected.emit(fantasyPlayer);
+    selectFantasyPlayer(fantasyPlayer: FantasyPlayer, isFlex: boolean) {
+        this.playerSelected.emit([fantasyPlayer, isFlex]);
     }
 
     setRatingRange() {

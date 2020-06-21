@@ -12,9 +12,9 @@ namespace CoachBot.Domain.Model
 
         public string FantasyTeamName { get; set; }
 
-        public ulong SteamID { get; set; }
-
         public int PlayerId { get; set; }
+
+        public string PlayerName { get; set; }
 
         public int Points { get; set; }
 

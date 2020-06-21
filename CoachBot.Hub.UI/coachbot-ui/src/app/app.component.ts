@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
       });
     });
     this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd)).subscribe(() => {
-      console.log('closing');
+      window.scrollTo(0, 0);
       this.closeSidebar();
     });
   }

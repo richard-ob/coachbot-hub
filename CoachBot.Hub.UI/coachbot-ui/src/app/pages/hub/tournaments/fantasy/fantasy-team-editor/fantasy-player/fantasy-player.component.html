@@ -1,7 +1,14 @@
 <div class="fantasy-player d-flex flex-column justify-content-center align-items-center"
     [class.fantasy-player-deletable]="!viewMode" title="Remove player">
     <div class="fantasy-kit-container">
-        <div class="fantasy-player-position-group">{{positionGroup | positionGroup}}</div>
+        <div class="fantasy-player-position-group">
+            <ng-container *ngIf="!isFlex; else isFlexSelection">
+                {{positionGroup | positionGroup}}
+            </ng-container>
+            <ng-template #isFlexSelection>
+                FLEX
+            </ng-template>
+        </div>
         <img [src]="kitImage" [ngStyle]="{ 'filter': kitFilter }">
         <img *ngIf="badge" [src]="badge" class="fantasy-player-badge">
     </div>
@@ -9,7 +16,6 @@
         {{playerName}}
     </div>
     <div class="fantasy-player-detail">
-        <!--<div>{{positionGroup | positionGroup}}</div>-->
         <div>{{rating | number : '1.2-2'}}</div>
     </div>
 </div>

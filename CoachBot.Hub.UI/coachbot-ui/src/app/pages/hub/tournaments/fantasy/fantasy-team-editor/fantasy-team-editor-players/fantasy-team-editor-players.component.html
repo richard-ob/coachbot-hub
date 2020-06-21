@@ -100,9 +100,10 @@
                             <i *ngIf="sortBy !== 'PositionGroup'" class="fas fa-sort"></i>
                         </span>
                     </th>
+                    <th style="width: 30px"></th>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let player of fantasyPlayers" (click)="selectFantasyPlayer(player)"
+                    <tr *ngFor="let player of fantasyPlayers" (click)="selectFantasyPlayer(player, false)"
                         title="Add player to your team">
                         <td>
                             <img *ngIf="player.team.badgeImage" [src]="player.team.badgeImage.base64EncodedImage"
@@ -111,6 +112,11 @@
                         <td>{{player.player.name}}</td>
                         <td>{{player.rating | number : '1.2-2'}}</td>
                         <td>{{player.positionGroup | positionGroup}}</td>
+                        <td style="width: 30px">
+                            <a (click)="selectFantasyPlayer(player, true)" class="clickable" title="Add as flex player">
+                                <i class="fas fa-random" style="font-size: 13px"></i>
+                            </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -139,7 +145,8 @@
                             <i class="fas fa-chevron-right"></i>
                         </a>
                     </li>
-                    <li class="page-item w-20" [class.disabled]="currentPage == totalPages || isLoading">
+                    <li class="page-item w-20" [class.disabled]="currentPage == totalPages || isLoading"
+                        style="width: 74px !important; margin-right: -1px;">
                         <a class="page-link w-100 m-0"
                             (click)="!isLoading && currentPage < totalPages && loadFantasyPlayers(totalPages)">
                             <i class="fas fa-chevron-right"></i>

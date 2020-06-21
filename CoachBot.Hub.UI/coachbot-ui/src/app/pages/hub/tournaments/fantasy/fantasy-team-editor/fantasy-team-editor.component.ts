@@ -8,6 +8,7 @@ import { PositionGroup } from '../../../shared/model/position-group.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Tournament } from '@pages/hub/shared/model/tournament.model';
 import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
+import { TournamentService } from '@pages/hub/shared/services/tournament.service';
 
 @Component({
     selector: 'app-fantasy-team-editor',
@@ -25,6 +26,7 @@ export class FantasyTeamEditorComponent implements OnInit {
 
     constructor(
         private fantasyService: FantasyService,
+        private tournamentService: TournamentService,
         private route: ActivatedRoute,
         private snackBar: MatSnackBar,
         public readonly swalTargets: SwalPortalTargets
@@ -35,7 +37,10 @@ export class FantasyTeamEditorComponent implements OnInit {
             this.fantasyTeamId = +params.get('id');
             this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
                 this.fantasyTeam = fantasyTeam;
-                this.isLoading = false;
+                this.tournamentService.getTournament(this.fantasyTeam.tournamentId).subscribe(tournament => {
+                    this.tournament = tournament;
+                    this.isLoading = false;
+                });
             });
         });
     }
@@ -48,23 +53,30 @@ export class FantasyTeamEditorComponent implements OnInit {
         });
     }
 
-    addFantasyTeamSelection(fantasyPlayer: FantasyPlayer) {
-        if (this.canAddToGroup(fantasyPlayer.positionGroup)
-            && !this.fantasyTeam.fantasyTeamSelections.some(f => f.fantasyPlayerId === fantasyPlayer.id)) {
+    addFantasyTeamSelection(fantasyPlayer: [FantasyPlayer, boolean]) {
+        if (this.fantasyTeam.fantasyTeamSelections.some(f => f.fantasyPlayerId === fantasyPlayer[0].id)) {
+            this.snackBar.open('Cannot add player as they are already added to your team', 'Dismiss', { duration: 5000 });
+        } else if (!this.canAddToGroup(fantasyPlayer[0].positionGroup, fantasyPlayer[1])) {
+            this.snackBar.open('Cannot add player as there are no available slots', 'Dismiss', { duration: 5000 });
+        } else if (this.getSquadValue() + fantasyPlayer[0].rating > this.tournament.fantasyPointsLimit) {
+            this.snackBar.open('Cannot add player as you do not have enough remaining budget', 'Dismiss', { duration: 5000 });
+        } else if (this.fantasyTeam.fantasyTeamSelections.filter(f => f.fantasyPlayer.teamId === fantasyPlayer[0].teamId).length === 3) {
+            this.snackBar.open(
+                `Cannot add player as you already have 3 players from ${fantasyPlayer[0].team.name}`, 'Dismiss', { duration: 5000 }
+            );
+        } else {
             this.isUpdating = true;
             const selection = new FantasyTeamSelection();
-            selection.fantasyPlayer = fantasyPlayer;
-            selection.fantasyPlayerId = fantasyPlayer.id;
+            selection.fantasyPlayer = fantasyPlayer[0];
+            selection.fantasyPlayerId = fantasyPlayer[0].id;
             selection.fantasyTeamId = this.fantasyTeamId;
-            selection.isFlex = false;
+            selection.isFlex = fantasyPlayer[1];
             this.fantasyService.addFantasyTeamSelection(selection).subscribe(() => {
                 this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
                     this.fantasyTeam = fantasyTeam;
                     this.isUpdating = false;
                 });
             });
-        } else {
-            this.snackBar.open('Cannot add player as they are already added or no available slots', 'Dismiss', { duration: 5000 });
         }
     }
 
@@ -78,12 +90,18 @@ export class FantasyTeamEditorComponent implements OnInit {
         });
     }
 
-    private canAddToGroup(positionGroup: PositionGroup) {
-        if (positionGroup === PositionGroup.Goalkeeper && this.getPlayerCountForPosition(positionGroup) < 2) {
+    private canAddToGroup(positionGroup: PositionGroup, isFlex: boolean) {
+        if (isFlex && this.fantasyTeam.fantasyTeamSelections.filter(f => f.isFlex).length < 4) {
             return true;
-        } else if (positionGroup === PositionGroup.Defence && this.getPlayerCountForPosition(positionGroup) < 5) {
+        } else if (isFlex) {
+            return false;
+        }
+
+        if (positionGroup === PositionGroup.Goalkeeper && this.getPlayerCountForPosition(positionGroup) < 1) {
             return true;
-        } else if (positionGroup === PositionGroup.Midfield && this.getPlayerCountForPosition(positionGroup) < 3) {
+        } else if (positionGroup === PositionGroup.Defence && this.getPlayerCountForPosition(positionGroup) < 3) {
+            return true;
+        } else if (positionGroup === PositionGroup.Midfield && this.getPlayerCountForPosition(positionGroup) < 1) {
             return true;
         } else if (positionGroup === PositionGroup.Attack && this.getPlayerCountForPosition(positionGroup) < 3) {
             return true;
@@ -93,7 +111,15 @@ export class FantasyTeamEditorComponent implements OnInit {
     }
 
     private getPlayerCountForPosition(positionGroup): number {
-        return this.fantasyTeam.fantasyTeamSelections.filter(f => f.fantasyPlayer.positionGroup === positionGroup).length;
+        return this.fantasyTeam.fantasyTeamSelections.filter(f => f.fantasyPlayer.positionGroup === positionGroup && !f.isFlex).length;
+    }
+
+    getSquadValue(): number {
+        return this.fantasyTeam.fantasyTeamSelections.reduce((a, b) => a + b.fantasyPlayer.rating, 0);
+    }
+
+    isSquadFull(): boolean {
+        return this.fantasyTeam.fantasyTeamSelections.length === 11;
     }
 
 }

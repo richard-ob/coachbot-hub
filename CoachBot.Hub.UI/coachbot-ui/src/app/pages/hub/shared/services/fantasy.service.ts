@@ -11,6 +11,7 @@ import { PagedResult } from '../model/dtos/paged-result.model';
 import { PlayerStatisticsFilterHelper } from '../model/helpers/player-statistics-filter.helper';
 import { Tournament } from '../model/tournament.model';
 import { FantasyTeamRank } from '../model/fantasy-team-rank.model';
+import { FantasyPlayerRank } from '../model/fantasy-player-rank';
 
 @Injectable({
     providedIn: 'root'
@@ -69,6 +70,22 @@ export class FantasyService {
 
     getFantasyTeamRankings(tournamentId: number): Observable<FantasyTeamRank[]> {
         return this.http.get<FantasyTeamRank[]>(`${environment.apiUrl}/api/fantasy/tournament/${tournamentId}/rankings`);
+    }
+
+    getFantasyPlayerRankings(tournamentId: number): Observable<FantasyPlayerRank[]> {
+        return this.http.get<FantasyPlayerRank[]>(`${environment.apiUrl}/api/fantasy/tournament/${tournamentId}/player-rankings`);
+    }
+
+    getFantasyTeamSpotlight(tournamentId: number): Observable<FantasyTeamRank> {
+        return this.http.get<FantasyTeamRank>(
+            `${environment.apiUrl}/api/fantasy/tournament/${tournamentId}/current-phase-spotlight-team`
+        );
+    }
+
+    getFantasyPlayerSpotlight(tournamentId: number): Observable<FantasyPlayerRank> {
+        return this.http.get<FantasyPlayerRank>(
+            `${environment.apiUrl}/api/fantasy/tournament/${tournamentId}/current-phase-spotlight-player`
+        );
     }
 
 }

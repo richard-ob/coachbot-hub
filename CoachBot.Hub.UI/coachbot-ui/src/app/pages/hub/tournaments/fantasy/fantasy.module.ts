@@ -16,6 +16,11 @@ import { FantasyTeamManagerRoutingModule } from './fantasy.routing-module';
 import { FantasyTeamManagerComponent } from './fantasy-team-manager/fantasy-team-manager.component';
 import { FantasyOverviewComponent } from './fantasy-overview/fantasy-overview.component';
 import { FantasyTeamOverviewComponent } from './fantasy-team-overview/fantasy-team-overview.component';
+import {
+    FantasyPlayerLeaderboardComponent
+} from './fantasy-overview/fantasy-overview-player-leaderboard/fantasy-player-leaderboard.component';
+import { FantasyTeamSpotlightComponent } from './fantasy-overview/fantasy-team-spotlight/fantasy-team-spotlight.component';
+import { FantasyPlayerSpotlightComponent } from './fantasy-overview/fantasy-player-spotlight/fantasy-player-spotlight.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +29,10 @@ import { FantasyTeamOverviewComponent } from './fantasy-team-overview/fantasy-te
         FantasyTeamEditorPlayersComponent,
         FantasyPlayerComponent,
         FantasyOverviewComponent,
-        FantasyTeamOverviewComponent
+        FantasyTeamOverviewComponent,
+        FantasyPlayerLeaderboardComponent,
+        FantasyTeamSpotlightComponent,
+        FantasyPlayerSpotlightComponent
     ],
     imports: [
         CommonModule,

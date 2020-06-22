@@ -1,13 +1,13 @@
 <div class="container py-4">
     <ng-container *ngIf="!isLoading; else spinner">
         <div class="row">
-            <div class="col-8">
+            <div class="col-12 col-lg-8">
                 <div class="widget card widget--sidebar widget-filter-price">
                     <div class="widget__title card__header">
                         <h4>{{fantasyTeam.name}}</h4>
                     </div>
-                    <div class="widget__content card__content position-relative" style="min-height: 48rem;"
-                        [class.widget__content--loading]="isUpdating">
+                    <div class="widget__content card__content position-relative"
+                        style="min-height: 48rem; overflow: hidden;" [class.widget__content--loading]="isUpdating">
                         <div class="football-pitch">
                             <div class="outline marking"></div>
                             <div class="box left marking"></div>
@@ -69,7 +69,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-lg-4">
                 <div class="card">
                     <div class="card__header">
                         <h4>Team Info</h4>

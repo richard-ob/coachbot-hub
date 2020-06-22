@@ -7,10 +7,10 @@ https://www.premierleague.com/players/4852/Adri%C3%A1n/stats
 -->
 <div class="container">
     <app-spinner *ngIf="isLoading"></app-spinner>
-    <div *ngIf="!isLoading && (!playerStatistics || !playerStatistics.length)" class="alert alert-info">
+    <div *ngIf="!isLoading && (!playerStatistics)" class="alert alert-info">
         Hold tight! This player has not played in matches yet
     </div>
-    <div *ngIf="!isLoading && playerStatistics.length" class="row">
+    <div *ngIf="!isLoading && playerStatistics" class="row">
         <div class="col-12">
             <div class="card card--has-table">
                 <div class="card__header card__header--has-btn">

@@ -9,13 +9,34 @@
                     <thead>
                         <th>Name</th>
                         <th>Tournament</th>
-                        <th>Status</th>
+                        <th class="text-center">Squad Complete?</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center"></th>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let fantasyTeam of fantasyTeams" (click)="navigateToFantasyTeam(fantasyTeam.id)">
-                            <td>{{fantasyTeam.name}}</td>
-                            <td>{{fantasyTeam.tournament?.name}}</td>
-                            <td>{{fantasyTeam.isFinalised ? 'In Play' : 'Editable' }}</td>
+                        <tr *ngFor="let fantasyTeam of fantasyTeams"
+                            (click)="navigateToFantasyTeam(fantasyTeam.fantasyTeamId, fantasyTeam.fantasyTeamStatus)">
+                            <td>{{fantasyTeam.fantasyTeamName}}</td>
+                            <td>{{fantasyTeam.tournamentName}}</td>
+                            <td class="text-center">
+                                <ng-container *ngIf="fantasyTeam.isComplete">
+                                    <i class="fas fa-check text-success"></i>
+                                </ng-container>
+                                <ng-container *ngIf="!fantasyTeam.isComplete">
+                                    <i class="fas fa-times text-danger"></i>
+                                </ng-container>
+                            </td>
+                            <td class="text-center">{{fantasyTeam.fantasyTeamStatus | fantasyTeamStatus }}</td>
+                            <td class="text-center">
+                                <button *ngIf="fantasyTeam.fantasyTeamStatus === fantasyTeamStatuses.Open" type="button"
+                                    class="btn btn-primary btn-xs">
+                                    Edit
+                                </button>
+                                <button *ngIf="fantasyTeam.fantasyTeamStatus !== fantasyTeamStatuses.Open" type="button"
+                                    class="btn btn-primary btn-xs">
+                                    View
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

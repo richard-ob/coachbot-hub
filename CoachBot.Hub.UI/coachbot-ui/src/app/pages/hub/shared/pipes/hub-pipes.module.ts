@@ -7,6 +7,7 @@ import { ArrayFilterPipe } from './array-filter.pipe';
 import { MatchOutcomePipe } from './match-outcome.pipe';
 import { TeamTypePipe } from './team-type.pipe';
 import { TournamentMatchDayPipe } from './tournament-match-day.pipe';
+import { FantasyTeamStatusPipe } from './fantasy-team-status.pipe';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { TournamentMatchDayPipe } from './tournament-match-day.pipe';
         ArrayFilterPipe,
         MatchOutcomePipe,
         TeamTypePipe,
-        TournamentMatchDayPipe
+        TournamentMatchDayPipe,
+        FantasyTeamStatusPipe
     ],
     exports: [
         TeamRolePipe,
@@ -27,7 +29,8 @@ import { TournamentMatchDayPipe } from './tournament-match-day.pipe';
         ArrayFilterPipe,
         MatchOutcomePipe,
         TeamTypePipe,
-        TournamentMatchDayPipe
+        TournamentMatchDayPipe,
+        FantasyTeamStatusPipe
     ]
 })
 export class HubPipesModule { }

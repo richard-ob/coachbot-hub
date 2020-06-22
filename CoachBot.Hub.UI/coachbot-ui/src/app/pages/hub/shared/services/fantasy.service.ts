@@ -12,6 +12,7 @@ import { PlayerStatisticsFilterHelper } from '../model/helpers/player-statistics
 import { Tournament } from '../model/tournament.model';
 import { FantasyTeamRank } from '../model/fantasy-team-rank.model';
 import { FantasyPlayerRank } from '../model/fantasy-player-rank';
+import { FantasyTeamSummary } from '../model/fantasy-team-summary.model';
 
 @Injectable({
     providedIn: 'root'
@@ -24,8 +25,8 @@ export class FantasyService {
         return this.http.get<FantasyTeam[]>(`${environment.apiUrl}/api/fantasy/tournament/${tournamentId}`);
     }
 
-    getFantasyTeamsForUser(): Observable<FantasyTeam[]> {
-        return this.http.get<FantasyTeam[]>(`${environment.apiUrl}/api/fantasy/teams/@me`);
+    getFantasyTeamsForUser(): Observable<FantasyTeamSummary[]> {
+        return this.http.get<FantasyTeamSummary[]>(`${environment.apiUrl}/api/fantasy/teams/@me`);
     }
 
     getFantasyTeam(fantasyTeamId: number): Observable<FantasyTeam> {
@@ -85,6 +86,18 @@ export class FantasyService {
     getFantasyPlayerSpotlight(tournamentId: number): Observable<FantasyPlayerRank> {
         return this.http.get<FantasyPlayerRank>(
             `${environment.apiUrl}/api/fantasy/tournament/${tournamentId}/current-phase-spotlight-player`
+        );
+    }
+
+    getFantasyTeamSummaries(tournamentId: number): Observable<FantasyTeamSummary[]> {
+        return this.http.get<FantasyTeamSummary[]>(
+            `${environment.apiUrl}/api/fantasy/tournament/${tournamentId}/team-summaries`
+        );
+    }
+
+    getFantasyTeamSummary(fantasyTeamId: number): Observable<FantasyTeamSummary> {
+        return this.http.get<FantasyTeamSummary>(
+            `${environment.apiUrl}/api/fantasy/${fantasyTeamId}/summary`
         );
     }
 

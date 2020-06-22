@@ -184,9 +184,12 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
     display: flex;
 }
 
+.fantasy-pitch-player-container--row {
+	min-height: 150px;
+}
+
 .fantasy-pitch--player {
     z-index: 10;
-	margin: 15px;
 	text-align: center;
 }
 

@@ -14,7 +14,7 @@ namespace CoachBot.Domain.Model
 
         public string Name { get; set; }
 
-        public bool IsFinalised { get; set; } = false;
+        public bool IsComplete { get; set; } = false;
 
         public int? PlayerId { get; set; }
 

@@ -4,11 +4,8 @@ using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.Controllers
 {
@@ -47,23 +44,21 @@ namespace CoachBot.Controllers
         [HttpPut]
         public void UpdateFantasyTeam(FantasyTeam fantasyTeam)
         {
-            _fantasyService.UpdateFantasyTeam(fantasyTeam);
+            _fantasyService.UpdateFantasyTeam(fantasyTeam, User.GetSteamId());
         }
 
         [Authorize]
         [HttpPost("{id}/selections")]
         public void AddFantasyTeamSelection(FantasyTeamSelection fantasySelection)
         {
-            // TODO: Implement security to check it is users team
-            _fantasyService.AddFantasyTeamSelection(fantasySelection);
+            _fantasyService.AddFantasyTeamSelection(fantasySelection, User.GetSteamId());
         }
 
         [Authorize]
         [HttpDelete("{id}/selections/{fantasyTeamSelectionId}")]
         public void RemoveFantasyTeamSelection(int fantasyTeamSelectionId)
         {
-            // TODO: Implement security to check it is users selection
-            _fantasyService.RemoveFantasyTeamSelection(fantasyTeamSelectionId);
+            _fantasyService.RemoveFantasyTeamSelection(fantasyTeamSelectionId, User.GetSteamId());
         }
 
         [Authorize]
@@ -79,13 +74,6 @@ namespace CoachBot.Controllers
         public IEnumerable<Tournament> GetAvailableTournamentsForUser()
         {
             return _fantasyService.GetAvailableTournamentsForUser(User.GetSteamId());
-        }
-
-        [Authorize]
-        [HttpGet("teams/@me")]
-        public IEnumerable<FantasyTeam> GetFantasyTeamsForUser()
-        {
-            return _fantasyService.GetFantasyTeamsForPlayer(User.GetSteamId());
         }
 
         [HttpGet("tournament/{tournamentId}/rankings")]
@@ -122,6 +110,25 @@ namespace CoachBot.Controllers
         public FantasyTeamRank GetCurrentPhaseSpotlightTeam(int tournamentId)
         {
             return _fantasyService.GetFantasyTeamrRankSpotlight(tournamentId);
+        }
+
+        [HttpGet("tournament/{tournamentId}/team-summaries")]
+        public IEnumerable<FantasyTeamSummary> GetFantasyTeamSummaries(int tournamentId)
+        {
+            return _fantasyService.GetFantasyTeamSummaries(tournamentId);
+        }
+
+        [HttpGet("{fantasyTeamId}/summary")]
+        public FantasyTeamSummary GetFantasyTeamSummary(int fantasyTeamId)
+        {
+            return _fantasyService.GetFantasyTeamSummary(fantasyTeamId);
+        }
+
+        [Authorize]
+        [HttpGet("teams/@me")]
+        public IEnumerable<FantasyTeamSummary> GetFantasyTeamSummariesForUser()
+        {
+            return _fantasyService.GetFantasyTeamSummariesForPlayer(User.GetSteamId());
         }
     }
 }

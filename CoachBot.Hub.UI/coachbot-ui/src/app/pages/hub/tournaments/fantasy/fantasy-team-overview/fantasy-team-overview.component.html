@@ -29,38 +29,39 @@
                         </div>
                         <div *ngIf="fantasyTeam && fantasyTeam.fantasyTeamSelections"
                             class="fantasy-pitch--player-container flex-column">
-                            <div class="d-flex justify-content-around mb-3">
+                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
                                     class="fantasy-pitch--player">
                                     <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-around mb-3">
+                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
                                     class="fantasy-pitch--player">
                                     <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-around mb-3">
+                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
                                     class="fantasy-pitch--player">
                                     <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-around mb-3">
+                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
                                     class="fantasy-pitch--player">
                                     <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-around mb-3">
+                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
                                 <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:true"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [isFlex]="true"
+                                        [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>

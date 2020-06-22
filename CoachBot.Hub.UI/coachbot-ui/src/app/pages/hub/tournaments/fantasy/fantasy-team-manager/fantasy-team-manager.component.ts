@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Tournament } from '@pages/hub/shared/model/tournament.model';
 import { FantasyService } from '@pages/hub/shared/services/fantasy.service';
 import { FantasyTeam } from '@pages/hub/shared/model/fantasy-team.model';
+import { FantasyTeamSummary, FantasyTeamStatus } from '@pages/hub/shared/model/fantasy-team-summary.model';
 
 @Component({
     selector: 'app-fantasy-team-manager',
@@ -11,8 +12,9 @@ import { FantasyTeam } from '@pages/hub/shared/model/fantasy-team.model';
 export class FantasyTeamManagerComponent implements OnInit {
 
     availableTournaments: Tournament[];
-    fantasyTeams: FantasyTeam[];
+    fantasyTeams: FantasyTeamSummary[];
     fantasyTeam: FantasyTeam = new FantasyTeam();
+    fantasyTeamStatuses = FantasyTeamStatus;
     isCreating = false;
     isLoading = true;
 
@@ -36,8 +38,12 @@ export class FantasyTeamManagerComponent implements OnInit {
         });
     }
 
-    navigateToFantasyTeam(fantasyTeamId: number) {
-        this.router.navigate(['/fantasy-editor', fantasyTeamId]);
+    navigateToFantasyTeam(fantasyTeamId: number, fantasyTeamStatus: FantasyTeamStatus) {
+        if (fantasyTeamStatus === FantasyTeamStatus.Open) {
+            this.router.navigate(['/fantasy-editor', fantasyTeamId]);
+        } else {
+            this.router.navigate(['/fantasy-overview', fantasyTeamId]);
+        }
     }
 
 }

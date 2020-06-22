@@ -1,130 +1,138 @@
 <div class="container py-4">
-    <ng-container *ngIf="!isLoading; else spinner">
-        <div class="row">
-            <div class="col-8">
-                <div class="widget card widget--sidebar widget-filter-price">
-                    <div class="widget__title card__header">
-                        <h4>
-                            {{fantasyTeam.name}}
-                            <a (click)="editTeamNameModal.fire()" class="show-on-parent-hover">
-                                <i class="fas fa-pencil-alt text-muted clickable"></i>
-                            </a>
+    <ng-container *ngIf="!isLoading && fantasyTeam; else spinner">
+        <ng-container *ngIf="fantasyTeamSummary.fantasyTeamStatus === fantasyOpen; else finalised">
+            <div class="row">
+                <div class="col-8">
+                    <div class="widget card widget--sidebar widget-filter-price">
+                        <div class="widget__title card__header">
+                            <h4>
+                                {{fantasyTeam.name}}
+                                <a (click)="editTeamNameModal.fire()" class="show-on-parent-hover">
+                                    <i class="fas fa-pencil-alt text-muted clickable"></i>
+                                </a>
 
-                        </h4>
-                        <div class="fantasy-pitch-header--budget">
-                            <div>
-                                <span *ngIf="!isSquadFull()" class="badge badge-warning">Incomplete Squad</span>
-                                <span *ngIf="isSquadFull()" class="badge badge-success">Complete</span>
+                            </h4>
+                            <div class="fantasy-pitch-header--budget">
+                                <div>
+                                    <span *ngIf="!isSquadFull()" class="badge badge-warning">Incomplete Squad</span>
+                                    <span *ngIf="isSquadFull()" class="badge badge-success">Complete</span>
+                                </div>
+                                <div>
+                                    <label class="text-muted mb-0">Budget</label>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0" [class.text-warning]="getSquadValue() > 70">
+                                        {{getSquadValue() | number:'1.2-2'}}/{{tournament.fantasyPointsLimit}}
+                                    </h6>
+                                </div>
                             </div>
-                            <div>
-                                <label class="text-muted mb-0">Budget</label>
+                        </div>
+                        <div class="widget__content card__content position-relative" style="min-height: 48rem;"
+                            [class.widget__content--loading]="isUpdating">
+                            <div class="football-pitch">
+                                <div class="outline marking"></div>
+                                <div class="box left marking"></div>
+                                <div class="box-d left marking"></div>
+                                <div class="box left small marking"></div>
+                                <div class="box right marking"></div>
+                                <div class="box-d right marking"></div>
+                                <div class="box right small marking"></div>
+                                <div class="spot left marking"></div>
+                                <div class="spot right marking"></div>
+                                <div class="spot center marking"></div>
+                                <div class="center-line marking"></div>
+                                <div class="center-circle marking"></div>
+                                <div class="corner top left marking"></div>
+                                <div class="corner top right marking"></div>
+                                <div class="corner bottom left marking"></div>
+                                <div class="corner bottom right marking"></div>
+                                <div class="grass"></div>
                             </div>
-                            <div>
-                                <h6 class="mb-0" [class.text-warning]="getSquadValue() > 70">
-                                    {{getSquadValue() | number:'1.2-2'}}/{{tournament.fantasyPointsLimit}}
-                                </h6>
+                            <div *ngIf="fantasyTeam && fantasyTeam.fantasyTeamSelections"
+                                class="fantasy-pitch--player-container flex-column">
+                                <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
+                                    <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
+                                        class="fantasy-pitch--player">
+                                        <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
+                                            (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
+                                    <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
+                                        class="fantasy-pitch--player">
+                                        <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
+                                            (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
+                                    <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
+                                        class="fantasy-pitch--player">
+                                        <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
+                                            (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
+                                    <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
+                                        class="fantasy-pitch--player">
+                                        <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
+                                            (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
+                                    <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:true"
+                                        class="fantasy-pitch--player">
+                                        <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [isFlex]="true"
+                                            (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="widget__content card__content position-relative" style="min-height: 48rem;"
-                        [class.widget__content--loading]="isUpdating">
-                        <div class="football-pitch">
-                            <div class="outline marking"></div>
-                            <div class="box left marking"></div>
-                            <div class="box-d left marking"></div>
-                            <div class="box left small marking"></div>
-                            <div class="box right marking"></div>
-                            <div class="box-d right marking"></div>
-                            <div class="box right small marking"></div>
-                            <div class="spot left marking"></div>
-                            <div class="spot right marking"></div>
-                            <div class="spot center marking"></div>
-                            <div class="center-line marking"></div>
-                            <div class="center-circle marking"></div>
-                            <div class="corner top left marking"></div>
-                            <div class="corner top right marking"></div>
-                            <div class="corner bottom left marking"></div>
-                            <div class="corner bottom right marking"></div>
-                            <div class="grass"></div>
+                    <div class="card">
+                        <div class="card__header">
+                            <h4>Rules & Guidance</h4>
                         </div>
-                        <div *ngIf="fantasyTeam && fantasyTeam.fantasyTeamSelections"
-                            class="fantasy-pitch--player-container flex-column">
-                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
-                                    class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
-                                    class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
-                                    class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
-                                    class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:true"
-                                    class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [isFlex]="true"
-                                        (click)="removeFantasyTeamSelection(selection)"></app-fantasy-player>
-                                </div>
-                            </div>
+                        <div class="card__content">
+                            <ul class="list">
+                                <li>You can spend up to 75 points.</li>
+                                <li>Flex players can be used for any position.</li>
+                                <li>You can only select maximum of 3 players from the same team.</li>
+                                <li>You have to fill all 11 slots for your squad to be complete.</li>
+                                <li>Your team can be changed up until the first game, however it must be complete at
+                                    kick
+                                    off to qualify.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card__header">
-                        <h4>Rules & Guidance</h4>
-                    </div>
-                    <div class="card__content">
-                        <ul class="list">
-                            <li>You can spend up to 75 points.</li>
-                            <li>Flex players can be used for any position.</li>
-                            <li>You can only select maximum of 3 players from the same team.</li>
-                            <li>You have to fill all 11 slots for your squad to be complete.</li>
-                            <li>Your team can be changed up until the first game, however it must be complete at kick
-                                off to qualify.</li>
-                        </ul>
-                    </div>
+                <div class="col-4">
+                    <app-fantasy-team-editor-players *ngIf="fantasyTeam" [tournamentId]="fantasyTeam.tournamentId"
+                        (playerSelected)="addFantasyTeamSelection($event)">
+                    </app-fantasy-team-editor-players>
+                    <a type="button" class="btn btn-primary btn-block"
+                        [routerLink]="['/fantasy-overview/', fantasyTeam.id]">Fantasy Team Profile</a>
                 </div>
             </div>
-            <div class="col-4">
-                <app-fantasy-team-editor-players *ngIf="fantasyTeam" [tournamentId]="fantasyTeam.tournamentId"
-                    (playerSelected)="addFantasyTeamSelection($event)">
-                </app-fantasy-team-editor-players>
-                <a type="button" class="btn btn-primary btn-block"
-                    [routerLink]="['/fantasy-overview/', fantasyTeam.id]">Fantasy Team Profile</a>
+        </ng-container>
+        <ng-template #finalised>
+            <div class="alert alert-info">
+                Editing of fantasy teams for this tournament has closed
             </div>
-        </div>
+        </ng-template>
     </ng-container>
     <ng-template #spinner>
         <app-spinner></app-spinner>
     </ng-template>
 </div>
 
-<swal #editTeamNameModal (confirm)="updateTeamName(teamName.value)">
+<swal #editTeamNameModal (confirm)="teamName.length > 1 && updateTeamName()">
     <ng-container *swalPortal="swalTargets.title">
         <h5>Update Fantasy Team</h5>
     </ng-container>
     <form *swalPortal>
         <div class="form-group">
             <label>Team Name</label>
-            <input type="text" class="form-control" name="teamName" #teamName>
+            <input type="text" class="form-control" name="teamName" [(ngModel)]="teamName">
         </div>
     </form>
     <ng-container *swalPortal="swalTargets.cancelButton">

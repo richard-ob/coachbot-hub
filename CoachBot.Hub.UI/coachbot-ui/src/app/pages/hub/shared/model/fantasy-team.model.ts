@@ -5,7 +5,7 @@ import { Tournament } from './tournament.model';
 export class FantasyTeam {
     id: number;
     name: string;
-    isFinalised: boolean;
+    isComplete: string;
     playerId: number;
     player: Player;
     tournamentId: number;

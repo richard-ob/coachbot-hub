@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Tournament } from '@pages/hub/shared/model/tournament.model';
 import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 import { TournamentService } from '@pages/hub/shared/services/tournament.service';
+import { FantasyTeamSummary, FantasyTeamStatus } from '@pages/hub/shared/model/fantasy-team-summary.model';
 
 @Component({
     selector: 'app-fantasy-team-editor',
@@ -19,8 +20,11 @@ export class FantasyTeamEditorComponent implements OnInit {
 
     fantasyTeamId: number;
     fantasyTeam: FantasyTeam;
+    fantasyTeamSummary: FantasyTeamSummary;
     tournament: Tournament;
     positionGroups = PositionGroup;
+    fantasyOpen = FantasyTeamStatus.Open;
+    teamName: string;
     isLoading = true;
     isUpdating = false;
 
@@ -37,17 +41,21 @@ export class FantasyTeamEditorComponent implements OnInit {
             this.fantasyTeamId = +params.get('id');
             this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
                 this.fantasyTeam = fantasyTeam;
+                this.teamName = fantasyTeam.name;
                 this.tournamentService.getTournament(this.fantasyTeam.tournamentId).subscribe(tournament => {
                     this.tournament = tournament;
-                    this.isLoading = false;
+                    this.fantasyService.getFantasyTeamSummary(this.fantasyTeamId).subscribe(fantasyTeamSummary => {
+                        this.fantasyTeamSummary = fantasyTeamSummary;
+                        this.isLoading = false;
+                    });
                 });
             });
         });
     }
 
-    updateTeamName(teamName: string) {
+    updateTeamName() {
         this.isLoading = true;
-        this.fantasyTeam.name = teamName;
+        this.fantasyTeam.name = this.teamName;
         this.fantasyService.updateFantasyTeam(this.fantasyTeam).subscribe(() => {
             this.isLoading = false;
         });

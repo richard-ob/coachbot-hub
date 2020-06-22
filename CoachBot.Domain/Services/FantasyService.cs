@@ -12,6 +12,12 @@ namespace CoachBot.Domain.Services
 {
     public class FantasyService
     {
+        private const int SQUAD_SIZE = 11;
+        private const int MAX_GKS = 1;
+        private const int MAX_DEFS = 3;
+        private const int MAX_MIDS = 1;
+        private const int MAX_ATTACKERS = 3;
+
         private readonly CoachBotContext _coachBotContext;
         private readonly IBackgroundTaskQueue _queue;
         private readonly IServiceProvider serviceProvider;
@@ -46,50 +52,121 @@ namespace CoachBot.Domain.Services
                 .First(ft => ft.Id == fantasyTeamId);
         }
 
+        public IEnumerable<FantasyTeamSummary> GetFantasyTeamSummaries(int tournamentId)
+        {
+            return _coachBotContext.FantasyTeams
+                .Where(f => f.TournamentId == tournamentId)
+                .Select(s => new FantasyTeamSummary()
+                {
+                    FantasyTeamId = s.Id,
+                    FantasyTeamName = s.Name,
+                    PlayerId = (int)s.PlayerId,
+                    PlayerName = s.Player.Name,
+                    TournamentName = s.Tournament.Name,
+                    TournamentId = (int)s.TournamentId,
+                    IsComplete = s.IsComplete,
+                    FantasyTeamStatus = 
+                        !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff < DateTime.Now))) ? FantasyTeamStatus.Open
+                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff > DateTime.Now))) ? FantasyTeamStatus.Pending 
+                        : FantasyTeamStatus.Settled
+                }).ToList();
+        }
+
+        public FantasyTeamSummary GetFantasyTeamSummary(int fantasyTeamId)
+        {
+            return _coachBotContext.FantasyTeams
+                .Where(f => f.Id == fantasyTeamId)
+                .Select(s => new FantasyTeamSummary()
+                {
+                    FantasyTeamId = s.Id,
+                    FantasyTeamName = s.Name,
+                    PlayerId = (int)s.PlayerId,
+                    PlayerName = s.Player.Name,
+                    TournamentName = s.Tournament.Name,
+                    TournamentId = (int)s.TournamentId,
+                    IsComplete = s.IsComplete,
+                    FantasyTeamStatus =
+                        !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff < DateTime.Now))) ? FantasyTeamStatus.Open
+                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff > DateTime.Now))) ? FantasyTeamStatus.Pending
+                        : FantasyTeamStatus.Settled
+                }).FirstOrDefault();
+        }
+
+        public List<FantasyTeamSummary> GetFantasyTeamSummariesForPlayer(ulong steamUserId)
+        {
+            return _coachBotContext.FantasyTeams
+                .Where(f => f.Player.SteamID == steamUserId)
+                .Select(s => new FantasyTeamSummary()
+                {
+                    FantasyTeamId = s.Id,
+                    FantasyTeamName = s.Name,
+                    PlayerId = (int)s.PlayerId,
+                    PlayerName = s.Player.Name,
+                    TournamentName = s.Tournament.Name,
+                    TournamentId = (int)s.TournamentId,
+                    IsComplete = s.IsComplete,
+                    FantasyTeamStatus =
+                        !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff < DateTime.Now))) ? FantasyTeamStatus.Open
+                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff > DateTime.Now))) ? FantasyTeamStatus.Pending
+                        : FantasyTeamStatus.Settled
+                }).ToList();
+        }
+
         public void CreateFantasyTeam(FantasyTeam fantasyTeam, ulong steamId)
         {
             CheckHasTournamentStarted((int)fantasyTeam.TournamentId);
             fantasyTeam.Player = null;
             fantasyTeam.PlayerId = _coachBotContext.Players.Single(p => p.SteamID == steamId).Id;
-            fantasyTeam.IsFinalised = false;
+            fantasyTeam.IsComplete = false;
             fantasyTeam.FantasyTeamSelections = null;
             fantasyTeam.Tournament = null;
             _coachBotContext.FantasyTeams.Add(fantasyTeam);
             _coachBotContext.SaveChanges();
         }
 
-        public void UpdateFantasyTeam(FantasyTeam fantasyTeam)
+        public void UpdateFantasyTeam(FantasyTeam fantasyTeam, ulong steamId)
         {
-            CanUpdateTeam(fantasyTeam.Id);
+            CanUpdateTeam(fantasyTeam.Id, steamId);
             var existingFantasyTeam = _coachBotContext.FantasyTeams.Find(fantasyTeam.Id);
-            existingFantasyTeam.IsFinalised = fantasyTeam.IsFinalised;
             existingFantasyTeam.Name = fantasyTeam.Name;
-            _coachBotContext.FantasyTeams.Update(existingFantasyTeam);
             _coachBotContext.SaveChanges();
         }
 
-        public void DeleteFantasyTeam(int fantasyTeamId)
+        public void DeleteFantasyTeam(int fantasyTeamId, ulong steamId)
         {
-            CanUpdateTeam(fantasyTeamId);
+            CanUpdateTeam(fantasyTeamId, steamId);
             var fantasyTeam = _coachBotContext.FantasyTeams.Find(fantasyTeamId);
             _coachBotContext.FantasyTeams.Remove(fantasyTeam);
             _coachBotContext.SaveChanges();
         }
 
-        public void AddFantasyTeamSelection(FantasyTeamSelection fantasyTeamSelection)
+        public void AddFantasyTeamSelection(FantasyTeamSelection fantasyTeamSelection, ulong steamId)
         {
-            CanUpdateTeam((int)fantasyTeamSelection.FantasyTeamId);
+            CanUpdateTeam((int)fantasyTeamSelection.FantasyTeamId, steamId);
             CanAddPlayer(fantasyTeamSelection);
             fantasyTeamSelection.FantasyPlayer = null;
             fantasyTeamSelection.FantasyTeam = null;
+
+            if (_coachBotContext.FantasyTeams.Any(f => f.Id == fantasyTeamSelection.FantasyTeamId && f.FantasyTeamSelections.Count() == SQUAD_SIZE - 1))
+            {
+                var fantasyTeam = _coachBotContext.FantasyTeams.Single(f => f.Id == fantasyTeamSelection.FantasyTeamId);
+                fantasyTeam.IsComplete = true;
+            }
+
             _coachBotContext.FantasyTeamSelections.Add(fantasyTeamSelection);
             _coachBotContext.SaveChanges();
         }
 
-        public void RemoveFantasyTeamSelection(int fantasyTeamSelectionId)
+        public void RemoveFantasyTeamSelection(int fantasyTeamSelectionId, ulong steamId)
         {
             var selection = _coachBotContext.FantasyTeamSelections.Find(fantasyTeamSelectionId);
-            CanUpdateTeam((int)selection.FantasyTeamId);
+            CanUpdateTeam((int)selection.FantasyTeamId, steamId);
+
+            if (_coachBotContext.FantasyTeams.Any(f => f.Id == selection.FantasyTeamId && f.FantasyTeamSelections.Count() == 11))
+            {
+                var fantasyTeam = _coachBotContext.FantasyTeams.Single(f => f.Id == selection.FantasyTeamId);
+                fantasyTeam.IsComplete = false;
+            }
 
             _coachBotContext.FantasyTeamSelections.Remove(selection);
             _coachBotContext.SaveChanges();
@@ -98,14 +175,6 @@ namespace CoachBot.Domain.Services
         public Model.Dtos.PagedResult<FantasyPlayer> GetFantasyPlayers(int page, int pageSize, string sortOrder, PlayerStatisticFilters playerStatisticFilters)
         {          
             return GetFantasyPlayersQueryable(playerStatisticFilters).GetPaged(page, pageSize, sortOrder);
-        }
-
-        public List<FantasyTeam> GetFantasyTeamsForPlayer(ulong steamUserId)
-        {
-            return _coachBotContext.FantasyTeams
-                .Where(t => t.Player.SteamID == steamUserId)
-                .Include(t => t.Tournament)
-                .ToList();
         }
 
         public List<Tournament> GetAvailableTournamentsForUser(ulong steamUserId)
@@ -434,13 +503,13 @@ namespace CoachBot.Domain.Services
             return queryable;
         }
 
-        private void CanUpdateTeam(int fantasyTeamId)
+        private void CanUpdateTeam(int fantasyTeamId, ulong steamId)
         {
-            var fantasyTeam = _coachBotContext.FantasyTeams.Find(fantasyTeamId);
+            var fantasyTeam = _coachBotContext.FantasyTeams.Include(f => f.Player).Single(f => f.Id == fantasyTeamId);
 
-            if (fantasyTeam.IsFinalised)
+            if (fantasyTeam.Player.SteamID != steamId)
             {
-                throw new Exception("Teams cannot be updated after they have been finalised");
+                throw new UnauthorizedAccessException("This team is owned by a different player");
             }
 
             CheckHasTournamentStarted((int)fantasyTeam.TournamentId);
@@ -492,13 +561,13 @@ namespace CoachBot.Domain.Services
             switch (positionGroup)
             {
                 case PositionGroup.Goalkeeper:
-                    return 1;
+                    return MAX_GKS;
                 case PositionGroup.Defence:
-                    return 3;
+                    return MAX_DEFS;
                 case PositionGroup.Midfield:
-                    return 1;
+                    return MAX_MIDS;
                 case PositionGroup.Attack:
-                    return 3;
+                    return MAX_ATTACKERS;
             }
 
             throw new Exception("Unknown position group");

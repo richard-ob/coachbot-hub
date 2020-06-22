@@ -32,7 +32,8 @@
                                         style="max-width: 64px;">
                                 </ng-template>
                             </span>
-                                <h5 class="d-inline-block text-white">
+                                <h5 class="d-inline-block text-white clickable"
+                                    (click)="navigateToTeamProfile(match.lineupHome.channel.teamId)">
                                     {{match.lineupHome.channel.subteamName || match.lineupHome.channel.team.name}}
                                 </h5>
                             </div>
@@ -44,7 +45,8 @@
                                 <span class="game-result__score-result">{{matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
                             </div>
                             <div id="match-headline-items-away" class="text-right" style="flex: 0 1 50%">
-                                <h5 class="d-inline-block text-white">
+                                <h5 class="d-inline-block text-white clickable"
+                                    (click)="navigateToTeamProfile(match.lineupAway.channel.teamId)">
                                     {{match.lineupAway.channel.subteamName || match.lineupAway.channel.team.name}}
                                 </h5>
                                 <span class="d-none d-md-inline-block pl-4">

@@ -4,7 +4,7 @@ import { StatisticType } from './model/statistic-type.enum';
 import { TeamType } from './model/team-type.enum.js';
 import { DisplayValueMode } from './components/horizontal-bar-graph/horizontal-bar-graph.component.js';
 import { MatchService } from '../shared/services/match.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Match } from '../shared/model/match.model';
 
 @Component({
@@ -23,7 +23,7 @@ export class MatchOverviewComponent implements OnInit {
   matchDate: Date;
   isLoading = true;
 
-  constructor(private matchService: MatchService, private route: ActivatedRoute) { }
+  constructor(private matchService: MatchService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.paramMap.pipe().subscribe(params => {
@@ -38,5 +38,9 @@ export class MatchOverviewComponent implements OnInit {
   loadJson(matchData: any) {
     this.matchData = matchData;
     this.matchDate = new Date(this.matchData.matchInfo.startTime * 1000);
+  }
+
+  navigateToTeamProfile(teamId: number) {
+    this.router.navigate(['/team-profile', teamId]);
   }
 }

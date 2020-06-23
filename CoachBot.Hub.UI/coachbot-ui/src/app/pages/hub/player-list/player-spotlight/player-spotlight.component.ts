@@ -15,6 +15,7 @@ import { PlayerSpotlightStatistic } from './player-spotlight-statistic.enum';
 export class PlayerSpotlightComponent implements OnInit {
 
     @Input() statistic: PlayerSpotlightStatistic;
+    @Input() tournamentId: number;
     filters = new PlayerStatisticFilters();
     spotlightPlayer: PlayerStatistics;
     apiModelProperty: string;
@@ -36,8 +37,12 @@ export class PlayerSpotlightComponent implements OnInit {
     ngOnInit() {
         this.setProperties(this.statistic);
         this.filters.regionId = this.userPreferencesService.getUserPreference(UserPreferenceType.Region);
-        this.filters.timePeriod = TimePeriod.Year;
         this.filters.includeSubstituteAppearances = false;
+        if (this.tournamentId) {
+            this.filters.tournamentId = this.tournamentId;
+        } else {
+            this.filters.timePeriod = TimePeriod.Year;
+        }
         this.playerService.getPlayerStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters).subscribe(playerStatistics => {
             if (playerStatistics.items.length > 0) {
                 this.spotlightPlayer = playerStatistics.items[0];

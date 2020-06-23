@@ -15,6 +15,7 @@ import { TeamService } from '@pages/hub/shared/services/team.service';
 export class TeamSpotlightComponent implements OnInit {
 
     @Input() statistic: TeamSpotlightStatistic;
+    @Input() tournamentId: number;
     filters = new TeamStatisticFilters();
     spotlightTeam: TeamStatistics;
     apiModelProperty: string;
@@ -36,7 +37,11 @@ export class TeamSpotlightComponent implements OnInit {
     ngOnInit() {
         this.setProperties(this.statistic);
         this.filters.regionId = this.userPreferencesService.getUserPreference(UserPreferenceType.Region);
-        this.filters.timePeriod = TimePeriod.Year;
+        if (this.tournamentId) {
+            this.filters.tournamentId = this.tournamentId;
+        } else {
+            this.filters.timePeriod = TimePeriod.Year;
+        }
         this.teamService.getTeamStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters).subscribe(teamStatistics => {
             if (teamStatistics.items.length > 0) {
                 this.spotlightTeam = teamStatistics.items[0];
@@ -54,6 +59,7 @@ export class TeamSpotlightComponent implements OnInit {
                 this.measureName = 'Average Goals';
                 this.ordering = 'DESC';
                 this.iconClass = '';
+                this.iconClass = 'icon-soccer-ball';
                 break;
             case TeamSpotlightStatistic.Wins:
                 this.modelProperty = 'wins';
@@ -61,7 +67,7 @@ export class TeamSpotlightComponent implements OnInit {
                 this.heading = 'Winners of the Week';
                 this.measureName = 'Wins';
                 this.ordering = 'DESC';
-                this.iconClass = '';
+                this.iconClass = 'icon-trophy';
                 break;
             case TeamSpotlightStatistic.GoalsConceded:
                 this.modelProperty = 'goalsConcededAverage';
@@ -69,7 +75,7 @@ export class TeamSpotlightComponent implements OnInit {
                 this.heading = 'Defensive Team of the Week';
                 this.measureName = 'Average Goals Conceded';
                 this.ordering = 'ASC';
-                this.iconClass = '';
+                this.iconClass = 'icon-keepers-glove';
                 break;
             case TeamSpotlightStatistic.PassCompletion:
                 this.modelProperty = 'passCompletionPercentageAverage';
@@ -77,7 +83,7 @@ export class TeamSpotlightComponent implements OnInit {
                 this.heading = 'Passing of the Week';
                 this.measureName = 'Pass Completion';
                 this.ordering = 'DESC';
-                this.iconClass = '';
+                this.iconClass = 'icon-soccer-shots';
                 break;
         }
     }

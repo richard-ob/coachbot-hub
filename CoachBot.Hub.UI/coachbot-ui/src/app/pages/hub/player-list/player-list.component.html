@@ -1,16 +1,20 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12 col-md-3">
-            <app-player-spotlight [statistic]="playerSpotlightStatistic.Goals"></app-player-spotlight>
+            <app-player-spotlight [statistic]="playerSpotlightStatistic.Goals" [tournamentId]="tournamentId">
+            </app-player-spotlight>
         </div>
         <div class="col-12 col-md-3">
-            <app-player-spotlight [statistic]="playerSpotlightStatistic.Assists"></app-player-spotlight>
+            <app-player-spotlight [statistic]="playerSpotlightStatistic.Assists" [tournamentId]="tournamentId">
+            </app-player-spotlight>
         </div>
         <div class="col-12 col-md-3">
-            <app-player-spotlight [statistic]="playerSpotlightStatistic.GoalsConceded"></app-player-spotlight>
+            <app-player-spotlight [statistic]="playerSpotlightStatistic.GoalsConceded" [tournamentId]="tournamentId">
+            </app-player-spotlight>
         </div>
         <div class="col-12 col-md-3">
-            <app-player-spotlight [statistic]="playerSpotlightStatistic.PassCompletion"></app-player-spotlight>
+            <app-player-spotlight [statistic]="playerSpotlightStatistic.PassCompletion" [tournamentId]="tournamentId">
+            </app-player-spotlight>
         </div>
     </div>
     <div class="card card--has-table">

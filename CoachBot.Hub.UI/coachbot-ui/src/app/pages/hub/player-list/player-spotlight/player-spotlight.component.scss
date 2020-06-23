@@ -8,13 +8,29 @@
 }
 
 .fantasy-spotlight-icon {
-    font-size: 132px;
+    filter: grayscale(1);
+    opacity: 0.05;
+    font-size: 83px;
     position: absolute;
-    bottom: -14px;
-    right: -6px;
+    bottom: -19px;
+    right: -15px;
     overflow: hidden;
     color: #3b434a;
     z-index: 0;
+    &.icon-soccer-shots {
+        opacity: 0.6;
+        font-size: 85px;
+    }
+    &.icon-soccer-ball {
+        opacity: 0.035;
+        font-size: 90px;
+    }
+    &.icon-soccer-shoe {
+        font-size: 77px;
+    }
+    &.icon-keepers-glove {
+        font-size: 64px;
+    }
 }
 
 .fantasy-spotlight-title {

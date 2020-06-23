@@ -7,10 +7,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { PlayerListComponent } from './player-list.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
+import { PlayerSpotlightComponent } from './player-spotlight/player-spotlight.component';
 
 @NgModule({
     declarations: [
-        PlayerListComponent
+        PlayerListComponent,
+        PlayerSpotlightComponent
     ],
     exports: [
         PlayerListComponent

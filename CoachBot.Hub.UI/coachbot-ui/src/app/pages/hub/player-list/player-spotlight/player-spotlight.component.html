@@ -1,0 +1,31 @@
+<div class="card fantasy-spotlight-card">
+    <div class="card__content fantasy-spotlight-card widget-player--soccer">
+        <h4 class="fantasy-spotlight-title mb-2">{{heading}}</h4>
+        <ng-container *ngIf="!isLoading; else spinner">
+            <div class="widget-player__ribbon">
+                <div class="fa fa-star"></div>
+            </div>
+            <h4 class="fantasy-spotlight-name">{{spotlightPlayer ? spotlightPlayer.name : 'TBC'}}
+            </h4>
+            <i class="fantasy-spotlight-icon fas fa-award"></i>
+            <div *ngIf="spotlightPlayer" class="d-flex">
+                <div class="fantasy-spotlight-stat-container">
+                    <div class="fantasy-spotlight-stat-value">
+                        <ng-container *ngIf="statistic === playerSpotlightStatistic.PassCompletion; else nonPercentage">
+                            {{spotlightPlayer[modelProperty] | percent }}
+                        </ng-container>
+                        <ng-template #nonPercentage>
+                            {{spotlightPlayer[modelProperty] | number:'1.1-1'}}
+                        </ng-template>
+                    </div>
+                    <div class="fantasy-spotlight-stat-measure">
+                        {{measureName || ' '}}
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #spinner>
+            <app-spinner [verticalMargins]="false"></app-spinner>
+        </ng-template>
+    </div>
+</div>

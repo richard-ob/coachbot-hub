@@ -1,0 +1,57 @@
+.fantasy-spotlight-card {    
+    background-color: #38a9ff;
+}
+
+.fantasy-spotlight-card:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.fantasy-spotlight-icon {
+    font-size: 132px;
+    position: absolute;
+    bottom: -14px;
+    right: -6px;
+    overflow: hidden;
+    color: #4cb2ffb8;
+    z-index: 0;
+}
+
+.fantasy-spotlight-title {
+    text-transform: uppercase;
+    color: #ffffff73;
+    font-size: 15px;
+    margin-bottom: .5rem;
+}
+
+.fantasy-spotlight-name {
+    text-transform: uppercase;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.fantasy-spotlight-stat-container {
+    color: #343a40;
+    line-height: 0.8em;
+    text-transform: uppercase;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.fantasy-spotlight-stat-measure {
+    font-size: 9px;   
+}
+
+.fantasy-spotlight-stat-value {
+    font-size: 1rem;
+}
+
+.fantasy-spotlight-card {
+    overflow: hidden;
+    position: relative;
+}
+
+.widget-player__ribbon {
+    z-index: 1;
+}

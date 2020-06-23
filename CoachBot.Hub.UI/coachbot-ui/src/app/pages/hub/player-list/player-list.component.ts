@@ -6,10 +6,9 @@ import { Router } from '@angular/router';
 import { PlayerStatisticFilters } from '../shared/model/dtos/paged-player-statistics-request-dto.model';
 import SortingUtils from '@shared/utilities/sorting-utilities';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
-import EnumUtils from '@shared/utilities/enum-utilities';
-import { FormatPositions } from '../team-editor/team-editor-discord-integration/discord-channel-editor/format-positions';
 import { Team } from '../shared/model/team.model';
 import { TeamService } from '../shared/services/team.service';
+import { PlayerSpotlightStatistic } from './player-spotlight/player-spotlight-statistic.enum';
 
 @Component({
     selector: 'app-player-list',
@@ -24,6 +23,7 @@ export class PlayerListComponent implements OnInit {
     filters = new PlayerStatisticFilters();
     teams: Team[];
     positions = ['GK', 'LB', 'CB', 'RB', 'LW', 'LM', 'CM', 'RM', 'RW', 'CF'];
+    playerSpotlightStatistic = PlayerSpotlightStatistic;
     currentPage = 1;
     totalPages: number;
     totalItems: number;

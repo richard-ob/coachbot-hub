@@ -1,5 +1,18 @@
 <div class="container-fluid py-4">
-    <!-- Team Latest Results -->
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <app-player-spotlight [statistic]="playerSpotlightStatistic.Goals"></app-player-spotlight>
+        </div>
+        <div class="col-12 col-md-3">
+            <app-player-spotlight [statistic]="playerSpotlightStatistic.Assists"></app-player-spotlight>
+        </div>
+        <div class="col-12 col-md-3">
+            <app-player-spotlight [statistic]="playerSpotlightStatistic.GoalsConceded"></app-player-spotlight>
+        </div>
+        <div class="col-12 col-md-3">
+            <app-player-spotlight [statistic]="playerSpotlightStatistic.PassCompletion"></app-player-spotlight>
+        </div>
+    </div>
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Player Statistics</h4>

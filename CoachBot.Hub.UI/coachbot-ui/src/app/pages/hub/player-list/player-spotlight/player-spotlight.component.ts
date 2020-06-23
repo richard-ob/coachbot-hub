@@ -22,6 +22,7 @@ export class PlayerSpotlightComponent implements OnInit {
     measureName: string;
     heading: string;
     ordering: string;
+    iconClass: string;
     playerSpotlightStatistic = PlayerSpotlightStatistic;
     isLoading = true;
 
@@ -53,6 +54,7 @@ export class PlayerSpotlightComponent implements OnInit {
                 this.heading = 'Goal Scorer of the Week';
                 this.measureName = 'Average Goals';
                 this.ordering = 'DESC';
+                this.iconClass = 'icon-soccer-ball';
                 break;
             case PlayerSpotlightStatistic.Assists:
                 this.modelProperty = 'assistsAverage';
@@ -60,6 +62,7 @@ export class PlayerSpotlightComponent implements OnInit {
                 this.heading = 'Assister of the Week';
                 this.measureName = 'Average Assists';
                 this.ordering = 'DESC';
+                this.iconClass = 'icon-soccer-shoe';
                 break;
             case PlayerSpotlightStatistic.GoalsConceded:
                 this.modelProperty = 'goalsConcededAverage';
@@ -67,6 +70,7 @@ export class PlayerSpotlightComponent implements OnInit {
                 this.heading = 'Defender of the Week';
                 this.measureName = 'Average Goals Conceded';
                 this.ordering = 'ASC';
+                this.iconClass = 'icon-keepers-glove';
                 break;
             case PlayerSpotlightStatistic.PassCompletion:
                 this.modelProperty = 'passCompletionPercentageAverage';
@@ -74,6 +78,7 @@ export class PlayerSpotlightComponent implements OnInit {
                 this.heading = 'Passer of the Week';
                 this.measureName = 'Pass Completion';
                 this.ordering = 'DESC';
+                this.iconClass = 'icon-soccer-shots';
                 break;
         }
     }

@@ -7,6 +7,7 @@ import { UserPreferenceService, UserPreferenceType } from '@shared/services/user
 import { TeamStatisticFilters } from '../shared/model/dtos/paged-team-statistics-request-dto.model';
 import EnumUtils from '@shared/utilities/enum-utilities';
 import { TeamType } from '../shared/model/team-type.enum';
+import { TeamSpotlightStatistic } from './team-spotlight/team-spotlight-statistic.enum';
 @Component({
     selector: 'app-team-list',
     templateUrl: './team-list.component.html',
@@ -19,6 +20,7 @@ export class TeamListComponent implements OnInit {
     teamStatistics: TeamStatistics[];
     filters: TeamStatisticFilters = new TeamStatisticFilters();
     teamTypes = TeamType;
+    teamSpotlightStatistic = TeamSpotlightStatistic;
     regionId: number;
     currentPage = 1;
     totalPages: number;

@@ -7,10 +7,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { TeamListComponent } from './team-list.component';
 import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
 import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
+import { TeamSpotlightComponent } from './team-spotlight/team-spotlight.component';
 
 @NgModule({
     declarations: [
-        TeamListComponent
+        TeamListComponent,
+        TeamSpotlightComponent
     ],
     exports: [
         TeamListComponent

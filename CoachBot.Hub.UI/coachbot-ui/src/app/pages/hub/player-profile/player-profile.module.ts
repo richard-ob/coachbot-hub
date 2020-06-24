@@ -18,6 +18,10 @@ import { CalendarHeatmapModule } from 'src/app/shared/components/calendar-heatma
 import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
 import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
 import { CoreModule } from '@core/core.module';
+import {
+    PlayerPerformanceTrackerComponent
+} from './player-profile-statistics/player-performance-tracker/player-performance-tracker.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
     declarations: [
@@ -26,7 +30,8 @@ import { CoreModule } from '@core/core.module';
         PlayerProfileMatchesComponent,
         PlayerProfileTournamentsComponent,
         PlayerProfileStatisticsComponent,
-        PlayerProfileActivityHeatmapComponent
+        PlayerProfileActivityHeatmapComponent,
+        PlayerPerformanceTrackerComponent
     ],
     imports: [
         CommonModule,
@@ -39,7 +44,8 @@ import { CoreModule } from '@core/core.module';
         SweetAlert2Module,
         CalendarHeatmapModule,
         HubPipesModule,
-        ThSorterModule
+        ThSorterModule,
+        NgxChartsModule
     ]
 })
 export class PlayerProfileModule { }

@@ -481,6 +481,75 @@ namespace CoachBot.Domain.Services
                  });
         }
 
+        public List<PlayerPerformanceSnapshot> GetMonthlyPlayerPerformance(int playerId)
+        {
+            return _coachBotContext
+                 .PlayerPerformanceSnapshots
+                 .FromSql($@"SELECT PlayerMatchStatistics.PlayerId,
+                                    DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
+                                    DATEPART(year, PlayerMatchStatistics.CreatedDate) AS Year,
+                                    AVG(PlayerMatchStatistics.Goals) As AverageGoals,
+                                    AVG(PlayerMatchStatistics.Assists) As AverageAssists,
+                                    AVG(PlayerMatchStatistics.GoalsConceded) As AverageGoalsConceded,
+                                    COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
+                                    COUNT(*) As Appearances
+                    FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
+                    WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(year, -1, DATENOW())
+                    GROUP BY PlayerMatchStatistics.PlayerId,
+                            DATEPART(month, PlayerMatchStatistics.CreatedDate),
+                            DATEPART(year, PlayerMatchStatistics.CreatedDate)
+                    ORDER BY DATEPART(year, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(month, PlayerMatchStatistics.CreatedDate) DESC")
+                .ToList();
+        }
+
+        public List<PlayerPerformanceSnapshot> GetWeeklyPlayerPerformance(int playerId)
+        {
+            return _coachBotContext
+                 .PlayerPerformanceSnapshots
+                 .FromSql($@"SELECT PlayerMatchStatistics.PlayerId,
+                                    DATEPART(week, PlayerMatchStatistics.CreatedDate) AS Week,
+                                    DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
+                                    DATEPART(year, PlayerMatchStatistics.CreatedDate) AS Year,
+                                    AVG(PlayerMatchStatistics.Goals) As AverageGoals,
+                                    AVG(PlayerMatchStatistics.Assists) As AverageAssists,
+                                    AVG(PlayerMatchStatistics.GoalsConceded) As AverageGoalsConceded,
+                                    COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
+                                    COUNT(*) As Appearances
+                    FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
+                    WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(month, -12, DATENOW())
+                    GROUP BY PlayerMatchStatistics.PlayerId,
+                            DATEPART(week, PlayerMatchStatistics.CreatedDate),
+                            DATEPART(month, PlayerMatchStatistics.CreatedDate),
+                            DATEPART(year, PlayerMatchStatistics.CreatedDate)
+                    ORDER BY DATEPART(year, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(month, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(week, PlayerMatchStatistics.CreatedDate) DESC")
+                .ToList();
+        }
+
+        public List<PlayerPerformanceSnapshot> GetDailyPlayerPerformance(int playerId)
+        {
+            return _coachBotContext
+                 .PlayerPerformanceSnapshots
+                 .FromSql($@"SELECT PlayerMatchStatistics.PlayerId,
+                                    DATEPART(day, PlayerMatchStatistics.CreatedDate) AS Day,
+                                    DATEPART(week, PlayerMatchStatistics.CreatedDate) AS Week,
+                                    DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
+                                    DATEPART(year, PlayerMatchStatistics.CreatedDate) AS Year,
+                                    AVG(PlayerMatchStatistics.Goals) As AverageGoals,
+                                    AVG(PlayerMatchStatistics.Assists) As AverageAssists,
+                                    AVG(PlayerMatchStatistics.GoalsConceded) As AverageGoalsConceded,
+                                    COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
+                                    COUNT(*) As Appearances
+                    FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
+                    WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(month, -1, DATENOW())
+                    GROUP BY PlayerMatchStatistics.PlayerId,
+                            DATEPART(day, PlayerMatchStatistics.CreatedDate),
+                            DATEPART(week, PlayerMatchStatistics.CreatedDate),
+                            DATEPART(month, PlayerMatchStatistics.CreatedDate),
+                            DATEPART(year, PlayerMatchStatistics.CreatedDate)
+                    ORDER BY DATEPART(year, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(month, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(week, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(day, PlayerMatchStatistics.CreatedDate)  DESC")
+                .ToList();
+        }
+
         private Position GetMostCommonPosition(PlayerTeam playerTeam)
         {
            var topPosition = _coachBotContext.PlayerPositionMatchStatistics

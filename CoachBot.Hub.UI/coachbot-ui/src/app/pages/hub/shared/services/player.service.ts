@@ -14,6 +14,7 @@ import { PlayerProfile } from '../model/player-profile.model';
 import { MatchDayTotals } from '../model/team-match-day-totals';
 import { PlayerPositionMatchStatistics } from '../model/player-match-statistics.model';
 import { PlayerStatisticsFilterHelper } from '../model/helpers/player-statistics-filter.helper';
+import { PlayerPerformanceSnapshot } from '../model/player-performance-snapshot.model';
 
 @Injectable({
     providedIn: 'root'
@@ -55,6 +56,18 @@ export class PlayerService {
 
     getPlayerTeamStatisticsHistory(playerId: number): Observable<PlayerTeamStatisticsTotals[]> {
         return this.http.get<PlayerTeamStatisticsTotals[]>(`${environment.apiUrl}/api/player/${playerId}/team-history`);
+    }
+
+    getMonthlyPlayerPerformance(playerId: number): Observable<PlayerPerformanceSnapshot[]> {
+        return this.http.get<PlayerPerformanceSnapshot[]>(`${environment.apiUrl}/api/player-statistics/performance/monthly/${playerId}`);
+    }
+
+    getWeeklyPlayerPerformance(playerId: number): Observable<PlayerPerformanceSnapshot[]> {
+        return this.http.get<PlayerPerformanceSnapshot[]>(`${environment.apiUrl}/api/player-statistics/performance/weekly/${playerId}`);
+    }
+
+    getDailyPlayerPerformance(playerId: number): Observable<PlayerPerformanceSnapshot[]> {
+        return this.http.get<PlayerPerformanceSnapshot[]>(`${environment.apiUrl}/api/player-statistics/performance/daily/${playerId}`);
     }
 
     getPlayerAppearanceTotals(playerId: number): Observable<MatchDayTotals[]> {

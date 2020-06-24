@@ -37,6 +37,7 @@ namespace CoachBot.Database
         public DbSet<PlayerPositionMatchStatistics> PlayerPositionMatchStatistics { get; set; }
         public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
         public DbSet<PlayerRating> PlayerRatings { get; set; }
+        public DbQuery<PlayerPerformanceSnapshot> PlayerPerformanceSnapshots { get; set; }
         public DbSet<Organisation> Organisations { get; set; }
         public DbSet<TournamentSeries> TournamentSeries { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }

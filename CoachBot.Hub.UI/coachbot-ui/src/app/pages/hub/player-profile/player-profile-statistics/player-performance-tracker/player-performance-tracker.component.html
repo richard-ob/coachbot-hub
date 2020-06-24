@@ -3,6 +3,34 @@
         <h4>Performance Tracker</h4>
         <ul class="team-result-filter d-none d-md-inline float-right">
             <li class="team-result-filter__item">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-xs btn-light"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageGoals"
+                        (click)="setAttribute(performanceTrackerAttribute.AverageGoals)">
+                        Goals
+                    </button>
+                    <button type="button" class="btn btn-xs btn-light"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageAssists"
+                        (click)="setAttribute(performanceTrackerAttribute.AverageAssists)">
+                        Assists
+                    </button>
+                    <button type="button" class="btn btn-xs btn-light"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.GoalsConceded"
+                        (click)="setAttribute(performanceTrackerAttribute.GoalsConceded)">
+                        Goals Conceded
+                    </button>
+                    <button type="button" class="btn btn-xs btn-light"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.Cleansheets"
+                        (click)="setAttribute(performanceTrackerAttribute.Cleansheets)">
+                        Cleansheets</button>
+                    <button type="button" class="btn btn-xs btn-light"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.Appearances"
+                        (click)="setAttribute(performanceTrackerAttribute.Appearances)">
+                        Appearances
+                    </button>
+                </div>
+            </li>
+            <li class="team-result-filter__item">
                 <select [(ngModel)]="currentPerformanceTrackerTime" name="timePeriod" class="form-control"
                     #timePeriodSelect>
                     <option [ngValue]="performanceTrackerTime.Daily">Daily</option>
@@ -19,9 +47,11 @@
     </div>
     <div class="card__content p-4">
         <app-spinner *ngIf="isLoading"></app-spinner>
-        <ngx-charts-line-chart *ngIf="!isLoading && performanceSeries" [results]="performanceSeries"
-            [xAxisLabel]="'Day'" [showXAxisLabel]="false" [yAxisLabel]="'Number'" [xAxis]="true" [yAxis]="true"
-            [showYAxisLabel]="false" [legend]="true" [legendTitle]="'Stat'" [autoScale]="true">
-        </ngx-charts-line-chart>
+        <div class="performance-tracker-chart-container">
+            <ngx-charts-line-chart *ngIf="!isLoading && performanceSeries" [results]="performanceSeries"
+                [xAxisLabel]="'Day'" [showXAxisLabel]="false" [yAxisLabel]="'Number'" [xAxis]="true" [yAxis]="true"
+                [showYAxisLabel]="false" [legend]="false" [legendTitle]="'Stat'">
+            </ngx-charts-line-chart>
+        </div>
     </div>
 </div>

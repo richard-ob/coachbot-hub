@@ -2,3 +2,13 @@
     display: block !important;
     padding-left: 0 !important;
 }
+
+.chart-legend .legend-wrap {
+    width: calc(100% - 32px) !important;
+}
+
+.performance-tracker-chart-container { 
+    width: 100%;
+    min-height: 300px;
+    overflow: auto;
+}

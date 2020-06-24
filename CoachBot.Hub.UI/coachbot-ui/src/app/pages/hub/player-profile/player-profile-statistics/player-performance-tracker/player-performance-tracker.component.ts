@@ -4,6 +4,7 @@ import { PlayerService } from '../../../shared/services/player.service';
 import { PlayerPerformanceSnapshot } from '@pages/hub/shared/model/player-performance-snapshot.model';
 import { PerformanceTrackerTime } from './performance-tracker-time.enum';
 import { GraphSeries } from './graph-series.model';
+import { PerformanceTrackerAttribute } from './performance-tracker-attribute.enum';
 
 @Component({
     selector: 'app-player-performance-tracker',
@@ -16,6 +17,8 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
     @Input() playerId: number;
     playerPerformanceSnapshots: PlayerPerformanceSnapshot[];
     performanceSeries: GraphSeries[];
+    currentPerformanceTrackerAttribute: PerformanceTrackerAttribute = PerformanceTrackerAttribute.AverageGoals;
+    performanceTrackerAttribute = PerformanceTrackerAttribute;
     currentPerformanceTrackerTime: PerformanceTrackerTime = PerformanceTrackerTime.Daily;
     performanceTrackerTime = PerformanceTrackerTime;
     isLoading = true;
@@ -69,27 +72,41 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
     }
 
     mapPerformanceToPoints() {
-        this.performanceSeries = [
-            {
-                name: 'Goals',
-                series: this.playerPerformanceSnapshots.map(snapshot => ({ value: snapshot.averageGoals, name: snapshot.month.toString() }))
-            },
-            {
-                name: 'Assists',
-                series: this.playerPerformanceSnapshots.map(snapshot => ({ value: snapshot.averageAssists, name: snapshot.month.toString() }))
-            },
-            {
-                name: 'Goals Conceded',
-                series: this.playerPerformanceSnapshots.map(snapshot => ({ value: snapshot.averageGoalsConceded, name: snapshot.month.toString() }))
-            },
-            {
-                name: 'Cleansheets',
-                series: this.playerPerformanceSnapshots.map(snapshot => ({ value: snapshot.cleanSheets, name: snapshot.month.toString() }))
-            },
-            {
-                name: 'Appearances',
-                series: this.playerPerformanceSnapshots.map(snapshot => ({ value: snapshot.appearances, name: snapshot.month.toString() }))
-            }
-        ];
+        let series: GraphSeries;
+        switch (this.currentPerformanceTrackerAttribute) {
+            case PerformanceTrackerAttribute.AverageGoals:
+                series = this.generateSeries('Average Goals', 'averageGoals');
+                break;
+            case PerformanceTrackerAttribute.AverageAssists:
+                series = this.generateSeries('Average Assists', 'averageAssists');
+                break;
+            case PerformanceTrackerAttribute.GoalsConceded:
+                series = this.generateSeries('Average Goals Conceded', 'averageGoalsConceded');
+                break;
+            case PerformanceTrackerAttribute.Cleansheets:
+                series = this.generateSeries('Cleansheets', 'cleanSheets');
+                break;
+            case PerformanceTrackerAttribute.Appearances:
+                series = this.generateSeries('Appearances', 'appearances');
+                break;
+        }
+        this.performanceSeries = [series];
+    }
+
+    generateSeries(name: string, property: string) {
+        return {
+            name,
+            series: this.playerPerformanceSnapshots.map(snapshot => ({ value: snapshot[property], name: this.getDateString(snapshot.year, snapshot.month) }))
+        };
+    }
+
+    setAttribute(attribute: PerformanceTrackerAttribute) {
+        this.currentPerformanceTrackerAttribute = attribute;
+        this.mapPerformanceToPoints();
+    }
+
+    getDateString(year: number, month: number) {
+        const date = new Date(year, month, 1);
+        return `${date.toLocaleString('default', { month: 'long' })} ${year}`;
     }
 }

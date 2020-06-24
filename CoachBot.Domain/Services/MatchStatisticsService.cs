@@ -490,9 +490,9 @@ namespace CoachBot.Domain.Services
                                     NULL AS Week,
                                     DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
                                     DATEPART(year, PlayerMatchStatistics.CreatedDate) AS Year,
-                                    AVG(PlayerMatchStatistics.Goals) As AverageGoals,
-                                    AVG(PlayerMatchStatistics.Assists) As AverageAssists,
-                                    AVG(PlayerMatchStatistics.GoalsConceded) As AverageGoalsConceded,
+                                    ROUND(AVG(CAST(PlayerMatchStatistics.Goals AS FLOAT)), 2) AS AverageGoals,
+                                    ROUND(AVG(CAST(PlayerMatchStatistics.Assists AS FLOAT)), 2) AS AverageAssists,
+                                    ROUND(AVG(CAST(PlayerMatchStatistics.GoalsConceded AS FLOAT)), 2) AS AverageGoalsConceded,
                                     COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
                                     COUNT(*) As Appearances
                     FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
@@ -500,7 +500,7 @@ namespace CoachBot.Domain.Services
                     GROUP BY PlayerMatchStatistics.PlayerId,
                             DATEPART(month, PlayerMatchStatistics.CreatedDate),
                             DATEPART(year, PlayerMatchStatistics.CreatedDate)
-                    ORDER BY DATEPART(year, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(month, PlayerMatchStatistics.CreatedDate) DESC")
+                    ORDER BY DATEPART(year, PlayerMatchStatistics.CreatedDate), DATEPART(month, PlayerMatchStatistics.CreatedDate)")
                 .ToList();
         }
 
@@ -513,9 +513,9 @@ namespace CoachBot.Domain.Services
                                     DATEPART(week, PlayerMatchStatistics.CreatedDate) AS Week,
                                     DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
                                     DATEPART(year, PlayerMatchStatistics.CreatedDate) AS Year,
-                                    AVG(PlayerMatchStatistics.Goals) As AverageGoals,
-                                    AVG(PlayerMatchStatistics.Assists) As AverageAssists,
-                                    AVG(PlayerMatchStatistics.GoalsConceded) As AverageGoalsConceded,
+                                    ROUND(AVG(CAST(PlayerMatchStatistics.Goals AS FLOAT)), 2) AS AverageGoals,
+                                    ROUND(AVG(CAST(PlayerMatchStatistics.Assists AS FLOAT)), 2) AS AverageAssists,
+                                    ROUND(AVG(CAST(PlayerMatchStatistics.GoalsConceded AS FLOAT)), 2) AS AverageGoalsConceded,
                                     COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
                                     COUNT(*) As Appearances
                     FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
@@ -524,7 +524,7 @@ namespace CoachBot.Domain.Services
                             DATEPART(week, PlayerMatchStatistics.CreatedDate),
                             DATEPART(month, PlayerMatchStatistics.CreatedDate),
                             DATEPART(year, PlayerMatchStatistics.CreatedDate)
-                    ORDER BY DATEPART(year, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(month, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(week, PlayerMatchStatistics.CreatedDate) DESC")
+                    ORDER BY DATEPART(year, PlayerMatchStatistics.CreatedDate), DATEPART(month, PlayerMatchStatistics.CreatedDate), DATEPART(week, PlayerMatchStatistics.CreatedDate)")
                 .ToList();
         }
 
@@ -537,9 +537,9 @@ namespace CoachBot.Domain.Services
                                     DATEPART(week, PlayerMatchStatistics.CreatedDate) AS Week,
                                     DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
                                     DATEPART(year, PlayerMatchStatistics.CreatedDate) AS Year,
-                                    AVG(PlayerMatchStatistics.Goals) As AverageGoals,
-                                    AVG(PlayerMatchStatistics.Assists) As AverageAssists,
-                                    AVG(PlayerMatchStatistics.GoalsConceded) As AverageGoalsConceded,
+                                    ROUND(AVG(CAST(PlayerMatchStatistics.Goals AS FLOAT)), 2) AS AverageGoals,
+                                    ROUND(AVG(CAST(PlayerMatchStatistics.Assists AS FLOAT)), 2) AS AverageAssists,
+                                    ROUND(AVG(CAST(PlayerMatchStatistics.GoalsConceded AS FLOAT)), 2) AS AverageGoalsConceded,
                                     COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
                                     COUNT(*) As Appearances
                     FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
@@ -549,7 +549,7 @@ namespace CoachBot.Domain.Services
                             DATEPART(week, PlayerMatchStatistics.CreatedDate),
                             DATEPART(month, PlayerMatchStatistics.CreatedDate),
                             DATEPART(year, PlayerMatchStatistics.CreatedDate)
-                    ORDER BY DATEPART(year, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(month, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(week, PlayerMatchStatistics.CreatedDate) DESC, DATEPART(day, PlayerMatchStatistics.CreatedDate)  DESC")
+                    ORDER BY DATEPART(year, PlayerMatchStatistics.CreatedDate), DATEPART(month, PlayerMatchStatistics.CreatedDate), DATEPART(week, PlayerMatchStatistics.CreatedDate), DATEPART(day, PlayerMatchStatistics.CreatedDate)")
                 .ToList();
         }
 

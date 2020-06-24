@@ -494,7 +494,7 @@ namespace CoachBot.Domain.Services
                                     COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
                                     COUNT(*) As Appearances
                     FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
-                    WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(year, -1, DATENOW())
+                    WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(year, -1, GETDATE())
                     GROUP BY PlayerMatchStatistics.PlayerId,
                             DATEPART(month, PlayerMatchStatistics.CreatedDate),
                             DATEPART(year, PlayerMatchStatistics.CreatedDate)
@@ -516,7 +516,7 @@ namespace CoachBot.Domain.Services
                                     COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
                                     COUNT(*) As Appearances
                     FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
-                    WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(month, -12, DATENOW())
+                    WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(month, -12, GETDATE())
                     GROUP BY PlayerMatchStatistics.PlayerId,
                             DATEPART(week, PlayerMatchStatistics.CreatedDate),
                             DATEPART(month, PlayerMatchStatistics.CreatedDate),
@@ -540,7 +540,7 @@ namespace CoachBot.Domain.Services
                                     COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
                                     COUNT(*) As Appearances
                     FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
-                    WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(month, -1, DATENOW())
+                    WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(month, -1, GETDATE())
                     GROUP BY PlayerMatchStatistics.PlayerId,
                             DATEPART(day, PlayerMatchStatistics.CreatedDate),
                             DATEPART(week, PlayerMatchStatistics.CreatedDate),

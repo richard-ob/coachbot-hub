@@ -18,6 +18,10 @@
         </ul>
     </div>
     <div class="card__content">
-
+        <app-spinner *ngIf="isLoading"></app-spinner>
+        <ngx-charts-line-chart *ngIf="!isLoading && performanceSeries" [results]="performanceSeries"
+            [xAxisLabel]="'Day'" [showXAxisLabel]="true" [yAxisLabel]="'Number'" [xAxis]="true" [yAxis]="true"
+            [showYAxisLabel]="true" [legend]="true" [legendTitle]="'Stat'">
+        </ngx-charts-line-chart>
     </div>
 </div>

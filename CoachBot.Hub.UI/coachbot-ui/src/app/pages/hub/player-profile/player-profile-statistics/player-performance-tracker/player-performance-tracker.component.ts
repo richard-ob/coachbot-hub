@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PlayerService } from '../../../shared/services/player.service';
 import { PlayerPerformanceSnapshot } from '@pages/hub/shared/model/player-performance-snapshot.model';
 import { PerformanceTrackerTime } from './performance-tracker-time.enum';
+import { GraphSeries } from './graph-series.model';
 
 @Component({
     selector: 'app-player-performance-tracker',
@@ -12,6 +13,7 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
 
     @Input() playerId: number;
     playerPerformanceSnapshots: PlayerPerformanceSnapshot[];
+    performanceSeries: GraphSeries[];
     currentPerformanceTrackerTime: PerformanceTrackerTime = PerformanceTrackerTime.Daily;
     performanceTrackerTime = PerformanceTrackerTime;
     isLoading = true;
@@ -27,6 +29,7 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
         this.isLoading = true;
         this.playerService.getDailyPlayerPerformance(this.playerId).subscribe(playerPerformanceSnapshots => {
             this.playerPerformanceSnapshots = playerPerformanceSnapshots;
+            this.mapPerformanceToPoints();
             this.isLoading = false;
         });
     }
@@ -60,4 +63,21 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
                 break;
         }
     }
+
+    mapPerformanceToPoints() {
+        this.performanceSeries = [
+            {
+                name: 'Goals',
+                series: [
+                    { name: 'January', value: 1 },
+                    { name: 'February', value: 1 },
+                    { name: 'March', value: 4 },
+                    { name: 'April', value: 0 },
+                    { name: 'May', value: 2 },
+                    { name: 'June', value: 3 },
+                ]
+            }
+        ];
+    }
 }
+//this.playerPerformanceSnapshots.map(snapshot => ({ value: snapshot.averageGoals, name: snapshot.day }))

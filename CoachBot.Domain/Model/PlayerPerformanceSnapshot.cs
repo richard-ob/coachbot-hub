@@ -14,15 +14,15 @@ namespace CoachBot.Domain.Model
 
         public int Year { get; set; }
 
-        public double AverageGoals { get; set; }
+        public int AverageGoals { get; set; }
 
-        public double AverageAssists { get; set; }
+        public int AverageAssists { get; set; }
 
-        public double AverageGoalsConceded { get; set; }
+        public int AverageGoalsConceded { get; set; }
 
-        public double CleanSheets { get; set; }
+        public int CleanSheets { get; set; }
 
-        public double Appearances { get; set; }
+        public int Appearances { get; set; }
 
     }
 }

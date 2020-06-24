@@ -17,11 +17,11 @@
             </li>
         </ul>
     </div>
-    <div class="card__content">
+    <div class="card__content p-4">
         <app-spinner *ngIf="isLoading"></app-spinner>
         <ngx-charts-line-chart *ngIf="!isLoading && performanceSeries" [results]="performanceSeries"
-            [xAxisLabel]="'Day'" [showXAxisLabel]="true" [yAxisLabel]="'Number'" [xAxis]="true" [yAxis]="true"
-            [showYAxisLabel]="true" [legend]="true" [legendTitle]="'Stat'">
+            [xAxisLabel]="'Day'" [showXAxisLabel]="false" [yAxisLabel]="'Number'" [xAxis]="true" [yAxis]="true"
+            [showYAxisLabel]="false" [legend]="true" [legendTitle]="'Stat'" [autoScale]="true">
         </ngx-charts-line-chart>
     </div>
 </div>

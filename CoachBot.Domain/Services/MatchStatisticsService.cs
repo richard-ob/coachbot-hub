@@ -486,6 +486,8 @@ namespace CoachBot.Domain.Services
             return _coachBotContext
                  .PlayerPerformanceSnapshots
                  .FromSql($@"SELECT PlayerMatchStatistics.PlayerId,
+                                    NULL AS Day,
+                                    NULL AS Week,
                                     DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
                                     DATEPART(year, PlayerMatchStatistics.CreatedDate) AS Year,
                                     AVG(PlayerMatchStatistics.Goals) As AverageGoals,
@@ -507,6 +509,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext
                  .PlayerPerformanceSnapshots
                  .FromSql($@"SELECT PlayerMatchStatistics.PlayerId,
+                                    NULL AS Day,
                                     DATEPART(week, PlayerMatchStatistics.CreatedDate) AS Week,
                                     DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
                                     DATEPART(year, PlayerMatchStatistics.CreatedDate) AS Year,

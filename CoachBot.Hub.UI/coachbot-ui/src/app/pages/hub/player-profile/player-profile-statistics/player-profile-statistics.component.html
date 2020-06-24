@@ -12,6 +12,7 @@ https://www.premierleague.com/players/4852/Adri%C3%A1n/stats
     </div>
     <div *ngIf="!isLoading && playerStatistics" class="row">
         <div class="col-12">
+            <app-player-performance-tracker [playerId]="playerId"></app-player-performance-tracker>
             <div class="card card--has-table">
                 <div class="card__header card__header--has-btn">
                     <h4 title="Activity in 2020">Activity</h4>

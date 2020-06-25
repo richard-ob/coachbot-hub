@@ -1,2 +1,5 @@
-<calendar-heatmap (handler)="doLog()" [data]="appearanceData" [overview]="overview" [color]="'#3b7eab'">
-</calendar-heatmap>
+<app-calendar-heatmap *ngIf="appearanceTotals; else spinner" [calendarEntries]="appearanceTotals">
+</app-calendar-heatmap>
+<ng-template #spinner>
+    <app-spinner></app-spinner>
+</ng-template>

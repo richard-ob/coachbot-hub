@@ -1,12 +1,16 @@
-import { CalendarHeatmap } from 'angular2-calendar-heatmap';
 import { NgModule } from '@angular/core';
+import { CalendarHeatmapComponent } from './calendar-heatmap.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
     declarations: [
-        CalendarHeatmap
+        CalendarHeatmapComponent
     ],
     exports: [
-        CalendarHeatmap
+        CalendarHeatmapComponent
+    ],
+    imports: [
+        NgxChartsModule
     ]
 })
 export class CalendarHeatmapModule { }

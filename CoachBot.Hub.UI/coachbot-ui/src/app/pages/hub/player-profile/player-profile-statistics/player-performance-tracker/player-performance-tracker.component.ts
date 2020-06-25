@@ -96,7 +96,9 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
     generateSeries(name: string, property: string) {
         return {
             name,
-            series: this.playerPerformanceSnapshots.map(snapshot => ({ value: snapshot[property], name: this.getDateString(snapshot.year, snapshot.month) }))
+            series: this.playerPerformanceSnapshots.map(
+                snapshot => ({ value: snapshot[property], name: this.getDateString(snapshot.year, snapshot.month) })
+            )
         };
     }
 

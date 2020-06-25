@@ -45,13 +45,19 @@
             </li>
         </ul>
     </div>
-    <div class="card__content p-4">
+    <div class="card__content position-relative p-4">
         <app-spinner *ngIf="isLoading"></app-spinner>
         <div class="performance-tracker-chart-container">
             <ngx-charts-line-chart *ngIf="!isLoading && performanceSeries" [results]="performanceSeries"
                 [xAxisLabel]="'Day'" [showXAxisLabel]="false" [yAxisLabel]="'Number'" [xAxis]="true" [yAxis]="true"
                 [showYAxisLabel]="false" [legend]="false" [legendTitle]="'Stat'">
             </ngx-charts-line-chart>
+        </div>
+        <div *ngIf="performanceSeries.length === 0"
+            style="position: absolute; height: 100%; width: 100%; background: rgba(0, 0, 0, 0.5); top: 0; left: 0; color: #fff; font-family: 'Montserrat'"
+            class="d-flex align-items-center justify-content-center">
+            <i class="fas fa-exclamation-triangle mr-2"></i>&nbsp;There is not yet enough historical data for this
+            player
         </div>
     </div>
 </div>

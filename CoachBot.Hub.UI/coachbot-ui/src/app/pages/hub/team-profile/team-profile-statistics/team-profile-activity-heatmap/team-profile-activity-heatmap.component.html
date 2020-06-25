@@ -10,7 +10,10 @@
         </ul>
     </div>
     <div class="card__content p-1">
-        <calendar-heatmap [data]="matchData" [overview]="overview" [color]="'#3b7eab'">
-        </calendar-heatmap>
+        <app-calendar-heatmap *ngIf="teamMatchTotals; else spinner" [calendarEntries]="teamMatchTotals">
+        </app-calendar-heatmap>
+        <ng-template #spinner>
+            <app-spinner></app-spinner>
+        </ng-template>
     </div>
 </div>

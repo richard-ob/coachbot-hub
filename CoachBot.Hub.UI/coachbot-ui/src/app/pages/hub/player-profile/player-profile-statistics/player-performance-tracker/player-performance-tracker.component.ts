@@ -32,6 +32,7 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
 
     getDailyPlayerPerformance() {
         this.isLoading = true;
+        this.currentPerformanceTrackerTime = PerformanceTrackerTime.Daily;
         this.playerService.getDailyPlayerPerformance(this.playerId).subscribe(playerPerformanceSnapshots => {
             this.playerPerformanceSnapshots = playerPerformanceSnapshots;
             this.mapPerformanceToPoints();
@@ -41,6 +42,7 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
 
     getWeeklyPlayerPerformance() {
         this.isLoading = true;
+        this.currentPerformanceTrackerTime = PerformanceTrackerTime.Weekly;
         this.playerService.getWeeklyPlayerPerformance(this.playerId).subscribe(playerPerformanceSnapshots => {
             this.playerPerformanceSnapshots = playerPerformanceSnapshots;
             this.mapPerformanceToPoints();
@@ -50,25 +52,12 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
 
     getMonthlyPlayerPerformance() {
         this.isLoading = true;
+        this.currentPerformanceTrackerTime = PerformanceTrackerTime.Monthly;
         this.playerService.getMonthlyPlayerPerformance(this.playerId).subscribe(playerPerformanceSnapshots => {
             this.playerPerformanceSnapshots = playerPerformanceSnapshots;
             this.mapPerformanceToPoints();
             this.isLoading = false;
         });
-    }
-
-    setFilters() {
-        switch (this.currentPerformanceTrackerTime) {
-            case PerformanceTrackerTime.Daily:
-                this.getDailyPlayerPerformance();
-                break;
-            case PerformanceTrackerTime.Weekly:
-                this.getWeeklyPlayerPerformance();
-                break;
-            case PerformanceTrackerTime.Monthly:
-                this.getMonthlyPlayerPerformance();
-                break;
-        }
     }
 
     mapPerformanceToPoints() {

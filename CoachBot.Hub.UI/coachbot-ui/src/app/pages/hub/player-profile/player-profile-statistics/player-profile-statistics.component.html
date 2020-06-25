@@ -6,37 +6,7 @@
     <div *ngIf="!isLoading && playerStatistics" class="row">
         <div class="col-12">
             <app-player-performance-tracker [playerId]="playerId"></app-player-performance-tracker>
-            <div class="card card--has-table">
-                <div class="card__header card__header--has-btn">
-                    <h4 title="Activity in 2020">Activity</h4>
-                    <ul class="team-result-filter">
-                        <li class="team-result-filter__item">
-                            <label class="checkbox checkbox-inline mr-2">
-                                <input type="checkbox" name="includeSubstituteAppearances"> Include Sub Appearances
-                                <span class="checkbox-indicator"></span>
-                            </label>
-                        </li>
-                        <li class="team-result-filter__item">
-                            <select placeholder="Position" class="form-control" #timePeriodSelect>
-                                <option>All Positions</option>
-                                <option>GK</option>
-                                <option>LB</option>
-                                <option>RB</option>
-                                <option>LW</option>
-                                <option>RW</option>
-                            </select>
-                        </li>
-                        <li class="team-result-filter__item">
-                            <button type="button" class="btn btn-default btn-outline btn-xs card-header__button">
-                                Filter
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card__content p-1">
-                    <app-player-profile-activity-heatmap [playerId]="playerId"></app-player-profile-activity-heatmap>
-                </div>
-            </div>
+            <app-player-profile-activity-heatmap [playerId]="playerId"></app-player-profile-activity-heatmap>
         </div>
 
         <div class="col-4">

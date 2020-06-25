@@ -1,4 +1,4 @@
-import { OnInit, Component, Input } from '@angular/core';
+import { OnInit, Component, Input, ViewEncapsulation } from '@angular/core';
 import { MatchDayTotals } from '@pages/hub/shared/model/team-match-day-totals';
 import { DatePipe } from '@angular/common';
 
@@ -8,7 +8,8 @@ const weekdayName = new Intl.DateTimeFormat('en-us', { weekday: 'short' });
 @Component({
     selector: 'app-calendar-heatmap',
     templateUrl: './calendar-heatmap.component.html',
-    styleUrls: ['./calendar-heatmap.component.scss']
+    styleUrls: ['./calendar-heatmap.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class CalendarHeatmapComponent implements OnInit {
 

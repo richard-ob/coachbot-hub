@@ -22,6 +22,7 @@ import {
     PlayerPerformanceTrackerComponent
 } from './player-profile-statistics/player-performance-tracker/player-performance-tracker.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         CalendarHeatmapModule,
         HubPipesModule,
         ThSorterModule,
-        NgxChartsModule
+        NgxChartsModule,
+        BsDropdownModule.forRoot()
     ]
 })
 export class PlayerProfileModule { }

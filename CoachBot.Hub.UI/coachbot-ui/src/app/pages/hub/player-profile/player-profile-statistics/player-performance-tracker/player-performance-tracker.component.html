@@ -1,7 +1,29 @@
 <div class="card card--has-table">
-    <div class="card__header card__header--has-btn">
+    <div class="card__header card__header--has-btn" style="overflow: visible;">
         <h4>Performance Tracker</h4>
-        <ul class="team-result-filter d-none d-md-inline float-right">
+        <div class="btn-group float-right ml-2" dropdown style="margin-top: 3px; height: 23px;">
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-secondary dropdown-toggle"
+                aria-controls="dropdown-basic">
+                <ng-container [ngSwitch]="currentPerformanceTrackerTime">
+                    <span *ngSwitchCase="performanceTrackerTime.Daily">Daily</span>
+                    <span *ngSwitchCase="performanceTrackerTime.Weekly">Weekly</span>
+                    <span *ngSwitchCase="performanceTrackerTime.Monthly">Monthly</span>
+                </ng-container>
+                <span class="caret"></span>
+            </button>
+            <ul id="dropdown-teamtype" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem">
+                    <a class="dropdown-item clickable" (click)="getDailyPlayerPerformance()">Daily</a>
+                </li>
+                <li role="menuitem">
+                    <a class="dropdown-item clickable" (click)="getWeeklyPlayerPerformance()">Weekly</a>
+                </li>
+                <li role="menuitem">
+                    <a class="dropdown-item clickable" (click)="getMonthlyPlayerPerformance()">Monthly</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="team-result-filter d-none d-md-inline">
             <li class="team-result-filter__item">
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-xs btn-light"
@@ -30,19 +52,6 @@
                     </button>
                 </div>
             </li>
-            <li class="team-result-filter__item">
-                <select [(ngModel)]="currentPerformanceTrackerTime" name="timePeriod" class="form-control"
-                    #timePeriodSelect>
-                    <option [ngValue]="performanceTrackerTime.Daily">Daily</option>
-                    <option [ngValue]="performanceTrackerTime.Weekly">Weekly</option>
-                    <option [ngValue]="performanceTrackerTime.Monthly">Monthly</option>
-                </select>
-            </li>
-            <li class="team-result-filter__item">
-                <button type="button" class="btn btn-secondary btn-xs card-header__button" (click)="setFilters()">
-                    Filter
-                </button>
-            </li>
         </ul>
     </div>
     <div class="card__content position-relative p-4">
@@ -53,9 +62,8 @@
                 [showYAxisLabel]="false" [legend]="false" [legendTitle]="'Stat'">
             </ngx-charts-line-chart>
         </div>
-        <div *ngIf="performanceSeries.length === 0"
-            style="position: absolute; height: 100%; width: 100%; background: rgba(0, 0, 0, 0.5); top: 0; left: 0; color: #fff; font-family: 'Montserrat'"
-            class="d-flex align-items-center justify-content-center">
+        <div *ngIf="performanceSeries && performanceSeries.length <= 1"
+            class="performance-tracker-no-data d-flex align-items-center justify-content-center">
             <i class="fas fa-exclamation-triangle mr-2"></i>&nbsp;There is not yet enough historical data for this
             player
         </div>

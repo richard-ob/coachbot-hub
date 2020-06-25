@@ -2,3 +2,8 @@
     width: 100%;
     height: 200px;
 }
+
+span.tooltip-val::after {
+    content: ' Matches';
+    color: white;
+}

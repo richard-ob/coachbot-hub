@@ -12,3 +12,14 @@
     min-height: 300px;
     overflow: auto;
 }
+
+.performance-tracker-no-data {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    color: #fff;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+}

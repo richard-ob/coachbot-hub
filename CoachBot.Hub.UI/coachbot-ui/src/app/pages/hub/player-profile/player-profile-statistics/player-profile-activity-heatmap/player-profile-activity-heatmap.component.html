@@ -1,5 +1,12 @@
-<app-calendar-heatmap *ngIf="appearanceTotals; else spinner" [calendarEntries]="appearanceTotals">
-</app-calendar-heatmap>
-<ng-template #spinner>
-    <app-spinner></app-spinner>
-</ng-template>
+<div class="card card--has-table">
+    <div class="card__header">
+        <h4>Activity</h4>
+    </div>
+    <div class="card__content p-1">
+        <app-calendar-heatmap *ngIf="appearanceTotals; else spinner" [calendarEntries]="appearanceTotals">
+        </app-calendar-heatmap>
+        <ng-template #spinner>
+            <app-spinner class="py-4"></app-spinner>
+        </ng-template>
+    </div>
+</div>

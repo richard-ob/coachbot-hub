@@ -3,5 +3,9 @@ export enum PerformanceTrackerAttribute {
     AverageAssists,
     GoalsConceded,
     Cleansheets,
-    Appearances
+    Appearances,
+    Wins,
+    Draws,
+    Losses,
+    MatchOutcomes
 }

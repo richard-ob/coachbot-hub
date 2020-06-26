@@ -1,0 +1,75 @@
+<div class="card card--has-table">
+    <div class="card__header card__header--has-btn" style="overflow: visible;">
+        <h4>Performance Tracker</h4>
+        <div class="btn-group btn-group-xs float-right ml-2" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-secondary dropdown-toggle"
+                aria-controls="dropdown-basic">
+                <ng-container [ngSwitch]="currentPerformanceTrackerTime">
+                    <span *ngSwitchCase="performanceTrackerTime.Daily">Daily</span>
+                    <span *ngSwitchCase="performanceTrackerTime.Weekly">Weekly</span>
+                    <span *ngSwitchCase="performanceTrackerTime.Monthly">Monthly</span>
+                </ng-container>
+                <span class="caret"></span>
+            </button>
+            <ul id="dropdown-teamtype" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem">
+                    <a class="dropdown-item clickable" (click)="getDailyPlayerPerformance()">Daily</a>
+                </li>
+                <li role="menuitem">
+                    <a class="dropdown-item clickable" (click)="getWeeklyPlayerPerformance()">Weekly</a>
+                </li>
+                <li role="menuitem">
+                    <a class="dropdown-item clickable" (click)="getMonthlyPlayerPerformance()">Monthly</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="team-result-filter float-right d-none d-md-inline">
+            <li class="team-result-filter__item">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-xs btn-light"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.MatchOutcomes"
+                        (click)="setAttribute(performanceTrackerAttribute.MatchOutcomes)">
+                        Match Outcomes</button>
+                    <button type="button" class="btn btn-xs btn-light"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageGoals"
+                        (click)="setAttribute(performanceTrackerAttribute.AverageGoals)">
+                        <span class="d-none d-xl-inline">Average&nbsp;</span>Goals
+                    </button>
+                    <button type="button" class="btn btn-xs btn-light"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageAssists"
+                        (click)="setAttribute(performanceTrackerAttribute.AverageAssists)">
+                        <span class="d-none d-xl-inline">Average&nbsp;</span>Assists
+                    </button>
+                    <button type="button" class="btn btn-xs btn-light"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.GoalsConceded"
+                        (click)="setAttribute(performanceTrackerAttribute.GoalsConceded)">
+                        <span class="d-none d-xl-inline">Average Goals&nbsp;</span>Conceded
+                    </button>
+                    <button type="button" class="btn btn-xs btn-light d-none d-xl-inline"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.Cleansheets"
+                        (click)="setAttribute(performanceTrackerAttribute.Cleansheets)">
+                        Cleansheets</button>
+                    <button type="button" class="btn btn-xs btn-light d-none d-xl-inline"
+                        [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.Appearances"
+                        (click)="setAttribute(performanceTrackerAttribute.Appearances)">
+                        Matches
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="card__content position-relative p-4">
+        <app-spinner *ngIf="isLoading"></app-spinner>
+        <div class="performance-tracker-chart-container">
+            <ngx-charts-line-chart *ngIf="!isLoading && performanceSeries" [results]="performanceSeries"
+                [xAxisLabel]="'Day'" [showXAxisLabel]="false" [yAxisLabel]="'Number'" [xAxis]="true" [yAxis]="true"
+                [showYAxisLabel]="false" [legend]="false" [legendTitle]="'Stat'" [scheme]="colorScheme">
+            </ngx-charts-line-chart>
+        </div>
+        <div *ngIf="performanceSeries && performanceSeries.length && performanceSeries[0].series.length <= 1"
+            class="performance-tracker-no-data d-flex align-items-center justify-content-center">
+            <i class="fas fa-exclamation-triangle mr-2"></i>&nbsp;There is not yet enough historical data for this
+            team
+        </div>
+    </div>
+</div>

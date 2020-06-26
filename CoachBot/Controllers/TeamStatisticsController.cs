@@ -30,5 +30,23 @@ namespace CoachBot.Controllers
         {
             return _matchStatisticsService.GetTeamMatchDayTotals(teamId);
         }
+
+        [HttpGet("performance/monthly/{teamId}")]
+        public List<TeamPerformanceSnapshot> GetMonthlyTeamPerformanceSnapshots(int teamId)
+        {
+            return _matchStatisticsService.GetMonthlyTeamPerformance(teamId);
+        }
+
+        [HttpGet("performance/weekly/{teamId}")]
+        public List<TeamPerformanceSnapshot> GetWeeklyTeamPerformanceSnapshots(int teamId)
+        {
+            return _matchStatisticsService.GetWeeklyTeamPerformance(teamId);
+        }
+
+        [HttpGet("performance/daily/{teamId}")]
+        public List<TeamPerformanceSnapshot> GetDailyPlayerPerformanceSnapshots(int teamId)
+        {
+            return _matchStatisticsService.GetDailyTeamPerformance(teamId);
+        }
     }
 }

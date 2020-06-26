@@ -23,6 +23,9 @@ import { HubPipesModule } from '../shared/pipes/hub-pipes.module';
 import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CoreModule } from '@core/core.module';
+import { TeamPerformanceTrackerComponent } from './team-profile-statistics/team-performance-tracker/team-performance-tracker.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
     declarations: [
@@ -33,6 +36,7 @@ import { CoreModule } from '@core/core.module';
         TeamProfilePlayerHistoryComponent,
         TeamProfileStatisticsLeaderboardComponent,
         TeamProfileActivityHeatmapComponent,
+        TeamPerformanceTrackerComponent,
         TeamProfileComponent
     ],
     imports: [
@@ -47,7 +51,9 @@ import { CoreModule } from '@core/core.module';
         CalendarHeatmapModule,
         HubPipesModule,
         FormIndicatorModule,
-        NgxSkeletonLoaderModule
+        NgxSkeletonLoaderModule,
+        BsDropdownModule.forRoot(),
+        NgxChartsModule
     ]
 })
 export class TeamProfileModule { }

@@ -504,6 +504,33 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
+        public List<TeamPerformanceSnapshot> GetMonthlyTeamPerformance(int teamId)
+        {
+            return _coachBotContext
+                 .TeamPerformanceSnapshots
+                 .FromSql($@"SELECT {teamId} AS TeamId,
+                            NULL AS Day,
+                            NULL AS Week,
+                            DATEPART(month, TeamMatchStatistics.CreatedDate) AS Month,
+                            DATEPART(year, TeamMatchStatistics.CreatedDate) AS Year,
+                            ISNULL(ROUND(AVG(CAST(TeamMatchStatistics.Goals AS FLOAT)), 2), 0) AS AverageGoals,
+                            ISNULL(ROUND(AVG(CAST(TeamMatchStatistics.Assists AS FLOAT)), 2), 0) AS AverageAssists,
+                            ISNULL(ROUND(AVG(CAST(TeamMatchStatistics.GoalsConceded AS FLOAT)), 2), 0) AS AverageGoalsConceded,
+                            SUM(CASE WHEN TeamMatchStatistics.GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
+                            SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Win} THEN 1 ELSE 0 END) As Wins,
+                            SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Draw} THEN 1 ELSE 0 END) As Draws,
+                            SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
+                            SUM(CASE WHEN CreatedDate IS NOT NULL THEN 1 ELSE 0 END) As Matches
+                        FROM dbo.TeamMatchStatistics TeamMatchStatistics 
+                        WHERE TeamMatchStatistics.TeamId = {teamId}
+                        GROUP BY TeamMatchStatistics.TeamId,
+                                DATEPART(week, TeamMatchStatistics.CreatedDate),
+                                DATEPART(month, TeamMatchStatistics.CreatedDate),
+                                DATEPART(year, TeamMatchStatistics.CreatedDate)
+                        ORDER BY DATEPART(year, TeamMatchStatistics.CreatedDate), DATEPART(month, TeamMatchStatistics.CreatedDate)")
+                .ToList();
+        }
+
         public List<PlayerPerformanceSnapshot> GetWeeklyPlayerPerformance(int playerId)
         {
             return _coachBotContext
@@ -528,6 +555,33 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
+        public List<TeamPerformanceSnapshot> GetWeeklyTeamPerformance(int teamId)
+        {
+            return _coachBotContext
+                 .TeamPerformanceSnapshots
+                 .FromSql($@"SELECT {teamId} AS TeamId,
+                            NULL AS Day,
+                            DATEPART(week, TeamMatchStatistics.CreatedDate) AS Week,
+                            DATEPART(month, TeamMatchStatistics.CreatedDate) AS Month,
+                            DATEPART(year, TeamMatchStatistics.CreatedDate) AS Year,
+                            ISNULL(ROUND(AVG(CAST(TeamMatchStatistics.Goals AS FLOAT)), 2), 0) AS AverageGoals,
+                            ISNULL(ROUND(AVG(CAST(TeamMatchStatistics.Assists AS FLOAT)), 2), 0) AS AverageAssists,
+                            ISNULL(ROUND(AVG(CAST(TeamMatchStatistics.GoalsConceded AS FLOAT)), 2), 0) AS AverageGoalsConceded,
+                            SUM(CASE WHEN TeamMatchStatistics.GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
+                            SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Win} THEN 1 ELSE 0 END) As Wins,
+                            SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Draw} THEN 1 ELSE 0 END) As Draws,
+                            SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
+                            SUM(CASE WHEN CreatedDate IS NOT NULL THEN 1 ELSE 0 END) As Matches
+                        FROM dbo.TeamMatchStatistics TeamMatchStatistics 
+                        WHERE TeamMatchStatistics.TeamId = {teamId}
+                        GROUP BY TeamMatchStatistics.TeamId,
+                                DATEPART(week, TeamMatchStatistics.CreatedDate),
+                                DATEPART(month, TeamMatchStatistics.CreatedDate),
+                                DATEPART(year, TeamMatchStatistics.CreatedDate)
+                        ORDER BY DATEPART(year, TeamMatchStatistics.CreatedDate), DATEPART(month, TeamMatchStatistics.CreatedDate), DATEPART(week, TeamMatchStatistics.CreatedDate)")
+                .ToList();
+        }
+
         public List<PlayerPerformanceSnapshot> GetDailyPlayerPerformance(int playerId)
         {
             return _coachBotContext
@@ -546,6 +600,35 @@ namespace CoachBot.Domain.Services
                         LEFT JOIN dbo.PlayerMatchStatistics PlayerMatchStatistics 
                             ON PlayerMatchStatistics.PlayerId = {playerId} AND CAST(PlayerMatchStatistics.CreatedDate AS DATE) = DateRange.DateValue 
                         GROUP BY PlayerMatchStatistics.PlayerId,
+                                DATEPART(day, DateRange.DateValue),
+                                DATEPART(week, DateRange.DateValue),
+                                DATEPART(month, DateRange.DateValue),
+                                DATEPART(year, DateRange.DateValue)
+                        ORDER BY DATEPART(year, DateRange.DateValue), DATEPART(month, DateRange.DateValue), DATEPART(week, DateRange.DateValue), DATEPART(day, DateRange.DateValue)")
+                .ToList();
+        }
+
+        public List<TeamPerformanceSnapshot> GetDailyTeamPerformance(int teamId)
+        {
+            return _coachBotContext
+                 .TeamPerformanceSnapshots
+                 .FromSql($@"SELECT {teamId} AS TeamId,
+                            DATEPART(day, DateRange.DateValue) AS Day,
+                            DATEPART(week, DateRange.DateValue) AS Week,
+                            DATEPART(month, DateRange.DateValue) AS Month,
+                            DATEPART(year, DateRange.DateValue) AS Year,
+                            ISNULL(ROUND(AVG(CAST(TeamMatchStatistics.Goals AS FLOAT)), 2), 0) AS AverageGoals,
+                            ISNULL(ROUND(AVG(CAST(TeamMatchStatistics.Assists AS FLOAT)), 2), 0) AS AverageAssists,
+                            ISNULL(ROUND(AVG(CAST(TeamMatchStatistics.GoalsConceded AS FLOAT)), 2), 0) AS AverageGoalsConceded,
+                            SUM(CASE WHEN TeamMatchStatistics.GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
+                            SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Win} THEN 1 ELSE 0 END) As Wins,
+                            SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Draw} THEN 1 ELSE 0 END) As Draws,
+                            SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
+                            SUM(CASE WHEN CreatedDate IS NOT NULL THEN 1 ELSE 0 END) As Matches
+                        FROM dbo.GenerateDateRange(DATEADD(month, -1, GETDATE()), GETDATE(), 1) DateRange
+                        LEFT JOIN dbo.TeamMatchStatistics TeamMatchStatistics 
+                            ON TeamMatchStatistics.TeamId = {teamId} AND CAST(TeamMatchStatistics.CreatedDate AS DATE) = DateRange.DateValue 
+                        GROUP BY TeamMatchStatistics.TeamId,
                                 DATEPART(day, DateRange.DateValue),
                                 DATEPART(week, DateRange.DateValue),
                                 DATEPART(month, DateRange.DateValue),

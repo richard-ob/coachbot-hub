@@ -29,7 +29,7 @@
                             <img *ngIf="!playerTeam.team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                                 style="width: 16px;">
                         </td>
-                        <td>{{playerTeam.team.name}}</td>
+                        <td><a [routerLink]="['/team-profile', playerTeam.teamId]">{{playerTeam.team.name}}</a></td>
                         <td>{{playerTeam.team.teamType | teamType}}</td>
                         <td>{{playerTeam.teamRole | teamRole}}</td>
                         <td>{{playerTeam.joinDate | date}}</td>

@@ -11,6 +11,7 @@ import { PlayerTeamStatisticsTotals } from '../model/player-team-statistics-tota
 import { MatchDayTotals } from '../model/team-match-day-totals';
 import { TeamStatisticsFilterHelper } from '../model/helpers/team-statistics-filter.helper';
 import { TeamType } from '../model/team-type.enum';
+import { TeamPerformanceSnapshot } from '../model/team-peformance-snapshot.model';
 
 @Injectable({
     providedIn: 'root'
@@ -47,6 +48,18 @@ export class TeamService {
         return this.http.post<PagedResult<TeamStatistics>>(`${environment.apiUrl}/api/teamstatistics`,
             TeamStatisticsFilterHelper.generatePlayerStatisticsFilter(page, pageSize, sortBy, sortOrder, filters)
         );
+    }
+
+    getMonthlyTeamPerformance(teamId: number): Observable<TeamPerformanceSnapshot[]> {
+        return this.http.get<TeamPerformanceSnapshot[]>(`${environment.apiUrl}/api/teamstatistics/performance/monthly/${teamId}`);
+    }
+
+    getWeeklyTeamPerformance(teamId: number): Observable<TeamPerformanceSnapshot[]> {
+        return this.http.get<TeamPerformanceSnapshot[]>(`${environment.apiUrl}/api/teamstatistics/performance/weekly/${teamId}`);
+    }
+
+    getDailyTeamPerformance(teamId: number): Observable<TeamPerformanceSnapshot[]> {
+        return this.http.get<TeamPerformanceSnapshot[]>(`${environment.apiUrl}/api/teamstatistics/performance/daily/${teamId}`);
     }
 
     getTeamMatchDayTotals(teamId: number): Observable<MatchDayTotals[]> {

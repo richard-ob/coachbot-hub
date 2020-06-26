@@ -1,29 +1,32 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { PlayerService } from '../../../shared/services/player.service';
-import { PlayerPerformanceSnapshot } from '@pages/hub/shared/model/player-performance-snapshot.model';
-import { PerformanceTrackerTime } from '../../../shared/model/performance-tracker-time.enum';
-import { PerformanceTrackerAttribute } from '../../../shared/model/performance-tracker-attribute.enum';
 import { GraphSeries } from '@shared/models/graph-series.model';
 import DateUtils from '@shared/utilities/date-utilities';
+import { PerformanceTrackerTime } from '@pages/hub/shared/model/performance-tracker-time.enum';
+import { PerformanceTrackerAttribute } from '@pages/hub/shared/model/performance-tracker-attribute.enum';
+import { TeamService } from '@pages/hub/shared/services/team.service';
+import { TeamPerformanceSnapshot } from '@pages/hub/shared/model/team-peformance-snapshot.model';
 
 @Component({
-    selector: 'app-player-performance-tracker',
-    templateUrl: './player-performance-tracker.component.html',
-    styleUrls: ['./player-performance-tracker.component.scss'],
+    selector: 'app-team-performance-tracker',
+    templateUrl: './team-performance-tracker.component.html',
+    styleUrls: ['./team-performance-tracker.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class PlayerPerformanceTrackerComponent implements OnInit {
+export class TeamPerformanceTrackerComponent implements OnInit {
 
-    @Input() playerId: number;
-    playerPerformanceSnapshots: PlayerPerformanceSnapshot[];
+    @Input() teamId: number;
+    playerPerformanceSnapshots: TeamPerformanceSnapshot[];
     performanceSeries: GraphSeries[];
-    currentPerformanceTrackerAttribute: PerformanceTrackerAttribute = PerformanceTrackerAttribute.AverageGoals;
+    currentPerformanceTrackerAttribute: PerformanceTrackerAttribute = PerformanceTrackerAttribute.MatchOutcomes;
     performanceTrackerAttribute = PerformanceTrackerAttribute;
     currentPerformanceTrackerTime: PerformanceTrackerTime = PerformanceTrackerTime.Daily;
     performanceTrackerTime = PerformanceTrackerTime;
+    colorScheme = {
+        domain: ['#28a745', '#5A5A5A', '#dc3545']
+    };
     isLoading = true;
 
-    constructor(private playerService: PlayerService) {
+    constructor(private teamService: TeamService) {
     }
 
     ngOnInit() {
@@ -33,7 +36,7 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
     getDailyPlayerPerformance() {
         this.isLoading = true;
         this.currentPerformanceTrackerTime = PerformanceTrackerTime.Daily;
-        this.playerService.getDailyPlayerPerformance(this.playerId).subscribe(playerPerformanceSnapshots => {
+        this.teamService.getDailyTeamPerformance(this.teamId).subscribe(playerPerformanceSnapshots => {
             this.playerPerformanceSnapshots = playerPerformanceSnapshots;
             this.mapPerformanceToPoints();
             this.isLoading = false;
@@ -43,9 +46,8 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
     getWeeklyPlayerPerformance() {
         this.isLoading = true;
         this.currentPerformanceTrackerTime = PerformanceTrackerTime.Weekly;
-        this.playerService.getWeeklyPlayerPerformance(this.playerId).subscribe(playerPerformanceSnapshots => {
+        this.teamService.getWeeklyTeamPerformance(this.teamId).subscribe(playerPerformanceSnapshots => {
             this.playerPerformanceSnapshots = playerPerformanceSnapshots;
-            this.mapPerformanceToPoints();
             this.isLoading = false;
         });
     }
@@ -53,7 +55,7 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
     getMonthlyPlayerPerformance() {
         this.isLoading = true;
         this.currentPerformanceTrackerTime = PerformanceTrackerTime.Monthly;
-        this.playerService.getMonthlyPlayerPerformance(this.playerId).subscribe(playerPerformanceSnapshots => {
+        this.teamService.getMonthlyTeamPerformance(this.teamId).subscribe(playerPerformanceSnapshots => {
             this.playerPerformanceSnapshots = playerPerformanceSnapshots;
             this.mapPerformanceToPoints();
             this.isLoading = false;
@@ -65,21 +67,38 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
         switch (this.currentPerformanceTrackerAttribute) {
             case PerformanceTrackerAttribute.AverageGoals:
                 series = this.generateSeries('Average Goals', 'averageGoals');
+                this.performanceSeries = [series];
+                this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.AverageAssists:
                 series = this.generateSeries('Average Assists', 'averageAssists');
+                this.performanceSeries = [series];
+                this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.GoalsConceded:
                 series = this.generateSeries('Average Goals Conceded', 'averageGoalsConceded');
+                this.performanceSeries = [series];
+                this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.Cleansheets:
                 series = this.generateSeries('Cleansheets', 'cleanSheets');
+                this.performanceSeries = [series];
+                this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.Appearances:
                 series = this.generateSeries('Appearances', 'appearances');
+                this.performanceSeries = [series];
+                this.setDefaultTheme();
+                break;
+            case PerformanceTrackerAttribute.MatchOutcomes:
+                this.generateMatchOutcomeData();
+                this.colorScheme = { domain: ['#28a745', '#5A5A5A', '#dc3545'] };
                 break;
         }
-        this.performanceSeries = [series];
+    }
+
+    setDefaultTheme() {
+        this.colorScheme = { domain: ['#33b9f6'] };
     }
 
     generateSeries(name: string, property: string) {
@@ -94,6 +113,12 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
                 )
             )
         };
+    }
+
+    generateMatchOutcomeData() {
+        this.performanceSeries = [
+            this.generateSeries('Wins', 'wins'), this.generateSeries('Draws', 'draws'), this.generateSeries('Losses', 'losses')
+        ];
     }
 
     setAttribute(attribute: PerformanceTrackerAttribute) {

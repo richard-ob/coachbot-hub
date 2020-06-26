@@ -1,0 +1,25 @@
+.chart-legend ul > li {
+    display: block !important;
+    padding-left: 0 !important;
+}
+
+.chart-legend .legend-wrap {
+    width: calc(100% - 32px) !important;
+}
+
+.performance-tracker-chart-container { 
+    width: 100%;
+    min-height: 300px;
+    overflow: auto;
+}
+
+.performance-tracker-no-data {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    color: #fff;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+}

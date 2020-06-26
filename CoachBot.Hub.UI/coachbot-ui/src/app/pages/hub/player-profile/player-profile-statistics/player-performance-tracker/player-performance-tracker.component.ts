@@ -5,6 +5,7 @@ import { PlayerPerformanceSnapshot } from '@pages/hub/shared/model/player-perfor
 import { PerformanceTrackerTime } from './performance-tracker-time.enum';
 import { GraphSeries } from './graph-series.model';
 import { PerformanceTrackerAttribute } from './performance-tracker-attribute.enum';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-player-performance-tracker',
@@ -86,7 +87,8 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
         return {
             name,
             series: this.playerPerformanceSnapshots.map(
-                snapshot => ({ value: snapshot[property], name: this.getDateString(snapshot.year, snapshot.month) })
+                snapshot => (
+                    { value: snapshot[property], name: this.getDateString(snapshot.year, snapshot.month, snapshot.week, snapshot.day) })
             )
         };
     }
@@ -96,8 +98,27 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
         this.mapPerformanceToPoints();
     }
 
-    getDateString(year: number, month: number) {
-        const date = new Date(year, month, 1);
-        return `${date.toLocaleString('default', { month: 'long' })} ${year}`;
+    getDateString(year: number, month: number, week: number, day: number) {
+        const datePipe = new DatePipe('en-gb');
+
+        if (day) {
+            const date = new Date(year, month, day);
+            return datePipe.transform(date, 'MMMM d');
+        } else if (week) {
+            const date = this.getDateOfWeek(week, year);
+            return datePipe.transform(date, 'MMMM d');
+        } else if (month) {
+            const date = new Date(year, month, day || 1);
+            return datePipe.transform(date, 'MMMM');
+        } else {
+            const date = new Date(year, 0, 1);
+            return datePipe.transform(date, 'yyyy');
+        }
+    }
+
+    getDateOfWeek(week: number, year: number) {
+        const date = new Date(year, 0, (1 + (week - 1) * 7)); // Elle's method
+        date.setDate(date.getDate() + (1 - date.getDay())); // 0 - Sunday, 1 - Monday etc
+        return date;
     }
 }

@@ -104,6 +104,13 @@
 				margin-bottom: 0;
 			}
 		}
+		> .btn-group.btn-group-xs {
+			margin-top: 3px;
+			height: 23px;
+			> .btn-xs {
+				line-height: 0.5rem;
+			}
+		}
 	}
 	.card__header--has-filter {
 		padding-top: 24px;

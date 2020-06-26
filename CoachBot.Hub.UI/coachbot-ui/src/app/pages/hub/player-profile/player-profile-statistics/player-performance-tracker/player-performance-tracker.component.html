@@ -1,7 +1,7 @@
 <div class="card card--has-table">
     <div class="card__header card__header--has-btn" style="overflow: visible;">
         <h4>Performance Tracker</h4>
-        <div class="btn-group float-right ml-2" dropdown style="margin-top: 3px; height: 23px;">
+        <div class="btn-group btn-group-xs float-right ml-2" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-secondary dropdown-toggle"
                 aria-controls="dropdown-basic">
                 <ng-container [ngSwitch]="currentPerformanceTrackerTime">
@@ -29,17 +29,17 @@
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageGoals"
                         (click)="setAttribute(performanceTrackerAttribute.AverageGoals)">
-                        Goals
+                        Average Goals
                     </button>
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageAssists"
                         (click)="setAttribute(performanceTrackerAttribute.AverageAssists)">
-                        Assists
+                        Average Assists
                     </button>
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.GoalsConceded"
                         (click)="setAttribute(performanceTrackerAttribute.GoalsConceded)">
-                        Goals Conceded
+                        Average Goals Conceded
                     </button>
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.Cleansheets"
@@ -62,7 +62,7 @@
                 [showYAxisLabel]="false" [legend]="false" [legendTitle]="'Stat'">
             </ngx-charts-line-chart>
         </div>
-        <div *ngIf="performanceSeries && performanceSeries.length <= 1"
+        <div *ngIf="performanceSeries && performanceSeries.length && performanceSeries[0].series.length <= 1"
             class="performance-tracker-no-data d-flex align-items-center justify-content-center">
             <i class="fas fa-exclamation-triangle mr-2"></i>&nbsp;There is not yet enough historical data for this
             player

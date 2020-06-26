@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { PlayerService } from '../../../shared/services/player.service';
 import { PlayerPerformanceSnapshot } from '@pages/hub/shared/model/player-performance-snapshot.model';
 import { PerformanceTrackerTime } from './performance-tracker-time.enum';
@@ -24,11 +23,11 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
     performanceTrackerTime = PerformanceTrackerTime;
     isLoading = true;
 
-    constructor(private route: ActivatedRoute, private playerService: PlayerService) {
+    constructor(private playerService: PlayerService) {
     }
 
     ngOnInit() {
-        this.getMonthlyPlayerPerformance();
+        this.getDailyPlayerPerformance();
     }
 
     getDailyPlayerPerformance() {

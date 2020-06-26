@@ -23,32 +23,33 @@
                 </li>
             </ul>
         </div>
-        <ul class="team-result-filter d-none d-md-inline">
+        <ul class="team-result-filter float-right d-none d-md-inline">
             <li class="team-result-filter__item">
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageGoals"
                         (click)="setAttribute(performanceTrackerAttribute.AverageGoals)">
-                        Average Goals
+                        <span class="d-none d-xl-inline">Average&nbsp;</span>Goals
                     </button>
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageAssists"
                         (click)="setAttribute(performanceTrackerAttribute.AverageAssists)">
-                        Average Assists
+                        <span class="d-none d-xl-inline">Average&nbsp;</span>Assists
                     </button>
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.GoalsConceded"
                         (click)="setAttribute(performanceTrackerAttribute.GoalsConceded)">
-                        Average Goals Conceded
+                        <span class="d-none d-xl-inline">Average Goals&nbsp;</span>Conceded
                     </button>
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.Cleansheets"
                         (click)="setAttribute(performanceTrackerAttribute.Cleansheets)">
                         Cleansheets</button>
-                    <button type="button" class="btn btn-xs btn-light"
+                    <button type="button" class="btn btn-xs btn-light d-none d-lg-inline"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.Appearances"
                         (click)="setAttribute(performanceTrackerAttribute.Appearances)">
-                        Appearances
+                        <span class="d-none d-xl-inline">Appearances</span>
+                        <span class="d-inline d-xl-none">Apps</span>
                     </button>
                 </div>
             </li>

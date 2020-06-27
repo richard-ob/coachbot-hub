@@ -21,9 +21,8 @@ export class TeamPerformanceTrackerComponent implements OnInit {
     performanceTrackerAttribute = PerformanceTrackerAttribute;
     currentPerformanceTrackerTime: PerformanceTrackerTime = PerformanceTrackerTime.Daily;
     performanceTrackerTime = PerformanceTrackerTime;
-    colorScheme = {
-        domain: ['#28a745', '#5A5A5A', '#dc3545']
-    };
+    colorScheme = { domain: ['#33b9f6'] };
+    showLegend = false;
     isLoading = true;
 
     constructor(private teamService: TeamService) {
@@ -68,31 +67,37 @@ export class TeamPerformanceTrackerComponent implements OnInit {
             case PerformanceTrackerAttribute.AverageGoals:
                 series = this.generateSeries('Average Goals', 'averageGoals');
                 this.performanceSeries = [series];
+                this.showLegend = false;
                 this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.AverageAssists:
                 series = this.generateSeries('Average Assists', 'averageAssists');
                 this.performanceSeries = [series];
+                this.showLegend = false;
                 this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.GoalsConceded:
                 series = this.generateSeries('Average Goals Conceded', 'averageGoalsConceded');
                 this.performanceSeries = [series];
+                this.showLegend = false;
                 this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.Cleansheets:
                 series = this.generateSeries('Cleansheets', 'cleanSheets');
                 this.performanceSeries = [series];
+                this.showLegend = false;
                 this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.Appearances:
-                series = this.generateSeries('Appearances', 'appearances');
+                series = this.generateSeries('Matches', 'matches');
                 this.performanceSeries = [series];
+                this.showLegend = false;
                 this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.MatchOutcomes:
                 this.generateMatchOutcomeData();
-                this.colorScheme = { domain: ['#28a745', '#5A5A5A', '#dc3545'] };
+                this.showLegend = true;
+                this.colorScheme = { domain: ['#44C424', '#5A5A5A', '#DD0000'] };
                 break;
         }
     }

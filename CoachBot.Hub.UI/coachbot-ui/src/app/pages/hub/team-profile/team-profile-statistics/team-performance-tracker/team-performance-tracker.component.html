@@ -59,11 +59,12 @@
         </ul>
     </div>
     <div class="card__content position-relative p-4">
-        <app-spinner *ngIf="isLoading"></app-spinner>
         <div class="performance-tracker-chart-container">
-            <ngx-charts-line-chart *ngIf="!isLoading && performanceSeries" [results]="performanceSeries"
+            <app-spinner *ngIf="isLoading"></app-spinner>
+            <ngx-charts-line-chart *ngIf="!isLoading && performanceSeries" [view]="" [results]="performanceSeries"
                 [xAxisLabel]="'Day'" [showXAxisLabel]="false" [yAxisLabel]="'Number'" [xAxis]="true" [yAxis]="true"
-                [showYAxisLabel]="false" [legend]="false" [legendTitle]="'Stat'" [scheme]="colorScheme">
+                [showYAxisLabel]="false" [legend]="showLegend" [legendPosition]="'below'" [legendTitle]="''"
+                [scheme]="colorScheme">
             </ngx-charts-line-chart>
         </div>
         <div *ngIf="performanceSeries && performanceSeries.length && performanceSeries[0].series.length <= 1"

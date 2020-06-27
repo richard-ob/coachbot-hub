@@ -17,10 +17,14 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
     @Input() playerId: number;
     playerPerformanceSnapshots: PlayerPerformanceSnapshot[];
     performanceSeries: GraphSeries[];
-    currentPerformanceTrackerAttribute: PerformanceTrackerAttribute = PerformanceTrackerAttribute.AverageGoals;
+    currentPerformanceTrackerAttribute: PerformanceTrackerAttribute = PerformanceTrackerAttribute.MatchOutcomes;
     performanceTrackerAttribute = PerformanceTrackerAttribute;
     currentPerformanceTrackerTime: PerformanceTrackerTime = PerformanceTrackerTime.Daily;
     performanceTrackerTime = PerformanceTrackerTime;
+    colorScheme = {
+        domain: ['#28a745', '#5A5A5A', '#dc3545']
+    };
+    showLegend = false;
     isLoading = true;
 
     constructor(private playerService: PlayerService) {
@@ -65,21 +69,44 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
         switch (this.currentPerformanceTrackerAttribute) {
             case PerformanceTrackerAttribute.AverageGoals:
                 series = this.generateSeries('Average Goals', 'averageGoals');
+                this.performanceSeries = [series];
+                this.showLegend = false;
+                this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.AverageAssists:
                 series = this.generateSeries('Average Assists', 'averageAssists');
+                this.performanceSeries = [series];
+                this.showLegend = false;
+                this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.GoalsConceded:
                 series = this.generateSeries('Average Goals Conceded', 'averageGoalsConceded');
+                this.performanceSeries = [series];
+                this.showLegend = false;
+                this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.Cleansheets:
                 series = this.generateSeries('Cleansheets', 'cleanSheets');
+                this.performanceSeries = [series];
+                this.showLegend = false;
+                this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.Appearances:
                 series = this.generateSeries('Appearances', 'appearances');
+                this.performanceSeries = [series];
+                this.showLegend = false;
+                this.setDefaultTheme();
+                break;
+            case PerformanceTrackerAttribute.MatchOutcomes:
+                this.generateMatchOutcomeData();
+                this.showLegend = true;
+                this.colorScheme = { domain: ['#44C424', '#5A5A5A', '#DD0000'] };
                 break;
         }
-        this.performanceSeries = [series];
+    }
+
+    setDefaultTheme() {
+        this.colorScheme = { domain: ['#33b9f6'] };
     }
 
     generateSeries(name: string, property: string) {
@@ -94,6 +121,12 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
                 )
             )
         };
+    }
+
+    generateMatchOutcomeData() {
+        this.performanceSeries = [
+            this.generateSeries('Wins', 'wins'), this.generateSeries('Draws', 'draws'), this.generateSeries('Losses', 'losses')
+        ];
     }
 
     setAttribute(attribute: PerformanceTrackerAttribute) {

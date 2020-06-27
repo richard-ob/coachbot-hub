@@ -9,4 +9,7 @@ export interface PlayerPerformanceSnapshot {
     averageGoalsConceded: number;
     cleanSheets: number;
     appearances: number;
+    wins: number;
+    draws: number;
+    losses: number;
 }

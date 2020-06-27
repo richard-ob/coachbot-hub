@@ -110,6 +110,13 @@
 			> .btn-xs {
 				line-height: 0.5rem;
 			}
+			> ul.dropdown-menu {
+				font-size: 10px;
+				line-height: 17px;
+				min-width: 99px;
+				padding: 0.25rem 0;
+				font-family: 'Montserrat';
+			}
 		}
 	}
 	.card__header--has-filter {

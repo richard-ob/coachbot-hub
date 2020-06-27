@@ -494,6 +494,9 @@ namespace CoachBot.Domain.Services
                                     ROUND(AVG(CAST(PlayerMatchStatistics.Assists AS FLOAT)), 2) AS AverageAssists,
                                     ROUND(AVG(CAST(PlayerMatchStatistics.GoalsConceded AS FLOAT)), 2) AS AverageGoalsConceded,
                                     COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
+                                    SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Win} THEN 1 ELSE 0 END) As Wins,
+                                    SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Draw} THEN 1 ELSE 0 END) As Draws,
+                                    SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
                                     COUNT(*) As Appearances
                     FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
                     WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(year, -1, GETDATE())
@@ -544,6 +547,9 @@ namespace CoachBot.Domain.Services
                                     ROUND(AVG(CAST(PlayerMatchStatistics.Assists AS FLOAT)), 2) AS AverageAssists,
                                     ROUND(AVG(CAST(PlayerMatchStatistics.GoalsConceded AS FLOAT)), 2) AS AverageGoalsConceded,
                                     COUNT(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
+                                    SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Win} THEN 1 ELSE 0 END) As Wins,
+                                    SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Draw} THEN 1 ELSE 0 END) As Draws,
+                                    SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
                                     COUNT(*) As Appearances
                     FROM dbo.PlayerMatchStatistics PlayerMatchStatistics
                     WHERE PlayerMatchStatistics.PlayerId = {playerId} AND PlayerMatchStatistics.CreatedDate > DATEADD(month, -12, GETDATE())
@@ -595,6 +601,9 @@ namespace CoachBot.Domain.Services
                             ISNULL(ROUND(AVG(CAST(PlayerMatchStatistics.Assists AS FLOAT)), 2), 0) AS AverageAssists,
                             ISNULL(ROUND(AVG(CAST(PlayerMatchStatistics.GoalsConceded AS FLOAT)), 2), 0) AS AverageGoalsConceded,
                             SUM(CASE WHEN GoalsConceded = 0 THEN 1 ELSE 0 END) As CleanSheets,
+                            SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Win} THEN 1 ELSE 0 END) As Wins,
+                            SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Draw} THEN 1 ELSE 0 END) As Draws,
+                            SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
                             SUM(CASE WHEN CreatedDate IS NOT NULL THEN 1 ELSE 0 END) As Appearances
                         FROM dbo.GenerateDateRange(DATEADD(month, -1, GETDATE()), GETDATE(), 1) DateRange
                         LEFT JOIN dbo.PlayerMatchStatistics PlayerMatchStatistics 

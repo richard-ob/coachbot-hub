@@ -58,7 +58,7 @@
             </li>
         </ul>
     </div>
-    <div class="card__content position-relative p-4">
+    <div class="card__content position-relative p-4" [class.pb-5]="showLegend">
         <div class="performance-tracker-chart-container">
             <app-spinner *ngIf="isLoading"></app-spinner>
             <ngx-charts-line-chart *ngIf="!isLoading && performanceSeries" [view]="" [results]="performanceSeries"

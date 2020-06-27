@@ -269,6 +269,7 @@ namespace CoachBot.Domain.Services
                  .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
                  .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
                  .Where(p => string.IsNullOrWhiteSpace(filters.PositionName) || p.Position.Name == filters.PositionName)
+                 .Where(p => filters.MinimumSecondsPlayed == null || p.SecondsPlayed > filters.MinimumSecondsPlayed)
                  .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                  .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                  .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))

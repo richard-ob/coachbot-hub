@@ -19,6 +19,7 @@ export class PlayerStatisticFilters {
     regionId?: number;
     tournamentId?: number;
     includeSubstituteAppearances = true;
+    minimumSecondsPlayed?: number;
     dateFrom?: Date;
     dateTo?: Date;
     minimumRating?: number;

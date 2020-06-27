@@ -21,6 +21,7 @@ export class PlayerSpotlightComponent implements OnInit {
     apiModelProperty: string;
     modelProperty: string;
     measureName: string;
+    positionFilter: string;
     heading: string;
     ordering: string;
     iconClass: string;
@@ -38,6 +39,7 @@ export class PlayerSpotlightComponent implements OnInit {
         this.setProperties(this.statistic);
         this.filters.regionId = this.userPreferencesService.getUserPreference(UserPreferenceType.Region);
         this.filters.includeSubstituteAppearances = false;
+        this.filters.minimumSecondsPlayed = 60 * 80; // Only include matches where player played at least roughly 80 mins
         if (this.tournamentId) {
             this.filters.tournamentId = this.tournamentId;
         } else {
@@ -59,6 +61,7 @@ export class PlayerSpotlightComponent implements OnInit {
                 this.heading = 'Goal Scorer of the Week';
                 this.measureName = 'Average Goals';
                 this.ordering = 'DESC';
+                this.filters.positionName = null;
                 this.iconClass = 'icon-soccer-ball';
                 break;
             case PlayerSpotlightStatistic.Assists:
@@ -67,14 +70,16 @@ export class PlayerSpotlightComponent implements OnInit {
                 this.heading = 'Assister of the Week';
                 this.measureName = 'Average Assists';
                 this.ordering = 'DESC';
+                this.filters.positionName = null;
                 this.iconClass = 'icon-soccer-shoe';
                 break;
             case PlayerSpotlightStatistic.GoalsConceded:
                 this.modelProperty = 'goalsConcededAverage';
                 this.apiModelProperty = 'GoalsConcededAverage';
-                this.heading = 'Defender of the Week';
+                this.heading = 'Keeper of the Week';
                 this.measureName = 'Average Goals Conceded';
                 this.ordering = 'ASC';
+                this.filters.positionName = 'GK';
                 this.iconClass = 'icon-keepers-glove';
                 break;
             case PlayerSpotlightStatistic.PassCompletion:
@@ -83,6 +88,7 @@ export class PlayerSpotlightComponent implements OnInit {
                 this.heading = 'Passer of the Week';
                 this.measureName = 'Pass Completion';
                 this.ordering = 'DESC';
+                this.filters.positionName = null;
                 this.iconClass = 'icon-soccer-shots';
                 break;
         }

@@ -28,6 +28,8 @@ namespace CoachBot.Domain.Model
 
         public DateTime? DateTo { get; set; }
 
+        public int? MinimumSecondsPlayed { get; set; }
+
         public float? MinimumRating { get; set; }
 
         public float? MaximumRating { get; set; }

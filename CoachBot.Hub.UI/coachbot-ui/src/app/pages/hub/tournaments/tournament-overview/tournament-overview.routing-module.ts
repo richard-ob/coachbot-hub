@@ -18,7 +18,8 @@ const routes: Routes = [
             { path: 'players', component: TournamentOverviewPlayersComponent },
             { path: 'teams', component: TournamentOverviewTeamsComponent },
             { path: 'staff', component: TournamentOverviewStaffComponent }
-        ]
+        ],
+        data: { title: 'Tournament Overview' }
     }
 ];
 @NgModule({

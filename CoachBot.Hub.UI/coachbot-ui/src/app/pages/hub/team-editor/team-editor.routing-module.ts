@@ -15,11 +15,13 @@ const routes: Routes = [
             { path: 'info', component: TeamEditorInfoComponent },
             { path: 'squad', component: TeamEditorSquadComponent },
             { path: 'discord', component: TeamEditorDiscordIntegrationComponent }
-        ]
+        ],
+        data: { title: 'Team Editor' }
     },
     {
         path: 'create-team',
-        component: TeamCreatorComponent
+        component: TeamCreatorComponent,
+        data: { title: 'Team Creator' }
     }
 ];
 @NgModule({

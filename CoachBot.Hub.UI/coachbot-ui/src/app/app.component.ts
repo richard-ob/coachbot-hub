@@ -7,8 +7,9 @@ import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/l
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import { Region } from '@pages/hub/shared/model/region.model';
 import { RegionService } from '@pages/hub/shared/services/region.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,9 @@ export class AppComponent implements OnInit {
     private playerService: PlayerService,
     private userPreferenceService: UserPreferenceService,
     private regionService: RegionService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title
   ) { }
 
   ngOnInit() {
@@ -40,6 +43,12 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd)).subscribe(() => {
       window.scrollTo(0, 0);
       this.closeSidebar();
+      const child = this.activatedRoute.firstChild;
+      if (child.snapshot.data.title) {
+        this.titleService.setTitle(child.snapshot.data.title + ' - IOSoccer');
+      } else {
+        this.titleService.setTitle('IOSoccer');
+      }
     });
   }
 

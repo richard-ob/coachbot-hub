@@ -36,63 +36,78 @@ const routes: Routes = [
   },
   {
     path: 'manual',
-    component: ManualComponent
+    component: ManualComponent,
+    data: { title: 'Manual' }
   },
   {
     path: 'server-manual',
-    component: ServerManualComponent
+    component: ServerManualComponent,
+    data: { title: 'Server Manual' }
   },
   {
     path: 'news',
-    component: NewsComponent
+    component: NewsComponent,
+    data: { title: 'News' }
   },
   {
     path: 'team',
-    component: TeamComponent
+    component: TeamComponent,
+    data: { title: 'Team' }
   },
   {
     path: 'about',
-    component: AboutComponent
+    component: AboutComponent,
+    data: { title: 'About' }
   },
   {
     path: 'match-overview/:id',
-    component: MatchOverviewComponent
+    component: MatchOverviewComponent,
+    data: { title: 'About' }
   },
   {
     path: 'server-manager',
-    component: ServerManagerComponent
+    component: ServerManagerComponent,
+    data: { title: 'Server Manager' }
   },
   {
     path: 'region-manager',
-    component: RegionManagerComponent
+    component: RegionManagerComponent,
+    data: { title: 'Region Manager' }
   },
   {
     path: 'recent-matches',
-    component: RecentMatchesComponent
+    component: RecentMatchesComponent,
+    data: { title: 'Results' }
   },
   {
     path: 'upcoming-matches',
-    component: UpcomingMatchesComponent
+    component: UpcomingMatchesComponent,
+    data: { title: 'Fixtures' }
   },
   {
     path: 'player-list',
-    component: PlayerListComponent
+    component: PlayerListComponent,
+    data: { title: 'Player Statistics' }
   },
   {
     path: 'team-list',
-    component: TeamListComponent
+    component: TeamListComponent,
+    data: { title: 'Team Statistics' }
   },
   {
     path: 'edit-profile',
-    component: ProfileEditorComponent
+    component: ProfileEditorComponent,
+    data: { title: 'Edit Profile' }
   },
   {
     path: 'team-editor-list',
-    component: TeamEditorListComponent
+    component: TeamEditorListComponent,
+    data: { title: 'Manage Teams' }
   },
   {
     path: 'teams',
-    component: TeamsComponent
+    component: TeamsComponent,
+    data: { title: 'Teams' }
   },
   {
     path: 'validate-steamid',
@@ -100,31 +115,38 @@ const routes: Routes = [
   },
   {
     path: 'tournament-creator',
-    component: TournamentCreatorComponent
+    component: TournamentCreatorComponent,
+    data: { title: 'Tournament Creator' }
   },
   {
     path: 'tournament-editor/:id',
-    component: TournamentSeriesEditorComponent
+    component: TournamentSeriesEditorComponent,
+    data: { title: 'Tournament' }
   },
   {
     path: 'tournament-edition-manager/:id',
-    component: TournamentEditionManagerComponent
+    component: TournamentEditionManagerComponent,
+    data: { title: 'Tournament' }
   },
   {
     path: 'tournaments',
-    component: CurrentTournamentsComponent
+    component: CurrentTournamentsComponent,
+    data: { title: 'Tournaments' }
   },
   {
     path: 'tournament-history',
-    component: PreviousTournamentsComponent
+    component: PreviousTournamentsComponent,
+    data: { title: 'Tournament History' }
   },
   {
     path: 'organisations',
-    component: OrganisationsComponent
+    component: OrganisationsComponent,
+    data: { title: 'Organisations' }
   },
   {
     path: 'organisation-editor/:id',
-    component: OrganisationEditorComponent
+    component: OrganisationEditorComponent,
+    data: { title: 'Organisation Editor' }
   },
   {
     path: 'matchmaking',
@@ -132,11 +154,13 @@ const routes: Routes = [
   },
   {
     path: 'match-editor/:id',
-    component: MatchEditorComponent
+    component: MatchEditorComponent,
+    data: { title: 'Organisations' }
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    data: { title: 'Login' }
   },
   {
     path: 'error',

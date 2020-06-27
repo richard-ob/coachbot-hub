@@ -6,11 +6,13 @@ import { ScorePredictorPlayerComponent } from './score-predictor-player/score-pr
 const routes: Routes = [
     {
         path: 'tournament/:id/score-predictor',
-        component: ScorePredictorComponent
+        component: ScorePredictorComponent,
+        data: { title: 'Score Predictor' }
     },
     {
         path: 'tournament/:tournamentId/score-predictor/player/:playerId',
-        component: ScorePredictorPlayerComponent
+        component: ScorePredictorPlayerComponent,
+        data: { title: 'Score Predictor' }
     }
 ];
 @NgModule({

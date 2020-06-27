@@ -8,19 +8,23 @@ import { FantasyTeamOverviewComponent } from './fantasy-team-overview/fantasy-te
 const routes: Routes = [
     {
         path: 'fantasy',
-        component: FantasyTeamManagerComponent
+        component: FantasyTeamManagerComponent,
+        data: { title: 'Fantasy Manager' }
     },
     {
         path: 'fantasy/:tournamentId',
-        component: FantasyOverviewComponent
+        component: FantasyOverviewComponent,
+        data: { title: 'Fantasy Tournament Overview' }
     },
     {
         path: 'fantasy-editor/:id',
-        component: FantasyTeamEditorComponent
+        component: FantasyTeamEditorComponent,
+        data: { title: 'Fantasy Team Editor' }
     },
     {
         path: 'fantasy-overview/:id',
-        component: FantasyTeamOverviewComponent
+        component: FantasyTeamOverviewComponent,
+        data: { title: 'Fantasy Team Overview' }
     },
 ];
 @NgModule({

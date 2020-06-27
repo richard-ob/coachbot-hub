@@ -10,7 +10,5 @@ namespace CoachBot.Model
 
         public string LoginStatus { get; set; }
 
-        public List<Guild> Guilds { get; set; }
-
     }
 }

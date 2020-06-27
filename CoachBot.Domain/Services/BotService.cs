@@ -4,9 +4,7 @@ using CoachBot.Model;
 using Discord;
 using Discord.WebSocket;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace CoachBot.Services.Matchmaker
 {
@@ -27,8 +25,7 @@ namespace CoachBot.Services.Matchmaker
         {
             var botState = new BotState() {
                 ConnectionStatus = _client.ConnectionState.ToString(),
-                LoginStatus = _client.LoginState.ToString(),
-               // Guilds = _client.Guilds.Select(g => new Guild() { Name = g.Name, Id = g.DiscordGuildId }).ToList()
+                LoginStatus = _client.LoginState.ToString()
             };
 
             return botState;

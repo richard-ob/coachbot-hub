@@ -1,0 +1,36 @@
+<div class="container py-4">
+    <div class="card">
+        <div class="card__header card__header--has-btn">
+            <h4>Bot Manager</h4>
+            <button class="btn btn-xs btn-secondary float-right" (click)="refreshBotState()" [disabled]="isRefreshing">
+                Refresh
+            </button>
+        </div>
+        <div class="card__content">
+            <div *ngIf="!isLoading; else spinner" class="row">
+                <div class="form-group col-md-6">
+                    <label>Connection Status</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" [(ngModel)]="botState.connectionStatus"
+                            name="connectionStatus">
+                        <div class="input-group-append clickable">
+                            <button class="btn btn-warning px-3" [disabled]="isReconnecting" (click)="reconnectBot()"
+                                title="Reconnect">
+                                <i *ngIf="!isReconnecting" class="fa fa-sync-alt"></i>
+                                <i *ngIf="isReconnecting" class="fa fa-sync-alt fa-spin"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Login Status</label>
+                    <input type="text" readonly class="form-control" [(ngModel)]="botState.loginStatus"
+                        name="loginStatus">
+                </div>
+            </div>
+            <ng-template #spinner>
+                <app-spinner></app-spinner>
+            </ng-template>
+        </div>
+    </div>
+</div>

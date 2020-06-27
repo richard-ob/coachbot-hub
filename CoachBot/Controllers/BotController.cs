@@ -1,41 +1,35 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Model;
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
     [Authorize]
-    public class BotStateController : Controller
+    public class BotController : Controller
     {
         private readonly BotService _botService;
 
-        public BotStateController(BotService botService)
+        public BotController(BotService botService)
         {
             _botService = botService;
         }
 
-        [HttpGet]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
+        [HttpGet("state")]
         public BotState Get()
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
-            {
-                throw new Exception();
-            }
             return _botService.GetCurrentBotState();
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("reconnect")]
         public void Reconnect()
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
-            {
-                throw new Exception();
-            }
             _botService.Reconnect();
         }
     }

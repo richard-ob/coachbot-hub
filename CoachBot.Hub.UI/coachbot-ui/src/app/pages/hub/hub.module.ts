@@ -64,6 +64,7 @@ import { OrganisationEditorComponent } from './tournaments/organisations/organis
 import { PreviousTournamentsComponent } from './tournaments/previous-tournaments/previous-tournaments.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FantasyTeamManagerModule } from './tournaments/fantasy/fantasy.module';
+import { BotManagerModule } from './bot-manager/bot-manager.module';
 
 @NgModule({
   declarations: [
@@ -117,6 +118,7 @@ import { FantasyTeamManagerModule } from './tournaments/fantasy/fantasy.module';
     RecentMatchesModule,
     TeamEditorListModule,
     TeamEditorModule,
+    BotManagerModule,
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserAnimationsModule,

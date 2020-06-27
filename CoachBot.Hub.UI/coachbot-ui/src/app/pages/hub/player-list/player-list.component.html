@@ -83,10 +83,11 @@
                         <th sorter [sortByColumn]="'Rating'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Appearances'" [sortByColumnName]="'Apps'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" title="Appearances"
+                            class="text-center"></th>
                         <th sorter [sortByColumn]="'SubstituteAppearances'" [sortByColumnName]="'As Sub'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
-                            class="text-center">
+                            title="Appearances As Substitute" class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'Wins'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>

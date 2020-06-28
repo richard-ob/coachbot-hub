@@ -62,7 +62,7 @@ const routes: Routes = [
   {
     path: 'match-overview/:id',
     component: MatchOverviewComponent,
-    data: { title: 'About' }
+    data: { title: 'Match Overview' }
   },
   {
     path: 'server-manager',

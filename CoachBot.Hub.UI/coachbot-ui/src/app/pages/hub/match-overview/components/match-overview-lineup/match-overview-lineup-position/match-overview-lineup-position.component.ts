@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PlayerPositionMatchStatistics } from '@pages/hub/shared/model/player-match-statistics.model';
+import { PlayerPositionMatchStatistics } from '@pages/hub/shared/model/player-position-match-statistics.model';
 import ColourUtils from '@shared/utilities/colour-utilities';
 
 @Component({

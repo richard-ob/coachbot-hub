@@ -1,8 +1,9 @@
 import { Channel } from './channel.model';
 import { Match } from './match.model';
+import { Position } from './position';
 import { Team } from './team.model';
 
-export interface PlayerMatchStatistics {
+export interface PlayerPositionMatchStatistics {
     id: number;
     secondsPlayed: number;
     nickname: string;
@@ -15,6 +16,8 @@ export interface PlayerMatchStatistics {
     channel: Channel;
     playerId: number;
     player?: any;
+    positionId: number;
+    position: Position;
     createdDate: Date;
     redCards: number;
     yellowCards: number;

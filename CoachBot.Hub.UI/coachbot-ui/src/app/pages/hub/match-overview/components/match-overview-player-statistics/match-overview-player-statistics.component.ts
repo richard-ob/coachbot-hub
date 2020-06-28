@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PlayerService } from '@pages/hub/shared/services/player.service';
 import { PlayerStatisticFilters } from '@pages/hub/shared/model/dtos/paged-player-statistics-request-dto.model';
-import { PlayerPositionMatchStatistics } from '@pages/hub/shared/model/player-match-statistics.model';
+import { PlayerPositionMatchStatistics } from '@pages/hub/shared/model/player-position-match-statistics.model';
 import SortingUtils from '@shared/utilities/sorting-utilities';
 import { Router } from '@angular/router';
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../../shared/services/player.service';
 import { PlayerStatisticFilters } from '../../shared/model/dtos/paged-player-statistics-request-dto.model';
-import { PlayerPositionMatchStatistics } from '../../shared/model/player-match-statistics.model';
+import { PlayerPositionMatchStatistics } from '../../shared/model/player-position-match-statistics.model';
 import SortingUtils from '@shared/utilities/sorting-utilities';
 
 @Component({

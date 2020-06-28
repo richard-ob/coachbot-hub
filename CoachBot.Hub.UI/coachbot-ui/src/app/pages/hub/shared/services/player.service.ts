@@ -12,9 +12,10 @@ import { TimePeriod } from '../model/time-period.enum';
 import { PlayerTeamStatisticsTotals } from '../model/player-team-statistics-totals.model';
 import { PlayerProfile } from '../model/player-profile.model';
 import { MatchDayTotals } from '../model/team-match-day-totals';
-import { PlayerPositionMatchStatistics } from '../model/player-match-statistics.model';
+import { PlayerPositionMatchStatistics } from '../model/player-position-match-statistics.model';
 import { PlayerStatisticsFilterHelper } from '../model/helpers/player-statistics-filter.helper';
 import { PlayerPerformanceSnapshot } from '../model/player-performance-snapshot.model';
+import { PlayerMatchStatistics } from '../model/player-match-statistics.model';
 
 @Injectable({
     providedIn: 'root'
@@ -55,8 +56,8 @@ export class PlayerService {
     }
 
     getPlayerMatchStatistics(page: number, pageSize = 10, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
-        : Observable<PagedResult<PlayerPositionMatchStatistics>> {
-        return this.http.post<PagedResult<PlayerPositionMatchStatistics>>(
+        : Observable<PagedResult<PlayerMatchStatistics>> {
+        return this.http.post<PagedResult<PlayerMatchStatistics>>(
             `${environment.apiUrl}/api/player-statistics/matches`,
             PlayerStatisticsFilterHelper.generatePlayerStatisticsFilter(page, pageSize, sortBy, sortOrder, filters)
         );

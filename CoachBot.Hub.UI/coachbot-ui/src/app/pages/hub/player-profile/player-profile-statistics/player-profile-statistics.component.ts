@@ -6,6 +6,7 @@ import { TimePeriod } from '../../shared/model/time-period.enum';
 import { map } from 'rxjs/operators';
 import { PlayerStatistics } from '../../shared/model/player-statistics.model';
 import { OverviewType } from 'angular2-calendar-heatmap';
+import { PlayerProfileSpotlightStatistic } from './player-profile-spotlight/player-profile-spotlight-statistic.enum';
 
 @Component({
     selector: 'app-player-profile-statistics',
@@ -17,47 +18,8 @@ export class PlayerProfileStatisticsComponent implements OnInit {
     playerId: number;
     playerStatistics: PlayerStatistics;
     isLoading = true;
+    spotlightStatistic = PlayerProfileSpotlightStatistic;
     overview = OverviewType.year;
-    data = [
-        {
-            date: "2020-01-01",
-            total: 17164,
-            details: [{
-                name: "Project 1",
-                date: "2016-01-01 12:30:45",
-                value: 9192
-            }, {
-                name: "Project 2",
-                date: "2016-01-01 13:37:00",
-                value: 6753
-            },
-            {
-                name: "Project N",
-                date: "2016-01-01 17:52:41",
-                value: 1219
-            },
-            ]
-        },
-        {
-            date: "2020-08-01",
-            total: 17164,
-            details: [
-                {
-                    name: "Project 1",
-                    date: "2016-08-01 12:30:45",
-                    value: 9192
-                }, {
-                    name: "Project 2",
-                    date: "2016-08-01 13:37:00",
-                    value: 6753
-                },
-                {
-                    name: "Project N",
-                    date: "2016-08-01 17:52:41",
-                    value: 1219
-                }
-            ]
-        }];
 
     constructor(private route: ActivatedRoute, private playerService: PlayerService) { }
 

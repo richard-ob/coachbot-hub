@@ -9,7 +9,7 @@ namespace CoachBot.Bot.Preconditions
 {
     public class RequireChannelAndTeamActive : PreconditionAttribute
     {
-        public override Task<PreconditionResult> CheckPermissions(ICommandContext context, CommandInfo command, IServiceProvider map)
+        public override Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command, IServiceProvider map)
         {
             using (var scope = map.CreateScope())
             {

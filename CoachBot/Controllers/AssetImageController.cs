@@ -23,11 +23,11 @@ namespace CoachBot.Controllers
         [HttpPost]
         public IActionResult CreateAssetImage(AssetImage assetImage)
         {
-            var fileSize = (Math.Floor((double)assetImage.Base64EncodedImage.Length / 3) + 1) * 4 + 1;
+            var fileSize = (double)assetImage.Base64EncodedImage.Length * 0.72; // Rough estimation of equivalent size
 
-            if (fileSize > 100000)
+            if (fileSize > 250000)
             {
-                return BadRequest("File exceeds 100KB in size");
+                return BadRequest("File exceeds 250KB in size");
             }
 
             if (!Regex.IsMatch(assetImage.Base64EncodedImage, "^data:image/(?:png)(?:;charset=utf-8)?;base64,(?:[A-Za-z0-9]|[+/])+={0,2}"))

@@ -37,7 +37,7 @@ namespace CoachBot
 
         public async Task ConfigureAsync()
         {
-            await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
+            await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
         }
 
         private async Task ProcessCommandAsync(SocketMessage pMsg)

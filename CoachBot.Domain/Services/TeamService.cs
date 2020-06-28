@@ -11,10 +11,12 @@ namespace CoachBot.Domain.Services
     public class TeamService
     {
         private readonly CoachBotContext _dbContext;
+        private readonly DiscordService _discordService;
 
-        public TeamService(CoachBotContext dbContext)
+        public TeamService(CoachBotContext dbContext, DiscordService discordService)
         {
             _dbContext = dbContext;
+            _discordService = discordService;
         }
 
         public Team GetTeam(int teamId)
@@ -57,6 +59,13 @@ namespace CoachBot.Domain.Services
                 throw new Exception("A team code must be unique for a region");
             }
 
+            if (team.BadgeImageId.HasValue)
+            {
+                var emoteName = $"{team.TeamCode}_{team.RegionId}";
+                var badgeImage = _dbContext.AssetImages.Single(i => i.Id == team.BadgeImageId);
+                team.BadgeEmote = _discordService.CreateEmote(emoteName, badgeImage.Base64EncodedImage);
+            }
+
             team.FoundedDate = team.FoundedDate ?? DateTime.Now;
             _dbContext.Teams.Add(team);
 
@@ -82,7 +91,17 @@ namespace CoachBot.Domain.Services
                 throw new Exception("A team code must be unique for a region");
             }
 
-            existingTeam.BadgeEmote = team.BadgeEmote;
+            if (existingTeam.BadgeImageId != team.BadgeImageId && team.BadgeImageId.HasValue || existingTeam.RegionId != team.RegionId || existingTeam.TeamCode != team.TeamCode)
+            {
+                var emoteName = $"{team.TeamCode}_{team.RegionId}";
+                var badgeImage = _dbContext.AssetImages.Single(i => i.Id == team.BadgeImageId);
+                if (existingTeam.BadgeImageId != team.BadgeImageId && existingTeam.BadgeEmote != null)
+                {
+                    _discordService.DeleteEmote(existingTeam.BadgeEmote);
+                }
+                existingTeam.BadgeEmote = _discordService.CreateEmote(emoteName, badgeImage.Base64EncodedImage);
+            }
+
             existingTeam.BadgeImageId = team.BadgeImageId;
             existingTeam.Color = team.Color;
             existingTeam.FoundedDate = team.FoundedDate;

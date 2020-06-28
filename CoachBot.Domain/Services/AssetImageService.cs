@@ -39,16 +39,6 @@ namespace CoachBot.Domain.Services
                 throw new Exception("User has uploaded 25 images today already");
             }
 
-            if (fileSize > 100000)
-            {
-                throw new Exception("File exceeds 100KB in size");
-            }
-            
-            if (!Regex.IsMatch(base64encodedImage, "^data:image/(?:png)(?:;charset=utf-8)?;base64,(?:[A-Za-z0-9]|[+/])+={0,2}"))
-            {
-                throw new Exception("File is not a valid PNG image");
-            }
-
             var assetImage = new AssetImage()
             {
                 Base64EncodedImage = base64encodedImage,

@@ -21,27 +21,6 @@
                     </option>
                 </select>
             </div>
-            <div class="form-group ">
-                <label class="control-label" for="input-default">Badge Emote</label>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend clickable">
-                        <span class="input-group-text">
-                            <img *ngIf="team.badgeEmote" style="width: 20px"
-                                [src]="((discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes | arrayFilter:'key':team.badgeEmote)[0].value">
-                    </span>
-                    </div>
-                    <select [(ngModel)]="team.badgeEmote" name="badgeEmote" class="form-control">
-                        <option [ngValue]="null">None</option>
-                        <ng-container *ngIf="team.guild && team.guild.discordGuildId">
-                            <option
-                                *ngFor="let emote of (discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes"
-                                [ngValue]="emote.key">
-                                {{emote.key | emoteDisplayName}}
-                            </option>
-                        </ng-container>
-                    </select>
-                </div>
-            </div>
             <div class="form-group">
                 <label class="control-label" for="input-default">Kit Emote</label>
                 <div class="input-group mb-3">

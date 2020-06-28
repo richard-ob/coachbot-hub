@@ -2,10 +2,13 @@
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
+using Discord;
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 
 namespace CoachBot.Domain.Services
@@ -21,6 +24,30 @@ namespace CoachBot.Domain.Services
             _discordSocketClient = discordSocketClient;
             _coachBotContext = coachBotContext;
             _config = config;
+        }
+
+        public string CreateEmote(string emoteName, string image)
+        {
+            var guild = _discordSocketClient.GetGuild(_config.OwnerGuildId) as SocketGuild;
+            var bytes = Convert.FromBase64String(image.Split(',')[1]); // Remove base64 header info
+            var emote = guild.CreateEmoteAsync(emoteName, new Image(new MemoryStream(bytes))).Result;
+
+            return $"<{emote.Name}:{emote.Id}>";
+        }
+
+        public void DeleteEmote(string emoteString)
+        {
+            try
+            {
+                var emoteId = ulong.Parse(emoteString.Split(':')[1].Replace(">", ""));
+                var guild = _discordSocketClient.GetGuild(_config.OwnerGuildId) as SocketGuild;
+                var emote = guild.GetEmoteAsync(emoteId).Result;
+                guild.DeleteEmoteAsync(emote).RunSynchronously();
+            }
+            catch
+            {
+                // TODO: Figure out if our error handling will let this fail gracefully..
+            }
         }
 
         public DiscordGuild GetDiscordGuild(ulong guildId)

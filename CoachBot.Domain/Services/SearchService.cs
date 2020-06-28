@@ -56,7 +56,8 @@ namespace CoachBot.Domain.Services
                 .WithTitle($":mag: {challenger.Team.BadgeEmote ?? challenger.Team.Name} are searching for a team to face")
                 .WithDescription($"To challenge **{challenger.Team.Name}** type **!challenge {challenger.Team.TeamCode}** and contact {startedBy} for more information")
                 .WithCurrentTimestamp()
-                .WithColor(challenger.Team.SystemColor);
+                .WithColor(challenger.Team.SystemColor)
+                .Build();
 
             var regionChannels = _coachBotContext.Channels
                 .Where(c => c.Team.RegionId == challenger.Team.RegionId)
@@ -94,7 +95,7 @@ namespace CoachBot.Domain.Services
 
             foreach(var messageChannel in search.DiscordSearchMessages.Keys)
             {
-                var discordChannel = _discordSocketClient.GetChannel(messageChannel) as IMessageChannel;
+                var discordChannel = _discordSocketClient.GetChannel(messageChannel) as ITextChannel;
                 var messageId = search.DiscordSearchMessages.GetValueOrDefault(messageChannel);
                 await discordChannel.DeleteMessagesAsync(new[] { messageId });
             }

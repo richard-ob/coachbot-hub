@@ -32,7 +32,7 @@ export class MatchOverviewPlayerStatisticsComponent implements OnInit {
         this.isSorting = true;
         this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
         this.sortBy = sortBy;
-        this.playerService.getPlayerMatchStatistics(1, 50, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
+        this.playerService.getPlayerPositionMatchStatistics(1, 50, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
             this.players = response.items;
             this.currentPage = response.page;
             this.isLoading = false;

@@ -46,6 +46,14 @@ export class PlayerService {
         );
     }
 
+    getPlayerPositionMatchStatistics(page: number, pageSize = 10, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
+        : Observable<PagedResult<PlayerPositionMatchStatistics>> {
+        return this.http.post<PagedResult<PlayerPositionMatchStatistics>>(
+            `${environment.apiUrl}/api/player-statistics/matches-by-position`,
+            PlayerStatisticsFilterHelper.generatePlayerStatisticsFilter(page, pageSize, sortBy, sortOrder, filters)
+        );
+    }
+
     getPlayerMatchStatistics(page: number, pageSize = 10, sortBy: string = null, sortOrder: string, filters: PlayerStatisticFilters)
         : Observable<PagedResult<PlayerPositionMatchStatistics>> {
         return this.http.post<PagedResult<PlayerPositionMatchStatistics>>(

@@ -1,4 +1,12 @@
 <div class="container">
+    <div class="row pt-2">
+        <app-team-profile-spotlight class="col-4" [teamId]="teamId" [statistic]="spotlightStatistic.BiggestWin">
+        </app-team-profile-spotlight>
+        <app-team-profile-spotlight class="col-4" [teamId]="teamId" [statistic]="spotlightStatistic.BiggestLoss">
+        </app-team-profile-spotlight>
+        <app-team-profile-spotlight class="col-4" [teamId]="teamId" [statistic]="spotlightStatistic.BestPassing">
+        </app-team-profile-spotlight>
+    </div>
     <app-team-profile-activity-heatmap [teamId]="teamId"></app-team-profile-activity-heatmap>
     <app-team-performance-tracker [teamId]="teamId"></app-team-performance-tracker>
     <div class="row pt-2">

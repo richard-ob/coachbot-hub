@@ -59,6 +59,16 @@ namespace CoachBot.Domain.Services
             return GetPlayerPositionMatchStatisticsQueryable(filters).GetPaged(page, pageSize, sortOrder);
         }
 
+        public Model.Dtos.PagedResult<PlayerMatchStatistics> GetPlayerMatchStatistics(int page, int pageSize, string sortOrder, PlayerStatisticFilters filters)
+        {
+            return GetPlayerMatchStatisticsQueryable(filters).GetPaged(page, pageSize, sortOrder);
+        }
+
+        public Model.Dtos.PagedResult<TeamMatchStatistics> GeTeamMatchStatistics(int page, int pageSize, string sortOrder, TeamStatisticsFilters filters)
+        {
+            return GetTeamMatchStatisticsQueryable(filters).GetPaged(page, pageSize, sortOrder);
+        }
+
         public List<PlayerTeamStatisticsTotals> GetPlayerTeamStatistics(int? playerId = null, int? teamId = null, bool activeOnly = false)
         {
             var playerTeams = _coachBotContext.PlayerTeams
@@ -255,6 +265,49 @@ namespace CoachBot.Domain.Services
                 .Include(c => c.Channel)
                 .Include(p => p.Position)
                 .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId);
+        }
+
+        private IQueryable<PlayerMatchStatistics> GetPlayerMatchStatisticsQueryable(PlayerStatisticFilters filters)
+        {
+            return _coachBotContext.PlayerMatchStatistics
+                .AsNoTracking()
+                .Where(p => filters.MatchId == null || p.MatchId == filters.MatchId)
+                .Where(p => filters.IncludeSubstituteAppearances || !p.Substitute)
+                .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId)
+                .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
+                .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
+                .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
+                .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
+                .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
+                .Include(p => p.Match)
+                    .ThenInclude(p => p.TeamHome)
+                .Include(p => p.Match)
+                    .ThenInclude(p => p.TeamAway)
+                .Include(p => p.Team)
+                .Include(c => c.Channel)
+                .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId);
+        }
+
+        private IQueryable<TeamMatchStatistics> GetTeamMatchStatisticsQueryable(TeamStatisticsFilters filters)
+        {
+            return _coachBotContext.TeamMatchStatistics
+                 .AsNoTracking()
+                 .Where(t => filters.TournamentId == null || t.TournamentId == filters.TournamentId)
+                 .Where(t => filters.TeamId == null || t.TeamId == filters.TeamId)
+                 .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
+                 .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
+                 .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
+                 .Where(t => filters.TeamType == null || t.Team.TeamType == filters.TeamType)
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
+                 .Include(p => p.Match)
+                    .ThenInclude(p => p.TeamHome)
+                .Include(p => p.Match)
+                    .ThenInclude(p => p.TeamAway);
         }
 
         private IQueryable<PlayerStatisticTotals> GetPlayerStatisticTotals(PlayerStatisticFilters filters)

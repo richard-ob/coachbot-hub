@@ -30,9 +30,8 @@ export class MatchOverviewLineupComponent implements OnInit {
     ngOnInit() {
         this.filters.matchId = this.matchId;
         this.filters.channelId = this.channelId;
-        this.playerService.getPlayerMatchStatistics(1, 30, undefined, undefined, this.filters).subscribe(players => {
+        this.playerService.getPlayerPositionMatchStatistics(1, 30, undefined, undefined, this.filters).subscribe(players => {
             this.players = players.items;
-            // TODO: invert this.. the original statistic generation was wrong
             this.starters = this.players
                 .filter(p => !p.substitute)
                 .sort((a, b) => this.allPositions.indexOf(a.position.name) - this.allPositions.indexOf(b.position.name));

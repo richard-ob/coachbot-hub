@@ -25,6 +25,12 @@ namespace CoachBot.Controllers
             return _matchStatisticsService.GetTeamStatistics(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
         }
 
+        [HttpPost("matches")]
+        public PagedResult<TeamMatchStatistics> PagedTeamMatchStatistics([FromBody]PagedTeamStatisticsRequestDto pagedRequest)
+        {
+            return _matchStatisticsService.GeTeamMatchStatistics(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
+        }
+
         [HttpGet("match-totals/{teamId}")]
         public List<MatchDayTotals> GetPlayerAppearanceTotals(int teamId)
         {

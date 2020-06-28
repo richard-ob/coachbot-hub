@@ -26,6 +26,7 @@ import { CoreModule } from '@core/core.module';
 import { TeamPerformanceTrackerComponent } from './team-profile-statistics/team-performance-tracker/team-performance-tracker.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { TeamProfileSpotlightComponent } from './team-profile-statistics/team-profile-spotlight/team-profile-spotlight.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         TeamProfileStatisticsLeaderboardComponent,
         TeamProfileActivityHeatmapComponent,
         TeamPerformanceTrackerComponent,
+        TeamProfileSpotlightComponent,
         TeamProfileComponent
     ],
     imports: [

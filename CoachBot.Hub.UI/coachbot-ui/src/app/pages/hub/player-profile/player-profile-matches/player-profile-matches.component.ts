@@ -37,13 +37,14 @@ export class PlayerProfileMatchesComponent implements OnInit {
         this.isLoading = true;
         this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
         this.sortBy = sortBy;
-        this.playerService.getPlayerMatchStatistics(page, undefined, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
-            this.matches = response.items;
-            this.currentPage = response.page;
-            this.totalPages = response.totalPages;
-            this.totalItems = response.totalItems;
-            this.isLoading = false;
-        });
+        this.playerService.getPlayerPositionMatchStatistics(page, undefined, this.sortBy, this.sortOrder, this.filters)
+            .subscribe(response => {
+                this.matches = response.items;
+                this.currentPage = response.page;
+                this.totalPages = response.totalPages;
+                this.totalItems = response.totalItems;
+                this.isLoading = false;
+            });
     }
 
     setFilters() {

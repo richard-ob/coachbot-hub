@@ -188,6 +188,11 @@
                                         <li><a routerLink="./team-editor-list">Teams</a></li>
                                         <li><a routerLink="./fantasy">Fantasy</a></li>
                                     </ul>
+                                    <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">Games</li>
+                                        <li><a routerLink="./fantasy">Fantasy</a></li>
+                                        <li><a routerLink="./score-predictor">Score Predictor</a></li>
+                                    </ul>
                                     <ul *ngIf="player && player.hubRole > 0"
                                         class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                         <li class="main-nav__title">Management</li>

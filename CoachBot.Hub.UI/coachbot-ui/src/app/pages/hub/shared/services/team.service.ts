@@ -12,6 +12,7 @@ import { MatchDayTotals } from '../model/team-match-day-totals';
 import { TeamStatisticsFilterHelper } from '../model/helpers/team-statistics-filter.helper';
 import { TeamType } from '../model/team-type.enum';
 import { TeamPerformanceSnapshot } from '../model/team-peformance-snapshot.model';
+import { TeamMatchStatistics } from '../model/team-match-statistics.model';
 
 @Injectable({
     providedIn: 'root'
@@ -46,6 +47,18 @@ export class TeamService {
         filters: TeamStatisticFilters
     ): Observable<PagedResult<TeamStatistics>> {
         return this.http.post<PagedResult<TeamStatistics>>(`${environment.apiUrl}/api/teamstatistics`,
+            TeamStatisticsFilterHelper.generatePlayerStatisticsFilter(page, pageSize, sortBy, sortOrder, filters)
+        );
+    }
+
+    getTeamMatchStatistics(
+        page: number,
+        pageSize = 10,
+        sortBy: string = null,
+        sortOrder: string = null,
+        filters: TeamStatisticFilters
+    ): Observable<PagedResult<TeamMatchStatistics>> {
+        return this.http.post<PagedResult<TeamMatchStatistics>>(`${environment.apiUrl}/api/teamstatistics/matches`,
             TeamStatisticsFilterHelper.generatePlayerStatisticsFilter(page, pageSize, sortBy, sortOrder, filters)
         );
     }

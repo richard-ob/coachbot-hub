@@ -1,0 +1,42 @@
+import { Channel } from './channel.model';
+import { Team } from './team.model';
+import { Match } from './match.model';
+
+export interface TeamMatchStatistics {
+    matchId: number;
+    match: Match;
+    teamId: number;
+    team: Team;
+    channelId: number;
+    channel: Channel;
+    positionId: number;
+    position: Position;
+    createdDate: Date;
+    redCards: number;
+    yellowCards: number;
+    fouls: number;
+    foulsSuffered: number;
+    slidingTackles: number;
+    slidingTacklesCompleted: number;
+    goalsConceded: number;
+    shots: number;
+    shotsOnGoal: number;
+    passesCompleted: number;
+    interceptions: number;
+    offsides: number;
+    goals: number;
+    ownGoals: number;
+    assists: number;
+    passes: number;
+    freeKicks: number;
+    penalties: number;
+    corners: number;
+    throwIns: number;
+    keeperSaves: number;
+    goalKicks: number;
+    possession: number;
+    distanceCovered: number;
+    keeperSavesCaught: number;
+    possessionPercentage: number;
+    matchOutcome: number;
+}

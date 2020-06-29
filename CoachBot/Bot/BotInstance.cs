@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
+using CoachBot.LegacyImporter;
 using CoachBot.Services;
 using CoachBot.Tools;
 using Discord;
@@ -21,6 +22,7 @@ namespace CoachBot.Bot
         private readonly MatchService _matchService;
         private readonly DiscordNotificationService _discordNotificationService;
         private readonly CacheService _cacheService;
+        private readonly Importer _importer;
         private CommandHandler _handler;
 
         public BotInstance(
@@ -31,7 +33,8 @@ namespace CoachBot.Bot
             ChannelService channelService,
             MatchService matchService,
             DiscordNotificationService discordNotificationService,
-            CacheService cacheService
+            CacheService cacheService,
+            Importer importer
         )
         {
             _serviceProvider = serviceProvider;
@@ -42,6 +45,7 @@ namespace CoachBot.Bot
             _matchService = matchService;
             _discordNotificationService = discordNotificationService;
             _cacheService = cacheService;
+            _importer = importer;
             Startup();
         }
 
@@ -50,24 +54,24 @@ namespace CoachBot.Bot
             Console.WriteLine("Connecting..");
             await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
             await _client.StartAsync();
-            await _client.SetGameAsync("IOSoccer Hub", "http://hub.iosoccer.com");
+            //await _client.SetGameAsync("IOSoccer Hub", "http://hub.iosoccer.com"); // TODO: Uncomment when life
 
             _client.Connected += Connected;
             _client.Disconnected += Disconnected;
             _client.Ready += BotReady;
             _client.ChannelDestroyed += ChannelDestroyed;
-            _client.LeftGuild += GuildDestroyed;
+            /*_client.LeftGuild += GuildDestroyed;
             _client.GuildMemberUpdated += (userPre, userPost) => { return UserUpdated(userPre, userPost); };
 
             _handler = new CommandHandler(_serviceProvider);
-            await _handler.ConfigureAsync();
-
+            await _handler.ConfigureAsync();*/
+            
             EnsureConnected();
         }
 
         private async void EnsureConnected()
         {
-            Task.Delay(TimeSpan.FromMinutes(10)).Wait();
+            Task.Delay(TimeSpan.FromMinutes(5)).Wait();
 
             if (_client.ConnectionState != ConnectionState.Connected || _client.LoginState != LoginState.LoggedIn)
             {
@@ -112,6 +116,7 @@ namespace CoachBot.Bot
                     }
                 }
             }
+            _importer.GetTeams();
 
             return Task.CompletedTask;
         }

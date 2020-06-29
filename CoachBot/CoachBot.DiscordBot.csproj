@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoachBot.Domain\CoachBot.Domain.csproj" />
+    <ProjectReference Include="..\CoachBot.LegacyImporter\CoachBot.LegacyImporter.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="config.json">

@@ -20,8 +20,6 @@ using CoachBot.Domain.Repositories;
 using CoachBot.Bot;
 using CoachBot.Extensions;
 using CoachBot.Services;
-using AspNet.Security.OpenId.Steam;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CoachBot
 {
@@ -102,6 +100,7 @@ namespace CoachBot
                 .AddSingleton<CacheService>()
                 .AddTransient<AssetImageService>()
                 .AddSingleton<BotInstance>()
+                .AddSingleton<LegacyImporter.Importer>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -117,13 +116,6 @@ namespace CoachBot
                     x.AppSecret = config.OAuth2Secret;
                 });
 
-            /*services.AddAuthorization(options =>
-            {
-                options.DefaultPolicy = new AuthorizationPolicyBuilder(SteamAuthenticationDefaults.AuthenticationScheme)
-                    .AddAuthenticationSchemes(SteamAuthenticationDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser()
-                    .Build();
-            });*/
             var provider = services.BuildServiceProvider();
 
             provider.GetService<LogAdaptor>();

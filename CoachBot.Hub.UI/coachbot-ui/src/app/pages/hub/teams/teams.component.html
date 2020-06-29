@@ -8,6 +8,7 @@
                 <span *ngSwitchCase="teamTypes.Club">Club Teams</span>
                 <span *ngSwitchCase="teamTypes.National">National Teams</span>
                 <span *ngSwitchCase="teamTypes.Mix">Mix Teams</span>
+                <span *ngSwitchCase="teamTypes.Draft">Draft Teams</span>
             </ng-container>
             <span class="caret"></span>
         </button>
@@ -18,6 +19,8 @@
                     Teams</a>
             </li>
             <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Mix)">Mix Teams</a></li>
+            <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Draft)">Draft Teams</a>
+            </li>
         </ul>
     </div>
     <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet in this region

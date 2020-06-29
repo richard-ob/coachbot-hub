@@ -10,7 +10,7 @@ export class UserPreferenceService {
     userPreferenceDefaults: UserPreference[] = [
         {
             type: UserPreferenceType.Region,
-            value: 2
+            value: 1 // EU
         }
     ];
 

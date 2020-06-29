@@ -4,6 +4,8 @@
     {
         Club = 1,
         National,
-        Mix
+        Mix,
+        Draft,
+        Other
     }
 }

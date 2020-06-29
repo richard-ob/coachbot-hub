@@ -47,6 +47,7 @@ namespace CoachBot.Domain.Services
                 .Include(t => t.BadgeImage)
                 .Where(t => t.RegionId == regionId)
                 .Where(t => teamType == null || t.TeamType == teamType)
+                .OrderBy(t => t.TeamType).ThenBy(t => t.Name)
                 .ToList();
         }
 

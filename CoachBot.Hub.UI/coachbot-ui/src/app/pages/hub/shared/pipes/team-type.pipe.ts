@@ -11,6 +11,8 @@ export class TeamTypePipe implements PipeTransform {
                 return 'Mix';
             case TeamType.National:
                 return 'National';
+            case TeamType.Draft:
+                return 'Draft';
             default:
                 return '';
         }

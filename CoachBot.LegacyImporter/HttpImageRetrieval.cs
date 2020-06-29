@@ -15,7 +15,7 @@ namespace CoachBot.LegacyImporter
             {
                 byte[] data = webClient.DownloadData(url);
                 var base64EncodedImage = Convert.ToBase64String(data);
-                return base64EncodedImage;
+                return "data:image/png;base64," + base64EncodedImage;
             }
         }
     }

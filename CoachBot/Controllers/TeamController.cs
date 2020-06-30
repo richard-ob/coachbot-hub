@@ -15,11 +15,13 @@ namespace CoachBot.Controllers
     public class TeamController : Controller
     {
         private readonly TeamService _teamService;
+        private readonly PlayerService _playerService;
         private readonly MatchStatisticsService _matchStatisticsService;
 
-        public TeamController(TeamService teamService, MatchStatisticsService matchStatisticsService)
+        public TeamController(TeamService teamService, PlayerService playerService, MatchStatisticsService matchStatisticsService)
         {
             _teamService = teamService;
+            _playerService = playerService;
             _matchStatisticsService = matchStatisticsService;
         }
 
@@ -66,7 +68,7 @@ namespace CoachBot.Controllers
         [HttpPut]
         public IActionResult Update(Team team)
         {
-            if (!_teamService.IsTeamCaptain(team.Id, User.GetSteamId()) && !_teamService.IsViceCaptain(team.Id, User.GetSteamId()))
+            if (!_teamService.IsTeamCaptain(team.Id, User.GetSteamId()) && !_teamService.IsViceCaptain(team.Id, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
             {
                 return Forbid();
             }
@@ -81,7 +83,7 @@ namespace CoachBot.Controllers
         [Route("update-guild-id")]
         public IActionResult UpdateGuildId([FromBody]UpdateGuildIdDto updateGuildIdDto)
         {
-            if (!_teamService.IsTeamCaptain(updateGuildIdDto.TeamId, User.GetSteamId()) && !_teamService.IsViceCaptain(updateGuildIdDto.TeamId, User.GetSteamId()))
+            if (!_teamService.IsTeamCaptain(updateGuildIdDto.TeamId, User.GetSteamId()) && !_teamService.IsViceCaptain(updateGuildIdDto.TeamId, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
             {
                 return Forbid();
             }

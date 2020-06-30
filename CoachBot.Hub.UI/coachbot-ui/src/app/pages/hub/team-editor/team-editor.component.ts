@@ -5,6 +5,7 @@ import { Region } from '../shared/model/region.model';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeamRole } from '../shared/model/team-role.enum';
+import { PlayerHubRole } from '../shared/model/player-hub-role.enum';
 
 @Component({
     selector: 'app-team-editor',
@@ -30,7 +31,8 @@ export class TeamEditorComponent implements OnInit {
             const teamId = +params.get('id');
             console.log(teamId);
             this.playerService.getCurrentPlayer().subscribe(player => {
-                if (player.teams.some(t => t.teamId === teamId && [TeamRole.Captain, TeamRole.ViceCaptain].some(tr => tr === t.teamRole))) {
+                if (player.teams.some(t => t.teamId === teamId && [TeamRole.Captain, TeamRole.ViceCaptain].some(tr => tr === t.teamRole))
+                    || player.hubRole === PlayerHubRole.Owner) {
                     this.teamService.getTeam(teamId).subscribe(team => {
                         this.team = team;
                         this.isLoading = false;

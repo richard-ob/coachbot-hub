@@ -16,16 +16,19 @@ import { PlayerPositionMatchStatistics } from '../model/player-position-match-st
 import { PlayerStatisticsFilterHelper } from '../model/helpers/player-statistics-filter.helper';
 import { PlayerPerformanceSnapshot } from '../model/player-performance-snapshot.model';
 import { PlayerMatchStatistics } from '../model/player-match-statistics.model';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PlayerService {
 
+    currentPlayer: Player;
+
     constructor(private http: HttpClient) { }
 
     getCurrentPlayer(): Observable<Player> {
-        return this.http.get<Player>(`${environment.apiUrl}/api/player/@me`);
+        return this.http.get<Player>(`${environment.apiUrl}/api/player/@me`).pipe(tap(player => this.currentPlayer = player));
     }
 
     getPlayers(page: number): Observable<PagedResult<Player>> {

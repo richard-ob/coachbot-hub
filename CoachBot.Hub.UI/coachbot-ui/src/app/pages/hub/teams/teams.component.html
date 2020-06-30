@@ -43,6 +43,11 @@
                 <footer class="card__footer sponsor-card__footer p-2">
                     <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
                         View Team Profile</a>
+                    <a *ngIf="currentPlayer && currentPlayer.hubRole === hubRoles.Owner"
+                        class="btn btn-xs  btn-block btn-dark" type="button"
+                        [routerLink]="['/team/' + team.id + '/manage']">
+                        Manage
+                    </a>
                 </footer>
             </div>
         </div>
@@ -67,6 +72,11 @@
                 <footer class="card__footer sponsor-card__footer p-2">
                     <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
                         View Team Profile</a>
+                    <a *ngIf="currentPlayer && currentPlayer.hubRole === hubRoles.Owner"
+                        class="btn btn-xs  btn-block btn-dark" type="button"
+                        [routerLink]="['/team/' + team.id + '/manage']">
+                        Manage
+                    </a>
                 </footer>
             </div>
         </div>

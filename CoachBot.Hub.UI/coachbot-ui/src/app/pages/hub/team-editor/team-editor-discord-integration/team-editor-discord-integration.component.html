@@ -20,7 +20,7 @@
                         <th>Channel Name</th>
                         <th>Sub Team</th>
                         <th>Format</th>
-                        <th>Is Mix</th>
+                        <th class="text-center">Is Mix</th>
                         <th></th>
                     </thead>
                     <tbody>
@@ -38,7 +38,7 @@
                             <td>
                                 <span *ngIf="channel.channelPositions">{{channel.channelPositions.length}}v{{channel.channelPositions.length}}</span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <i *ngIf="channel.isMixChannel" class="text-success fa fa-check"></i>
                                 <i *ngIf="!channel.isMixChannel" class="text-danger fa fa-times"></i>
                             </td>

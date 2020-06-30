@@ -13,12 +13,14 @@ namespace CoachBot.Controllers
     {
         private readonly ChannelService _channelService;
         private readonly TeamService _teamService;
+        private readonly PlayerService _playerService;
         private readonly DiscordService _discordService;
 
-        public ChannelController(ChannelService channelService, TeamService teamService, DiscordService discordService)
+        public ChannelController(ChannelService channelService, PlayerService playerService, TeamService teamService, DiscordService discordService)
         {
             _channelService = channelService;
             _teamService = teamService;
+            _playerService = playerService;
             _discordService = discordService;
         }
 
@@ -34,7 +36,7 @@ namespace CoachBot.Controllers
             var steamUserId = User.GetSteamId();
             var channel = _channelService.GetChannel(id);
 
-            if (!_teamService.IsTeamCaptain(channel.TeamId, steamUserId) && !_teamService.IsViceCaptain(channel.TeamId, steamUserId))
+            if (!_teamService.IsTeamCaptain(channel.TeamId, steamUserId) && !_teamService.IsViceCaptain(channel.TeamId, steamUserId) && !_playerService.IsOwner(User.GetSteamId()))
             {
                 return Forbid();
             }
@@ -45,7 +47,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public IActionResult Create([FromBody]Channel channel)
         {
-            if (!_teamService.IsTeamCaptain(channel.TeamId, User.GetSteamId()) && !_teamService.IsViceCaptain(channel.TeamId, User.GetSteamId()))
+            if (!_teamService.IsTeamCaptain(channel.TeamId, User.GetSteamId()) && !_teamService.IsViceCaptain(channel.TeamId, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
             {
                 return Forbid();
             }
@@ -58,7 +60,7 @@ namespace CoachBot.Controllers
         [HttpPut]
         public IActionResult Update([FromBody]Channel channel)
         {
-            if (!_teamService.IsTeamCaptain(channel.Id, User.GetSteamId()) && !_teamService.IsViceCaptain(channel.Id, User.GetSteamId()))
+            if (!_teamService.IsTeamCaptain(channel.Id, User.GetSteamId()) && !_teamService.IsViceCaptain(channel.Id, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
             {
                 return Forbid();
             }

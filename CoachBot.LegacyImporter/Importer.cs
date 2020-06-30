@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
+using CoachBot.LegacyImporter.Data;
 using CoachBot.LegacyImporter.Model;
 using CoachBot.Model;
 using Discord;
@@ -40,7 +41,7 @@ namespace CoachBot.LegacyImporter
         {
             var regions = new List<Region>();
 
-            foreach (var legacyRegion in config.Regions.OrderBy(r => r.RegionId))
+            foreach (var legacyRegion in config.Regions.Where(r => r.RegionName == "Europe").OrderBy(r => r.RegionId))
             {
                 var region = new Region()
                 {
@@ -60,7 +61,7 @@ namespace CoachBot.LegacyImporter
         {
             var servers = new List<Server>();
 
-            foreach (var legacyServer in config.Servers)
+            foreach (var legacyServer in config.Servers.Where(s => s.RegionId == 1))
             {
                 var countryCode = IpTools.GetCountryFromIpData(legacyServer.Address.Split(":")[0]);
                 var countryId = this.coachBotContext.Countries.Where(c => c.Code == countryCode).Select(c => c.Id).FirstOrDefault();
@@ -71,7 +72,7 @@ namespace CoachBot.LegacyImporter
                     Address = legacyServer.Address,
                     RconPassword = legacyServer.RconPassword,
                     IsActive = true,
-                    CountryId = countryId > 0 ? countryId : 1
+                    CountryId = ServersData.GetCorrectServerCountry(countryId, legacyServer.Name)
                 };
 
                 servers.Add(server);
@@ -85,19 +86,10 @@ namespace CoachBot.LegacyImporter
         public List<Position> GetPositions()
         {
             var positions = new List<Position>();
-
-            foreach (var channel in config.Channels)
-            {
-                var newPositions = channel.Positions.Select(p => new Position()
-                {
-                    Name = p.PositionName
-                }).Where(p => !positions.Any(e => e.Name.ToUpper() == p.Name.ToUpper()));
-
-                positions.AddRange(newPositions);
-            }
-
-            this.coachBotContext.Positions.AddRange(positions);
+            this.coachBotContext.Positions.AddRange(PositionsData.Positions.ToList().Select(p => new Position() { Name = p }));
+            this.coachBotContext.Positions.AddRange(PositionsData.PositionNumbers.ToList().Select(p => new Position() { Name = p }));
             this.coachBotContext.SaveChanges();
+
             return positions;
         }
 
@@ -108,6 +100,7 @@ namespace CoachBot.LegacyImporter
             var channels = new List<Channel>();
 
             var activeChannels = config.Channels
+                .Where(c => c.RegionId == 1)
                 .GroupBy(c => c.GuildName)
                 .Select(s => new
                 {
@@ -153,17 +146,21 @@ namespace CoachBot.LegacyImporter
 
             foreach (var guild in guilds)
             {
-                // MAYBE IMPORT GUILD IMAGES :D
                 try
                 {
                     var leadChannel = config.Channels
-                        .Where(c => c.RegionId > 0)
+                        .Where(c => c.RegionId == 1)
                         .OrderBy(c => c.LastSearch.HasValue)
                         .ThenBy(c => c.LastSearch)
                         .ThenBy(c => !string.IsNullOrWhiteSpace(c.Team1.BadgeEmote))
                         .First(c => c.GuildName == guild.Name);
 
                     if (leadChannel == null)
+                    {
+                        continue;
+                    }
+
+                    if (TeamExclusions.Teams.Any(t => t == guild.Name))
                     {
                         continue;
                     }
@@ -191,7 +188,13 @@ namespace CoachBot.LegacyImporter
             foreach (var legacyChannel in config.Channels)
             {
                 var discordChannel = this.discordSocketClient.GetChannel(legacyChannel.Id) as ITextChannel;
+
+                if (discordChannel == null) continue;
+
+                if (!matchHistory.Any(m => m.ChannelId == discordChannel.Id)) continue;
+
                 var currentPosIndex = 0;
+
                 try
                 {
                     var channel = new Channel()
@@ -204,16 +207,13 @@ namespace CoachBot.LegacyImporter
                         UseClassicLineup = legacyChannel.ClassicLineup,
                         DiscordChannelName = legacyChannel.Name,
                         Formation = (Formation)legacyChannel.Formation,                        
-                        ChannelPositions = this.Positions.Where(p => legacyChannel.Positions.Any(l => l.PositionName.ToUpper() == p.Name.ToUpper())).Select(p =>
-                            new ChannelPosition()
-                            {
-                                PositionId = p.Id,
-                                Ordinal = currentPosIndex++
-                            }) as ICollection<ChannelPosition> 
                     };
 
                     channels.Add(channel);
                     this.coachBotContext.Channels.Add(channel);
+                    this.coachBotContext.SaveChanges();
+                    this.coachBotContext.ChannelPositions.AddRange(PositionsData.GenerateChannelPositions(legacyChannel.Positions, channel.Id, this.coachBotContext));
+                    this.coachBotContext.SaveChanges();
                 }
                 catch
                 {

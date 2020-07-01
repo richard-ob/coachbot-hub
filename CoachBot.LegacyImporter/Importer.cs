@@ -193,6 +193,11 @@ namespace CoachBot.LegacyImporter
 
                 if (!matchHistory.Any(m => m.ChannelId == discordChannel.Id)) continue;
 
+                if (ChannelExclusions.Channels.Any(c => c == legacyChannel.Id))
+                {
+                    continue;
+                }
+
                 var currentPosIndex = 0;
 
                 try

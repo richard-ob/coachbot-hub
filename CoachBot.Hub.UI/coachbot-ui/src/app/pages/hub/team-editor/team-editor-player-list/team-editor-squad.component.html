@@ -39,6 +39,9 @@
                                 <option [ngValue]="teamRoles.Reserve">Reserve</option>
                                 <option [ngValue]="teamRoles.Trialist">Trialist</option>
                             </select>
+                            <span *ngIf="teamPlayer.playerId === currentPlayer.id">
+                                {{teamPlayer.teamRole | teamRole}}
+                            </span>
                         </td>
                         <td class="text-center">
                             <button *ngIf="teamPlayer.playerId !== currentPlayer.id" class="btn btn-xs btn-primary"

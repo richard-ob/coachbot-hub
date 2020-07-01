@@ -27,7 +27,7 @@
                         style="width: 100%; height: 50px; border-radius: 2px; border: 1px #dedede solid"
                         [style.background-color]="organisation.brandColour" (click)="colourPicker.showColorPicker()">
                     </div>
-                    <app-chrome-colour-picker [color]="organisation.brandColour"
+                    <app-chrome-colour-picker [color]="organisation.brandColour || '#ffffff'"
                         (colorChange)="organisation.brandColour = $event" #colourPicker>
                     </app-chrome-colour-picker>
                 </div>

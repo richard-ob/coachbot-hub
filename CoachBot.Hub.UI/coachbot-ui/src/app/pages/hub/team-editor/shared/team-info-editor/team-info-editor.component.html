@@ -39,7 +39,8 @@
                         style="width: 100%; height: 50px; border-radius: 2px; border: 1px #dedede solid"
                         [style.background-color]="team.color" (click)="colourPicker.showColorPicker()">
                     </div>
-                    <app-chrome-colour-picker [color]="team.color" (colorChange)="team.color = $event" #colourPicker>
+                    <app-chrome-colour-picker [color]="team.color || '#ffffff'" (colorChange)="team.color = $event"
+                        #colourPicker>
                     </app-chrome-colour-picker>
                 </div>
                 <div class="form-group">
@@ -51,7 +52,7 @@
                                 <i class="fas fa-calendar"></i>
                             </span>
                         </div>
-                        <input matInput class="form-control" required [matDatepicker]="picker" (click)="picker.open()"
+                        <input matInput class="form-control" [matDatepicker]="picker" (click)="picker.open()"
                             name="dateFounded" [(ngModel)]="team.foundedDate">
                     </div>
                 </div>

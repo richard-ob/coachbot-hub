@@ -23,6 +23,7 @@ namespace CoachBot.Domain.Services
                 .Include(s => s.Region)
                 .Include(s => s.Country)
                 .Where(s => s.IsActive == true)
+                .OrderBy(s => s.Name)
                 .ToList();
         }
 
@@ -31,7 +32,8 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.Servers
                 .Include(s => s.Country)
                 .Include(s => s.Region)
-                .Where(s => s.RegionId == regionId).ToList();
+                .Where(s => s.RegionId == regionId)
+                .ToList();
         }
 
         public Server GetServer(int id)

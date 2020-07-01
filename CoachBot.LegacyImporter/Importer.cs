@@ -172,7 +172,7 @@ namespace CoachBot.LegacyImporter
                         BadgeEmote = leadChannel.Team1.BadgeEmote,
                         KitEmote = leadChannel.Team1.KitEmote,
                         RegionId = leadChannel.RegionId,
-                        TeamType = TeamTypeMapper.GetTeamTypeForTeam(guild.Name),
+                        TeamType = TeamTypes.GetTeamTypeForTeam(guild.Name),
                         Color = leadChannel.Team1.Color,
                         GuildId = guild.Id,
                         BadgeImageId = this.TeamAssetImages.Where(t => t.Key == guild.Name).Select(t => (int?)t.Value.Id).FirstOrDefault()

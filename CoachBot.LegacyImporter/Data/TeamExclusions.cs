@@ -12,7 +12,8 @@ namespace CoachBot.LegacyImporter
             "Wasps FC",
             "Waps FC IOS Europa Cup",
             "The Wasps Nest aka The Champs",
-            "ArrowNewEra"
+            "ArrowNewEra",
+            "Passing Makes Perfect"
         };
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CoachBot.LegacyImporter
 {
-    public static class TeamTypeMapper
+    public static class TeamTypes
     {
         public static TeamType GetTeamTypeForTeam(string guildName)
         {

@@ -34,9 +34,8 @@
         <div class="form-group">
             <label class="control-label" for="input-default">Positions</label>
             <div class="d-block mb-2">
-                <span *ngFor="let position of channel.channelPositions" class="badge badge-pill badge-primary mr-2 clickable" (click)="editPosition(position)" title="Edit position">
+                <span *ngFor="let position of channel.channelPositions" class="badge badge-pill badge-primary mr-2">
                     {{position.position.name}}
-                    <i class="fas fa-pencil-alt fa-sm ml-1 show-on-parent-hover"></i>
                 </span>
             </div>
             <div class="d-block">

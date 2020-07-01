@@ -81,6 +81,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<Server>().HasIndex(s => new { s.Address }).IsUnique(true);
             modelBuilder.Entity<Region>().HasIndex(r => new { r.RegionName }).IsUnique(true);
             modelBuilder.Entity<Team>().HasIndex(t => new { t.TeamCode, t.RegionId }).IsUnique(true);
+            modelBuilder.Entity<Position>().HasIndex(p => new { p.Name }).IsUnique(true);
             modelBuilder.Entity<PlayerLineupPosition>().HasIndex(ptp => new { ptp.PositionId, ptp.LineupId }).IsUnique(true);
             modelBuilder.Entity<TournamentStaff>().HasIndex(tes => new { tes.PlayerId, tes.TournamentId }).IsUnique(true);
             modelBuilder.Entity<FantasyTeam>().HasIndex(ft => new { ft.PlayerId, ft.TournamentId }).IsUnique(true);

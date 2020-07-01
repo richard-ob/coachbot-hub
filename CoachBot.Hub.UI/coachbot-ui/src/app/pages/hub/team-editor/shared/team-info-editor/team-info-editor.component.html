@@ -8,18 +8,19 @@
             <form #teamInfoForm="ngForm">
                 <div *ngIf="team.inactive" class="alert alert-warning">This team is not active</div>
                 <div class="form-group">
-                    <label class="control-label" for="teamName">Team Name</label>
+                    <label class="control-label required" for="teamName">Team Name</label>
                     <input type="text" class="form-control" id="teamName" required [(ngModel)]="team.name"
                         placeholder="Full team name, e.g. Ball Breakers" name="teamName">
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="teamCode">Team Code</label>
-                    <small class="label-subtitle mb-2">This must be unique in the region your team plays in</small>
+                    <label class="control-label required" for="teamCode">Team Code</label>
+                    <small class="label-subtitle mb-2">This must be unique in the region your team plays in. It will be
+                        used ingame, and also for matchmaking searches.</small>
                     <input type="text" class="form-control" id="teamCode" required [(ngModel)]="team.teamCode"
                         name="teamCode" placeholder="Short team code, e.g. BB">
                 </div>
                 <div *ngIf="!team.id" class="form-group">
-                    <label class="control-label" for="teamType">Team Type</label>
+                    <label class="control-label required" for="teamType">Team Type</label>
                     <select class="form-control" id="teamType" [(ngModel)]="team.teamType" name="teamType" required>
                         <option [ngValue]="teamTypes.Club">Club</option>
                         <option [ngValue]="teamTypes.National">National</option>
@@ -57,7 +58,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="region">Region</label>
+                    <label class="control-label required" for="region">Region</label>
                     <select class="form-control" id="region" [(ngModel)]="team.regionId" required
                         placeholder="Select region..." name="regionId">
                         <option *ngFor="let region of regions" [ngValue]="region.regionId">
@@ -65,7 +66,7 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div *ngIf="team.id" class="form-group">
                     <label class="control-label" for="inactive">Inactive</label>
                     <div>
                         <label class="checkbox checkbox-inline">

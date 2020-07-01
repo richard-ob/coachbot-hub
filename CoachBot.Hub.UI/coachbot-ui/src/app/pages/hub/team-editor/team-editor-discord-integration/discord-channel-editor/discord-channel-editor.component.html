@@ -21,7 +21,7 @@
 <ng-container *ngIf="wizardMode !== wizardModes.Disabled && wizardStep === wizardSteps.Configuration">
     <form *ngIf="!isLoading" #editChannelForm="ngForm">
         <div class="form-group">
-            <label class="control-label" for="input-default">Format</label>
+            <label class="control-label required" for="input-default">Format</label>
             <select class="form-control" (change)="setPositions($event.target.value)"
                 placeholder="Select match format.." name="format" required>
                 <option *ngFor="let format of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"
@@ -49,7 +49,8 @@
             <label class="control-label mb-0" for="input-default">Sub Team Name</label>
             <small class="label-subtitle mb-2">If this is a secondary channel (i.e. not your team's main channel) then
                 you
-                will want to use populate this with an appropriate name</small>
+                will want to use populate this with an appropriate name. For example, for the IOSoccer mix "team",
+                Overlap is a subteam.</small>
             <input class="form-control" [(ngModel)]="channel.subTeamName" name="subTeamName" type="text">
         </div>
 

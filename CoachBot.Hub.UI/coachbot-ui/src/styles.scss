@@ -22,3 +22,11 @@
 .show-on-parent-hover {
     display: none;
 }
+
+label.required::after {
+    content: '*';
+    color: red;
+    font-size: .83em;
+    padding-left: 0.2rem;
+    vertical-align: super;
+}

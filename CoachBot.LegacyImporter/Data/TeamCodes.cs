@@ -45,31 +45,9 @@ namespace CoachBot.LegacyImporter.Data
                 case "___________":
                     return "________";
 
-                case "___________":
-                    return "________";
-
-                case "___________":
-                    return "________";
-
-                case "___________":
-                    return "________";
-
-                case "___________":
-                    return "________";
-
-                case "___________":
-                    return "________";
-
-                case "___________":
-                    return "________";
-
-                case "___________":
-                    return "________";
-
-                case "___________":
-                    return "________";
-
             }
+
+            return teamName;
         }
     }
 }

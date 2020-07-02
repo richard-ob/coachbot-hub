@@ -4,8 +4,11 @@
             There are no organisations yet. Create one below.
         </div>
         <div *ngIf="organisations && organisations.length" class="card card--has-table">
-            <div class="card__header">
+            <div class="card__header card__header--has-btn">
                 <h4>Organisations</h4>
+                <a [routerLink]="['/tournament-creator']" class="btn btn-xs btn-secondary float-right">
+                    Back to Tournament Series
+                </a>
             </div>
             <div class="card__content">
                 <table class="table table-striped table-clickable table-hover">
@@ -50,6 +53,17 @@
                         <app-asset-image-uploader (imageUploaded)="updateLogoImageId($event)"
                             [currentAssetImageId]="organisation.logoImageId">
                         </app-asset-image-uploader>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="orgColour">Organisation Colour</label>
+                        <div class="clickable"
+                            style="width: 100%; height: 50px; border-radius: 2px; border: 1px #dedede solid"
+                            [style.background-color]="organisation.brandColour"
+                            (click)="colourPicker.showColorPicker()">
+                        </div>
+                        <app-chrome-colour-picker [color]="organisation.brandColour || '#ffffff'"
+                            (colorChange)="organisation.brandColour = $event" #colourPicker>
+                        </app-chrome-colour-picker>
                     </div>
                     <button class="btn btn-primary" type="submit"
                         [disabled]="isCreating || !organisationForm.valid">Create</button>

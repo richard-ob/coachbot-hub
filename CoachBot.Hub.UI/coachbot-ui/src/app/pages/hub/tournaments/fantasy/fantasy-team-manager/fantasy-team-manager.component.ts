@@ -33,8 +33,11 @@ export class FantasyTeamManagerComponent implements OnInit {
     createFantasyTeam() {
         this.isCreating = true;
         this.fantasyService.createFantasyTeam(this.fantasyTeam).subscribe(() => {
-            this.isCreating = false;
             this.fantasyTeam = new FantasyTeam();
+            this.fantasyService.getFantasyTeamsForUser().subscribe(fantasyTeams => {
+                this.fantasyTeams = fantasyTeams;
+                this.isCreating = false;
+            });
         });
     }
 

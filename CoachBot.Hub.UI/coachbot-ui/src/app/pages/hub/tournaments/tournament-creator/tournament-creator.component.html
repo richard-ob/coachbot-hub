@@ -1,6 +1,9 @@
 <div class="container py-4">
     <ng-container *ngIf="existingTournamentSeries; else spinner">
-        <div class="card card--has-table">
+        <div *ngIf="!existingTournamentSeries.length" class="alert alert-info">
+            There are no tournament series yet. Create one below.
+        </div>
+        <div *ngIf="existingTournamentSeries.length" class="card card--has-table">
             <div class="card__header">
                 <h4>Tournament Series</h4>
             </div>
@@ -22,29 +25,27 @@
         </div>
         <div class="card">
             <div class="card__header">
-                <h4>Create Tournament</h4>
+                <h4>Create Tournament Series</h4>
             </div>
             <div class="card__content">
                 <form (ngSubmit)="createTournament()" #tournamentForm="ngForm">
                     <div class="form-group">
                         <label>Name</label>
                         <input [(ngModel)]="tournamentSeries.name" name="tournament" type="text" class="form-control"
-                            placeholder="e.g. IOSF" required>
+                            placeholder="e.g. IOSF League" required>
                     </div>
                     <div class="form-group">
-                        <label>Organisation</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">
-                                    <a [routerLink]="['/organisations']"><i class="fas fa-plus"></i></a>
-                                </span>
-                            </div>
-                            <select [(ngModel)]="tournamentSeries.organisationId" name="organisation"
-                                class="form-control">
-                                <option *ngFor="let organisation of organisations" [ngValue]="organisation.id">
-                                    {{organisation.name}} ({{organisation.acronym}})</option>
-                            </select>
-                        </div>
+                        <label>
+                            Organisation
+                            <a [routerLink]="['/organisations']" class="btn btn-xs btn-secondary ml-2">
+                                Manage Organisations
+                            </a>
+                        </label>
+                        <select [(ngModel)]="tournamentSeries.organisationId" name="organisation" class="form-control"
+                            required>
+                            <option *ngFor="let organisation of organisations" [ngValue]="organisation.id">
+                                {{organisation.name}} ({{organisation.acronym}})</option>
+                        </select>
                     </div>
                     <button class="btn btn-primary" type="submit"
                         [disabled]="isCreating || !tournamentForm.valid">Create</button>

@@ -187,6 +187,11 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
+        public TournamentStage GetTournamentStage(int tournamentStageId)
+        {
+            return _coachBotContext.TournamentStages.FirstOrDefault(t => t.Id == tournamentStageId);
+        }
+
         public void UpdateTournamentStage(TournamentStage tournamentStage)
         {
             _coachBotContext.TournamentStages.Update(tournamentStage);
@@ -237,6 +242,13 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
+        public TournamentStaff GetTournamentStaffMember(int tournamentStaffId)
+        {
+            return _coachBotContext.TournamentStaff
+                .Include(t => t.Player)
+                .Include(t => t.Tournament)
+                .First(s => s.Id == tournamentStaffId);
+        }
         public void CreateTournamentStaff(TournamentStaff tournamentStaff)
         {
             _coachBotContext.TournamentStaff.Add(tournamentStaff);
@@ -265,6 +277,13 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(tgt => tgt.Team)
                 .Where(g => g.TournamentStage.TournamentId == tournamentId)
                 .ToList();
+        }
+
+        public TournamentGroup GetTournamentGroup(int tournamentGroupId)
+        {
+            return _coachBotContext.TournamentGroups
+                .Include(g => g.TournamentStage)
+                .First(g => g.Id == tournamentGroupId);
         }
 
         public void CreateTournamentGroup(TournamentGroup tournamentGroup)
@@ -368,6 +387,11 @@ namespace CoachBot.Domain.Services
                 default:
                     break;
             }
+        }
+
+        public bool IsTournamentOrganiser(int tournamentId, ulong steamId)
+        {
+            return _coachBotContext.TournamentStaff.Any(t => t.TournamentId == tournamentId && t.Player.SteamID == steamId && t.Role == TournamentStaffRole.Organiser);
         }
 
         private DateTime GetMatchDaySlotDate(DateTime earliestDate, TournamentMatchDaySlot tournamentMatchDaySlot)

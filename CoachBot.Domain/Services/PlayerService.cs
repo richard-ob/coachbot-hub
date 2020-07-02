@@ -104,9 +104,8 @@ namespace CoachBot.Domain.Services
 
         public void UpdateDiscordUserId(ulong discordUserId, ulong steamId)
         {
-            // TODO: Ensure player is not an admin for security purposes
             var player = GetPlayerBySteamId(steamId);
-            if (player.HubRole == PlayerHubRole.Administrator)
+            if (player.HubRole == PlayerHubRole.Administrator || player.HubRole == PlayerHubRole.Owner)
             {
                 throw new Exception("Administrators cannot verify their accounts in this manner");
             }

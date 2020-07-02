@@ -183,6 +183,7 @@ namespace CoachBot.Domain.Services
                 .Include(t => t.TournamentSeries)
                 .Where(t => !_coachBotContext.Matches.Any(m => m.TournamentId == t.Id && m.ScheduledKickOff < DateTime.Now))
                 .Where(t => !_coachBotContext.FantasyTeams.Any(ft => ft.Player.SteamID == steamUserId))
+                .Where(t => t.IsPublic)
                 .ToList();
         }
 

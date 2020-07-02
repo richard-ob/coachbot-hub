@@ -12,10 +12,12 @@ namespace CoachBot.Domain.Services
     public class AssetImageService
     {
         private readonly CoachBotContext _coachBotContext;
+        private readonly PlayerService _playerService;
 
-        public AssetImageService(CoachBotContext coachBotContext)
+        public AssetImageService(CoachBotContext coachBotContext, PlayerService playerService)
         {
             _coachBotContext = coachBotContext;
+            _playerService = playerService;
         }
 
         public AssetImage GetAssetImage(int id)
@@ -34,9 +36,9 @@ namespace CoachBot.Domain.Services
             var currentDailyAssetCount = _coachBotContext.AssetImages.Count(a => a.PlayerId == player.Id && a.CreatedDate > DateTime.Now.AddDays(-1));
             var fileSize = (Math.Floor((double)base64encodedImage.Length / 3) + 1) * 4 + 1;
 
-            if (currentDailyAssetCount > 25)
+            if (currentDailyAssetCount > 10 && !_playerService.IsOwner(steamUserId))
             {
-                throw new Exception("User has uploaded 25 images today already");
+                throw new Exception("User has uploaded 10 images today already");
             }
 
             var assetImage = new AssetImage()

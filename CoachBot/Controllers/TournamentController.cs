@@ -52,18 +52,30 @@ namespace CoachBot.Controllers
 
         [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost]
-        public void CreateTournament(Tournament tournament)
+        public IActionResult CreateTournament(Tournament tournament)
         {
-            // TODO: Check player is tournament organiser
+            if (!_tournamentService.IsTournamentOrganiser(tournament.Id, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
+            {
+                return Unauthorized();
+            }
+
             _tournamentService.CreateTournament(tournament, User.GetSteamId());
+
+            return Ok();
         }
 
-        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
+
         [HttpPut]
-        public void UpdateTournament(Tournament tournament)
+        public IActionResult UpdateTournament(Tournament tournament)
         {
-            // TODO: Check player is tournament organiser
+            if (!_tournamentService.IsTournamentOrganiser(tournament.Id, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
+            {
+                return Unauthorized();
+            }
+
             _tournamentService.UpdateTournament(tournament);
+
+            return Ok();
         }
 
         [HttpGet("{id}/groups")]
@@ -84,12 +96,17 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournamentStaff(id);
         }
 
-        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/generate-schedule")]
-        public void GenerateTournamentSchedule(int id)
+        public IActionResult GenerateTournamentSchedule(int id)
         {
-            // TODO: Check player is tournament organiser
+            if (!_tournamentService.IsTournamentOrganiser(id, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
+            {
+                return Unauthorized();
+            }
+
             _tournamentService.GenerateTournamentSchedule(id);
+
+            return Ok();
         }
 
         [HttpGet("{id}/current-phase")]
@@ -104,38 +121,43 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournamentMatchDaySlots(id);
         }
 
-        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/match-day-slots")]
-        public void CreateTournamentMatchDaySlot(TournamentMatchDaySlot tournamentMatchDaySlot)
+        public IActionResult CreateTournamentMatchDaySlot(TournamentMatchDaySlot tournamentMatchDaySlot)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
+            if (!_tournamentService.IsTournamentOrganiser(tournamentMatchDaySlot.TournamentId, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
             {
-                throw new Exception();
+                return Unauthorized();
             }
-            // TODO: Check player is tournament organiser
+
             _tournamentService.CreateTournamentMatchDaySlot(tournamentMatchDaySlot);
+
+            return Ok();
         }
 
-        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
-        [HttpDelete("{id}/match-day-slots/{matchDaySlotId}")]
-        public void DeleteTournamentMatchDaySlot(int matchDaySlotId)
+        [HttpDelete("{tournamentId}/match-day-slots/{matchDaySlotId}")]
+        public IActionResult DeleteTournamentMatchDaySlot(int tournamentId, int matchDaySlotId)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
+            if (!_tournamentService.IsTournamentOrganiser(tournamentId, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
             {
-                throw new Exception();
+                return Unauthorized();
             }
+
             _tournamentService.DeleteTournamentMatchDaySlot(matchDaySlotId);
+
+            return Ok();
         }
 
-        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/generate-fantasy-snapshots")]
-        public void GenerateFantasyTeamSnapshots(int id)
+        public IActionResult GenerateFantasyTeamSnapshots(int id)
         {
-            if (!_playerService.IsAdmin(User.GetSteamId()))
+            if (!_tournamentService.IsTournamentOrganiser(id, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
             {
-                throw new Exception();
+                return Unauthorized();
             }
+
             _fantasyService.GenerateFantasyPlayersSnapshot(id);
+
+            return Ok();
         }
     }
 }

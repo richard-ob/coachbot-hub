@@ -31,10 +31,10 @@ namespace CoachBot.LegacyImporter
             config = JsonConvert.DeserializeObject<LegacyConfig>(File.ReadAllText(@"legacy-config.json"));
             this.discordSocketClient = discordSocketClient;
             this.coachBotContext = coachBotContext;
-            this.Regions = GetRegions();
+            /*this.Regions = GetRegions();
             this.Servers = GetServers();
             this.Positions = GetPositions();
-            SetupAdministrator();
+            SetupAdministrator();*/
         }
 
         public List<Region> GetRegions()

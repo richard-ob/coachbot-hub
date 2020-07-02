@@ -54,7 +54,7 @@ namespace CoachBot.Bot
             Console.WriteLine("Connecting..");
             await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
             await _client.StartAsync();
-            //await _client.SetGameAsync("IOSoccer Hub", "http://hub.iosoccer.com"); // TODO: Uncomment when life
+            //await _client.SetGameAsync("IOSoccer Hub", "http://hub.iosoccer.com"); // TODO: Uncomment when live
 
             _client.Connected += Connected;
             _client.Disconnected += Disconnected;
@@ -116,7 +116,7 @@ namespace CoachBot.Bot
                     }
                 }
             }
-            _importer.GetTeams();
+            //_importer.GetTeams();
 
             return Task.CompletedTask;
         }

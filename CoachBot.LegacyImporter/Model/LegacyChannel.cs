@@ -9,7 +9,6 @@ namespace CoachBot.LegacyImporter.Model
         
         public ulong Id { get; set; }
 
-        // TODO: Create custom serializer to serialize ulong's as strings, as Javascript cannot handle large ulong values
         public string IdString { get { return Id.ToString(); } }
 
         public List<LegacyPosition> Positions { get; set; }

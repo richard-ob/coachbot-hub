@@ -6,10 +6,14 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '@core/core.module';
 import { BotManagerComponent } from './bot-manager.component';
 import { BotManagerRoutingModule } from './bot-manager.routing-module';
+import { BotLogsComponent } from './bot-logs/bot-logs.component';
+import { BotConnectionStateComponent } from './bot-connection-state/bot-connection-state.component';
 
 @NgModule({
     declarations: [
-        BotManagerComponent
+        BotManagerComponent,
+        BotLogsComponent,
+        BotConnectionStateComponent
     ],
     imports: [
         CommonModule,

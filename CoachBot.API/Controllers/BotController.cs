@@ -22,9 +22,8 @@ namespace CoachBot.Controllers
 
         [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpGet("state")]
-        public Task Get()
+        public Task GetCurrentState()
         {
-            var url = $"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/state";
             return this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/state");
         }
 
@@ -33,6 +32,13 @@ namespace CoachBot.Controllers
         public Task Reconnect()
         {
             return this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/reconnect");
+        }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
+        [HttpPost("logs")]
+        public Task GetLogs()
+        {
+            return this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/logs");
         }
     }
 }

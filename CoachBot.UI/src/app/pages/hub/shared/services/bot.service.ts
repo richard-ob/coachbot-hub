@@ -15,6 +15,10 @@ export class BotService {
         return this.http.get<BotState>(`${environment.apiUrl}/api/bot/state`).pipe();
     }
 
+    getBotLogs(): Observable<string> {
+        return this.http.get<string>(`${environment.apiUrl}/api/log/`).pipe();
+    }
+
     reconnectBot() {
         return this.http.post(`${environment.apiUrl}/api/bot/reconnect`, null).pipe();
     }

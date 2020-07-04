@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoachBot.DiscordBot", "CoachBot\CoachBot.DiscordBot.csproj", "{66E3A67A-5AAD-484E-A3D4-474DCE21D2C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoachBot.DiscordBot", "CoachBot.DiscordBot\CoachBot.DiscordBot.csproj", "{66E3A67A-5AAD-484E-A3D4-474DCE21D2C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoachBot.Domain", "CoachBot.Domain\CoachBot.Domain.csproj", "{5C5C278A-84FE-42B1-AD5D-F245C7FEE849}"
 EndProject

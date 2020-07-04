@@ -2,7 +2,6 @@
 using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using Discord;
-using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,10 +15,9 @@ using Newtonsoft.Json;
 using System.IO;
 using CoachBot.Database;
 using CoachBot.Domain.Services;
-using CoachBot.Bot;
 using CoachBot.Extensions;
 using CoachBot.Services;
-using CoachBot.LegacyImporter;
+using AspNetCore.Proxy;
 
 namespace CoachBot
 {
@@ -43,39 +41,81 @@ namespace CoachBot
             var logger = LogAdaptor.CreateLogger();
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider(logger));
-            
-            services.AddMvc().AddJsonOptions(options => {
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    });
+            });
+
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
                     options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                    //options.SerializerSettings.DateFormatString = "yyyy'-'dd'-'MM'T'HH':'mm':'ssZ";
+                    options.SerializerSettings.Converters.Add(new UlongToStringConverter());
+                    options.SerializerSettings.Converters.Add(new UlongNullableToStringConverter());
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
             services.AddSingleton<ConfigService>()
                 .AddSingleton(_client)
-                .AddSingleton(new CommandService(new CommandServiceConfig { CaseSensitiveCommands = false, ThrowOnError = false }))
                 .AddSingleton(logger)
                 .AddSingleton(config)
                 .AddSingleton<LogAdaptor>()
                 .AddSingleton<ConfigService>()
+                .AddTransient<BotService>()
                 .AddTransient<RegionService>()
+                .AddTransient<CountryService>()
                 .AddTransient<ServerService>()
                 .AddTransient<ChannelService>()
-                .AddTransient<SubstitutionService>()
-                .AddTransient<MatchmakingService>()
-                .AddTransient<ServerManagementService>()
+                .AddTransient<GuildService>()
                 .AddTransient<MatchService>()
                 .AddTransient<SearchService>()
                 .AddTransient<PlayerService>()
+                .AddTransient<PlayerTeamService>()
+                .AddTransient<PositionService>()
+                .AddTransient<TeamService>()
+                .AddTransient<TournamentService>()
+                .AddTransient<MatchStatisticsService>()
+                .AddTransient<FantasyService>()
+                .AddTransient<ScorePredictionService>()
+                .AddTransient<PlayerProfileService>()
                 .AddTransient<DiscordNotificationService>()
-                .AddTransient<BotService>()
+                .AddTransient<DiscordService>()
                 .AddSingleton<CacheService>()
-                .AddSingleton<BotInstance>()
-                .AddSingleton<Importer>()
+                .AddTransient<AssetImageService>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
+
+            services.AddProxies();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.ExpireTimeSpan = new TimeSpan(7, 0, 0, 0);
+                    options.LoginPath = "/unauthorized";
+                })
+                .AddSteam()
+                .AddDiscord(x =>
+                {
+                    x.AppId = config.OAuth2Id;
+                    x.AppSecret = config.OAuth2Secret;
+                });
 
             var provider = services.BuildServiceProvider();
 
             provider.GetService<LogAdaptor>();
             provider.GetService<ConfigService>();
-            provider.GetService<BotInstance>();
+
+            services.AddHostedService<QueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -84,6 +124,8 @@ namespace CoachBot
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseMvc();
         }

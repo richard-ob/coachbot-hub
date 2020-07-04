@@ -1,13 +1,10 @@
-﻿using Discord;
-using Discord.WebSocket;
-using System.Threading.Tasks;
-using CoachBot.Services.Matchmaker;
+﻿using System.Threading.Tasks;
 using CoachBot.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
 using Newtonsoft.Json;
 using System.IO;
-using CoachBot.Bot;
+using System.Threading;
 
 namespace CoachBot
 {
@@ -19,15 +16,17 @@ namespace CoachBot
         private async Task RunAsync()
         {
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            var port = config.ApiPort > 0 ? config.ApiPort : 8080;
             var host = WebHost
               .CreateDefaultBuilder()
               .UseKestrel()
               .UseStartup<WebStartup>()
-              .UseUrls($"http://*:{(config.ApiPort > 0 ? config.ApiPort.ToString() : "80")}")
+              .UseUrls($"http://*:{port}")
               .Build();
             host.Start();
-            
-            while (true) { }
+
+            await Task.Delay(Timeout.Infinite);
         }
+        
     }        
 }

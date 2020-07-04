@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace CoachBot.Domain.Model
+﻿namespace CoachBot.Domain.Model
 {
     public class TeamStatisticTotals : StatisticTotals
     {
@@ -12,6 +9,5 @@ namespace CoachBot.Domain.Model
         public string TeamName { get; set; }
 
         public string BadgeImage { get; set; }
-
     }
 }

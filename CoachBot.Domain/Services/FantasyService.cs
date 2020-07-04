@@ -65,9 +65,9 @@ namespace CoachBot.Domain.Services
                     TournamentName = s.Tournament.Name,
                     TournamentId = (int)s.TournamentId,
                     IsComplete = s.IsComplete,
-                    FantasyTeamStatus = 
+                    FantasyTeamStatus =
                         !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff < DateTime.Now))) ? FantasyTeamStatus.Open
-                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff > DateTime.Now))) ? FantasyTeamStatus.Pending 
+                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff > DateTime.Now))) ? FantasyTeamStatus.Pending
                         : FantasyTeamStatus.Settled
                 }).ToList();
         }
@@ -173,7 +173,7 @@ namespace CoachBot.Domain.Services
         }
 
         public Model.Dtos.PagedResult<FantasyPlayer> GetFantasyPlayers(int page, int pageSize, string sortOrder, PlayerStatisticFilters playerStatisticFilters)
-        {          
+        {
             return GetFantasyPlayersQueryable(playerStatisticFilters).GetPaged(page, pageSize, sortOrder);
         }
 
@@ -326,8 +326,8 @@ namespace CoachBot.Domain.Services
                 throw new Exception("Fantasy season already seeded");
             }
 
-            foreach(var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => p.Teams.Any(pt => pt.IsCurrentTeam 
-                && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)))
+            foreach (var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => p.Teams.Any(pt => pt.IsCurrentTeam
+                 && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)))
             )
             {
                 player.Rating = GetRandomRating();
@@ -344,7 +344,7 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
-        static float GetRandomRating()
+        private static float GetRandomRating()
         {
             Random r = new Random();
             string beforePoint = r.Next(4, 9).ToString();
@@ -353,7 +353,7 @@ namespace CoachBot.Domain.Services
             return float.Parse(combined);
         }
 
-        static PositionGroup GetRandomPositionGroup()
+        private static PositionGroup GetRandomPositionGroup()
         {
             return (PositionGroup)new Random().Next(0, 4);
         }
@@ -535,7 +535,7 @@ namespace CoachBot.Domain.Services
 
             // Check no more than 3 players from a given team
             if (fantasyTeam.FantasyTeamSelections.Count(f => f.FantasyPlayer.TeamId == fantasyPlayer.TeamId) == 3)
-            {                
+            {
                 throw new Exception("The limit for players from this team has been exceeded");
             }
 
@@ -554,7 +554,6 @@ namespace CoachBot.Domain.Services
             {
                 throw new Exception($"The limit of {positionGroup.ToString()} players has already been met for this team");
             }
-
         }
 
         private int GetPositionGroupLimit(PositionGroup positionGroup)
@@ -563,10 +562,13 @@ namespace CoachBot.Domain.Services
             {
                 case PositionGroup.Goalkeeper:
                     return MAX_GKS;
+
                 case PositionGroup.Defence:
                     return MAX_DEFS;
+
                 case PositionGroup.Midfield:
                     return MAX_MIDS;
+
                 case PositionGroup.Attack:
                     return MAX_ATTACKERS;
             }

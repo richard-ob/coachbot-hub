@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Concurrent;
 using System.Threading;
 
 namespace CoachBot.Extensions
 {
     /// <summary>
-    /// Provides a way to set contextual data that flows with the call and 
+    /// Provides a way to set contextual data that flows with the call and
     /// async context of a test or invocation.
     /// </summary>
     public static class CallContext
     {
-        static ConcurrentDictionary<string, AsyncLocal<object>> state = new ConcurrentDictionary<string, AsyncLocal<object>>();
+        private static ConcurrentDictionary<string, AsyncLocal<object>> state = new ConcurrentDictionary<string, AsyncLocal<object>>();
 
         /// <summary>
         /// Stores a given object and associates it with the specified name.

@@ -4,6 +4,5 @@ namespace CoachBot.Models
 {
     public class PagedPlayerRequestDto : PagedRequest
     {
-        
     }
 }

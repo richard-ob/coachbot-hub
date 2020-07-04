@@ -5,6 +5,5 @@
         public int TeamId { get; set; }
 
         public int TournamentGroupId { get; set; }
-
     }
 }

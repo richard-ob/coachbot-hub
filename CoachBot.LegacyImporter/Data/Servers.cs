@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoachBot.LegacyImporter.Data
+﻿namespace CoachBot.LegacyImporter.Data
 {
     public static class ServersData
     {

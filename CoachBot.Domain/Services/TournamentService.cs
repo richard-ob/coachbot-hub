@@ -155,9 +155,11 @@ namespace CoachBot.Domain.Services
                 case TournamentType.RoundRobin:
                     GenerateRoundRobinTournament(tournament.Id);
                     break;
+
                 case TournamentType.Knockout:
                     GenerateKnockoutTournament(tournament.Id);
                     break;
+
                 default:
                     break;
             }
@@ -249,6 +251,7 @@ namespace CoachBot.Domain.Services
                 .Include(t => t.Tournament)
                 .First(s => s.Id == tournamentStaffId);
         }
+
         public void CreateTournamentStaff(TournamentStaff tournamentStaff)
         {
             _coachBotContext.TournamentStaff.Add(tournamentStaff);
@@ -381,9 +384,11 @@ namespace CoachBot.Domain.Services
                 case TournamentType.RoundRobin:
                     GenerateRoundRobinSchedule(tournamentId);
                     break;
+
                 case TournamentType.Knockout:
                     GenerateKnockoutSchedule(tournamentId);
                     break;
+
                 default:
                     break;
             }
@@ -412,6 +417,7 @@ namespace CoachBot.Domain.Services
         }
 
         #region Knockout
+
         private void GenerateKnockoutTournament(int tournamentId)
         {
             var tournament = _coachBotContext.Tournaments.Include(t => t.TournamentSeries).First(t => t.Id == tournamentId);
@@ -476,12 +482,15 @@ namespace CoachBot.Domain.Services
                     case 0:
                         roundName = "Final";
                         break;
+
                     case 1:
                         roundName = "Semi Final";
                         break;
+
                     case 2:
                         roundName = "Quarter Final";
                         break;
+
                     default:
                         break;
                 }
@@ -530,7 +539,7 @@ namespace CoachBot.Domain.Services
                     {
                         lastRoundByes--;
                     }
-                    
+
                     string homePlaceholder = "TBC";
                     string awayPlaceholder = "TBC";
                     switch (roundsFromFinal)
@@ -539,10 +548,12 @@ namespace CoachBot.Domain.Services
                             homePlaceholder = "Winner of SF1";
                             awayPlaceholder = "Winner of SF2";
                             break;
+
                         case 1:
                             homePlaceholder = currentMatchNumberOfRound == 1 ? "Winner of QF1" : "Winner of QF3";
                             awayPlaceholder = currentMatchNumberOfRound == 1 ? "Winner of QF2" : "Winner of QF4";
                             break;
+
                         default:
                             break;
                     }
@@ -570,9 +581,11 @@ namespace CoachBot.Domain.Services
             }
             _coachBotContext.SaveChanges();
         }
-        #endregion
+
+        #endregion Knockout
 
         #region Round Robin
+
         private void GenerateRoundRobinTournament(int tournamentId)
         {
             var tournament = _coachBotContext.Tournaments.Include(t => t.TournamentSeries).First(t => t.Id == tournamentId);
@@ -703,6 +716,7 @@ namespace CoachBot.Domain.Services
                 return phases;
             }
         }
-        #endregion
+
+        #endregion Round Robin
     }
 }

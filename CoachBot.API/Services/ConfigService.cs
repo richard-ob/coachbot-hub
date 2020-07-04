@@ -1,7 +1,7 @@
 ﻿using CoachBot.Model;
 using Newtonsoft.Json;
-using System.IO;
 using System;
+using System.IO;
 
 namespace CoachBot.Services
 {

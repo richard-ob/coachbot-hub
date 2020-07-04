@@ -14,7 +14,7 @@ namespace CoachBot.Database
         public CoachBotContext(DbContextOptions options)
                : base(options)
         { }
-        
+
         public DbSet<Server> Servers { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Channel> Channels { get; set; }
@@ -136,7 +136,6 @@ namespace CoachBot.Database
 
     public class CoachBotContextFactory : IDesignTimeDbContextFactory<CoachBotContext>
     {
-
         public CoachBotContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<CoachBotContext>();

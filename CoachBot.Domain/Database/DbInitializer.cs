@@ -35,7 +35,6 @@ namespace CoachBot.Database
             }
             catch
             {
-
             }
             context.Database.EnsureCreated();
         }
@@ -128,10 +127,10 @@ namespace CoachBot.Database
             };
             context.Channels.AddRange(channels);
 
-            foreach(var channel in channels)
+            foreach (var channel in channels)
             {
                 channel.ChannelPositions = new List<ChannelPosition>();
-                foreach(var position in new string[] { "GK", "LB", "RB", "CF" })
+                foreach (var position in new string[] { "GK", "LB", "RB", "CF" })
                 {
                     channel.ChannelPositions.Add(new ChannelPosition()
                     {
@@ -144,7 +143,7 @@ namespace CoachBot.Database
                 }
             }
 
-            foreach(var position in new string[] { "CB", "LW", "RW", "CM" })
+            foreach (var position in new string[] { "CB", "LW", "RW", "CM" })
             {
                 context.Positions.Add(new Position() { Name = position });
             }
@@ -158,7 +157,7 @@ namespace CoachBot.Database
             context.MatchStatistics.RemoveRange(context.MatchStatistics);
             context.SaveChanges();
             string[] files = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "2020*.json", SearchOption.AllDirectories);
-            foreach(var file in files)
+            foreach (var file in files)
             {
                 using (StreamReader r = new StreamReader(file))
                 {
@@ -343,5 +342,4 @@ namespace CoachBot.Database
             context.SaveChanges();
         }
     }
-
 }

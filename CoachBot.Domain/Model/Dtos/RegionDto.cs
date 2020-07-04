@@ -9,6 +9,5 @@
         public string RegionCode { get; set; }
 
         public int ServerCount { get; set; }
-
     }
 }

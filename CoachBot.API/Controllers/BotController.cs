@@ -1,9 +1,7 @@
 ﻿using AspNetCore.Proxy;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
-using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using static CoachBot.Attributes.HubRoleAuthorizeAttribute;

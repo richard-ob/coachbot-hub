@@ -151,7 +151,6 @@ namespace CoachBot.Domain.Model
 
         public int Losses { get; set; }
 
-        public List<MatchOutcomeType> Form { get; set; } 
-
+        public List<MatchOutcomeType> Form { get; set; }
     }
 }

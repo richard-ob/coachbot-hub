@@ -1,14 +1,14 @@
-﻿using Discord.Commands;
-using System.Threading.Tasks;
+﻿using CoachBot.Bot.Preconditions;
+using CoachBot.Domain.Model;
+using CoachBot.Extensions;
 using CoachBot.Preconditions;
 using CoachBot.Services;
-using Discord;
-using System;
 using CoachBot.Tools;
-using CoachBot.Extensions;
-using CoachBot.Domain.Model;
+using Discord;
+using Discord.Commands;
+using System;
 using System.Linq;
-using CoachBot.Bot.Preconditions;
+using System.Threading.Tasks;
 
 namespace CoachBot.Modules.Matchmaker
 {
@@ -41,7 +41,7 @@ namespace CoachBot.Modules.Matchmaker
 
             if (command.Attributes.Any(a => a.GetType() == typeof(SendLineupMessage)))
             {
-                foreach(var teamEmbed in _channelMatchService.GenerateTeamList(Context.Channel.Id))
+                foreach (var teamEmbed in _channelMatchService.GenerateTeamList(Context.Channel.Id))
                 {
                     ReplyAsync("", embed: teamEmbed);
                 }
@@ -194,7 +194,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!ready")]
         [RequireChannelConfigured]
         public async Task ReadyAsync(int serverListItemId)
-        {            
+        {
             if (_channelServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var serverAvailable = await _channelServerService.ValidateServerAvailability(serverListItemId, Context.Message.Channel.Id);
@@ -338,7 +338,7 @@ namespace CoachBot.Modules.Matchmaker
         [Command("!requestsub")]
         [RequireChannelConfigured]
         public async Task RequestSubAsync(int serverId, [Remainder]string positionName = null)
-        {            
+        {
             if (_channelServerService.ValidateServer(Context.Channel.Id, serverId))
             {
                 await ReplyAsync("", embed: _channelMatchService.RequestSub(Context.Channel.Id, serverId, positionName, Context.Message.Author));

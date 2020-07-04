@@ -10,7 +10,8 @@
 
         public string SortOrder { get; set; }
 
-        public string SortOrderFull {
+        public string SortOrderFull
+        {
             get
             {
                 if (string.IsNullOrEmpty(SortBy)) return null;
@@ -21,6 +22,5 @@
         }
 
         public int Offset => (Page - 1) * PageSize + 1;
-
     }
 }

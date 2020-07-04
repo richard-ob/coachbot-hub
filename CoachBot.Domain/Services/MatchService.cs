@@ -28,6 +28,7 @@ namespace CoachBot.Domain.Services
         }
 
         #region Get Match Data
+
         public Match GetMatch(int matchId)
         {
             return _coachBotContext.GetMatchById(matchId);
@@ -150,9 +151,11 @@ namespace CoachBot.Domain.Services
 
             return formList;
         }
-        #endregion
+
+        #endregion Get Match Data
 
         #region Manage Match Data
+
         public ServiceResponse CreateMatch(int channelId, Lineup existingTeam = null)
         {
             var channel = _coachBotContext.Channels.First(c => c.Id == channelId);
@@ -251,7 +254,7 @@ namespace CoachBot.Domain.Services
         public ServiceResponse RemoveSubstitutePlayerFromMatch(ulong channelId, Player player)
         {
             var match = GetCurrentMatchForChannel(channelId);
-            if (match.LineupHome.PlayerSubstitutes.Any(sp => sp.Player.DiscordUserId == player.DiscordUserId) 
+            if (match.LineupHome.PlayerSubstitutes.Any(sp => sp.Player.DiscordUserId == player.DiscordUserId)
                 || match.LineupAway.PlayerSubstitutes.Any(sp => sp.Player.DiscordUserId == player.DiscordUserId))
             {
                 RemovePlayerSubstituteFromTeam(match.LineupHome, player);
@@ -262,7 +265,7 @@ namespace CoachBot.Domain.Services
 
             return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is not on the subs bench and therefore cannot be removed");
         }
-               
+
         public ServiceResponse ClearPosition(ulong channelId, string position, MatchTeamType teamType = MatchTeamType.Home)
         {
             var match = GetCurrentMatchForChannel(channelId);
@@ -383,9 +386,10 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Team successfully unchallenged");
         }
 
-        #endregion
+        #endregion Manage Match Data
 
         #region Private methods
+
         private PlayerLineupPosition RemovePlayerFromTeam(Lineup team, Player player)
         {
             var playerTeamPosition = team?.PlayerLineupPositions.FirstOrDefault(ptp => ptp.Player.Id == player.Id);
@@ -447,7 +451,7 @@ namespace CoachBot.Domain.Services
 
             if (transferrablePositions.Any())
             {
-                foreach(var position in transferrablePositions)
+                foreach (var position in transferrablePositions)
                 {
                     var awayPlayer = match.LineupAway.PlayerLineupPositions.FirstOrDefault(ap => ap.PositionId == position.PositionId);
                     if (awayPlayer != null)
@@ -463,6 +467,7 @@ namespace CoachBot.Domain.Services
                 }
             }
         }
-        #endregion
+
+        #endregion Private methods
     }
 }

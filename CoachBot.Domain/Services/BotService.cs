@@ -1,5 +1,4 @@
 ﻿using CoachBot.Database;
-using CoachBot.Domain.Model;
 using CoachBot.Model;
 using Discord;
 using Discord.WebSocket;
@@ -23,7 +22,8 @@ namespace CoachBot.Services.Matchmaker
 
         public BotState GetCurrentBotState()
         {
-            var botState = new BotState() {
+            var botState = new BotState()
+            {
                 ConnectionStatus = _client.ConnectionState.ToString(),
                 LoginStatus = _client.LoginState.ToString()
             };

@@ -9,7 +9,7 @@ namespace CoachBot.Domain.Model
         public int PlayerId { get; set; }
 
         public Player Player { get; set; }
-        
+
         public int LineupId { get; set; }
 
         public Lineup Lineup { get; set; }

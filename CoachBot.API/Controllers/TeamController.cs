@@ -1,5 +1,4 @@
-﻿
-using CoachBot.Domain.Model;
+﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Models;

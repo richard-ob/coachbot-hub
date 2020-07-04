@@ -27,6 +27,5 @@
         public int Draws { get; set; }
 
         public int Losses { get; set; }
-
     }
 }

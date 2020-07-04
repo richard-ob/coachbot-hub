@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 namespace CoachBot.Extensions
 {
     /// <summary>
-     /// .NET Core implementation of <see cref="INetworkSocket"/> interface
-     /// </summary>
+    /// .NET Core implementation of <see cref="INetworkSocket"/> interface
+    /// </summary>
     public class RconSocket : INetworkSocket
     {
         private TcpClient _client;
@@ -17,7 +17,6 @@ namespace CoachBot.Extensions
         /// </summary>
         public RconSocket()
         {
-
         }
 
         /// <summary>

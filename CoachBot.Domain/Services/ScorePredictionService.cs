@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CoachBot.Domain.Services
 {
@@ -40,7 +39,6 @@ namespace CoachBot.Domain.Services
                 _coachBotContext.Add(scorePrediction);
                 _coachBotContext.SaveChanges();
             }
-                        
         }
 
         public void UpdateScorePrediction(ScorePrediction scorePrediction, ulong steamId)
@@ -95,7 +93,8 @@ namespace CoachBot.Domain.Services
                      m.MatchId,
                      m.Player.Rating
                  })
-                 .GroupBy(p => new { p.PlayerId, p.Name }, (key, s) => new ScorePredictionLeaderboardPlayer() {
+                 .GroupBy(p => new { p.PlayerId, p.Name }, (key, s) => new ScorePredictionLeaderboardPlayer()
+                 {
                      PlayerId = key.PlayerId,
                      PlayerName = key.Name,
                      Points = s.Sum(p => p.HomeGoals == p.HomeGoalsPrediction && p.AwayGoals == p.AwayGoalsPrediction ? 1 : 0),

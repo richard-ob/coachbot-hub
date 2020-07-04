@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoachBot.Domain.Model
+﻿namespace CoachBot.Domain.Model
 {
     public class ScorePredictionLeaderboardPlayer
     {
@@ -13,6 +9,5 @@ namespace CoachBot.Domain.Model
         public int Points { get; set; }
 
         public int Predictions { get; set; }
-
     }
 }

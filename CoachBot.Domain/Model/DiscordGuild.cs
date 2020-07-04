@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace CoachBot.Domain.Model
 {
@@ -13,6 +11,5 @@ namespace CoachBot.Domain.Model
         public bool IsLinked { get; set; }
 
         public List<KeyValuePair<string, string>> Emotes { get; set; }
-
     }
 }

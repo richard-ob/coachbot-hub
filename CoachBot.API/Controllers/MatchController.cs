@@ -3,7 +3,6 @@ using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
 using CoachBot.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers

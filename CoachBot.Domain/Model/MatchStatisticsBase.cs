@@ -1,7 +1,4 @@
 ﻿using CoachBot.Domain.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.Domain.Model
 {

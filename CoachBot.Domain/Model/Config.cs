@@ -21,6 +21,5 @@
         public int ApiPort { get; set; } = 80;
 
         public int BotApiPort { get; set; } = 8080;
-
     }
 }

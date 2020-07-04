@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.LegacyImporter.Model
 {
     public class LegacyPosition
     {
-        public LegacyPosition() { }
+        public LegacyPosition()
+        {
+        }
 
         public LegacyPosition(string position)
         {

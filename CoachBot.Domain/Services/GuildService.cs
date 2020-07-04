@@ -1,9 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CoachBot.Domain.Services
 {

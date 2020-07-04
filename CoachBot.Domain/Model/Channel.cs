@@ -1,6 +1,4 @@
-﻿using CoachBot.Domain.Extensions;
-using CoachBot.Model;
-using Discord;
+﻿using CoachBot.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -43,6 +41,5 @@ namespace CoachBot.Domain.Model
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }
-
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoachBot.Domain.Model
+﻿namespace CoachBot.Domain.Model
 {
     public class FantasyPlayerRank
     {
@@ -33,6 +29,5 @@ namespace CoachBot.Domain.Model
         public int GoalsConceded { get; set; }
 
         public int SecondsPlayed { get; set; }
-
     }
 }

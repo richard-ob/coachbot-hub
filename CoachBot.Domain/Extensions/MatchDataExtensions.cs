@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CoachBot.Domain.Extensions
 {
@@ -139,7 +138,7 @@ namespace CoachBot.Domain.Extensions
             if (expectedPlayerCount * EXPECTED_PLAYERCOUNT_THRESHOLD_MULTIPLIER > actualPlayerCount)
             {
                 throw new Exception($"Too few players present in match data. Expected at least {expectedPlayerCount}, found {actualPlayerCount}.");
-            }           
+            }
 
             return true;
         }

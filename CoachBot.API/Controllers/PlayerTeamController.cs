@@ -66,6 +66,5 @@ namespace CoachBot.Controllers
         {
             return _playerTeamService.GetForTeam(playerTeamRequestDto.Id, playerTeamRequestDto.IncludeInactive);
         }
-
     }
 }

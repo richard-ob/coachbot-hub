@@ -65,11 +65,10 @@ namespace CoachBot.Domain.Services
             return topPosition.Position;
         }
 
-        struct PositionAppearances
+        private struct PositionAppearances
         {
             public int Appearances;
             public Position Position;
         }
-
     }
 }

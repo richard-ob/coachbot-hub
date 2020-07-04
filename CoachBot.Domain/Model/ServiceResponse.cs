@@ -11,7 +11,6 @@
 
     public class ServiceResponse
     {
-
         public ServiceResponseStatus Status { get; set; }
 
         public string Message { get; set; }

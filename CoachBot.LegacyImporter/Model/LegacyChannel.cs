@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.LegacyImporter.Model
 {
     public class LegacyChannel
     {
-        
         public ulong Id { get; set; }
 
         public string IdString { get { return Id.ToString(); } }
@@ -40,6 +38,5 @@ namespace CoachBot.LegacyImporter.Model
         public bool EnableUnsignWhenPlayerStartsOtherGame { get; set; }
 
         public LegacyRegion Region { get; set; }
-
     }
 }

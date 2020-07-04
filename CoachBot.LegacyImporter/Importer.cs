@@ -139,7 +139,6 @@ namespace CoachBot.LegacyImporter
                 }
                 catch
                 {
-
                 }
             }
             this.coachBotContext.SaveChanges();
@@ -211,7 +210,7 @@ namespace CoachBot.LegacyImporter
                         DisableSearchNotifications = legacyChannel.DisableSearchNotifications,
                         UseClassicLineup = legacyChannel.ClassicLineup,
                         DiscordChannelName = legacyChannel.Name,
-                        Formation = (Formation)legacyChannel.Formation,                        
+                        Formation = (Formation)legacyChannel.Formation,
                     };
 
                     channels.Add(channel);
@@ -222,7 +221,6 @@ namespace CoachBot.LegacyImporter
                 }
                 catch
                 {
-
                 }
             }
             this.coachBotContext.SaveChanges();
@@ -243,6 +241,5 @@ namespace CoachBot.LegacyImporter
             this.coachBotContext.Players.Add(player);
             this.coachBotContext.SaveChanges();
         }
-
     }
 }

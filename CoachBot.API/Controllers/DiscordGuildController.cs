@@ -1,5 +1,4 @@
-﻿using CoachBot.Domain.Model;
-using CoachBot.Domain.Services;
+﻿using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

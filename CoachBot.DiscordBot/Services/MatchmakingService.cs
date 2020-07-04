@@ -200,7 +200,7 @@ namespace CoachBot.Services
             (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(acceptMessage));
 
             (_discordClient.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId).First());
-            (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(opposition.DiscordChannelId).First());            
+            (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(opposition.DiscordChannelId).First());
 
             return EmbedTools.GenerateSimpleEmbed($":handshake: You have successfully challenged {opposition.Team.Name}. `!ready` will send both teams to the server");
         }
@@ -367,9 +367,9 @@ namespace CoachBot.Services
         private async void SendReadyMessageForPlayers(Match match, List<Player> players, Server server)
         {
             var message = $":soccer: Match ready! **{match.LineupHome.Channel.Team.DisplayName}** vs **{match.LineupAway.Channel.Team.DisplayName}** - Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible.";
-            foreach(var player in players.Where(p => p.DiscordUserId != null && !p.DisableDMNotifications))
+            foreach (var player in players.Where(p => p.DiscordUserId != null && !p.DisableDMNotifications))
             {
-               await _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, message);
+                await _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, message);
             }
         }
 
@@ -394,16 +394,18 @@ namespace CoachBot.Services
             var formList = _matchService.GetFormForChannel(channelId, 5);
             var sb = new StringBuilder();
 
-            foreach(var formItem in formList)
+            foreach (var formItem in formList)
             {
                 switch (formItem)
                 {
                     case MatchOutcomeType.Win:
                         sb.Append($"{formWinEmote} ");
                         break;
+
                     case MatchOutcomeType.Loss:
                         sb.Append($"{formLossEmote} ");
                         break;
+
                     case MatchOutcomeType.Draw:
                         sb.Append($"{formDrawEmote} ");
                         break;
@@ -411,8 +413,8 @@ namespace CoachBot.Services
             }
 
             if (formList.Count() < 5)
-            {                
-                for(var unknownItems = 5 - formList.Count(); unknownItems > 0; unknownItems--)
+            {
+                for (var unknownItems = 5 - formList.Count(); unknownItems > 0; unknownItems--)
                 {
                     sb.Append($"{formUnknownEmote} ");
                 }

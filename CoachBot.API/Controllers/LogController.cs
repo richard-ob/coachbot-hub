@@ -28,7 +28,7 @@ namespace CoachBot.Controllers
                 {
                     while (sr.Peek() >= 0)
                     {
-                        log = sr.ReadLine() + Environment.NewLine + log;                        
+                        log = sr.ReadLine() + Environment.NewLine + log;
                     }
                 }
             }

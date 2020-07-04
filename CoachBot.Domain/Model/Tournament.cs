@@ -38,6 +38,5 @@ namespace CoachBot.Domain.Model
         public ICollection<TournamentMatchDaySlot> TournamentMatchDays { get; set; }
 
         public ICollection<TournamentStaff> TournamentStaff { get; set; }
-
     }
 }

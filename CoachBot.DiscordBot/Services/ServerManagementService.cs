@@ -6,7 +6,6 @@ using CoachBot.Tools;
 using Discord;
 using Discord.WebSocket;
 using RconSharp;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -60,7 +59,7 @@ namespace CoachBot.Services
                     sb.Append($"~~{server.Name}~~ [OFFLINE]");
                 }
 
-                if(!string.IsNullOrEmpty(server.RconPassword))
+                if (!string.IsNullOrEmpty(server.RconPassword))
                 {
                     sb.Append("**[Auto Setup]**");
                 }
@@ -119,7 +118,7 @@ namespace CoachBot.Services
         public async Task<Embed> GenerateMapListAsync(int serverId)
         {
             var server = _serverService.GetServer(serverId);
-            string maps = await GetMapListAsync(server);            
+            string maps = await GetMapListAsync(server);
 
             if (!string.IsNullOrWhiteSpace(maps))
             {

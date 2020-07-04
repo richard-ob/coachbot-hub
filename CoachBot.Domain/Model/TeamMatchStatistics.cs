@@ -1,5 +1,4 @@
-﻿using CoachBot.Domain.Attributes;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

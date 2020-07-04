@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using CoachBot.Model;
-using Microsoft.AspNetCore.Hosting;
+﻿using CoachBot.Model;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CoachBot
 {
@@ -27,6 +27,5 @@ namespace CoachBot
 
             await Task.Delay(Timeout.Infinite);
         }
-        
-    }        
+    }
 }

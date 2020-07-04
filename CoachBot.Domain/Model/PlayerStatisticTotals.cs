@@ -1,9 +1,4 @@
-﻿using CoachBot.Model;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace CoachBot.Domain.Model
+﻿namespace CoachBot.Domain.Model
 {
     public class PlayerStatisticTotals : StatisticTotals
     {
@@ -14,6 +9,5 @@ namespace CoachBot.Domain.Model
         public ulong? SteamID { get; set; }
 
         public double Rating { get; set; }
-
     }
 }

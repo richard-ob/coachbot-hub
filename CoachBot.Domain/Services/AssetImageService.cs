@@ -4,8 +4,6 @@ using CoachBot.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace CoachBot.Domain.Services
 {
@@ -52,6 +50,5 @@ namespace CoachBot.Domain.Services
 
             return assetImage.Id;
         }
-
     }
 }

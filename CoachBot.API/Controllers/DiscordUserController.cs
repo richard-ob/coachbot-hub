@@ -28,6 +28,5 @@ namespace CoachBot.Controllers
 
             return Ok(user);
         }
-      
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoachBot.Domain.Model
+﻿namespace CoachBot.Domain.Model
 {
     public class TeamStatisticsFilters
     {
@@ -17,6 +13,5 @@ namespace CoachBot.Domain.Model
         public bool IncludeInactive { get; set; } = true;
 
         public TeamType? TeamType { get; set; }
-
     }
 }

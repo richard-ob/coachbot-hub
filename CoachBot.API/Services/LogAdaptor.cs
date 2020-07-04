@@ -1,11 +1,11 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using System;
-using System.Threading.Tasks;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+using System;
+using System.Threading.Tasks;
 
 namespace CoachBot.Services.Logging
 {
@@ -15,10 +15,10 @@ namespace CoachBot.Services.Logging
 
         public static Logger CreateLogger()
         {
-           return new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.RollingFile("log-{Date}.txt")
-                .CreateLogger();
+            return new LoggerConfiguration()
+                 .MinimumLevel.Debug()
+                 .WriteTo.RollingFile("log-{Date}.txt")
+                 .CreateLogger();
         }
 
         public LogAdaptor(Logger logger, DiscordSocketClient client)
@@ -54,7 +54,7 @@ namespace CoachBot.Services.Logging
 
         private static LogEventLevel GetEventLevel(LogSeverity severity)
         {
-            return (LogEventLevel) Math.Abs((int) (severity - 5));
+            return (LogEventLevel)Math.Abs((int)(severity - 5));
         }
     }
 }

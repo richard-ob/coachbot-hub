@@ -1,7 +1,4 @@
 ﻿using CoachBot.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.Domain.Model
 {
@@ -16,6 +13,5 @@ namespace CoachBot.Domain.Model
         public Team NationalTeam { get; set; }
 
         public Position Position { get; set; }
-
     }
 }

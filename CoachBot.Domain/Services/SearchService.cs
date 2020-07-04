@@ -79,7 +79,7 @@ namespace CoachBot.Domain.Services
             await Task.Delay(30 * 60 * 1000);
             if (_coachBotContext.Searches.Any(s => s.ChannelId == channelId))
             {
-                var channel =_coachBotContext.Channels.Find(channelId);
+                var channel = _coachBotContext.Channels.Find(channelId);
                 await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, ":timer: Your search for an opponent has timed out after 15 minutes. Please try again if you are still searching");
                 await StopSearch(channelId);
             }
@@ -87,13 +87,13 @@ namespace CoachBot.Domain.Services
 
         public async Task<ServiceResponse> StopSearch(int channelId)
         {
-            var search =_coachBotContext.Searches.FirstOrDefault(s => s.ChannelId == channelId);
+            var search = _coachBotContext.Searches.FirstOrDefault(s => s.ChannelId == channelId);
             if (search == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There is no search in progress to stop");
 
             _coachBotContext.Remove(search);
             _coachBotContext.SaveChanges();
 
-            foreach(var messageChannel in search.DiscordSearchMessages.Keys)
+            foreach (var messageChannel in search.DiscordSearchMessages.Keys)
             {
                 var discordChannel = _discordSocketClient.GetChannel(messageChannel) as ITextChannel;
                 var messageId = search.DiscordSearchMessages.GetValueOrDefault(messageChannel);

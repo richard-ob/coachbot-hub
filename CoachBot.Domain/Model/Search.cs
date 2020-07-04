@@ -18,6 +18,5 @@ namespace CoachBot.Domain.Model
         public Dictionary<ulong, ulong> DiscordSearchMessages { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
     }
 }

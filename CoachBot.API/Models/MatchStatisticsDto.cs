@@ -6,5 +6,5 @@ namespace CoachBot.Models.Dto
     {
         public MatchData MatchData { get; set; }
         public string Access_Token { get; set; }
-    }    
+    }
 }

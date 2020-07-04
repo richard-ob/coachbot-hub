@@ -1,14 +1,9 @@
 ﻿using CoachBot.Domain.Model;
-using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
-using CoachBot.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.Controllers
 {
@@ -55,6 +50,5 @@ namespace CoachBot.Controllers
         {
             _scorePredictionService.CreateScorePrediction(scorePrediction, User.GetSteamId());
         }
-
     }
 }

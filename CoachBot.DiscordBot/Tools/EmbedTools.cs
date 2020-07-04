@@ -48,22 +48,27 @@ namespace CoachBot.Tools
                         message.Append(":warning: ");
                         embedBuilder.WithColor(new Color(255, 204, 77));
                         break;
+
                     case ServiceResponseStatus.Success:
                         message.Append(":white_check_mark: ");
                         embedBuilder.WithColor(new Color(119, 178, 85));
                         break;
+
                     case ServiceResponseStatus.Failure:
                         message.Append(":no_entry: ");
                         embedBuilder.WithColor(new Color(190, 25, 49));
                         break;
+
                     case ServiceResponseStatus.NegativeSuccess:
                         message.Append(":negative_squared_cross_mark: ");
                         embedBuilder.WithColor(new Color(119, 178, 85));
                         break;
+
                     case ServiceResponseStatus.Info:
                         message.Append(":information_source: ");
                         embedBuilder.WithColor(new Color(87, 164, 175));
                         break;
+
                     default:
                         embedBuilder.WithDefaultColour();
                         break;

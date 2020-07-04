@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore;
-using System.IO;
+﻿using CoachBot.Model;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
-using CoachBot.Model;
+using System.IO;
 
 namespace CoachBot
 {

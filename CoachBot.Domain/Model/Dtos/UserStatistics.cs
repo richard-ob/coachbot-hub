@@ -11,6 +11,5 @@ namespace CoachBot.Model
         public DateTime LastAppearance { get; set; }
 
         public int Rank { get; set; }
-
     }
 }

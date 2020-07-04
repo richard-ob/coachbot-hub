@@ -94,7 +94,7 @@ namespace CoachBot.Modules
 
         [Command("!maps")]
         public async Task ListMapsAsync(int serverListItemId = 0)
-        {            
+        {
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var server = _discordServerService.GetServerFromServerListItemId(serverListItemId, Context.Message.Channel.Id);

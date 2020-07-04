@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.LegacyImporter.Model
 {
@@ -23,6 +22,5 @@ namespace CoachBot.LegacyImporter.Model
         public List<LegacyPlayer> Substitutes { get; set; }
 
         public List<LegacyPlayer> Players { get; set; }
-
     }
 }

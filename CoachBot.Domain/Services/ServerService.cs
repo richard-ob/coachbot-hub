@@ -50,7 +50,7 @@ namespace CoachBot.Domain.Services
             {
                 throw new Exception("The server address provided is not a valid IPv4 IP and port");
             }
-            
+
             _coachBotContext.Servers.Add(server);
             _coachBotContext.SaveChanges();
         }

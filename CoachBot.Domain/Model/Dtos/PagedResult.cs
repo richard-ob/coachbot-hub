@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CoachBot.Domain.Model.Dtos
 {
-    public class PagedResult<T>: PagedRequest where T : class
+    public class PagedResult<T> : PagedRequest where T : class
     {
         public IEnumerable<T> Items { get; set; }
 
@@ -17,6 +17,6 @@ namespace CoachBot.Domain.Model.Dtos
 
                 return (int)Math.Ceiling(pageCount);
             }
-        }        
+        }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoachBot.Domain.Model
+﻿namespace CoachBot.Domain.Model
 {
     public class PlayerPerformanceSnapshot
     {
@@ -31,6 +27,5 @@ namespace CoachBot.Domain.Model
         public int Draws { get; set; }
 
         public int Losses { get; set; }
-
     }
 }

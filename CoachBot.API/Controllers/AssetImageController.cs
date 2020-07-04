@@ -2,7 +2,6 @@
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 

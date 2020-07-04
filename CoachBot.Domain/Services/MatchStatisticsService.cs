@@ -1,7 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
-using CoachBot.Domain.Model.Dtos;
 using CoachBot.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -124,8 +123,8 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.LineupAway)
                     .ThenInclude(t => t.Channel)
                 .Where(m => m.MatchStatistics != null);
-            
-            foreach(var match in matches)
+
+            foreach (var match in matches)
             {
                 GeneratePlayerMatchStatistics(match);
                 GenerateTeamMatchStatistics(match);
@@ -139,7 +138,8 @@ namespace CoachBot.Domain.Services
                 .Where(p => p.PlayerId == playerId)
                 .Where(p => p.Match.ReadiedDate != null && p.Match.ReadiedDate.Value.Year == DateTime.Now.Year)
                 .GroupBy(p => p.Match.ReadiedDate.Value.Date)
-                .Select(s => new MatchDayTotals() {
+                .Select(s => new MatchDayTotals()
+                {
                     Matches = s.Count(),
                     MatchDayDate = s.Key
                 }).ToList();
@@ -170,7 +170,7 @@ namespace CoachBot.Domain.Services
         }
 
         #region Private Methods
-        
+
         private void GeneratePlayerMatchStatistics(Match match)
         {
             foreach (var matchDataPlayer in match.MatchStatistics.MatchData.Players.Where(p => p.MatchPeriodData != null && p.MatchPeriodData.Any()))
@@ -190,7 +190,7 @@ namespace CoachBot.Domain.Services
                             PlayerId = player.Id,
                             MatchId = match.Id,
                             ChannelId = team != null ? (int)team.ChannelId : 1,
-                            TeamId =  team != null ? team.Channel.TeamId : match.TeamHomeId,
+                            TeamId = team != null ? team.Channel.TeamId : match.TeamHomeId,
                             PositionId = positionId > 0 ? positionId : _coachBotContext.Positions.FirstOrDefault().Id,
                             MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                             SecondsPlayed = matchDataPlayer.GetPlayerPositionSeconds(teamType, position),
@@ -578,7 +578,7 @@ namespace CoachBot.Domain.Services
                             SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Draw} THEN 1 ELSE 0 END) As Draws,
                             SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
                             SUM(CASE WHEN CreatedDate IS NOT NULL THEN 1 ELSE 0 END) As Matches
-                        FROM dbo.TeamMatchStatistics TeamMatchStatistics 
+                        FROM dbo.TeamMatchStatistics TeamMatchStatistics
                         WHERE TeamMatchStatistics.TeamId = {teamId}
                         GROUP BY TeamMatchStatistics.TeamId,
                                 DATEPART(week, TeamMatchStatistics.CreatedDate),
@@ -632,7 +632,7 @@ namespace CoachBot.Domain.Services
                             SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Draw} THEN 1 ELSE 0 END) As Draws,
                             SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
                             SUM(CASE WHEN CreatedDate IS NOT NULL THEN 1 ELSE 0 END) As Matches
-                        FROM dbo.TeamMatchStatistics TeamMatchStatistics 
+                        FROM dbo.TeamMatchStatistics TeamMatchStatistics
                         WHERE TeamMatchStatistics.TeamId = {teamId}
                         GROUP BY TeamMatchStatistics.TeamId,
                                 DATEPART(week, TeamMatchStatistics.CreatedDate),
@@ -660,8 +660,8 @@ namespace CoachBot.Domain.Services
                             SUM(CASE WHEN PlayerMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
                             SUM(CASE WHEN CreatedDate IS NOT NULL THEN 1 ELSE 0 END) As Appearances
                         FROM dbo.GenerateDateRange(DATEADD(month, -1, GETDATE()), GETDATE(), 1) DateRange
-                        LEFT JOIN dbo.PlayerMatchStatistics PlayerMatchStatistics 
-                            ON PlayerMatchStatistics.PlayerId = {playerId} AND CAST(PlayerMatchStatistics.CreatedDate AS DATE) = DateRange.DateValue 
+                        LEFT JOIN dbo.PlayerMatchStatistics PlayerMatchStatistics
+                            ON PlayerMatchStatistics.PlayerId = {playerId} AND CAST(PlayerMatchStatistics.CreatedDate AS DATE) = DateRange.DateValue
                         GROUP BY PlayerMatchStatistics.PlayerId,
                                 DATEPART(day, DateRange.DateValue),
                                 DATEPART(week, DateRange.DateValue),
@@ -689,8 +689,8 @@ namespace CoachBot.Domain.Services
                             SUM(CASE WHEN TeamMatchStatistics.MatchOutcome = {MatchOutcomeType.Loss} THEN 1 ELSE 0 END) As Losses,
                             SUM(CASE WHEN CreatedDate IS NOT NULL THEN 1 ELSE 0 END) As Matches
                         FROM dbo.GenerateDateRange(DATEADD(month, -1, GETDATE()), GETDATE(), 1) DateRange
-                        LEFT JOIN dbo.TeamMatchStatistics TeamMatchStatistics 
-                            ON TeamMatchStatistics.TeamId = {teamId} AND CAST(TeamMatchStatistics.CreatedDate AS DATE) = DateRange.DateValue 
+                        LEFT JOIN dbo.TeamMatchStatistics TeamMatchStatistics
+                            ON TeamMatchStatistics.TeamId = {teamId} AND CAST(TeamMatchStatistics.CreatedDate AS DATE) = DateRange.DateValue
                         GROUP BY TeamMatchStatistics.TeamId,
                                 DATEPART(day, DateRange.DateValue),
                                 DATEPART(week, DateRange.DateValue),
@@ -702,23 +702,23 @@ namespace CoachBot.Domain.Services
 
         private Position GetMostCommonPosition(PlayerTeam playerTeam)
         {
-           var topPosition = _coachBotContext.PlayerPositionMatchStatistics
-                .AsNoTracking()
-                .Where(p => p.PlayerId == playerTeam.Player.Id)
-                .Where(p => p.Match.ReadiedDate > playerTeam.JoinDate)
-                .Where(p => playerTeam.LeaveDate == null || p.Match.ReadiedDate < playerTeam.LeaveDate)
-                .GroupBy(p => new { p.Position.Id, p.Position.Name })
-                .Select(p => new PositionAppearances()
-                {
-                    Appearances = p.Count(),
-                    Position = new Position()
-                    {
-                        Name = p.Key.Name,
-                        Id = p.Key.Id
-                    }
-                })
-                .OrderByDescending(p => p.Appearances)
-                .FirstOrDefault();
+            var topPosition = _coachBotContext.PlayerPositionMatchStatistics
+                 .AsNoTracking()
+                 .Where(p => p.PlayerId == playerTeam.Player.Id)
+                 .Where(p => p.Match.ReadiedDate > playerTeam.JoinDate)
+                 .Where(p => playerTeam.LeaveDate == null || p.Match.ReadiedDate < playerTeam.LeaveDate)
+                 .GroupBy(p => new { p.Position.Id, p.Position.Name })
+                 .Select(p => new PositionAppearances()
+                 {
+                     Appearances = p.Count(),
+                     Position = new Position()
+                     {
+                         Name = p.Key.Name,
+                         Id = p.Key.Id
+                     }
+                 })
+                 .OrderByDescending(p => p.Appearances)
+                 .FirstOrDefault();
 
             return topPosition.Position;
         }
@@ -761,11 +761,12 @@ namespace CoachBot.Domain.Services
             };
         }
 
-        struct PositionAppearances
+        private struct PositionAppearances
         {
             public int Appearances;
             public Position Position;
         }
-        #endregion
+
+        #endregion Private Methods
     }
 }

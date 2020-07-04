@@ -24,6 +24,5 @@ namespace CoachBot.Domain.Model
         public DateTime CreatedDate { get; set; }
 
         public DateTime? AcceptedDate { get; set; }
-
     }
 }

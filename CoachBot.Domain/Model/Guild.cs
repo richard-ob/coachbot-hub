@@ -9,7 +9,7 @@ namespace CoachBot.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        
+
         public ulong DiscordGuildId { get; set; }
 
         public string Name { get; set; }
@@ -18,6 +18,5 @@ namespace CoachBot.Model
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
-
     }
 }

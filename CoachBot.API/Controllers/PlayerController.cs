@@ -79,6 +79,5 @@ namespace CoachBot.Controllers
         {
             return _playerService.SearchPlayersByName(playerName);
         }
-
     }
 }

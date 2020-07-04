@@ -55,5 +55,4 @@ namespace CoachBot.Controllers
             return this.ProxyAsync(url);
         }
     }
-
 }

@@ -39,7 +39,6 @@ namespace CoachBot.Factories
                 }
             }
 
-
             if (teamType == MatchTeamType.Home && channel.Team.Color != null && channel.Team.Color[0] == '#')
             {
                 teamColor = new Color(ColorExtensions.FromHex(channel.Team.Color).R, ColorExtensions.FromHex(channel.Team.Color).G, ColorExtensions.FromHex(channel.Team.Color).B);
@@ -197,6 +196,5 @@ namespace CoachBot.Factories
                 return position;
             }
         }
-
     }
 }

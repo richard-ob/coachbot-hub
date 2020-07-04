@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CoachBot.Attributes
 {
-    class HubRoleAuthorizeAttribute
+    internal class HubRoleAuthorizeAttribute
     {
         public class HubRolePermission : AuthorizeAttribute, IAuthorizationFilter
         {
@@ -17,7 +17,7 @@ namespace CoachBot.Attributes
             {
                 var steamId = context.HttpContext.User.GetSteamId();
 
-                if (steamId <= 0 )
+                if (steamId <= 0)
                 {
                     context.Result = new UnauthorizedResult();
                     return;
@@ -39,6 +39,5 @@ namespace CoachBot.Attributes
                 return;
             }
         }
-
     }
 }

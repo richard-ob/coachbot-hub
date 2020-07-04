@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CoachBot.Domain.Helpers
 {
@@ -10,7 +9,6 @@ namespace CoachBot.Domain.Helpers
     {
         public static List<Bracket> GenerateBrackets(List<Team> teams)
         {
-
             var perfectBrackets = new int[] { 2, 4, 5, 8, 16, 32, 64 };
 
             var baseNum = teams.Count;
@@ -66,7 +64,6 @@ namespace CoachBot.Domain.Helpers
                     baseT = baseT + baseC;
                     baseR = i / baseT;
                 }
-
             }
 
             return brackets;
@@ -88,7 +85,6 @@ namespace CoachBot.Domain.Helpers
             public decimal? NextGame { get; set; }
 
             public int RoundNo { get; set; }
-
         }
     }
 }

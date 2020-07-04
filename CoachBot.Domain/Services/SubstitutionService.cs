@@ -33,9 +33,9 @@ namespace CoachBot.Domain.Services
 
             _coachBotContext.SubstitutionRequests.Add(request);
             _coachBotContext.SaveChanges();
-                 
+
             return new ServiceResponse(
-                ServiceResponseStatus.Success, 
+                ServiceResponseStatus.Success,
                 $"A substitute{(string.IsNullOrEmpty(positionName) ? "" : " **" + positionName + "**")} is required urgently. Type **!acceptsub {token}** to sub in."
             );
         }

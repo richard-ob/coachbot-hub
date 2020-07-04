@@ -37,7 +37,7 @@ namespace CoachBot.Domain.Services
             existingChannel.UseClassicLineup = channel.UseClassicLineup;
             existingChannel.UpdatedDate = DateTime.Now;
 
-            if (channel.ChannelPositions.GroupBy(cp => cp.Position.Name).Select(s => s.Count()).Max() >  1)
+            if (channel.ChannelPositions.GroupBy(cp => cp.Position.Name).Select(s => s.Count()).Max() > 1)
                 throw new Exception("Positions must be unique");
 
             if (channel.ChannelPositions.GroupBy(cp => cp.Ordinal).Select(s => s.Count()).Max() > 1)
@@ -60,7 +60,7 @@ namespace CoachBot.Domain.Services
 
             // Add new positions
             var newChannelPositions = channel.ChannelPositions.Where(c => c.PositionId <= 0);
-            foreach(var newChannelPosition in newChannelPositions)
+            foreach (var newChannelPosition in newChannelPositions)
             {
                 var position = _dbContext.Positions.FirstOrDefault(p => p.Name.ToUpper() == newChannelPosition.Position.Name.ToUpper());
                 if (position == null)

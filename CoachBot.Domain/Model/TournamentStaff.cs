@@ -20,6 +20,5 @@ namespace CoachBot.Domain.Model
         public TournamentStaffRole Role { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
     }
 }

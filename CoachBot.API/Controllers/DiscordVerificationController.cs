@@ -1,8 +1,6 @@
 ﻿using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Services;
-using CoachBot.Tools;
-using Effortless.Net.Encryption;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

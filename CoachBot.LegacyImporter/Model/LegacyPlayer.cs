@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.LegacyImporter.Model
 {
@@ -15,6 +13,5 @@ namespace CoachBot.LegacyImporter.Model
         public string DiscordUserMention { get; set; }
 
         public LegacyPosition Position { get; set; }
-
     }
 }

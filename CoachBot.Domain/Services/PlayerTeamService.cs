@@ -30,8 +30,8 @@ namespace CoachBot.Domain.Services
                 CreatedDate = DateTime.Now
             };
 
-            var team = _dbContext.Teams.Single(t => t.Id == teamId);       
-            
+            var team = _dbContext.Teams.Single(t => t.Id == teamId);
+
             if (team.TeamType == TeamType.Club && _dbContext.PlayerTeams.Any(pt => pt.LeaveDate == null && pt.PlayerId == playerId && pt.Team.TeamType == TeamType.Club))
             {
                 throw new Exception("A player cannot belong to two club teams at once");

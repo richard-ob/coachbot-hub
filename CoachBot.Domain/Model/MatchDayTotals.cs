@@ -7,6 +7,5 @@ namespace CoachBot.Domain.Model
         public int Matches { get; set; }
 
         public DateTime MatchDayDate { get; set; }
-
     }
 }

@@ -50,7 +50,7 @@ namespace CoachBot.Domain.Services
 
             foreach (var discordChannelId in discordChannelIds)
             {
-                var discordMessageId =  await SendChannelMessage(discordChannelId, message);
+                var discordMessageId = await SendChannelMessage(discordChannelId, message);
                 if (discordMessageId != 0) messageIds.Add(discordChannelId, discordMessageId);
             }
 

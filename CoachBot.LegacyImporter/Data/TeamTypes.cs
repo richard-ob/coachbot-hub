@@ -1,8 +1,5 @@
 ﻿using CoachBot.Domain.Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CoachBot.LegacyImporter
 {
@@ -110,7 +107,6 @@ namespace CoachBot.LegacyImporter
 
             // Korea
             "IOS League"
-
         };
 
         public static string[] OtherTeams => new string[]
@@ -122,5 +118,4 @@ namespace CoachBot.LegacyImporter
             "Ball2D Sudamerica"
         };
     }
-
 }

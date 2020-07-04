@@ -11,6 +11,5 @@
         public LegacyRegion Region { get; set; }
 
         public string RconPassword { get; set; }
-
     }
 }

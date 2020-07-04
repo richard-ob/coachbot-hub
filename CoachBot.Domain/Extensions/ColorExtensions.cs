@@ -41,6 +41,5 @@ namespace CoachBot.Domain.Extensions
 
             return c;
         }
-
     }
 }

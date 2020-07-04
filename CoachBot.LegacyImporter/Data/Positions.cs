@@ -1,11 +1,8 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
 using CoachBot.LegacyImporter.Model;
-using CoachBot.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CoachBot.LegacyImporter.Data
 {
@@ -80,24 +77,34 @@ namespace CoachBot.LegacyImporter.Data
             {
                 case 1:
                     return OneVsOne;
+
                 case 2:
                     return TwoVsTwo;
+
                 case 3:
                     return ThreeVsThree;
+
                 case 4:
                     return FourVsFour;
+
                 case 5:
                     return FiveVsFive;
+
                 case 6:
                     return SixVsSix;
+
                 case 7:
                     return SevenVsSeven;
+
                 case 8:
                     return EightVsEight;
+
                 case 9:
                     return NineVsNine;
+
                 case 10:
                     return TenVsTen;
+
                 case 11:
                     return ElevenVsEleven;
             }
@@ -131,19 +138,18 @@ namespace CoachBot.LegacyImporter.Data
                     {
                         PositionId = GetPositionId(coachBotContext, position),
                         Ordinal = currentPositionOrdinal++,
-                        ChannelId = channelId                        
+                        ChannelId = channelId
                     };
                     positions.Add(channelPosition);
                 }
             }
 
-            return positions; 
+            return positions;
         }
 
         public static int GetPositionId(CoachBotContext coachBotContext, string position)
         {
             return coachBotContext.Positions.Single(p => p.Name == position).Id;
         }
-
     }
 }

@@ -18,6 +18,5 @@ namespace CoachBot.Domain.Model
         public int PlayerId { get; set; }
 
         public Player Player { get; set; }
-
     }
 }

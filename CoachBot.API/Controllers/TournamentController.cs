@@ -1,9 +1,7 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
@@ -37,7 +35,6 @@ namespace CoachBot.Controllers
             return _tournamentService.GetPastTournaments();
         }
 
-
         [HttpGet]
         public List<Tournament> GetTournaments()
         {
@@ -63,7 +60,6 @@ namespace CoachBot.Controllers
 
             return Ok();
         }
-
 
         [HttpPut]
         public IActionResult UpdateTournament(Tournament tournament)

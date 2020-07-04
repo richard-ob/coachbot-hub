@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoachBot.Models
+﻿namespace CoachBot.Models
 {
     public class PlayerTeamRequestDto
     {

@@ -1,23 +1,23 @@
-﻿using CoachBot.Model;
+﻿using AspNetCore.Proxy;
+using CoachBot.Database;
+using CoachBot.Domain.Services;
+using CoachBot.Extensions;
+using CoachBot.Model;
+using CoachBot.Services;
 using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog.Extensions.Logging;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System;
 using Newtonsoft.Json;
+using Serilog.Extensions.Logging;
+using System;
 using System.IO;
-using CoachBot.Database;
-using CoachBot.Domain.Services;
-using CoachBot.Extensions;
-using CoachBot.Services;
-using AspNetCore.Proxy;
 
 namespace CoachBot
 {

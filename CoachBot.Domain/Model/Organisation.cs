@@ -21,6 +21,5 @@ namespace CoachBot.Domain.Model
         public DateTime? UpdatedDate { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
     }
 }

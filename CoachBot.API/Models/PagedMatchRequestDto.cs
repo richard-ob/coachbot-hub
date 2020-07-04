@@ -2,7 +2,7 @@
 
 namespace CoachBot.Models
 {
-    public class PagedMatchRequestDto: PagedRequest
+    public class PagedMatchRequestDto : PagedRequest
     {
         public MatchFilters Filters { get; set; }
     }

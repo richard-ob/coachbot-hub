@@ -1,8 +1,7 @@
-﻿using System.ComponentModel;
-using System.Threading.Tasks;
-using Discord.Addons.Interactive;
+﻿using Discord.Addons.Interactive;
 using Discord.Commands;
 using Discord.WebSocket;
+using System.Threading.Tasks;
 
 namespace CoachBot.Bot.Criteria
 {

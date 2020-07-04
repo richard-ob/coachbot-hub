@@ -25,6 +25,5 @@ namespace CoachBot.Domain.Model
         public PlayerMatchStatistics PlayerMatchStatistics { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
     }
 }

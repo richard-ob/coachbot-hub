@@ -38,7 +38,7 @@ namespace CoachBot.Factories
                 {
                     teamColor = channel.Team.SystemColor;
                 }
-            }        
+            }
 
             var embedBuilder = new EmbedBuilder().WithTitle($"{channel.Team.BadgeEmote ?? channel.Team.Name}{(match.IsMixMatch && teamType == MatchTeamType.Away ? " #2" : "")} Team List");
             foreach (var channelPosition in channel.ChannelPositions.OrderBy(cp => cp.Ordinal))

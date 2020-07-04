@@ -1,4 +1,9 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Bot;
+using CoachBot.Database;
+using CoachBot.Domain.Services;
+using CoachBot.LegacyImporter;
+using CoachBot.Model;
+using CoachBot.Services;
 using CoachBot.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using Discord;
@@ -9,17 +14,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog.Extensions.Logging;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System;
 using Newtonsoft.Json;
+using Serilog.Extensions.Logging;
 using System.IO;
-using CoachBot.Database;
-using CoachBot.Domain.Services;
-using CoachBot.Bot;
-using CoachBot.Extensions;
-using CoachBot.Services;
-using CoachBot.LegacyImporter;
 
 namespace CoachBot
 {
@@ -43,10 +40,11 @@ namespace CoachBot
             var logger = LogAdaptor.CreateLogger();
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider(logger));
-            
-            services.AddMvc().AddJsonOptions(options => {
-                    options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
-                });
+
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+            });
 
             services.AddSingleton<ConfigService>()
                 .AddSingleton(_client)

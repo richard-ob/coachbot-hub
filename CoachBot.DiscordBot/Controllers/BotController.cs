@@ -1,8 +1,5 @@
-﻿using CoachBot.Domain.Model;
-using CoachBot.Extensions;
-using CoachBot.Model;
+﻿using CoachBot.Extensions;
 using CoachBot.Services.Matchmaker;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoachBot.Controllers

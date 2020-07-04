@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.Domain.Model
 {
@@ -41,6 +40,5 @@ namespace CoachBot.Domain.Model
         public string PositionName { get; set; }
 
         public List<int> ExcludePlayers { get; set; } = new List<int>();
-
     }
 }

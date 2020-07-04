@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace CoachBot.Services
-{  
+{
     public class CacheService
     {
         public enum CacheItemType

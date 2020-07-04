@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CoachBot.LegacyImporter.Model
 {
@@ -17,6 +16,5 @@ namespace CoachBot.LegacyImporter.Model
         public string Team2Name { get; set; }
 
         public DateTime MatchDate { get; set; }
-
     }
 }

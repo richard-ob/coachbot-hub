@@ -65,7 +65,7 @@ namespace CoachBot.Bot
 
             _handler = new CommandHandler(_serviceProvider);
             await _handler.ConfigureAsync();*/
-            
+
             EnsureConnected();
         }
 
@@ -105,7 +105,7 @@ namespace CoachBot.Bot
             var channels = _channelService.GetChannels();
             Console.WriteLine("Ready!");
             Console.WriteLine("Matchmaking in:");
-            
+
             foreach (var server in _client.Guilds)
             {
                 foreach (var channel in server.Channels)
@@ -183,7 +183,7 @@ namespace CoachBot.Bot
                         break;
                     }
                 }
-            }                
+            }
 
             if (!playerSigned) return Task.CompletedTask;
 

@@ -1,8 +1,6 @@
 ﻿using CoachBot.Model;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace CoachBot.Domain.Model
 {
@@ -20,6 +18,5 @@ namespace CoachBot.Domain.Model
         public Player Player { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoachBot.Domain.Model
+﻿namespace CoachBot.Domain.Model
 {
     public class FantasyTeamSummary
     {
@@ -21,6 +17,5 @@ namespace CoachBot.Domain.Model
         public FantasyTeamStatus FantasyTeamStatus { get; set; }
 
         public bool IsComplete { get; set; }
-
     }
 }

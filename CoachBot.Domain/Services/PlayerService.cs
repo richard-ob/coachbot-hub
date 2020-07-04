@@ -1,13 +1,13 @@
 ﻿using CoachBot.Database;
-using CoachBot.Model;
-using System.Linq;
-using Discord;
-using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Extensions;
+using CoachBot.Domain.Model;
+using CoachBot.Domain.Model.Dtos;
+using CoachBot.Model;
+using Discord;
 using Microsoft.EntityFrameworkCore;
 using System;
-using CoachBot.Domain.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoachBot.Domain.Services
 {

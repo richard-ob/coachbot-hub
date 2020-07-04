@@ -1,4 +1,11 @@
-﻿using Discord.Commands;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
+using CoachBot.Extensions;
+using CoachBot.Services;
+using CoachBot.Services.Logging;
+using CoachBot.Tools;
+using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -6,13 +13,6 @@ using Serilog.Core;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using CoachBot.Services.Logging;
-using Discord;
-using CoachBot.Services;
-using CoachBot.Domain.Services;
-using CoachBot.Extensions;
-using CoachBot.Tools;
-using CoachBot.Domain.Model;
 
 namespace CoachBot
 {
@@ -107,7 +107,7 @@ namespace CoachBot
             }
 
             try
-            { 
+            {
                 await message.DeleteAsync();
             }
             catch

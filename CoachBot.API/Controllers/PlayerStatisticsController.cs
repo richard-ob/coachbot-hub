@@ -11,7 +11,7 @@ namespace CoachBot.Controllers
     [Route("api/player-statistics")]
     [ApiController]
     public class PlayerStatisticsController : Controller
-    {       
+    {
         private readonly MatchStatisticsService _matchStatisticsService;
 
         public PlayerStatisticsController(MatchStatisticsService matchStatisticsService)
@@ -60,6 +60,5 @@ namespace CoachBot.Controllers
         {
             return _matchStatisticsService.GetDailyPlayerPerformance(playerId);
         }
-
     }
 }

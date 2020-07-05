@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ChannelType = CoachBot.Domain.Model.ChannelType;
 
 namespace CoachBot.LegacyImporter
 {
@@ -206,7 +207,7 @@ namespace CoachBot.LegacyImporter
                         TeamId = teams.First(t => t.GuildId == guilds.First(g => g.Name == legacyChannel.GuildName).Id).Id,
                         DiscordChannelId = legacyChannel.Id,
                         DuplicityProtection = legacyChannel.EnableUnsignWhenPlayerStartsOtherGame,
-                        IsMixChannel = legacyChannel.IsMixChannel,
+                        ChannelType = legacyChannel.IsMixChannel ? ChannelType.PrivateMix : Domain.Model.ChannelType.Team,
                         DisableSearchNotifications = legacyChannel.DisableSearchNotifications,
                         UseClassicLineup = legacyChannel.ClassicLineup,
                         DiscordChannelName = legacyChannel.Name,
@@ -234,6 +235,7 @@ namespace CoachBot.LegacyImporter
             {
                 Name = "Thing'e'",
                 SteamID = 76561197960374238,
+                DiscordUserId = 166153339610857472,
                 HubRole = PlayerHubRole.Owner,
                 Rating = 7.2
             };

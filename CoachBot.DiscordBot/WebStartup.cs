@@ -43,7 +43,7 @@ namespace CoachBot
 
             services.AddMvc().AddJsonOptions(options =>
             {
-                options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             });
 
             services.AddSingleton<ConfigService>()
@@ -59,9 +59,9 @@ namespace CoachBot
                 .AddTransient<SubstitutionService>()
                 .AddTransient<MatchmakingService>()
                 .AddTransient<ServerManagementService>()
-                .AddTransient<MatchService>()
                 .AddTransient<SearchService>()
                 .AddTransient<PlayerService>()
+                .AddTransient<MatchupService>()
                 .AddTransient<DiscordNotificationService>()
                 .AddTransient<BotService>()
                 .AddSingleton<CacheService>()

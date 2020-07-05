@@ -14,7 +14,7 @@ namespace CoachBot.Factories
         private const string DEFAULT_KIT_EMOTE = "<:redshirt:318114878063902720>";
         private const string UNICODE_SPACE = "\u200B";
 
-        public static Embed GenerateEmbed(Channel channel, Match match, MatchTeamType teamType = MatchTeamType.Home)
+        public static Embed GenerateEmbed(Channel channel, Matchup matchup, MatchTeamType teamType = MatchTeamType.Home)
         {
             var teamList = new StringBuilder();
             var teamColor = new Color(DEFAULT_EMBED_HOME_TEAM_COLOUR);
@@ -25,15 +25,15 @@ namespace CoachBot.Factories
             Lineup oppositionTeam;
             if (teamType == MatchTeamType.Home)
             {
-                team = match.LineupHome;
-                oppositionTeam = match.LineupAway;
+                team = matchup.LineupHome;
+                oppositionTeam = matchup.LineupAway;
                 teamColor = channel.Team.SystemColor;
             }
             else
             {
-                team = match.LineupAway;
-                oppositionTeam = match.LineupHome;
-                if (match.IsMixMatch)
+                team = matchup.LineupAway;
+                oppositionTeam = matchup.LineupHome;
+                if (matchup.IsMixMatch)
                 {
                     teamColor = new Color(DEFAULT_EMBED_AWAY_TEAM_COLOUR);
                 }
@@ -49,7 +49,7 @@ namespace CoachBot.Factories
                            .WithCurrentTimestamp()
                            .WithColor(teamColor);
 
-            if (!match.IsMixMatch && oppositionTeam?.Channel != null)
+            if (!matchup.IsMixMatch && oppositionTeam?.Channel != null)
             {
                 var oppositionInfo = $"vs {oppositionTeam.Channel.Team.Name}";
                 if (!oppositionTeam.HasGk) oppositionInfo += " ***No GK***";
@@ -180,7 +180,7 @@ namespace CoachBot.Factories
                 }
             }
 
-            if (teamType == MatchTeamType.Home && team.PlayerSubstitutes.Any()) builder.AddField("Subs", string.Join(", ", match.LineupHome.PlayerSubstitutes.Select(ps => ps.Player.DiscordUserMention ?? ps.Player.Name)));
+            if (teamType == MatchTeamType.Home && team.PlayerSubstitutes.Any()) builder.AddField("Subs", string.Join(", ", matchup.LineupHome.PlayerSubstitutes.Select(ps => ps.Player.DiscordUserMention ?? ps.Player.Name)));
 
             return builder.Build();
         }

@@ -27,6 +27,8 @@ namespace CoachBot.Domain.Services
                     Name = discordGuild.Name,
                     DiscordGuildId = discordGuildId
                 };
+                _coachBotContext.Guilds.Add(guild);
+                _coachBotContext.SaveChanges();
             }
 
             return guild;

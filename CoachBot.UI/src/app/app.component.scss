@@ -5,3 +5,15 @@
 .main-nav--opened {
     transform: translateX(0);
 }
+
+@media (min-width: 992px) {
+    .col-md-3 {
+        max-width: 15.2%;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-lg-2 {
+        max-width: 15.2%;
+    }
+}

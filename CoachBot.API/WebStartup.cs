@@ -89,7 +89,7 @@ namespace CoachBot
                 .AddTransient<ScorePredictionService>()
                 .AddTransient<PlayerProfileService>()
                 .AddTransient<DiscordNotificationService>()
-                .AddTransient<DiscordService>()
+                .AddSingleton<DiscordService>()
                 .AddSingleton<CacheService>()
                 .AddTransient<AssetImageService>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
@@ -113,6 +113,9 @@ namespace CoachBot
 
             provider.GetService<LogAdaptor>();
             provider.GetService<ConfigService>();
+
+            var discordService = provider.GetService<DiscordService>();
+            discordService.StartPersistentConnection();
 
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();

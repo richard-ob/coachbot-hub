@@ -19,7 +19,6 @@ namespace CoachBot.Bot
         private readonly ConfigService _configService;
         private readonly MatchmakingService _matchmakingService;
         private readonly ChannelService _channelService;
-        private readonly MatchService _matchService;
         private readonly DiscordNotificationService _discordNotificationService;
         private readonly CacheService _cacheService;
         private readonly Importer _importer;
@@ -31,7 +30,6 @@ namespace CoachBot.Bot
             ConfigService configService,
             MatchmakingService matchmakingService,
             ChannelService channelService,
-            MatchService matchService,
             DiscordNotificationService discordNotificationService,
             CacheService cacheService,
             Importer importer
@@ -42,7 +40,6 @@ namespace CoachBot.Bot
             _configService = configService;
             _matchmakingService = matchmakingService;
             _channelService = channelService;
-            _matchService = matchService;
             _discordNotificationService = discordNotificationService;
             _cacheService = cacheService;
             _importer = importer;
@@ -54,17 +51,17 @@ namespace CoachBot.Bot
             Console.WriteLine("Connecting..");
             await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
             await _client.StartAsync();
-            //await _client.SetGameAsync("IOSoccer Hub", "http://hub.iosoccer.com"); // TODO: Uncomment when live
+            await _client.SetGameAsync("IOSoccer", "http://iosoccer.com"); // TODO: Uncomment when live
 
             _client.Connected += Connected;
             _client.Disconnected += Disconnected;
             _client.Ready += BotReady;
             _client.ChannelDestroyed += ChannelDestroyed;
-            /*_client.LeftGuild += GuildDestroyed;
+            _client.LeftGuild += GuildDestroyed;
             _client.GuildMemberUpdated += (userPre, userPost) => { return UserUpdated(userPre, userPost); };
 
             _handler = new CommandHandler(_serviceProvider);
-            await _handler.ConfigureAsync();*/
+            await _handler.ConfigureAsync();
 
             EnsureConnected();
         }
@@ -175,7 +172,7 @@ namespace CoachBot.Bot
             {
                 foreach (var channel in _channelService.GetChannels())
                 {
-                    var match = scope.ServiceProvider.GetService<MatchService>().GetCurrentMatchForChannel(channel.DiscordChannelId);
+                    var match = scope.ServiceProvider.GetService<MatchupService>().GetCurrentMatchupForChannel(channel.DiscordChannelId);
                     var player = match.SignedPlayersAndSubs.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                     if (player != null)
                     {
@@ -210,10 +207,10 @@ namespace CoachBot.Bot
             {
                 foreach (var channel in scope.ServiceProvider.GetService<ChannelService>().GetChannels())
                 {
-                    var match = scope.ServiceProvider.GetService<MatchService>().GetCurrentMatchForChannel(channel.DiscordChannelId);
+                    var matchup = scope.ServiceProvider.GetService<MatchupService>().GetCurrentMatchupForChannel(channel.DiscordChannelId);
                     if (_client.GetChannel(channel.DiscordChannelId) is ITextChannel discordChannel)
                     {
-                        var player = match.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
+                        var player = matchup.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                         if (player != null)
                         {
                             discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning));
@@ -228,7 +225,7 @@ namespace CoachBot.Bot
                             }
                         }
 
-                        var sub = match.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
+                        var sub = matchup.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
                         if (sub != null)
                         {
                             _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, _matchmakingService.RemoveSub(channel.DiscordChannelId, userPre));
@@ -251,16 +248,16 @@ namespace CoachBot.Bot
             {
                 foreach (var channel in scope.ServiceProvider.GetService<ChannelService>().GetChannels())
                 {
-                    var match = scope.ServiceProvider.GetService<MatchService>().GetCurrentMatchForChannel(channel.DiscordChannelId);
+                    var matchup = scope.ServiceProvider.GetService<MatchupService>().GetCurrentMatchupForChannel(channel.DiscordChannelId);
                     if (_client.GetChannel(channel.DiscordChannelId) is ITextChannel discordChannel)
                     {
-                        var player = match.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
+                        var player = matchup.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                         if (player != null)
                         {
                             discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {player.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());
                         }
 
-                        var sub = match.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
+                        var sub = matchup.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
                         if (sub != null)
                         {
                             discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {sub.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());

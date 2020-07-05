@@ -1,10 +1,7 @@
 <div class="container py-4">
     <!-- Team Latest Results -->
     <app-spinner *ngIf="isLoading"></app-spinner>
-    <div *ngIf="!isLoading && player && !player.teams.length" class="alert alert-info">
-        You are not currently a member of any teams
-    </div>
-    <div *ngIf="!isLoading && player && player.teams.length" class="card card--has-table">
+    <div *ngIf="!isLoading && player" class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>My Teams</h4>
             <a [routerLink]="['/create-team']" class="btn btn-primary btn-xs float-right">
@@ -12,7 +9,10 @@
             </a>
         </div>
         <div class="card__content table-responsive">
-            <table class="table table-striped">
+            <div *ngIf="!player.teams.length" class="alert alert-info m-3">
+                You are not currently a member of any teams. Teams can invite you to join, or you can form a new team.
+            </div>
+            <table *ngIf="player.teams.length" class="table table-striped">
                 <thead>
                     <th style="width: 35px;"></th>
                     <th>Team</th>

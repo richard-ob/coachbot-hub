@@ -22,7 +22,7 @@ namespace CoachBot.Domain.Services
             var tournamentPhase = _coachBotContext.TournamentPhases.Single(p => p.Id == scorePrediction.TournamentPhaseId);
             scorePrediction.PlayerId = player.Id;
 
-            if (_coachBotContext.TournamentPhases.Any(tp => tp.Id == scorePrediction.TournamentPhaseId && tp.TournamentGroupMatches.Any(g => g.Match.ScheduledKickOff < DateTime.Now)))
+            if (_coachBotContext.TournamentPhases.Any(tp => tp.Id == scorePrediction.TournamentPhaseId && tp.TournamentGroupMatches.Any(g => g.Match.KickOff < DateTime.Now)))
             {
                 throw new Exception("This tournament phase has already started");
             }

@@ -10,7 +10,7 @@ using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 namespace CoachBot.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/match-statistics")]
     [ApiController]
     [AllowAnonymous]
     public class MatchStatisticController : Controller
@@ -50,7 +50,7 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            if (match.LineupHome.Channel.Team.TeamCode != homeTeamCode || match.LineupAway.Channel.Team.TeamCode != awayTeamCode)
+            if (match.TeamHome.TeamCode != homeTeamCode || match.TeamAway.TeamCode != awayTeamCode)
             {
                 _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData);
                 return BadRequest();

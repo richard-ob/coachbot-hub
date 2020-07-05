@@ -19,12 +19,12 @@ namespace CoachBot.Model
         public Channel Channel { get; set; }
 
         [InverseProperty("LineupHome")]
-        public Match HomeMatch { get; set; }
+        public Matchup HomeMatchup { get; set; }
 
         [InverseProperty("LineupAway")]
-        public Match AwayMatch { get; set; }
+        public Matchup AwayMatchup { get; set; }
 
-        public Match Match => HomeMatch ?? AwayMatch;
+        public Matchup Matchup => HomeMatchup ?? AwayMatchup;
 
         public MatchTeamType TeamType { get; set; }
 

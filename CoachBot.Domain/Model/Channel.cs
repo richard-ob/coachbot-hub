@@ -25,7 +25,11 @@ namespace CoachBot.Domain.Model
 
         public bool UseClassicLineup { get; set; }
 
-        public bool IsMixChannel { get; set; }
+        public bool IsMixChannel => ChannelType == ChannelType.PublicMix || ChannelType == ChannelType.PrivateMix;
+
+        public ChannelType ChannelType { get; set; } = ChannelType.Team;
+
+        public MatchFormat Format => (MatchFormat)ChannelPositions.Count;
 
         public List<int> SearchIgnoreList { get; set; } = new List<int>();
 

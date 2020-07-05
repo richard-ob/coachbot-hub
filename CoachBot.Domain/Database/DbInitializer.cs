@@ -17,7 +17,7 @@ namespace CoachBot.Database
             try
             {
                 context.Searches.RemoveRange(context.Searches); // Clear all searches when restarted as timers will have stopped
-                context.Lineups.RemoveRange(context.Lineups.Where(t => !context.Matches.Any(m => m.LineupHomeId == t.Id || m.LineupAwayId == t.Id))); // Remove orphaned teams
+                context.Lineups.RemoveRange(context.Lineups.Where(t => !context.Matchups.Any(m => m.LineupHomeId == t.Id || m.LineupAwayId == t.Id))); // Remove orphaned teams
                 context.PlayerMatchStatistics.RemoveRange(context.PlayerMatchStatistics);
                 context.TeamMatchStatistics.RemoveRange(context.TeamMatchStatistics);
                 context.Matches.RemoveRange(context.Matches);
@@ -96,7 +96,7 @@ namespace CoachBot.Database
                 new Channel()
                 {
                     TeamId = teams.First().Id,
-                    IsMixChannel = false,
+                    ChannelType = ChannelType.PrivateMix,
                     UseClassicLineup = true,
                     DisableSearchNotifications = false,
                     Inactive = false,
@@ -106,7 +106,7 @@ namespace CoachBot.Database
                 new Channel()
                 {
                     TeamId = teams.First().Id,
-                    IsMixChannel = true,
+                    ChannelType = ChannelType.PrivateMix,
                     UseClassicLineup = true,
                     DisableSearchNotifications = false,
                     Inactive = false,
@@ -116,7 +116,7 @@ namespace CoachBot.Database
                 new Channel()
                 {
                     TeamId = teams.First().Id,
-                    IsMixChannel = false,
+                    ChannelType = ChannelType.Team,
                     UseClassicLineup = true,
                     DisableSearchNotifications = false,
                     Inactive = false,
@@ -169,20 +169,8 @@ namespace CoachBot.Database
                         {
                             MatchData = matchStatisticsData.MatchData
                         },
-                        ReadiedDate = DateTime.UnixEpoch.AddSeconds(matchStatisticsData.MatchData.MatchInfo.StartTime),
+                        KickOff = DateTime.UnixEpoch.AddSeconds(matchStatisticsData.MatchData.MatchInfo.StartTime),
                         ServerId = context.Servers.First().Id,
-                        LineupHome = new Lineup()
-                        {
-                            ChannelId = context.Channels.First().Id,
-                            TeamType = MatchTeamType.Home,
-                            PlayerLineupPositions = new List<PlayerLineupPosition>()
-                        },
-                        LineupAway = new Lineup()
-                        {
-                            ChannelId = context.Channels.First(c => c.Id != context.Channels.First().Id).Id,
-                            TeamType = MatchTeamType.Away,
-                            PlayerLineupPositions = new List<PlayerLineupPosition>()
-                        },
                         TeamHomeId = context.Teams.First().Id,
                         TeamAwayId = context.Teams.First().Id
                     };
@@ -191,26 +179,6 @@ namespace CoachBot.Database
                     foreach (var player in match.MatchStatistics.MatchData.Players)
                     {
                         var newPlayer = GetOrCreatePlayer(context, player.Info.SteamId64 ?? 0, player.Info.Name);
-
-                        if (currentPlayer > 8)
-                        {
-                            match.LineupAway.PlayerLineupPositions.Add(new PlayerLineupPosition()
-                            {
-                                Lineup = match.LineupAway,
-                                PlayerId = newPlayer.Id,
-                                Position = new Position() { Name = "XXX" }
-                            });
-                        }
-                        else
-                        {
-                            match.LineupHome.PlayerLineupPositions.Add(new PlayerLineupPosition()
-                            {
-                                Lineup = match.LineupHome,
-                                PlayerId = newPlayer.Id,
-                                Position = new Position() { Name = "XXX" }
-                            });
-                        }
-
                         currentPlayer++;
                     }
 

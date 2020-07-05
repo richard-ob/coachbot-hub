@@ -29,6 +29,7 @@ namespace CoachBot.Database
         public DbSet<PlayerLineupSubstitute> PlayerLineupSubstitutes { get; set; }
         public DbSet<ChannelPosition> ChannelPositions { get; set; }
         public DbSet<Lineup> Lineups { get; set; }
+        public DbSet<Matchup> Matchups { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<SubstitutionRequest> SubstitutionRequests { get; set; }
         public DbSet<Search> Searches { get; set; }
@@ -94,6 +95,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<Region>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Player>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Lineup>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Matchup>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Country>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Guild>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Position>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");

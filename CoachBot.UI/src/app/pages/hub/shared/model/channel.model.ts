@@ -2,6 +2,7 @@ import { Formation } from './formation';
 import { ChannelPosition } from './channel-position';
 import { Guild } from './guild';
 import { Team } from './team.model';
+import { ChannelType } from './channel-type.enum';
 
 export class Channel {
     id?: number;
@@ -10,6 +11,7 @@ export class Channel {
     subTeamName = null;
     discordChannelId = '';
     discordChannelName = '';
+    channelType: ChannelType = ChannelType.Team;
     channelPositions: ChannelPosition[] = [];
     formation: Formation = Formation.None;
     guildId?: number;

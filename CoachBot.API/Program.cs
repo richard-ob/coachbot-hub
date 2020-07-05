@@ -12,10 +12,15 @@ namespace CoachBot
               .UseKestrel()
               .UseIISIntegration()
               .UseStartup<WebStartup>()
-              .UseUrls($"http://*:{Config.ApiPort}")
+              .UseUrls($"http://*:{ApiPort}")
               .Build()
               .Run();
 
-        public static Config Config => JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+        public static int ApiPort {
+            get {
+                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+                return config.ApiPort > 0 ? config.ApiPort : 80;
+            }
+        }
     }
 }

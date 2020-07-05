@@ -129,10 +129,8 @@ namespace CoachBot.Domain.Services
         {
             var matches = _coachBotContext.Matches
                 .Include(m => m.MatchStatistics)
-                .Include(m => m.LineupHome)
-                    .ThenInclude(t => t.Channel)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(t => t.Channel)
+                .Include(m => m.TeamHome)
+                .Include(m => m.TeamAway)
                 .Where(m => m.MatchStatistics != null);
 
             foreach (var match in matches)
@@ -147,8 +145,8 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.PlayerPositionMatchStatistics
                 .AsNoTracking()
                 .Where(p => p.PlayerId == playerId)
-                .Where(p => p.Match.ReadiedDate != null && p.Match.ReadiedDate.Value.Year == DateTime.Now.Year)
-                .GroupBy(p => p.Match.ReadiedDate.Value.Date)
+                .Where(p => p.Match.KickOff != null && p.Match.KickOff.Value.Year == DateTime.Now.Year)
+                .GroupBy(p => p.Match.KickOff.Value.Date)
                 .Select(s => new MatchDayTotals()
                 {
                     Matches = s.Count(),
@@ -161,8 +159,8 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.TeamMatchStatistics
                 .AsNoTracking()
                 .Where(t => t.TeamId == teamId)
-                .Where(t => t.Match.ReadiedDate != null && t.Match.ReadiedDate.Value.Year == DateTime.Now.Year)
-                .GroupBy(t => t.Match.ReadiedDate.Value.Date)
+                .Where(t => t.Match.KickOff != null && t.Match.KickOff.Value.Year == DateTime.Now.Year)
+                .GroupBy(t => t.Match.KickOff.Value.Date)
                 .Select(s => new MatchDayTotals()
                 {
                     Matches = s.Count(),
@@ -192,7 +190,7 @@ namespace CoachBot.Domain.Services
                 foreach (var teamType in matchDataPlayer.MatchPeriodData.Select(m => m.Info.Team).Distinct())
                 {
                     var isHomeTeam = teamType == MatchDataSideConstants.Home;
-                    var team = isHomeTeam ? match.LineupHome : match.LineupAway;
+                    var team = isHomeTeam ? match.TeamHome : match.TeamAway;
                     foreach (var position in matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == teamType).Select(m => m.Info.Position).Distinct())
                     {
                         var positionId = _coachBotContext.Positions.Where(p => p.Name == position).Select(p => p.Id).FirstOrDefault();
@@ -200,8 +198,8 @@ namespace CoachBot.Domain.Services
                         {
                             PlayerId = player.Id,
                             MatchId = match.Id,
-                            ChannelId = team != null ? (int)team.ChannelId : 1,
-                            TeamId = team != null ? team.Channel.TeamId : match.TeamHomeId,
+                            ChannelId = 1,
+                            TeamId = team != null ? team.Id : match.TeamHomeId,
                             PositionId = positionId > 0 ? positionId : _coachBotContext.Positions.FirstOrDefault().Id,
                             MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                             SecondsPlayed = matchDataPlayer.GetPlayerPositionSeconds(teamType, position),
@@ -216,8 +214,8 @@ namespace CoachBot.Domain.Services
                     {
                         PlayerId = player.Id,
                         MatchId = match.Id,
-                        ChannelId = team != null ? (int)team.ChannelId : 1,
-                        TeamId = team != null ? team.Channel.TeamId : match.TeamHomeId,
+                        ChannelId = 1, // TODO: Figure out
+                        TeamId = team.Id,
                         MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                         SecondsPlayed = matchDataPlayer.GetPlayerSeconds(teamType),
                         PossessionPercentage = match.MatchStatistics.MatchData.GetPlayerPossession(matchDataPlayer),
@@ -236,12 +234,12 @@ namespace CoachBot.Domain.Services
             foreach (var matchDataTeam in match.MatchStatistics.MatchData.Teams)
             {
                 var isHomeTeam = matchDataTeam.MatchTotal.Side == MatchDataSideConstants.Home;
-                var team = isHomeTeam ? match.LineupHome : match.LineupAway;
+                var team = isHomeTeam ? match.TeamHome : match.TeamAway;
                 var teamMatchStatistics = new TeamMatchStatistics()
                 {
                     MatchId = match.Id,
-                    ChannelId = team != null ? (int)team.ChannelId : 1,
-                    TeamId = team != null ? team.Channel.TeamId : match.TeamHomeId,
+                    ChannelId = 1,
+                    TeamId = team.Id,
                     MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                     PossessionPercentage = match.MatchStatistics.MatchData.GetTeamPosession(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                     TeamName = matchDataTeam.MatchTotal.Name
@@ -265,9 +263,9 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                 .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
                 .Include(p => p.Match)
                     .ThenInclude(p => p.TeamHome)
                 .Include(p => p.Match)
@@ -290,9 +288,9 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                 .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
                 .Include(p => p.Match)
                     .ThenInclude(p => p.TeamHome)
                 .Include(p => p.Match)
@@ -312,9 +310,9 @@ namespace CoachBot.Domain.Services
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
                  .Where(t => filters.TeamType == null || t.Team.TeamType == filters.TeamType)
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
                  .Include(p => p.Match)
                     .ThenInclude(p => p.TeamHome)
                 .Include(p => p.Match)
@@ -337,9 +335,9 @@ namespace CoachBot.Domain.Services
                  .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                  .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                  .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
                  .Select(m => new
                  {
                      m.PlayerId,
@@ -446,9 +444,9 @@ namespace CoachBot.Domain.Services
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
                  .Where(t => filters.TeamType == null || t.Team.TeamType == filters.TeamType)
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.ReadiedDate > DateTime.Now.AddDays(-7))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.ReadiedDate > DateTime.Now.AddMonths(-1))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.ReadiedDate > DateTime.Now.AddYears(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
                  .AsNoTracking()
                  .Select(m => new
                  {
@@ -716,8 +714,8 @@ namespace CoachBot.Domain.Services
             var topPosition = _coachBotContext.PlayerPositionMatchStatistics
                  .AsNoTracking()
                  .Where(p => p.PlayerId == playerTeam.Player.Id)
-                 .Where(p => p.Match.ReadiedDate > playerTeam.JoinDate)
-                 .Where(p => playerTeam.LeaveDate == null || p.Match.ReadiedDate < playerTeam.LeaveDate)
+                 .Where(p => p.Match.KickOff > playerTeam.JoinDate)
+                 .Where(p => playerTeam.LeaveDate == null || p.Match.KickOff < playerTeam.LeaveDate)
                  .GroupBy(p => new { p.Position.Id, p.Position.Name })
                  .Select(p => new PositionAppearances()
                  {

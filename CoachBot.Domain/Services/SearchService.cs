@@ -36,9 +36,9 @@ namespace CoachBot.Domain.Services
 
         public async Task<ServiceResponse> Search(int channelId, string startedBy)
         {
-            var challenger = _coachBotContext.Channels.Include(c => c.ChannelPositions).FirstOrDefault(c => c.Id == channelId);
+            var challenger = _coachBotContext.Channels.Include(c => c.ChannelPositions).Include(c => c.Team).FirstOrDefault(c => c.Id == channelId);
             if (challenger.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"Mix channels cannot search for opposition");
-            if (challenger.ChannelPositions.Count() - 1 > GetCurrentMatchForChannel(challenger.DiscordChannelId).SignedPlayersAndSubs.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"All outfield positions must be filled");
+            if (challenger.ChannelPositions.Count() - 1 > GetCurrentMatchupForChannel(challenger.DiscordChannelId).SignedPlayersAndSubs.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"All outfield positions must be filled");
             if (GetSearches().Any(c => c.ChannelId == challenger.Id)) return new ServiceResponse(ServiceResponseStatus.Failure, $"You're already searching for a match. Type **!stopsearch** to cancel the previous search.");
 
             var search = new Search()
@@ -103,9 +103,9 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.Success, $"Search successfully stopped");
         }
 
-        public Match GetCurrentMatchForChannel(ulong channelId)
+        public Matchup GetCurrentMatchupForChannel(ulong channelId)
         {
-            return _coachBotContext.Matches
+            return _coachBotContext.Matchups
                 .Include(m => m.LineupHome)
                     .ThenInclude(th => th.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Player)

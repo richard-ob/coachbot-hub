@@ -16,15 +16,17 @@ namespace CoachBot.Services
     {
         private readonly ServerService _serverService;
         private readonly ChannelService _channelService;
-        private readonly MatchService _matchService;
+        private readonly MatchupService _matchupService;
         private readonly DiscordSocketClient _discordClient;
+        private readonly Config _config;
 
-        public ServerManagementService(ServerService serverService, ChannelService channelService, MatchService matchService, DiscordSocketClient discordClient)
+        public ServerManagementService(ServerService serverService, ChannelService channelService, MatchupService matchupService, DiscordSocketClient discordClient, Config config)
         {
             _serverService = serverService;
             _channelService = channelService;
-            _matchService = matchService;
+            _matchupService = matchupService;
             _discordClient = discordClient;
+            _config = config;
         }
 
         public bool ValidateServer(ulong channelId, int serverListItemId)
@@ -45,7 +47,6 @@ namespace CoachBot.Services
             foreach (var server in servers)
             {
                 var gameServer = new GameServerQuery(server.Address);
-                var autoSetup = !string.IsNullOrEmpty(server.RconPassword) ? "**[Auto Setup]**" : "";
                 var sb = new StringBuilder();
 
                 sb.Append($"```{serverId}``` ");
@@ -61,7 +62,7 @@ namespace CoachBot.Services
 
                 if (!string.IsNullOrEmpty(server.RconPassword))
                 {
-                    sb.Append("**[Auto Setup]**");
+                    sb.Append(" **[Auto Setup]**");
                 }
 
                 embedBuilder.AddField(sb.ToString(), $"steam://connect/{server.Address}");
@@ -238,7 +239,6 @@ namespace CoachBot.Services
         {
             var server = GetServerFromServerListItemId(serverListItemId, channelId);
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var match = _matchService.GetCurrentMatchForChannel(channelId);
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
 
             if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
@@ -301,11 +301,11 @@ namespace CoachBot.Services
             return true;
         }
 
-        public async void PrepareServer(int serverListItemId, ulong channelId, int matchId)
+        public async void PrepareServer(int serverListItemId, ulong channelId, int matchupId)
         {
             var server = GetServerFromServerListItemId(serverListItemId, channelId);
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var match = _matchService.GetCurrentMatchForChannel(channelId);
+            var matchup = _matchupService.GetCurrentMatchupForChannel(channelId);
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
             var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
 
@@ -320,7 +320,7 @@ namespace CoachBot.Services
                     if (authenticated)
                     {
                         await messenger.ExecuteCommandAsync($"exec {channel.ChannelPositions.Count}v{channel.ChannelPositions.Count}.cfg");
-                        if (match.LineupHome.HasGk && match.LineupAway.HasGk)
+                        if (matchup.LineupHome.HasGk && matchup.LineupAway.HasGk)
                         {
                             await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
                         }
@@ -329,10 +329,10 @@ namespace CoachBot.Services
                             await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
                         }
                         await messenger.ExecuteCommandAsync("mp_matchinfo \"Ranked Friendly Match\"");
-                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + "http://localhost/api/matchstatistic" + "\"");
+                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + _config.HubApiUrl + "/api/match-statistics" + "\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_enabled 1");
-                        await messenger.ExecuteCommandAsync($"mp_teamnames \"{match.LineupHome.Channel.Team.TeamCode}: {match.LineupHome.Channel.Team.Name}, {match.LineupAway.Channel.Team.TeamCode}: {match.LineupAway.Channel.Team.Name}\"");
-                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchId, match.LineupHome.Channel.Team.TeamCode, match.LineupAway.Channel.Team.TeamCode));
+                        await messenger.ExecuteCommandAsync($"mp_teamnames \"{matchup.LineupHome.Channel.Team.TeamCode}: {matchup.LineupHome.Channel.Team.Name}, {matchup.LineupAway.Channel.Team.TeamCode}: {matchup.LineupAway.Channel.Team.Name}\"");
+                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchupId, matchup.LineupHome.Channel.Team.TeamCode, matchup.LineupAway.Channel.Team.TeamCode));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
                         await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
                     }
@@ -353,7 +353,6 @@ namespace CoachBot.Services
         {
             var server = GetServerFromServerListItemId(serverListItemId, channelId);
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var match = _matchService.GetCurrentMatchForChannel(channelId);
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
             var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
 

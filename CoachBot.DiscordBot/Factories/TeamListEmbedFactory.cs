@@ -12,7 +12,7 @@ namespace CoachBot.Factories
         private const uint DEFAULT_EMBED_HOME_TEAM_COLOUR = 0x2463b0;
         private const uint DEFAULT_EMBED_AWAY_TEAM_COLOUR = 0xd60e0e;
 
-        public static Embed GenerateEmbed(Channel channel, Match match, MatchTeamType teamType = MatchTeamType.Home)
+        public static Embed GenerateEmbed(Channel channel, Matchup matchup, MatchTeamType teamType = MatchTeamType.Home)
         {
             var sb = new StringBuilder();
             var teamColor = new Color(DEFAULT_EMBED_HOME_TEAM_COLOUR);
@@ -22,15 +22,15 @@ namespace CoachBot.Factories
             Lineup oppositionTeam;
             if (teamType == MatchTeamType.Home)
             {
-                team = match.LineupHome;
-                oppositionTeam = match.LineupAway;
+                team = matchup.LineupHome;
+                oppositionTeam = matchup.LineupAway;
                 teamColor = channel.Team.SystemColor;
             }
             else
             {
-                team = match.LineupAway;
-                oppositionTeam = match.LineupHome;
-                if (match.IsMixMatch)
+                team = matchup.LineupAway;
+                oppositionTeam = matchup.LineupHome;
+                if (matchup.IsMixMatch)
                 {
                     teamColor = new Color(DEFAULT_EMBED_AWAY_TEAM_COLOUR);
                 }
@@ -40,7 +40,7 @@ namespace CoachBot.Factories
                 }
             }
 
-            var embedBuilder = new EmbedBuilder().WithTitle($"{channel.Team.BadgeEmote ?? channel.Team.Name}{(match.IsMixMatch && teamType == MatchTeamType.Away ? " #2" : "")} Team List");
+            var embedBuilder = new EmbedBuilder().WithTitle($"{channel.Team.BadgeEmote ?? channel.Team.Name}{(matchup.IsMixMatch && teamType == MatchTeamType.Away ? " #2" : "")} Team List");
             foreach (var channelPosition in channel.ChannelPositions.OrderBy(cp => cp.Ordinal))
             {
                 var playerTeamPosition = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channelPosition.Position.Name);
@@ -50,7 +50,7 @@ namespace CoachBot.Factories
 
             if (team.PlayerSubstitutes.Any()) sb.Append($"*Subs*: **{string.Join(", ", team.PlayerSubstitutes.Select(ps => ps.Player.DiscordUserMention ?? ps.Player.Name))}**");
 
-            if (!match.IsMixMatch && oppositionTeam?.Channel != null)
+            if (!matchup.IsMixMatch && oppositionTeam?.Channel != null)
             {
                 sb.AppendLine("");
                 sb.Append($"vs **{oppositionTeam.Channel.Team.DisplayName}**");

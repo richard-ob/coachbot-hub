@@ -204,7 +204,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.Matches
                 .Where(m => _coachBotContext.TournamentPhases.Any(p => p.TournamentGroupMatches.Any(gm => gm.TournamentPhaseId == tournamentPhaseId)))
-                .Where(m => !futureOnly || m.ScheduledKickOff > DateTime.Now)
+                .Where(m => !futureOnly || m.KickOff > DateTime.Now)
                 .ToList();
         }
 
@@ -212,8 +212,8 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.TournamentGroupMatches
                 .Where(tg => tg.TournamentGroup.TournamentStage.TournamentId == tournamentId)
-                .Where(m => m.Match.ScheduledKickOff > DateTime.Now)
-                .OrderBy(m => m.Match.ScheduledKickOff)
+                .Where(m => m.Match.KickOff > DateTime.Now)
+                .OrderBy(m => m.Match.KickOff)
                 .Select(m => m.TournamentPhase)
                 .Include(p => p.TournamentStage)
                 .Include(t => t.TournamentGroupMatches)
@@ -569,7 +569,7 @@ namespace CoachBot.Domain.Services
                             TeamHomeId = homeTeamId > 0 ? homeTeamId : (int?)null,
                             TeamAwayId = awayTeamId > 0 ? awayTeamId : (int?)null,
                             MatchType = MatchType.Competition,
-                            ScheduledKickOff = scheduledKickOff,
+                            KickOff = scheduledKickOff,
                             Format = tournament.Format,
                             TournamentId = tournament.Id
                         }
@@ -684,7 +684,7 @@ namespace CoachBot.Domain.Services
                                         TeamHomeId = groupTeam.TeamId,
                                         TeamAwayId = awayTeam.TeamId,
                                         MatchType = MatchType.Competition,
-                                        ScheduledKickOff = scheduledKickOff,
+                                        KickOff = scheduledKickOff,
                                         Format = tournament.Format,
                                         TournamentId = tournament.Id
                                     }

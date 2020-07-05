@@ -78,15 +78,29 @@
             </span>
         </div>
 
-        <div class="form-group">
-            <label class="control-label mb-0" for="input-default">Is Mix Channel?</label>
+        <div *ngIf="currentPlayer.hubRole !== hubRoles.Owner" class="form-group">
+            <label class="control-label mb-0" for="isMixChannel">Is Mix Channel?</label>
             <small class="label-subtitle">The default opponent will be a second mix team that players can sign up
                 to</small>
             <div>
                 <label class="checkbox mr-2">
-                    <input [(ngModel)]="channel.isMixChannel" type="checkbox" name="isMixChannel">
+                    <input [(ngModel)]="isMixChannel" (ngModelChange)="setChannelType()" type="checkbox"
+                        name="isMixChannel">
                     <span class="checkbox-indicator"></span>
                 </label>
+            </div>
+        </div>
+
+        <div *ngIf="currentPlayer.hubRole === hubRoles.Owner" class="form-group">
+            <label class="control-label mb-0 required" for="channelType">Channel Type</label>
+            <small class="label-subtitle mb-2">Public mixes are reserved for official mix channels that can be
+                challenged</small>
+            <div>
+                <select [(ngModel)]="channel.channelType" class="form-control" name="channelType">
+                    <option [ngValue]="channelTypes.Team">Team</option>
+                    <option [ngValue]="channelTypes.PrivateMix">Private Mix</option>
+                    <option [ngValue]="channelTypes.PublicMix">Public Mix</option>
+                </select>
             </div>
         </div>
 

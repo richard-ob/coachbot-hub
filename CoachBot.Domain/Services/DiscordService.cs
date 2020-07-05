@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoachBot.Domain.Services
 {
@@ -30,14 +31,14 @@ namespace CoachBot.Domain.Services
             var bytes = Convert.FromBase64String(image.Split(',')[1]); // Remove base64 header info
             var emote = guild.CreateEmoteAsync(emoteName, new Image(new MemoryStream(bytes))).Result;
 
-            return $"<{emote.Name}:{emote.Id}>";
+            return $"<:{emote.Name}:{emote.Id}>";
         }
 
         public void DeleteEmote(string emoteString)
         {
             try
             {
-                var emoteId = ulong.Parse(emoteString.Split(':')[1].Replace(">", ""));
+                var emoteId = ulong.Parse(emoteString.Split(':')[2].Replace(">", ""));
                 var guild = _discordSocketClient.GetGuild(_config.OwnerGuildId) as SocketGuild;
                 var emote = guild.GetEmoteAsync(emoteId).Result;
                 guild.DeleteEmoteAsync(emote).RunSynchronously();
@@ -107,14 +108,6 @@ namespace CoachBot.Domain.Services
                 });
         }
 
-        public bool UserIsOwningGuildAdmin(ulong steamUserId)
-        {
-            var player = _coachBotContext.GetPlayerBySteamId(steamUserId);
-            var owningGuild = _discordSocketClient.GetGuild(_config.OwnerGuildId);
-
-            return owningGuild.Users.FirstOrDefault(u => u.Id == player.DiscordUserId).GuildPermissions.Administrator;
-        }
-
         public bool UserIsGuildAdministrator(ulong steamUserId, ulong guildId)
         {
             var discordUserId = _coachBotContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
@@ -125,6 +118,19 @@ namespace CoachBot.Domain.Services
         {
             var discordUserId = _coachBotContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
             return _discordSocketClient.GetGuild(guildId).Users.Any(u => u.Id == steamUserId);
+        }
+
+        public async void StartPersistentConnection()
+        {
+            if (_discordSocketClient.ConnectionState != ConnectionState.Connected || _discordSocketClient.LoginState != LoginState.LoggedIn)
+            {
+                await _discordSocketClient.LogoutAsync();
+                await _discordSocketClient.LoginAsync(TokenType.Bot, _config.BotToken);
+                await _discordSocketClient.StartAsync();
+            }
+
+            Task.Delay(TimeSpan.FromMinutes(5)).Wait();
+            StartPersistentConnection();
         }
     }
 }

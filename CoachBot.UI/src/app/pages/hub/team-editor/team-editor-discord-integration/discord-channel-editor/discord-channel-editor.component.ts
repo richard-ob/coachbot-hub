@@ -12,6 +12,10 @@ import { SwalComponent, SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, debounceTime, map } from 'rxjs/operators';
+import { PlayerService } from '@pages/hub/shared/services/player.service';
+import { Player } from '@pages/hub/shared/model/player.model';
+import { PlayerHubRole } from '@pages/hub/shared/model/player-hub-role.enum';
+import { ChannelType } from '@pages/hub/shared/model/channel-type.enum';
 
 @Component({
     selector: 'app-discord-channel-editor',
@@ -21,9 +25,13 @@ export class DiscordChannelEditorComponent implements OnInit {
 
     @ViewChild('editPositionModal', { static: false }) editPositionModal: SwalComponent;
     @Output() wizardClosed = new EventEmitter<void>();
+    currentPlayer: Player;
+    hubRoles = PlayerHubRole;
     team: Team;
     teams: Team[];
     channel: Channel = new Channel();
+    isMixChannel: boolean;
+    channelTypes = ChannelType;
     discordChannels: DiscordChannel[];
     discordGuildId: string;
     positionToEdit: ChannelPosition;
@@ -48,11 +56,13 @@ export class DiscordChannelEditorComponent implements OnInit {
         private discordService: DiscordService,
         private teamService: TeamService,
         private channelService: ChannelService,
+        private playerService: PlayerService,
         public readonly swalTargets: SwalPortalTargets,
         private userPreferenceService: UserPreferenceService
     ) { }
 
     ngOnInit() {
+        this.currentPlayer = this.playerService.currentPlayer;
         this.teamService.getTeams(this.userPreferenceService.getUserPreference(UserPreferenceType.Region)).subscribe(teams => {
             this.teams = teams;
         });
@@ -64,11 +74,11 @@ export class DiscordChannelEditorComponent implements OnInit {
         this.wizardStep = WizardStep.ChannelSelection;
         this.channel = new Channel();
         this.channel.teamId = teamId;
+        this.isMixChannel = false;
         this.teamService.getTeam(teamId).subscribe(team => {
             this.team = team;
             this.discordService.getChannelsForGuild(this.team.guild.discordGuildId).subscribe(discordChannels => {
                 this.discordChannels = discordChannels;
-
                 this.isLoading = false;
             });
         });
@@ -80,6 +90,7 @@ export class DiscordChannelEditorComponent implements OnInit {
         this.wizardStep = WizardStep.Configuration;
         this.channelService.getChannel(channelId).subscribe(channel => {
             this.channel = channel;
+            this.isMixChannel = channel.channelType !== ChannelType.Team;
             this.channel.channelPositions = channel.channelPositions.sort((a, b) => a.ordinal - b.ordinal);
             this.isLoading = false;
         });
@@ -95,6 +106,10 @@ export class DiscordChannelEditorComponent implements OnInit {
 
     setChannelName(discordChannelId: string) {
         this.channel.discordChannelName = this.discordChannels.find(c => c.id === discordChannelId).name;
+    }
+
+    setChannelType() {
+        this.channel.channelType = this.isMixChannel ? ChannelType.PrivateMix : ChannelType.Team;
     }
 
     setPositions(format: number) {

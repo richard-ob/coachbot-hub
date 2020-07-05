@@ -11,10 +11,12 @@ namespace CoachBot.Controllers
     public class DiscordGuildController : Controller
     {
         private readonly DiscordService _discordService;
+        private readonly PlayerService _playerService;
 
-        public DiscordGuildController(DiscordService discordService)
+        public DiscordGuildController(DiscordService discordService, PlayerService playerService)
         {
             _discordService = discordService;
+            _playerService = playerService;
         }
 
         [HttpGet]
@@ -27,7 +29,7 @@ namespace CoachBot.Controllers
         public IActionResult GetForGuild(ulong id)
         {
             var steamId = User.GetSteamId();
-            if (!_discordService.UserIsGuildAdministrator(steamId, id) && !_discordService.UserIsOwningGuildAdmin(steamId))
+            if (!_discordService.UserIsGuildAdministrator(steamId, id) && !_playerService.IsOwner(User.GetSteamId()))
             {
                 return Unauthorized();
             }

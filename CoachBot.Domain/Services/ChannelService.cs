@@ -31,54 +31,13 @@ namespace CoachBot.Domain.Services
             existingChannel.DuplicityProtection = channel.DuplicityProtection;
             existingChannel.Formation = channel.Formation;
             existingChannel.Inactive = channel.Inactive;
-            existingChannel.IsMixChannel = channel.IsMixChannel;
+            existingChannel.ChannelType = channel.ChannelType;
             existingChannel.SearchIgnoreList = channel.SearchIgnoreList;
             existingChannel.SubTeamName = channel.SubTeamName;
             existingChannel.UseClassicLineup = channel.UseClassicLineup;
             existingChannel.UpdatedDate = DateTime.Now;
 
-            if (channel.ChannelPositions.GroupBy(cp => cp.Position.Name).Select(s => s.Count()).Max() > 1)
-                throw new Exception("Positions must be unique");
-
-            if (channel.ChannelPositions.GroupBy(cp => cp.Ordinal).Select(s => s.Count()).Max() > 1)
-                throw new Exception("Position ordinals must be unique");
-
-            if (!channel.ChannelPositions.Any())
-                throw new Exception("No positions provided");
-
-            if (channel.ChannelPositions.Any(cp => string.IsNullOrWhiteSpace(cp.Position.Name)))
-                throw new Exception("No position name provided");
-
-            // Remove deleted positions
-            var deletedPositions = _dbContext.ChannelPositions
-                .Where(c => c.ChannelId == channel.Id)
-                .Where(cp => !channel.ChannelPositions.Any(cpt => cpt.PositionId == cp.PositionId));
-            if (deletedPositions.Any())
-            {
-                _dbContext.ChannelPositions.RemoveRange(deletedPositions);
-            }
-
-            // Add new positions
-            var newChannelPositions = channel.ChannelPositions.Where(c => c.PositionId <= 0);
-            foreach (var newChannelPosition in newChannelPositions)
-            {
-                var position = _dbContext.Positions.FirstOrDefault(p => p.Name.ToUpper() == newChannelPosition.Position.Name.ToUpper());
-                if (position == null)
-                {
-                    position = new Position()
-                    {
-                        Name = newChannelPosition.Position.Name
-                    };
-                    _dbContext.Positions.Add(position);
-                }
-                var channelPositionToAdd = new ChannelPosition()
-                {
-                    ChannelId = channel.Id,
-                    PositionId = position.Id,
-                    Ordinal = newChannelPosition.Ordinal
-                };
-                _dbContext.ChannelPositions.Add(channelPositionToAdd);
-            }
+            UpdatePositions(channel.ChannelPositions, channel.Id);
 
             _dbContext.SaveChanges();
         }
@@ -88,12 +47,17 @@ namespace CoachBot.Domain.Services
             if (_dbContext.Channels.Any(c => c.DiscordChannelId == channel.DiscordChannelId))
                 throw new Exception("A Discord channel can only be to one team");
 
+            var channelPositions = channel.ChannelPositions;
+
+            channel.ChannelPositions = null;
+            channel.Team = null;
             channel.UpdatedDate = DateTime.UtcNow;
-            channel.CreatedDate = DateTime.UtcNow;
             _dbContext.Channels.Add(channel);
             _dbContext.SaveChanges();
-        }
 
+            UpdatePositions(channelPositions, channel.Id);
+            _dbContext.SaveChanges();
+        }
         public List<Channel> GetChannels()
         {
             return _dbContext.Channels
@@ -122,7 +86,7 @@ namespace CoachBot.Domain.Services
 
         public MatchTeamType GetTeamTypeForChannelTeamType(ChannelTeamType channelTeamType, ulong channelId)
         {
-            var match = _dbContext.GetCurrentMatchForChannel(channelId);
+            var match = _dbContext.GetCurrentMatchupForChannel(channelId);
 
             if (match.IsMixMatch && channelTeamType == ChannelTeamType.TeamOne)
             {
@@ -185,5 +149,52 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(cp => cp.Position)
                 .FirstOrDefault(c => c.Team.TeamCode == teamCode);
         }
+
+        private void UpdatePositions(ICollection<ChannelPosition> channelPositions, int channelId)
+        {
+            if (channelPositions.GroupBy(cp => cp.Position.Name).Select(s => s.Count()).Max() > 1)
+                throw new Exception("Positions must be unique");
+
+            if (channelPositions.GroupBy(cp => cp.Ordinal).Select(s => s.Count()).Max() > 1)
+                throw new Exception("Position ordinals must be unique");
+
+            if (!channelPositions.Any())
+                throw new Exception("No positions provided");
+
+            if (channelPositions.Any(cp => string.IsNullOrWhiteSpace(cp.Position.Name)))
+                throw new Exception("No position name provided");
+
+            // Remove deleted positions
+            var deletedPositions = _dbContext.ChannelPositions
+                .Where(c => c.ChannelId == channelId)
+                .Where(cp => !channelPositions.Any(cpt => cpt.PositionId == cp.PositionId));
+            if (deletedPositions.Any())
+            {
+                _dbContext.ChannelPositions.RemoveRange(deletedPositions);
+            }
+
+            // Add new positions
+            var newChannelPositions = channelPositions.Where(c => c.PositionId <= 0);
+            foreach (var newChannelPosition in newChannelPositions)
+            {
+                var position = _dbContext.Positions.FirstOrDefault(p => p.Name.ToUpper() == newChannelPosition.Position.Name.ToUpper());
+                if (position == null)
+                {
+                    position = new Position()
+                    {
+                        Name = newChannelPosition.Position.Name
+                    };
+                    _dbContext.Positions.Add(position);
+                }
+                var channelPositionToAdd = new ChannelPosition()
+                {
+                    ChannelId = channelId,
+                    PositionId = position.Id,
+                    Ordinal = newChannelPosition.Ordinal
+                };
+                _dbContext.ChannelPositions.Add(channelPositionToAdd);
+            }
+        }
+
     }
 }

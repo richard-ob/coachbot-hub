@@ -23,10 +23,5 @@ namespace CoachBot.Extensions
 
             return steamId64;
         }
-
-        public static ulong GetDiscordUserId(this ClaimsPrincipal claimsPrincipal)
-        {
-            return ulong.Parse(claimsPrincipal.Claims.ToList().First().Value);
-        }
     }
 }

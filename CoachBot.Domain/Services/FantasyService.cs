@@ -66,8 +66,8 @@ namespace CoachBot.Domain.Services
                     TournamentId = (int)s.TournamentId,
                     IsComplete = s.IsComplete,
                     FantasyTeamStatus =
-                        !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff < DateTime.Now))) ? FantasyTeamStatus.Open
-                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff > DateTime.Now))) ? FantasyTeamStatus.Pending
+                        !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.KickOff < DateTime.Now))) ? FantasyTeamStatus.Open
+                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.KickOff > DateTime.Now))) ? FantasyTeamStatus.Pending
                         : FantasyTeamStatus.Settled
                 }).ToList();
         }
@@ -86,8 +86,8 @@ namespace CoachBot.Domain.Services
                     TournamentId = (int)s.TournamentId,
                     IsComplete = s.IsComplete,
                     FantasyTeamStatus =
-                        !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff < DateTime.Now))) ? FantasyTeamStatus.Open
-                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff > DateTime.Now))) ? FantasyTeamStatus.Pending
+                        !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.KickOff < DateTime.Now))) ? FantasyTeamStatus.Open
+                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.KickOff > DateTime.Now))) ? FantasyTeamStatus.Pending
                         : FantasyTeamStatus.Settled
                 }).FirstOrDefault();
         }
@@ -106,8 +106,8 @@ namespace CoachBot.Domain.Services
                     TournamentId = (int)s.TournamentId,
                     IsComplete = s.IsComplete,
                     FantasyTeamStatus =
-                        !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff < DateTime.Now))) ? FantasyTeamStatus.Open
-                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.ScheduledKickOff > DateTime.Now))) ? FantasyTeamStatus.Pending
+                        !s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.KickOff < DateTime.Now))) ? FantasyTeamStatus.Open
+                        : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.KickOff > DateTime.Now))) ? FantasyTeamStatus.Pending
                         : FantasyTeamStatus.Settled
                 }).ToList();
         }
@@ -181,7 +181,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.Tournaments
                 .Include(t => t.TournamentSeries)
-                .Where(t => !_coachBotContext.Matches.Any(m => m.TournamentId == t.Id && m.ScheduledKickOff < DateTime.Now))
+                .Where(t => !_coachBotContext.Matches.Any(m => m.TournamentId == t.Id && m.KickOff < DateTime.Now))
                 .Where(t => !_coachBotContext.FantasyTeams.Any(ft => ft.Player.SteamID == steamUserId))
                 .Where(t => t.IsPublic)
                 .ToList();
@@ -578,7 +578,7 @@ namespace CoachBot.Domain.Services
 
         private void CheckHasTournamentStarted(int tournamentId)
         {
-            if (_coachBotContext.Matches.Any(m => m.TournamentId == tournamentId && m.ScheduledKickOff < DateTime.Now))
+            if (_coachBotContext.Matches.Any(m => m.TournamentId == tournamentId && m.KickOff < DateTime.Now))
             {
                 throw new Exception("The tournament has started. Fantasy teams cannot be updated.");
             }

@@ -40,21 +40,25 @@ namespace CoachBot.Controllers
 
             if (match.Server.Address != serverAddress)
             {
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData);
                 return BadRequest();
             }
 
             if (match.MatchStatistics != null)
             {
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData);
                 return BadRequest();
             }
 
             if (match.LineupHome.Channel.Team.TeamCode != homeTeamCode || match.LineupAway.Channel.Team.TeamCode != awayTeamCode)
             {
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData);
                 return BadRequest();
             }
 
             if (serverAddress.Split(":")[0] != Request.HttpContext.Connection.RemoteIpAddress.ToString())
             {
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData);
                 return Unauthorized();
             }
 

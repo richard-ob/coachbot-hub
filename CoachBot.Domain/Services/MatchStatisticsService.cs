@@ -43,6 +43,17 @@ namespace CoachBot.Domain.Services
             }
         }
 
+        public void SaveUnlinkedMatchData(MatchData matchData)
+        {
+            var matchStatistics = new MatchStatistics()
+            {
+                MatchData = matchData
+            };
+
+            _coachBotContext.MatchStatistics.Add(matchStatistics);
+            _coachBotContext.SaveChanges();
+        }
+
         public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, TeamStatisticsFilters filters)
         {
             return GetTeamStatisticTotals(filters).GetPaged(page, pageSize, sortOrder);

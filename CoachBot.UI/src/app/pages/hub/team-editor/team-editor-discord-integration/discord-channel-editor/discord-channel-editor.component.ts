@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, OnInit, Input } from '@angular/core';
 import { DiscordService } from '../../../shared/services/discord.service';
 import { TeamService } from '../../../shared/services/team.service';
 import { ChannelService } from '../../../shared/services/channel.service';
@@ -16,18 +16,21 @@ import { PlayerService } from '@pages/hub/shared/services/player.service';
 import { Player } from '@pages/hub/shared/model/player.model';
 import { PlayerHubRole } from '@pages/hub/shared/model/player-hub-role.enum';
 import { ChannelType } from '@pages/hub/shared/model/channel-type.enum';
+import StringUtils from '@shared/utilities/string-utilities';
 
 @Component({
     selector: 'app-discord-channel-editor',
-    templateUrl: './discord-channel-editor.component.html'
+    templateUrl: './discord-channel-editor.component.html',
+    styleUrls: ['./discord-channel-editor.component.scss']
 })
 export class DiscordChannelEditorComponent implements OnInit {
 
     @ViewChild('editPositionModal', { static: false }) editPositionModal: SwalComponent;
     @Output() wizardClosed = new EventEmitter<void>();
+    @Input() channels: Channel[];
+    @Input() team: Team;
     currentPlayer: Player;
     hubRoles = PlayerHubRole;
-    team: Team;
     teams: Team[];
     channel: Channel = new Channel();
     isMixChannel: boolean;
@@ -75,12 +78,9 @@ export class DiscordChannelEditorComponent implements OnInit {
         this.channel = new Channel();
         this.channel.teamId = teamId;
         this.isMixChannel = false;
-        this.teamService.getTeam(teamId).subscribe(team => {
-            this.team = team;
-            this.discordService.getChannelsForGuild(this.team.guild.discordGuildId).subscribe(discordChannels => {
-                this.discordChannels = discordChannels;
-                this.isLoading = false;
-            });
+        this.discordService.getChannelsForGuild(this.team.guild.discordGuildId).subscribe(discordChannels => {
+            this.discordChannels = discordChannels;
+            this.isLoading = false;
         });
     }
 
@@ -173,6 +173,11 @@ export class DiscordChannelEditorComponent implements OnInit {
 
     removeSearchIgnoreChannel(teamId: number) {
         this.channel.searchIgnoreList = this.channel.searchIgnoreList.filter(t => t !== teamId);
+    }
+
+    isDuplicateTeamCode() {
+        return this.channels.some(c => StringUtils.upperCase(this.channel.subTeamCode) === StringUtils.upperCase(c.subTeamCode)
+            && c.id !== this.channel.id && c.channelPositions.length === this.channel.channelPositions.length);
     }
 
     saveChannel() {

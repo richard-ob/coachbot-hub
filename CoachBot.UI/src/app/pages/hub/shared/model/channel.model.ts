@@ -9,6 +9,7 @@ export class Channel {
     teamId: number;
     team?: Team = null;
     subTeamName = null;
+    subTeamCode = null;
     discordChannelId = '';
     discordChannelName = '';
     channelType: ChannelType = ChannelType.Team;

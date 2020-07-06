@@ -25,6 +25,17 @@ namespace CoachBot.Domain.Services
         {
             var existingChannel = _dbContext.Channels.Find(channel.Id);
 
+            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => c.TeamId == channel.TeamId && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count))
+            {
+                throw new Exception("Secondary channels must have a sub team code");
+            }
+
+            if (!string.IsNullOrWhiteSpace(channel.SubTeamCode) 
+                && _dbContext.Channels.Any(c => c.SubTeamCode.ToUpper() == channel.SubTeamCode.ToUpper() && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count))
+            {
+                throw new Exception("Secondary channels must have a unique sub team code");
+            }
+
             existingChannel.DisableSearchNotifications = channel.DisableSearchNotifications;
             existingChannel.DiscordChannelId = channel.DiscordChannelId;
             existingChannel.DiscordChannelName = channel.DiscordChannelName;
@@ -33,6 +44,7 @@ namespace CoachBot.Domain.Services
             existingChannel.Inactive = channel.Inactive;
             existingChannel.ChannelType = channel.ChannelType;
             existingChannel.SearchIgnoreList = channel.SearchIgnoreList;
+            existingChannel.SubTeamCode = channel.SubTeamCode.ToUpper();
             existingChannel.SubTeamName = channel.SubTeamName;
             existingChannel.UseClassicLineup = channel.UseClassicLineup;
             existingChannel.UpdatedDate = DateTime.Now;
@@ -45,19 +57,34 @@ namespace CoachBot.Domain.Services
         public void CreateChannel(Channel channel)
         {
             if (_dbContext.Channels.Any(c => c.DiscordChannelId == channel.DiscordChannelId))
-                throw new Exception("A Discord channel can only be to one team");
+            {
+                throw new Exception("A Discord channel can only be attached to one team");
+            }
+
+            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => c.TeamId == channel.TeamId && c.ChannelPositions.Count == channel.ChannelPositions.Count))
+            {
+                throw new Exception("Secondary channels must have a sub team code");
+            }
+
+            if (!string.IsNullOrWhiteSpace(channel.SubTeamCode)
+                && _dbContext.Channels.Any(c => c.SubTeamCode.ToUpper() == channel.SubTeamCode.ToUpper() && c.TeamId == channel.TeamId && c.ChannelPositions.Count == channel.ChannelPositions.Count))
+            {
+                throw new Exception("Secondary channels must have a unique sub team code");
+            }
 
             var channelPositions = channel.ChannelPositions;
 
             channel.ChannelPositions = null;
             channel.Team = null;
             channel.UpdatedDate = DateTime.UtcNow;
+            channel.SubTeamCode = channel.SubTeamCode.ToUpper();
             _dbContext.Channels.Add(channel);
             _dbContext.SaveChanges();
 
             UpdatePositions(channelPositions, channel.Id);
             _dbContext.SaveChanges();
         }
+
         public List<Channel> GetChannels()
         {
             return _dbContext.Channels
@@ -148,6 +175,17 @@ namespace CoachBot.Domain.Services
                 .Include(c => c.ChannelPositions)
                     .ThenInclude(cp => cp.Position)
                 .FirstOrDefault(c => c.Team.TeamCode == teamCode);
+        }
+
+        public Channel GetChannelBySearchTeamCode(string searchTeamCode, MatchFormat format)
+        {
+            return _dbContext.Channels
+                .Include(c => c.Team)
+                    .ThenInclude(t => t.Region)
+                .Include(c => c.ChannelPositions)
+                    .ThenInclude(cp => cp.Position)
+                .Where(c => c.ChannelPositions.Count == (int)format)
+                .FirstOrDefault(c => c.Team.TeamCode + c.SubTeamCode == searchTeamCode);
         }
 
         private void UpdatePositions(ICollection<ChannelPosition> channelPositions, int channelId)

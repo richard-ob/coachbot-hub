@@ -10,7 +10,7 @@ export interface Match {
     serverId: number;
     server: Server;
     matchStatistics: MatchStatistics;
-    readiedDate: Date;
+    kickOff: Date;
     scheduledKickOff: Date;
     createdDate: Date;
 }

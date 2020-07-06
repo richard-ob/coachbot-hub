@@ -189,7 +189,7 @@ namespace CoachBot.Services
         public Embed Challenge(ulong challengerChannelId, string teamCode, string challengerMention)
         {
             var challenger = _channelService.GetChannelByDiscordId(challengerChannelId);
-            var opposition = _channelService.GetChannelByTeamCode(teamCode);
+            var opposition = _channelService.GetChannelBySearchTeamCode(teamCode, (MatchFormat)challenger.ChannelPositions.Count);
 
             if (opposition == null) return EmbedTools.GenerateEmbed($"{teamCode} is not a valid team code", ServiceResponseStatus.Failure);
 
@@ -210,7 +210,7 @@ namespace CoachBot.Services
         {
             var channel = _channelService.GetChannelByDiscordId(challengerChannelId);
             var searches = _searchService.GetSearches().Where(s => s.Channel.Team.RegionId == channel.Team.RegionId && s.ChannelId != channel.Id && channel.ChannelType == ChannelType.Team);
-            var mixChallenges = _channelService.GetChannels().Where(c => channel.ChannelType == ChannelType.PublicMix && c.Team.RegionId == channel.Team.RegionId && channel.Format == c.Format);
+            var mixChallenges = _channelService.GetChannels().Where(c => c.ChannelType == ChannelType.PublicMix && c.Team.RegionId == channel.Team.RegionId && channel.Format == c.Format);
 
             var embedBuilder = new EmbedBuilder();
 
@@ -221,7 +221,7 @@ namespace CoachBot.Services
             {
                 var match = _matchupService.GetCurrentMatchupForChannel(search.Channel.DiscordChannelId);
                 if (!string.IsNullOrEmpty(search.Channel.Team.BadgeEmote)) teamList.Append($"{search.Channel.Team.BadgeEmote} ");
-                teamList.Append($"**{search.Channel.Team.TeamCode}** ");
+                teamList.Append($"**{search.Channel.SearchTeamCode}** ");
                 if (!match.LineupHome.HasGk) teamList.Append("(No GK)");
                 teamList.AppendLine("");
                 teamList.AppendLine(GenerateFormEmoteListForChannel(search.Channel.DiscordChannelId));
@@ -245,7 +245,7 @@ namespace CoachBot.Services
                 if (matchup.IsMixMatch)
                 {
                     if (!string.IsNullOrEmpty(matchup.LineupHome.Channel.Team.BadgeEmote)) mixTeamList.Append($"{matchup.LineupHome.Channel.Team.BadgeEmote} ");
-                    mixTeamList.Append($"**{mix.Team.TeamCode}** ");
+                    mixTeamList.Append($"**{mix.SearchTeamCode}** ");
                     if (string.IsNullOrEmpty(matchup.LineupHome.Channel.Team.BadgeEmote)) mixTeamList.Append($"({matchup.LineupHome.Channel.Team.Guild}) ");
                     if (!matchup.LineupHome.HasGk) mixTeamList.Append(" (No GK)");
                     mixTeamList.AppendLine("");

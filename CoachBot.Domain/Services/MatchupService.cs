@@ -12,14 +12,16 @@ namespace CoachBot.Domain.Services
     public class MatchupService
     {
         private readonly CoachBotContext _coachBotContext;
+        private readonly MatchService _matchService;
         private readonly ChannelService _channelService;
         private readonly ServerService _serverService;
         private readonly SearchService _searchService;
         private readonly DiscordNotificationService _discordNotificationService;
 
-        public MatchupService(CoachBotContext coachBotContext, ChannelService channelService, ServerService serverService, SearchService searchService, DiscordNotificationService discordNotificationService)
+        public MatchupService(CoachBotContext coachBotContext, MatchService matchService, ChannelService channelService, ServerService serverService, SearchService searchService, DiscordNotificationService discordNotificationService)
         {
             _coachBotContext = coachBotContext;
+            _matchService = matchService;
             _channelService = channelService;
             _serverService = serverService;
             _searchService = searchService;
@@ -299,12 +301,12 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed **{player.DisplayName}**");
         }
 
-        public ServiceResponse ReadyMatch(ulong channelId, int serverId, out int matchupId)
+        public ServiceResponse ReadyMatch(ulong channelId, int serverId, out int matchId)
         {
             var matchup = GetCurrentMatchupForChannel(channelId);
             var channel = matchup.LineupHome.Channel;
             var server = _serverService.GetServer(serverId);
-            matchupId = matchup.Id;
+            matchId = -1;
 
             if (matchup.LineupAway == null || matchup.LineupHome == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There is no opposition set");
             if (matchup.SignedPlayersAndSubs.Count < channel.ChannelPositions.Count) return new ServiceResponse(ServiceResponseStatus.Failure, $"All positions must be filled"); ;
@@ -312,14 +314,25 @@ namespace CoachBot.Domain.Services
             if (server.RegionId != channel.Team.RegionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server is not in this channels region");
             if (matchup.SignedPlayers.GroupBy(p => p.Id).Where(p => p.Count() > 1).Any()) return new ServiceResponse(ServiceResponseStatus.Failure, $"One or more players is signed for both teams");
 
-            //matchup.ServerId = server.Id;
+            var match = new Match()
+            {
+                ServerId = server.Id,
+                TeamHomeId = matchup.LineupHome.Channel.TeamId,
+                TeamAwayId = matchup.LineupAway.Channel.TeamId,
+                Format = (MatchFormat)channel.ChannelPositions.Count,
+                MatchType = server.HasRconPassword ? MatchType.RankedFriendly : MatchType.UnrankedFriendly
+            };
+            _coachBotContext.Matches.Add(match);
             matchup.ReadiedDate = DateTime.UtcNow;
+            matchup.MatchId = match.Id;
             _coachBotContext.SaveChanges();
 
             CreateMatchup((int)matchup.LineupHome.ChannelId);
             if (matchup.LineupHome.ChannelId != matchup.LineupAway.ChannelId) CreateMatchup((int)matchup.LineupAway.ChannelId);
 
             RemovePlayersFromOtherMatchups(matchup);
+
+            matchId = match.Id;
 
             return new ServiceResponse(ServiceResponseStatus.Success, $"Match successfully readied");
         }

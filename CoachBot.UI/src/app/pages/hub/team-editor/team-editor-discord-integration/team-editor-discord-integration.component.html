@@ -51,7 +51,8 @@
                 </table>
             </div>
             <app-spinner *ngIf="isLoading"></app-spinner>
-            <app-discord-channel-editor (wizardClosed)=" loadChannels(); isChannelWizardOpen = false;" #channelEditor>
+            <app-discord-channel-editor (wizardClosed)=" loadChannels(); isChannelWizardOpen = false;"
+                [channels]="channels" [team]="team" #channelEditor>
             </app-discord-channel-editor>
             <app-discord-guild-editor (guildEditorClosed)="loadTeam(); isGuildEditorOpen = false;" #guildEditor>
             </app-discord-guild-editor>

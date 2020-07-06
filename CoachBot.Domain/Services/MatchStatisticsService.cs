@@ -31,6 +31,7 @@ namespace CoachBot.Domain.Services
 
             if (matchData.IsValid(match, manualSave))
             {
+                match.KickOff = match.KickOff ?? match.MatchStatistics.KickOff;
                 _coachBotContext.SaveChanges();
                 GeneratePlayerMatchStatistics(match);
                 GenerateTeamMatchStatistics(match);

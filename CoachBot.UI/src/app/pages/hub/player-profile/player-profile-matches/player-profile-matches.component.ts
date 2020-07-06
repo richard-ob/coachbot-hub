@@ -17,7 +17,7 @@ export class PlayerProfileMatchesComponent implements OnInit {
     currentPage = 1;
     totalPages: number;
     totalItems: number;
-    sortBy = 'Match.ReadiedDate';
+    sortBy = 'Match.KickOff';
     sortOrder = 'ASC';
     timePeriod = 0;
     hasFiltered = false;

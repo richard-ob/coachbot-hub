@@ -17,6 +17,8 @@ namespace CoachBot.Domain.Model
 
         public string SubTeamName { get; set; }
 
+        public string SubTeamCode { get; set; }
+
         public ulong DiscordChannelId { get; set; }
 
         public string DiscordChannelName { get; set; }
@@ -29,7 +31,9 @@ namespace CoachBot.Domain.Model
 
         public ChannelType ChannelType { get; set; } = ChannelType.Team;
 
-        public MatchFormat Format => (MatchFormat)ChannelPositions.Count;
+        public MatchFormat Format => ChannelPositions != null ? (MatchFormat)ChannelPositions.Count : MatchFormat.Unknown;
+
+        public string SearchTeamCode => Team.TeamCode + SubTeamName;
 
         public List<int> SearchIgnoreList { get; set; } = new List<int>();
 

@@ -31,7 +31,7 @@ namespace CoachBot.Services
 
         public bool ValidateServer(ulong channelId, int serverListItemId)
         {
-            var channel = _channelService.GetChannelByDiscordId(channelId, false);
+            var channel = _channelService.GetChannelByDiscordId(channelId);
             var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
 
             return servers.Count >= serverListItemId && serverListItemId > 0;

@@ -11,7 +11,7 @@ namespace CoachBot.Services
 
         public ConfigService()
         {
-            Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
+            Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
             if (string.IsNullOrEmpty(Config.BotToken)) throw new Exception("No valid bot token provided");
         }
     }

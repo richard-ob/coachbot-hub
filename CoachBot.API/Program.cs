@@ -17,7 +17,7 @@ namespace CoachBot
 
         public static int ApiPort {
             get {
-                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
+                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
                 return config.ApiPort > 0 ? config.ApiPort : 80;
             }
         }

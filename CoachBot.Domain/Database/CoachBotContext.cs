@@ -63,7 +63,7 @@ namespace CoachBot.Database
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
+                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
                 optionsBuilder.UseSqlServer(config.SqlConnectionString, o => { o.EnableRetryOnFailure(); });
             }
         }
@@ -141,7 +141,7 @@ namespace CoachBot.Database
         public CoachBotContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<CoachBotContext>();
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
             builder.UseSqlServer(config.SqlConnectionString, o => { o.EnableRetryOnFailure(); });
             return new CoachBotContext(builder.Options);
         }

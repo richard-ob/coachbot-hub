@@ -17,7 +17,7 @@ namespace CoachBot.Services.Matchmaker
         public BotService(DiscordSocketClient client)
         {
             _client = client;
-            _config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
+            _config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
         }
 
         public BotState GetCurrentBotState()

@@ -37,7 +37,7 @@ namespace CoachBot
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
             var logger = LogAdaptor.CreateLogger();
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider(logger));

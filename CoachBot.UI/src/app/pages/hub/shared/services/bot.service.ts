@@ -22,4 +22,12 @@ export class BotService {
     reconnectBot() {
         return this.http.post(`${environment.apiUrl}/api/bot/reconnect`, null).pipe();
     }
+
+    connectBot() {
+        return this.http.post(`${environment.apiUrl}/api/bot/connect`, null).pipe();
+    }
+
+    disconnectBot() {
+        return this.http.post(`${environment.apiUrl}/api/bot/disconnect`, null).pipe();
+    }
 }

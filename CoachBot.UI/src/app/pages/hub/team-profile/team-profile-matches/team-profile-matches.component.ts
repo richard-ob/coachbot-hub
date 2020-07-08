@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { OverviewType } from 'angular2-calendar-heatmap';
 import { TeamService } from '../../shared/services/team.service';
 import { TeamStatistics } from '../../shared/model/team-statistics.model';
 
@@ -13,7 +12,6 @@ export class TeamProfileMatchesComponent implements OnInit {
     teamId: number;
     teamStatistics: TeamStatistics;
     isLoading = true;
-    overview = OverviewType.year;
 
     constructor(private route: ActivatedRoute, private teamService: TeamService) { }
 

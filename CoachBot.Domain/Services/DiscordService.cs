@@ -41,7 +41,7 @@ namespace CoachBot.Domain.Services
                 var emoteId = ulong.Parse(emoteString.Split(':')[2].Replace(">", ""));
                 var guild = _discordSocketClient.GetGuild(_config.OwnerGuildId) as SocketGuild;
                 var emote = guild.GetEmoteAsync(emoteId).Result;
-                guild.DeleteEmoteAsync(emote).RunSynchronously();
+                guild.DeleteEmoteAsync(emote).Wait();
             }
             catch
             {

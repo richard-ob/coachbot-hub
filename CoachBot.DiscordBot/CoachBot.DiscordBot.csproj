@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk;Microsoft.NET.Sdk.Publish" ToolsVersion="15.0">
   <PropertyGroup Label="Configuration">
     <RootNamespace>CoachBot</RootNamespace>
   </PropertyGroup>
@@ -21,6 +21,14 @@
     <None Remove="Modules\Matchmaker\**" />
     <None Remove="Services\Logging\**" />
     <None Remove="Services\Matchmaker\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="history.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="history.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
@@ -56,8 +64,17 @@
     <ProjectReference Include="..\CoachBot.LegacyImporter\CoachBot.LegacyImporter.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="config-dev.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="legacy-config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Settings.job">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

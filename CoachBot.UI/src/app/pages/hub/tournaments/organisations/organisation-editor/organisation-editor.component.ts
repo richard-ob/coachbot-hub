@@ -18,8 +18,6 @@ export class OrganisationEditorComponent implements OnInit {
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
-            console.log('hi');
-            console.log(params);
             this.organisationId = +params.get('id');
             this.loadOrganisation();
         });
@@ -40,5 +38,9 @@ export class OrganisationEditorComponent implements OnInit {
             this.isSaving = false;
             this.loadOrganisation();
         });
+    }
+
+    updateLogoImageId(logoImageId: number) {
+        this.organisation.logoImageId = logoImageId;
     }
 }

@@ -44,7 +44,7 @@ export class FantasyTeamEditorPlayersComponent implements OnChanges, OnInit {
         this.loadFantasyPlayers(this.currentPage);
     }
 
-    loadFantasyPlayers(page: number, sortBy: string = null) {
+    loadFantasyPlayers(page = 1, sortBy: string = null) {
         this.isLoading = true;
         if (sortBy !== null && this.sortBy !== null && this.sortBy === sortBy && this.sortOrder === 'ASC') {
             this.sortOrder = 'DESC';

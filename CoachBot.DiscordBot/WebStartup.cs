@@ -36,7 +36,7 @@ namespace CoachBot
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
             var logger = LogAdaptor.CreateLogger();
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider(logger));
@@ -61,9 +61,10 @@ namespace CoachBot
                 .AddTransient<ServerManagementService>()
                 .AddTransient<SearchService>()
                 .AddTransient<PlayerService>()
+                .AddTransient<MatchService>()
                 .AddTransient<MatchupService>()
                 .AddTransient<DiscordNotificationService>()
-                .AddTransient<BotService>()
+                .AddSingleton<BotService>()
                 .AddSingleton<CacheService>()
                 .AddSingleton<BotInstance>()
                 .AddSingleton<Importer>()

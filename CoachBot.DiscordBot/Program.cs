@@ -15,8 +15,8 @@ namespace CoachBot
 
         private async Task RunAsync()
         {
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
-            var port = config.ApiPort > 0 ? config.ApiPort : 8080;
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
+            var port = config.ApiPort > 0 ? config.BotApiPort : 8080;
             var host = WebHost
               .CreateDefaultBuilder()
               .UseKestrel()

@@ -2,6 +2,7 @@ import { SteamUserProfile } from './steam-user-profile.model';
 import { PlayerPosition } from './player-position.model';
 import { PlayerTeam } from './player-team.model';
 import { PlayerHubRole } from './player-hub-role.enum';
+import { Country } from './country.model';
 
 export interface Player {
     id: number;
@@ -9,6 +10,8 @@ export interface Player {
     discordUserId: string;
     discordUserMention: string;
     steamID: string;
+    countryId: number;
+    country: Country;
     disableDMNotifications: boolean;
     playerStatisticsTotalsId: number;
     playerStatisticsTotals: any;
@@ -17,6 +20,7 @@ export interface Player {
     teams: PlayerTeam[];
     steamUserProfile: SteamUserProfile;
     hubRole: PlayerHubRole;
+    playingSince: Date;
     createdDate: Date;
 }
 

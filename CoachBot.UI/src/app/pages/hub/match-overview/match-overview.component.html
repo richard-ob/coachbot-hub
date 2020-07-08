@@ -23,9 +23,9 @@
                             <div id="match-headline-items-home" class="text-left" style="flex: 0 1 50%">
                                 <span class="d-none d-md-inline-block pr-4">
                                 <ng-container
-                                    *ngIf="match.lineupHome.channel.team.badgeImage; else blankCrest">
+                                    *ngIf="match.teamHome.badgeImage; else blankCrest">
                                     <img 
-                                        [src]="match.lineupHome.channel.team.badgeImage.base64EncodedImage">
+                                        [src]="match.teamHome.badgeImage.base64EncodedImage">
                                 </ng-container>
                                 <ng-template #blankCrest>
                                     <img src="./assets/images/soccer/blank-crest.png"
@@ -33,8 +33,8 @@
                                 </ng-template>
                             </span>
                                 <h5 class="d-inline-block text-white clickable"
-                                    (click)="navigateToTeamProfile(match.lineupHome.channel.teamId)">
-                                    {{match.lineupHome.channel.subteamName || match.lineupHome.channel.team.name}}
+                                    (click)="navigateToTeamProfile(match.teamHomeId)">
+                                    {{match.teamHome.name}}
                                 </h5>
                             </div>
                             <div id="match-headline-score"
@@ -46,14 +46,14 @@
                             </div>
                             <div id="match-headline-items-away" class="text-right" style="flex: 0 1 50%">
                                 <h5 class="d-inline-block text-white clickable"
-                                    (click)="navigateToTeamProfile(match.lineupAway.channel.teamId)">
-                                    {{match.lineupAway.channel.subteamName || match.lineupAway.channel.team.name}}
+                                    (click)="navigateToTeamProfile(match.teamAwayId)">
+                                    {{match.teamAway.name}}
                                 </h5>
                                 <span class="d-none d-md-inline-block pl-4">
                                     <ng-container
-                                        *ngIf="match.lineupAway.channel.team.badgeImage; else blankCrest">
+                                        *ngIf="match.teamAway.badgeImage; else blankCrest">
                                         <img 
-                                            [src]="match.lineupAway.channel.team.badgeImage.base64EncodedImage">
+                                            [src]="match.teamAway.badgeImage.base64EncodedImage">
                                     </ng-container>
                                     <ng-template #blankCrest>
                                         <img src="./assets/images/soccer/blank-crest.png"
@@ -117,12 +117,12 @@
                                     <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
                                         <div class="widget__title card__header">
                                             <h4>
-                                                {{match.lineupAway.channel.subteamName || match.lineupAway.channel.team.name}}
+                                                {{match.teamAway.name}}
                                                 Lineup</h4>
                                         </div>
                                         <div class="widget__content card__content position-relative">
-                                            <app-match-overview-lineup [matchId]="match.id"
-                                                [channelId]="match.lineupHome.channelId" [color]="'#dc3545'">
+                                            <app-match-overview-lineup [matchId]="match.id" [channelId]="1"
+                                                [color]="'#dc3545'">
                                             </app-match-overview-lineup>
                                         </div>
                                     </aside>
@@ -131,12 +131,12 @@
                                 <div class="col-md-6">
                                     <aside class="widget card card--has-table widget--sidebar widget-lineup-table">
                                         <div class="widget__title card__header">
-                                            <h4>{{match.lineupAway.channel.subteamName || match.lineupAway.channel.team.name}}
+                                            <h4>{{match.teamAway.name}}
                                                 Lineup</h4>
                                         </div>
                                         <div class="widget__content card__content position-relative">
-                                            <app-match-overview-lineup [matchId]="match.id"
-                                                [channelId]="match.lineupAway.channelId" [color]="'#ffc107'">
+                                            <app-match-overview-lineup [matchId]="match.id" [channelId]="1"
+                                                [color]="'#ffc107'">
                                             </app-match-overview-lineup>
                                         </div>
                                     </aside>
@@ -157,29 +157,29 @@
                                                     <div>
                                                         <h5 class="float-left">
                                                             <ng-container
-                                                                *ngIf="match.lineupHome.channel.team.badgeImage; else blankCrest">
+                                                                *ngIf="match.teamHome.badgeImage; else blankCrest">
                                                                 <img
-                                                                    [src]="match.lineupHome.channel.team.badgeImage.base64EncodedImage">
+                                                                    [src]="match.teamHome.badgeImage.base64EncodedImage">
                                                             </ng-container>
                                                             <ng-template #blankCrest>
                                                                 <img src="./assets/images/soccer/blank-crest.png"
                                                                     style="max-height: 25px;">
                                                             </ng-template>
-                                                            {{match.lineupHome.channel.subteamName || match.lineupHome.channel.team.name}}
+                                                            {{match.teamHome.name}}
                                                         </h5>
                                                     </div>
                                                     <div>
                                                         <h5 class="float-right">
                                                             <ng-container
-                                                                *ngIf="match.lineupAway.channel.team.badgeImage; else blankCrest">
+                                                                *ngIf="match.teamAway.badgeImage; else blankCrest">
                                                                 <img
-                                                                    [src]="match.lineupAway.channel.team.badgeImage.base64EncodedImage">
+                                                                    [src]="match.teamAway.badgeImage.base64EncodedImage">
                                                             </ng-container>
                                                             <ng-template #blankCrest>
                                                                 <img src="./assets/images/soccer/blank-crest.png"
                                                                     style="max-height: 25px;">
                                                             </ng-template>
-                                                            {{match.lineupAway.channel.subteamName || match.lineupAway.channel.team.name}}
+                                                            {{match.teamAway.name}}
                                                         </h5>
                                                     </div>
                                                 </div>
@@ -220,7 +220,7 @@
                                                                                 [totalValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
                                                                                 [partValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
                                                                                 [title]="'Shot Accuracy'"
-                                                                                [fillColour]="match.lineupHome.channel.team.color ? match.lineupHome.channel.team.color  : '#dc3545'">
+                                                                                [fillColour]="match.teamHome.color ? match.teamHome.color  : '#dc3545'">
                                                                             </app-circle-graph>
                                                                         </div>
                                                                         <div class="col-6">
@@ -228,7 +228,7 @@
                                                                                 [totalValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
                                                                                 [partValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
                                                                                 [title]="'Pass Accuracy'"
-                                                                                [fillColour]="match.lineupAway.channel.team.color ? match.lineupAway.channel.team.color : '#dc3545'">
+                                                                                [fillColour]="match.teamAway.color ? match.teamAway.color : '#dc3545'">
                                                                             </app-circle-graph>
                                                                         </div>
                                                                     </div>
@@ -249,50 +249,48 @@
                                                     <app-horizontal-bar-graph
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Possession]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Possession]"
-                                                        [homeColour]="match.lineupHome.channel.team.color"
-                                                        [awayColour]="'match.lineupHome.channel.team.color'"
-                                                        [title]="'Possession'"
+                                                        [homeColour]="match.teamHome.color"
+                                                        [awayColour]="'match.teamAway.color'" [title]="'Possession'"
                                                         [displayValueMode]="displayValueModes.Percentage">
                                                     </app-horizontal-bar-graph>
 
                                                     <app-horizontal-bar-graph
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
-                                                        [homeColour]="match.lineupHome.channel.team.color"
-                                                        [awayColour]="'match.lineupHome.channel.team.color'"
-                                                        [title]="'Shots'" [displayValueMode]="displayValueModes.Value">
+                                                        [homeColour]="match.teamHome.color"
+                                                        [awayColour]="'match.teamAway.color'" [title]="'Shots'"
+                                                        [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
                                                     <app-horizontal-bar-graph
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
-                                                        [homeColour]="match.lineupHome.channel.team.color"
-                                                        [awayColour]="'match.lineupHome.channel.team.color'"
-                                                        [title]="'Shots On Goal'"
+                                                        [homeColour]="match.teamHome.color"
+                                                        [awayColour]="'match.teamAway.color'" [title]="'Shots On Goal'"
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
                                                     <app-horizontal-bar-graph
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.KeeperSaves]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.KeeperSaves]"
-                                                        [homeColour]="match.lineupHome.channel.team.color"
-                                                        [awayColour]="'match.lineupHome.channel.team.color'"
-                                                        [title]="'Saves'" [displayValueMode]="displayValueModes.Value">
+                                                        [homeColour]="match.teamHome.color"
+                                                        [awayColour]="'match.teamHome.color'" [title]="'Saves'"
+                                                        [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
                                                     <app-horizontal-bar-graph
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Passes]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
-                                                        [homeColour]="match.lineupHome.channel.team.color"
-                                                        [awayColour]="'match.lineupHome.channel.team.color'"
-                                                        [title]="'Passes'" [displayValueMode]="displayValueModes.Value">
+                                                        [homeColour]="match.teamHome.color"
+                                                        [awayColour]="'match.teamHome.color'" [title]="'Passes'"
+                                                        [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
                                                     <app-horizontal-bar-graph
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.PassesCompleted]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
-                                                        [homeColour]="match.lineupHome.channel.team.color"
-                                                        [awayColour]="'match.lineupHome.channel.team.color'"
+                                                        [homeColour]="match.teamHome.color"
+                                                        [awayColour]="'match.teamHome.color'"
                                                         [title]="'Passes Completed'"
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
@@ -300,18 +298,17 @@
                                                     <app-horizontal-bar-graph
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Corners]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Corners]"
-                                                        [homeColour]="match.lineupHome.channel.team.color"
-                                                        [awayColour]="'match.lineupHome.channel.team.color'"
-                                                        [title]="'Corners'"
+                                                        [homeColour]="match.teamHome.color"
+                                                        [awayColour]="'match.teamHome.color'" [title]="'Corners'"
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
                                                     <app-horizontal-bar-graph
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Fouls]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Fouls]"
-                                                        [homeColour]="match.lineupHome.channel.team.color"
-                                                        [awayColour]="'match.lineupHome.channel.team.color'"
-                                                        [title]="'Fouls'" [displayValueMode]="displayValueModes.Value">
+                                                        [homeColour]="match.teamHome.color"
+                                                        [awayColour]="'match.teamHome.color'" [title]="'Fouls'"
+                                                        [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
                                                 </section>
@@ -357,7 +354,7 @@
                                                         class="icon-svg icon-soccer-ball-own-goal"></i>
                                                     <i *ngSwitchCase="eventType.YellowCard"
                                                         class="icon-svg icon-yellow-card"></i>
-                                                    <i *ngSwitchCase="eventType.SecondYellow"
+                                                    <i *ngSwitchCase="eventType.SecondYellowCard"
                                                         class="icon-svg icon-red-card"></i>
                                                     <i *ngSwitchCase="eventType.RedCard"
                                                         class="icon-svg icon-red-card"></i>
@@ -370,7 +367,7 @@
                                                 </div>
                                                 {{matchEvent.event}}
                                                 <strong>{{matchEvent.player1SteamId | steamIdToPlayerName:matchData.players}}</strong>
-                                                <span *ngIf="matchEvent.event === eventType.SecondYellow">Received a second yellow card</span>
+                                                <span *ngIf="matchEvent.event === eventType.SecondYellowCard">Received a second yellow card</span>
                                                 <ng-container *ngIf="matchEvent.player2SteamId">
                                                     <ng-container [ngSwitch]="matchEvent.event">
                                                         <span *ngSwitchCase="eventType.Goal">&nbsp;Assist by

@@ -5,4 +5,5 @@ export interface MatchStatistics {
     matchGoalsHome: number;
     matchGoalsAway: number;
     matchData: MatchData;
+    createdDate: Date;
 }

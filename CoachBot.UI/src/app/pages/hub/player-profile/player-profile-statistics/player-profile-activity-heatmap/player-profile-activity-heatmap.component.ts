@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { OverviewType, CalendarHeatmapData } from 'angular2-calendar-heatmap';
 import { PlayerService } from '../../../shared/services/player.service';
 import { MatchDayTotals } from '../../../shared/model/team-match-day-totals';
 

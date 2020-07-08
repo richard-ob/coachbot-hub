@@ -11,4 +11,5 @@ export class FantasyTeam {
     tournamentId: number;
     tournament: Tournament;
     fantasyTeamSelections: FantasyTeamSelection[];
+    createdDate: Date;
 }

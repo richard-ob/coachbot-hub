@@ -92,6 +92,9 @@
     <ProjectReference Include="..\CoachBot.LegacyImporter\CoachBot.LegacyImporter.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="config-dev.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

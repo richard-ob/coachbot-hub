@@ -1,4 +1,4 @@
 <app-team-info-editor *ngIf="!isLoading; else spinner" [team]="team"></app-team-info-editor>
-<ng-template>
+<ng-template #spinner>
     <app-spinner></app-spinner>
 </ng-template>

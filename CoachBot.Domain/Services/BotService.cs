@@ -3,7 +3,9 @@ using CoachBot.Model;
 using Discord;
 using Discord.WebSocket;
 using Newtonsoft.Json;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CoachBot.Services.Matchmaker
 {
@@ -11,13 +13,11 @@ namespace CoachBot.Services.Matchmaker
     {
         private DiscordSocketClient _client;
         private Config _config;
-        private CoachBotContext _dbContext;
 
-        public BotService(DiscordSocketClient client, CoachBotContext dbContext)
+        public BotService(DiscordSocketClient client)
         {
             _client = client;
-            _dbContext = dbContext;
-            _config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            _config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
         }
 
         public BotState GetCurrentBotState()
@@ -31,11 +31,28 @@ namespace CoachBot.Services.Matchmaker
             return botState;
         }
 
-        public void Reconnect()
+        public async Task Reconnect()
         {
-            _client.LogoutAsync();
-            _client.LoginAsync(TokenType.Bot, _config.BotToken);
-            _client.StartAsync();
+            Console.WriteLine("Logging out..");
+            await _client.LogoutAsync();
+            Console.WriteLine("Logging in..");
+            await _client.LoginAsync(TokenType.Bot, _config.BotToken);
+            Console.WriteLine("Starting session..");
+            await _client.StartAsync();
+        }
+
+        public async Task Disconnect()
+        {
+            Console.WriteLine("Logging out..");
+            await _client.LogoutAsync();
+        }
+
+        public async Task Connect()
+        {
+            Console.WriteLine("Logging in..");
+            await _client.LoginAsync(TokenType.Bot, _config.BotToken);
+            Console.WriteLine("Starting session..");
+            await _client.StartAsync();
         }
 
         public void LeaveGuild(string id)

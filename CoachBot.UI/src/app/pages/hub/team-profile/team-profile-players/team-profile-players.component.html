@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals"
+                    <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals; let odd = odd"
                         (click)="navigateToPlayerProfile(playerTeamStatisticsTotal.playerTeam.playerId)">
                         <td>{{playerTeamStatisticsTotal.playerTeam.player.name}}</td>
                         <td>{{playerTeamStatisticsTotal.playerTeam.teamRole | teamRole}}</td>

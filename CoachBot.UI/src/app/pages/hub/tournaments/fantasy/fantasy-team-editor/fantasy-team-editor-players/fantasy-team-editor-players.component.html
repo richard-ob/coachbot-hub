@@ -37,7 +37,7 @@
         <div class="form-group">
             <label>Price</label>
             <nouislider [connect]="true" [min]="0" [max]="10" [(ngModel)]="ratingRange" [step]="0.25"
-                [tooltips]="[ true, true ]" (ngModelChange)="setRatingRange($event)"></nouislider>
+                [tooltips]="[ true, true ]" (ngModelChange)="setRatingRange()"></nouislider>
         </div>
         <div class="form-group">
             <label>Team</label>

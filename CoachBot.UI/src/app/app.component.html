@@ -203,7 +203,9 @@
                                         </ul>
                                     </ng-container>
                                     <ng-template #spinner>
-                                        <app-spinner></app-spinner>
+                                        <div class="w-100 d-flex justify-content-center align-items-center">
+                                            <app-spinner [light]="true" [verticalMargins]="false"></app-spinner>
+                                        </div>
                                     </ng-template>
                                 </div>
                             </li>

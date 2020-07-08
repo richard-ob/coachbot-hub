@@ -3,6 +3,7 @@ import { MatchService } from '../shared/services/match.service';
 import { Match } from '../shared/model/match.model';
 import { PagedMatchRequestDto, MatchFilters } from '../shared/model/dtos/paged-match-request-dto.model';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
+import { MatchTypes } from '../shared/model/match-types.enum';
 @Component({
     selector: 'app-upcoming-matches',
     templateUrl: './upcoming-matches.component.html',
@@ -12,6 +13,7 @@ export class UpcomingMatchesComponent implements OnInit {
 
     filters = new MatchFilters();
     matches: Match[];
+    matchTypes = MatchTypes;
     currentPage = 1;
     totalPages: number;
     totalItems: number;

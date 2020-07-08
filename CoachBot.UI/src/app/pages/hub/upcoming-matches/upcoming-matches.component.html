@@ -35,7 +35,7 @@
                             <ng-container *ngIf="match.tournament; else matchType">
                                 {{match.tournament.name}}
                             </ng-container>
-                            <ng-template>
+                            <ng-template #matchType>
                                 <ng-container [ngSwitch]="match.matchType">
                                     <span *ngSwitchCase="matchTypes.UnrankedFriendly">Unranked Friendly</span>
                                     <span *ngSwitchCase="matchTypes.RankedFriendly">Ranked Friendly</span>

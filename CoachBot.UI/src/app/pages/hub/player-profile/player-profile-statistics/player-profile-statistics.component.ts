@@ -5,7 +5,6 @@ import { PlayerStatisticFilters } from '../../shared/model/dtos/paged-player-sta
 import { TimePeriod } from '../../shared/model/time-period.enum';
 import { map } from 'rxjs/operators';
 import { PlayerStatistics } from '../../shared/model/player-statistics.model';
-import { OverviewType } from 'angular2-calendar-heatmap';
 import { PlayerProfileSpotlightStatistic } from './player-profile-spotlight/player-profile-spotlight-statistic.enum';
 
 @Component({
@@ -19,7 +18,6 @@ export class PlayerProfileStatisticsComponent implements OnInit {
     playerStatistics: PlayerStatistics;
     isLoading = true;
     spotlightStatistic = PlayerProfileSpotlightStatistic;
-    overview = OverviewType.year;
 
     constructor(private route: ActivatedRoute, private playerService: PlayerService) { }
 

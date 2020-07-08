@@ -12,10 +12,19 @@
     -webkit-animation: preloader4 0.8s linear infinite;
     animation: preloader4 0.8s linear infinite;
  }
+
+ .preloader4.light {
+   border-top-color:rgba(255, 255, 255, 0.65) !important;
+   border-bottom-color:rgba(255, 255, 255, 0.15) !important;
+   border-left-color:rgba(255, 255, 255, 0.65) !important;
+   border-right-color:rgba(255, 255, 255, 0.15) !important;
+ }
+
  @keyframes preloader4 {
     from {transform: rotate(0deg);}
     to {transform: rotate(360deg);}
  }
+
  @-webkit-keyframes preloader4 {
     from {-webkit-transform: rotate(0deg);}
     to {-webkit-transform: rotate(360deg);}

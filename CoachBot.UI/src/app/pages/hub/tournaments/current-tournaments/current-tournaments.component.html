@@ -24,8 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let tournament of tournaments | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
-                        (click)="navigateToTournament(tournament.id)">
+                    <tr *ngFor="let tournament of tournaments" (click)="navigateToTournament(tournament.id)">
                         <td><img *ngIf="tournament.tournamentSeries.organisation.logoImage"
                                 [src]="tournament.tournamentSeries.organisation.logoImage.base64EncodedImage"
                                 style="max-height: 20px;"></td>
@@ -41,9 +40,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div *ngIf="totalPages > 1" class="text-center">
-        <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
     </div>
 </div>
 <!-- Team Latest Results / End -->

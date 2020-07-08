@@ -1,4 +1,5 @@
 import { Tournament } from './tournament.model';
+import { Organisation } from './organisation.model';
 
 export class TournamentSeries {
     id: number;
@@ -7,4 +8,5 @@ export class TournamentSeries {
     isActive: boolean;
     organisationId: number;
     tournaments: Tournament[];
+    organisation: Organisation;
 }

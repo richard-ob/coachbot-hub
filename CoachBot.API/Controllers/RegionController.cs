@@ -13,7 +13,6 @@ namespace CoachBot.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class RegionController : Controller
     {
         private readonly RegionService _regionService;

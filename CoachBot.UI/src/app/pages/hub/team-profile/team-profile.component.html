@@ -25,8 +25,8 @@
                         <div class="player-info-details__item player-info-details__item--height">
                             <h6 class="player-info-details__title">Founded</h6>
                             <div class="player-info-details__value">
-                                <ng-container *ngIf="team.dateFounded; else noFoundedDate">
-                                    {{team.dateFounded | date}}
+                                <ng-container *ngIf="team.foundedDate; else noFoundedDate">
+                                    {{team.foundedDate | date}}
                                 </ng-container>
                                 <ng-template #noFoundedDate>
                                     Unknown

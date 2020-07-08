@@ -29,9 +29,29 @@ namespace CoachBot.Controllers
 
         [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("reconnect")]
-        public Task Reconnect()
+        public async Task<IActionResult> Reconnect()
         {
-            return this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/reconnect");
+            await this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/reconnect");
+
+            return NoContent();
+        }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
+        [HttpPost("disconnect")]
+        public async Task<IActionResult> Disconnect()
+        {
+            await this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/disconnect");
+
+            return NoContent();
+        }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
+        [HttpPost("connect")]
+        public async Task<IActionResult> Connect()
+        {
+            await this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/connect");
+
+            return NoContent();
         }
 
         [HubRolePermission(HubRole = PlayerHubRole.Administrator)]

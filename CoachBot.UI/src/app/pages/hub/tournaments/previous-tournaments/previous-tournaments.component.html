@@ -23,8 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let tournament of tournaments | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
-                        (click)="navigateToTournament(tournament.id)">
+                    <tr *ngFor="let tournament of tournaments" (click)="navigateToTournament(tournament.id)">
                         <td>{{tournament.organisation.acronym}}</td>
                         <td class="team-result__status">{{tournament.name}}</td>
                         <td class="team-result__status">
@@ -37,9 +36,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div *ngIf="totalPages > 1" class="text-center">
-        <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
     </div>
 </div>
 <!-- Team Latest Results / End -->

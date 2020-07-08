@@ -43,4 +43,24 @@ export class BotConnectionStateComponent implements OnInit {
         });
     }
 
+    connectBot() {
+        this.isReconnecting = true;
+        this.botService.connectBot().subscribe(() => {
+            this.botService.getBotState().subscribe(state => {
+                this.botState = state;
+                this.isReconnecting = false;
+            });
+        });
+    }
+
+    disconnectBot() {
+        this.isReconnecting = true;
+        this.botService.disconnectBot().subscribe(() => {
+            this.botService.getBotState().subscribe(state => {
+                this.botState = state;
+                this.isReconnecting = false;
+            });
+        });
+    }
+
 }

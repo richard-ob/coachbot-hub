@@ -63,7 +63,7 @@ namespace CoachBot.Database
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
                 optionsBuilder.UseSqlServer(config.SqlConnectionString, o => { o.EnableRetryOnFailure(); });
             }
         }
@@ -132,7 +132,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<Team>().Property(p => p.Form).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<MatchOutcomeType>>(v));
 
             // Seed data
-            modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
+            //modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
         }
     }
 
@@ -141,7 +141,7 @@ namespace CoachBot.Database
         public CoachBotContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<CoachBotContext>();
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
             builder.UseSqlServer(config.SqlConnectionString, o => { o.EnableRetryOnFailure(); });
             return new CoachBotContext(builder.Options);
         }

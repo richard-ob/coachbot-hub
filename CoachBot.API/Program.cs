@@ -10,7 +10,6 @@ namespace CoachBot
         public static void Main(string[] args) =>
           new WebHostBuilder()
               .UseKestrel()
-              .UseIISIntegration()
               .UseStartup<WebStartup>()
               .UseUrls($"http://*:{ApiPort}")
               .Build()
@@ -18,7 +17,7 @@ namespace CoachBot
 
         public static int ApiPort {
             get {
-                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
                 return config.ApiPort > 0 ? config.ApiPort : 80;
             }
         }

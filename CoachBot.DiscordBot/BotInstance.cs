@@ -90,10 +90,6 @@ namespace CoachBot.Bot
         private Task Disconnected(Exception arg)
         {
             Console.WriteLine("Disconnected");
-            _client.LogoutAsync();
-            _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
-            _client.StartAsync();
-
             return Task.CompletedTask;
         }
 

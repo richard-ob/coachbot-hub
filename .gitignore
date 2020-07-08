@@ -263,5 +263,10 @@ __pycache__/
 # config files
 config.json
 history.json
+legacy-config.json
+config-dev.json
+config-test.json
+config-prod.json
 
 Migrations/
+

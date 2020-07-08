@@ -3,6 +3,7 @@ import { Region } from './region.model';
 import { Channel } from './channel.model';
 import { TeamType } from '../../match-overview/model/team-type.enum';
 import { AssetImage } from 'src/app/shared/models/asset-image.model';
+import { MatchOutcomeType } from './match-outcome-type.enum';
 
 export class Team {
     id: number;
@@ -23,6 +24,7 @@ export class Team {
     systemColor: any;
     inactive: boolean;
     channels: Channel[];
+    form: MatchOutcomeType[];
     createdDate: Date;
     updatedDate: Date;
 }

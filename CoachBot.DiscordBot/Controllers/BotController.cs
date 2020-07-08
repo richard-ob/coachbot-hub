@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoachBot.Controllers
 {
@@ -30,7 +31,7 @@ namespace CoachBot.Controllers
         }
 
         [HttpPost("reconnect")]
-        public IActionResult Reconnect()
+        public async Task<IActionResult> Reconnect()
         {
             if (!Request.IsLocal())
             {
@@ -39,7 +40,34 @@ namespace CoachBot.Controllers
 
             _botService.Reconnect();
 
-            return Ok();
+            return NoContent();
+        }
+
+        [HttpPost("disconnect")]
+        public async Task<IActionResult> Disconnect()
+        {
+            if (!Request.IsLocal())
+            {
+                return Unauthorized();
+            }
+
+            await _botService.Disconnect();
+
+            return NoContent();
+        }
+
+
+        [HttpPost("connect")]
+        public async Task<IActionResult> Connect()
+        {
+            if (!Request.IsLocal())
+            {
+                return Unauthorized();
+            }
+
+            await _botService.Connect();
+
+            return NoContent();
         }
 
         [HttpGet("logs")]

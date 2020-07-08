@@ -13,10 +13,23 @@
                     <input type="text" readonly class="form-control" [(ngModel)]="botState.connectionStatus"
                         name="connectionStatus">
                     <div class="input-group-append clickable">
+                        <button class="btn btn-danger px-3" [disabled]="isReconnecting" (click)="disconnectBot()"
+                            title="Disconnect">
+                            <i *ngIf="!isReconnecting" class="fa fa-times"></i>
+                            <i *ngIf="isReconnecting" class="fa fa-sync-alt fa-spin"></i>
+                            Disconnect
+                        </button>
+                        <button class="btn btn-success px-3" [disabled]="isReconnecting" (click)="connectBot()"
+                            title="Connect">
+                            <i *ngIf="!isReconnecting" class="fa fa-check"></i>
+                            <i *ngIf="isReconnecting" class="fa fa-sync-alt fa-spin"></i>
+                            Connect
+                        </button>
                         <button class="btn btn-warning px-3" [disabled]="isReconnecting" (click)="reconnectBot()"
                             title="Reconnect">
-                            <i *ngIf="!isReconnecting" class="fa fa-sync-alt"></i>
+                            <i *ngIf="!isReconnecting" class="fa fa-recycle"></i>
                             <i *ngIf="isReconnecting" class="fa fa-sync-alt fa-spin"></i>
+                            Reconnect
                         </button>
                     </div>
                 </div>

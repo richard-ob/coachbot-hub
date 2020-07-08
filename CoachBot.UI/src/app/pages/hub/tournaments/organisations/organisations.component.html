@@ -65,8 +65,7 @@
                             (colorChange)="organisation.brandColour = $event" #colourPicker>
                         </app-chrome-colour-picker>
                     </div>
-                    <button class="btn btn-primary" type="submit"
-                        [disabled]="isCreating || !organisationForm.valid">Create</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!organisationForm.valid">Create</button>
                 </form>
             </div>
         </div>

@@ -1,4 +1,4 @@
-<div  class="tournament-bracket">
+<div class="tournament-bracket">
     <div *ngFor="let phase of tournament.tournamentStages[0].tournamentPhases; let i = index"
         class="tournament-bracket__round">
         <h6 class="tournament-bracket__round-title d-block d-lg-none d-xl-none">Quarterfinals</h6>
@@ -9,12 +9,12 @@
                 <div class="tournament-bracket__match" tabindex="0">
                     <table class="tournament-bracket__table">
                         <tbody class="tournament-bracket__content">
-                            <tr class="tournament-bracket__team"
-                                [class.tournament-bracket__team--winner]="false === true">
+                            <tr class="tournament-bracket__team" [class.tournament-bracket__team--winner]="true">
                                 <td class="tournament-bracket__inner">
                                     <figure class="tournament-bracket__team-thumb">
                                         <img *ngIf="match.match.teamHome && match.match.teamHome.badgeImage"
-                                            [src]="playerTeam.team.badgeImage.base64EncodedImage" style="width: 25px">
+                                            [src]="match.match.teamHome.badgeImage.base64EncodedImage"
+                                            style="width: 25px">
                                         <img *ngIf="!match.match.teamHome || !match.match.teamHome.badgeImage"
                                             style="width: 25px" src="./assets/images/soccer/blank-crest.png">
                                     </figure>
@@ -31,9 +31,10 @@
                             <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__inner">
                                     <figure class="tournament-bracket__team-thumb">
-                                        <img *ngIf="match.match.teamHome && match.match.teamHome.badgeImage"
-                                            style="width: 25px" [src]="playerTeam.team.badgeImage.base64EncodedImage">
-                                        <img *ngIf="!match.match.teamHome || !match.match.teamHome.badgeImage"
+                                        <img *ngIf="match.match.teamAway && match.match.teamAway.badgeImage"
+                                            style="width: 25px"
+                                            [src]="match.match.teamAway.badgeImage.base64EncodedImage">
+                                        <img *ngIf="!match.match.teamAway || !match.match.teamAway.badgeImage"
                                             style="width: 25px" src="./assets/images/soccer/blank-crest.png">
                                     </figure>
                                     <div class="tournament-bracket__team-info text-truncate">

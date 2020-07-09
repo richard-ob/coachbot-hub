@@ -32,5 +32,11 @@ namespace CoachBot.Controllers
         {
             return _channelService.GetChannelsForGuild(guildId);
         }
+
+        [HttpGet("{guildId}/{teamId}/channels")]
+        public List<Channel> GetChannelsForTeamGuild(ulong guildId, int teamId)
+        {
+            return _channelService.GetChannelsForTeamGuild(guildId, teamId);
+        }
     }
 }

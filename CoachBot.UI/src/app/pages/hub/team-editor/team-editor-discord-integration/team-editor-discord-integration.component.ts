@@ -48,7 +48,7 @@ export class TeamEditorDiscordIntegrationComponent implements OnInit {
 
     loadChannels() {
         this.isLoading = true;
-        this.channelService.getChannelsForGuild(this.team.guild.discordGuildId).subscribe(channels => {
+        this.channelService.getChannelsForTeamGuild(this.team.guild.discordGuildId, this.teamId).subscribe(channels => {
             this.channels = channels;
             this.isLoading = false;
         });

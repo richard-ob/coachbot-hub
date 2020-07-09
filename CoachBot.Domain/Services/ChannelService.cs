@@ -106,6 +106,17 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
+        public List<Channel> GetChannelsForTeamGuild(ulong discordGuildId, int teamId)
+        {
+            return _dbContext.Channels
+                .Include(c => c.Team)
+                .ThenInclude(t => t.Region)
+                .Include(c => c.ChannelPositions)
+                    .ThenInclude(cp => cp.Position)
+                .Where(c => c.Team.Guild.DiscordGuildId == discordGuildId && c.TeamId == teamId)
+                .ToList();
+        }
+
         public List<Channel> GetChannelsByRegion(int regionId)
         {
             return GetChannels().Where(c => c.Team.RegionId == regionId).ToList();

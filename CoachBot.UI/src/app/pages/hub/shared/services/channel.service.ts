@@ -20,6 +20,10 @@ export class ChannelService {
         return this.http.get<Channel[]>(`${environment.apiUrl}/api/guild/${discordGuildId}/channels`);
     }
 
+    getChannelsForTeamGuild(discordGuildId: string, teamId: number): Observable<Channel[]> {
+        return this.http.get<Channel[]>(`${environment.apiUrl}/api/guild/${discordGuildId}/${teamId}/channels`);
+    }
+
     createChannel(channel: Channel): Observable<void> {
         return this.http.post<void>(`${environment.apiUrl}/api/channel`, channel);
     }

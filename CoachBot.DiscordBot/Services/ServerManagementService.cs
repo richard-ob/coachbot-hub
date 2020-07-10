@@ -1,4 +1,5 @@
-﻿using CoachBot.Domain.Model;
+﻿using CoachBot.Domain.Helpers;
+using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Model;
@@ -6,6 +7,8 @@ using CoachBot.Tools;
 using Discord;
 using Discord.WebSocket;
 using RconSharp;
+using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,14 +20,16 @@ namespace CoachBot.Services
         private readonly ServerService _serverService;
         private readonly ChannelService _channelService;
         private readonly MatchupService _matchupService;
+        private readonly MatchService _matchService;
         private readonly DiscordSocketClient _discordClient;
         private readonly Config _config;
 
-        public ServerManagementService(ServerService serverService, ChannelService channelService, MatchupService matchupService, DiscordSocketClient discordClient, Config config)
+        public ServerManagementService(ServerService serverService, ChannelService channelService, MatchupService matchupService, MatchService matchService, DiscordSocketClient discordClient, Config config)
         {
             _serverService = serverService;
             _channelService = channelService;
             _matchupService = matchupService;
+            _matchService = matchService;
             _discordClient = discordClient;
             _config = config;
         }
@@ -210,16 +215,19 @@ namespace CoachBot.Services
                     bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
                     if (authenticated)
                     {
-                        kits = await messenger.ExecuteCommandAsync("mp_teamkits");
+                        kits = await messenger.ExecuteCommandAsync("mp_teamkits_csv");
                     }
                     messenger.CloseConnection();
 
-                    Regex regex = new Regex(@"[\d]+   [A-Za-z]+");
                     StringBuilder sb = new StringBuilder();
-
-                    foreach (var match in regex.Matches(kits))
+                    var kitCount = 1;
+                    foreach (var kit in kits.Split(',').Where(k => k.Contains(':') && k.Contains('_')))
                     {
-                        sb.AppendLine("`" + match.ToString()).Replace("   ", "` ");
+                        if (kitCount > 40) break;
+                        var kitId = kit.Split(':')[0];
+                        var kitName = kit.Split(':')[1];
+                        sb.AppendLine($"`{kitId}` {kitName}");
+                        kitCount++;
                     }
 
                     return EmbedTools.GenerateSimpleEmbed(sb.ToString(), ":shirt: Kits (" + server.Name + ")");
@@ -308,6 +316,17 @@ namespace CoachBot.Services
             var matchup = _matchupService.GetMatchup(matchupId);
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
             var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
+
+            if (DateTime.UtcNow.AddHours(-1) > matchup.ReadiedDate.Value)
+            {
+                await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed("This match has already taken place, and so the server cannot be changed.", ServiceResponseStatus.Failure));
+                return;
+            }
+
+            if (matchup.Match.ServerId != server.Id)
+            {
+                _matchService.UpdateServerForMatch((int)matchup.MatchId, server.Id);
+            }
 
             if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
             {

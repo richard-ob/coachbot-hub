@@ -367,7 +367,8 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.LineupAway)
                     .ThenInclude(ta => ta.Channel)
                     .ThenInclude(c => c.Team)
-                    .ThenInclude(t => t.Guild);
+                    .ThenInclude(t => t.Guild)
+                .Include(m => m.Match);
         }
 
         private PlayerLineupPosition RemovePlayerFromTeam(Lineup team, Player player)

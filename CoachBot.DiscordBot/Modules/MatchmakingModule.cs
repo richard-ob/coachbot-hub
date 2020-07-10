@@ -215,11 +215,15 @@ namespace CoachBot.Modules.Matchmaker
 
         [Command("!setupserver")]
         [RequireChannelConfigured]
-        public async Task SetupServerAsync(int serverListItemId, int matchId)
+        public async Task SetupServerAsync(int serverListItemId, int matchupId)
         {
             if (_channelServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
-                _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id, matchId);
+                var serverAvailable = await _channelServerService.ValidateServerAvailability(serverListItemId, Context.Message.Channel.Id);
+                if (serverAvailable)
+                {
+                    _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id, matchupId);
+                }
             }
             else
             {

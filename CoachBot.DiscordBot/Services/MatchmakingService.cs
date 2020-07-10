@@ -378,7 +378,7 @@ namespace CoachBot.Services
         {
             var discordChannel = _discordClient.GetChannel(team.Channel.DiscordChannelId) as ITextChannel;
 
-            var embed = EmbedTools.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible.", $":soccer: Kick Off! **{matchup.LineupHome.Channel.Team.DisplayName}** vs **{matchup.LineupAway.Channel.Team.DisplayName}**");
+            var embed = EmbedTools.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible. If you need to use a different server, use `!setupserver {matchup.Id} <server id>`", $":soccer: Kick Off! **{matchup.LineupHome.Channel.Team.DisplayName}** vs **{matchup.LineupAway.Channel.Team.DisplayName}**");
             await discordChannel.SendMessageAsync("", embed: embed);
 
             var highlightMessage = string.Join(", ", team.PlayerLineupPositions.Where(ptp => ptp.Player.DiscordUserId != null).Select(ptp => ptp.Player.DisplayName));

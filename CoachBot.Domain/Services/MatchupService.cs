@@ -73,47 +73,7 @@ namespace CoachBot.Domain.Services
                 CreateMatchup(channel.Id);
             }
 
-            return _coachBotContext.Matchups
-                .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Lineup)
-                .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.Channel)
-                    .ThenInclude(c => c.ChannelPositions)
-                    .ThenInclude(cp => cp.Position)
-                .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.Channel)
-                    .ThenInclude(c => c.Team)
-                    .ThenInclude(t => t.Guild)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(ta => ta.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(ta => ta.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(th => th.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Lineup)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(ta => ta.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(ta => ta.Channel)
-                    .ThenInclude(c => c.ChannelPositions)
-                    .ThenInclude(cp => cp.Position)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(ta => ta.Channel)
-                    .ThenInclude(c => c.Team)
-                    .ThenInclude(t => t.Guild)
+            return GetMatchupQueryable()
                 .Where(m => m.ReadiedDate == null)
                 .OrderByDescending(m => m.CreatedDate)
                 .First(m => m.LineupHome.Channel.DiscordChannelId == channelId || (m.LineupAway != null && m.LineupAway.Channel.DiscordChannelId == channelId));
@@ -121,45 +81,18 @@ namespace CoachBot.Domain.Services
 
         public List<Matchup> GetMatchupsForChannel(ulong channelId, bool readiedMatchesOnly = false, int limit = 10)
         {
-            return _coachBotContext.Matchups
-               .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.LineupHome)
-                   .ThenInclude(th => th.PlayerLineupPositions)
-                   .ThenInclude(ptp => ptp.Lineup)
-                .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.LineupHome)
-                    .ThenInclude(th => th.Channel)
-                    .ThenInclude(c => c.ChannelPositions)
-                    .ThenInclude(cp => cp.Position)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(ta => ta.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Player)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(ta => ta.PlayerLineupPositions)
-                    .ThenInclude(ptp => ptp.Position)
-                .Include(m => m.LineupAway)
-                   .ThenInclude(th => th.PlayerLineupPositions)
-                   .ThenInclude(ptp => ptp.Lineup)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(ta => ta.PlayerSubstitutes)
-                    .ThenInclude(ps => ps.Player)
-                .Include(m => m.LineupAway)
-                    .ThenInclude(ta => ta.Channel)
-                    .ThenInclude(c => c.ChannelPositions)
-                    .ThenInclude(cp => cp.Position)
+            return GetMatchupQueryable()
                .Where(m => m.LineupHome.Channel != null && m.LineupAway.Channel != null)
                .Where(m => m.LineupHome.Channel.DiscordChannelId == channelId || m.LineupAway.Channel.DiscordChannelId == channelId)
                .Where(m => !readiedMatchesOnly || m.ReadiedDate != null)
                .OrderByDescending(m => m.CreatedDate)
                .Take(limit)
                .ToList();
+        }
+
+        public Matchup GetMatchup(int matchupId)
+        {
+            return GetMatchupQueryable().Single(m => m.Id == matchupId);
         }
 
         public List<MatchOutcomeType> GetFormForChannel(ulong channelId, int limit = 5)
@@ -386,6 +319,14 @@ namespace CoachBot.Domain.Services
         #region Private methods
         private Matchup GetCurrentMatchForChannel(ulong channelId)
         {
+            return GetMatchupQueryable()
+                .Where(m => m.ReadiedDate == null)
+                .OrderByDescending(m => m.CreatedDate)
+                .First(m => m.LineupHome.Channel.DiscordChannelId == channelId || (m.LineupAway != null && m.LineupAway.Channel.DiscordChannelId == channelId));
+        }
+
+        private IQueryable<Matchup> GetMatchupQueryable()
+        {
             return _coachBotContext.Matchups
                 .Include(m => m.LineupHome)
                     .ThenInclude(th => th.PlayerLineupPositions)
@@ -394,8 +335,8 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(th => th.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Position)
                 .Include(m => m.LineupHome)
-                   .ThenInclude(th => th.PlayerLineupPositions)
-                   .ThenInclude(ptp => ptp.Lineup)
+                    .ThenInclude(th => th.PlayerLineupPositions)
+                    .ThenInclude(ptp => ptp.Lineup)
                 .Include(m => m.LineupHome)
                     .ThenInclude(th => th.PlayerSubstitutes)
                     .ThenInclude(ps => ps.Player)
@@ -414,8 +355,8 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(ta => ta.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Position)
                 .Include(m => m.LineupAway)
-                   .ThenInclude(th => th.PlayerLineupPositions)
-                   .ThenInclude(ptp => ptp.Lineup)
+                    .ThenInclude(th => th.PlayerLineupPositions)
+                    .ThenInclude(ptp => ptp.Lineup)
                 .Include(m => m.LineupAway)
                     .ThenInclude(ta => ta.PlayerSubstitutes)
                     .ThenInclude(ps => ps.Player)
@@ -426,10 +367,7 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.LineupAway)
                     .ThenInclude(ta => ta.Channel)
                     .ThenInclude(c => c.Team)
-                    .ThenInclude(t => t.Guild)
-                .Where(m => m.ReadiedDate == null)
-                .OrderByDescending(m => m.CreatedDate)
-                .First(m => m.LineupHome.Channel.DiscordChannelId == channelId || (m.LineupAway != null && m.LineupAway.Channel.DiscordChannelId == channelId));
+                    .ThenInclude(t => t.Guild);
         }
 
         private PlayerLineupPosition RemovePlayerFromTeam(Lineup team, Player player)

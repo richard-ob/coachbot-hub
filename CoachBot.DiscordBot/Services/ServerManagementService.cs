@@ -305,7 +305,7 @@ namespace CoachBot.Services
         {
             var server = GetServerFromServerListItemId(serverListItemId, channelId);
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var matchup = _matchupService.GetCurrentMatchupForChannel(channelId);
+            var matchup = _matchupService.GetMatchup(matchupId);
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
             var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
 

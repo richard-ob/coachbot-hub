@@ -196,7 +196,7 @@ namespace CoachBot.Domain.Services
                 .Include(c => c.ChannelPositions)
                     .ThenInclude(cp => cp.Position)
                 .Where(c => c.ChannelPositions.Count == (int)format)
-                .FirstOrDefault(c => c.Team.TeamCode + c.SubTeamCode == searchTeamCode);
+                .FirstOrDefault(c => c.Team.TeamCode + (c.SubTeamCode ?? "") == searchTeamCode);
         }
 
         private void UpdatePositions(ICollection<ChannelPosition> channelPositions, int channelId)

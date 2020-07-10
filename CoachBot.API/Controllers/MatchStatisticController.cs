@@ -46,7 +46,7 @@ namespace CoachBot.Controllers
 
             if (match.MatchStatistics != null)
             {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData);
+                // INFO: We don't want to save these, as these are likely where the the server has persisted the access token for this match
                 return BadRequest();
             }
 

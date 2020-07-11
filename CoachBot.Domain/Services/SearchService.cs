@@ -80,7 +80,7 @@ namespace CoachBot.Domain.Services
             if (_coachBotContext.Searches.Any(s => s.ChannelId == channelId))
             {
                 var channel = _coachBotContext.Channels.Find(channelId);
-                await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, ":timer: Your search for an opponent has timed out after 15 minutes. Please try again if you are still searching");
+                await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, ":timer: Your search for an opponent has timed out after 30 minutes. Please try again if you are still searching");
                 await StopSearch(channelId);
             }
         }

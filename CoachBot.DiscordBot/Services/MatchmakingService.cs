@@ -23,6 +23,7 @@ namespace CoachBot.Services
         private readonly SearchService _searchService;
         private readonly PlayerService _playerService;
         private readonly SubstitutionService _substitutionService;
+        private readonly ServerManagementService _serverManagementServiceService;
         private readonly CacheService _cacheService;
         private readonly DiscordNotificationService _discordNotificationService;
         private readonly DiscordSocketClient _discordClient;
@@ -34,6 +35,7 @@ namespace CoachBot.Services
             SearchService searchService,
             PlayerService playerService,
             SubstitutionService substitutionService,
+            ServerManagementService serverManagementServiceService,
             CacheService cacheService,
             DiscordSocketClient discordClient,
             DiscordNotificationService discordNotificationService)
@@ -44,6 +46,7 @@ namespace CoachBot.Services
             _searchService = searchService;
             _playerService = playerService;
             _substitutionService = substitutionService;
+            _serverManagementServiceService = serverManagementServiceService;
             _cacheService = cacheService;
             _discordNotificationService = discordNotificationService;
             _discordClient = discordClient;
@@ -306,14 +309,12 @@ namespace CoachBot.Services
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }
 
-        public Embed RequestSub(ulong channelId, int serverListItemId, string positionName, IUser user)
+        public async Task RequestSub(ulong channelId, int serverListItemId, string positionName, IUser user)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var server = _serverService.GetServersByRegion((int)channel.Team.RegionId)[serverListItemId - 1];
 
-            var response = _substitutionService.CreateRequest(channel.Id, server.Id, positionName);
-
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            await _substitutionService.CreateRequest(channel.Id, server.Id, positionName, user.Username);
         }
 
         public Embed AcceptSubRequest(string requestToken, IUser user)
@@ -321,6 +322,13 @@ namespace CoachBot.Services
             var player = _playerService.GetPlayer(user);
 
             var response = _substitutionService.AcceptSubstitution(requestToken, player);
+
+            if (response.Status == ServiceResponseStatus.Success)
+            {
+                var server = _substitutionService.GetServerForSubstitionRequest(requestToken);
+                var message = $"{user.Username} is coming to the server as a substitute";
+                _serverManagementServiceService.SendServerMessage(server.Id, message);
+            }
 
             return EmbedTools.GenerateEmbedFromServiceResponse(response);
         }

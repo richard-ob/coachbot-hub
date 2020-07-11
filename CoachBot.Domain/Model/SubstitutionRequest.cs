@@ -19,6 +19,8 @@ namespace CoachBot.Domain.Model
 
         public ulong DiscordMessageId { get; set; }
 
+        public int? AcceptedById { get; set; }
+
         public Player AcceptedBy { get; set; }
 
         public DateTime CreatedDate { get; set; }

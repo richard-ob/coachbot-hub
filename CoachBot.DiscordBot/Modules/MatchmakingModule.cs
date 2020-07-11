@@ -345,7 +345,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (_channelServerService.ValidateServer(Context.Channel.Id, serverId))
             {
-                await ReplyAsync("", embed: _channelMatchService.RequestSub(Context.Channel.Id, serverId, positionName, Context.Message.Author));
+                await _channelMatchService.RequestSub(Context.Channel.Id, serverId, positionName, Context.Message.Author);
             }
             else
             {

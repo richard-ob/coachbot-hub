@@ -96,7 +96,7 @@ namespace CoachBot.Domain.Services
 
             var allPlayerTeamStatisticTotals = new List<PlayerTeamStatisticsTotals>();
 
-            foreach (var playerTeam in playerTeams.Take(30))
+            foreach (var playerTeam in playerTeams.Take(40))
             {
                 var filter = new PlayerStatisticFilters()
                 {

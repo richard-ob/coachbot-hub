@@ -33,7 +33,7 @@ namespace CoachBot.Domain.Model
 
         public MatchFormat Format => ChannelPositions != null ? (MatchFormat)ChannelPositions.Count : MatchFormat.Unknown;
 
-        public string SearchTeamCode => Team.TeamCode + SubTeamCode;
+        public string SearchTeamCode => Team != null ? Team.TeamCode + SubTeamCode : null;
 
         public List<int> SearchIgnoreList { get; set; } = new List<int>();
 

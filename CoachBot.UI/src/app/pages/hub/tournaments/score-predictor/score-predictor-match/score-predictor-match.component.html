@@ -1,7 +1,7 @@
 <div *ngIf="phaseMatch && phase" class="card">
     <div class="card__header">
         <h4>{{phase.name}}
-            <span class="text-muted float-right">{{phaseMatch.match.scheduledKickOff | date:'medium'}}</span>
+            <span class="text-muted float-right">{{phaseMatch.match.kickOff | date:'medium'}}</span>
         </h4>
     </div>
     <div class="card__content pt-1">

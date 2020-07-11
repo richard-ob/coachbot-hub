@@ -32,7 +32,7 @@ export class MatchService {
     }
 
     submitMatchStatistics(matchId: number, matchStatistics: MatchStatistics): Observable<void> {
-        return this.http.post<void>(`${environment.apiUrl}/api/matchstatistic/${matchId}`, matchStatistics);
+        return this.http.post<void>(`${environment.apiUrl}/api/match-statistics/${matchId}`, matchStatistics);
     }
 
 }

@@ -11,6 +11,5 @@ export interface Match {
     server: Server;
     matchStatistics: MatchStatistics;
     kickOff: Date;
-    scheduledKickOff: Date;
     createdDate: Date;
 }

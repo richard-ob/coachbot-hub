@@ -6,6 +6,7 @@ import { DisplayValueMode } from './components/horizontal-bar-graph/horizontal-b
 import { MatchService } from '../shared/services/match.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Match } from '../shared/model/match.model';
+import { MatchTeamType } from '../shared/model/match-team-type.enum';
 
 @Component({
   selector: 'app-match-overview',
@@ -18,12 +19,17 @@ export class MatchOverviewComponent implements OnInit {
   match: Match;
   statisticType = StatisticType;
   teamType = TeamType;
+  matchTeamType = MatchTeamType;
   eventType = EventType;
   displayValueModes = DisplayValueMode;
   matchDate: Date;
   isLoading = true;
 
-  constructor(private matchService: MatchService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private matchService: MatchService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.pipe().subscribe(params => {

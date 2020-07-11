@@ -29,7 +29,9 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.Matches
                 .Include(m => m.TeamHome)
+                    .ThenInclude(t => t.BadgeImage)
                 .Include(m => m.TeamAway)
+                    .ThenInclude(t => t.BadgeImage)
                 .Include(m => m.MatchStatistics)
                 .Include(m => m.Tournament)
                 .Include(s => s.Server)

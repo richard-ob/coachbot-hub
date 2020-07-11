@@ -3,6 +3,7 @@ import { PlayerService } from '@pages/hub/shared/services/player.service';
 import { PlayerStatisticFilters } from '@pages/hub/shared/model/dtos/paged-player-statistics-request-dto.model';
 import { PlayerPositionMatchStatistics } from '@pages/hub/shared/model/player-position-match-statistics.model';
 import { Positions } from './positions';
+import { MatchTeamType } from '@pages/hub/shared/model/match-team-type.enum';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { Positions } from './positions';
 export class MatchOverviewLineupComponent implements OnInit {
 
     @Input() matchId: number;
-    @Input() channelId: number;
+    @Input() matchTeamType: MatchTeamType;
     @Input() color: string;
     filters = new PlayerStatisticFilters();
     players: PlayerPositionMatchStatistics[];
@@ -29,7 +30,7 @@ export class MatchOverviewLineupComponent implements OnInit {
 
     ngOnInit() {
         this.filters.matchId = this.matchId;
-        this.filters.channelId = this.channelId;
+        this.filters.matchTeamType = this.matchTeamType;
         this.playerService.getPlayerPositionMatchStatistics(1, 30, undefined, undefined, this.filters).subscribe(players => {
             this.players = players.items;
             this.starters = this.players

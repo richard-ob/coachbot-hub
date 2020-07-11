@@ -9,8 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-team-profile-spotlight',
-    templateUrl: './team-profile-spotlight.component.html',
-    styleUrls: ['./team-profile-spotlight.component.scss']
+    templateUrl: './team-profile-spotlight.component.html'
 })
 export class TeamProfileSpotlightComponent implements OnInit {
 

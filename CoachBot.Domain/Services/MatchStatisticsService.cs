@@ -202,7 +202,7 @@ namespace CoachBot.Domain.Services
                         {
                             PlayerId = player.Id,
                             MatchId = match.Id,
-                            ChannelId = 1,
+                            MatchTeamType = isHomeTeam ? MatchTeamType.Home : MatchTeamType.Away,
                             TeamId = team != null ? team.Id : match.TeamHomeId,
                             PositionId = positionId > 0 ? positionId : _coachBotContext.Positions.FirstOrDefault().Id,
                             MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
@@ -218,8 +218,8 @@ namespace CoachBot.Domain.Services
                     {
                         PlayerId = player.Id,
                         MatchId = match.Id,
-                        ChannelId = 1, // TODO: Figure out
                         TeamId = team.Id,
+                        MatchTeamType = isHomeTeam ? MatchTeamType.Home : MatchTeamType.Away,
                         MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                         SecondsPlayed = matchDataPlayer.GetPlayerSeconds(teamType),
                         PossessionPercentage = match.MatchStatistics.MatchData.GetPlayerPossession(matchDataPlayer),
@@ -242,7 +242,7 @@ namespace CoachBot.Domain.Services
                 var teamMatchStatistics = new TeamMatchStatistics()
                 {
                     MatchId = match.Id,
-                    ChannelId = 1,
+                    MatchTeamType = isHomeTeam ? MatchTeamType.Home : MatchTeamType.Away,
                     TeamId = team.Id,
                     MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
                     PossessionPercentage = match.MatchStatistics.MatchData.GetTeamPosession(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
@@ -262,7 +262,7 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.IncludeSubstituteAppearances || !p.Substitute)
                 .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId)
                 .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
-                .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
+                .Where(p => filters.MatchTeamType == null || p.MatchTeamType == filters.MatchTeamType)
                 .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
@@ -272,10 +272,11 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
                 .Include(p => p.Match)
                     .ThenInclude(p => p.TeamHome)
+                    .ThenInclude(t => t.BadgeImage)
                 .Include(p => p.Match)
                     .ThenInclude(p => p.TeamAway)
+                    .ThenInclude(t => t.BadgeImage)
                 .Include(p => p.Team)
-                .Include(c => c.Channel)
                 .Include(p => p.Position)
                 .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId);
         }
@@ -288,7 +289,7 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.IncludeSubstituteAppearances || !p.Substitute)
                 .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId)
                 .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
-                .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
+                .Where(p => filters.MatchTeamType == null || p.MatchTeamType == filters.MatchTeamType)
                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                 .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
@@ -300,7 +301,6 @@ namespace CoachBot.Domain.Services
                 .Include(p => p.Match)
                     .ThenInclude(p => p.TeamAway)
                 .Include(p => p.Team)
-                .Include(c => c.Channel)
                 .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId);
         }
 
@@ -310,7 +310,7 @@ namespace CoachBot.Domain.Services
                  .AsNoTracking()
                  .Where(t => filters.TournamentId == null || t.TournamentId == filters.TournamentId)
                  .Where(t => filters.TeamId == null || t.TeamId == filters.TeamId)
-                 .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
+                 .Where(p => filters.MatchTeamType == null || p.MatchTeamType == filters.MatchTeamType)
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
                  .Where(t => filters.TeamType == null || t.Team.TeamType == filters.TeamType)
@@ -332,7 +332,6 @@ namespace CoachBot.Domain.Services
                  .Where(p => filters.MatchId == null || p.MatchId == filters.MatchId)
                  .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId)
                  .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
-                 .Where(p => filters.ChannelId == null || p.ChannelId == filters.ChannelId)
                  .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
                  .Where(p => string.IsNullOrWhiteSpace(filters.PositionName) || p.Position.Name == filters.PositionName)
                  .Where(p => filters.MinimumSecondsPlayed == null || p.SecondsPlayed > filters.MinimumSecondsPlayed)
@@ -455,7 +454,6 @@ namespace CoachBot.Domain.Services
                  .Select(m => new
                  {
                      m.TeamId,
-                     m.ChannelId,
                      m.RedCards,
                      m.YellowCards,
                      m.Fouls,
@@ -487,7 +485,7 @@ namespace CoachBot.Domain.Services
                      m.Team.Form,
                      m.Team.Name
                  })
-                 .GroupBy(p => new { p.TeamId, p.ChannelId, p.Name, p.Base64EncodedImage, p.Form }, (key, s) => new TeamStatisticTotals()
+                 .GroupBy(p => new { p.TeamId, p.Name, p.Base64EncodedImage, p.Form }, (key, s) => new TeamStatisticTotals()
                  {
                      Goals = s.Sum(p => p.Goals),
                      GoalsAverage = s.Average(p => p.Goals),
@@ -540,7 +538,6 @@ namespace CoachBot.Domain.Services
                      Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
                      TeamId = key.TeamId,
                      TeamName = key.Name,
-                     ChannelId = key.ChannelId,
                      BadgeImage = key.Base64EncodedImage,
                      Form = key.Form,
                      GoalDifference = s.Sum(p => p.Goals) - s.Sum(p => p.GoalsConceded),

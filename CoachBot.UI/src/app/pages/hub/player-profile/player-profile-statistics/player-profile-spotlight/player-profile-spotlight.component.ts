@@ -9,8 +9,7 @@ import { PlayerStatisticFilters } from '@pages/hub/shared/model/dtos/paged-playe
 
 @Component({
     selector: 'app-player-profile-spotlight',
-    templateUrl: './player-profile-spotlight.component.html',
-    styleUrls: ['./player-profile-spotlight.component.scss']
+    templateUrl: './player-profile-spotlight.component.html'
 })
 export class PlayerProfileSpotlightComponent implements OnInit {
 

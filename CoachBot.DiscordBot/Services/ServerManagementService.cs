@@ -1,5 +1,4 @@
-﻿using CoachBot.Domain.Helpers;
-using CoachBot.Domain.Model;
+﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Model;
@@ -10,7 +9,6 @@ using RconSharp;
 using System;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CoachBot.Services
@@ -24,7 +22,13 @@ namespace CoachBot.Services
         private readonly DiscordSocketClient _discordClient;
         private readonly Config _config;
 
-        public ServerManagementService(ServerService serverService, ChannelService channelService, MatchupService matchupService, MatchService matchService, DiscordSocketClient discordClient, Config config)
+        public ServerManagementService(
+            ServerService serverService,
+            ChannelService channelService,
+            MatchupService matchupService,
+            MatchService matchService,
+            DiscordSocketClient discordClient,
+            Config config)
         {
             _serverService = serverService;
             _channelService = channelService;
@@ -395,6 +399,31 @@ namespace CoachBot.Services
                 catch
                 {
                     await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"The server config could not be executed.", ServiceResponseStatus.Failure));
+                }
+            }
+        }
+
+        public async void SendServerMessage(int serverId, string message)
+        {
+            var server = _serverService.GetServer(serverId);
+
+            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            {
+                try
+                {
+                    INetworkSocket socket = new RconSocket();
+                    RconMessenger messenger = new RconMessenger(socket);
+                    bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                    bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                    if (authenticated)
+                    {
+                        await messenger.ExecuteCommandAsync($"say Coach says: " + message);
+                    }
+                    messenger.CloseConnection();
+                }
+                catch
+                {
+
                 }
             }
         }

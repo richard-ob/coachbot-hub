@@ -9,8 +9,7 @@ import { PlayerSpotlightStatistic } from './player-spotlight-statistic.enum';
 
 @Component({
     selector: 'app-player-spotlight',
-    templateUrl: './player-spotlight.component.html',
-    styleUrls: ['./player-spotlight.component.scss']
+    templateUrl: './player-spotlight.component.html'
 })
 export class PlayerSpotlightComponent implements OnInit {
 

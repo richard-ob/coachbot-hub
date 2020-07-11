@@ -2,6 +2,7 @@ import { Channel } from './channel.model';
 import { Match } from './match.model';
 import { Position } from './position';
 import { Team } from './team.model';
+import { MatchTeamType } from './match-team-type.enum';
 
 export interface PlayerPositionMatchStatistics {
     id: number;
@@ -12,8 +13,7 @@ export interface PlayerPositionMatchStatistics {
     match: Match;
     teamId: number;
     team: Team;
-    channelId: number;
-    channel: Channel;
+    matchTeamType?: MatchTeamType;
     playerId: number;
     player?: any;
     positionId: number;

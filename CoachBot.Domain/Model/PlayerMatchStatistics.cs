@@ -25,9 +25,7 @@ namespace CoachBot.Domain.Model
 
         public Team Team { get; set; }
 
-        public int ChannelId { get; set; }
-
-        public Channel Channel { get; set; }
+        public MatchTeamType MatchTeamType { get; set; }
 
         public int PlayerId { get; set; }
 

@@ -1,87 +1,92 @@
-<app-spinner *ngIf="isLoading" class="py-4"></app-spinner>
-<div *ngIf="!isLoading" class="container position-relative py-4">
-    <h4>Current</h4>
-    <div class="btn-group" dropdown style="position: absolute; top: 15px; right: 15px;">
-        <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle"
-            aria-controls="dropdown-basic">
-            <ng-container [ngSwitch]="teamType">
-                <span *ngSwitchCase="teamTypes.Club">Club Teams</span>
-                <span *ngSwitchCase="teamTypes.National">National Teams</span>
-                <span *ngSwitchCase="teamTypes.Mix">Mix Teams</span>
-                <span *ngSwitchCase="teamTypes.Draft">Draft Teams</span>
-            </ng-container>
-            <span class="caret"></span>
-        </button>
-        <ul id="dropdown-teamtype" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Club)">Club Teams</a>
-            </li>
-            <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.National)">National
-                    Teams</a>
-            </li>
-            <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Mix)">Mix Teams</a></li>
-            <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Draft)">Draft Teams</a>
-            </li>
-        </ul>
-    </div>
-    <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet in this region
-    </div>
-    <div class="sponsors-grid row">
-        <div *ngFor="let team of teams | filterBy:['inactive']:false" class="col-sm-6 col-lg-4">
-            <div class="card sponsor-card">
-                <header class="card__header sponsor-card__header"
-                    [style.background-color]="team.color ? team.color : '#292c31'">
-                    <figure class="sponsor-card__logo">
-                        <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage"
-                            style="max-height: 140px">
-                        <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
-                            style="max-height: 140px">
-                    </figure>
-                </header>
-                <div class="card__content text-center p-2">
-                    <h6 class="m-0">{{team.name}}</h6>
-                </div>
-                <footer class="card__footer sponsor-card__footer p-2">
-                    <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
-                        View Team Profile</a>
-                    <a *ngIf="currentPlayer && currentPlayer.hubRole === hubRoles.Owner"
-                        class="btn btn-xs  btn-block btn-dark" type="button"
-                        [routerLink]="['/team/' + team.id + '/manage']">
-                        Manage
-                    </a>
-                </footer>
-            </div>
+<div class="container position-relative py-4">
+    <app-spinner *ngIf="isLoading" class="my-4"></app-spinner>
+    <ng-container *ngIf="!isLoading">
+        <h4>Current</h4>
+        <div class="btn-group" dropdown style="position: absolute; top: 15px; right: 15px;">
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle"
+                aria-controls="dropdown-basic">
+                <ng-container [ngSwitch]="teamType">
+                    <span *ngSwitchCase="teamTypes.Club">Club Teams</span>
+                    <span *ngSwitchCase="teamTypes.National">National Teams</span>
+                    <span *ngSwitchCase="teamTypes.Mix">Mix Teams</span>
+                    <span *ngSwitchCase="teamTypes.Draft">Draft Teams</span>
+                </ng-container>
+                <span class="caret"></span>
+            </button>
+            <ul id="dropdown-teamtype" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Club)">Club Teams</a>
+                </li>
+                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.National)">National
+                        Teams</a>
+                </li>
+                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Mix)">Mix Teams</a>
+                </li>
+                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Draft)">Draft
+                        Teams</a>
+                </li>
+            </ul>
         </div>
-    </div>
-    <h4>Past</h4>
-    <div class="sponsors-grid row">
-        <div *ngFor="let team of teams | filterBy:['inactive']:true" class="col-sm-6 col-lg-4">
-            <div class="card sponsor-card">
-                <header class="card__header sponsor-card__header"
-                    [style.background-color]="team.color ? team.color : '#292c31'">
-                    <figure class="sponsor-card__logo">
-                        <a href="#">
-                            <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage">
+        <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet in this region
+        </div>
+        <div class="sponsors-grid row">
+            <div *ngFor="let team of teams | filterBy:['inactive']:false" class="col-sm-6 col-lg-4">
+                <div class="card sponsor-card">
+                    <header class="card__header sponsor-card__header"
+                        [style.background-color]="team.color ? team.color : '#292c31'">
+                        <figure class="sponsor-card__logo">
+                            <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage"
+                                style="max-height: 140px">
                             <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                                 style="max-height: 140px">
+                        </figure>
+                    </header>
+                    <div class="card__content text-center p-2">
+                        <h6 class="m-0">{{team.name}}</h6>
+                    </div>
+                    <footer class="card__footer sponsor-card__footer p-2">
+                        <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
+                            View Team Profile</a>
+                        <a *ngIf="currentPlayer && currentPlayer.hubRole === hubRoles.Owner"
+                            class="btn btn-xs  btn-block btn-dark" type="button"
+                            [routerLink]="['/team/' + team.id + '/manage']">
+                            Manage
                         </a>
-                    </figure>
-                </header>
-                <div class="card__content text-center p-2">
-                    <h6 class="m-0">{{team.name}}</h6>
+                    </footer>
                 </div>
-                <footer class="card__footer sponsor-card__footer p-2">
-                    <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
-                        View Team Profile</a>
-                    <a *ngIf="currentPlayer && currentPlayer.hubRole === hubRoles.Owner"
-                        class="btn btn-xs  btn-block btn-dark" type="button"
-                        [routerLink]="['/team/' + team.id + '/manage']">
-                        Manage
-                    </a>
-                </footer>
             </div>
         </div>
-    </div>
-    <div *ngIf="!(teams | filterBy:['inactive']:true).length" class="alert alert-info">
-        No teams have died yet. Great!
-    </div>
+        <h4>Past</h4>
+        <div class="sponsors-grid row">
+            <div *ngFor="let team of teams | filterBy:['inactive']:true" class="col-sm-6 col-lg-4">
+                <div class="card sponsor-card">
+                    <header class="card__header sponsor-card__header"
+                        [style.background-color]="team.color ? team.color : '#292c31'">
+                        <figure class="sponsor-card__logo">
+                            <a href="#">
+                                <img *ngIf="team.badgeImage" [src]="team.badgeImage.base64EncodedImage">
+                                <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                                    style="max-height: 140px">
+                            </a>
+                        </figure>
+                    </header>
+                    <div class="card__content text-center p-2">
+                        <h6 class="m-0">{{team.name}}</h6>
+                    </div>
+                    <footer class="card__footer sponsor-card__footer p-2">
+                        <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
+                            View Team Profile</a>
+                        <a *ngIf="currentPlayer && currentPlayer.hubRole === hubRoles.Owner"
+                            class="btn btn-xs  btn-block btn-dark" type="button"
+                            [routerLink]="['/team/' + team.id + '/manage']">
+                            Manage
+                        </a>
+                    </footer>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!(teams | filterBy:['inactive']:true).length" class="alert alert-info">
+            No teams have died yet. Great!
+        </div>
+    </ng-container>
+
 </div>

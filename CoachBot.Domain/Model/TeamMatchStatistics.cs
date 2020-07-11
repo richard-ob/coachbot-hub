@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoachBot.Model;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,9 +21,7 @@ namespace CoachBot.Domain.Model
 
         public Team Team { get; set; }
 
-        public int ChannelId { get; set; }
-
-        public Channel Channel { get; set; }
+        public MatchTeamType MatchTeamType { get; set; }
 
         public int? TournamentId { get; set; }
 

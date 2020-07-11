@@ -37,7 +37,7 @@ export class MatchEditorComponent implements OnInit {
         this.isLoading = true;
         this.matchService.getMatch(this.matchId).subscribe(match => {
             this.match = match;
-            this.match.scheduledKickOff = new Date(this.match.scheduledKickOff);
+            this.match.kickOff = new Date(this.match.kickOff);
             this.isLoading = false;
         });
     }

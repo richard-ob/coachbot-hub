@@ -16,21 +16,21 @@
                 </li>
             </ul>
         </header>
-        <div class="card__content table-responsive" style="max-height: 80vh; overflow-y: auto;">
+        <div class="card__content table-responsive">
             <app-spinner *ngIf="isLoading"></app-spinner>
             <table *ngIf="!isLoading"
                 class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
                 [class.widget__content--loading]="isSorting">
                 <thead>
                     <tr>
+                        <th sorter [sortByColumn]="'Team.TeamCode'" [sortByColumnName]="'Team'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Position.Name'" [sortByColumnName]="'Pos'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"
                             title="Position">
                         </th>
                         <th>Player</th>
                         <th class="text-center"></th>
-                        <th sorter [sortByColumn]="'Team.TeamCode'" [sortByColumnName]="'Team'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Shots'" [sortByColumnName]="'Shots'" [currentSort]="sortBy"
@@ -95,7 +95,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let player of players" (click)="navigateToPlayerProfile(player.playerId)"
-                        title="View player's profile">
+                        title="View player's profile" [style.border-left-color]="player.team.color"
+                        style="border-left: 4px solid transparent;">
+                        <td class="team-result__status">{{player.team.teamCode}}</td>
                         <td class="team-result__status">{{player.position.name}}</td>
                         <td class="team-result__score">{{player.nickname}}</td>
                         <td class="text-center">
@@ -112,7 +114,6 @@
                                 <i  class="icon-svg icon-keepers-glove"></i>
                             </span>
                         </td>
-                        <td class="team-result__status">{{player.channel.subTeamName || player.team.teamCode}}</td>
                         <td class="text-center">{{player.goals}}</td>
                         <td class="text-center">{{player.shots}}</td>
                         <td class="text-center">{{player.shotsOnGoal}}</td>
@@ -120,7 +121,7 @@
                         <td class="text-center">{{player.passes}}</td>
                         <td class="text-center">{{player.passesCompleted}}</td>
                         <td class="text-center">{{player.interceptions}}</td>
-                        <td class="text-center">{{player.possessionPercentage | number : '1.2-2'}}%</td>
+                        <td class="text-center">{{player.possessionPercentage | number : '1.0-0'}}%</td>
                         <td class="text-center">
                             <ng-container *ngIf="player.position.name === 'GK'; else notGk">
                                 {{player.keeperSaves}}

@@ -8,7 +8,7 @@
                 <div class="form-group col-md-6">
                     <label>Scheduled Kick Off</label>
                     <div class="form-control-static mb-2">
-                        {{match.scheduledKickOff | date:'full'}}
+                        {{match.kickOff | date:'full'}}
                         <button type="button" class="btn btn-primary btn-xs ml-2"
                             (click)="showDatepicker = !showDatepicker">
                             Edit
@@ -16,7 +16,7 @@
                     </div>
                     <div *ngIf="showDatepicker" class="border rounded px-4 pt-4">
                         <dl-date-time-picker startView="day" maxView="year" minView="minute" minuteStep="15"
-                            [(ngModel)]="match.scheduledKickOff">
+                            [(ngModel)]="match.kickOff">
                         </dl-date-time-picker>
                     </div>
                 </div>

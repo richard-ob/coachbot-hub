@@ -1,19 +1,19 @@
-<div class="card fantasy-spotlight-card" (click)="spotlight && navigateToMatchOverview()">
-    <div class="card__content fantasy-spotlight-card widget-player--soccer">
-        <h4 class="fantasy-spotlight-title mb-2">{{heading}}</h4>
+<div class="card statistic-spotlight-card" (click)="spotlight && navigateToMatchOverview()">
+    <div class="card__content statistic-spotlight-card widget-player--soccer">
+        <h4 class="statistic-spotlight-title mb-2">{{heading}}</h4>
         <ng-container *ngIf="!isLoading; else spinner">
             <div class="widget-player__ribbon">
                 <div class="fa fa-star"></div>
             </div>
-            <h4 class="fantasy-spotlight-name">vs {{oppositionName ? oppositionName : 'TBC'}}
+            <h4 class="statistic-spotlight-name">vs {{oppositionName ? oppositionName : 'TBC'}}
             </h4>
-            <i class="fantasy-spotlight-icon icon-svg" [ngClass]="iconClass"></i>
+            <i class="statistic-spotlight-icon icon-svg" [ngClass]="iconClass"></i>
             <div *ngIf="spotlight" class="d-flex">
-                <div class="fantasy-spotlight-stat-container">
-                    <div class="fantasy-spotlight-stat-value">
+                <div class="statistic-spotlight-stat-container">
+                    <div class="statistic-spotlight-stat-value">
                         {{spotlight[modelProperty]}}
                     </div>
-                    <div class="fantasy-spotlight-stat-measure">
+                    <div class="statistic-spotlight-stat-measure">
                         {{measureName || ' '}}
                     </div>
                 </div>

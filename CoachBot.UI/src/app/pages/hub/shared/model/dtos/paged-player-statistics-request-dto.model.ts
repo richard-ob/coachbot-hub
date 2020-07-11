@@ -1,5 +1,6 @@
 import { TimePeriod } from '../time-period.enum';
 import { PositionGroup } from '../position-group.enum';
+import { MatchTeamType } from '../match-team-type.enum';
 
 export class PagedPlayerStatisticsRequestDto {
     page = 1;
@@ -15,6 +16,7 @@ export class PlayerStatisticFilters {
     teamId?: number;
     channelId?: number;
     matchId?: number;
+    matchTeamType?: MatchTeamType;
     positionId?: number;
     regionId?: number;
     tournamentId?: number;

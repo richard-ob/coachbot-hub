@@ -1,10 +1,14 @@
-﻿namespace CoachBot.Domain.Model
+﻿using CoachBot.Model;
+
+namespace CoachBot.Domain.Model
 {
     public class TeamStatisticsFilters
     {
         public StatisticsTimePeriod TimePeriod { get; set; }
 
         public int? TeamId { get; set; }
+
+        public MatchTeamType? MatchTeamType { get; set; }
 
         public int? TournamentId { get; set; }
 

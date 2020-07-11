@@ -1,34 +1,34 @@
-<div class="card fantasy-spotlight-card" (click)="spotlightPlayer && navigateToPlayer(spotlightPlayer.playerId)">
-    <div class="card__content fantasy-spotlight-card widget-player--soccer">
-        <h4 class="fantasy-spotlight-title mb-2">Player of the Week</h4>
+<div class="card statistic-spotlight-card" (click)="spotlightPlayer && navigateToPlayer(spotlightPlayer.playerId)">
+    <div class="card__content statistic-spotlight-card widget-player--soccer">
+        <h4 class="statistic-spotlight-title mb-2">Player of the Week</h4>
         <ng-container *ngIf="!isLoading; else spinner">
             <div class="widget-player__ribbon">
                 <div class="fa fa-star"></div>
             </div>
-            <h4 class="fantasy-spotlight-name">{{spotlightPlayer ? spotlightPlayer.playerName : 'TBD'}}</h4>
-            <i class="fantasy-spotlight-icon fas fa-award"></i>
+            <h4 class="statistic-spotlight-name">{{spotlightPlayer ? spotlightPlayer.playerName : 'TBD'}}</h4>
+            <i class="statistic-spotlight-icon icon-svg icon-trophy"></i>
             <div *ngIf="spotlightPlayer" class="d-flex">
-                <div class="fantasy-spotlight-stat-container">
-                    <div class="fantasy-spotlight-stat-value">
+                <div class="statistic-spotlight-stat-container">
+                    <div class="statistic-spotlight-stat-value">
                         {{spotlightPlayer.points}}
                     </div>
-                    <div class="fantasy-spotlight-stat-measure">
+                    <div class="statistic-spotlight-stat-measure">
                         Points
                     </div>
                 </div>
-                <div class="fantasy-spotlight-stat-container">
-                    <div class="fantasy-spotlight-stat-value">
+                <div class="statistic-spotlight-stat-container">
+                    <div class="statistic-spotlight-stat-value">
                         {{spotlightPlayer.goals}}
                     </div>
-                    <div class="fantasy-spotlight-stat-measure">
+                    <div class="statistic-spotlight-stat-measure">
                         Goals
                     </div>
                 </div>
-                <div class="fantasy-spotlight-stat-container">
-                    <div class="fantasy-spotlight-stat-value">
+                <div class="statistic-spotlight-stat-container">
+                    <div class="statistic-spotlight-stat-value">
                         {{spotlightPlayer.assists}}
                     </div>
-                    <div class="fantasy-spotlight-stat-measure">
+                    <div class="statistic-spotlight-stat-measure">
                         Assists
                     </div>
                 </div>

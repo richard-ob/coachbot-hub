@@ -5,9 +5,7 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-fantasy-player-spotlight',
-    templateUrl: './fantasy-player-spotlight.component.html',
-    styleUrls: ['./fantasy-player-spotlight.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    templateUrl: './fantasy-player-spotlight.component.html'
 })
 export class FantasyPlayerSpotlightComponent implements OnInit {
 

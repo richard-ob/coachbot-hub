@@ -24,7 +24,7 @@
                         <tbody>
                             <tr *ngFor="let prediction of scorePredictions">
                                 <td>{{prediction.createdDate | date:'short'}}</td>
-                                <td>{{prediction.match.scheduledKickOff | date:'short'}}</td>
+                                <td>{{prediction.match.kickOff | date:'short'}}</td>
                                 <td>
                                     {{prediction.match.teamHome.name}} vs {{prediction.match.teamAway.name}}
                                 </td>

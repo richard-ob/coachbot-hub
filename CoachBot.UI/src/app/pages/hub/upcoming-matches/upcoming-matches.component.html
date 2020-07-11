@@ -23,7 +23,7 @@
                 <tbody>
                     <tr
                         *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
-                        <td class="team-result__date">{{match.scheduledKickOff | date:'medium'}}</td>
+                        <td class="team-result__date">{{match.kickOff | date:'medium'}}</td>
                         <td class="team-result__vs">
                             <div class="team-meta">
                                 <strong [attr.title]="match.teamHome.name">{{match.teamHome.teamCode}}</strong>

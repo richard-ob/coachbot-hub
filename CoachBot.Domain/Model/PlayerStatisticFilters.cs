@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoachBot.Model;
+using System;
 using System.Collections.Generic;
 
 namespace CoachBot.Domain.Model
@@ -12,6 +13,8 @@ namespace CoachBot.Domain.Model
         public int? TeamId { get; set; }
 
         public int? ChannelId { get; set; }
+
+        public MatchTeamType? MatchTeamType { get; set; }
 
         public int? PositionId { get; set; }
 

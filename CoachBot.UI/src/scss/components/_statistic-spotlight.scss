@@ -1,13 +1,13 @@
-.fantasy-spotlight-card {
+.statistic-spotlight-card {
     background-color: #343a40;
 }
 
-.fantasy-spotlight-card:hover {
+.statistic-spotlight-card:hover {
     opacity: 0.9;
     cursor: pointer;
 }
 
-.fantasy-spotlight-icon {
+.statistic-spotlight-icon {
     filter: grayscale(1);
     opacity: 0.05;
     font-size: 83px;
@@ -30,23 +30,26 @@
     }
     &.icon-keepers-glove {
         font-size: 64px;
+    }    
+    &.icon-trophy {
+        font-size: 65px;
     }
 }
 
-.fantasy-spotlight-title {
+.statistic-spotlight-title {
     text-transform: uppercase;
     color: #ffffff73;
     font-size: 15px;
     margin-bottom: .5rem;
 }
 
-.fantasy-spotlight-name {
+.statistic-spotlight-name {
     text-transform: uppercase;
     color: #ffffff;
     font-size: 20px;
 }
 
-.fantasy-spotlight-stat-container {
+.statistic-spotlight-stat-container {
     color: #78818a;
     line-height: 0.8em;
     text-transform: uppercase;
@@ -55,15 +58,15 @@
     letter-spacing: -0.02em;
 }
 
-.fantasy-spotlight-stat-measure {
+.statistic-spotlight-stat-measure {
     font-size: 9px;   
 }
 
-.fantasy-spotlight-stat-value {
+.statistic-spotlight-stat-value {
     font-size: 1rem;
 }
 
-.fantasy-spotlight-card {
+.statistic-spotlight-card {
     overflow: hidden;
     position: relative;
 }

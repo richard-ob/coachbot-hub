@@ -221,9 +221,10 @@ namespace CoachBot.Services
 
                     StringBuilder sb = new StringBuilder();
                     var kitCount = 1;
+                    const int KIT_LIMIT = 40;
                     foreach (var kit in kits.Split(',').Where(k => k.Contains(':') && k.Contains('_')))
                     {
-                        if (kitCount > 40) break;
+                        if (kitCount > KIT_LIMIT) break;
                         var kitId = kit.Split(':')[0];
                         var kitName = kit.Split(':')[1];
                         sb.AppendLine($"`{kitId}` {kitName}");

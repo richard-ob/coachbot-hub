@@ -122,7 +122,7 @@ namespace CoachBot.Domain.Extensions
             }
 
             // Validate match took place within an hour of the match ready time
-            if (DateTime.Now.AddHours(-2) > match.KickOff && !manualSave)
+            if (DateTime.UtcNow.AddHours(-2) > match.KickOff && !manualSave)
             {
                 throw new Exception("The match should finish no later than two hours after being readied.");
             }

@@ -22,7 +22,7 @@ namespace CoachBot.Domain.Services
             var tournamentPhase = _coachBotContext.TournamentPhases.Single(p => p.Id == scorePrediction.TournamentPhaseId);
             scorePrediction.PlayerId = player.Id;
 
-            if (_coachBotContext.TournamentPhases.Any(tp => tp.Id == scorePrediction.TournamentPhaseId && tp.TournamentGroupMatches.Any(g => g.Match.KickOff < DateTime.Now)))
+            if (_coachBotContext.TournamentPhases.Any(tp => tp.Id == scorePrediction.TournamentPhaseId && tp.TournamentGroupMatches.Any(g => g.Match.KickOff < DateTime.UtcNow)))
             {
                 throw new Exception("This tournament phase has already started");
             }
@@ -53,7 +53,7 @@ namespace CoachBot.Domain.Services
 
             existing.HomeGoalsPrediction = scorePrediction.HomeGoalsPrediction;
             existing.AwayGoalsPrediction = scorePrediction.AwayGoalsPrediction;
-            existing.UpdatedDate = DateTime.Now;
+            existing.UpdatedDate = DateTime.UtcNow;
 
             _coachBotContext.SaveChanges();
         }

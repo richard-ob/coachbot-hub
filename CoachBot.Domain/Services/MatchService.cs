@@ -48,7 +48,7 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(s => s.Country)
                 .Where(m => filters.RegionId == null || m.Server.RegionId == filters.RegionId || filters.TournamentId != null)
                 .Where(m => filters.IncludeUpcoming || m.KickOff != null)
-                .Where(m => filters.IncludePast || m.KickOff > DateTime.Now)
+                .Where(m => filters.IncludePast || m.KickOff > DateTime.UtcNow)
                 .Where(m => filters.PlayerId == null || m.PlayerMatchStatistics.Any(p => p.PlayerId == filters.PlayerId))
                 .Where(m => filters.TeamId == null || m.TeamMatchStatistics.Any(t => t.TeamId == filters.TeamId))
                 .Where(m => m.TeamHomeId != null && m.TeamAwayId != null)
@@ -56,9 +56,9 @@ namespace CoachBot.Domain.Services
                 .Where(m => filters.IncludeUnpublished || m.TournamentId == null || m.Tournament.IsPublic)
                 .Where(m => filters.DateFrom == null || m.KickOff > filters.DateFrom)
                 .Where(m => filters.DateTo == null || m.KickOff < filters.DateTo)
-                .Where(m => filters.TimePeriod != StatisticsTimePeriod.Week || m.KickOff > DateTime.Now.AddDays(-7))
-                .Where(m => filters.TimePeriod != StatisticsTimePeriod.Month || m.KickOff > DateTime.Now.AddMonths(-1))
-                .Where(m => filters.TimePeriod != StatisticsTimePeriod.Year || m.KickOff > DateTime.Now.AddYears(-1));
+                .Where(m => filters.TimePeriod != StatisticsTimePeriod.Week || m.KickOff > DateTime.UtcNow.AddDays(-7))
+                .Where(m => filters.TimePeriod != StatisticsTimePeriod.Month || m.KickOff > DateTime.UtcNow.AddMonths(-1))
+                .Where(m => filters.TimePeriod != StatisticsTimePeriod.Year || m.KickOff > DateTime.UtcNow.AddYears(-1));
 
             return queryable.GetPaged(page, pageSize, sortOrder);
         }

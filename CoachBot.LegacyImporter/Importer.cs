@@ -107,7 +107,7 @@ namespace CoachBot.LegacyImporter
                 {
                     GuildName = s.Key,
                     ChannelID = s.Max(p => p.Id),
-                    HasMatchCount = s.Count(p => matchHistory.Any(m => m.ChannelId == p.Id && m.MatchDate > DateTime.Now.AddMonths(-3)))
+                    HasMatchCount = s.Count(p => matchHistory.Any(m => m.ChannelId == p.Id && m.MatchDate > DateTime.UtcNow.AddMonths(-3)))
                 })
                 .Where(t => t.HasMatchCount > 0);
 

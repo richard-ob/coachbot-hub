@@ -38,7 +38,7 @@ namespace CoachBot.Domain.Services
                 .Include(t => t.TournamentSeries)
                 .ThenInclude(t => t.Organisation)
                 .ThenInclude(o => o.LogoImage)
-                .Where(t => !excludeInactive || (t.EndDate == null || t.EndDate > DateTime.Now))
+                .Where(t => !excludeInactive || (t.EndDate == null || t.EndDate > DateTime.UtcNow))
                 .Where(t => t.IsPublic)
                 .ToList();
         }
@@ -48,7 +48,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.Tournaments
                 .Include(t => t.TournamentSeries)
                 .ThenInclude(t => t.Organisation)
-                .Where(t => t.EndDate < DateTime.Now)
+                .Where(t => t.EndDate < DateTime.UtcNow)
                 .Where(t => t.IsPublic)
                 .ToList();
         }
@@ -204,7 +204,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.Matches
                 .Where(m => _coachBotContext.TournamentPhases.Any(p => p.TournamentGroupMatches.Any(gm => gm.TournamentPhaseId == tournamentPhaseId)))
-                .Where(m => !futureOnly || m.KickOff > DateTime.Now)
+                .Where(m => !futureOnly || m.KickOff > DateTime.UtcNow)
                 .ToList();
         }
 
@@ -212,7 +212,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.TournamentGroupMatches
                 .Where(tg => tg.TournamentGroup.TournamentStage.TournamentId == tournamentId)
-                .Where(m => m.Match.KickOff > DateTime.Now)
+                .Where(m => m.Match.KickOff > DateTime.UtcNow)
                 .OrderBy(m => m.Match.KickOff)
                 .Select(m => m.TournamentPhase)
                 .Include(p => p.TournamentStage)

@@ -14,16 +14,18 @@ namespace CoachBot.Domain.Services
     {
         private readonly CoachBotContext _coachBotContext;
         private readonly FantasyService _fantasyService;
+        private readonly DiscordNotificationService _discordNotificationService;
 
-        public MatchStatisticsService(CoachBotContext coachBotContext, FantasyService fantasyService)
+        public MatchStatisticsService(CoachBotContext coachBotContext, FantasyService fantasyService, DiscordNotificationService discordNotificationService)
         {
             _coachBotContext = coachBotContext;
             _fantasyService = fantasyService;
+            _discordNotificationService = discordNotificationService;
         }
 
         public void SaveMatchData(MatchData matchData, int matchId, bool manualSave = false)
         {
-            var match = _coachBotContext.Matches.Single(m => m.Id == matchId);
+            var match = _coachBotContext.Matches.Include(m => m.TeamHome).Include(m => m.TeamAway).Single(m => m.Id == matchId);
             match.MatchStatistics = new MatchStatistics()
             {
                 MatchData = matchData
@@ -41,6 +43,7 @@ namespace CoachBot.Domain.Services
                     var tournamentPhaseId = _coachBotContext.TournamentGroupMatches.Single(m => m.MatchId == match.Id).TournamentPhaseId;
                     _fantasyService.GenerateFantasyPhaseSnapshots(tournamentPhaseId);
                 }
+                _discordNotificationService.SendAuditChannelMessage($"New match statistics uploaded for {match.TeamHome} vs {match.TeamAway}").Wait();
             }
         }
 
@@ -146,7 +149,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.PlayerPositionMatchStatistics
                 .AsNoTracking()
                 .Where(p => p.PlayerId == playerId)
-                .Where(p => p.Match.KickOff != null && p.Match.KickOff.Value.Year == DateTime.Now.Year)
+                .Where(p => p.Match.KickOff != null && p.Match.KickOff.Value.Year == DateTime.UtcNow.Year)
                 .GroupBy(p => p.Match.KickOff.Value.Date)
                 .Select(s => new MatchDayTotals()
                 {
@@ -160,7 +163,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.TeamMatchStatistics
                 .AsNoTracking()
                 .Where(t => t.TeamId == teamId)
-                .Where(t => t.Match.KickOff != null && t.Match.KickOff.Value.Year == DateTime.Now.Year)
+                .Where(t => t.Match.KickOff != null && t.Match.KickOff.Value.Year == DateTime.UtcNow.Year)
                 .GroupBy(t => t.Match.KickOff.Value.Date)
                 .Select(s => new MatchDayTotals()
                 {
@@ -264,9 +267,9 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                 .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
                 .Include(p => p.Match)
                     .ThenInclude(p => p.TeamHome)
                 .Include(p => p.Match)
@@ -289,9 +292,9 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                 .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
-                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
+                .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
                 .Include(p => p.Match)
                     .ThenInclude(p => p.TeamHome)
                 .Include(p => p.Match)
@@ -311,9 +314,9 @@ namespace CoachBot.Domain.Services
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
                  .Where(t => filters.TeamType == null || t.Team.TeamType == filters.TeamType)
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
                  .Include(p => p.Match)
                     .ThenInclude(p => p.TeamHome)
                 .Include(p => p.Match)
@@ -336,9 +339,9 @@ namespace CoachBot.Domain.Services
                  .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                  .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
                  .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
                  .Select(m => new
                  {
                      m.PlayerId,
@@ -445,9 +448,9 @@ namespace CoachBot.Domain.Services
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
                  .Where(t => filters.TeamType == null || t.Team.TeamType == filters.TeamType)
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.Now.AddDays(-7))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.Now.AddMonths(-1))
-                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.Now.AddYears(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
                  .AsNoTracking()
                  .Select(m => new
                  {

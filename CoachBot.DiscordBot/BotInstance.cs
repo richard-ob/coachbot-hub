@@ -158,8 +158,8 @@ namespace CoachBot.Bot
         private Task UserUpdated(SocketGuildUser userPre, SocketGuildUser userPost)
         {
             var lastUserStatusCheck = (DateTime?)_cacheService.Get(CacheService.CacheItemType.LastUserStatusChangeCheck, userPost.Id.ToString());
-            if (lastUserStatusCheck != null && lastUserStatusCheck.Value > DateTime.Now.AddMinutes(-1)) return Task.CompletedTask;
-            _cacheService.Set(CacheService.CacheItemType.LastUserStatusChangeCheck, userPost.Id.ToString(), DateTime.Now);
+            if (lastUserStatusCheck != null && lastUserStatusCheck.Value > DateTime.UtcNow.AddMinutes(-1)) return Task.CompletedTask;
+            _cacheService.Set(CacheService.CacheItemType.LastUserStatusChangeCheck, userPost.Id.ToString(), DateTime.UtcNow);
 
             if (userPost.Status.Equals(UserStatus.Online)) return Task.CompletedTask;
 

@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using CoachBot.Model;
+using Discord;
 using Discord.WebSocket;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,10 +9,12 @@ namespace CoachBot.Domain.Services
     public class DiscordNotificationService
     {
         private readonly DiscordSocketClient _discordSocketClient;
+        private readonly Config _config;
 
-        public DiscordNotificationService(DiscordSocketClient discordSocketClient)
+        public DiscordNotificationService(DiscordSocketClient discordSocketClient, Config config)
         {
             _discordSocketClient = discordSocketClient;
+            _config = config;
         }
 
         public async Task<ulong> SendChannelMessage(ulong discordChannelId, Embed embed)
@@ -67,6 +70,11 @@ namespace CoachBot.Domain.Services
             }
 
             return 0;
+        }
+
+        public async Task SendAuditChannelMessage(string message)
+        {
+            await SendChannelMessage(_config.AuditChannelId, message);
         }
     }
 }

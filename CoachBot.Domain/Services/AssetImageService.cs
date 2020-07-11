@@ -31,7 +31,7 @@ namespace CoachBot.Domain.Services
         public int CreateAssetImage(string base64encodedImage, string fileName, ulong steamUserId)
         {
             var player = _coachBotContext.GetPlayerBySteamId(steamUserId);
-            var currentDailyAssetCount = _coachBotContext.AssetImages.Count(a => a.PlayerId == player.Id && a.CreatedDate > DateTime.Now.AddDays(-1));
+            var currentDailyAssetCount = _coachBotContext.AssetImages.Count(a => a.PlayerId == player.Id && a.CreatedDate > DateTime.UtcNow.AddDays(-1));
             var fileSize = (Math.Floor((double)base64encodedImage.Length / 3) + 1) * 4 + 1;
 
             if (currentDailyAssetCount > 10 && !_playerService.IsOwner(steamUserId))

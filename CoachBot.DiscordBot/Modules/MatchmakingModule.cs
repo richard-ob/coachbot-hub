@@ -246,9 +246,9 @@ namespace CoachBot.Modules.Matchmaker
         {
             const int HERE_INTERVAL = 10;
             var lastMention = _cacheService.Get(CacheService.CacheItemType.LastMention, Context.Channel.Id.ToString()) as DateTime?;
-            if (lastMention != null && lastMention.Value.AddMinutes(HERE_INTERVAL) > DateTime.Now)
+            if (lastMention != null && lastMention.Value.AddMinutes(HERE_INTERVAL) > DateTime.UtcNow)
             {
-                var timeRemaining = lastMention.Value.AddMinutes(HERE_INTERVAL).Subtract(DateTime.Now).TotalMinutes;
+                var timeRemaining = lastMention.Value.AddMinutes(HERE_INTERVAL).Subtract(DateTime.UtcNow).TotalMinutes;
                 if (timeRemaining >= 1)
                 {
                     await ReplyAsync("", embed: EmbedTools.GenerateEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in {timeRemaining.ToString("0")} minutes.", ServiceResponseStatus.Failure));
@@ -261,7 +261,7 @@ namespace CoachBot.Modules.Matchmaker
             else
             {
                 await ReplyAsync("@here");
-                _cacheService.Set(CacheService.CacheItemType.LastMention, Context.Channel.Id.ToString(), DateTime.Now);
+                _cacheService.Set(CacheService.CacheItemType.LastMention, Context.Channel.Id.ToString(), DateTime.UtcNow);
             }
         }
 

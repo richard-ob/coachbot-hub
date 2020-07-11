@@ -67,7 +67,7 @@ namespace CoachBot.Domain.Services
                 team.BadgeEmote = _discordService.CreateEmote(emoteName, badgeImage.Base64EncodedImage);
             }
 
-            team.FoundedDate = team.FoundedDate ?? DateTime.Now;
+            team.FoundedDate = team.FoundedDate ?? DateTime.UtcNow;
             _dbContext.Teams.Add(team);
 
             var playerTeam = new PlayerTeam()
@@ -76,7 +76,7 @@ namespace CoachBot.Domain.Services
                 TeamId = team.Id,
                 TeamRole = TeamRole.Captain,
                 IsPending = false,
-                JoinDate = DateTime.Now
+                JoinDate = DateTime.UtcNow
             };
             _dbContext.PlayerTeams.Add(playerTeam);
 
@@ -113,7 +113,7 @@ namespace CoachBot.Domain.Services
             existingTeam.TeamCode = team.TeamCode;
             existingTeam.TeamType = team.TeamType;
             existingTeam.GuildId = team.GuildId;
-            existingTeam.UpdatedDate = DateTime.Now;
+            existingTeam.UpdatedDate = DateTime.UtcNow;
 
             _dbContext.SaveChanges();
         }

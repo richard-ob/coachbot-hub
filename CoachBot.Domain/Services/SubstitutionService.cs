@@ -22,11 +22,11 @@ namespace CoachBot.Domain.Services
 
         public ServiceResponse CreateRequest(int channelId, int serverId, string positionName)
         {
-            var token = DateTime.Now.Ticks.ToString().GetHashCode().ToString("x");
+            var token = DateTime.UtcNow.Ticks.ToString().GetHashCode().ToString("x");
             var request = new SubstitutionRequest()
             {
                 Token = token,
-                CreatedDate = DateTime.Now,
+                CreatedDate = DateTime.UtcNow,
                 ServerId = serverId,
                 ChannelId = channelId
             };
@@ -47,7 +47,7 @@ namespace CoachBot.Domain.Services
             if (request == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"No such subtitution request exists, {player.DiscordUserMention}. Check the unique token and try again.");
             if (request.AcceptedDate != null) return new ServiceResponse(ServiceResponseStatus.Failure, $"This substitution request has already been accepted, {player.DiscordUserMention}.");
 
-            request.AcceptedDate = DateTime.Now;
+            request.AcceptedDate = DateTime.UtcNow;
             request.AcceptedBy = player;
             _coachBotContext.SaveChanges();
 

@@ -193,7 +193,7 @@ namespace CoachBot.Database
                     PlayerId = player.Id,
                     TeamId = 1,
                     TeamRole = TeamRole.Player,
-                    JoinDate = DateTime.Now.AddMonths(-7)
+                    JoinDate = DateTime.UtcNow.AddMonths(-7)
                 };
                 context.PlayerTeams.Add(playerTeam);
             }

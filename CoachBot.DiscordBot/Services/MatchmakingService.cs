@@ -225,14 +225,14 @@ namespace CoachBot.Services
                 if (!match.LineupHome.HasGk) teamList.Append("(No GK)");
                 teamList.AppendLine("");
                 teamList.AppendLine(GenerateFormEmoteListForChannel(search.Channel.DiscordChannelId));
-                var searchMinutesAgo = search.CreatedDate.Subtract(DateTime.Now).TotalMinutes.ToString("0");
+                var searchMinutesAgo = search.CreatedDate.Subtract(DateTime.UtcNow).TotalMinutes.ToString("0");
                 if (searchMinutesAgo == "0" || searchMinutesAgo == "1")
                 {
                     teamList.AppendLine($"*Search started just now*");
                 }
                 else
                 {
-                    teamList.AppendLine($"*Searching for {DateTime.Now.Subtract(search.CreatedDate).TotalMinutes.ToString("0")} minutes*");
+                    teamList.AppendLine($"*Searching for {DateTime.UtcNow.Subtract(search.CreatedDate).TotalMinutes.ToString("0")} minutes*");
                 }
                 teamList.AppendLine($"");
             }

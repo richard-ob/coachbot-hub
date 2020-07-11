@@ -47,7 +47,7 @@ namespace CoachBot.Domain.Services
             existingChannel.SubTeamCode = channel.SubTeamCode.ToUpper();
             existingChannel.SubTeamName = channel.SubTeamName;
             existingChannel.UseClassicLineup = channel.UseClassicLineup;
-            existingChannel.UpdatedDate = DateTime.Now;
+            existingChannel.UpdatedDate = DateTime.UtcNow;
 
             UpdatePositions(channel.ChannelPositions, channel.Id);
 

@@ -96,7 +96,7 @@ namespace CoachBot
                 }
                 else if (!result.IsSuccess)
                 {
-                    var errorId = DateTime.Now.Ticks.ToString();
+                    var errorId = DateTime.UtcNow.Ticks.ToString();
                     if (_client.GetChannel(_configService.Config.AuditChannelId) is ITextChannel auditChannel)
                     {
                         await auditChannel.SendMessageAsync("", embed: new EmbedBuilder().WithTitle($"Error - {message.Channel.Name} [REF:{errorId}]").WithDescription($":exclamation: {result.ErrorReason} ```{context.Message.Author.Username}: {context.Message.Content}").WithCurrentTimestamp().Build());

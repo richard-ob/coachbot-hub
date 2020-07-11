@@ -48,7 +48,7 @@ namespace CoachBot.Domain.Services
             var topPosition = _coachBotContext.PlayerPositionMatchStatistics
                  .AsNoTracking()
                  .Where(p => p.PlayerId == playerId)
-                 .Where(p => p.Match.KickOff > DateTime.Now.AddMonths(-6))
+                 .Where(p => p.Match.KickOff > DateTime.UtcNow.AddMonths(-6))
                  .GroupBy(p => new { p.Position.Id, p.Position.Name })
                  .Select(p => new PositionAppearances()
                  {

@@ -193,11 +193,11 @@ namespace CoachBot.Bot
             return Task.CompletedTask;
         }
 
-        private Task UserOffline(SocketGuildUser userPre, SocketGuildUser userPost)
+        private async Task UserOffline(SocketGuildUser userPre, SocketGuildUser userPost)
         {
             Task.Delay(TimeSpan.FromMinutes(10)).Wait();
             var currentState = _client.GetUser(userPre.Id);
-            if (!currentState.Status.Equals(UserStatus.Offline)) return Task.CompletedTask; // User is no longer offline
+            if (!currentState.Status.Equals(UserStatus.Offline)) return; // User is no longer offline
 
             using (var scope = _serviceProvider.CreateScope())
             {
@@ -209,36 +209,35 @@ namespace CoachBot.Bot
                         var player = matchup.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                         if (player != null)
                         {
-                            discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning));
+                            await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning));
                             _matchmakingService.RemovePlayer(channel.DiscordChannelId, userPre);
                             foreach (var teamEmbed in scope.ServiceProvider.GetService<MatchmakingService>().GenerateTeamList(channel.DiscordChannelId))
                             {
-                                discordChannel.SendMessageAsync("", embed: teamEmbed);
+                                await discordChannel.SendMessageAsync("", embed: teamEmbed);
                             }
                             if (player.DiscordUserId != null)
                             {
-                                _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, $"You've been unsigned from the line-up in **{discordChannel.Name} ({discordChannel.Guild.Name})** as you've gone offline. Sorry champ.");
+                                await _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, $"You've been unsigned from the line-up in **{discordChannel.Name} ({discordChannel.Guild.Name})** as you've gone offline. Sorry champ.");
                             }
                         }
 
                         var sub = matchup.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
                         if (sub != null)
                         {
-                            _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, _matchmakingService.RemoveSub(channel.DiscordChannelId, userPre));
-                            _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, embed: EmbedTools.GenerateEmbed($"Removed {sub.DisplayName} from the subs bench as they have gone offline", ServiceResponseStatus.Warning));
+                            await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, _matchmakingService.RemoveSub(channel.DiscordChannelId, userPre));
+                            await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, embed: EmbedTools.GenerateEmbed($"Removed {sub.DisplayName} from the subs bench as they have gone offline", ServiceResponseStatus.Warning));
                         }
                     }
                 }
             }
 
-            return Task.CompletedTask;
         }
 
-        private Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)
+        private async Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)
         {
             Task.Delay(TimeSpan.FromMinutes(15)).Wait(); // When user goes away, wait 15 minutes before notifying others
             var currentState = _client.GetUser(userPre.Id);
-            if (currentState.Status.Equals(UserStatus.Online)) return Task.CompletedTask; // User is no longer AFK/Idle
+            if (currentState.Status.Equals(UserStatus.Online)) return; // User is no longer AFK/Idle
 
             using (var scope = _serviceProvider.CreateScope())
             {
@@ -250,19 +249,17 @@ namespace CoachBot.Bot
                         var player = matchup.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                         if (player != null)
                         {
-                            discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {player.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());
+                            await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {player.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());
                         }
 
                         var sub = matchup.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
                         if (sub != null)
                         {
-                            discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {sub.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());
+                            await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {sub.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());
                         }
                     }
                 }
             }
-
-            return Task.CompletedTask;
         }
     }
 }

@@ -1,5 +1,7 @@
 <!-- Add some code kind of team coloured gradients as background colour -->
-<app-spinner *ngIf="isLoading"></app-spinner>
+<div *ngIf="isLoading" class="container py-4">
+    <app-spinner></app-spinner>
+</div>
 <ng-container *ngIf="!isLoading">
     <div class="player-heading" [ngStyle]="{ 'background-image': generateGradient(team.color) }">
         <div class="container">

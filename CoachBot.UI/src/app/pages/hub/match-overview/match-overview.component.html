@@ -35,8 +35,9 @@
                                 </ng-template>
                             </span>
                                 <h4 class="d-inline-block text-white clickable m-0"
-                                    (click)="navigateToTeamProfile(match.teamHomeId)">
-                                    {{match.teamHome.name}}
+                                    (click)="navigateToTeamProfile(match.teamHomeId)"
+                                    [attr.title]="match.teamHome.name">
+                                    {{match.teamHome.name | ellipsis:25}}
                                 </h4>
                             </div>
                             <div id="match-headline-score"
@@ -48,8 +49,9 @@
                             </div>
                             <div id="match-headline-items-away" class="text-right" style="flex: 0 1 50%">
                                 <h4 class="d-inline-block text-white clickable m-0"
-                                    (click)="navigateToTeamProfile(match.teamAwayId)">
-                                    {{match.teamAway.name}}
+                                    (click)="navigateToTeamProfile(match.teamAwayId)"
+                                    [attr.title]="match.teamAway.name">
+                                    {{match.teamAway.name | ellipsis:25}}
                                 </h4>
                                 <span class="d-none d-md-inline-block pl-4">
                                     <ng-container

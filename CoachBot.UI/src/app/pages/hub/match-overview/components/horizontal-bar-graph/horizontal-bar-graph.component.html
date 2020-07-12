@@ -5,7 +5,8 @@
 
     <div class="progress-double-wrapper">
         <div class="progress-inner-holder">
-            <div class="progress__digit progress__digit--left progress__digit--highlight">
+            <div class="progress__digit progress__digit--left progress__digit--highlight"
+                [style.color]="homeColourFont">
                 <ng-container [ngSwitch]="displayValueMode">
                     <span *ngSwitchCase="displayValueModes.Value">
                         {{ homeValue }}
@@ -23,7 +24,8 @@
                     [style.width]="(awayValue | percentageSharePipe:[homeValue]) + '%'" role="progressbar"
                     aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <div class="progress__digit progress__digit--right progress__digit--highlight">
+            <div class="progress__digit progress__digit--right progress__digit--highlight"
+                [style.color]="awayColourFont">
                 <ng-container [ngSwitch]="displayValueMode">
                     <span *ngSwitchCase="displayValueModes.Value">
                         {{ awayValue }}

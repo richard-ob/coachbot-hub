@@ -27,7 +27,7 @@ export class MatchOverviewLineupPositionComponent implements OnInit {
     }
 
     getFontColour() {
-        return ColourUtils.isDark(this.color) ? '#ffffff' : '#000000';
+        return ColourUtils.isDark(this.color) ? '#000000' : '#ffffff';
     }
 
     getMainSub() {

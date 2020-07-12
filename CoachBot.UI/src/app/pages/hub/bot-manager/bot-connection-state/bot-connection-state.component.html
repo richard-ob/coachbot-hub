@@ -1,38 +1,30 @@
 <div class="card">
     <div class="card__header card__header--has-btn">
-        <h4>Bot Manager</h4>
-        <button class="btn btn-xs btn-secondary float-right" (click)="refreshBotState()" [disabled]="isRefreshing">
-            Refresh
-        </button>
+        <h4>Bot Connection State</h4>
+        <div class="float-right">
+            <button class="btn btn-xs btn-danger mx-1" [disabled]="isReconnecting" (click)="disconnectBot()"
+                title="Disconnect">
+                Disconnect
+            </button>
+            <button class="btn btn-xs  btn-success mx-1" [disabled]="isReconnecting" (click)="connectBot()"
+                title="Connect">
+                Connect
+            </button>
+            <button class="btn btn-xs  btn-warning mx-1" [disabled]="isReconnecting" (click)="reconnectBot()"
+                title="Reconnect">
+                Reconnect
+            </button>
+            <button class="btn btn-xs btn-secondary" (click)="refreshBotState()" [disabled]="isRefreshing">
+                Refresh
+            </button>
+        </div>
     </div>
     <div class="card__content">
         <div *ngIf="!isLoading; else spinner" class="row">
             <div class="form-group col-md-6">
                 <label>Connection Status</label>
-                <div class="input-group mb-3">
-                    <input type="text" readonly class="form-control" [(ngModel)]="botState.connectionStatus"
-                        name="connectionStatus">
-                    <div class="input-group-append clickable">
-                        <button class="btn btn-danger px-3" [disabled]="isReconnecting" (click)="disconnectBot()"
-                            title="Disconnect">
-                            <i *ngIf="!isReconnecting" class="fa fa-times"></i>
-                            <i *ngIf="isReconnecting" class="fa fa-sync-alt fa-spin"></i>
-                            Disconnect
-                        </button>
-                        <button class="btn btn-success px-3" [disabled]="isReconnecting" (click)="connectBot()"
-                            title="Connect">
-                            <i *ngIf="!isReconnecting" class="fa fa-check"></i>
-                            <i *ngIf="isReconnecting" class="fa fa-sync-alt fa-spin"></i>
-                            Connect
-                        </button>
-                        <button class="btn btn-warning px-3" [disabled]="isReconnecting" (click)="reconnectBot()"
-                            title="Reconnect">
-                            <i *ngIf="!isReconnecting" class="fa fa-recycle"></i>
-                            <i *ngIf="isReconnecting" class="fa fa-sync-alt fa-spin"></i>
-                            Reconnect
-                        </button>
-                    </div>
-                </div>
+                <input type="text" readonly class="form-control" [(ngModel)]="botState.connectionStatus"
+                    name="connectionStatus">
             </div>
             <div class="form-group col-md-6">
                 <label>Login Status</label>

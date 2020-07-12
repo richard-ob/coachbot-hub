@@ -1,4 +1,6 @@
-<app-spinner *ngIf="isLoading"></app-spinner>
+<div *ngIf="isLoading" class="container">
+    <app-spinner></app-spinner>
+</div>
 <ng-container *ngIf="!isLoading">
     <div class="player-heading"
         [ngStyle]="{ 'background-image': generateGradient(tournament.tournamentSeries.organisation.brandColour) }">

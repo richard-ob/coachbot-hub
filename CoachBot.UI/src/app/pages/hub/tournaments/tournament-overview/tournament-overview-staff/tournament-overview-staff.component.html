@@ -13,7 +13,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let staff of tournamentStaff">
-                            <td>{{staff.player.name}}</td>
+                            <td><a [routerLink]="['/player-profile/', staff.player.id]">{{staff.player.name}}</a></td>
                             <td>{{staff.role | tournamentStaffRole}}</td>
                             <td>{{staff.createdDate | date}}</td>
                         </tr>

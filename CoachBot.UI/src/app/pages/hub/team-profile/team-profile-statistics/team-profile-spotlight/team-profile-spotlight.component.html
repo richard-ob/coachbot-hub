@@ -5,7 +5,8 @@
             <div class="widget-player__ribbon">
                 <div class="fa fa-star"></div>
             </div>
-            <h4 class="statistic-spotlight-name">vs {{oppositionName ? oppositionName : 'TBC'}}
+            <h4 class="statistic-spotlight-name"><span class="statistic-spotlight-prefix text-muted">vs</span>
+                {{oppositionName ? oppositionName : 'TBC'}}
             </h4>
             <i class="statistic-spotlight-icon icon-svg" [ngClass]="iconClass"></i>
             <div *ngIf="spotlightTeam" class="d-flex">

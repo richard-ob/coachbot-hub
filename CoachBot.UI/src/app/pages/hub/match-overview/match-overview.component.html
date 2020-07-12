@@ -30,7 +30,7 @@
                             <div id="match-meta-data-date" class="col-4 text-right">{{matchDate | date:'medium'}}</div>
                         </div>
                         <div id="match-headline-items" class="d-flex align-items-center mt-2 mb-4">
-                            <div id="match-headline-items-home" class="text-left" style="flex: 0 1 50%">
+                            <div id="match-headline-items-home" class="text-right" style="flex: 0 1 50%">
                                 <span class="d-none d-md-inline-block pr-4">
                                 <ng-container
                                     *ngIf="match.teamHome.badgeImage; else blankCrest">
@@ -56,7 +56,7 @@
                                 <span class="game-result__score-dash">-</span>
                                 <span class="game-result__score-result">{{matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
                             </div>
-                            <div id="match-headline-items-away" class="text-right" style="flex: 0 1 50%">
+                            <div id="match-headline-items-away" class="text-left" style="flex: 0 1 50%">
                                 <h4 class="d-inline-block text-white clickable m-0"
                                     (click)="navigateToTeamProfile(match.teamAwayId)"
                                     [attr.title]="match.teamAway.name">

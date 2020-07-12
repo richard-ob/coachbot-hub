@@ -13,7 +13,7 @@ namespace CoachBot.Domain.Model
 
         public MatchData MatchData { get; set; }
 
-        public DateTime KickOff => new DateTime(MatchData.MatchInfo.StartTime);
+        public DateTime KickOff => new DateTime(MatchData.MatchInfo.StartTime * 1000);
 
         public int? HomeGoals { get; set; }
 

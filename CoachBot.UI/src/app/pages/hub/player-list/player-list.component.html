@@ -18,8 +18,39 @@
         </div>
     </div>
     <div class="card card--has-table">
-        <div class="card__header card__header--has-btn">
+        <div class="card__header card__header--has-btn" style="overflow: visible">
             <h4>Player Statistics</h4>
+            <div class="btn-group btn-group-xs ml-2" dropdown>
+                <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-secondary dropdown-toggle"
+                    aria-controls="dropdown-basic">
+                    <ng-container [ngSwitch]="currentPlayerStat">
+                        <span *ngSwitchCase="playerStatType.General">General</span>
+                        <span *ngSwitchCase="playerStatType.Goalkeeping">Goalkeeping</span>
+                        <span *ngSwitchCase="playerStatType.Defensive">Defensive</span>
+                        <span *ngSwitchCase="playerStatType.Defensive">Attacking</span>
+                    </ng-container>
+                    <span class="caret"></span>
+                </button>
+                <ul id="dropdown-teamtype" *dropdownMenu class="dropdown-menu" role="menu"
+                    aria-labelledby="button-basic">
+                    <li role="menuitem">
+                        <a class="dropdown-item clickable" (click)="currentPlayerStat = playerStatType.General">General
+                            Stats</a>
+                    </li>
+                    <li role="menuitem">
+                        <a class="dropdown-item clickable"
+                            (click)="currentPlayerStat = playerStatType.Goalkeeping">Goalkeeping Stats</a>
+                    </li>
+                    <li role="menuitem">
+                        <a class="dropdown-item clickable"
+                            (click)="currentPlayerStat = playerStatType.Defending">Defending Stats</a>
+                    </li>
+                    <li role="menuitem">
+                        <a class="dropdown-item clickable"
+                            (click)="currentPlayerStat = playerStatType.Attacking">Attacking Stats</a>
+                    </li>
+                </ul>
+            </div>
             <ul *ngIf="!hideFilters" class="team-result-filter d-none d-md-inline float-right">
                 <li class="team-result-filter__item">
                     <input type="text" class="form-control input-xs" placeholder="Filter By Player Name"
@@ -97,14 +128,16 @@
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th *ngIf="filters.positionName !== 'GK'" sorter [sortByColumn]="'GoalsAverage'"
-                            [sortByColumnName]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
+                        <th *ngIf="currentPlayerStat !== playerStatType.Goalkeeping" sorter
+                            [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Goals'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
                         </th>
                         <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center">
                         </th>
+                        <!-- Shots Per Goal -->
                         <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'AssistsAverage'" [sortByColumnName]="'Assists'"
@@ -125,21 +158,25 @@
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th *ngIf="filters.positionName === 'GK'" sorter [sortByColumn]="'KeeperSavesAverage'"
-                            [sortByColumnName]="'Saves'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
+                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
+                            [sortByColumn]="'KeeperSavesAverage'" [sortByColumnName]="'Saves'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
                         </th>
-                        <th *ngIf="filters.positionName === 'GK'" sorter [sortByColumn]="'KeeperSavesCaughtAverage'"
-                            [sortByColumnName]="'Saves Caught'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
+                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
+                            [sortByColumn]="'KeeperSavesCaughtAverage'" [sortByColumnName]="'Saves Caught'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center" [average]="true">
                         </th>
-                        <th *ngIf="filters.positionName === 'GK'" sorter [sortByColumn]="'GoalsConcededAverage'"
-                            [sortByColumnName]="'Goals Conceded'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
+                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
+                            [sortByColumn]="'GoalsConcededAverage'" [sortByColumnName]="'Goals Conceded'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center" [average]="true">
                         </th>
-                        <th *ngIf="filters.positionName !== 'GK'" sorter [sortByColumn]="'DistanceCoveredAverage'"
-                            [sortByColumnName]="'Distance'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)" class="text-center" [average]="true">
+                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
+                            [sortByColumn]="'DistanceCoveredAverage'" [sortByColumnName]="'Distance'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center" [average]="true">
                         </th>
                     </tr>
                 </thead>
@@ -188,7 +225,8 @@
                         <td class="team-result__status text-center">{{statistics.losses}}</td>
                         <td class="team-result__status text-center">{{statistics.draws}}</td>
                         <td class="team-result__status text-center">{{statistics.goals}}</td>
-                        <td *ngIf="filters.positionName !== 'GK'" class="team-result__status text-center">
+                        <td *ngIf="currentPlayerStat !== playerStatType.Goalkeeping"
+                            class="team-result__status text-center">
                             {{statistics.goalsAverage | number : '1.2-2'}}</td>
                         <td class="team-result__status text-center">{{statistics.shotAccuracyPercentage | percent }}
                         </td>
@@ -204,13 +242,14 @@
                         </td>
                         <td class="team-result__status text-center">{{statistics.yellowCards}}</td>
                         <td class="team-result__status text-center">{{statistics.redCards}}</td>
-                        <td *ngIf="filters.positionName === 'GK'" class="text-center">
+                        <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping" class="text-center">
                             {{statistics.keeperSavesAverage | number : '1.2-2'}}</td>
-                        <td *ngIf="filters.positionName === 'GK'" class="text-center">
+                        <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping" class="text-center">
                             {{statistics.keeperSavesCaughtAverage | number : '1.2-2'}}</td>
-                        <td *ngIf="filters.positionName === 'GK'" class="text-center">
+                        <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping" class="text-center">
                             {{statistics.goalsConcededAverage | number : '1.2-2'}}</td>
-                        <td *ngIf="filters.positionName !== 'GK'" class="team-result__status text-center">
+                        <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping"
+                            class="team-result__status text-center">
                             {{(statistics.distanceCoveredAverage / 1000) | number : '1.2-2'}}km</td>
                     </tr>
                 </tbody>

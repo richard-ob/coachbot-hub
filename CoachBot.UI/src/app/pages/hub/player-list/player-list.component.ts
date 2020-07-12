@@ -9,6 +9,7 @@ import { UserPreferenceService, UserPreferenceType } from '@shared/services/user
 import { Team } from '../shared/model/team.model';
 import { TeamService } from '../shared/services/team.service';
 import { PlayerSpotlightStatistic } from './player-spotlight/player-spotlight-statistic.enum';
+import { PlayerStatType } from './player-stat-type.enum';
 
 @Component({
     selector: 'app-player-list',
@@ -24,6 +25,8 @@ export class PlayerListComponent implements OnInit {
     teams: Team[];
     positions = ['GK', 'LB', 'CB', 'RB', 'LW', 'LM', 'CM', 'RM', 'RW', 'CF'];
     playerSpotlightStatistic = PlayerSpotlightStatistic;
+    playerStatType = PlayerStatType;
+    currentPlayerStat = PlayerStatType.General;
     currentPage = 1;
     totalPages: number;
     totalItems: number;

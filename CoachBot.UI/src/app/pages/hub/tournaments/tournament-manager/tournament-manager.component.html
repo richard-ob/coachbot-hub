@@ -1,0 +1,29 @@
+<nav class="content-filter">
+    <div class="container">
+        <a href="javascript:void(0);" (click)="tabNav.toggle()" class="content-filter__toggle"></a>
+        <ul class="content-filter__list" appTabNavMobile #tabNav>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./details']" class="content-filter__link">Details</a>
+            </li>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./staff']" class="content-filter__link">Staff</a>
+            </li>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./match-days']" class="content-filter__link">Match Days</a>
+            </li>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./groups']" class="content-filter__link">Groups</a>
+            </li>
+            <li class="content-filter__item" routerLinkActive="content-filter__item--active">
+                <a [routerLink]="['./actions']" class="content-filter__link">Actions</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container py-4">
+    <div *ngIf="accessDenied" class="alert alert-danger">
+        You do not have access to manage this tournament
+    </div>
+    <router-outlet *ngIf="!isLoading && !accessDenied"></router-outlet>
+    <app-spinner *ngIf="isLoading"></app-spinner>
+</div>

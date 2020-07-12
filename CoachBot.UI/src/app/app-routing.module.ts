@@ -14,7 +14,6 @@ import { SteamIDValidatorComponent } from './pages/hub/profile-editor/steam-id-v
 import { ManualComponent } from './pages/manual/manual.component';
 import { TeamComponent } from './pages/team/team.component';
 import { TournamentCreatorComponent } from './pages/hub/tournaments/tournament-creator/tournament-creator.component';
-import { TournamentEditionManagerComponent } from './pages/hub/tournaments/tournament-edition-manager/tournament-edition-manager.component';
 import { MatchEditorComponent } from './pages/hub/match-editor/match-editor.component';
 import { UpcomingMatchesComponent } from './pages/hub/upcoming-matches/upcoming-matches.component';
 import { CurrentTournamentsComponent } from './pages/hub/tournaments/current-tournaments/current-tournaments.component';
@@ -121,11 +120,6 @@ const routes: Routes = [
   {
     path: 'tournament-editor/:id',
     component: TournamentSeriesEditorComponent,
-    data: { title: 'Tournament' }
-  },
-  {
-    path: 'tournament-edition-manager/:id',
-    component: TournamentEditionManagerComponent,
     data: { title: 'Tournament' }
   },
   {

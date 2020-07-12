@@ -21,10 +21,6 @@ import { ProfileEditorComponent } from './profile-editor/profile-editor.componen
 import { SteamIDValidatorComponent } from './profile-editor/steam-id-validator.component';
 import { UpcomingMatchesComponent } from './upcoming-matches/upcoming-matches.component';
 import { TournamentCreatorComponent } from './tournaments/tournament-creator/tournament-creator.component';
-import { TournamentEditionManagerComponent } from './tournaments/tournament-edition-manager/tournament-edition-manager.component';
-import {
-  TournamentGroupTeamManagerComponent
-} from './tournaments/tournament-edition-manager/tournament-group-team-manager/tournament-group-team-manager.component';
 import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 import { PlayerProfileModule } from './player-profile/player-profile.module';
@@ -46,9 +42,6 @@ import { TeamEditorListModule } from './team-editor-list/team-editor-list.module
 import { TeamEditorModule } from './team-editor/team-editor.module';
 import { AssetImageUploaderModule } from '@shared/components/asset-image-uploader/asset-image-uploader.module';
 import { ScorePredictorModule } from './tournaments/score-predictor/score-predictor.module';
-import {
-  TournamentMatchDaySlotManagerComponent
-} from './tournaments/tournament-edition-manager/tournament-match-day-slot-manager/tournament-match-day-slot-manager.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { MatchOverviewLineupComponent } from './match-overview/components/match-overview-lineup/match-overview-lineup.component';
 import {
@@ -65,6 +58,7 @@ import { PreviousTournamentsComponent } from './tournaments/previous-tournaments
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FantasyTeamManagerModule } from './tournaments/fantasy/fantasy.module';
 import { BotManagerModule } from './bot-manager/bot-manager.module';
+import { TournamentManagerModule } from './tournaments/tournament-manager/tournament-manager.module';
 
 @NgModule({
   declarations: [
@@ -86,9 +80,6 @@ import { BotManagerModule } from './bot-manager/bot-manager.module';
     SteamIDValidatorComponent,
     TournamentCreatorComponent,
     TournamentSeriesEditorComponent,
-    TournamentEditionManagerComponent,
-    TournamentGroupTeamManagerComponent,
-    TournamentMatchDaySlotManagerComponent,
     OrganisationsComponent,
     OrganisationEditorComponent,
     MatchEditorComponent,
@@ -118,6 +109,7 @@ import { BotManagerModule } from './bot-manager/bot-manager.module';
     RecentMatchesModule,
     TeamEditorListModule,
     TeamEditorModule,
+    TournamentManagerModule,
     BotManagerModule,
     MatDatepickerModule,
     MatNativeDateModule,

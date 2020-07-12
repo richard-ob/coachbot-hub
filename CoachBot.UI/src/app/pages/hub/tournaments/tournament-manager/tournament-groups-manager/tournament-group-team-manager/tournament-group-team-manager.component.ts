@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { TournamentGroupTeamDto } from '../../../shared/model/dtos/tournament-group-team-dto.model';
-import { TournamentService } from '../../../shared/services/tournament.service';
-import { TeamService } from '../../../shared/services/team.service';
-import { Team } from '../../../shared/model/team.model';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
+import { TournamentGroupTeamDto } from '@pages/hub/shared/model/dtos/tournament-group-team-dto.model';
+import { Team } from '@pages/hub/shared/model/team.model';
+import { TournamentService } from '@pages/hub/shared/services/tournament.service';
+import { TeamService } from '@pages/hub/shared/services/team.service';
 
 @Component({
     selector: 'app-tournament-group-team-manager',

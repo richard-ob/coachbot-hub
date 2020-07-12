@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { TournamentService } from '../../../shared/services/tournament.service';
 import { TournamentMatchDay, TournamentMatchDaySlot } from '@pages/hub/shared/model/tournament-match-day-slot.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-tournament-match-day-slot-manager',
@@ -10,17 +11,20 @@ import { TournamentMatchDay, TournamentMatchDaySlot } from '@pages/hub/shared/mo
 })
 export class TournamentMatchDaySlotManagerComponent implements OnInit {
 
-    @Input() tournamentId: number;
+    tournamentId: number;
     matchDaySlots: TournamentMatchDaySlot[];
     matchDaySlot: TournamentMatchDaySlot;
     matchDays = TournamentMatchDay;
     isLoading = true;
 
-    constructor(private tournamentService: TournamentService) { }
+    constructor(private tournamentService: TournamentService, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.initialiseMatchDaySlot();
-        this.loadMatchDaySlots();
+        this.route.parent.paramMap.pipe().subscribe(params => {
+            this.tournamentId = +params.get('id');
+            this.initialiseMatchDaySlot();
+            this.loadMatchDaySlots();
+        });
     }
 
     loadMatchDaySlots() {

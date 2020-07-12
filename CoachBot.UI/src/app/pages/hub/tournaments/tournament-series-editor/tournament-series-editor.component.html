@@ -19,7 +19,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let edition of tournamentSeries.tournaments">
-                            <td><a [routerLink]="['/tournament-edition-manager/', edition.id]">{{edition.name}}</a></td>
+                            <td><a [routerLink]="['/tournament-manager/', edition.id]">{{edition.name}}</a></td>
                             <td>{{edition.format}}vs{{edition.format}}</td>
                             <td>{{edition.isPublic ? 'Yes' : 'No' }}</td>
                             <td>{{edition.startDate | date}}</td>
@@ -83,7 +83,7 @@
                             </div>
                             <input matInput class="form-control" [matDatepicker]="startDatePicker"
                                 [(ngModel)]="tournament.startDate" placeholder="The date the first match should happen"
-                                required>
+                                name="startDatePicker" required>
                         </div>
                     </div>
                     <button class="btn btn-primary" type="submit"

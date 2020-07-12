@@ -1,0 +1,47 @@
+<app-spinner *ngIf="isLoading"></app-spinner>
+<div *ngIf="!isLoading" class="card">
+    <div class="card__header">
+        <h4>Tournament Staff</h4>
+    </div>
+    <div class="card__content">
+        <div *ngIf="!tournament.tournamentStaff.length" class="alert alert-info">There are no
+            staff added yet</div>
+        <table *ngIf="tournament.tournamentStaff.length" class="table table-striped">
+            <thead>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Date Since</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let staff of tournament.tournamentStaff">
+                    <td>{{staff.player.name}}</td>
+                    <td>{{staff.role | tournamentStaffRole}}</td>
+                    <td>{{staff.createdDate | date}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <form (ngSubmit)="createTournamentStaff()" #addStaffForm="ngForm">
+            <h5>Add Staff</h5>
+            <div class="form-group">
+                <label class="control-label" for="input-default">Player</label>
+                <input class="form-control" type="number" [(ngModel)]="tournamentStaff.playerId" name="staffPlayerId"
+                    required>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="input-default">Staff Role</label>
+                <select class="form-control" id="input-default" [(ngModel)]="tournamentStaff.role" name="staffRole"
+                    required placeholder="Select role..">
+                    <option [ngValue]="tournamentRole.Organiser">Organiser</option>
+                    <option [ngValue]="tournamentRole.MatchAdmin">Match Admin</option>
+                    <option [ngValue]="tournamentRole.Streamer">Streamer</option>
+                    <option [ngValue]="tournamentRole.Commentator">Commentator</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary float-right"
+                [disabled]="isSaving || isLoading || addStaffForm.invalid">
+                <i *ngIf="isSaving || isLoading" class="fas fa-circle-notch fa-spin"></i>
+                Save
+            </button>
+        </form>
+    </div>
+</div>

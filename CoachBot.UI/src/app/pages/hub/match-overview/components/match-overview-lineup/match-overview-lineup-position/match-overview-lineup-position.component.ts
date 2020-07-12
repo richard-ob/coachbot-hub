@@ -23,7 +23,6 @@ export class MatchOverviewLineupPositionComponent implements OnInit {
     ngOnInit() {
         this.fontColor = this.getFontColour();
         this.mainSub = this.getMainSub();
-        console.log(this.substitutes);
     }
 
     getFontColour() {

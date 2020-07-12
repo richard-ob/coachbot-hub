@@ -320,6 +320,6 @@ export function cssColouriser(hex: string): string {
     const color = new Color(rgb[0], rgb[1], rgb[2]);
     const solver = new Solver(color);
     const result = solver.solve();
-    console.log(result);
+
     return result.filter;
 }

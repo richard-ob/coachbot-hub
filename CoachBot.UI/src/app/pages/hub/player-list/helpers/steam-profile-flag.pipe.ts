@@ -14,7 +14,6 @@ export class SteamProfileFlagPipe implements PipeTransform {
             const steamId64 = steamUser.getSteamID64();
             const steamUserProfile = steamUserProfiles.find(u => u.steamid === steamId64);
             if (steamUserProfile) {
-                console.log(steamUserProfile.loccountrycode);
                 return steamUserProfile.loccountrycode;
             }
         }

@@ -129,7 +129,7 @@ export class DiscordChannelEditorComponent implements OnInit {
 
     usePositionNames() {
         const format = this.channel.channelPositions.length;
-        console.log(format);
+
         const positionNames = FormatPositions.names;
         for (let i = 0; i < format; i++) {
             const channelPosition = this.channel.channelPositions[i];

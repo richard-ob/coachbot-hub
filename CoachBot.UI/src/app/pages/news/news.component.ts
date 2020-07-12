@@ -17,7 +17,6 @@ export class NewsComponent implements OnInit {
         this.steamService.getNews().subscribe(response => {
             for (const item of response.appnews.newsitems) {
                 item.date = new Date(item.date * 1000);
-                console.log(item.date);
             }
             this.news = response.appnews.newsitems;
             for (const newsItem of this.news) {

@@ -15,10 +15,19 @@
             <div class="row">
                 <div class="col-lg-10 offset-md-1">
                     <section class="d-flex flex-column text-white my-4">
-                        <div id="match-meta-data" class="match-meta-data d-flex justify-content-between mb-4">
-                            <div id="match-meta-data-type">{{matchData.matchInfo.type}}</div>
-                            <div id="match-meta-data-server"></div>
-                            <div id="match-meta-data-date">{{matchDate | date:'medium'}}</div>
+                        <div id="match-meta-data" class="match-meta-data row mb-4">
+                            <div id="match-meta-data-server" class="col-4 text-left">
+                                <div *ngIf="match.server; else unknownServer" [attr.title]="match.server.address">
+                                    <i class="flag-icon flag-icon-squared"
+                                        [ngClass]="'flag-icon-' + match.server.country.code.toLowerCase()"></i>&nbsp;
+                                    {{match.server.name}}
+                                </div>
+                                <ng-template #unknownServer>Unknown Server</ng-template>
+                            </div>
+                            <div id="match-meta-data-type" class="col-4 text-center">
+                                {{matchData.matchInfo.type}}
+                            </div>
+                            <div id="match-meta-data-date" class="col-4 text-right">{{matchDate | date:'medium'}}</div>
                         </div>
                         <div id="match-headline-items" class="d-flex align-items-center mt-2 mb-4">
                             <div id="match-headline-items-home" class="text-left" style="flex: 0 1 50%">

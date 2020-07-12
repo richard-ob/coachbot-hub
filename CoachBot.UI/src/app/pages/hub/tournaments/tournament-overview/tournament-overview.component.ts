@@ -30,8 +30,7 @@ export class TournamentOverviewComponent implements OnInit {
     generateGradient(colour: string) {
         const gradientSrc =
             'linear-gradient(90deg,' + ColourUtils.hexToRgbA(colour, 0.6) + ',' + ColourUtils.hexToRgbA(colour, 0.3) + ')';
-        console.log('yep');
-        console.log(gradientSrc);
+
         return gradientSrc;
     }
 

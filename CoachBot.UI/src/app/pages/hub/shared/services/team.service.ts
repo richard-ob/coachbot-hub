@@ -31,11 +31,11 @@ export class TeamService {
 
     getTeams(regionId: number, teamType: TeamType = null): Observable<Team[]> {
         let params = {};
-        console.log(teamType);
+
         if (teamType) {
             params = { teamType };
         }
-        console.log(params);
+
         return this.http.get<Team[]>(`${environment.apiUrl}/api/team/region/${regionId}`, { params });
     }
 

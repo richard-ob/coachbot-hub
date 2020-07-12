@@ -8,8 +8,6 @@ export class ArrayFilterPipe implements PipeTransform {
         if (mode === ArrayFilterPipeMode.NotEquals) {
             return baseArray.filter(b => b[comparisonProperty] !== comparisonValue);
         }
-        console.log(baseArray);
-        console.log(baseArray[0][comparisonProperty]);
         return baseArray.filter(b => b[comparisonProperty] === comparisonValue);
     }
 }

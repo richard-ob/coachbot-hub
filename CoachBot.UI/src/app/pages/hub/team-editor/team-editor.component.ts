@@ -29,7 +29,7 @@ export class TeamEditorComponent implements OnInit {
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
             const teamId = +params.get('id');
-            console.log(teamId);
+
             this.playerService.getCurrentPlayer().subscribe(player => {
                 if (player.teams.some(t => t.teamId === teamId && [TeamRole.Captain, TeamRole.ViceCaptain].some(tr => tr === t.teamRole))
                     || player.hubRole === PlayerHubRole.Owner) {

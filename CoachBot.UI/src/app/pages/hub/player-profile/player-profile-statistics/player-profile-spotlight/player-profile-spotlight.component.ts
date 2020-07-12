@@ -36,7 +36,6 @@ export class PlayerProfileSpotlightComponent implements OnInit {
         this.filters.playerId = this.playerId;
         this.playerService.getPlayerMatchStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters)
             .subscribe(playerStatistics => {
-                console.log(playerStatistics)
                 if (playerStatistics.items.length > 0) {
                     this.spotlight = playerStatistics.items[0];
                     this.setOppositionName();

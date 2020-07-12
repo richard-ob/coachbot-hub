@@ -83,7 +83,6 @@ export class PlayerListComponent implements OnInit {
                 steamIds.push(player.steamID);
             }
         }
-        console.log(steamIds);
         this.steamService.getUserProfiles(steamIds).subscribe(response => {
             for (const player of playerStatistics) {
                 if (player.steamID && player.steamID.length > 5) {

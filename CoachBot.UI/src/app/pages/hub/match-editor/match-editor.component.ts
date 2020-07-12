@@ -58,13 +58,11 @@ export class MatchEditorComponent implements OnInit {
     }
 
     fileSelected(event: any) {
-        console.log('happened');
         const file = event.target.files[0];
         const fileReader = new FileReader();
         fileReader.addEventListener('load', () => {
             try {
                 this.matchStatistics = JSON.parse(fileReader.result as string);
-                console.log(this.matchStatistics);
             } catch (e) {
                 return;
             }

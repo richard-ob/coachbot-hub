@@ -34,3 +34,42 @@ label.required::after {
 #page-content {
     background-color: #edeff4;
 }
+
+.preloader-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preloader {
+    width:30px;
+    height:30px;
+    display:inline-block;
+    padding:0px;
+    border-radius:100%;
+    border:2px solid;
+    border-top-color:rgba(0,0,0, 0.65);
+    border-bottom-color:rgba(0,0,0, 0.15);
+    border-left-color:rgba(0,0,0, 0.65);
+    border-right-color:rgba(0,0,0, 0.15);
+    -webkit-animation: preloader 0.8s linear infinite;
+    animation: preloader 0.8s linear infinite;
+ }
+
+ .preloader.light {
+   border-top-color:rgba(255, 255, 255, 0.65) !important;
+   border-bottom-color:rgba(255, 255, 255, 0.15) !important;
+   border-left-color:rgba(255, 255, 255, 0.65) !important;
+   border-right-color:rgba(255, 255, 255, 0.15) !important;
+ }
+
+ @keyframes preloader {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+ }
+
+ @-webkit-keyframes preloader {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+ }

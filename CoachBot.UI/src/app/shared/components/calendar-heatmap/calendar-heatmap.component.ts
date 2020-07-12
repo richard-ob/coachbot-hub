@@ -20,7 +20,6 @@ export class CalendarHeatmapComponent implements OnInit {
     };
 
     ngOnInit() {
-        console.log(this.calendarEntries);
         this.chartData = this.getCalendarData();
     }
 

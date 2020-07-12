@@ -4,6 +4,8 @@ import { TournamentService } from '@pages/hub/shared/services/tournament.service
 import { Tournament } from '@pages/hub/shared/model/tournament.model';
 import { TournamentStaff } from '@pages/hub/shared/model/tournament-staff.model';
 import { TournamentStaffRole } from '@pages/hub/shared/model/tournament-staff-role.model';
+import { Player } from '@pages/hub/shared/model/player.model';
+import { PlayerService } from '@pages/hub/shared/services/player.service';
 
 @Component({
     selector: 'app-tournament-staff-manager',
@@ -15,19 +17,24 @@ export class TournamentStaffManagerComponent implements OnInit {
     tournament: Tournament;
     tournamentStaff = new TournamentStaff();
     tournamentRole = TournamentStaffRole;
+    currentPlayer: Player;
     isSaving = false;
     isLoading = true;
 
     constructor(
         private tournamentService: TournamentService,
+        private playerService: PlayerService,
         private route: ActivatedRoute,
         private router: Router
     ) { }
 
     ngOnInit() {
-        this.route.parent.paramMap.pipe().subscribe(params => {
-            this.tournamentId = +params.get('id');
-            this.loadTournament();
+        this.playerService.getCurrentPlayer().subscribe(currentPlayer => {
+            this.currentPlayer = currentPlayer;
+            this.route.parent.paramMap.pipe().subscribe(params => {
+                this.tournamentId = +params.get('id');
+                this.loadTournament();
+            });
         });
     }
 
@@ -47,6 +54,14 @@ export class TournamentStaffManagerComponent implements OnInit {
             this.isSaving = false;
             this.loadTournament();
         });
+    }
+
+    deleteTournamentStaff(tournamentStaffId: number) {
+        this.isLoading = true;
+        this.tournamentService.deleteTournamentStaff(tournamentStaffId).subscribe(() => {
+            this.isLoading = false;
+            this.loadTournament();
+        })
     }
 
 

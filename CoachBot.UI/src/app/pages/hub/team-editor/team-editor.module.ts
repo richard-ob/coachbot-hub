@@ -27,6 +27,7 @@ import { TeamEditorInfoComponent } from './team-editor-info/team-editor-info.com
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgPipesModule } from 'ngx-pipes';
 import { CoreModule } from '@core/core.module';
+import { PlayerSelectorModule } from '../shared/components/player-selector/player-selector.module';
 
 @NgModule({
     declarations: [
@@ -57,7 +58,8 @@ import { CoreModule } from '@core/core.module';
         MatDatepickerModule,
         HubPipesModule,
         NgbTypeaheadModule,
-        NgPipesModule
+        NgPipesModule,
+        PlayerSelectorModule
     ]
 })
 export class TeamEditorModule { }

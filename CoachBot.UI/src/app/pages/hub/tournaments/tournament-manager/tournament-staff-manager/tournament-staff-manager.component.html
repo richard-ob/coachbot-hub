@@ -11,22 +11,24 @@
                 <th>Name</th>
                 <th>Role</th>
                 <th>Date Since</th>
+                <th></th>
             </thead>
             <tbody>
                 <tr *ngFor="let staff of tournament.tournamentStaff">
                     <td>{{staff.player.name}}</td>
                     <td>{{staff.role | tournamentStaffRole}}</td>
                     <td>{{staff.createdDate | date}}</td>
+                    <td>
+                        <button *ngIf="staff.playerId !== currentPlayer.id" type="button" class="btn btn-xs btn-danger"
+                            (click)="deleteTournamentStaff(staff.id)">Remove</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
         <form (ngSubmit)="createTournamentStaff()" #addStaffForm="ngForm">
             <h5>Add Staff</h5>
-            <div class="form-group">
-                <label class="control-label" for="input-default">Player</label>
-                <input class="form-control" type="number" [(ngModel)]="tournamentStaff.playerId" name="staffPlayerId"
-                    required>
-            </div>
+            <app-player-selector (playerSelected)="tournamentStaff.playerId = ($event ? $event.id : null)">
+            </app-player-selector>
             <div class="form-group">
                 <label class="control-label" for="input-default">Staff Role</label>
                 <select class="form-control" id="input-default" [(ngModel)]="tournamentStaff.role" name="staffRole"
@@ -38,7 +40,8 @@
                 </select>
             </div>
             <button type="button" class="btn btn-primary float-right"
-                [disabled]="isSaving || isLoading || addStaffForm.invalid">
+                [disabled]="isSaving || isLoading || addStaffForm.invalid || !tournamentStaff.playerId"
+                (click)="createTournamentStaff()">
                 <i *ngIf="isSaving || isLoading" class="fas fa-circle-notch fa-spin"></i>
                 Save
             </button>

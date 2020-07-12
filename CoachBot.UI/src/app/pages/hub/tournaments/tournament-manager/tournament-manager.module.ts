@@ -18,6 +18,8 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { HubPipesModule } from '@pages/hub/shared/pipes/hub-pipes.module';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { NgPipesModule } from 'ngx-pipes';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { PlayerSelectorModule } from '@pages/hub/shared/components/player-selector/player-selector.module';
 
 @NgModule({
     declarations: [
@@ -34,12 +36,15 @@ import { NgPipesModule } from 'ngx-pipes';
         CoreModule,
         RouterModule,
         FormsModule,
+        RouterModule,
         SpinnerModule,
         TournamentManagerRoutingModule,
         SweetAlert2Module,
         HubPipesModule,
         TimepickerModule.forRoot(),
-        NgPipesModule
+        NgPipesModule,
+        MatDatepickerModule,
+        PlayerSelectorModule
     ]
 })
 export class TournamentManagerModule { }

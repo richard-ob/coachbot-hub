@@ -16,16 +16,15 @@
                 <div class="col-lg-10 offset-md-1">
                     <section class="d-flex flex-column text-white my-4">
                         <div id="match-meta-data" class="match-meta-data row mb-4">
-                            <div id="match-meta-data-server" class="col-4 text-left">
-                                <div *ngIf="match.server; else unknownServer" [attr.title]="match.server.address">
+                            <div id="match-meta-data-type" class="col-4 text-left">
+                                {{matchData.matchInfo.type}}
+                            </div>
+                            <div id="match-meta-data-server" class="col-4 text-center">
+                                <div *ngIf="match.server" [attr.title]="match.server.address">
                                     <i class="flag-icon flag-icon-squared"
                                         [ngClass]="'flag-icon-' + match.server.country.code.toLowerCase()"></i>&nbsp;
                                     {{match.server.name}}
                                 </div>
-                                <ng-template #unknownServer>Unknown Server</ng-template>
-                            </div>
-                            <div id="match-meta-data-type" class="col-4 text-center">
-                                {{matchData.matchInfo.type}}
                             </div>
                             <div id="match-meta-data-date" class="col-4 text-right">{{matchDate | date:'medium'}}</div>
                         </div>

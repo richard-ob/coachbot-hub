@@ -1,50 +1,60 @@
 <app-spinner *ngIf="isLoading"></app-spinner>
-<div *ngIf="!isLoading" class="card">
-    <div class="card__header">
-        <h4>Tournament Staff</h4>
+<ng-container *ngIf="!isLoading">
+
+    <div class="card card--has-table">
+        <div class="card__header">
+            <h4>Staff</h4>
+        </div>
+        <div class="card__content">
+            <div *ngIf="!tournament.tournamentStaff.length" class="alert alert-info m-4">There are no
+                staff added yet</div>
+            <table *ngIf="tournament.tournamentStaff.length" class="table table-striped">
+                <thead>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Date Since</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let staff of tournament.tournamentStaff">
+                        <td>{{staff.player.name}}</td>
+                        <td>{{staff.role | tournamentStaffRole}}</td>
+                        <td>{{staff.createdDate | date}}</td>
+                        <td>
+                            <button *ngIf="staff.playerId !== currentPlayer.id" type="button"
+                                class="btn btn-xs btn-danger" (click)="deleteTournamentStaff(staff.id)">Remove</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="card__content">
-        <div *ngIf="!tournament.tournamentStaff.length" class="alert alert-info">There are no
-            staff added yet</div>
-        <table *ngIf="tournament.tournamentStaff.length" class="table table-striped">
-            <thead>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Date Since</th>
-                <th></th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let staff of tournament.tournamentStaff">
-                    <td>{{staff.player.name}}</td>
-                    <td>{{staff.role | tournamentStaffRole}}</td>
-                    <td>{{staff.createdDate | date}}</td>
-                    <td>
-                        <button *ngIf="staff.playerId !== currentPlayer.id" type="button" class="btn btn-xs btn-danger"
-                            (click)="deleteTournamentStaff(staff.id)">Remove</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <form (ngSubmit)="createTournamentStaff()" #addStaffForm="ngForm">
-            <h5>Add Staff</h5>
-            <app-player-selector (playerSelected)="tournamentStaff.playerId = ($event ? $event.id : null)">
-            </app-player-selector>
-            <div class="form-group">
-                <label class="control-label" for="input-default">Staff Role</label>
-                <select class="form-control" id="input-default" [(ngModel)]="tournamentStaff.role" name="staffRole"
-                    required placeholder="Select role..">
-                    <option [ngValue]="tournamentRole.Organiser">Organiser</option>
-                    <option [ngValue]="tournamentRole.MatchAdmin">Match Admin</option>
-                    <option [ngValue]="tournamentRole.Streamer">Streamer</option>
-                    <option [ngValue]="tournamentRole.Commentator">Commentator</option>
-                </select>
-            </div>
-            <button type="button" class="btn btn-primary float-right"
-                [disabled]="isSaving || isLoading || addStaffForm.invalid || !tournamentStaff.playerId"
-                (click)="createTournamentStaff()">
-                <i *ngIf="isSaving || isLoading" class="fas fa-circle-notch fa-spin"></i>
-                Save
-            </button>
-        </form>
+
+    <div class="card">
+        <div class="card__header">
+            <h4>Add Staff</h4>
+        </div>
+        <div class="card__content">
+            <form (ngSubmit)="createTournamentStaff()" #addStaffForm="ngForm">
+                <app-player-selector (playerSelected)="tournamentStaff.playerId = ($event ? $event.id : null)">
+                </app-player-selector>
+                <div class="form-group">
+                    <label class="control-label" for="input-default">Staff Role</label>
+                    <select class="form-control" id="input-default" [(ngModel)]="tournamentStaff.role" name="staffRole"
+                        required placeholder="Select role..">
+                        <option [ngValue]="tournamentRole.Organiser">Organiser</option>
+                        <option [ngValue]="tournamentRole.MatchAdmin">Match Admin</option>
+                        <option [ngValue]="tournamentRole.Streamer">Streamer</option>
+                        <option [ngValue]="tournamentRole.Commentator">Commentator</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary float-right"
+                    [disabled]="isSaving || isLoading || addStaffForm.invalid || !tournamentStaff.playerId"
+                    (click)="createTournamentStaff()">
+                    <i *ngIf="isSaving || isLoading" class="fas fa-circle-notch fa-spin"></i>
+                    Save
+                </button>
+            </form>
+        </div>
     </div>
-</div>
+</ng-container>

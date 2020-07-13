@@ -1,11 +1,10 @@
-<div class="card">
-    <div class="card__header">
-        <h4>Tournament Match Day Slots</h4>
-    </div>
-    <div class="card__content">
-        <app-spinner *ngIf="isLoading"></app-spinner>
-        <ng-container *ngIf="!isLoading">
-            <h5>Current Slots</h5>
+<app-spinner *ngIf="isLoading"></app-spinner>
+<ng-container *ngIf="!isLoading">
+    <div class="card">
+        <div class="card__header">
+            <h4>Match Day Slots</h4>
+        </div>
+        <div class="card__content">
             <div *ngIf="!matchDaySlots.length" class="alert alert-info">
                 There are no slots added yet
             </div>
@@ -14,8 +13,15 @@
                     {{slot.matchTime | date:'shortTime'}} <button type="button" class="btn btn-outline-danger btn-xs"
                         (click)="deleteMatchDaySlot(slot.id)">Delete</button></li>
             </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card__header">
+            <h4>Add Match Day Slot</h4>
+        </div>
+        <div class="card__content">
             <form (ngSubmit)="createMatchDaySlot()" #addSlotForm="ngForm">
-                <h5>Add Match Day Slot</h5>
                 <div class="form-group">
                     <label class="control-label" for="input-default">Day</label>
                     <select class="form-control" [(ngModel)]="matchDaySlot.matchDay" name="matchDay" required>
@@ -38,6 +44,6 @@
                     Save
                 </button>
             </form>
-        </ng-container>
+        </div>
     </div>
-</div>
+</ng-container>

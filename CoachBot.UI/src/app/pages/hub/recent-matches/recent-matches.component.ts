@@ -25,6 +25,7 @@ export class RecentMatchesComponent implements OnInit {
     currentPage = 1;
     totalPages: number;
     totalItems: number;
+    hasFiltersApplied = false;
     isLoadingPage = false;
 
     constructor(private matchService: MatchService, private userPreferenceService: UserPreferenceService, private router: Router) { }
@@ -56,5 +57,6 @@ export class RecentMatchesComponent implements OnInit {
 
     setFilters() {
         this.loadPage(this.currentPage);
+        this.hasFiltersApplied = true;
     }
 }

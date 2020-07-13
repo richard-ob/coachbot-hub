@@ -50,6 +50,7 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.Tournament)
                 .Include(s => s.Server)
                     .ThenInclude(s => s.Country)
+                .Where(m => filters.MatchType == null || m.MatchType == filters.MatchType)
                 .Where(m => filters.RegionId == null || m.Server.RegionId == filters.RegionId || filters.TournamentId != null)
                 .Where(m => filters.IncludeUpcoming || m.KickOff != null)
                 .Where(m => filters.IncludePast || m.KickOff > DateTime.UtcNow)

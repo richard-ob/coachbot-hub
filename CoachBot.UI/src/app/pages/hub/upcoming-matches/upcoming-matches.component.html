@@ -5,31 +5,36 @@
     </div>
     <div *ngIf="matches && matches.length" class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>Matches</h4>
+            <h4>Fixtures</h4>
         </div>
         <div class="card__content">
             <app-spinner *ngIf="!matches"></app-spinner>
-            <table *ngIf="matches" class="table table--large">
+            <table *ngIf="matches" class="table table-striped">
                 <thead>
                     <tr>
                         <th class="team-result__date">Date</th>
-                        <th class="team-result__vs">Match</th>
+                        <th></th>
+                        <th colspan="2"><span style="margin-left: -22px;">Match</span></th>
                         <th class="team-result__status">Match Type</th>
-                        <th class="team-result__status">Match Format</th>
-                        <th class="team-result__ball-posession">Location</th>
-                        <th class="team-result__game-overview">Match Overview</th>
+                        <th class="text-center">Match Format</th>
+                        <th class="text-center">Venue</th>
+                        <th class="text-center">Country</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
                         *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }">
                         <td class="team-result__date">{{match.kickOff | date:'medium'}}</td>
-                        <td class="team-result__vs">
-                            <div class="team-meta">
-                                <strong [attr.title]="match.teamHome.name">{{match.teamHome.teamCode}}</strong>
-                                vs
-                                <strong [attr.title]="match.teamAway.name">{{match.teamAway.teamCode}}</strong>
-                            </div>
+                        <td class="text-right">
+                            <app-team-name [team]="match.teamHome" [isHomeTeam]="true">
+                            </app-team-name>
+                        </td>
+                        <td class="text-center mx-0 px-0">
+                            vs
+                        </td>
+                        <td class="text-left">
+                            <app-team-name [team]="match.teamAway" [isHomeTeam]="false">
+                            </app-team-name>
                         </td>
                         <td class="team-result__status">
                             <ng-container *ngIf="match.tournament; else matchType">
@@ -42,13 +47,12 @@
                                 </ng-container>
                             </ng-template>
                         </td>
-                        <td class="team-result__status">{{match.format}}v{{match.format}}</td>
-                        <td class="team-result__ball-posession" title="{{match.server.country.name}}">
-                            <img src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png">
+                        <td class="text-center">{{match.format}}v{{match.format}}</td>
+                        <td class="text-center">
+                            {{match.server.name}}
                         </td>
-                        <td class="team-result__game-overview">
-                            <a [routerLink]="['../match-overview', match.id]"
-                                class="btn btn-xs btn-outline-primary btn-block">See Match Overview</a>
+                        <td class="text-center" title="{{match.server.country.name}}">
+                            <img src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png">
                         </td>
                     </tr>
                 </tbody>

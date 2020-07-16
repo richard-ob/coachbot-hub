@@ -7,6 +7,7 @@ import { RecentMatchesComponent } from './recent-matches.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { TeamNameDisplayModule } from '../shared/components/team-name-display/team-name-display.module';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
         SpinnerModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        TeamNameDisplayModule
     ],
     exports: [
         RecentMatchesComponent

@@ -9,11 +9,11 @@
             <div class="d-flex flex-column justify-content-center align-items-center p-2">
                 <div class="py-3">
                     <img *ngIf="phaseMatch.match.teamHome.badgeImage"
-                        [src]="phaseMatch.match.teamHome.badgeImage.base64EncodedImage">
+                        [src]="phaseMatch.match.teamHome.badgeImage.base64EncodedImage" style="max-height: 140px">
                     <img *ngIf="!phaseMatch.match.teamHome.badgeImage" src="./assets/images/soccer/blank-crest.png"
                         style="max-height: 140px">
                 </div>
-                <div>
+                <div class="text-center">
                     <h6>{{phaseMatch.match.teamHome.teamCode}}</h6>
                 </div>
             </div>
@@ -53,11 +53,11 @@
             <div class="d-flex flex-column justify-content-center align-items-center p-2">
                 <div class="py-3">
                     <img *ngIf="phaseMatch.match.teamAway.badgeImage"
-                        [src]="phaseMatch.match.teamAway.badgeImage.base64EncodedImage">
+                        [src]="phaseMatch.match.teamAway.badgeImage.base64EncodedImage" style="max-height: 140px">
                     <img *ngIf="!phaseMatch.match.teamAway.badgeImage" src="./assets/images/soccer/blank-crest.png"
                         style="max-height: 140px">
                 </div>
-                <div>
+                <div class="text-center">
                     <h6>{{phaseMatch.match.teamAway.teamCode}}</h6>
                 </div>
             </div>

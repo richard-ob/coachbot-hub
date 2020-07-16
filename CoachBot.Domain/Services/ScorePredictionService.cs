@@ -58,10 +58,11 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
-        public List<ScorePrediction> GetScorePredictions(int tournamentId, ulong? steamId = null, int? playerId = null)
+        public List<ScorePrediction> GetScorePredictions(int? tournamentId = null, ulong? steamId = null, int? playerId = null)
         {
             return _coachBotContext.ScorePredictions
                 .AsNoTracking()
+                .Where(s => tournamentId == null || s.TournamentPhase.TournamentStage.TournamentId == tournamentId)
                 .Where(s => steamId == null || s.Player.SteamID == steamId)
                 .Where(s => playerId == null || s.PlayerId == playerId)
                 .Include(m => m.Match)
@@ -76,11 +77,12 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
-        public List<ScorePredictionLeaderboardPlayer> GetLeaderboard(int tournamentId)
+        public List<ScorePredictionLeaderboardPlayer> GetLeaderboard(int? tournamentId = null)
         {
             return _coachBotContext
                  .ScorePredictions
-                 .Where(s => s.TournamentPhase.TournamentStage.TournamentId == tournamentId)
+                 .Where(s => tournamentId == null || s.TournamentPhase.TournamentStage.TournamentId == tournamentId)
+                 .Where(s => s.Match.MatchStatistics != null)
                  .AsNoTracking()
                  .Select(m => new
                  {
@@ -102,5 +104,35 @@ namespace CoachBot.Domain.Services
                  })
                  .ToList();
         }
+
+        public ScorePredictionLeaderboardPlayer GetMonthLeader()
+        {
+            return _coachBotContext
+                 .ScorePredictions
+                 .Where(s => s.Match.MatchStatistics != null)
+                 .Where(s => s.CreatedDate > DateTime.UtcNow.AddMonths(-1))
+                 .AsNoTracking()
+                 .Select(m => new
+                 {
+                     m.PlayerId,
+                     m.Player.Name,
+                     m.Match.MatchStatistics.HomeGoals,
+                     m.Match.MatchStatistics.AwayGoals,
+                     m.HomeGoalsPrediction,
+                     m.AwayGoalsPrediction,
+                     m.MatchId,
+                     m.Player.Rating
+                 })
+                 .GroupBy(p => new { p.PlayerId, p.Name }, (key, s) => new ScorePredictionLeaderboardPlayer()
+                 {
+                     PlayerId = key.PlayerId,
+                     PlayerName = key.Name,
+                     Points = s.Sum(p => p.HomeGoals == p.HomeGoalsPrediction && p.AwayGoals == p.AwayGoalsPrediction ? 1 : 0),
+                     Predictions = s.Count()
+                 })
+                 .OrderByDescending(s => s.Points)
+                 .FirstOrDefault();
+        }
+
     }
 }

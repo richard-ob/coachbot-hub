@@ -22,9 +22,27 @@ export class ScorePredictorService {
         );
     }
 
+    getHistoricScorePredictionsForPlayer(playerId: number): Observable<ScorePrediction[]> {
+        return this.http.get<ScorePrediction[]>(
+            `${environment.apiUrl}/api/score-predictions/player/${playerId}`
+        );
+    }
+
+    getScorePredictionMonthLeader(): Observable<ScorePredictionLeaderboardPlayer> {
+        return this.http.get<ScorePredictionLeaderboardPlayer>(
+            `${environment.apiUrl}/api/score-predictions/leaderboard/month-leader`
+        );
+    }
+
     getScorePredictionLeaderboard(tournamentId: number): Observable<ScorePredictionLeaderboardPlayer[]> {
         return this.http.get<ScorePredictionLeaderboardPlayer[]>(
             `${environment.apiUrl}/api/score-predictions/tournament/${tournamentId}/leaderboard`
+        );
+    }
+
+    getScorePredictionsGlobalLeaderboard(): Observable<ScorePredictionLeaderboardPlayer[]> {
+        return this.http.get<ScorePredictionLeaderboardPlayer[]>(
+            `${environment.apiUrl}/api/score-predictions/leaderboard`
         );
     }
 

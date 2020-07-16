@@ -10,6 +10,8 @@ namespace CoachBot.Domain.Model
 
         public MatchTeamType? MatchTeamType { get; set; }
 
+        public MatchOutcomeType? MatchOutcome { get; set; }
+
         public int? TournamentId { get; set; }
 
         public int? RegionId { get; set; }

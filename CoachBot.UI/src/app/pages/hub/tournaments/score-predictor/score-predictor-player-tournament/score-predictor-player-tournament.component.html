@@ -33,8 +33,8 @@
                                 </td>
                                 <td>
                                     <ng-container *ngIf="prediction.match.matchStatistics; else tbc">
-                                        {{prediction.match.matchStatistics.homeGoals}} -
-                                        {{prediction.match.matchStatistics.awayGoals}}
+                                        {{prediction.match.matchStatistics.matchGoalsHome}} -
+                                        {{prediction.match.matchStatistics.matchGoalsAway}}
                                     </ng-container>
                                     <ng-template #tbc><span class="text-muted">TBC</span></ng-template>
                                 </td>
@@ -44,9 +44,11 @@
                                             *ngIf="prediction.match.matchStatistics 
                                         && prediction.homeGoalsPrediction === prediction.match.matchStatistics.homeGoals
                                         && prediction.awayGoalsPrediction === prediction.match.matchStatistics.awayGoals; else incorrect">
-                                            Exact Result
+                                            <span class="badge badge-success">Exact Result</span>
                                         </ng-container>
-                                        <ng-template #incorrect><span class="text-muted">Incorrect</span></ng-template>
+                                        <ng-template #incorrect>
+                                            <span class="badge badge-danger">Incorrect</span>
+                                        </ng-template>
                                     </ng-container>
                                 </td>
                             </tr>

@@ -10,14 +10,29 @@ import { HubPipesModule } from '@pages/hub/shared/pipes/hub-pipes.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ScorePredictorComponent } from './score-predictor.component';
 import { ScorePredictorRoutingModule } from './score-predictor.routing-module';
-import { ScorePredictorPlayerComponent } from './score-predictor-player/score-predictor-player.component';
 import { ScorePredictorMatchComponent } from './score-predictor-match/score-predictor-match.component';
+import { ScorePredictorHubComponent } from './score-predictor-hub/score-predictor-hub.component';
+import {
+    ScorePredictorLeaderboardComponent
+} from './score-predictor-hub/score-predictor-leaderboard/score-predictor-leaderboard.component';
+import { ScorePredictorPlayerTournamentComponent } from './score-predictor-player-tournament/score-predictor-player-tournament.component';
+import { ScorePredictorPlayerHistoryComponent } from './score-predictor-player-history/score-predictor-player-history.component';
+import {
+    ScorePredictorHubCurrentTournamentsComponent
+} from './score-predictor-hub/score-predictor-hub-current-tournaments/score-predictor-hub-current-tournaments.component';
+import { ScorePredictorSpotlightComponent } from './score-predictor-hub/score-predictor-spotlight/score-predictor-spotlight.component';
+import { TeamNameDisplayModule } from '@pages/hub/shared/components/team-name-display/team-name-display.module';
 
 @NgModule({
     declarations: [
         ScorePredictorComponent,
-        ScorePredictorPlayerComponent,
-        ScorePredictorMatchComponent
+        ScorePredictorPlayerTournamentComponent,
+        ScorePredictorMatchComponent,
+        ScorePredictorHubComponent,
+        ScorePredictorLeaderboardComponent,
+        ScorePredictorPlayerHistoryComponent,
+        ScorePredictorHubCurrentTournamentsComponent,
+        ScorePredictorSpotlightComponent
     ],
     imports: [
         CommonModule,
@@ -29,6 +44,7 @@ import { ScorePredictorMatchComponent } from './score-predictor-match/score-pred
         NouisliderModule,
         HubPipesModule,
         MatSnackBarModule,
+        TeamNameDisplayModule,
         ScorePredictorRoutingModule
     ]
 })

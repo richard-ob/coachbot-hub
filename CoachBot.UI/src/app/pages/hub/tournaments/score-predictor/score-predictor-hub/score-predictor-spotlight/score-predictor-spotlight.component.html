@@ -1,0 +1,34 @@
+<div class="card statistic-spotlight-card" (click)="spotlightPlayer && navigateToPlayerHistory()">
+    <div class="card__content statistic-spotlight-card widget-player--soccer">
+        <h4 class="statistic-spotlight-title mb-2">Player of the Week</h4>
+        <ng-container *ngIf="!isLoading; else spinner">
+            <div class="widget-player__ribbon">
+                <div class="fa fa-star"></div>
+            </div>
+            <h4 class="statistic-spotlight-name">{{spotlightPlayer ? spotlightPlayer.playerName : 'TBC'}}
+            </h4>
+            <i class="statistic-spotlight-icon icon-svg icon-trophy"></i>
+            <div *ngIf="spotlightPlayer" class="d-flex">
+                <div class="statistic-spotlight-stat-container mr-3">
+                    <div class="statistic-spotlight-stat-value">
+                        {{spotlightPlayer.points}}
+                    </div>
+                    <div class="statistic-spotlight-stat-measure">
+                        Points
+                    </div>
+                </div>
+                <div class="statistic-spotlight-stat-container">
+                    <div class="statistic-spotlight-stat-value">
+                        {{spotlightPlayer.predictions}}
+                    </div>
+                    <div class="statistic-spotlight-stat-measure">
+                        Predictions
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #spinner>
+            <app-spinner [verticalMargins]="false"></app-spinner>
+        </ng-template>
+    </div>
+</div>

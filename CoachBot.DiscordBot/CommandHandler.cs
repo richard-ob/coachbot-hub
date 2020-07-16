@@ -99,7 +99,7 @@ namespace CoachBot
                     var errorId = DateTime.UtcNow.Ticks.ToString();
                     if (_client.GetChannel(_configService.Config.AuditChannelId) is ITextChannel auditChannel)
                     {
-                        await auditChannel.SendMessageAsync("", embed: new EmbedBuilder().WithTitle($"Error - {message.Channel.Name} [REF:{errorId}]").WithDescription($":exclamation: {result.ErrorReason} ```{context.Message.Author.Username}: {context.Message.Content}").WithCurrentTimestamp().Build());
+                        await auditChannel.SendMessageAsync("", embed: new EmbedBuilder().WithTitle($"Error - {message.Channel.Name} [REF:{errorId}]").WithDescription($":exclamation: {result.ErrorReason} ``{context.Message.Author.Username}: {context.Message.Content}``").WithCurrentTimestamp().Build());
                     }
 
                     await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"An error occurred. Please contact an admin, {context.Message.Author.Mention}. [REF:{errorId}]", ServiceResponseStatus.Failure));

@@ -1,9 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ScorePredictorComponent } from './score-predictor.component';
-import { ScorePredictorPlayerComponent } from './score-predictor-player/score-predictor-player.component';
+import { ScorePredictorHubComponent } from './score-predictor-hub/score-predictor-hub.component';
+import { ScorePredictorPlayerTournamentComponent } from './score-predictor-player-tournament/score-predictor-player-tournament.component';
+import { ScorePredictorPlayerHistoryComponent } from './score-predictor-player-history/score-predictor-player-history.component';
 
 const routes: Routes = [
+    {
+        path: 'score-predictor',
+        component: ScorePredictorHubComponent,
+        data: { title: 'Score Predictor' }
+    },
     {
         path: 'tournament/:id/score-predictor',
         component: ScorePredictorComponent,
@@ -11,7 +18,12 @@ const routes: Routes = [
     },
     {
         path: 'tournament/:tournamentId/score-predictor/player/:playerId',
-        component: ScorePredictorPlayerComponent,
+        component: ScorePredictorPlayerTournamentComponent,
+        data: { title: 'Score Predictor' }
+    },
+    {
+        path: 'score-predictor/player/:playerId',
+        component: ScorePredictorPlayerHistoryComponent,
         data: { title: 'Score Predictor' }
     }
 ];

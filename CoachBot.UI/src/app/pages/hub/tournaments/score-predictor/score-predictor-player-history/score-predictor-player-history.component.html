@@ -1,0 +1,86 @@
+<div class="container" [class.py-4]="verticalPadding">
+    <ng-container *ngIf="!isLoading; else spinner">
+        <div class="card card--has-table">
+            <div class="card__header">
+                <h4>{{player.name}}'s Prediction History
+                </h4>
+            </div>
+            <div class="card__content table-responsive" [class.card--overflow-40]="verticalOverflow">
+                <app-spinner *ngIf="!scorePredictions"></app-spinner>
+                <div *ngIf="scorePredictions && !scorePredictions.length" class="alert alert-info">
+                    This player hasn't made any predictions yet!
+                </div>
+                <ng-container *ngIf="scorePredictions && scorePredictions.length">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>Prediction Date</th>
+                            <th>Match Date</th>
+                            <th></th>
+                            <th colspan="2" class="mx-0 px-0">
+                                <span style="margin-left: -13px">Match</span>
+                            </th>
+                            <th class="text-center">Prediction</th>
+                            <th class="text-center">Actual</th>
+                            <th>Outcome</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let prediction of scorePredictions">
+                                <td>{{prediction.createdDate | date:'short'}}</td>
+                                <td>{{prediction.match.kickOff | date:'short'}}</td>
+                                <td class="text-right">
+                                    <app-team-name [team]="prediction.match.teamHome" [isHomeTeam]="true">
+                                    </app-team-name>
+                                </td>
+                                <td class="text-center mx-0 px-0">
+                                    vs
+                                </td>
+                                <td class="text-left">
+                                    <app-team-name [team]="prediction.match.teamAway" [isHomeTeam]="false">
+                                    </app-team-name>
+                                </td>
+                                <td class="text-center">
+                                    <span class="team-result--score">
+                                        {{prediction.homeGoalsPrediction}}
+                                    </span> -
+                                    <span class="team-result--score">
+                                        {{prediction.awayGoalsPrediction}}                                            
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <ng-container *ngIf="prediction.match.matchStatistics; else tbc">
+                                        <span class="team-result--score">
+                                            {{prediction.match.matchStatistics.matchGoalsHome}}
+                                        </span> -
+                                        <span class="team-result--score">
+                                            {{prediction.match.matchStatistics.matchGoalsAway}}                                            
+                                        </span>
+                                    </ng-container>
+                                    <ng-template #tbc><span class="team-result--score-tbc">TBC</span></ng-template>
+                                </td>
+                                <td>
+                                    <ng-container *ngIf="prediction.match.matchStatistics; else pending">
+                                        <ng-container
+                                            *ngIf="prediction.match.matchStatistics
+                                                && prediction.homeGoalsPrediction === prediction.match.matchStatistics.homeGoals
+                                                && prediction.awayGoalsPrediction === prediction.match.matchStatistics.awayGoals; else incorrect">
+                                            <span class="badge badge-success">Exact Result</span>
+                                        </ng-container>
+                                        <ng-template #incorrect>
+                                            <span class="badge badge-danger">Incorrect</span>
+                                        </ng-template>
+                                    </ng-container>
+                                    <ng-template #pending>
+                                        <span class="badge badge-info">Pending</span>
+                                    </ng-template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #spinner>
+        <app-spinner></app-spinner>
+    </ng-template>
+</div>

@@ -21,13 +21,13 @@
         <div class="card__header card__header--has-btn" style="overflow: visible">
             <h4>Player Statistics</h4>
             <div class="btn-group btn-group-xs ml-2" dropdown>
-                <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-secondary dropdown-toggle"
-                    aria-controls="dropdown-basic">
+                <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-light dropdown-toggle"
+                    aria-controls="dropdown-basic" style="top: -3px;">
                     <ng-container [ngSwitch]="currentPlayerStat">
-                        <span *ngSwitchCase="playerStatType.General">General</span>
-                        <span *ngSwitchCase="playerStatType.Goalkeeping">Goalkeeping</span>
-                        <span *ngSwitchCase="playerStatType.Defensive">Defensive</span>
-                        <span *ngSwitchCase="playerStatType.Defensive">Attacking</span>
+                        <span *ngSwitchCase="playerStatType.General">General Stats</span>
+                        <span *ngSwitchCase="playerStatType.Goalkeeping">Goalkeeping Stats</span>
+                        <span *ngSwitchCase="playerStatType.Defensive">Defending Stats</span>
+                        <span *ngSwitchCase="playerStatType.Attacking">Attacking Stats</span>
                     </ng-container>
                     <span class="caret"></span>
                 </button>
@@ -43,7 +43,7 @@
                     </li>
                     <li role="menuitem">
                         <a class="dropdown-item clickable"
-                            (click)="currentPlayerStat = playerStatType.Defending">Defending Stats</a>
+                            (click)="currentPlayerStat = playerStatType.Defensive">Defending Stats</a>
                     </li>
                     <li role="menuitem">
                         <a class="dropdown-item clickable"
@@ -126,21 +126,35 @@
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                         <th sorter [sortByColumn]="'Draws'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        <th *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
+                            sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th *ngIf="currentPlayerStat !== playerStatType.Goalkeeping" sorter
-                            [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Goals'" [currentSort]="sortBy"
+                        <th *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
+                            sorter [sortByColumn]="'GoalsAverage'" [sortByColumnName]="'Goals'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
                             [average]="true">
                         </th>
-                        <th sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
+                        <th *ngIf="currentPlayerStat === playerStatType.Attacking" sorter
+                            [sortByColumn]="'ShotsAverage'" [sortByColumnName]="'Shots'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
+                        </th>
+                        <th *ngIf="currentPlayerStat === playerStatType.Attacking" sorter
+                            [sortByColumn]="'ShotConversionPercentage'" [sortByColumnName]="'Shot Conversion'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center">
                         </th>
-                        <!-- Shots Per Goal -->
-                        <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        <th *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
+                            sorter [sortByColumn]="'ShotAccuracyPercentage'" [sortByColumnName]="'Shot Accuracy'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center">
+                        </th>
+                        <!-- Shots Per Goal ? -->
+                        <th *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
+                            sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'AssistsAverage'" [sortByColumnName]="'Assists'"
+                        <th *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
+                            sorter [sortByColumn]="'AssistsAverage'" [sortByColumnName]="'Assists'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center" [average]="true">
                         </th>
@@ -151,29 +165,67 @@
                         <th sorter [sortByColumn]="'PassCompletionPercentageAverage'"
                             [sortByColumnName]="'Pass Completion'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'PossessionPercentageAverage'" [sortByColumnName]="'Possession'"
+                        <th *ngIf="currentPlayerStat !== playerStatType.Attacking" sorter
+                            [sortByColumn]="'PossessionPercentageAverage'" [sortByColumnName]="'Possession'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center"></th>
-                        <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                        <th *ngIf="currentPlayerStat !== playerStatType.Attacking" sorter [sortByColumn]="'YellowCards'"
+                            [sortByColumnName]="'Yellows'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                        <th *ngIf="currentPlayerStat !== playerStatType.Attacking" sorter [sortByColumn]="'RedCards'"
+                            [sortByColumnName]="'Reds'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center"></th>
+                        <th *ngIf="currentPlayerStat === playerStatType.Defensive" sorter
+                            [sortByColumn]="'InterceptionsAverage'" [sortByColumnName]="'Interceptions'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center" [average]="true">
+                        </th>
+                        <th *ngIf="currentPlayerStat === playerStatType.Defensive" sorter
+                            [sortByColumn]="'FoulsAverage'" [sortByColumnName]="'Fouls'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
+                        </th>
+                        <th *ngIf="currentPlayerStat === playerStatType.Defensive" sorter
+                            [sortByColumn]="'SlidingTacklesCompletedAverage'"
+                            [sortByColumnName]="'Sliding Tackles Complete'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
+                        </th>
+                        <th *ngIf="currentPlayerStat === playerStatType.Defensive" sorter
+                            [sortByColumn]="'OwnGoalsAverage'" [sortByColumnName]="'Own Goals'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
+                        </th>
                         <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
                             [sortByColumn]="'KeeperSavesAverage'" [sortByColumnName]="'Saves'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
                             [average]="true">
                         </th>
                         <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
+                            [sortByColumn]="'KeeperSavePercentage'" [sortByColumnName]="'Save %'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
+                        </th>
+                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
                             [sortByColumn]="'KeeperSavesCaughtAverage'" [sortByColumnName]="'Saves Caught'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center" [average]="true">
                         </th>
-                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
-                            [sortByColumn]="'GoalsConcededAverage'" [sortByColumnName]="'Goals Conceded'"
+                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping || currentPlayerStat === playerStatType.Defensive"
+                            sorter [sortByColumn]="'GoalsConcededAverage'" [sortByColumnName]="'Goals Conceded'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center" [average]="true">
                         </th>
-                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
+                        <th *ngIf="currentPlayerStat === playerStatType.Attacking" sorter
+                            [sortByColumn]="'OffsidesAverage'" [sortByColumnName]="'Offsides'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
+                        </th>
+                        <th *ngIf="currentPlayerStat === playerStatType.Attacking" sorter
+                            [sortByColumn]="'PenaltiesAverage'" [sortByColumnName]="'Penalties'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
+                            [average]="true">
+                        </th>
+                        <th *ngIf="currentPlayerStat === playerStatType.General" sorter
                             [sortByColumn]="'DistanceCoveredAverage'" [sortByColumnName]="'Distance'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center" [average]="true">
@@ -224,31 +276,59 @@
                         <td class="team-result__status text-center">{{statistics.wins}}</td>
                         <td class="team-result__status text-center">{{statistics.losses}}</td>
                         <td class="team-result__status text-center">{{statistics.draws}}</td>
-                        <td class="team-result__status text-center">{{statistics.goals}}</td>
-                        <td *ngIf="currentPlayerStat !== playerStatType.Goalkeeping"
+                        <td *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
+                            class="team-result__status text-center">{{statistics.goals}}</td>
+                        <td *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
                             class="team-result__status text-center">
                             {{statistics.goalsAverage | number : '1.2-2'}}</td>
-                        <td class="team-result__status text-center">{{statistics.shotAccuracyPercentage | percent }}
+                        <td *ngIf="currentPlayerStat === playerStatType.Attacking" class="text-center">
+                            {{statistics.shotsAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="currentPlayerStat === playerStatType.Attacking" class="text-center">
+                            {{statistics.shotConversionPercentage | percent}}</td>
+                        <td *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
+                            class="team-result__status text-center">
+                            {{statistics.shotAccuracyPercentage | percent: '1.2-2' }}
                         </td>
-                        <td class="team-result__status text-center">{{statistics.assists}}</td>
-                        <td class="team-result__status text-center">{{statistics.assistsAverage | number : '1.2-2'}}
+                        <td *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
+                            class="team-result__status text-center">{{statistics.assists}}</td>
+                        <td *ngIf="currentPlayerStat !== playerStatType.Goalkeeping && currentPlayerStat !== playerStatType.Defensive"
+                            class="team-result__status text-center">{{statistics.assistsAverage | number : '1.2-2'}}
                         </td>
                         <td class="team-result__status text-center">{{statistics.passesAverage | number : '1.2-2'}}</td>
                         <td class="team-result__status text-center">
-                            {{statistics.passCompletionPercentageAverage | percent }}
+                            {{statistics.passCompletionPercentageAverage | percent: '1.2-2' }}
                         </td>
-                        <td class="team-result__status text-center">
+                        <td *ngIf="currentPlayerStat !== playerStatType.Attacking"
+                            class="team-result__status text-center">
                             {{(statistics.possessionPercentageAverage | number : '1.2-2') + '%' }}
                         </td>
-                        <td class="team-result__status text-center">{{statistics.yellowCards}}</td>
-                        <td class="team-result__status text-center">{{statistics.redCards}}</td>
+                        <td *ngIf="currentPlayerStat !== playerStatType.Attacking"
+                            class="team-result__status text-center">{{statistics.yellowCards}}</td>
+                        <td *ngIf="currentPlayerStat !== playerStatType.Attacking"
+                            class="team-result__status text-center">{{statistics.redCards}}</td>
+                        <td *ngIf="currentPlayerStat === playerStatType.Defensive" class="text-center">
+                            {{statistics.interceptionsAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="currentPlayerStat === playerStatType.Defensive" class="text-center">
+                            {{statistics.foulsAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="currentPlayerStat === playerStatType.Defensive" class="text-center">
+                            {{statistics.slidingTacklesCompletedAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="currentPlayerStat === playerStatType.Defensive" class="text-center">
+                            {{statistics.ownGoalsAverage | number : '1.2-2'}}</td>
                         <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping" class="text-center">
                             {{statistics.keeperSavesAverage | number : '1.2-2'}}</td>
                         <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping" class="text-center">
-                            {{statistics.keeperSavesCaughtAverage | number : '1.2-2'}}</td>
+                            {{statistics.keeperSavePercentage | percent: '1.2-2'}}
+                        </td>
                         <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping" class="text-center">
+                            {{statistics.keeperSavesCaughtAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping || currentPlayerStat === playerStatType.Defensive"
+                            class="text-center">
                             {{statistics.goalsConcededAverage | number : '1.2-2'}}</td>
-                        <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping"
+                        <td *ngIf="currentPlayerStat === playerStatType.Attacking" class="text-center">
+                            {{statistics.offsidesAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="currentPlayerStat === playerStatType.Attacking" class="text-center">
+                            {{statistics.penaltiesAverage | number : '1.2-2'}}</td>
+                        <td *ngIf="currentPlayerStat === playerStatType.General"
                             class="team-result__status text-center">
                             {{(statistics.distanceCoveredAverage / 1000) | number : '1.2-2'}}km</td>
                     </tr>

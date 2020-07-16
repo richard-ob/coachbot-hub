@@ -6,6 +6,7 @@ import { TeamService } from '@pages/hub/shared/services/team.service';
 import { TeamProfileSpotlightStatistic } from './team-profile-spotlight-statistic.enum';
 import { TeamMatchStatistics } from '@pages/hub/shared/model/team-match-statistics.model';
 import { Router } from '@angular/router';
+import { MatchOutcomeType } from '@pages/hub/shared/model/match-outcome-type.enum';
 
 @Component({
     selector: 'app-team-profile-spotlight',
@@ -53,6 +54,7 @@ export class TeamProfileSpotlightComponent implements OnInit {
                 this.ordering = 'DESC';
                 this.iconClass = '';
                 this.iconClass = 'icon-soccer-ball';
+                this.filters.matchOutcome = MatchOutcomeType.Win;
                 break;
             case TeamProfileSpotlightStatistic.BiggestLoss:
                 this.modelProperty = 'goalsConceded';
@@ -61,6 +63,7 @@ export class TeamProfileSpotlightComponent implements OnInit {
                 this.measureName = 'Goals Conceded';
                 this.ordering = 'DESC';
                 this.iconClass = 'icon-keepers-glove';
+                this.filters.matchOutcome = MatchOutcomeType.Loss;
                 break;
             case TeamProfileSpotlightStatistic.BestPassing:
                 this.modelProperty = 'passesCompleted';
@@ -69,6 +72,7 @@ export class TeamProfileSpotlightComponent implements OnInit {
                 this.measureName = 'Passes';
                 this.ordering = 'DESC';
                 this.iconClass = 'icon-soccer-shots';
+                this.filters.matchOutcome = null;
                 break;
         }
     }

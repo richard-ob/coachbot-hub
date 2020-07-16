@@ -43,7 +43,7 @@ namespace CoachBot.Domain.Services
                     var tournamentPhaseId = _coachBotContext.TournamentGroupMatches.Single(m => m.MatchId == match.Id).TournamentPhaseId;
                     _fantasyService.GenerateFantasyPhaseSnapshots(tournamentPhaseId);
                 }
-                _discordNotificationService.SendAuditChannelMessage($"New match statistics uploaded for {match.TeamHome} vs {match.TeamAway}").Wait();
+                _discordNotificationService.SendAuditChannelMessage($"New match statistics uploaded for {match.TeamHome.Name} vs {match.TeamAway.Name}").Wait();
             }
         }
 
@@ -266,6 +266,7 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
+                .Where(p => filters.MatchOutcome == null || p.MatchOutcome == filters.MatchOutcome)
                 .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
@@ -292,6 +293,7 @@ namespace CoachBot.Domain.Services
                 .Where(p => filters.MatchTeamType == null || p.MatchTeamType == filters.MatchTeamType)
                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
+                .Where(p => filters.MatchOutcome == null || p.MatchOutcome == filters.MatchOutcome)
                 .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
@@ -314,6 +316,7 @@ namespace CoachBot.Domain.Services
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
                  .Where(t => filters.TeamType == null || t.Team.TeamType == filters.TeamType)
+                 .Where(p => filters.MatchOutcome == null || p.MatchOutcome == filters.MatchOutcome)
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
@@ -376,7 +379,8 @@ namespace CoachBot.Domain.Services
                      m.MatchOutcome,
                      m.Substitute,
                      m.MatchId,
-                     m.Player.Rating
+                     m.Player.Rating,
+                     m.PositionId
                  })
                  .GroupBy(p => new { p.PlayerId, p.SteamID, p.Name, p.Rating }, (key, s) => new PlayerStatisticTotals()
                  {
@@ -396,12 +400,12 @@ namespace CoachBot.Domain.Services
                      ShotsAverage = s.Average(p => p.Shots),
                      ShotsOnGoal = s.Sum(p => p.ShotsOnGoal),
                      ShotsOnGoalAverage = s.Average(p => p.ShotsOnGoal),
-                     ShotAccuracyPercentage = s.Average(p => p.Shots > 0 ? Convert.ToDouble(p.ShotsOnGoal) / Convert.ToDouble(p.Shots) : 0),
+                     ShotAccuracyPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.ShotsOnGoal)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
                      Passes = s.Sum(p => p.Passes),
                      PassesAverage = s.Average(p => p.Passes),
                      PassesCompleted = s.Sum(p => p.PassesCompleted),
                      PassesCompletedAverage = s.Average(p => p.PassesCompleted),
-                     PassCompletionPercentageAverage = s.Average(p => p.Passes > 0 ? Convert.ToDouble(p.PassesCompleted) / Convert.ToDouble(p.Passes) : 0),
+                     PassCompletionPercentageAverage = s.Sum(p => Convert.ToDouble(p.Passes)) > 0 ? s.Sum(p => Convert.ToDouble(p.PassesCompleted)) / s.Sum(p => Convert.ToDouble(p.Passes)) : 0,
                      Interceptions = s.Sum(p => p.Interceptions),
                      InterceptionsAverage = s.Average(p => p.Interceptions),
                      Offsides = s.Sum(p => p.Offsides),
@@ -427,6 +431,8 @@ namespace CoachBot.Domain.Services
                      Corners = s.Sum(p => p.Corners),
                      PlayerId = key.PlayerId,
                      Appearances = s.Count(),
+                     KeeperSavePercentage = s.Sum(p => Convert.ToDouble(p.KeeperSaves)) > 0 ? s.Sum(p => Convert.ToDouble(p.KeeperSaves)) / (s.Sum(p => Convert.ToDouble(p.KeeperSaves)) + s.Sum(p => Convert.ToDouble(p.GoalsConceded))) : 0,
+                     ShotConversionPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.Goals)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
                      SubstituteAppearances = s.Sum(p => p.Substitute ? 1 : 0),
                      Wins = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0),
                      Losses = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0),

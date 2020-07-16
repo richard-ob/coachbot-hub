@@ -32,6 +32,8 @@ namespace CoachBot.Domain.Model
 
         public int? MinimumSecondsPlayed { get; set; }
 
+        public MatchOutcomeType? MatchOutcome { get; set; }
+
         public float? MinimumRating { get; set; }
 
         public float? MaximumRating { get; set; }

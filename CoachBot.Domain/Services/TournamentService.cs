@@ -171,7 +171,7 @@ namespace CoachBot.Domain.Services
             existingTournament.IsPublic = tournament.IsPublic;
             existingTournament.StartDate = tournament.StartDate;
 
-            var tournamentSeries = _coachBotContext.TournamentSeries.Single(ts => ts.Tournaments.Any(t => ts.Id == tournament.Id));
+            var tournamentSeries = _coachBotContext.TournamentSeries.Single(ts => ts.Tournaments.Any(t => ts.Id == tournament.TournamentSeriesId));
             if (tournament.IsPublic)
             {
                 tournamentSeries.IsPublic = true;

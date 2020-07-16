@@ -137,6 +137,10 @@ namespace CoachBot.Domain.Model
 
         public double PossessionPercentageAverage { get; set; }
 
+        public double? ShotConversionPercentage { get; set; }
+
+        public double? KeeperSavePercentage { get; set; }
+
         public int GoalDifference { get; set; }
 
         public int Points { get; set; }

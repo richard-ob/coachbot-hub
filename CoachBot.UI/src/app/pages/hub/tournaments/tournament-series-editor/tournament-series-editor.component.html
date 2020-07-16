@@ -20,7 +20,7 @@
                     <tbody>
                         <tr *ngFor="let edition of tournamentSeries.tournaments">
                             <td><a [routerLink]="['/tournament-manager/', edition.id]">{{edition.name}}</a></td>
-                            <td>{{edition.format}}vs{{edition.format}}</td>
+                            <td>{{edition.format}}v{{edition.format}}</td>
                             <td>{{edition.isPublic ? 'Yes' : 'No' }}</td>
                             <td>{{edition.startDate | date}}</td>
                             <td>{{edition.endDate | date }}</td>
@@ -70,6 +70,7 @@
                             <option [ngValue]="teamTypes.Club">Club</option>
                             <option [ngValue]="teamTypes.National">National</option>
                             <option [ngValue]="teamTypes.Mix">Mix</option>
+                            <option [ngValue]="teamTypes.Draft">Draft</option>
                         </select>
                     </div>
                     <div class="form-group">

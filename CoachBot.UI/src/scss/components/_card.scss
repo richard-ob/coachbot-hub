@@ -270,6 +270,27 @@
 	}
 
 
+	.card--overflow-30 {
+		overflow-y: auto;
+		max-height: 30vh;
+	}
+	.card--overflow-40 {
+		overflow-y: auto;
+		max-height: 40vh;
+
+	}
+	.card--overflow-50 {
+		overflow-y: auto;
+		max-height: 50vh;
+
+	}
+	.card--overflow-60 {
+		overflow-y: auto;
+		max-height: 60vh;
+
+	}
+
+
 // Sizes
 .card--lg {
 

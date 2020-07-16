@@ -8,10 +8,10 @@ import { PlayerService } from '@pages/hub/shared/services/player.service';
 import { Player } from '@pages/hub/shared/model/player.model';
 
 @Component({
-    selector: 'app-score-predictor-player',
-    templateUrl: './score-predictor-player.component.html'
+    selector: 'app-score-predictor-player-tournament',
+    templateUrl: './score-predictor-player-tournament.component.html'
 })
-export class ScorePredictorPlayerComponent implements OnInit {
+export class ScorePredictorPlayerTournamentComponent implements OnInit {
 
     tournament: Tournament;
     scorePredictions: ScorePrediction[];

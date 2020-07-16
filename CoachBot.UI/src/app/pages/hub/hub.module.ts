@@ -59,6 +59,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FantasyTeamManagerModule } from './tournaments/fantasy/fantasy.module';
 import { BotManagerModule } from './bot-manager/bot-manager.module';
 import { TournamentManagerModule } from './tournaments/tournament-manager/tournament-manager.module';
+import { TeamNameDisplayModule } from './shared/components/team-name-display/team-name-display.module';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { TournamentManagerModule } from './tournaments/tournament-manager/tourna
     ChromeColourPickerModule,
     AssetImageUploaderModule,
     ThSorterModule,
+    TeamNameDisplayModule,
     TimepickerModule.forRoot()
   ],
   providers: [

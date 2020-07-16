@@ -19,6 +19,9 @@
                             <span class="player-info__first-name">{{tournament.name}}</span>
                         </h1>
                         <a class="btn btn-xs btn-primary" [routerLink]="['/fantasy/', tournament.id]">Fantasy Game</a>
+                        <a class="btn btn-xs btn-primary"
+                            [routerLink]="['/tournament/' + tournament.id + '/score-predictor']">Score Predictor
+                            Game</a>
                     </div>
                     <div class="player-info-details">
                         <div class="player-info-details__item player-info-details__item--height"

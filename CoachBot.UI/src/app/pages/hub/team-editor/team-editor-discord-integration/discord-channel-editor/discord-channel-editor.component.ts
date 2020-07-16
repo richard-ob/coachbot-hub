@@ -141,6 +141,24 @@ export class DiscordChannelEditorComponent implements OnInit {
         }
     }
 
+    usePositionNumbersWithGk() {
+        const firstChannelPosition = this.channel.channelPositions[0];
+        firstChannelPosition.positionId = 0;
+        firstChannelPosition.position = new Position();
+        firstChannelPosition.position.id = 0;
+        firstChannelPosition.position.name = 'GK';
+        firstChannelPosition.ordinal = 0;
+        const format = this.channel.channelPositions.length;
+        for (let i = 1; i < format; i++) {
+            const channelPosition = this.channel.channelPositions[i - 1];
+            channelPosition.positionId = 0;
+            channelPosition.position = new Position();
+            channelPosition.position.id = 0;
+            channelPosition.position.name = i.toString();
+            channelPosition.ordinal = i;
+        }
+    }
+
     usePositionNumbers() {
         const format = this.channel.channelPositions.length;
         for (let i = 1; i <= format; i++) {

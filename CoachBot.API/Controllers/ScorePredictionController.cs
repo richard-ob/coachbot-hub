@@ -20,21 +20,39 @@ namespace CoachBot.Controllers
         }
 
         [HttpGet("tournament/{tournamentId}")]
-        public List<ScorePrediction> GetScorePredictions(int tournamentId)
+        public List<ScorePrediction> GetScorePredictionsByTournament(int tournamentId)
         {
             return _scorePredictionService.GetScorePredictions(tournamentId, User.GetSteamId());
         }
 
         [HttpGet("tournament/{tournamentId}/player/{playerId}")]
-        public List<ScorePrediction> GetScorePredictions(int tournamentId, int playerId)
+        public List<ScorePrediction> GetScorePredictions(int playerId, int tournamentId)
         {
             return _scorePredictionService.GetScorePredictions(tournamentId, null, playerId);
+        }
+
+        [HttpGet("player/{playerId}")]
+        public List<ScorePrediction> GetScorePredictionsByPlayer(int playerId)
+        {
+            return _scorePredictionService.GetScorePredictions(null, null, playerId);
         }
 
         [HttpGet("tournament/{tournamentId}/leaderboard")]
         public List<ScorePredictionLeaderboardPlayer> GetScorePredictionLeaderboard(int tournamentId)
         {
             return _scorePredictionService.GetLeaderboard(tournamentId);
+        }
+
+        [HttpGet("leaderboard")]
+        public List<ScorePredictionLeaderboardPlayer> GetScorePredictionLeaderboard()
+        {
+            return _scorePredictionService.GetLeaderboard();
+        }
+
+        [HttpGet("leaderboard/month-leader")]
+        public ScorePredictionLeaderboardPlayer GetScorePredictionMonthLeader()
+        {
+            return _scorePredictionService.GetMonthLeader();
         }
 
         [Authorize]

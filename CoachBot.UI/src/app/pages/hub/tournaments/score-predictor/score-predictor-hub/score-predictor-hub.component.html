@@ -1,0 +1,24 @@
+<div class="container py-4">
+    <ng-container *ngIf="!isLoading">
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <app-score-predictor-leaderboard></app-score-predictor-leaderboard>
+            </div>
+            <div class="col-12 col-md-4">
+                <app-score-predictor-spotlight></app-score-predictor-spotlight>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <app-score-predictor-player-history [verticalOverflow]="true" [verticalPadding]="false"
+                    [playerId]="player.id">
+                </app-score-predictor-player-history>
+            </div>
+            <div class="col-12">
+                <app-score-predictor-hub-current-tournaments></app-score-predictor-hub-current-tournaments>
+            </div>
+        </div>
+
+    </ng-container>
+    <app-spinner *ngIf="isLoading"></app-spinner>
+</div>

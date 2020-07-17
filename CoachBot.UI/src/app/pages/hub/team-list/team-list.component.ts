@@ -52,6 +52,7 @@ export class TeamListComponent implements OnInit {
                 this.totalPages = response.totalPages;
                 this.totalItems = response.totalItems;
                 this.isLoadingPage = false;
+                this.isLoading = false;
             });
     }
 

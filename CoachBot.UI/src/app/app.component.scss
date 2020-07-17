@@ -17,3 +17,30 @@
         max-width: 15.2%;
     }
 }
+
+.header--steam-button {
+    padding-right: 20px;
+    background-color: #5c7e10;
+    margin-right: 9px;
+    border-radius: 4px;
+    &:hover {
+        opacity: 0.8;
+    }
+    > i {
+        padding-left: 15px;
+        margin-top: 5px
+    }
+}
+
+.header--discord-button {
+    padding-right: 20px;
+    background: #7289da;
+    border-radius: 4px;
+    &:hover {
+        opacity: 0.8;
+    }
+    > i {
+        padding-left: 15px;
+        margin-top: 5px
+    }
+}

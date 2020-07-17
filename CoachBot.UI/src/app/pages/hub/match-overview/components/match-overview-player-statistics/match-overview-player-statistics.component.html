@@ -96,7 +96,7 @@
                 <tbody>
                     <tr *ngFor="let player of players" (click)="navigateToPlayerProfile(player.playerId)"
                         title="View player's profile" [style.border-left-color]="player.team.color"
-                        style="border-left: 4px solid transparent;">
+                        style="border-left: 5px solid transparent;">
                         <td class="team-result__status">{{player.team.teamCode}}</td>
                         <td class="team-result__status">{{player.position.name}}</td>
                         <td class="team-result__score">{{player.nickname}}</td>

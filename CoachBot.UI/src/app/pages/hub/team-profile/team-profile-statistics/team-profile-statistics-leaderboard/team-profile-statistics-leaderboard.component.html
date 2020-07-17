@@ -12,8 +12,8 @@
                     {{player[statisticProperty]}}</div>
             </div>
         </div>
-        <div *ngIf="!isLoading && !playerStatistics.length" class="alert alert-info m-2">
-            No match data
+        <div *ngIf="!isLoading && !playerStatistics.length" class="player-profile-statistics__no-data m-4">
+            No match data available
         </div>
         <ng-template #spinner>
             <app-spinner class="py-3"></app-spinner>

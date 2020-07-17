@@ -1,6 +1,9 @@
 <div class="container">
     <app-spinner *ngIf="!playerTeamStatisticsTotals"></app-spinner>
-    <div *ngIf="playerTeamStatisticsTotals" class="card card--has-table">
+    <div *ngIf="playerTeamStatisticsTotals && !playerTeamStatisticsTotals.length" class="alert alert-info">
+        This team doesn't have any active players. What a shame.
+    </div>
+    <div *ngIf="playerTeamStatisticsTotals && playerTeamStatisticsTotals.length" class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Current Squad</h4>
         </div>

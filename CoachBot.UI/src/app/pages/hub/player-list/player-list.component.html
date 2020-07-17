@@ -1,18 +1,24 @@
-<div class="container-fluid py-4">
+<div *ngIf="isLoading" class="py-4">
+    <app-spinner></app-spinner>
+</div>
+<div *ngIf="!isLoading && !playerStatistics.length && !filtersApplied" class="alert alert-info">
+    No player data available yet. Come back later! Please.
+</div>
+<div *ngIf="!isLoading && (playerStatistics.length || filtersApplied)" class="container-fluid py-4">
     <div class="row">
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-lg-3">
             <app-player-spotlight [statistic]="playerSpotlightStatistic.Goals" [tournamentId]="tournamentId">
             </app-player-spotlight>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-lg-3">
             <app-player-spotlight [statistic]="playerSpotlightStatistic.Assists" [tournamentId]="tournamentId">
             </app-player-spotlight>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-lg-3">
             <app-player-spotlight [statistic]="playerSpotlightStatistic.GoalsConceded" [tournamentId]="tournamentId">
             </app-player-spotlight>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-lg-3">
             <app-player-spotlight [statistic]="playerSpotlightStatistic.PassCompletion" [tournamentId]="tournamentId">
             </app-player-spotlight>
         </div>
@@ -51,11 +57,7 @@
                     </li>
                 </ul>
             </div>
-            <ul *ngIf="!hideFilters" class="team-result-filter d-none d-md-inline float-right">
-                <li class="team-result-filter__item">
-                    <input type="text" class="form-control input-xs" placeholder="Filter By Player Name"
-                        [(ngModel)]="filters.playerName">
-                </li>
+            <ul *ngIf="!hideFilters" class="team-result-filter d-none d-xl-inline float-right">
                 <li class="team-result-filter__item">
                     <label class="checkbox checkbox-inline mr-2">
                         <input [(ngModel)]="filters.includeSubstituteAppearances" type="checkbox"
@@ -65,7 +67,7 @@
                 </li>
                 <li class="team-result-filter__item">
                     <select [(ngModel)]="filters.teamId" name="position" class="form-control" style="text-align-last: center;
-                    text-align: center;" #teamSelect>
+                    text-align: center; max-width: 95px;" #teamSelect>
                         <option [ngValue]="undefined">All Teams</option>
                         <option *ngFor="let team of teams" [ngValue]="team.id">{{team.name}}</option>
                     </select>
@@ -86,6 +88,10 @@
                     </select>
                 </li>
                 <li class="team-result-filter__item">
+                    <input type="text" class="form-control input-xs" placeholder="Filter By Player Name"
+                        [(ngModel)]="filters.playerName">
+                </li>
+                <li class="team-result-filter__item">
                     <button type="button" class="btn btn-secondary btn-xs card-header__button" (click)="setFilters()">
                         Filter
                     </button>
@@ -95,12 +101,7 @@
         <div class="card__content table-responsive">
             <app-spinner *ngIf="isLoading"></app-spinner>
             <div *ngIf="!isLoading && !playerStatistics.length" class="m-3 alert alert-info">
-                <ng-container *ngIf="filtersApplied">
-                    No matching player data available
-                </ng-container>
-                <ng-container *ngIf="!filtersApplied">
-                    No matches have been played yet in this region. Hang tight!
-                </ng-container>
+                No matching player data available
             </div>
             <table *ngIf="!isLoading && playerStatistics.length"
                 class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
@@ -248,7 +249,7 @@
                                 </ngx-skeleton-loader>
                             </ng-template>
                         </td>
-                        <td class="no-left-border">{{statistics.name}}</td>
+                        <td class="no-left-border" style="font-weight: 600;">{{statistics.name}}</td>
                         <td class="team-result__ball-posession text-center text-center py-0 px-2"
                             style="vertical-align: middle;">
                             <ng-container *ngIf="statistics.steamUserProfile; else flagSkeleton">
@@ -340,4 +341,3 @@
         <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
     </div>
 </div>
-<!-- Team Latest Results / End -->

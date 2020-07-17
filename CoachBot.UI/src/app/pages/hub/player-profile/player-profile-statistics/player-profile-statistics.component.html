@@ -1,16 +1,16 @@
 <div class="container">
     <app-spinner *ngIf="isLoading"></app-spinner>
-    <div *ngIf="!isLoading && (!playerStatistics)" class="alert alert-info">
+    <div *ngIf="!isLoading && !playerStatistics" class="alert alert-info">
         Hold tight! This player has not played in matches yet
     </div>
     <div *ngIf="!isLoading && playerStatistics" class="row">
-        <app-player-profile-spotlight class="col-12 col-md-4" [playerId]="playerId"
+        <app-player-profile-spotlight class="col-12 col-lg-4" [playerId]="playerId"
             [statistic]="spotlightStatistic.MostGoals">
         </app-player-profile-spotlight>
-        <app-player-profile-spotlight class="col-12 col-md-4" [playerId]="playerId"
+        <app-player-profile-spotlight class="col-12 col-lg-4" [playerId]="playerId"
             [statistic]="spotlightStatistic.MostAssists">
         </app-player-profile-spotlight>
-        <app-player-profile-spotlight class="col-12 col-md-4" [playerId]="playerId"
+        <app-player-profile-spotlight class="col-12 col-lg-4" [playerId]="playerId"
             [statistic]="spotlightStatistic.MostCompletedPasses">
         </app-player-profile-spotlight>
         <div class="col-12">
@@ -170,6 +170,13 @@
                             <div class="player-profile-statistics__statistic-box__item-statistic">Saves (Average)</div>
                             <div class="player-profile-statistics__statistic-box__item-value">
                                 {{playerStatistics.keeperSavesAverage | number : '1.2-2'}}
+                            </div>
+                        </div>
+                        <div class="player-profile-statistics__statistic-box__item">
+                            <div class="player-profile-statistics__statistic-box__item-statistic">Saves (Percentage)
+                            </div>
+                            <div class="player-profile-statistics__statistic-box__item-value">
+                                {{playerStatistics.keeperSavePercentage | percent:'1.2-2'}}
                             </div>
                         </div>
                         <div class="player-profile-statistics__statistic-box__item">

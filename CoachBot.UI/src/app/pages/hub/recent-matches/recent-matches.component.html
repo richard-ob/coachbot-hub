@@ -1,6 +1,9 @@
 <div class="container" [class.py-4]="verticalPadding">
     <!-- Team Latest Results -->
     <app-spinner *ngIf="!matches"></app-spinner>
+    <div *ngIf="matches && !matches.length && !hasFiltersApplied" class="alert alert-info">
+        No matches played yet. Come back soon!
+    </div>
     <div *ngIf="(matches && matches.length) || hasFiltersApplied" class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>Matches</h4>

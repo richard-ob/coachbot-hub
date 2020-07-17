@@ -1,18 +1,24 @@
-<div class="container-fluid py-4">
+<div *ngIf="isLoading" class="py-4">
+    <app-spinner></app-spinner>
+</div>
+<div *ngIf="!isLoading && !teamStatistics.length && !filtersApplied" class="alert alert-info my-4">
+    There is no team data available yet. Sorry!
+</div>
+<div *ngIf="!isLoading && (teamStatistics.length || filtersApplied)" class="container-fluid py-4">
     <div class="row">
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-lg-3">
             <app-team-spotlight [statistic]="teamSpotlightStatistic.Goals" [tournamentId]="tournamentId">
             </app-team-spotlight>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-lg-3">
             <app-team-spotlight [statistic]="teamSpotlightStatistic.Wins" [tournamentId]="tournamentId">
             </app-team-spotlight>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-lg-3">
             <app-team-spotlight [statistic]="teamSpotlightStatistic.GoalsConceded" [tournamentId]="tournamentId">
             </app-team-spotlight>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-lg-3">
             <app-team-spotlight [statistic]="teamSpotlightStatistic.PassCompletion" [tournamentId]="tournamentId">
             </app-team-spotlight>
         </div>
@@ -57,8 +63,10 @@
             </ul>
         </div>
         <div class="card__content table-responsive">
-            <app-spinner *ngIf="!teamStatistics"></app-spinner>
-            <table *ngIf="teamStatistics"
+            <div *ngIf="teamStatistics && !teamStatistics.length" class="alert alert-info">
+                No matching team data available
+            </div>
+            <table *ngIf="teamStatistics && teamStatistics.length"
                 class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover"
                 [class.widget__content--loading]="isLoadingPage">
                 <thead>
@@ -136,11 +144,12 @@
                     <tr *ngFor="let statistics of teamStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                         (click)="navigatetoProfile(statistics.teamId)">
                         <td class="pr-0">
-                            <img *ngIf="statistics.badgeImage" [src]="statistics.badgeImage" style="width: 25px;">
+                            <img *ngIf="statistics.badgeImage" [src]="statistics.badgeImage"
+                                class="statistics-list--team-badge">
                             <img *ngIf="!statistics.badgeImage" src="./assets/images/soccer/blank-crest.png"
-                                style="width: 20px;">
+                                class="statistics-list--team-badge">
                         </td>
-                        <td class="team-result__score no-left-border">{{statistics.teamName}}</td>
+                        <td class="no-left-border" style="font-weight: 600;">{{statistics.teamName}}</td>
                         <td class="team-result__status text-center">{{statistics.appearances}}</td>
                         <td class="team-result__status text-center">{{statistics.wins}}</td>
                         <td class="team-result__status text-center">{{statistics.losses}}</td>

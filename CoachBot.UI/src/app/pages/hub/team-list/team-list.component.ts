@@ -30,6 +30,7 @@ export class TeamListComponent implements OnInit {
     timePeriod = 0;
     isLoading = true;
     isLoadingPage = false;
+    filtersApplied = false;
 
     constructor(private teamService: TeamService, private router: Router, private userPreferenceService: UserPreferenceService) { }
 
@@ -56,6 +57,7 @@ export class TeamListComponent implements OnInit {
 
     setFilters() {
         this.loadPage(this.currentPage);
+        this.filtersApplied = true;
     }
 
     navigatetoProfile(teamId: number) {

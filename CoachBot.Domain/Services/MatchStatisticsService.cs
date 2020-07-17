@@ -310,7 +310,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.TeamMatchStatistics
                  .AsNoTracking()
-                 .Where(t => filters.TournamentId == null || t.TournamentId == filters.TournamentId)
+                 .Where(t => filters.TournamentId == null || t.Match.TournamentId == filters.TournamentId)
                  .Where(t => filters.TeamId == null || t.TeamId == filters.TeamId)
                  .Where(p => filters.MatchTeamType == null || p.MatchTeamType == filters.MatchTeamType)
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
@@ -447,9 +447,8 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamMatchStatistics
-                 .Where(t => filters.TournamentId == null || t.TournamentId == filters.TournamentId)
+                 .Where(t => filters.TournamentId == null || t.Match.TournamentId == filters.TournamentId)
                  .Where(t => filters.TeamId == null || t.TeamId == filters.TeamId)
-                 .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
                  .Where(t => filters.TeamType == null || t.Team.TeamType == filters.TeamType)

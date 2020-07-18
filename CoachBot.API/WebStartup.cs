@@ -1,10 +1,10 @@
 ﻿using AspNetCore.Proxy;
 using CoachBot.Database;
 using CoachBot.Domain.Services;
-using CoachBot.Extensions;
+using CoachBot.Shared.Extensions;
 using CoachBot.Model;
 using CoachBot.Services;
-using CoachBot.Services.Logging;
+using CoachBot.Shared.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using Discord;
 using Discord.WebSocket;
@@ -18,6 +18,9 @@ using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
 using System;
 using System.IO;
+using CoachBot.Shared.Services;
+using CoachBot.Shared.Helpers;
+using CoachBot.Extensions;
 
 namespace CoachBot
 {
@@ -37,7 +40,7 @@ namespace CoachBot
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            var config = ConfigHelper.GetConfig();
             var logger = LogAdaptor.CreateLogger();
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider(logger));
@@ -65,12 +68,10 @@ namespace CoachBot
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
-            services.AddSingleton<ConfigService>()
-                .AddSingleton(_client)
+            services.AddSingleton(_client)
                 .AddSingleton(logger)
                 .AddSingleton(config)
                 .AddSingleton<LogAdaptor>()
-                .AddSingleton<ConfigService>()
                 .AddTransient<BotService>()
                 .AddTransient<RegionService>()
                 .AddTransient<CountryService>()
@@ -112,7 +113,6 @@ namespace CoachBot
             var provider = services.BuildServiceProvider();
 
             provider.GetService<LogAdaptor>();
-            provider.GetService<ConfigService>();
 
             var discordService = provider.GetService<DiscordService>();
             discordService.StartPersistentConnection();

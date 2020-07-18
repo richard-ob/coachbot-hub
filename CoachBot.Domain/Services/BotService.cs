@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Model;
+using CoachBot.Shared.Model;
 using Discord;
 using Discord.WebSocket;
 using Newtonsoft.Json;
@@ -14,10 +15,10 @@ namespace CoachBot.Services.Matchmaker
         private DiscordSocketClient _client;
         private Config _config;
 
-        public BotService(DiscordSocketClient client)
+        public BotService(DiscordSocketClient client, Config config)
         {
             _client = client;
-            _config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            _config = _config;
         }
 
         public BotState GetCurrentBotState()

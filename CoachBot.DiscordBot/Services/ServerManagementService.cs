@@ -2,6 +2,7 @@
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Model;
+using CoachBot.Shared.Model;
 using CoachBot.Tools;
 using Discord;
 using Discord.WebSocket;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Net;
 
-namespace CoachBot.Extensions
+namespace CoachBot.Shared.Extensions
 {
     public static class HttpRequestExtensions
     {

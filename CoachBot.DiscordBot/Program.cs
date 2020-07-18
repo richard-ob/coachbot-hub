@@ -1,4 +1,5 @@
 ﻿using CoachBot.Model;
+using CoachBot.Shared.Helpers;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
@@ -15,8 +16,8 @@ namespace CoachBot
 
         private async Task RunAsync()
         {
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
-            var port = config.ApiPort > 0 ? config.BotApiPort : 8080;
+            var config = ConfigHelper.GetConfig();
+            var port = config.BotApiPort > 0 ? config.BotApiPort : 8080;
             var host = WebHost
               .CreateDefaultBuilder()
               .UseKestrel()

@@ -4,7 +4,7 @@ using CoachBot.Domain.Services;
 using CoachBot.LegacyImporter;
 using CoachBot.Model;
 using CoachBot.Services;
-using CoachBot.Services.Logging;
+using CoachBot.Shared.Services.Logging;
 using CoachBot.Services.Matchmaker;
 using Discord;
 using Discord.Commands;
@@ -17,6 +17,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
 using System.IO;
+using CoachBot.Shared.Helpers;
+using CoachBot.Shared.Services;
 
 namespace CoachBot
 {
@@ -36,7 +38,7 @@ namespace CoachBot
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            var config = ConfigHelper.GetConfig();
             var logger = LogAdaptor.CreateLogger();
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider(logger));
@@ -46,13 +48,12 @@ namespace CoachBot
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             });
 
-            services.AddSingleton<ConfigService>()
+            services
                 .AddSingleton(_client)
                 .AddSingleton(new CommandService(new CommandServiceConfig { CaseSensitiveCommands = false, ThrowOnError = false }))
                 .AddSingleton(logger)
                 .AddSingleton(config)
                 .AddSingleton<LogAdaptor>()
-                .AddSingleton<ConfigService>()
                 .AddTransient<RegionService>()
                 .AddTransient<ServerService>()
                 .AddTransient<ChannelService>()
@@ -73,7 +74,6 @@ namespace CoachBot
             var provider = services.BuildServiceProvider();
 
             provider.GetService<LogAdaptor>();
-            provider.GetService<ConfigService>();
             provider.GetService<BotInstance>();
         }
 

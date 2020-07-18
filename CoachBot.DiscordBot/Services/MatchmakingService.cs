@@ -1,8 +1,9 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
-using CoachBot.Extensions;
 using CoachBot.Factories;
 using CoachBot.Model;
+using CoachBot.Shared.Extensions;
+using CoachBot.Shared.Services;
 using CoachBot.Tools;
 using Discord;
 using Discord.WebSocket;

@@ -62,6 +62,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CoachBot.Domain\CoachBot.Domain.csproj" />
     <ProjectReference Include="..\CoachBot.LegacyImporter\CoachBot.LegacyImporter.csproj" />
+    <ProjectReference Include="..\CoachBot.Shared\CoachBot.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="config-dev.json">

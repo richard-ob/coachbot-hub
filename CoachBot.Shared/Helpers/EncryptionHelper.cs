@@ -2,9 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CoachBot.Tools
+namespace CoachBot.Shared.Helpers
 {
-    public static class EncryptionTools
+    public static class EncryptionHelper
     {
         public static string Encrypt(string plainText, byte[] key, byte[] iv)
         {

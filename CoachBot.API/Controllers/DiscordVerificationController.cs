@@ -1,6 +1,7 @@
 ﻿using CoachBot.Domain.Services;
-using CoachBot.Extensions;
-using CoachBot.Services;
+using CoachBot.Shared.Extensions;
+using CoachBot.Shared.Model;
+using CoachBot.Shared.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,13 @@ namespace CoachBot.Controllers
     {
         private const string PROFILE_EDITOR_PATH = "/edit-profile";
         private readonly PlayerService _playerService;
-        private readonly ConfigService _configService;
         private readonly CacheService _cacheService;
+        private readonly Config _config;
 
-        public DiscordVerificationController(PlayerService playerService, ConfigService configService, CacheService cacheService)
+        public DiscordVerificationController(PlayerService playerService, Config config, CacheService cacheService)
         {
             _playerService = playerService;
-            _configService = configService;
+            _config = config;
             _cacheService = cacheService;
         }
 
@@ -50,7 +51,7 @@ namespace CoachBot.Controllers
 
             HttpContext.SignOutAsync("Cookies").Wait();
 
-            return new RedirectResult(_configService.Config.ClientUrl + PROFILE_EDITOR_PATH);
+            return new RedirectResult(_config.ClientUrl + PROFILE_EDITOR_PATH);
         }
     }
 }

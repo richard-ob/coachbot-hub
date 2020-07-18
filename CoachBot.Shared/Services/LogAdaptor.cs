@@ -7,7 +7,7 @@ using Serilog.Events;
 using System;
 using System.Threading.Tasks;
 
-namespace CoachBot.Services.Logging
+namespace CoachBot.Shared.Services.Logging
 {
     public class LogAdaptor
     {
@@ -43,7 +43,7 @@ namespace CoachBot.Services.Logging
             return Task.CompletedTask;
         }
 
-        internal async Task LogCommand(LogMessage message)
+        public async Task LogCommand(LogMessage message)
         {
             if (message.Exception != null && message.Exception is CommandException cmd)
             {

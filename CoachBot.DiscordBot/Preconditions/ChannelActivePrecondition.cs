@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Services;
 using CoachBot.Services;
+using CoachBot.Shared.Model;
 using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,14 +15,14 @@ namespace CoachBot.Bot.Preconditions
             using (var scope = map.CreateScope())
             {
                 var channelService = scope.ServiceProvider.GetService<ChannelService>();
-                var configService = scope.ServiceProvider.GetService<ConfigService>();
+                var config = scope.ServiceProvider.GetService<Config>();
 
                 var channel = channelService.GetChannelByDiscordId(context.Channel.Id);
                 if (channel != null && channel.Inactive == true)
-                    return Task.FromResult(PreconditionResult.FromError($":wrench: This channel marked as inactive. To change this, please visit {configService.Config.ClientUrl}"));
+                    return Task.FromResult(PreconditionResult.FromError($":wrench: This channel marked as inactive. To change this, please visit {config.ClientUrl}"));
 
                 if (channel != null && channel.Team != null && channel.Team.Inactive == true)
-                    return Task.FromResult(PreconditionResult.FromError($":wrench: This team is marked as inactive. To change this, please visit {configService.Config.ClientUrl}"));
+                    return Task.FromResult(PreconditionResult.FromError($":wrench: This team is marked as inactive. To change this, please visit {config.ClientUrl}"));
             }
 
             return Task.FromResult(PreconditionResult.FromSuccess());

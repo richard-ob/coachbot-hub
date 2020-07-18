@@ -1,4 +1,4 @@
-﻿namespace CoachBot.Extensions
+﻿namespace CoachBot.Shared.Extensions
 {
     public static class StringExtensions
     {

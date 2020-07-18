@@ -3,6 +3,8 @@ using CoachBot.Domain.Model;
 using CoachBot.Extensions;
 using CoachBot.Preconditions;
 using CoachBot.Services;
+using CoachBot.Shared.Extensions;
+using CoachBot.Shared.Services;
 using CoachBot.Tools;
 using Discord;
 using Discord.Commands;

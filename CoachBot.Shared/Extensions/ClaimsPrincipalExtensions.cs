@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 
-namespace CoachBot.Extensions
+namespace CoachBot.Shared.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {

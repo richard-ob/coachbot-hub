@@ -2,6 +2,8 @@
 using CoachBot.Domain.Services;
 using CoachBot.LegacyImporter;
 using CoachBot.Services;
+using CoachBot.Shared.Model;
+using CoachBot.Shared.Services;
 using CoachBot.Tools;
 using Discord;
 using Discord.WebSocket;
@@ -16,40 +18,40 @@ namespace CoachBot.Bot
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly DiscordSocketClient _client;
-        private readonly ConfigService _configService;
         private readonly MatchmakingService _matchmakingService;
         private readonly ChannelService _channelService;
         private readonly DiscordNotificationService _discordNotificationService;
         private readonly CacheService _cacheService;
         private readonly Importer _importer;
+        private readonly Config _config;
         private CommandHandler _handler;
 
         public BotInstance(
             IServiceProvider serviceProvider,
             DiscordSocketClient client,
-            ConfigService configService,
             MatchmakingService matchmakingService,
             ChannelService channelService,
             DiscordNotificationService discordNotificationService,
             CacheService cacheService,
-            Importer importer
+            Importer importer,
+            Config config
         )
         {
             _serviceProvider = serviceProvider;
             _client = client;
-            _configService = configService;
             _matchmakingService = matchmakingService;
             _channelService = channelService;
             _discordNotificationService = discordNotificationService;
             _cacheService = cacheService;
             _importer = importer;
+            _config = config;
             Startup();
         }
 
         public async void Startup()
         {
             Console.WriteLine("Connecting..");
-            await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
+            await _client.LoginAsync(TokenType.Bot, _config.BotToken);
             await _client.StartAsync();
             await _client.SetGameAsync("IOSoccer", "http://iosoccer.com"); // TODO: Uncomment when live
 
@@ -74,7 +76,7 @@ namespace CoachBot.Bot
             {
                 Console.WriteLine("Attempting reconnection");
                 await _client.LogoutAsync();
-                await _client.LoginAsync(TokenType.Bot, _configService.Config.BotToken);
+                await _client.LoginAsync(TokenType.Bot, _config.BotToken);
                 await _client.StartAsync();
             }
 

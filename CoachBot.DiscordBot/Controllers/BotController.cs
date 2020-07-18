@@ -1,5 +1,6 @@
 ﻿using CoachBot.Extensions;
 using CoachBot.Services.Matchmaker;
+using CoachBot.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;

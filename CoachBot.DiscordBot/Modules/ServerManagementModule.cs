@@ -4,6 +4,7 @@ using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Preconditions;
 using CoachBot.Services;
+using CoachBot.Shared.Extensions;
 using CoachBot.Tools;
 using Discord;
 using Discord.Commands;

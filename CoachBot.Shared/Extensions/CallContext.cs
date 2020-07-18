@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading;
 
-namespace CoachBot.Extensions
+namespace CoachBot.Shared.Extensions
 {
     /// <summary>
     /// Provides a way to set contextual data that flows with the call and

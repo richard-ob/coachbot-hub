@@ -1,4 +1,5 @@
 ﻿using CoachBot.Model;
+using CoachBot.Shared.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.IO;
@@ -17,7 +18,7 @@ namespace CoachBot
 
         public static int ApiPort {
             get {
-                var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+                var config = ConfigHelper.GetConfig();
                 return config.ApiPort > 0 ? config.ApiPort : 80;
             }
         }

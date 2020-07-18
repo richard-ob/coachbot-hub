@@ -1,6 +1,7 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Extensions;
 using CoachBot.Model;
+using CoachBot.Shared.Extensions;
 using Discord;
 using System.Linq;
 using System.Text;

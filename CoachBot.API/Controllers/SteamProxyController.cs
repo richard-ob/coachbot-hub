@@ -1,5 +1,6 @@
 ﻿using AspNetCore.Proxy;
 using CoachBot.Model;
+using CoachBot.Shared.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

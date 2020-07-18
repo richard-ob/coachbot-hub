@@ -1,6 +1,7 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
+using CoachBot.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;

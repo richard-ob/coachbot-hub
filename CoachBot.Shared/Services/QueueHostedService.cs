@@ -1,10 +1,9 @@
-﻿using CoachBot.Domain.Services;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace CoachBot.Services
+namespace CoachBot.Shared.Services
 {
     public class QueuedHostedService : BackgroundService
     {

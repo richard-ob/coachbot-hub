@@ -1,11 +1,18 @@
-﻿using CoachBot.Domain.Services;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CoachBot.Services
+namespace CoachBot.Shared.Services
 {
+    public interface IBackgroundTaskQueue
+    {
+        void QueueBackgroundWorkItem(Func<CancellationToken, Task> workItem);
+
+        Task<Func<CancellationToken, Task>> DequeueAsync(
+            CancellationToken cancellationToken);
+    }
+
     public class BackgroundTaskQueue : IBackgroundTaskQueue
     {
         private ConcurrentQueue<Func<CancellationToken, Task>> _workItems =

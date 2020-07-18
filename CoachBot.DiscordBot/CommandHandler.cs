@@ -1,8 +1,9 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
-using CoachBot.Extensions;
 using CoachBot.Services;
-using CoachBot.Services.Logging;
+using CoachBot.Shared.Extensions;
+using CoachBot.Shared.Model;
+using CoachBot.Shared.Services.Logging;
 using CoachBot.Tools;
 using Discord;
 using Discord.Commands;
@@ -22,7 +23,7 @@ namespace CoachBot
         private readonly CommandService _commands;
         private readonly DiscordSocketClient _client;
         private readonly ILogger _logger;
-        private readonly ConfigService _configService;
+        private readonly Config _config;
 
         public CommandHandler(IServiceProvider provider)
         {
@@ -32,7 +33,7 @@ namespace CoachBot
             _commands = _provider.GetService<CommandService>();
             _commands.Log += _provider.GetService<LogAdaptor>().LogCommand;
             _logger = _provider.GetService<Logger>().ForContext<CommandService>();
-            _configService = _provider.GetService<ConfigService>();
+            _config = _provider.GetService<Config>();
         }
 
         public async Task ConfigureAsync()
@@ -97,7 +98,7 @@ namespace CoachBot
                 else if (!result.IsSuccess)
                 {
                     var errorId = DateTime.UtcNow.Ticks.ToString();
-                    if (_client.GetChannel(_configService.Config.AuditChannelId) is ITextChannel auditChannel)
+                    if (_client.GetChannel(_config.AuditChannelId) is ITextChannel auditChannel)
                     {
                         await auditChannel.SendMessageAsync("", embed: new EmbedBuilder().WithTitle($"Error - {message.Channel.Name} [REF:{errorId}]").WithDescription($":exclamation: {result.ErrorReason} ``{context.Message.Author.Username}: {context.Message.Content}``").WithCurrentTimestamp().Build());
                     }

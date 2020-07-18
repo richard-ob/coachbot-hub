@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\SeedData\" />
+    <ProjectReference Include="..\CoachBot.Shared\CoachBot.Shared.csproj" />
   </ItemGroup>
 
 </Project>

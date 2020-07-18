@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Extensions;
 using CoachBot.Model;
+using CoachBot.Shared.Extensions;
 using Discord;
 using System;
 using System.Collections.Generic;

@@ -3,6 +3,7 @@ using CoachBot.Domain.Model.Dtos;
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Models;
+using CoachBot.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

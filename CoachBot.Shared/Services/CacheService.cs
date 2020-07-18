@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoachBot.Services
+namespace CoachBot.Shared.Services
 {
     public class CacheService
     {

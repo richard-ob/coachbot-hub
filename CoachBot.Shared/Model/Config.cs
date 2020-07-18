@@ -1,4 +1,4 @@
-﻿namespace CoachBot.Model
+﻿namespace CoachBot.Shared.Model
 {
     public class Config
     {

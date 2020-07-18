@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace CoachBot.Extensions
+namespace CoachBot.Shared.Extensions
 {
     public static class ColorExtensions
     {

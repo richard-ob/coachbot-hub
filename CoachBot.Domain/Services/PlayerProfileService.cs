@@ -38,8 +38,10 @@ namespace CoachBot.Domain.Services
                 .Where(pt => pt.PlayerId == playerId)
                 .Where(pt => pt.Team.TeamType == teamType)
                 .Where(pt => pt.LeaveDate == null)
+                .Where(pt => pt.IsPending == false)
                 .OrderByDescending(pt => pt.JoinDate)
                 .Select(pt => pt.Team)
+                .Include(t => t.BadgeImage)
                 .FirstOrDefault();
         }
 

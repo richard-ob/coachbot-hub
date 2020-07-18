@@ -6,6 +6,7 @@ import { SteamService } from '../../../shared/services/steam.service.';
 import { SteamUserProfile } from '../shared/model/steam-user-profile.model';
 import * as humanizeDuration from 'humanize-duration';
 import { PlayerProfile } from '../shared/model/player-profile.model';
+import ColourUtils from '@shared/utilities/colour-utilities';
 
 /*
     IDEAS:
@@ -59,5 +60,20 @@ export class PlayerProfileComponent implements OnInit {
                 });
             });
         });
+    }
+
+    getBackground() {
+        if (!this.playerProfile || !this.playerProfile.clubTeam || !this.playerProfile.clubTeam.color) {
+            return this.generateGradient('#292c31');
+        }
+        console.log('here');
+        console.log(this.playerProfile.clubTeam.color);
+        return this.generateGradient(this.playerProfile.clubTeam.color);
+    }
+
+    generateGradient(colour: string) {
+        const gradientSrc =
+            'linear-gradient(90deg,' + ColourUtils.hexToRgbA(colour, 0.6) + ',' + ColourUtils.hexToRgbA(colour, 0.3) + ')';
+        return gradientSrc;
     }
 }

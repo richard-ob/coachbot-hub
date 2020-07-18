@@ -23,6 +23,8 @@ import { NgPipesModule } from 'ngx-pipes';
 import {
     TournamentStandingsRoundRobinComponent
 } from './tournament-overview-standings/tournament-standings-round-robin/tournament-standings-round-robin.component';
+import { TabNavMobileComponent } from '@core/components/tab-nav-mobile/tab-nav-mobile.component';
+import { CoreModule } from '@core/core.module';
 
 @NgModule({
     declarations: [
@@ -47,7 +49,8 @@ import {
         PlayerListModule,
         RecentMatchesModule,
         HubPipesModule,
-        NgPipesModule
+        NgPipesModule,
+        CoreModule
     ]
 })
 export class TournamentOverviewModule { }

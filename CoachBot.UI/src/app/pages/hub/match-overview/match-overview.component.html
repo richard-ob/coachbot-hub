@@ -29,17 +29,18 @@
                             <div id="match-meta-data-date" class="col-4 text-right">{{matchDate | date:'medium'}}</div>
                         </div>
                         <div id="match-headline-items" class="d-flex align-items-center mt-2 mb-4">
-                            <div id="match-headline-items-home" class="text-right" style="flex: 0 1 50%">
+                            <div id="match-headline-items-home"
+                                class="d-flex justify-content-between align-items-center" style="flex: 0 1 50%">
                                 <span class="d-none d-md-inline-block pr-4">
                                 <ng-container
                                     *ngIf="match.teamHome.badgeImage; else blankCrest">
                                     <img 
                                         [src]="match.teamHome.badgeImage.base64EncodedImage"
-                                        style="max-width: 64px;">
+                                        class="game-result__team-badge">
                                 </ng-container>
                                 <ng-template #blankCrest>
                                     <img src="./assets/images/soccer/blank-crest.png"
-                                        style="max-width: 64px;">
+                                        class="game-result__team-badge">
                                 </ng-template>
                             </span>
                                 <h4 class="d-inline-block text-white clickable m-0"
@@ -55,7 +56,8 @@
                                 <span class="game-result__score-dash">-</span>
                                 <span class="game-result__score-result">{{matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Goals]}}</span>
                             </div>
-                            <div id="match-headline-items-away" class="text-left" style="flex: 0 1 50%">
+                            <div id="match-headline-items-away"
+                                class="d-flex justify-content-between align-items-center" style="flex: 0 1 50%">
                                 <h4 class="d-inline-block text-white clickable m-0"
                                     (click)="navigateToTeamProfile(match.teamAwayId)"
                                     [attr.title]="match.teamAway.name">
@@ -66,19 +68,17 @@
                                         *ngIf="match.teamAway.badgeImage; else blankCrest">
                                         <img 
                                             [src]="match.teamAway.badgeImage.base64EncodedImage"
-                                            style="max-width: 64px;">
+                                            class="game-result__team-badge">
                                     </ng-container>
                                     <ng-template #blankCrest>
                                         <img src="./assets/images/soccer/blank-crest.png"
-                                            style="max-width: 64px;">
+                                        class="game-result__team-badge">
                                     </ng-template>
                             </span>
                             </div>
                         </div>
                         <div id="match-footer-items" class="d-flex align-items-start">
-                            <div id="match-footer-items-home"
-                                style="flex: 0 1 50%; overflow-y: auto; max-height: 140px;"
-                                class="match-footer-events  px-2 text-right">
+                            <div id="match-footer-items-home" class="match-footer-events  px-2 text-right">
                                 <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'home' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
                                 {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
                                 ({{goalEvents.second | secondsToMinutes}}’)
@@ -96,8 +96,7 @@
                                 <div id="match-score-status" class="game-result__score-label text-white">Final Score
                                 </div>
                             </div>
-                            <div id="match-footer-items-away" class="match-footer-events px-2 text-left"
-                                style="flex: 0 1 50%; overflow-y: auto; max-height: 140px;">
+                            <div id="match-footer-items-away" class="match-footer-events px-2 text-left">
                                 <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'away' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
                                 {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
                                 ({{goalEvents.second | secondsToMinutes}}’)

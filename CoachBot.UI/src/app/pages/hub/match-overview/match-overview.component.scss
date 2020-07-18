@@ -51,3 +51,13 @@
     margin-right: 0.4rem;
     margin-left: 0.4rem;
 }
+
+.game-result__team-badge {
+    max-height: 82px;
+}
+
+.match-footer-events {
+    flex: 0 1 50%;
+    overflow-y: auto;
+    max-height: 105px;
+}

@@ -26,8 +26,8 @@
                                     <td>
                                         {{region.serverCount}}
                                     </td>
-                                    <td>0</td>
-                                    <td>0</td>
+                                    <td>{{region.teamCount}}</td>
+                                    <td>{{region.matchCount}}</td>
                                     <td>
                                         <button class="btn btn-danger btn-xs" (click)="removeRegion(region.regionId)"
                                             [disabled]="region.serverCount">

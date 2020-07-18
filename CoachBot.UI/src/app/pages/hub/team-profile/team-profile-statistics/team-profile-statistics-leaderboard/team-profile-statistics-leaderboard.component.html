@@ -7,7 +7,8 @@
             <div *ngFor="let player of playerStatistics; let rank = index"
                 class="player-profile-statistics__statistic-box__item">
                 <div class="player-profile-statistics__statistic-box__item-statistic">{{rank + 1}}</div>
-                <div class="player-profile-statistics__statistic-box__item-statistic">{{player.name}}</div>
+                <div class="player-profile-statistics__statistic-box__item-statistic clickable"
+                    [routerLink]="['/player-profile/', player.playerId]">{{player.name}}</div>
                 <div class="player-profile-statistics__statistic-box__item-value">
                     {{player[statisticProperty]}}</div>
             </div>

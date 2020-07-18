@@ -74,10 +74,13 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	height: 15%;
 	background: transparent;
 	border: $markingWidth solid $markingColor;
+	@media (max-width: 992px) {
+		display: none;
+	}
 	
 	&.left {
     transform: rotate(90deg);
-		top: 5%;
+		top: 4.5%;
 		border-left: none;
 		border-bottom-right-radius: 1000px;
 		border-top-right-radius: 1000px;		
@@ -86,7 +89,7 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	
 	&.right {
     transform: rotate(90deg);
-		bottom: 5%;
+		bottom: 4.5%;
 		border-right: none;
 		border-bottom-left-radius: 1000px;
 		border-top-left-radius: 1000px;
@@ -98,7 +101,7 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	width: $markingWidth;
 	height: $markingWidth;
 	border-radius: $markingWidth;
-	top: calc(50% - #{$markingWidth} / 2);
+	top: calc(50% - #{$markingWidth} / 2 - 1px);
 	
 	&.left {
 		left: 11%;
@@ -111,7 +114,7 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	&.center {
 		width: $markingWidth*2;
 		height: $markingWidth*2;
-		left: calc(50% - 4px);
+		left: calc(50% - 5px);
 	}
 }
 

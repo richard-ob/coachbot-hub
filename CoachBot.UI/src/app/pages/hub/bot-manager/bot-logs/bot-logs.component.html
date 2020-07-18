@@ -6,8 +6,8 @@
         </button>
     </div>
     <div class="card__content">
-        <div class="w-100" style="max-height: 500px; overflow-y: auto;" [innerText]="botLog">
-        </div>
+        <pre class="w-100" style="max-height: 500px; overflow-y: auto;" [innerText]="botLog">
+        </pre>
     </div>
 </div>
 <app-spinner *ngIf="isLoading"></app-spinner>

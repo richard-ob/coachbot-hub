@@ -45,7 +45,7 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	border: $markingWidth solid $markingColor;
 	background: none;
 	top: calc(50% - #{$size} / 2 );
-	left: calc(50% - #{$size} / 2 );
+	left: calc(50% - #{$size} / 2 - 1px);
 }
 
 .box {
@@ -54,6 +54,9 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	height: 50%;
 	background: transparent;
 	border: $markingWidth solid $markingColor;
+	@media (max-width: 992px) {
+		display: none;
+	}
 	
 	&.left {
 		left: 0;
@@ -76,6 +79,10 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	height: 30%;
 	background: transparent;
 	border: $markingWidth solid $markingColor;
+
+	@media (max-width: 992px) {
+		display: none;
+	}
 	
 	&.left {
 		left: 5%;
@@ -111,7 +118,7 @@ $noise: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAA
 	&.center {
 		width: $markingWidth*2;
 		height: $markingWidth*2;
-		left: calc(50% - 4px);
+		left: calc(50% - 5px);
 	}
 }
 

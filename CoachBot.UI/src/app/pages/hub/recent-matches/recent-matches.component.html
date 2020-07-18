@@ -67,14 +67,14 @@
                 <tbody>
                     <tr *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                         (click)="navigateToMatchOverview(match.id)">
-                        <td class="team-result__date">
+                        <td class="team-result__date text-nowrap">
                             {{(match.kickOff)| date:'medium'}}
                         </td>
-                        <td class="text-right ">
+                        <td class="text-right text-nowrap">
                             <app-team-name [team]="match.teamHome" [isHomeTeam]="true">
                             </app-team-name>
                         </td>
-                        <td class="text-center px-0">
+                        <td class="text-center text-nowrap px-0">
                             <span *ngIf="match.matchStatistics; else matchNotPlayed">
                                 <span class="team-result--score">{{match?.matchStatistics?.matchGoalsHome}}</span>
                             <span class="team-result--score">{{match?.matchStatistics?.matchGoalsAway}}</span>
@@ -85,11 +85,11 @@
                                 </span>
                             </ng-template>
                         </td>
-                        <td class="text-left">
+                        <td class="text-left text-nowrap">
                             <app-team-name [team]="match.teamAway" [isHomeTeam]="false">
                             </app-team-name>
                         </td>
-                        <td class="team-result__status">
+                        <td class="team-result__status text-nowrap">
                             <ng-container [ngSwitch]="match.matchType">
                                 <span *ngSwitchCase="matchTypes.UnrankedFriendly">Unranked Friendly</span>
                                 <span *ngSwitchCase="matchTypes.RankedFriendly">Ranked Friendly</span>

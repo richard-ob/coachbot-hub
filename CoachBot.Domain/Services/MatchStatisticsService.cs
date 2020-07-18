@@ -24,13 +24,14 @@ namespace CoachBot.Domain.Services
             _discordNotificationService = discordNotificationService;
         }
 
-        public void SaveMatchData(MatchData matchData, string token, int matchId, bool manualSave = false)
+        public void SaveMatchData(MatchData matchData, string token, string sourceAddress, int matchId, bool manualSave = false)
         {
             var match = _coachBotContext.Matches.Include(m => m.TeamHome).Include(m => m.TeamAway).Single(m => m.Id == matchId);
             match.MatchStatistics = new MatchStatistics()
             {
                 MatchData = matchData,
-                Token = token
+                Token = token,
+                SourceAddress = sourceAddress
             };
 
             if (matchData.IsValid(match, manualSave))
@@ -49,12 +50,13 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        public void SaveUnlinkedMatchData(MatchData matchData, string token)
+        public void SaveUnlinkedMatchData(MatchData matchData, string token, string sourceAddress)
         {
             var matchStatistics = new MatchStatistics()
             {
                 MatchData = matchData,
-                Token = token
+                Token = token,
+                SourceAddress = sourceAddress
             };
 
             _coachBotContext.MatchStatistics.Add(matchStatistics);

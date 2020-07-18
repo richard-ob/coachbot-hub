@@ -15,9 +15,9 @@ namespace CoachBot.Domain.Model
 
         public string Token { get; set; }
 
-        public DateTime? KickOff => MatchData != null? new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(MatchData.MatchInfo.StartTime) : (DateTime?)null;
+        public string SourceAddress { get; set; }
 
-        public string MapName => MatchData != null && MatchData.MatchInfo?.MapName != null ? MatchData.MatchInfo.MapName : null;
+        public DateTime? KickOff => MatchData != null? new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(MatchData.MatchInfo.StartTime) : (DateTime?)null;
 
         public int? HomeGoals { get; set; }
 

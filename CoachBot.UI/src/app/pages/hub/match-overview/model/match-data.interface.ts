@@ -46,6 +46,9 @@ export interface MatchInfo {
     endTime: number;
     periods: number;
     lastPeriodName: LastPeriodName;
+    format: number;
+    mapName: string;
+    serverName: string;
 }
 
 export interface Player {

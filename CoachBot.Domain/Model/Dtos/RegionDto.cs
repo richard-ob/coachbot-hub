@@ -9,5 +9,9 @@
         public string RegionCode { get; set; }
 
         public int ServerCount { get; set; }
+
+        public int MatchCount { get; set; }
+
+        public int TeamCount { get; set; }
     }
 }

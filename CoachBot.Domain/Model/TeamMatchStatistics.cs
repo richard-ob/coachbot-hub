@@ -23,10 +23,6 @@ namespace CoachBot.Domain.Model
 
         public MatchTeamType MatchTeamType { get; set; }
 
-        public int? TournamentId { get; set; }
-
-        public Tournament Tournament { get; set; }
-
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
     }

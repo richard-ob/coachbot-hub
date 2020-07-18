@@ -40,29 +40,30 @@ namespace CoachBot.Controllers
 
             if (match.Server.Address != serverAddress)
             {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData);
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token);
                 return BadRequest();
             }
 
             if (match.MatchStatistics != null)
             {
-                // INFO: We don't want to save these, as these are likely where the the server has persisted the access token for this match
+                // INFO: This could be either be a rematch or where the server has persisted the token after map change etc.
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token);
                 return BadRequest();
             }
 
             if (match.TeamHome.TeamCode != homeTeamCode || match.TeamAway.TeamCode != awayTeamCode)
             {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData);
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token);
                 return BadRequest();
             }
 
             if (serverAddress.Split(":")[0] != Request.HttpContext.Connection.RemoteIpAddress.ToString())
             {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData);
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token);
                 return Unauthorized();
             }
 
-            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchId);
+            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, matchId);
 
             return Ok();
         }
@@ -84,12 +85,22 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchId, true);
+            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, matchId, true);
 
             return Ok();
         }
 
-        [HttpGet]
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HttpPost("{id}/create-match")]
+        public IActionResult GetUnlinkedMatchStatistics([FromQuery]int id)
+        {
+            _matchStatisticsService.CreateMatchFromMatchData(id);
+
+            return Ok();
+        }
+        
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HttpGet("generate")]
         public IActionResult Generate()
         {
             _matchStatisticsService.GenerateStatistics();

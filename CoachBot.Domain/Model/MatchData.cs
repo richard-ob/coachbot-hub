@@ -18,6 +18,7 @@ namespace CoachBot.Domain.Model
         public int EndTime { get; set; }
         public int Periods { get; set; }
         public string LastPeriodName { get; set; }
+        public string MapName { get; set; }
     }
 
     public class MatchDataTeamMatchTotal

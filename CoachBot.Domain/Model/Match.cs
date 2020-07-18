@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CoachBot.Domain.Model
 {
@@ -38,10 +37,6 @@ namespace CoachBot.Domain.Model
         public MatchFormat Format { get; set; } = MatchFormat.EightVsEight;
 
         public MatchType MatchType { get; set; } = MatchType.RankedFriendly;
-
-        public string Map { get; set; }
-
-        public MatchPeriod FinalMatchPeriod { get; set; }
 
         public int? TournamentId { get; set; }
 

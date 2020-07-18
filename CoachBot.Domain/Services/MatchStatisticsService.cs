@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Text;
 
 namespace CoachBot.Domain.Services
 {
@@ -23,12 +24,13 @@ namespace CoachBot.Domain.Services
             _discordNotificationService = discordNotificationService;
         }
 
-        public void SaveMatchData(MatchData matchData, int matchId, bool manualSave = false)
+        public void SaveMatchData(MatchData matchData, string token, int matchId, bool manualSave = false)
         {
             var match = _coachBotContext.Matches.Include(m => m.TeamHome).Include(m => m.TeamAway).Single(m => m.Id == matchId);
             match.MatchStatistics = new MatchStatistics()
             {
-                MatchData = matchData
+                MatchData = matchData,
+                Token = token
             };
 
             if (matchData.IsValid(match, manualSave))
@@ -47,14 +49,47 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        public void SaveUnlinkedMatchData(MatchData matchData)
+        public void SaveUnlinkedMatchData(MatchData matchData, string token)
         {
             var matchStatistics = new MatchStatistics()
             {
-                MatchData = matchData
+                MatchData = matchData,
+                Token = token
             };
 
             _coachBotContext.MatchStatistics.Add(matchStatistics);
+            _coachBotContext.SaveChanges();
+        }
+
+        public List<MatchStatistics> GetUnlinkedMatchData()
+        {
+            return _coachBotContext.MatchStatistics.Where(ms => !_coachBotContext.Matches.Any(m => m.MatchStatisticsId == ms.Id)).ToList();
+        }
+
+        public void CreateMatchFromMatchData(int matchStatisticsId)
+        {
+            var matchStatistics = _coachBotContext.MatchStatistics.Single(m => m.Id == matchStatisticsId);
+            var base64EncodedBytes = Convert.FromBase64String(matchStatistics.Token);
+            var token = Encoding.UTF8.GetString(base64EncodedBytes);
+            var serverAddress = token.Split("_")[0];
+            var matchId = int.Parse(token.Split("_")[1]);
+            var homeTeamCode = token.Split("_")[2];
+            var awayTeamCode = token.Split("_")[3];
+
+            var server = _coachBotContext.Servers.FirstOrDefault(s => s.Address == serverAddress);
+
+            var match = new Match()
+            {
+                ServerId = server?.Id,
+                MatchStatisticsId = matchStatisticsId,
+                KickOff = matchStatistics.KickOff,
+                Format = (MatchFormat)int.Parse(matchStatistics.MatchData.MatchInfo.MapName.Split('v').First()),
+                MatchType = MatchType.RankedFriendly,
+                TeamHomeId = _coachBotContext.Teams.First(t => t.TeamCode == homeTeamCode && t.RegionId == server.RegionId).Id,
+                TeamAwayId = _coachBotContext.Teams.First(t => t.TeamCode == awayTeamCode && t.RegionId == server.RegionId).Id
+            };
+
+            _coachBotContext.Matches.Add(match);
             _coachBotContext.SaveChanges();
         }
 
@@ -761,12 +796,13 @@ namespace CoachBot.Domain.Services
             {
                 TeamRole = playerTeam.TeamRole,
                 JoinDate = playerTeam.JoinDate,
-                LeaveDate = playerTeam.LeaveDate,
+                LeaveDate = playerTeam.LeaveDate,                
                 PlayerId = playerTeam.PlayerId,
                 Player = new Player()
                 {
                     Name = playerTeam.Player.Name,
-                    Country = playerTeam.Player.Country
+                    Country = playerTeam.Player.Country,
+                    SteamID = playerTeam.Player.SteamID
                 },
                 Team = new Team()
                 {

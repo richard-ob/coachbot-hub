@@ -37,33 +37,34 @@ namespace CoachBot.Controllers
             var homeTeamCode = token.Split("_")[2];
             var awayTeamCode = token.Split("_")[3];
             var match = _matchService.GetMatch(matchId);
+            var sourceAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
             if (match.Server.Address != serverAddress)
             {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token);
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
                 return BadRequest();
             }
 
             if (match.MatchStatistics != null)
             {
                 // INFO: This could be either be a rematch or where the server has persisted the token after map change etc.
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token);
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
                 return BadRequest();
             }
 
             if (match.TeamHome.TeamCode != homeTeamCode || match.TeamAway.TeamCode != awayTeamCode)
             {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token);
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
                 return BadRequest();
             }
 
-            if (serverAddress.Split(":")[0] != Request.HttpContext.Connection.RemoteIpAddress.ToString())
+            if (serverAddress.Split(":")[0] != sourceAddress)
             {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token);
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
                 return Unauthorized();
             }
 
-            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, matchId);
+            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress, matchId);
 
             return Ok();
         }
@@ -74,6 +75,7 @@ namespace CoachBot.Controllers
         public IActionResult ManualSubmit([FromBody]MatchStatisticsDto matchStatisticsDto, int matchId)
         {
             var match = _matchService.GetMatch(matchId);
+            var sourceAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
             if (match == null)
             {
@@ -85,7 +87,7 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, matchId, true);
+            _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress, matchId, true);
 
             return Ok();
         }

@@ -362,6 +362,7 @@
 
 	.tournament-bracket__team--winner & {
 		border-color: $color-primary;
+		background-color: $color-primary;
 		color: $headings-color;
 	}
 }

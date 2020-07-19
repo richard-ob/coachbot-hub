@@ -87,6 +87,11 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(t => t.TournamentGroupMatches)
                     .ThenInclude(t => t.Match)
                     .ThenInclude(t => t.TeamAway)
+                .Include(t => t.TournamentStages)
+                    .ThenInclude(t => t.TournamentGroups)
+                    .ThenInclude(t => t.TournamentGroupMatches)
+                    .ThenInclude(t => t.Match)
+                    .ThenInclude(t => t.MatchStatistics)
                 .Single(t => t.Id == tournamentId);
         }
 

@@ -9,7 +9,8 @@
                 <div class="tournament-bracket__match" tabindex="0">
                     <table class="tournament-bracket__table">
                         <tbody class="tournament-bracket__content">
-                            <tr class="tournament-bracket__team" [class.tournament-bracket__team--winner]="true">
+                            <tr class="tournament-bracket__team"
+                                [class.tournament-bracket__team--winner]="match.match.matchStatistics?.matchGoalsHome > match.match.matchStatistics?.matchGoalsAway">
                                 <td class="tournament-bracket__inner">
                                     <figure class="tournament-bracket__team-thumb">
                                         <img *ngIf="match.match.teamHome && match.match.teamHome.badgeImage"
@@ -25,10 +26,11 @@
                                     </div>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">?</span>
+                                    <span class="tournament-bracket__number text-white">{{match.match.matchStatistics?.matchGoalsHome || '?'}}</span>
                                 </td>
                             </tr>
-                            <tr class="tournament-bracket__team">
+                            <tr class="tournament-bracket__team"
+                                [class.tournament-bracket__team--winner]="match.match.matchStatistics?.matchGoalsHome < match.match.matchStatistics?.matchGoalsAway">
                                 <td class="tournament-bracket__inner">
                                     <figure class="tournament-bracket__team-thumb">
                                         <img *ngIf="match.match.teamAway && match.match.teamAway.badgeImage"
@@ -44,7 +46,7 @@
                                     </div>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">?</span>
+                                    <span class="tournament-bracket__number text-white">{{match.match.matchStatistics?.matchGoalsAway || '?'}}</span>
                                 </td>
                             </tr>
                         </tbody>

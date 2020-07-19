@@ -27,6 +27,7 @@ import { TournamentSeriesEditorComponent } from '@pages/hub/tournaments/tourname
 import { OrganisationsComponent } from '@pages/hub/tournaments/organisations/organisations.component';
 import { OrganisationEditorComponent } from '@pages/hub/tournaments/organisations/organisation-editor/organisation-editor.component';
 import { PreviousTournamentsComponent } from '@pages/hub/tournaments/previous-tournaments/previous-tournaments.component';
+import { MediaComponent } from '@pages/media/media.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,11 @@ const routes: Routes = [
     path: 'news',
     component: NewsComponent,
     data: { title: 'News' }
+  },
+  {
+    path: 'media',
+    component: MediaComponent,
+    data: { title: 'Media' }
   },
   {
     path: 'team',

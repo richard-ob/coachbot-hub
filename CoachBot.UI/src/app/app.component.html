@@ -125,7 +125,7 @@
                     <!-- Header Logo -->
                     <div class="header-logo">
                         <a routerlink="/">
-                            <img src="assets/images/logos/iosoccer-full-logo-medium.png" alt="IOSoccer"
+                            <img src="assets/images/logos/iosoccer-full-logo-small.png" alt="IOSoccer"
                                 class="header-logo__img">
                         </a>
                     </div>
@@ -143,7 +143,9 @@
                             <li routerLinkActive="active"><a routerLink="/news">News</a></li>
                             <li routerLinkActive="active"><a href="https://store.steampowered.com/app/673560/IOSoccer/"
                                     target="_blank">Download</a></li>
-                            <li routerLinkActive="active" (click)="toggleSectionOpen(manualsSection, manualsToggle)">
+                            <li routerLinkActive="active"><a routerLink="/media">Media</a></li>
+                            <li class="has-children" routerLinkActive="active"
+                                (click)="toggleSectionOpen(manualsSection, manualsToggle)">
                                 <a href="javascript:void(0);">Manuals</a>
                                 <span class="main-nav__toggle" #manualsToggle></span>
                                 <ul class="main-nav__sub" #manualsSection>
@@ -151,7 +153,8 @@
                                     <li><a routerLink="/server-manual">Server Admin Manual</a></li>
                                 </ul>
                             </li>
-                            <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
+                            <li class="has-children" routerLinkActive="active"
+                                [routerLinkActiveOptions]="{exact: false}"
                                 (click)="toggleSectionOpen(matchHubSection, matchHubToggle)">
                                 <a href="javascript:void(0);">Hub</a>
                                 <span class="badge badge-pill badge-warning d-none d-xl-inline" style="
@@ -209,7 +212,8 @@
                                     </ng-template>
                                 </div>
                             </li>
-                            <li routerLinkActive="active" (click)="toggleSectionOpen(infoSection, infoToggle)">
+                            <li class="has-children" routerLinkActive="active"
+                                (click)="toggleSectionOpen(infoSection, infoToggle)">
                                 <a href="javascript:void(0);">Info</a>
                                 <span class="main-nav__toggle" #infoToggle></span>
                                 <ul class="main-nav__sub" #infoSection>
@@ -263,7 +267,7 @@
                                 <div class="footer-logo footer-logo--has-txt">
                                     <a href="index.html">
                                         <img class="footer-logo__img"
-                                            src="assets/images/logos/iosoccer-full-logo-medium.png" alt="">
+                                            src="assets/images/logos/iosoccer-full-logo-small.png" alt="">
                                     </a>
                                 </div>
                                 <!-- Footer Logo / End -->
@@ -315,13 +319,13 @@
                                                     <li class="social-links__item">
                                                         <a class="social-links__link" href="https://twitch.tv/iosoccer"
                                                             title="Twitch">
-                                                            <i class="fa fa-reddit"></i>
+                                                            <i class="fa fa-twitch"></i>
                                                         </a>
                                                     </li>
                                                     <li class="social-links__item">
                                                         <a class="social-links__link"
                                                             href="https://www.reddit.com/r/iosoccer" title="Reddit">
-                                                            <i class="fa fa-twitch"></i>
+                                                            <i class="fa fa-reddit"></i>
                                                         </a>
                                                     </li>
                                                     <li class="social-links__item">

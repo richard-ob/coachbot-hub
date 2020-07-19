@@ -20,6 +20,8 @@ import { NewsComponent } from '@pages/news/news.component';
 import { SpinnerModule } from '@core/components/spinner/spinner.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MediaComponent } from '@pages/media/media.component';
+import { LightboxModule } from 'ngx-lightbox';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatchmakingComponent,
     AboutComponent,
     ServerManualComponent,
-    NewsComponent
+    NewsComponent,
+    MediaComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     LayoutModule,
     SpinnerModule,
     NgxSkeletonLoaderModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    LightboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

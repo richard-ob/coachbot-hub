@@ -26,6 +26,14 @@
     &:hover {
         opacity: 0.8;
     }
+    &:active {
+        background: #5c7e10 !important;
+        opacity: 0.9;
+        border-color: #5c7e10 !important;
+    }
+    &:focus {
+        box-shadow: 0 0 0 0.2rem #405217 !important;
+    }
     > i {
         padding-left: 15px;
         margin-top: 5px
@@ -38,6 +46,14 @@
     border-radius: 4px;
     &:hover {
         opacity: 0.8;
+    }
+    &:active {
+        background: #7289da !important;
+        opacity: 0.9;        
+        border-color: #7289da !important;
+    }
+    &:focus {
+        box-shadow: 0 0 0 0.2rem #4d587d !important;
     }
     > i {
         padding-left: 15px;

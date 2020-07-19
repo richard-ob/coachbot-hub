@@ -1,0 +1,12 @@
+.card__content > div {
+    display: inline;
+    img {
+        padding: 10px;
+        max-width: 265px;
+        display: inline-block;
+        cursor: pointer;
+        &:hover {
+            opacity: 0.85;
+        }
+    }
+}

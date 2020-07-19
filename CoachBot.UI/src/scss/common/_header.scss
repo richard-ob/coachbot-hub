@@ -211,7 +211,7 @@
 				display: none;
 				top: 0;
 				bottom: 0;
-				width: 210px;
+				width: 88px;
 				background-color: $header-secondary-bg;
 				left: -73px;
 				margin-left: 0;
@@ -239,11 +239,10 @@
 /* Header Logo */
 .header-logo {
 	position: absolute;
-	z-index: 1001;
-	bottom: 67px;
-    left: 78px;
-	display: block;
-
+    z-index: 1001;
+    bottom: 77px;
+    left: 93px;
+    display: block;
 	@media (max-width: 991px) {
 		display: none;
 	}
@@ -251,7 +250,7 @@
 }
 
 .header-logo__img {
-	width: 256px;
+	width: 203px;
 	position: relative;
 }
 

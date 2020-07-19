@@ -136,8 +136,9 @@
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
                             [average]="true">
                         </th>
-                        <th class="team-result__game-overview text-center" style="min-width: 175px" class="text-center">
-                            Form</th>
+                        <th sorter [sortByColumn]="'Points'" [sortByColumnName]="'Form'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

@@ -8,5 +8,8 @@
         &:hover {
             opacity: 0.85;
         }
+        @media (max-width: 992px) {
+            max-width: 100%;
+		}
     }
 }

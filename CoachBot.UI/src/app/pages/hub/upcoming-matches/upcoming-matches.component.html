@@ -38,7 +38,7 @@
                         </td>
                         <td class="team-result__status text-nowrap">
                             <ng-container *ngIf="match.tournament; else matchType">
-                                {{match.tournament.name}}
+                                <a [routerLink]="['/tournament/', match.tournamentId]">{{match.tournament.name}}</a>
                             </ng-container>
                             <ng-template #matchType>
                                 <ng-container [ngSwitch]="match.matchType">

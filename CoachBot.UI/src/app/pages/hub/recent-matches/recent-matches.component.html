@@ -94,7 +94,7 @@
                                 <span *ngSwitchCase="matchTypes.UnrankedFriendly">Unranked Friendly</span>
                                 <span *ngSwitchCase="matchTypes.RankedFriendly">Ranked Friendly</span>
                                 <span *ngSwitchCase="matchTypes.Competition">
-                                    {{match.tournament?.name}}
+                                    <a [routerLink]="['/tournament/', match.tournamentId]">{{match.tournament.name}}</a>
                                 </span>
                             </ng-container>
                         </td>

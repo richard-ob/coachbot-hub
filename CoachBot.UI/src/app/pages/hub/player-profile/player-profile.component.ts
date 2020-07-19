@@ -66,8 +66,6 @@ export class PlayerProfileComponent implements OnInit {
         if (!this.playerProfile || !this.playerProfile.clubTeam || !this.playerProfile.clubTeam.color) {
             return this.generateGradient('#292c31');
         }
-        console.log('here');
-        console.log(this.playerProfile.clubTeam.color);
         return this.generateGradient(this.playerProfile.clubTeam.color);
     }
 

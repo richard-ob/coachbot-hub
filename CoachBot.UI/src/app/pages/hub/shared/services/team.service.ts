@@ -75,6 +75,10 @@ export class TeamService {
         return this.http.get<TeamPerformanceSnapshot[]>(`${environment.apiUrl}/api/teamstatistics/performance/daily/${teamId}`);
     }
 
+    getContinuousTeamPerformance(teamId: number): Observable<TeamPerformanceSnapshot[]> {
+        return this.http.get<TeamPerformanceSnapshot[]>(`${environment.apiUrl}/api/teamstatistics/performance/continuous/${teamId}`);
+    }
+
     getTeamMatchDayTotals(teamId: number): Observable<MatchDayTotals[]> {
         return this.http.get<MatchDayTotals[]>(`${environment.apiUrl}/api/teamstatistics/match-totals/${teamId}`);
     }

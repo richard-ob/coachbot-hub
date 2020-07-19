@@ -1,5 +1,6 @@
 export enum PerformanceTrackerTime {
-    Daily = 1,
+    Continuous = 0,
+    Daily,
     Weekly,
     Monthly,
     Yearly

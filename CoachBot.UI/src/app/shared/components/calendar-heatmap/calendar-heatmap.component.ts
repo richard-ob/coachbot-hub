@@ -63,7 +63,12 @@ export class CalendarHeatmapComponent implements OnInit {
                 }
 
                 // value
-                const totals = this.calendarEntries.find(t => new Date(t.matchDayDate).getTime() === date.getTime());
+                date.setHours(0, 0, 0, 0);
+                const totals = this.calendarEntries.find(t => {
+                    const matchDayDate = new Date(t.matchDayDate);
+                    matchDayDate.setHours(0, 0, 0, 0);
+                    return matchDayDate.getTime() === date.getTime();
+                });
                 const value = totals ? totals.matches : 0;
                 series.push({
                     date,

@@ -19,7 +19,7 @@ export class TeamPerformanceTrackerComponent implements OnInit {
     performanceSeries: GraphSeries[];
     currentPerformanceTrackerAttribute: PerformanceTrackerAttribute = PerformanceTrackerAttribute.MatchOutcomes;
     performanceTrackerAttribute = PerformanceTrackerAttribute;
-    currentPerformanceTrackerTime: PerformanceTrackerTime = PerformanceTrackerTime.Daily;
+    currentPerformanceTrackerTime: PerformanceTrackerTime = PerformanceTrackerTime.Continuous;
     performanceTrackerTime = PerformanceTrackerTime;
     colorScheme = { domain: ['#33b9f6'] };
     showLegend = false;
@@ -29,8 +29,19 @@ export class TeamPerformanceTrackerComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getDailyPlayerPerformance();
+        this.getContinuousPlayerPerformance();
     }
+
+    getContinuousPlayerPerformance() {
+        this.isLoading = true;
+        this.currentPerformanceTrackerTime = PerformanceTrackerTime.Daily;
+        this.teamService.getContinuousTeamPerformance(this.teamId).subscribe(playerPerformanceSnapshots => {
+            this.playerPerformanceSnapshots = playerPerformanceSnapshots;
+            this.mapPerformanceToPoints();
+            this.isLoading = false;
+        });
+    }
+
 
     getDailyPlayerPerformance() {
         this.isLoading = true;

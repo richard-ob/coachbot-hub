@@ -82,6 +82,10 @@ export class PlayerService {
         return this.http.get<PlayerPerformanceSnapshot[]>(`${environment.apiUrl}/api/player-statistics/performance/daily/${playerId}`);
     }
 
+    getContinuousPlayerPerformance(playerId: number): Observable<PlayerPerformanceSnapshot[]> {
+        return this.http.get<PlayerPerformanceSnapshot[]>(`${environment.apiUrl}/api/player-statistics/performance/continuous/${playerId}`);
+    }
+
     getPlayerAppearanceTotals(playerId: number): Observable<MatchDayTotals[]> {
         return this.http.get<MatchDayTotals[]>(`${environment.apiUrl}/api/player-statistics/appearance-totals/${playerId}`);
     }

@@ -54,5 +54,11 @@ namespace CoachBot.Controllers
         {
             return _matchStatisticsService.GetDailyTeamPerformance(teamId);
         }
+
+        [HttpGet("performance/continuous/{teamId}")]
+        public List<TeamPerformanceSnapshot> GetContinuousPlayerPerformanceSnapshots(int teamId)
+        {
+            return _matchStatisticsService.GetContinuousTeamPerformance(teamId);
+        }
     }
 }

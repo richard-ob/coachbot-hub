@@ -1,10 +1,10 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
-using CoachBot.Model;
 using CoachBot.Shared.Model;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,14 +15,14 @@ namespace CoachBot.Domain.Services
 {
     public class DiscordService
     {
-        private readonly CoachBotContext _coachBotContext;
+        private readonly IServiceProvider _serviceProvider;
         private readonly DiscordSocketClient _discordSocketClient;
         private readonly Config _config;
 
-        public DiscordService(CoachBotContext coachBotContext, DiscordSocketClient discordSocketClient, Config config)
+        public DiscordService(IServiceProvider serviceProvider, DiscordSocketClient discordSocketClient, Config config)
         {
+            _serviceProvider = serviceProvider;
             _discordSocketClient = discordSocketClient;
-            _coachBotContext = coachBotContext;
             _config = config;
         }
 
@@ -85,39 +85,68 @@ namespace CoachBot.Domain.Services
 
         public IEnumerable<DiscordChannel> GetChannelsForGuild(ulong guildId)
         {
-            var guild = _discordSocketClient.GetGuild(guildId);
-
-            return guild.Channels.Select(c => new DiscordChannel()
+            IEnumerable<DiscordChannel> channels;
+            using (var scope = _serviceProvider.CreateScope())
             {
-                Id = c.Id,
-                Name = c.Name,
-                IsConfigured = _coachBotContext.Channels.Any(cc => cc.DiscordChannelId == c.Id)
-            });
+                var coachBotContext = scope.ServiceProvider.GetService<CoachBotContext>();
+                var guild = _discordSocketClient.GetGuild(guildId);
+
+                channels = guild.Channels.Select(c => new DiscordChannel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    IsConfigured = coachBotContext.Channels.Any(cc => cc.DiscordChannelId == c.Id)
+                });
+            }
+
+            return channels;
         }
 
         public IEnumerable<DiscordGuild> GetGuildsForUser(ulong steamUserId)
         {
-            var discordUserId = _coachBotContext.Players.Single(s => s.SteamID == steamUserId).DiscordUserId;
-            return _discordSocketClient.Guilds
-                .Where(g => g.Users.Any(u => u.Id == discordUserId && u.GuildPermissions.Administrator))
-                .Select(g => new DiscordGuild()
-                {
-                    Id = g.Id,
-                    Name = g.Name,
-                    IsLinked = _coachBotContext.Guilds.Any(cg => cg.DiscordGuildId == g.Id),
-                    Emotes = g.Emotes.Select(e => new KeyValuePair<string, string>($"<:{e.Name}:{e.Id}>", e.Url)).ToList()
-                });
+            IEnumerable<DiscordGuild> guilds;
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var coachBotContext = scope.ServiceProvider.GetService<CoachBotContext>();
+
+                var discordUserId = coachBotContext.Players.Single(s => s.SteamID == steamUserId).DiscordUserId;
+                guilds = _discordSocketClient.Guilds
+                    .Where(g => g.Users.Any(u => u.Id == discordUserId && u.GuildPermissions.Administrator))
+                    .Select(g => new DiscordGuild()
+                    {
+                        Id = g.Id,
+                        Name = g.Name,
+                        IsLinked = coachBotContext.Guilds.Any(cg => cg.DiscordGuildId == g.Id),
+                        Emotes = g.Emotes.Select(e => new KeyValuePair<string, string>($"<:{e.Name}:{e.Id}>", e.Url)).ToList()
+                    });
+            }
+
+            return guilds;
         }
 
         public bool UserIsGuildAdministrator(ulong steamUserId, ulong guildId)
         {
-            var discordUserId = _coachBotContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
+            ulong? discordUserId;
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var coachBotContext = scope.ServiceProvider.GetService<CoachBotContext>();
+
+                discordUserId = coachBotContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
+            }
+
             return _discordSocketClient.GetGuild(guildId).Users.Any(u => u.Id == discordUserId && u.GuildPermissions.Administrator);
         }
 
         public bool UserIsPresentOnGuild(ulong steamUserId, ulong guildId)
         {
-            var discordUserId = _coachBotContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
+            ulong? discordUserId;
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var coachBotContext = scope.ServiceProvider.GetService<CoachBotContext>();
+
+                discordUserId = coachBotContext.GetPlayerBySteamId(steamUserId).DiscordUserId;
+            }
+
             return _discordSocketClient.GetGuild(guildId).Users.Any(u => u.Id == steamUserId);
         }
 

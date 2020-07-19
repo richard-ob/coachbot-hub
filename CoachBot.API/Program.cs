@@ -1,26 +1,32 @@
 ﻿using CoachBot.Model;
 using CoachBot.Shared.Helpers;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CoachBot
 {
     public class Program
     {
-        public static void Main(string[] args) =>
-          new WebHostBuilder()
+        private static void Main(string[] args) =>
+            new Program().RunAsync().GetAwaiter().GetResult();
+
+        private async Task RunAsync()
+        {
+            var config = ConfigHelper.GetConfig();
+            var port = config.BotApiPort > 0 ? config.ApiPort : 8080;
+            var host = WebHost
+              .CreateDefaultBuilder()
               .UseKestrel()
               .UseStartup<WebStartup>()
-              .UseUrls($"http://*:{ApiPort}")
-              .Build()
-              .Run();
+              .UseUrls($"http://*:{port}")
+              .Build();
+            host.Start();
 
-        public static int ApiPort {
-            get {
-                var config = ConfigHelper.GetConfig();
-                return config.ApiPort > 0 ? config.ApiPort : 80;
-            }
+            await Task.Delay(Timeout.Infinite);
         }
     }
 }

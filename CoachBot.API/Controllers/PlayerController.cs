@@ -31,11 +31,21 @@ namespace CoachBot.Controllers
             return _playerService.GetPlayer(id);
         }
 
-        [Authorize]
         [HttpGet]
         [Route("@me")]
         public Player Get()
         {
+            ulong steamId;
+            
+            try
+            {
+                steamId = User.GetSteamId();
+            }
+            catch
+            {
+                return null;
+            }
+
             return _playerService.GetPlayerBySteamId(User.GetSteamId(), createIfNotExists: true, playerName: User.Identity.Name);
         }
 

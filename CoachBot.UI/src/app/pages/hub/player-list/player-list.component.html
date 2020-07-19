@@ -203,8 +203,9 @@
                             [average]="true">
                         </th>
                         <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
-                            [sortByColumn]="'KeeperSavePercentage'" [sortByColumnName]="'Save %'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
+                            [sortByColumn]="'KeeperSavePercentage'" [sortByColumnName]="'Save Rate'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center">
                         </th>
                         <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
                             [sortByColumn]="'KeeperSavesCaughtAverage'" [sortByColumnName]="'Saves Caught'"

@@ -150,7 +150,7 @@ export class DiscordChannelEditorComponent implements OnInit {
         firstChannelPosition.ordinal = 0;
         const format = this.channel.channelPositions.length;
         for (let i = 1; i < format; i++) {
-            const channelPosition = this.channel.channelPositions[i - 1];
+            const channelPosition = this.channel.channelPositions[i];
             channelPosition.positionId = 0;
             channelPosition.position = new Position();
             channelPosition.position.id = 0;

@@ -34,14 +34,13 @@ export class TeamPerformanceTrackerComponent implements OnInit {
 
     getContinuousPlayerPerformance() {
         this.isLoading = true;
-        this.currentPerformanceTrackerTime = PerformanceTrackerTime.Daily;
+        this.currentPerformanceTrackerTime = PerformanceTrackerTime.Continuous;
         this.teamService.getContinuousTeamPerformance(this.teamId).subscribe(playerPerformanceSnapshots => {
             this.playerPerformanceSnapshots = playerPerformanceSnapshots;
             this.mapPerformanceToPoints();
             this.isLoading = false;
         });
     }
-
 
     getDailyPlayerPerformance() {
         this.isLoading = true;

@@ -27,11 +27,7 @@ namespace CoachBot.Attributes
                 var playerService = context.HttpContext.RequestServices.GetService(typeof(PlayerService)) as PlayerService;
                 var playerHubRole = playerService.GetPlayerHubRole(steamId);
 
-                if (HubRole.Equals(PlayerHubRole.Administrator) && playerHubRole >= PlayerHubRole.Administrator)
-                {
-                    return;
-                }
-                else if (HubRole.Equals(PlayerHubRole.Manager) && playerHubRole >= HubRole)
+                if (playerHubRole >= HubRole)
                 {
                     return;
                 }

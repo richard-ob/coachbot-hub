@@ -4,6 +4,7 @@ using CoachBot.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
@@ -94,13 +95,20 @@ namespace CoachBot.Controllers
 
         [HubRolePermission(HubRole = PlayerHubRole.Owner)]
         [HttpPost("{id}/create-match")]
-        public IActionResult GetUnlinkedMatchStatistics([FromQuery]int id)
+        public IActionResult CreateMatchFromMatchData(int id)
         {
             _matchStatisticsService.CreateMatchFromMatchData(id);
 
             return Ok();
         }
-        
+
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HttpGet("unlinked")]
+        public List<MatchStatistics> GetUnlinkedMatchStatistics()
+        {
+            return _matchStatisticsService.GetUnlinkedMatchData();
+        }
+
         [HubRolePermission(HubRole = PlayerHubRole.Owner)]
         [HttpGet("generate")]
         public IActionResult Generate()

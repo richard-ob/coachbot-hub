@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Server } from 'selenium-webdriver/safari';
 import { ServerService } from '../shared/services/server.service';
 import { MatchStatistics } from '../shared/model/match-statistics.model';
+import { MatchStatisticsService } from '../shared/services/match-statistics.service';
 
 @Component({
     selector: 'app-match-editor',
@@ -21,7 +22,12 @@ export class MatchEditorComponent implements OnInit {
     isSubmittingStatistics = false;
     isProccessingStatistics = false;
 
-    constructor(private matchService: MatchService, private serverService: ServerService, private route: ActivatedRoute) { }
+    constructor(
+        private matchService: MatchService,
+        private matchStatisticsService: MatchStatisticsService,
+        private serverService: ServerService,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
         this.route.paramMap.pipe().subscribe(params => {
@@ -51,7 +57,7 @@ export class MatchEditorComponent implements OnInit {
 
     updateMatchStatistics() {
         this.isLoading = true;
-        this.matchService.submitMatchStatistics(this.matchId, this.matchStatistics).subscribe(() => {
+        this.matchStatisticsService.submitMatchStatistics(this.matchId, this.matchStatistics).subscribe(() => {
             this.isLoading = false;
             this.isProccessingStatistics = true;
         });

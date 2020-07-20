@@ -60,6 +60,7 @@ import { FantasyTeamManagerModule } from './tournaments/fantasy/fantasy.module';
 import { BotManagerModule } from './bot-manager/bot-manager.module';
 import { TournamentManagerModule } from './tournaments/tournament-manager/tournament-manager.module';
 import { TeamNameDisplayModule } from './shared/components/team-name-display/team-name-display.module';
+import { MatchStatisticsModule } from './match-statistics/match-statistics.module';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { TeamNameDisplayModule } from './shared/components/team-name-display/tea
     AssetImageUploaderModule,
     ThSorterModule,
     TeamNameDisplayModule,
+    MatchStatisticsModule,
     TimepickerModule.forRoot()
   ],
   providers: [

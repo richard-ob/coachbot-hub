@@ -26,7 +26,7 @@ namespace CoachBot.Domain.Services
 
         public void SaveMatchData(MatchData matchData, string token, string sourceAddress, int matchId, bool manualSave = false)
         {
-            var match = _coachBotContext.Matches.Include(m => m.TeamHome).Include(m => m.TeamAway).Single(m => m.Id == matchId);
+            var match = _coachBotContext.Matches.Single(m => m.Id == matchId);
             match.MatchStatistics = new MatchStatistics()
             {
                 MatchData = matchData,
@@ -38,15 +38,7 @@ namespace CoachBot.Domain.Services
             {
                 match.KickOff = match.KickOff ?? match.MatchStatistics.KickOff;
                 _coachBotContext.SaveChanges();
-                GeneratePlayerMatchStatistics(match);
-                GenerateTeamMatchStatistics(match);
-                GenerateTeamForm();
-                if (match.TournamentId.HasValue && match.TournamentId > 0)
-                {
-                    var tournamentPhaseId = _coachBotContext.TournamentGroupMatches.Single(m => m.MatchId == match.Id).TournamentPhaseId;
-                    _fantasyService.GenerateFantasyPhaseSnapshots(tournamentPhaseId);
-                }
-                _discordNotificationService.SendAuditChannelMessage($"New match statistics uploaded for {match.TeamHome.Name} vs {match.TeamAway.Name}").Wait();
+                GenerateStatsForMatch(match.Id);
             }
         }
 
@@ -93,6 +85,25 @@ namespace CoachBot.Domain.Services
 
             _coachBotContext.Matches.Add(match);
             _coachBotContext.SaveChanges();
+
+            GenerateStatsForMatch(match.Id);
+        }
+
+        public void GenerateStatsForMatch(int matchId)
+        {
+            var match = _coachBotContext.Matches.Include(m => m.TeamHome).Include(m => m.TeamAway).Single(m => m.Id == matchId);
+
+            GeneratePlayerMatchStatistics(match);
+            GenerateTeamMatchStatistics(match);
+            GenerateTeamForm();
+            if (match.TournamentId.HasValue && match.TournamentId > 0)
+            {
+                var tournamentPhaseId = _coachBotContext.TournamentGroupMatches.Single(m => m.MatchId == match.Id).TournamentPhaseId;
+                _fantasyService.GenerateFantasyPhaseSnapshots(tournamentPhaseId);
+            }
+
+            _discordNotificationService.SendAuditChannelMessage($"New match statistics uploaded for {match.TeamHome.Name} vs {match.TeamAway.Name}").Wait();
+
         }
 
         public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, TeamStatisticsFilters filters)

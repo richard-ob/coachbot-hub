@@ -102,7 +102,7 @@
                 <tbody>
                     <tr *ngFor="let player of fantasyPlayers" title="Add player to your team">
                         <td>
-                            <img *ngIf="player.team.badgeImage" [src]="player.team.badgeImage.url"
+                            <img *ngIf="player.team.badgeImage" [src]="player.team.badgeImage.extraSmallUrl"
                                 style="max-height: 15px">
                         </td>
                         <td>{{player.player.name}}</td>

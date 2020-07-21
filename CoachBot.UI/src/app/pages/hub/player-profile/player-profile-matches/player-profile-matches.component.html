@@ -110,7 +110,7 @@
                                 <td class="team-result__score">{{match.match.kickOff | date:'medium'}}</td>
                                 <td>{{match.position.name}}</td>
                                 <td class="team-result__score">
-                                    <img *ngIf="match.team.badgeImage" [src]="match.team.badgeImage.url"
+                                    <img *ngIf="match.team.badgeImage" [src]="match.team.badgeImage.extraSmallUrl"
                                         style="width: 13px;">
                                     <img *ngIf="!match.team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                                         style="width: 13px;">

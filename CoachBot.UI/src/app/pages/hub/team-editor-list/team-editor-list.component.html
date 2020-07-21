@@ -24,7 +24,7 @@
                 <tbody>
                     <tr *ngFor="let playerTeam of player.teams | filterBy: ['isCurrentTeam']:'true'">
                         <td class="pr-0">
-                            <img *ngIf="playerTeam.team.badgeImage" [src]="playerTeam.team.badgeImage.url"
+                            <img *ngIf="playerTeam.team.badgeImage" [src]="playerTeam.team.badgeImage.extraSmallUrl"
                                 style="width: 16px;">
                             <img *ngIf="!playerTeam.team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                                 style="width: 16px;">

@@ -39,7 +39,7 @@
                                 <div class="player-info-details__value">
                                     <span *ngIf="playerProfile.clubTeam">
                                         <a class="player-info-details__team-link" [routerLink]="['/team-profile/', playerProfile.clubTeam.id]">                                                    
-                                            <img *ngIf="playerProfile.clubTeam.badgeImage" [src]="playerProfile.clubTeam.badgeImage.url" style="width: 20px">{{playerProfile.clubTeam.name}}
+                                            <img *ngIf="playerProfile.clubTeam.badgeImage" [src]="playerProfile.clubTeam.badgeImage.extraSmallUrl" style="width: 20px">{{playerProfile.clubTeam.name}}
                                         </a>
                                     </span>
                                     <span *ngIf="!playerProfile.clubTeam">None</span>
@@ -50,7 +50,7 @@
                                 <div class="player-info-details__value">
                                     <span *ngIf="playerProfile.nationalTeam">
                                                 <a [routerLink]="['/team-profile/', playerProfile.nationalTeam.id]">
-                                                    <img *ngIf="playerProfile.nationalTeam.badgeImage" [src]="playerProfile.nationalTeam.badgeImage.url" style="width: 20px">{{playerProfile.nationalTeam.name}}
+                                                    <img *ngIf="playerProfile.nationalTeam.badgeImage" [src]="playerProfile.nationalTeam.badgeImage.extraSmallUrl" style="width: 20px">{{playerProfile.nationalTeam.name}}
                                                     {{playerProfile.nationalTeam.name}}
                                                 </a>
                                             </span>

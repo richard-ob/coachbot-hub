@@ -34,7 +34,7 @@
                     <header class="card__header sponsor-card__header"
                         [style.background-color]="team.color ? team.color : '#292c31'">
                         <figure class="sponsor-card__logo">
-                            <img *ngIf="team.badgeImage" [src]="team.badgeImage.url" style="max-height: 140px">
+                            <img *ngIf="team.badgeImage" [src]="team.badgeImage.mediumUrl" style="max-height: 140px">
                             <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                                 style="max-height: 140px">
                         </figure>
@@ -62,7 +62,7 @@
                         [style.background-color]="team.color ? team.color : '#292c31'">
                         <figure class="sponsor-card__logo">
                             <a href="#">
-                                <img *ngIf="team.badgeImage" [src]="team.badgeImage.url">
+                                <img *ngIf="team.badgeImage" [src]="team.badgeImage.mediumUrl">
                                 <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                                     style="max-height: 140px">
                             </a>

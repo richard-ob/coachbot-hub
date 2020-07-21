@@ -59,24 +59,13 @@ namespace CoachBot.Domain.Services
             _coachBotContext.AssetImages.Add(assetImage);
             _coachBotContext.SaveChanges();
 
-            byte[] bytes = Convert.FromBase64String(assetImage.Base64EncodedImage.Replace("data:image/png;base64,", ""));
-            using (var outputStream = new MemoryStream())
-            using (var image = Image.Load(new MemoryStream(bytes)))
+            foreach (var assetImageSize in AssetImageSizes.AllSizes)
             {
-                int newHeight = Convert.ToInt32(Math.Floor(image.Height * CalculateNumberChange(image.Width, 256)));
-                image.Mutate(x => x.Resize(256, newHeight));
-
-                var storageCredentials = new StorageSharedKeyCredential(_azureAssetsConfig.AccountName, _azureAssetsConfig.Key);
-                var blobUri = GenerateImageUri($"{assetImage.Id}_md_{fileName}");
-                var blobClient = new BlobClient(blobUri, storageCredentials);
-                image.SaveAsPng(outputStream);
-                outputStream.Position = 0;
-
-                blobClient.UploadAsync(outputStream).Wait();
-
-                assetImage.Url = blobUri.ToString();
-                _coachBotContext.SaveChanges();
+                UploadImageToAzure(assetImage, assetImageSize.Name, assetImageSize.Width);
             }
+
+            assetImage.Url = GenerateImageUri($"{assetImage.Id}_{AssetImageSizes.ASSET_IMAGE_REPLACEMENT_TOKEN}.png").ToString();
+            _coachBotContext.SaveChanges();
 
             GenerateAllAssetImageUrls();
 
@@ -85,26 +74,37 @@ namespace CoachBot.Domain.Services
 
         public void GenerateAllAssetImageUrls()
         {
-            foreach(var assetImage in _coachBotContext.AssetImages.Where(image => string.IsNullOrWhiteSpace(image.Url)))
+            foreach(var assetImage in _coachBotContext.AssetImages)
             {
-                byte[] bytes = Convert.FromBase64String(assetImage.Base64EncodedImage.Replace("data:image/png;base64,", ""));
-                using (var outputStream = new MemoryStream())
-                using (var image = Image.Load(new MemoryStream(bytes)))
+                foreach(var assetImageSize in AssetImageSizes.AllSizes)
                 {
-                    int newHeight = Convert.ToInt32(Math.Floor(image.Height * CalculateNumberChange(image.Width, 256)));
-                    image.Mutate(x => x.Resize(256, newHeight));
-
-                    var storageCredentials = new StorageSharedKeyCredential(_azureAssetsConfig.AccountName, _azureAssetsConfig.Key);
-                    var blobUri = GenerateImageUri($"{assetImage.Id}_md_{assetImage.FileName}");
-                    var blobClient = new BlobClient(blobUri, storageCredentials);
-                    image.SaveAsPng(outputStream);
-                    outputStream.Position = 0;
-
-                    blobClient.UploadAsync(outputStream).Wait();
-
-                    assetImage.Url = blobUri.ToString();
-                    _coachBotContext.SaveChanges();
+                    UploadImageToAzure(assetImage, assetImageSize.Name, assetImageSize.Width);
                 }
+
+                assetImage.Url = GenerateImageUri($"{assetImage.Id}_{AssetImageSizes.ASSET_IMAGE_REPLACEMENT_TOKEN}.png").ToString();
+                _coachBotContext.SaveChanges();
+            }
+        }
+
+        private void UploadImageToAzure(AssetImage assetImage, string sizeName, int? width)
+        {
+            byte[] bytes = Convert.FromBase64String(assetImage.Base64EncodedImage.Replace("data:image/png;base64,", ""));
+            using (var outputStream = new MemoryStream())
+            using (var image = Image.Load(new MemoryStream(bytes)))
+            {
+                if (width != null)
+                {
+                    int newHeight = Convert.ToInt32(Math.Floor(image.Height * CalculateNumberChange(image.Width, (int)width)));
+                    image.Mutate(x => x.Resize((int)width, newHeight));
+                }
+
+                var storageCredentials = new StorageSharedKeyCredential(_azureAssetsConfig.AccountName, _azureAssetsConfig.Key);
+                var blobUri = GenerateImageUri($"{assetImage.Id}_{sizeName}.png");
+                var blobClient = new BlobClient(blobUri, storageCredentials);
+                image.SaveAsPng(outputStream);
+                outputStream.Position = 0;
+
+                blobClient.UploadAsync(outputStream, overwrite: true).Wait();
             }
         }
 

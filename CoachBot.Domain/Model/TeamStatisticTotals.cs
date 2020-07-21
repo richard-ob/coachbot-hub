@@ -8,6 +8,6 @@
 
         public string TeamName { get; set; }
 
-        public string BadgeImage { get; set; }
+        public string BadgeImageUrl { get; set; }
     }
 }

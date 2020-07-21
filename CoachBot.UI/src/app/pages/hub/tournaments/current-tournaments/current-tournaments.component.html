@@ -26,7 +26,7 @@
                 <tbody>
                     <tr *ngFor="let tournament of tournaments" (click)="navigateToTournament(tournament.id)">
                         <td><img *ngIf="tournament.tournamentSeries.organisation.logoImage"
-                                [src]="tournament.tournamentSeries.organisation.logoImage.base64EncodedImage"
+                                [src]="tournament.tournamentSeries.organisation.logoImage.url"
                                 style="max-height: 20px;"></td>
                         <td>{{tournament.tournamentSeries.organisation.acronym}}</td>
                         <td class="team-result__status">{{tournament.name}}</td>

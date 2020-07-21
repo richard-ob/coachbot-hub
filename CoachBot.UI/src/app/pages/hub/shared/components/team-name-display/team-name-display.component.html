@@ -4,7 +4,7 @@
             [attr.title]="team.name">{{ useTeamCodes ? team.teamCode : team.name }}</strong>
         <span class="pl-1">
             <img *ngIf="team.badgeImage"
-                [src]="team.badgeImage.base64EncodedImage" style="max-height: 20px">
+                [src]="team.badgeImage.url" style="max-height: 20px">
                 <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                     style="max-height: 20px">
         </span>
@@ -12,7 +12,7 @@
     <ng-container *ngIf="!isHomeTeam">
         <span class="pr-1">
             <img *ngIf="team.badgeImage"
-                [src]="team.badgeImage.base64EncodedImage" style="max-height: 20px">
+                [src]="team.badgeImage.url" style="max-height: 20px">
                 <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                     style="max-height: 20px">
         </span>

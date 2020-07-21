@@ -119,11 +119,13 @@ namespace CoachBot.LegacyImporter
                 {
                     if (!string.IsNullOrEmpty(discordChannel.Guild.IconUrl))
                     {
-                        var assetImageContent = HttpImageRetrieval.GetImageAsBase64(discordChannel.Guild.IconUrl.Replace(".jpg", ".png") + "?size=512");
+                        var iconUrl = discordChannel.Guild.IconUrl.Replace(".jpg", ".png") + "?size=512";
+                        var assetImageContent = HttpImageRetrieval.GetImageAsBase64(iconUrl);
                         var assetImage = new AssetImage()
                         {
                             Base64EncodedImage = assetImageContent,
                             FileName = discordChannel.Name.Replace("#", "").Replace(" ", "-"),
+                            Url = iconUrl,
                             PlayerId = 1
                         };
                         this.coachBotContext.AssetImages.Add(assetImage);

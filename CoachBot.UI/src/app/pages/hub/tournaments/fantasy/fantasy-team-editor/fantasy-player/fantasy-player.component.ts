@@ -30,7 +30,7 @@ export class FantasyPlayerComponent implements OnInit {
         this.color = this.fantasyPlayer.team.color;
         this.playerName = this.fantasyPlayer.player.name;
         if (this.fantasyPlayer.team.badgeImage) {
-            this.badge = this.fantasyPlayer.team.badgeImage.base64EncodedImage;
+            this.badge = this.fantasyPlayer.team.badgeImage.url;
         }
         if (this.color) {
             this.kitFilter = cssColouriser(this.color).replace('filter: ', '');

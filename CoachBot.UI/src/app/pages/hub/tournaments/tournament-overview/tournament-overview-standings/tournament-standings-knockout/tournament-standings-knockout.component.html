@@ -14,8 +14,7 @@
                                 <td class="tournament-bracket__inner">
                                     <figure class="tournament-bracket__team-thumb">
                                         <img *ngIf="match.match.teamHome && match.match.teamHome.badgeImage"
-                                            [src]="match.match.teamHome.badgeImage.base64EncodedImage"
-                                            style="width: 25px">
+                                            [src]="match.match.teamHome.badgeImage.url" style="width: 25px">
                                         <img *ngIf="!match.match.teamHome || !match.match.teamHome.badgeImage"
                                             style="width: 25px" src="./assets/images/soccer/blank-crest.png">
                                     </figure>
@@ -34,8 +33,7 @@
                                 <td class="tournament-bracket__inner">
                                     <figure class="tournament-bracket__team-thumb">
                                         <img *ngIf="match.match.teamAway && match.match.teamAway.badgeImage"
-                                            style="width: 25px"
-                                            [src]="match.match.teamAway.badgeImage.base64EncodedImage">
+                                            style="width: 25px" [src]="match.match.teamAway.badgeImage.url">
                                         <img *ngIf="!match.match.teamAway || !match.match.teamAway.badgeImage"
                                             style="width: 25px" src="./assets/images/soccer/blank-crest.png">
                                     </figure>

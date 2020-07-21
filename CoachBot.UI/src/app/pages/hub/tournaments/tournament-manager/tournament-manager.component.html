@@ -21,9 +21,6 @@
     </div>
 </nav>
 <div class="container py-4">
-    <div *ngIf="accessDenied" class="alert alert-danger">
-        You do not have access to manage this tournament
-    </div>
-    <router-outlet *ngIf="!isLoading && !accessDenied"></router-outlet>
+    <router-outlet *ngIf="!isLoading"></router-outlet>
     <app-spinner *ngIf="isLoading"></app-spinner>
 </div>

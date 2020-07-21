@@ -9,7 +9,7 @@ import { Lightbox } from 'ngx-lightbox';
 })
 export class MediaComponent {
 
-    private albums = [];
+    albums = [];
 
     constructor(private lightbox: Lightbox) {
         for (let i = 1; i <= 12; i++) {

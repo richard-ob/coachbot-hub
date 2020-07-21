@@ -23,5 +23,16 @@
         public int ApiPort { get; set; } = 80;
 
         public int BotApiPort { get; set; } = 8080;
+
+        public AzureAssetsConfig AzureAssetsConfig { get; set; }
+    }
+
+    public class AzureAssetsConfig
+    {
+        public string AccountName { get; set; }
+
+        public string Key { get; set; }
+
+        public string ContainerName { get; set; }
     }
 }

@@ -8,7 +8,7 @@ export interface PlayerStatistics {
     name: string;
     steamUserProfile: SteamUserProfile;
     createdDate: Date;
-    
+
     rating: number;
     redCards: number;
     redCardsAverage: number;
@@ -51,6 +51,7 @@ export interface PlayerStatistics {
     keeperSaves: number;
     keeperSavesAverage: number;
     keeperSavesCaughtAverage: number;
+    keeperSavePercentage: number;
     goalKicksAverage: number;
     possessionAverage: number;
     distanceCoveredAverage: number;

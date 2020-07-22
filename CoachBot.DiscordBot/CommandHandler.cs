@@ -62,7 +62,11 @@ namespace CoachBot
                 var matchmakingService = scope.ServiceProvider.GetService<MatchmakingService>();
                 CallContext.SetData(CallContextDataType.DiscordUser, message.Author.Username);
 
-                if (result is PreconditionResult precondition && !precondition.IsSuccess)
+                if (!channelService.ChannelExists(context.Channel.Id))
+                {
+                    return; // INFO: This can be removed when precondition is re-enabled
+                }
+                else if (result is PreconditionResult precondition && !precondition.IsSuccess)
                 {
                     await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed(precondition.ErrorReason, ServiceResponseStatus.Failure));
                 }

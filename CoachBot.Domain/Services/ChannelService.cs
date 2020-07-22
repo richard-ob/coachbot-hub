@@ -199,6 +199,11 @@ namespace CoachBot.Domain.Services
                 .FirstOrDefault(c => c.Team.TeamCode + (c.SubTeamCode ?? "") == searchTeamCode);
         }
 
+        public bool ChannelExists(ulong channelId)
+        {
+            return _dbContext.Channels.Any(c => c.DiscordChannelId == channelId);
+        }
+
         private void UpdatePositions(ICollection<ChannelPosition> channelPositions, int channelId)
         {
             if (channelPositions.GroupBy(cp => cp.Position.Name).Select(s => s.Count()).Max() > 1)

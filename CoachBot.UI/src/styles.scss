@@ -3,6 +3,10 @@
 @import "~nouislider/distribute/nouislider.min.css";
 @import "~ngx-lightbox/lightbox.css";
 
+body {
+    min-height: 100vh;
+}
+
 .ngx-pagination {
     font-size: 0.7rem;
     font-family: "Montserrat";

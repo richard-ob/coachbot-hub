@@ -263,4 +263,10 @@ __pycache__/
 # config files
 config.json
 
+
+# new Coach version
 Migrations/
+history.json
+config-dev.json
+legacy-config.json
+CoachBot.UI/dist/coachbot-ui/

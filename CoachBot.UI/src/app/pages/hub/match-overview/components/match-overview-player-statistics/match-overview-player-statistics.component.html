@@ -100,7 +100,7 @@
                         <td class="team-result__status">{{player.team.teamCode}}</td>
                         <td class="team-result__status">{{player.position.name}}</td>
                         <td class="team-result__score">{{player.nickname}}</td>
-                        <td class="text-center">
+                        <td class="text-center text-nowrap">
                             <span *ngIf="player.substitute" title="Substitute">
                                 <i class="icon-svg icon-in mr-1"></i>
                             </span>
@@ -108,7 +108,7 @@
                                 <i class="icon-svg icon-yellow-card mr-1"></i>
                             </span>
                             <span *ngIf="player.redCards > 0" title="Red carded">
-                                <i class="icon-svg icon-red-card"></i>
+                                <i class="icon-svg icon-red-card mr-1"></i>
                             </span>
                             <span *ngIf="player.position.name == 'GK' && !player.goalsConceded" title="Clean sheet">
                                 <i  class="icon-svg icon-keepers-glove"></i>

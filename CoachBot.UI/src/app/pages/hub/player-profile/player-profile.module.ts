@@ -24,6 +24,7 @@ import {
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PlayerProfileSpotlightComponent } from './player-profile-statistics/player-profile-spotlight/player-profile-spotlight.component';
+import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
 
 @NgModule({
     declarations: [
@@ -49,6 +50,7 @@ import { PlayerProfileSpotlightComponent } from './player-profile-statistics/pla
         HubPipesModule,
         ThSorterModule,
         NgxChartsModule,
+        FormIndicatorModule,
         BsDropdownModule.forRoot()
     ]
 })

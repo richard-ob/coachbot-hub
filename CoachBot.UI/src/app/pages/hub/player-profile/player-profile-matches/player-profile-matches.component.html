@@ -116,7 +116,9 @@
                                         style="width: 13px;">
                                     {{match.team.name}}
                                 </td>
-                                <td>{{match.matchOutcome | matchOutcome}}</td>
+                                <td class="text-center">
+                                    <app-form-indicator [form]="[match.matchOutcome]"></app-form-indicator>
+                                </td>
                                 <td class="text-center">
                                     <span *ngIf="match.substitute" title="Substitute">
                                             <i class="icon-svg icon-in mr-1"></i>

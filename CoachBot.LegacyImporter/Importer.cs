@@ -169,7 +169,7 @@ namespace CoachBot.LegacyImporter
 
                     var team = new Team()
                     {
-                        TeamCode = guild.Name,
+                        TeamCode = TeamCodes.GetTeamCode(guild.Name),
                         Name = guild.Name,
                         BadgeEmote = leadChannel.Team1.BadgeEmote,
                         KitEmote = leadChannel.Team1.KitEmote,
@@ -180,8 +180,11 @@ namespace CoachBot.LegacyImporter
                         BadgeImageId = this.TeamAssetImages.Where(t => t.Key == guild.Name).Select(t => (int?)t.Value.Id).FirstOrDefault()
                     };
 
-                    teams.Add(team);
-                    this.coachBotContext.Teams.Add(team);
+                    if (team.TeamType != TeamType.Draft)
+                    {
+                        teams.Add(team);
+                        this.coachBotContext.Teams.Add(team);
+                    }
                 }
                 catch { }
             }

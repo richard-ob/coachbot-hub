@@ -52,9 +52,14 @@ namespace CoachBot
             var context = new SocketCommandContext(_client, message);
             var result = await _commands.ExecuteAsync(context, argPos, _provider);
             var matchmakerChannel = _configService.Config.Channels.FirstOrDefault(c => c.Id == context.Channel.Id);
+
+            // INFO: Stop processing of European matchmaking
+            if (matchmakerChannel == null || matchmakerChannel.RegionId == 1) return;
+
             var logMsg = $"[{message.Channel.Name} ({context.Guild.Name})] {message.Timestamp.ToString()}: @{message.Author.Username} {message.Content}";
             Console.WriteLine(logMsg);
             _logger.Information(logMsg);
+
             try
             {
                 await message.DeleteAsync();
@@ -63,6 +68,7 @@ namespace CoachBot
             {
                 Console.WriteLine($"Bot doesn't have have manage messages privileges in {message.Channel.Name} ({context.Guild.Name})");
             }
+
             if (result is PreconditionResult precondition && !precondition.IsSuccess)
             {
                 await message.Channel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription(precondition.ErrorReason).WithCurrentTimestamp());

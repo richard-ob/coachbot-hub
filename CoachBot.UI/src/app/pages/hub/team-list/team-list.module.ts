@@ -8,6 +8,7 @@ import { TeamListComponent } from './team-list.component';
 import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
 import { ThSorterModule } from '@shared/components/th-sorter/th-sort.module';
 import { TeamSpotlightComponent } from './team-spotlight/team-spotlight.component';
+import { NgReplacePipeModule } from 'angular-pipes';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { TeamSpotlightComponent } from './team-spotlight/team-spotlight.componen
         SpinnerModule,
         NgxPaginationModule,
         FormIndicatorModule,
-        ThSorterModule
+        ThSorterModule,
+        NgReplacePipeModule
     ]
 })
 export class TeamListModule { }

@@ -145,7 +145,8 @@
                     <tr *ngFor="let statistics of teamStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                         (click)="navigatetoProfile(statistics.teamId)">
                         <td class="pr-0">
-                            <img *ngIf="statistics.badgeImageUrl" [src]="statistics.badgeImageUrl"
+                            <img *ngIf="statistics.badgeImageUrl"
+                                [src]="statistics.badgeImageUrl | replace:'[[SIZE]]':'xs'"
                                 class="statistics-list--team-badge">
                             <img *ngIf="!statistics.badgeImageUrl" src="./assets/images/soccer/blank-crest.png"
                                 class="statistics-list--team-badge">

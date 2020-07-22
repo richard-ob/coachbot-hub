@@ -10,6 +10,7 @@
                 L
         </span>
     </ng-container>
+    <span *ngIf="form && !form.length">N/A</span>
 </ng-container>
 <ng-template #spinner>
     <app-spinner [verticalMargins]="false"></app-spinner>

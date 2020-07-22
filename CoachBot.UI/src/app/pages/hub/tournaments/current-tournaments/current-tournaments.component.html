@@ -4,7 +4,7 @@
         <div class="card__header card__header--has-btn">
             <h4>Current Tournaments</h4>
         </div>
-        <div class="card__content">
+        <div class="card__content table-responsive">
             <app-spinner *ngIf="!tournaments"></app-spinner>
             <div *ngIf="tournaments && !tournaments.length" class="alert alert-info m-4">
                 There are no tournaments currently taking place. Check back again soon!
@@ -26,7 +26,7 @@
                 <tbody>
                     <tr *ngFor="let tournament of tournaments" (click)="navigateToTournament(tournament.id)">
                         <td><img *ngIf="tournament.tournamentSeries.organisation.logoImage"
-                                [src]="tournament.tournamentSeries.organisation.logoImage.url"
+                                [src]="tournament.tournamentSeries.organisation.logoImage.extraSmallUrl"
                                 style="max-height: 20px;"></td>
                         <td>{{tournament.tournamentSeries.organisation.acronym}}</td>
                         <td class="team-result__status">{{tournament.name}}</td>

@@ -35,7 +35,7 @@
                                 <ng-container
                                     *ngIf="match.teamHome.badgeImage; else blankCrest">
                                     <img 
-                                        [src]="match.teamHome.badgeImage.extraSmallUrl"
+                                        [src]="match.teamHome.badgeImage.mediumUrl"
                                         class="game-result__team-badge">
                                 </ng-container>
                                 <ng-template #blankCrest>
@@ -67,7 +67,7 @@
                                     <ng-container
                                         *ngIf="match.teamAway.badgeImage; else blankCrest">
                                         <img 
-                                            [src]="match.teamAway.badgeImage.extraSmallUrl"
+                                            [src]="match.teamAway.badgeImage.mediumUrl"
                                             class="game-result__team-badge">
                                     </ng-container>
                                     <ng-template #blankCrest>

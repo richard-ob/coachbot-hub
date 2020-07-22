@@ -1,7 +1,7 @@
 <div class="tournament-bracket">
     <div *ngFor="let phase of tournament.tournamentStages[0].tournamentPhases; let i = index"
         class="tournament-bracket__round">
-        <h6 class="tournament-bracket__round-title d-block d-lg-none d-xl-none">Quarterfinals</h6>
+        <h6 class="tournament-bracket__round-title d-block d-lg-none d-xl-none">{{phase.name}}</h6>
         <ul class="tournament-bracket__list">
             <li *ngFor="let match of tournament.tournamentStages[0].tournamentGroups[0].tournamentGroupMatches | filterBy:['tournamentPhaseId']:phase.id"
                 [class.tournament-bracket__next-round-includes-byes]="nextRoundIncludesByedTeams(i)"

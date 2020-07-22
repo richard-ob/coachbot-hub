@@ -107,9 +107,9 @@
                         <tbody>
                             <tr *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                                 (click)="navigateToMatch(match.matchId)">
-                                <td class="team-result__score">{{match.match.kickOff | date:'medium'}}</td>
+                                <td class="text-nowrap">{{match.match.kickOff | date:'medium'}}</td>
                                 <td>{{match.position.name}}</td>
-                                <td class="team-result__score">
+                                <td class="team-result__score text-nowrap">
                                     <img *ngIf="match.team.badgeImage" [src]="match.team.badgeImage.extraSmallUrl"
                                         style="width: 13px;">
                                     <img *ngIf="!match.team.badgeImage" src="./assets/images/soccer/blank-crest.png"

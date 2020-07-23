@@ -14,6 +14,7 @@ export class ScorePredictorPlayerHistoryComponent implements OnInit {
     @Input() playerId: number;
     @Input() verticalPadding = true;
     @Input() verticalOverflow = false;
+    @Input() useContainer = true;
     scorePredictions: ScorePrediction[];
     player: Player;
     isLoading = true;

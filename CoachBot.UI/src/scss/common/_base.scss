@@ -31,6 +31,7 @@ body {
 	backface-visibility: hidden;
 	transition: all 0.4s ease-in-out;
 	overflow-x: hidden;
+	min-height: 100vh;
 }
 	.site-wrapper--has-overlay {
 		overflow: hidden;

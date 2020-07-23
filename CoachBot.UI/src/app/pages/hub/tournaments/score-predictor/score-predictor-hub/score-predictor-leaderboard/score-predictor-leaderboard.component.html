@@ -1,45 +1,43 @@
-<div class="container">
-    <ng-container *ngIf="!isLoading; else spinner">
-        <div class="card" [class.card--has-table]="leaderboard && leaderboard.length">
-            <div class="card__header">
-                <h4>Global Leaderboard</h4>
-            </div>
-            <div class="card__content card--overflow-40 table-responsive">
-                <app-spinner *ngIf="!leaderboard"></app-spinner>
-                <div *ngIf="leaderboard && !leaderboard.length" class="alert alert-info">
-                    No leaderboard yet!
-                </div>
-                <ng-container *ngIf="leaderboard && leaderboard.length">
-                    <table class="table table-striped">
-                        <thead>
-                            <th class="text-center">Rank</th>
-                            <th>Player</th>
-                            <th>Predictions</th>
-                            <th>Correct Results</th>
-                            <th></th>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let player of leaderboard; let index = index">
-                                <td class="text-center">{{index + 1}}</td>
-                                <td>
-                                    <a [routerLink]="['/player-profile/' + player.playerId]">{{player.playerName}}</a>
-                                </td>
-                                <td>{{player.predictions}}</td>
-                                <td>{{player.points}}</td>
-                                <td>
-                                    <a type="button" class="btn btn-xs btn-primary"
-                                        [routerLink]="['./player/' + player.playerId]">
-                                        View Predictions
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </ng-container>
-            </div>
+<ng-container *ngIf="!isLoading; else spinner">
+    <div class="card" [class.card--has-table]="leaderboard && leaderboard.length">
+        <div class="card__header">
+            <h4>Global Leaderboard</h4>
         </div>
-    </ng-container>
-    <ng-template #spinner>
-        <app-spinner></app-spinner>
-    </ng-template>
-</div>
+        <div class="card__content card--overflow-40 table-responsive">
+            <app-spinner *ngIf="!leaderboard"></app-spinner>
+            <div *ngIf="leaderboard && !leaderboard.length" class="alert alert-info">
+                No leaderboard yet!
+            </div>
+            <ng-container *ngIf="leaderboard && leaderboard.length">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="text-center">Rank</th>
+                        <th>Player</th>
+                        <th>Predictions</th>
+                        <th>Correct Results</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let player of leaderboard; let index = index">
+                            <td class="text-center">{{index + 1}}</td>
+                            <td>
+                                <a [routerLink]="['/player-profile/' + player.playerId]">{{player.playerName}}</a>
+                            </td>
+                            <td>{{player.predictions}}</td>
+                            <td>{{player.points}}</td>
+                            <td>
+                                <a type="button" class="btn btn-xs btn-primary"
+                                    [routerLink]="['./player/' + player.playerId]">
+                                    View Predictions
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>
+<ng-template #spinner>
+    <app-spinner></app-spinner>
+</ng-template>

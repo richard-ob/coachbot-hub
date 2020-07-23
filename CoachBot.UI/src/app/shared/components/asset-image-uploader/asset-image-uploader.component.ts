@@ -23,7 +23,7 @@ export class AssetImageUploaderComponent implements OnInit {
     ngOnInit() {
         if (this.currentAssetImageId && this.currentAssetImageId > 0) {
             this.assetImageService.getAssetImage(this.currentAssetImageId).subscribe(assetImage => {
-                this.currentAssetImage = assetImage.url;
+                this.currentAssetImage = assetImage.mediumUrl;
             });
         }
     }

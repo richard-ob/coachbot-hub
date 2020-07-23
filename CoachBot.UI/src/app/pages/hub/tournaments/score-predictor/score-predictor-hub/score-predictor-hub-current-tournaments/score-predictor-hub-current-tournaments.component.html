@@ -1,43 +1,41 @@
-<div class="container">
-    <!-- Team Latest Results -->
-    <div class="card card--has-table">
-        <div class="card__header card__header--has-btn">
-            <h4>Current Score Prediction Tournaments</h4>
+<!-- Team Latest Results -->
+<div class="card card--has-table">
+    <div class="card__header card__header--has-btn">
+        <h4>Current Score Prediction Tournaments</h4>
+    </div>
+    <div class="card__content table-responsive">
+        <app-spinner *ngIf="!tournaments"></app-spinner>
+        <div *ngIf="tournaments && !tournaments.length" class="alert alert-info m-4">
+            There are no tournaments currently taking place. Check back again soon!
         </div>
-        <div class="card__content table-responsive">
-            <app-spinner *ngIf="!tournaments"></app-spinner>
-            <div *ngIf="tournaments && !tournaments.length" class="alert alert-info m-4">
-                There are no tournaments currently taking place. Check back again soon!
-            </div>
-            <table *ngIf="tournaments && tournaments.length" class="table table-striped table-clickable table-hover
+        <table *ngIf="tournaments && tournaments.length" class="table table-striped table-clickable table-hover
                 table--large">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Organisation</th>
-                        <th class="team-result__date">Tournament</th>
-                        <th class="team-result__status">Tournament Format</th>
-                        <th class="team-result__status">Team Type</th>
-                        <th class="team-result__status">Match Format</th>
-                        <th class="team-result__vs">Start Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let tournament of tournaments" (click)="navigateToTournament(tournament.id)">
-                        <td><img *ngIf="tournament.tournamentSeries.organisation.logoImage"
-                                [src]="tournament.tournamentSeries.organisation.logoImage.extraSmallUrl"
-                                style="max-height: 20px;"></td>
-                        <td>{{tournament.tournamentSeries.organisation.acronym}}</td>
-                        <td class="team-result__status">{{tournament.name}}</td>
-                        <td class="team-result__status">
-                            {{tournament.tournamentType | tournamentType}}</td>
-                        <td class="team-result__status">Club</td>
-                        <td class="team-result__status">{{tournament.format}}v{{tournament.format}}</td>
-                        <td class="team-result__date">{{tournament.startDate | date:'mediumDate'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Organisation</th>
+                    <th class="team-result__date">Tournament</th>
+                    <th class="team-result__status">Tournament Format</th>
+                    <th class="team-result__status">Team Type</th>
+                    <th class="team-result__status">Match Format</th>
+                    <th class="team-result__vs">Start Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tournament of tournaments" (click)="navigateToTournament(tournament.id)">
+                    <td><img *ngIf="tournament.tournamentSeries.organisation.logoImage"
+                            [src]="tournament.tournamentSeries.organisation.logoImage.extraSmallUrl"
+                            style="max-height: 20px;"></td>
+                    <td>{{tournament.tournamentSeries.organisation.acronym}}</td>
+                    <td class="team-result__status">{{tournament.name}}</td>
+                    <td class="team-result__status">
+                        {{tournament.tournamentType | tournamentType}}</td>
+                    <td class="team-result__status">Club</td>
+                    <td class="team-result__status">{{tournament.format}}v{{tournament.format}}</td>
+                    <td class="team-result__date">{{tournament.startDate | date:'mediumDate'}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <!-- Team Latest Results / End -->

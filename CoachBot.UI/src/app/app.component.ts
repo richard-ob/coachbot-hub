@@ -1,9 +1,7 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { User } from './core/models/user.model';
+import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Player } from './pages/hub/shared/model/player.model';
 import { PlayerService } from './pages/hub/shared/services/player.service';
-import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import { Region } from '@pages/hub/shared/model/region.model';
 import { RegionService } from '@pages/hub/shared/services/region.service';

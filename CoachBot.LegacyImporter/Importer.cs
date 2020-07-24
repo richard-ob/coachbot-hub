@@ -38,7 +38,6 @@ namespace CoachBot.LegacyImporter
             this.Regions = GetRegions();
             this.Servers = GetServers();
             this.Positions = GetPositions();
-            SetupAdministrator();
         }
 
         public List<Region> GetRegions()
@@ -248,25 +247,15 @@ namespace CoachBot.LegacyImporter
             }
             this.coachBotContext.SaveChanges();
 
-            AddTeamsManually();
+            this.AddTeamsManually();
 
             this.assetImageService.GenerateAllAssetImageUrls();
 
-            // Completely manual changes
+            this.FixTeamNames();
 
-            var thcTeam = coachBotContext.Teams.Single(t => t.Name == "THC ҂ [ MultiGaming Team ]");
-            thcTeam.Name = "Tiger Haxball Club";
-            var ptTeam = coachBotContext.Teams.Single(t => t.Name == "Portugal IOS");
-            ptTeam.Name = "Portugal";
-            var frTeam = coachBotContext.Teams.Single(t => t.Name == "French Empire National Team IOS");
-            frTeam.Name = "France";
-            var czTeam = coachBotContext.Teams.Single(t => t.Name == "Czechoslovakia IOS");
-            czTeam.Name = "Czechoslovakia";
-            var pepTeam = coachBotContext.Teams.Single(t => t.Name == "Pepegas mix team");
-            pepTeam.Name = "Pepega";
+            this.SetupAdministrator();
 
-            coachBotContext.SaveChanges();
-
+            this.AddCaptains();
 
             return teams;
         }
@@ -281,9 +270,53 @@ namespace CoachBot.LegacyImporter
                 HubRole = PlayerHubRole.Owner,
                 Rating = 7.2
             };
-
             this.coachBotContext.Players.Add(player);
+
+            var playerTeam = new PlayerTeam()
+            {
+                TeamId = coachBotContext.Teams.Single(t => t.Name == "Excel").Id,
+                IsPending = false,
+                JoinDate = DateTime.UtcNow,
+                TeamRole = TeamRole.Captain,
+                PlayerId = player.Id
+            };
+            coachBotContext.PlayerTeams.Add(playerTeam);
+
             this.coachBotContext.SaveChanges();
+        }
+
+        private void FixTeamNames()
+        {
+            var thcTeam = coachBotContext.Teams.Single(t => t.Name == "THC ҂ [ MultiGaming Team ]");
+            thcTeam.Name = "Tiger Haxball Club";
+            var ptTeam = coachBotContext.Teams.Single(t => t.Name == "Portugal IOS");
+            ptTeam.Name = "Portugal";
+            var frTeam = coachBotContext.Teams.Single(t => t.Name == "French Empire National Team IOS");
+            frTeam.Name = "France";
+            var czTeam = coachBotContext.Teams.Single(t => t.Name == "Czechoslovakia IOS");
+            czTeam.Name = "Czechoslovakia";
+            var pepTeam = coachBotContext.Teams.Single(t => t.Name == "Pepegas mix team");
+            pepTeam.Name = "Pepega";
+
+            coachBotContext.SaveChanges();
+        }
+
+        private void AddCaptains()
+        {
+            foreach(var captain in Captains.CaptainsList)
+            {
+                coachBotContext.Players.Add(captain.Player);
+                var playerTeam = new PlayerTeam()
+                {
+                    TeamId = coachBotContext.Teams.Single(t => t.Name == captain.TeamName).Id,
+                    IsPending = false,
+                    JoinDate = DateTime.UtcNow,
+                    TeamRole = TeamRole.Captain,
+                    PlayerId = captain.Player.Id
+                };
+                coachBotContext.PlayerTeams.Add(playerTeam);
+                coachBotContext.SaveChanges();
+            }
         }
 
         private void AddTeamsManually()

@@ -65,8 +65,10 @@
                         </div>
                     </div>
                     <div class="d-none d-lg-block">
-                        <img *ngIf="steamUserProfile && steamUserProfile.avatarfull"
-                            [attr.src]="steamUserProfile.avatarfull">
+                        <a *ngIf="steamUserProfile && steamUserProfile.avatarfull"
+                            [attr.href]="steamUserProfile.profileurl">
+                            <img [attr.src]="steamUserProfile.avatarfull">
+                        </a>
                     </div>
                 </div>
             </div>

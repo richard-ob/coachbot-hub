@@ -22,6 +22,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MediaComponent } from '@pages/media/media.component';
 import { LightboxModule } from 'ngx-lightbox';
+import { TroubleshootingComponent } from '@pages/troubleshooting/troubleshooting.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { LightboxModule } from 'ngx-lightbox';
     AboutComponent,
     ServerManualComponent,
     NewsComponent,
-    MediaComponent
+    MediaComponent,
+    TroubleshootingComponent
   ],
   imports: [
     BrowserModule,

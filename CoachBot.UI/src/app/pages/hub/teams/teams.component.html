@@ -21,9 +21,9 @@
                 </li>
                 <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Mix)">Mix Teams</a>
                 </li>
-                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Draft)">Draft
+                <!--<li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Draft)">Draft
                         Teams</a>
-                </li>
+                </li>-->
             </ul>
         </div>
         <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet in this region

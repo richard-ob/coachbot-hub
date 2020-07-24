@@ -7,7 +7,7 @@
             </div>
             <div class="card__content table-responsive" [class.card--overflow-40]="verticalOverflow">
                 <app-spinner *ngIf="!scorePredictions"></app-spinner>
-                <div *ngIf="scorePredictions && !scorePredictions.length" class="alert alert-info">
+                <div *ngIf="scorePredictions && !scorePredictions.length" class="m-4 alert alert-info">
                     This player hasn't made any predictions yet!
                 </div>
                 <ng-container *ngIf="scorePredictions && scorePredictions.length">

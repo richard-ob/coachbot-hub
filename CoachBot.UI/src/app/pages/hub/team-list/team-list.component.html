@@ -1,8 +1,10 @@
 <div *ngIf="isLoading" class="py-4">
     <app-spinner></app-spinner>
 </div>
-<div *ngIf="!isLoading && !teamStatistics.length && !filtersApplied" class="alert alert-info my-4">
-    There is no team data available yet. Sorry!
+<div *ngIf="!isLoading && !teamStatistics.length && !filtersApplied" class="container py-4">
+    <div class="alert alert-info">
+        There is no team data available yet. Sorry!
+    </div>
 </div>
 <div *ngIf="!isLoading && (teamStatistics.length || filtersApplied)" class="container-fluid py-4">
     <div class="row">

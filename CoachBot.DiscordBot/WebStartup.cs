@@ -68,6 +68,7 @@ namespace CoachBot
                 .AddSingleton<BotService>()
                 .AddSingleton<CacheService>()
                 .AddSingleton<BotInstance>()
+                .AddSingleton<AssetImageService>()
                 .AddSingleton<Importer>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
 

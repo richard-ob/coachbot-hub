@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
 using CoachBot.LegacyImporter.Data;
 using CoachBot.LegacyImporter.Model;
 using CoachBot.Model;
@@ -18,6 +19,7 @@ namespace CoachBot.LegacyImporter
     {
         private readonly DiscordSocketClient discordSocketClient;
         private readonly CoachBotContext coachBotContext;
+        private readonly AssetImageService assetImageService;
         public readonly LegacyConfig config;
         public readonly List<LegacyMatch> matchHistory;
 
@@ -26,16 +28,17 @@ namespace CoachBot.LegacyImporter
         public List<Position> Positions;
         public Dictionary<string, AssetImage> TeamAssetImages = new Dictionary<string, AssetImage>();
 
-        public Importer(DiscordSocketClient discordSocketClient, CoachBotContext coachBotContext)
+        public Importer(DiscordSocketClient discordSocketClient, CoachBotContext coachBotContext, AssetImageService assetImageService)
         {
             matchHistory = JsonConvert.DeserializeObject<List<LegacyMatch>>(File.ReadAllText(@"history.json"));
             config = JsonConvert.DeserializeObject<LegacyConfig>(File.ReadAllText(@"legacy-config.json"));
             this.discordSocketClient = discordSocketClient;
             this.coachBotContext = coachBotContext;
-            /*this.Regions = GetRegions();
+            this.assetImageService = assetImageService;
+            this.Regions = GetRegions();
             this.Servers = GetServers();
             this.Positions = GetPositions();
-            SetupAdministrator();*/
+            SetupAdministrator();
         }
 
         public List<Region> GetRegions()
@@ -107,19 +110,31 @@ namespace CoachBot.LegacyImporter
                 {
                     GuildName = s.Key,
                     ChannelID = s.Max(p => p.Id),
-                    HasMatchCount = s.Count(p => matchHistory.Any(m => m.ChannelId == p.Id && m.MatchDate > DateTime.UtcNow.AddMonths(-3)))
+                    HasMatchCount = s.Count(p => matchHistory.Any(m => m.ChannelId == p.Id && m.MatchDate > DateTime.UtcNow.AddDays(-20)))
                 })
-                .Where(t => t.HasMatchCount > 0);
+                .Where(t => t.HasMatchCount > 0)
+                .ToList();
 
             foreach (var guildChannel in activeChannels)
             {
-                var discordChannel = this.discordSocketClient.GetChannel(guildChannel.ChannelID) as ITextChannel;
+                ulong channelId = guildChannel.ChannelID;
+                if (guildChannel.GuildName == "Revolution")
+                {
+                    channelId = 613712939722997780;
+                }
+
+                if (guildChannel.GuildName == "False 11")
+                {
+                    channelId = 708347875733667870;
+                }
+
+                var discordChannel = this.discordSocketClient.GetChannel(channelId) as ITextChannel;
 
                 try
                 {
                     if (!string.IsNullOrEmpty(discordChannel.Guild.IconUrl))
                     {
-                        var iconUrl = discordChannel.Guild.IconUrl.Replace(".jpg", ".png") + "?size=512";
+                        var iconUrl = TeamBadges.GetBadgeImageUrl(discordChannel);
                         var assetImageContent = HttpImageRetrieval.GetImageAsBase64(iconUrl);
                         var assetImage = new AssetImage()
                         {
@@ -171,11 +186,11 @@ namespace CoachBot.LegacyImporter
                     {
                         TeamCode = TeamCodes.GetTeamCode(guild.Name),
                         Name = guild.Name,
-                        BadgeEmote = leadChannel.Team1.BadgeEmote,
+                        BadgeEmote = BadgeEmote.GetBadgeEmote(guild.Name, leadChannel.Team1.BadgeEmote),
                         KitEmote = leadChannel.Team1.KitEmote,
                         RegionId = leadChannel.RegionId,
                         TeamType = TeamTypes.GetTeamTypeForTeam(guild.Name),
-                        Color = leadChannel.Team1.Color,
+                        Color = TeamColours.GetColour(guild.Name, leadChannel.Team1.Color),
                         GuildId = guild.Id,
                         BadgeImageId = this.TeamAssetImages.Where(t => t.Key == guild.Name).Select(t => (int?)t.Value.Id).FirstOrDefault()
                     };
@@ -207,9 +222,10 @@ namespace CoachBot.LegacyImporter
 
                 try
                 {
+                    var teamId = teams.First(t => t.GuildId == guilds.First(g => g.Name == legacyChannel.GuildName).Id).Id;
                     var channel = new Channel()
                     {
-                        TeamId = teams.First(t => t.GuildId == guilds.First(g => g.Name == legacyChannel.GuildName).Id).Id,
+                        TeamId = teamId,
                         DiscordChannelId = legacyChannel.Id,
                         DuplicityProtection = legacyChannel.EnableUnsignWhenPlayerStartsOtherGame,
                         ChannelType = legacyChannel.IsMixChannel ? ChannelType.PrivateMix : Domain.Model.ChannelType.Team,
@@ -217,6 +233,7 @@ namespace CoachBot.LegacyImporter
                         UseClassicLineup = legacyChannel.ClassicLineup,
                         DiscordChannelName = legacyChannel.Name,
                         Formation = (Formation)legacyChannel.Formation,
+                        UpdatedDate = matchHistory.Where(m => m.ChannelId == legacyChannel.Id).Max(m => m.MatchDate) 
                     };
 
                     channels.Add(channel);
@@ -230,6 +247,26 @@ namespace CoachBot.LegacyImporter
                 }
             }
             this.coachBotContext.SaveChanges();
+
+            AddTeamsManually();
+
+            this.assetImageService.GenerateAllAssetImageUrls();
+
+            // Completely manual changes
+
+            var thcTeam = coachBotContext.Teams.Single(t => t.Name == "THC ҂ [ MultiGaming Team ]");
+            thcTeam.Name = "Tiger Haxball Club";
+            var ptTeam = coachBotContext.Teams.Single(t => t.Name == "Portugal IOS");
+            ptTeam.Name = "Portugal";
+            var frTeam = coachBotContext.Teams.Single(t => t.Name == "French Empire National Team IOS");
+            frTeam.Name = "France";
+            var czTeam = coachBotContext.Teams.Single(t => t.Name == "Czechoslovakia IOS");
+            czTeam.Name = "Czechoslovakia";
+            var pepTeam = coachBotContext.Teams.Single(t => t.Name == "Pepegas mix team");
+            pepTeam.Name = "Pepega";
+
+            coachBotContext.SaveChanges();
+
 
             return teams;
         }
@@ -248,5 +285,71 @@ namespace CoachBot.LegacyImporter
             this.coachBotContext.Players.Add(player);
             this.coachBotContext.SaveChanges();
         }
+
+        private void AddTeamsManually()
+        {
+            foreach(var team in Teams.TeamSeed)
+            {
+                var assetImageContent = HttpImageRetrieval.GetImageAsBase64(team.BadgeUrl);
+                var assetImage = new AssetImage()
+                {
+                    Base64EncodedImage = assetImageContent,
+                    FileName = team.TeamCode + ".png",
+                    Url = team.BadgeUrl,
+                    PlayerId = 1
+                };
+                this.coachBotContext.AssetImages.Add(assetImage);
+
+                var discordChannel = this.discordSocketClient.GetChannel(team.ChannelID) as ITextChannel;
+
+                var guild = new Guild()
+                {
+                    DiscordGuildId = discordChannel.GuildId,
+                    Name = discordChannel.Guild.Name
+                };
+                if (!coachBotContext.Guilds.Any(g => g.DiscordGuildId == guild.DiscordGuildId))
+                {
+                    coachBotContext.Guilds.Add(guild);
+                }               
+
+                var newTeam = new Team()
+                {
+                    TeamCode = team.TeamCode,
+                    Name = team.TeamName,
+                    BadgeEmote = BadgeEmote.GetBadgeEmote(guild.Name, team.BadgeEmote),
+                    RegionId = 1,
+                    TeamType = team.TeamType,
+                    Color = TeamColours.GetColour(team.TeamName, team.Colour),
+                    GuildId = coachBotContext.Guilds.Single(g => g.DiscordGuildId == discordChannel.Guild.Id).Id,
+                    BadgeImageId = assetImage.Id
+                };
+                coachBotContext.Teams.Add(newTeam);
+
+                var channel = new Channel()
+                {
+                    ChannelType = ChannelType.Team,
+                    DiscordChannelId = team.ChannelID,
+                    DiscordChannelName = discordChannel.Name,
+                    TeamId = newTeam.Id
+                };
+                coachBotContext.Channels.Add(channel);
+
+                var legacyChannel = config.Channels.First(c => c.Id == team.ChannelID);
+                this.coachBotContext.ChannelPositions.AddRange(PositionsData.GenerateChannelPositions(legacyChannel.Positions, channel.Id, this.coachBotContext));
+
+                coachBotContext.SaveChanges();
+            }
+        }
+    }
+
+    public struct TeamSeed
+    {
+        public string TeamName { get; set; }
+        public string TeamCode { get; set; }
+        public ulong ChannelID { get; set; }
+        public TeamType TeamType { get; set; }
+        public string BadgeUrl { get; set; }
+        public string BadgeEmote { get; set; }
+        public string Colour { get; set; }
     }
 }

@@ -134,7 +134,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<Team>().Property(p => p.Form).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<MatchOutcomeType>>(v));
 
             // Seed data
-            //modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
+            modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
         }
     }
 

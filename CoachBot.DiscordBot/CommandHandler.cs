@@ -43,6 +43,7 @@ namespace CoachBot
 
         private async Task ProcessCommandAsync(SocketMessage pMsg)
         {
+            if (_config.BotStealthMode) return;
             if (!(pMsg is SocketUserMessage message)) return;
             if (!message.Content.StartsWith("!")) return;
 

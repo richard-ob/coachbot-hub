@@ -25,6 +25,8 @@
         public int BotApiPort { get; set; } = 8080;
 
         public AzureAssetsConfig AzureAssetsConfig { get; set; }
+
+        public bool BotStealthMode { get; set; } = false;
     }
 
     public class AzureAssetsConfig

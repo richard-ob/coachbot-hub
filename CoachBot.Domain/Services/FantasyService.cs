@@ -323,11 +323,10 @@ namespace CoachBot.Domain.Services
 
             if (_coachBotContext.FantasyPlayers.Any(t => t.TournamentId == tournamentId))
             {
-                GenerateFantasyPhaseSnapshots(1);
                 throw new Exception("Fantasy season already seeded");
             }
 
-            foreach (var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => p.Teams.Any(pt => pt.IsCurrentTeam
+            foreach (var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => p.Rating > 0 && p.Teams.Any(pt => pt.IsCurrentTeam
                  && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)))
             )
             {

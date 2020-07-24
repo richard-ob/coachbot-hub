@@ -53,14 +53,18 @@ namespace CoachBot.Bot
             Console.WriteLine("Connecting..");
             await _client.LoginAsync(TokenType.Bot, _config.BotToken);
             await _client.StartAsync();
-            await _client.SetGameAsync("IOSoccer", "http://iosoccer.com"); // TODO: Uncomment when live
 
             _client.Connected += Connected;
             _client.Disconnected += Disconnected;
             _client.Ready += BotReady;
-            _client.ChannelDestroyed += ChannelDestroyed;
-            _client.LeftGuild += GuildDestroyed;
-            _client.GuildMemberUpdated += (userPre, userPost) => { return UserUpdated(userPre, userPost); };
+
+            if (!_config.BotStealthMode)
+            {
+                await _client.SetGameAsync("IOSoccer", "http://iosoccer.com"); // TODO: Uncomment when live
+                _client.ChannelDestroyed += ChannelDestroyed;
+                _client.LeftGuild += GuildDestroyed;
+                _client.GuildMemberUpdated += (userPre, userPost) => { return UserUpdated(userPre, userPost); };
+            }
 
             _handler = new CommandHandler(_serviceProvider);
             await _handler.ConfigureAsync();
@@ -111,7 +115,7 @@ namespace CoachBot.Bot
                     }
                 }
             }
-            //_importer.GetTeams();
+            _importer.GetTeams();
 
             return Task.CompletedTask;
         }

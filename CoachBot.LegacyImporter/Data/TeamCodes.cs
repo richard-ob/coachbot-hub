@@ -7,13 +7,13 @@
             switch (teamName)
             {
                 case "Czechoslovakia IOS":
-                    return "Czech";
+                    return "TCH";
 
                 case "DO-T":
                     return "DOT";
 
                 case "Excel":
-                    return "xls";
+                    return "Excel";
 
                 case "False 11":
                     return "F11";
@@ -65,6 +65,21 @@
 
                 case "xGoal":
                     return "xGoal";
+
+                case "Pepegas mix team":
+                    return "Pepe";
+
+                case "Dark SunRise":
+                    return "DSR";
+
+                case "CABRONES":
+                    return "GOAT";
+
+                case "Tempest":
+                    return "TT";
+
+                case "Revolution":
+                    return "REVO";
             }
 
             return teamName;

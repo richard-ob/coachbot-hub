@@ -40,7 +40,11 @@ namespace CoachBot.LegacyImporter
             "Tempest",
             "xGoal",
             "ProSoccer", // Exclude
-            "Wasps FC" // Exclude
+            "Wasps FC", // Exclude
+            "CABRONES",
+            "Cryptic",
+            "Revolution",
+            "Dark SunRise"
         };
 
         public static string[] DraftTeams => new string[]

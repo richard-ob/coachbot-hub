@@ -20,10 +20,7 @@ export class ScorePredictorMatchComponent implements OnInit {
     constructor(private scorePredictionService: ScorePredictorService, private snackBar: MatSnackBar) { }
 
     ngOnInit() {
-        console.log(this.phaseMatch);
         const existingPrediction = this.scorePredictions.find(p => p.matchId === this.phaseMatch.match.id);
-        console.log(this.scorePredictions);
-        console.log(existingPrediction);
         if (existingPrediction) {
             this.scorePrediction = existingPrediction;
         } else {

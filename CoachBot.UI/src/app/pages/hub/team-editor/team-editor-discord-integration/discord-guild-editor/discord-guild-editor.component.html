@@ -30,14 +30,14 @@
                     <div class="input-group-prepend clickable">
                         <span class="input-group-text">
                                 <img *ngIf="team.kitEmote" style="width: 20px"
-                                    [src]="((discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes | arrayFilter:'key':team.kitEmote)[0].value">
+                                    [src]="((discordGuilds | arrayFilter:'id':selectedDiscordGuildId)[0].emotes | arrayFilter:'key':team.kitEmote)[0].value">
                         </span>
                     </div>
                     <select [(ngModel)]="team.kitEmote" name="kitEmote" class="form-control">
                         <option [ngValue]="null">None</option>
                         <ng-container *ngIf="team.guild && team.guild.discordGuildId">
                             <option
-                                *ngFor="let emote of (discordGuilds | arrayFilter:'id':team.guild.discordGuildId)[0].emotes"
+                                *ngFor="let emote of (discordGuilds | arrayFilter:'id':selectedDiscordGuildId)[0].emotes"
                                 [ngValue]="emote.key">
                                 {{emote.key | emoteDisplayName}}
                             </option>

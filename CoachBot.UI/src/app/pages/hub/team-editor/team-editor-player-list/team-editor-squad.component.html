@@ -44,7 +44,8 @@
                             </span>
                         </td>
                         <td class="text-center">
-                            <button *ngIf="teamPlayer.playerId !== currentPlayer.id" class="btn btn-xs btn-danger"
+                            <button *ngIf="teamPlayer.playerId !== currentPlayer.id"
+                                class="btn btn-xs btn-outline-danger"
                                 [swal]="{ title: 'Are you sure?', text: 'This player will be kicked immediately', icon: 'warning', showCancelButton: true }"
                                 (confirm)="kickPlayer(teamPlayer)">Kick</button>
                         </td>

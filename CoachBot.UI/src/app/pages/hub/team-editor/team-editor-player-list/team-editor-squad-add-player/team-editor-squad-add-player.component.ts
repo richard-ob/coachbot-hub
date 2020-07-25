@@ -24,22 +24,24 @@ export class TeamEditorSquadAddPlayerComponent {
 
     addPlayer() {
         this.isSaving = true;
-        const playerTeam: PlayerTeam = {
-            teamId: this.teamId,
-            teamRole: this.role,
-            playerId: this.player.id
-        };
-        this.playerTeamService.createPlayerTeam(playerTeam).subscribe(
-            () => {
-                this.isSaving = false;
-                this.wizardClosed.emit();
-                this.playerAdded.emit();
-            },
-            error => {
+        this.playerAddFailure = false;
+        this.playerService.getPlayerProfile(this.player.id).subscribe(playerProfile => {
+            if (!playerProfile.clubTeam) {
+                const playerTeam: PlayerTeam = {
+                    teamId: this.teamId,
+                    teamRole: this.role,
+                    playerId: this.player.id
+                };
+                this.playerTeamService.createPlayerTeam(playerTeam).subscribe(() => {
+                    this.isSaving = false;
+                    this.wizardClosed.emit();
+                    this.playerAdded.emit();
+                });
+            } else {
                 this.playerAddFailure = true;
                 this.isSaving = false;
             }
-        );
+        });
     }
 
     selectPlayer(player: Player) {

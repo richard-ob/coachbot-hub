@@ -16,6 +16,10 @@ body {
     cursor: pointer;
 }
 
+.btn:disabled {
+    cursor: not-allowed;
+}
+
 .w-20 {
     width: 20% !important;
 }

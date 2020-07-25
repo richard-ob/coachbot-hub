@@ -93,7 +93,7 @@
                 </ng-template>
             </div>
             <span *ngFor="let ignoreChannel of channel.searchIgnoreList" class="badge badge-pill badge-primary mr-2">
-                {{(teams | filterBy:['id']:ignoreChannel)[0].name}}
+                {{(teams | filterBy:['id']:ignoreChannel:true)[0].name}}                
                 <i class="fas fa-times pl-1 clickable show-on-parent-hover" (click)="removeSearchIgnoreChannel(ignoreChannel)"></i>
             </span>
         </div>

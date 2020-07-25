@@ -24,6 +24,8 @@ namespace CoachBot.LegacyImporter.Data
                     return "#124364";
                 case "Portugal IOS":
                     return "#9c0a0a";
+                case "NextGen":
+                    return "#532580";
             }
 
             return teamColour;

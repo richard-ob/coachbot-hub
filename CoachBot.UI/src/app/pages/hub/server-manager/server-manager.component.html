@@ -33,10 +33,11 @@
                                         <i *ngIf="!server.hasRconPassword" class="fas fa-times text-danger"></i>
                                     </td>
                                     <td class="text-center">
-                                        <button class="btn btn-secondary btn-xs mr-2 mb-2 d-block d-lg-inline-block"
+                                        <button
+                                            class="btn btn-outline-secondary btn-xs mr-2 mb-2 d-block d-lg-inline-block"
                                             (click)="editServer(server)" [disabled]="isRemoving">
                                             <i class="fa fa-times"></i> Edit RCON</button>
-                                        <button class="btn btn-danger btn-xs mb-2 d-block d-lg-inline-block"
+                                        <button class="btn btn-outline-danger btn-xs mb-2 d-block d-lg-inline-block"
                                             (click)="removeServer(server.id)" [disabled]="isRemoving">
                                             <i class="fa fa-times"></i> Remove</button>
                                     </td>

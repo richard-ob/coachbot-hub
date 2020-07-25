@@ -29,8 +29,8 @@
                                     <td>{{region.teamCount}}</td>
                                     <td>{{region.matchCount}}</td>
                                     <td>
-                                        <button class="btn btn-danger btn-xs" (click)="removeRegion(region.regionId)"
-                                            [disabled]="region.serverCount">
+                                        <button class="btn btn-outline-danger btn-xs"
+                                            (click)="removeRegion(region.regionId)" [disabled]="region.serverCount">
                                             <i class="fa fa-times"></i> Remove</button>
                                     </td>
                                 </tr>

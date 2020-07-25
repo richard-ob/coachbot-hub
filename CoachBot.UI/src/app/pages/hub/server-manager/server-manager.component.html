@@ -1,104 +1,106 @@
 <div class="py-4 container">
     <app-spinner *ngIf="isLoading"></app-spinner>
-    <div *ngIf="!isLoading" class="card card--has-table">
-        <div class="widget__title card__header card__header--has-btn">
-            <h4>Servers</h4>
-        </div>
-        <div class="card__content widget__content" [class.widget__content--loading]="isUpdating || isRemoving">
-            <div class="table-responsive">
-                <app-spinner *ngIf="!servers"></app-spinner>
-                <div *ngIf="servers">
-                    <table class="table table--lg">
-                        <thead>
-                            <th>Server Name</th>
-                            <th>Address</th>
-                            <th>Country</th>
-                            <th>Region</th>
-                            <th>RCON Password</th>
-                            <th>Actions</th>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let server of servers">
-                                <td>{{server.name}}</td>
-                                <td>{{server.address}}</td>
-                                <td>
-                                    <i class="flag-icon flag-icon-squared"
-                                        [ngClass]="'flag-icon-' + server.country.code.toLowerCase()"></i>&nbsp;
-                                    {{server.country.name}}
-                                </td>
-                                <td>{{server.region.regionName}}</td>
-                                <td class="text-center">
-                                    <i *ngIf="server.hasRconPassword" class="fas fa-check text-success"></i>
-                                    <i *ngIf="!server.hasRconPassword" class="fas fa-times text-danger"></i>
-                                </td>
-                                <td>
-                                    <button class="btn btn-outline-primary btn-xs mr-2 mb-2"
-                                        (click)="editServer(server)" [disabled]="isRemoving">
-                                        <i class="fa fa-times"></i> Edit RCON</button>
-                                    <button class="btn btn-outline-danger btn-xs mb-2" (click)="removeServer(server.id)"
-                                        [disabled]="isRemoving">
-                                        <i class="fa fa-times"></i> Remove</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <ng-container *ngIf="!isLoading">
+        <div class="card card--has-table">
+            <div class="widget__title card__header card__header--has-btn">
+                <h4>Servers</h4>
+            </div>
+            <div class="card__content widget__content" [class.widget__content--loading]="isUpdating || isRemoving">
+                <div class="table-responsive">
+                    <app-spinner *ngIf="!servers"></app-spinner>
+                    <div *ngIf="servers">
+                        <table class="table table--lg">
+                            <thead>
+                                <th>Server Name</th>
+                                <th>Address</th>
+                                <th>Country</th>
+                                <th>Region</th>
+                                <th class="text-center">RCON Password</th>
+                                <th class="text-center">Actions</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let server of servers">
+                                    <td>{{server.name}}</td>
+                                    <td>{{server.address}}</td>
+                                    <td class="text-nowrap">
+                                        <i class="flag-icon flag-icon-squared"
+                                            [ngClass]="'flag-icon-' + server.country.code.toLowerCase()"></i>&nbsp;
+                                        {{server.country.name}}
+                                    </td>
+                                    <td>{{server.region.regionName}}</td>
+                                    <td class="text-center">
+                                        <i *ngIf="server.hasRconPassword" class="fas fa-check text-success"></i>
+                                        <i *ngIf="!server.hasRconPassword" class="fas fa-times text-danger"></i>
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-secondary btn-xs mr-2 mb-2 d-block d-lg-inline-block"
+                                            (click)="editServer(server)" [disabled]="isRemoving">
+                                            <i class="fa fa-times"></i> Edit RCON</button>
+                                        <button class="btn btn-danger btn-xs mb-2 d-block d-lg-inline-block"
+                                            (click)="removeServer(server.id)" [disabled]="isRemoving">
+                                            <i class="fa fa-times"></i> Remove</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card__header">
-            <h4>
-                Add Server
-            </h4>
+        <div class="card">
+            <div class="card__header">
+                <h4>
+                    Add Server
+                </h4>
+            </div>
+            <div class="card__content">
+                <form #serverForm="ngForm">
+                    <div class="row">
+                        <div class="form-group col-12 col-lg-3">
+                            <label for="serverName">Server Name</label>
+                            <input type="text" class="form-control" id="serverName" name="serverName"
+                                [(ngModel)]="newServer.name" required>
+                        </div>
+                        <div class="form-group col-12 col-lg-3">
+                            <label for="ipAddress">IP Address</label>
+                            <input type="text" class="form-control" id="ipAddress" name="ipAddress"
+                                [(ngModel)]="newServer.address"
+                                pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$"
+                                required>
+                        </div>
+                        <div class="form-group col-12 col-lg-2">
+                            <label for="rconPassword">RCON Password</label>
+                            <input type="text" class="form-control" id="rconPassword" name="rconPassword"
+                                [(ngModel)]="newServer.rconPassword">
+                        </div>
+                        <div class="form-group col-12 col-lg-2">
+                            <label for="countryId">Country</label>
+                            <select class="form-control" [(ngModel)]="newServer.countryId" name="countryId"
+                                id="countryId" required>
+                                <option *ngFor="let country of countries" [ngValue]="country.id">
+                                    {{country.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-lg-2">
+                            <label for="regionId">Region</label>
+                            <select class="form-control" [(ngModel)]="newServer.regionId" name="regionId" id="regionId"
+                                required>
+                                <option *ngFor="let region of regions" [ngValue]="region.regionId">
+                                    {{region.regionName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <button type="submit" class="btn btn-primary float-right" (click)="addServer()"
+                    [disabled]="serverForm.invalid || isAdding">
+                    <i *ngIf="isAdding" class="fa fa-circle-notch fa-spin"></i>&nbsp;
+                    Add
+                </button>
+            </div>
         </div>
-        <div class="card__content">
-            <form #serverForm="ngForm">
-                <div class="row">
-                    <div class="form-group col-12 col-lg-3">
-                        <label for="serverName">Server Name</label>
-                        <input type="text" class="form-control" id="serverName" name="serverName"
-                            [(ngModel)]="newServer.name" required>
-                    </div>
-                    <div class="form-group col-12 col-lg-3">
-                        <label for="ipAddress">IP Address</label>
-                        <input type="text" class="form-control" id="ipAddress" name="ipAddress"
-                            [(ngModel)]="newServer.address"
-                            pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$"
-                            required>
-                    </div>
-                    <div class="form-group col-12 col-lg-2">
-                        <label for="rconPassword">RCON Password</label>
-                        <input type="text" class="form-control" id="rconPassword" name="rconPassword"
-                            [(ngModel)]="newServer.rconPassword">
-                    </div>
-                    <div class="form-group col-12 col-lg-2">
-                        <label for="countryId">Country</label>
-                        <select class="form-control" [(ngModel)]="newServer.countryId" name="countryId" id="countryId"
-                            required>
-                            <option *ngFor="let country of countries" [ngValue]="country.id">
-                                {{country.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-12 col-lg-2">
-                        <label for="regionId">Region</label>
-                        <select class="form-control" [(ngModel)]="newServer.regionId" name="regionId" id="regionId"
-                            required>
-                            <option *ngFor="let region of regions" [ngValue]="region.regionId">
-                                {{region.regionName}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </form>
-            <button type="submit" class="btn btn-primary float-right" (click)="addServer()"
-                [disabled]="serverForm.invalid || isAdding">
-                <i *ngIf="isAdding" class="fa fa-circle-notch fa-spin"></i>&nbsp;
-                Add
-            </button>
-        </div>
-    </div>
+    </ng-container>
 </div>
 <swal #editServerModal (confirm)="updateServer()">
     <ng-container *swalPortal="swalTargets.title">

@@ -8,6 +8,7 @@ import { RegionService } from '@pages/hub/shared/services/region.service';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
+import { PlayerHubRole } from '@pages/hub/shared/model/player-hub-role.enum';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit {
   selectedRegion: Region;
   regions: Region[];
   player: Player;
+  hubRoles = PlayerHubRole;
   apiUrl = environment.apiUrl;
 
   constructor(

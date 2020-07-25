@@ -197,13 +197,17 @@
                                             <li><a routerLink="./fantasy">Fantasy</a></li>
                                             <li><a routerLink="./score-predictor">Score Predictor</a></li>
                                         </ul>
-                                        <ul *ngIf="player && player.hubRole > 0"
+                                        <ul *ngIf="player && player.hubRole > hubRoles.Player"
                                             class="col-lg-2 col-md-3 col-12 main-nav__ul">
                                             <li class="main-nav__title">Management</li>
-                                            <li><a routerLink="./tournament-creator">Competitions</a></li>
-                                            <li><a routerLink="./server-manager">Servers</a></li>
-                                            <li><a routerLink="./region-manager">Regions</a></li>
-                                            <li><a routerLink="./bot">Bot</a></li>
+                                            <li *ngIf="player.hubRole > hubRoles.Owner"><a
+                                                    routerLink="./tournament-creator">Competitions</a></li>
+                                            <li *ngIf="player.hubRole > hubRoles.Owner"><a
+                                                    routerLink="./server-manager">Servers</a></li>
+                                            <li *ngIf="player.hubRole > hubRoles.Manager"><a
+                                                    routerLink="./region-manager">Regions</a></li>
+                                            <li *ngIf="player.hubRole > hubRoles.Owner"><a routerLink="./bot">Bot</a>
+                                            </li>
                                         </ul>
                                     </ng-container>
                                     <ng-template #spinner>

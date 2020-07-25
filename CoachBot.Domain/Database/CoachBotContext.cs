@@ -80,7 +80,7 @@ namespace CoachBot.Database
             {
                 if (e.Entry.Entity is IUserUpdateableEntity userUpdateableEntity)
                 {
-                    userUpdateableEntity.UpdatedDate = DateTime.Now;
+                    userUpdateableEntity.UpdatedDate = DateTime.UtcNow;
                     var playerId = CallContext.GetData(CallContextDataType.PlayerId);
                     if (playerId != null)
                     {
@@ -89,11 +89,11 @@ namespace CoachBot.Database
                 }
                 else if (e.Entry.Entity is IUpdateableEntity updateableEntity)
                 {
-                    updateableEntity.UpdatedDate = DateTime.Now;
+                    updateableEntity.UpdatedDate = DateTime.UtcNow;
                 }
                 else if (e.Entry.Entity is ISystemUpdateableEntity systemUpdateableEntity)
                 {
-                    systemUpdateableEntity.UpdatedDate = DateTime.Now;
+                    systemUpdateableEntity.UpdatedDate = DateTime.UtcNow;
                 }
             }
         }
@@ -140,9 +140,10 @@ namespace CoachBot.Database
 
             // Manual relationships
             modelBuilder.Entity<Player>().HasMany(p => p.Teams).WithOne("Player");
-            modelBuilder.Entity<PlayerTeam>().HasOne(pt => pt.Player);
-            modelBuilder.Entity<PlayerTeam>().HasOne(pt => pt.UpdatedBy);
-            modelBuilder.Entity<PlayerTeam>().HasOne(pt => pt.CreatedBy);
+            modelBuilder.Entity<Player>().HasMany(p => p.CreatedPlayerTeams).WithOne("CreatedBy");
+            modelBuilder.Entity<Player>().HasMany(p => p.UpdatedPlayerTeams).WithOne("UpdatedBy");
+            modelBuilder.Entity<Player>().HasMany(p => p.CreatedPlayers).WithOne("CreatedBy");
+            modelBuilder.Entity<Player>().HasMany(p => p.UpdatedPlayers).WithOne("UpdatedBy");
 
             // Unique constraints
             modelBuilder.Entity<Channel>().HasIndex(c => new { c.DiscordChannelId }).IsUnique(true);

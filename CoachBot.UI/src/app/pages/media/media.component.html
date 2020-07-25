@@ -3,7 +3,7 @@
         <div class="card__header">
             <h4>Media</h4>
         </div>
-        <div class="card__content">
+        <div class="card__content text-center">
             <div *ngFor="let image of albums; let i = index">
                 <img [src]="image.thumb" (click)="open(i)" />
             </div>

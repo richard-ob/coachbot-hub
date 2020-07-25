@@ -158,63 +158,52 @@
                                 [routerLinkActiveOptions]="{exact: false}"
                                 (click)="toggleSectionOpen(matchHubSection, matchHubToggle)">
                                 <a href="javascript:void(0);">Hub</a>
-                                <span class="badge badge-pill badge-warning d-none d-xl-inline" style="
-                                position: absolute;
-                                top: 8px;
-                                margin-left: 11px;
-                                font-size: 9px;">Beta</span>
+                                <span class="badge badge-pill badge-warning d-none d-xl-inline main-nav--badge">Beta</span>
                                 <span class="main-nav__toggle" #matchHubToggle></span>
                                 <div class="main-nav__megamenu clearfix" #matchHubSection>
-                                    <ng-container *ngIf="regions; else spinner">
-                                        <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                            <li class="main-nav__title">Matches</li>
-                                            <li><a routerLink="./recent-matches">Results</a></li>
-                                            <li><a routerLink="./upcoming-matches">Fixtures</a></li>
-                                        </ul>
-                                        <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                            <li class="main-nav__title">Teams</li>
-                                            <li><a routerLink="./team-list">Team Statistics</a></li>
-                                            <li>
-                                                <a routerLink="./teams">Team List</a>
-                                            </li>
-                                        </ul>
-                                        <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                            <li class="main-nav__title">Players</li>
-                                            <li><a routerLink="./player-list">Player Statistics</a></li>
-                                        </ul>
-                                        <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                            <li class="main-nav__title">Competitions</li>
-                                            <li><a routerLink="/tournaments">Current</a></li>
-                                            <li><a routerLink="./tournament-history">Past</a></li>
-                                        </ul>
-                                        <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                            <li class="main-nav__title">My Hub</li>
-                                            <li><a routerLink="./player-profile/{{player.id}}">Profile</a></li>
-                                            <li><a routerLink="./team-editor-list">Teams</a></li>
-                                        </ul>
-                                        <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                            <li class="main-nav__title">Games</li>
-                                            <li><a routerLink="./fantasy">Fantasy</a></li>
-                                            <li><a routerLink="./score-predictor">Score Predictor</a></li>
-                                        </ul>
-                                        <ul *ngIf="player && player.hubRole > hubRoles.Player"
-                                            class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                            <li class="main-nav__title">Management</li>
-                                            <li *ngIf="player.hubRole >= hubRoles.Owner"><a
-                                                    routerLink="./tournament-creator">Competitions</a></li>
-                                            <li *ngIf="player.hubRole >= hubRoles.Owner"><a
-                                                    routerLink="./server-manager">Servers</a></li>
-                                            <li *ngIf="player.hubRole >= hubRoles.Manager"><a
-                                                    routerLink="./region-manager">Regions</a></li>
-                                            <li *ngIf="player.hubRole >= hubRoles.Owner"><a routerLink="./bot">Bot</a>
-                                            </li>
-                                        </ul>
-                                    </ng-container>
-                                    <ng-template #spinner>
-                                        <div class="w-100 d-flex justify-content-center align-items-center">
-                                            <app-spinner [light]="true" [verticalMargins]="false"></app-spinner>
-                                        </div>
-                                    </ng-template>
+                                    <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">Matches</li>
+                                        <li><a routerLink="./recent-matches">Results</a></li>
+                                        <li><a routerLink="./upcoming-matches">Fixtures</a></li>
+                                    </ul>
+                                    <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">Teams</li>
+                                        <li><a routerLink="./team-list">Team Statistics</a></li>
+                                        <li>
+                                            <a routerLink="./teams">Team List</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">Players</li>
+                                        <li><a routerLink="./player-list">Player Statistics</a></li>
+                                    </ul>
+                                    <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">Competitions</li>
+                                        <li><a routerLink="/tournaments">Current</a></li>
+                                        <li><a routerLink="./tournament-history">Past</a></li>
+                                    </ul>
+                                    <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">My Hub</li>
+                                        <li><a routerLink="./player-profile/{{player.id}}">Profile</a></li>
+                                        <li><a routerLink="./team-editor-list">Teams</a></li>
+                                    </ul>
+                                    <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">Games</li>
+                                        <li><a routerLink="./fantasy">Fantasy</a></li>
+                                        <li><a routerLink="./score-predictor">Score Predictor</a></li>
+                                    </ul>
+                                    <ul *ngIf="player && player.hubRole > hubRoles.Player"
+                                        class="col-lg-2 col-md-3 col-12 main-nav__ul">
+                                        <li class="main-nav__title">Management</li>
+                                        <li *ngIf="player.hubRole >= hubRoles.Owner"><a
+                                                routerLink="./tournament-creator">Competitions</a></li>
+                                        <li *ngIf="player.hubRole >= hubRoles.Owner"><a
+                                                routerLink="./server-manager">Servers</a></li>
+                                        <li *ngIf="player.hubRole >= hubRoles.Manager"><a
+                                                routerLink="./region-manager">Regions</a></li>
+                                        <li *ngIf="player.hubRole >= hubRoles.Owner"><a routerLink="./bot">Bot</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </li>
                             <li class="has-children" routerLinkActive="active"

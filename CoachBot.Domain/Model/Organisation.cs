@@ -14,7 +14,7 @@ namespace CoachBot.Domain.Model
 
         public string Acronym { get; set; }
 
-        public int LogoImageId { get; set; }
+        public int? LogoImageId { get; set; }
 
         public AssetImage LogoImage { get; set; }
 

@@ -3,7 +3,7 @@
         class="tournament-bracket__round">
         <h6 class="tournament-bracket__round-title d-block d-lg-none d-xl-none">{{phase.name}}</h6>
         <ul class="tournament-bracket__list">
-            <li *ngFor="let match of tournament.tournamentStages[0].tournamentGroups[0].tournamentGroupMatches | filterBy:['tournamentPhaseId']:phase.id"
+            <li *ngFor="let match of tournament.tournamentStages[0].tournamentGroups[0].tournamentGroupMatches | filterBy:['tournamentPhaseId']:phase.id:true"
                 [class.tournament-bracket__next-round-includes-byes]="nextRoundIncludesByedTeams(i)"
                 class="tournament-bracket__item">
                 <div class="tournament-bracket__match" tabindex="0">
@@ -19,8 +19,14 @@
                                             style="width: 25px" src="./assets/images/soccer/blank-crest.png">
                                     </figure>
                                     <div class="tournament-bracket__team-info text-truncate">
-                                        <h6 class="tournament-bracket__team-name text-truncate">
-                                            {{(match.match.teamHome ? match.match.teamHome.name : match.teamHomePlaceholder)}}
+                                        <h6 *ngIf="match.match.teamHome"
+                                            class="tournament-bracket__team-name text-truncate clickable"
+                                            [routerLink]="['/team-profile/', match.match.teamHomeId]">
+                                            {{(match.match.teamHome.name)}}
+                                        </h6>
+                                        <h6 *ngIf="!match.match.teamHome"
+                                            class="tournament-bracket__team-name text-truncate">
+                                            {{(match.teamHomePlaceholder)}}
                                         </h6>
                                     </div>
                                 </td>
@@ -38,8 +44,14 @@
                                             style="width: 25px" src="./assets/images/soccer/blank-crest.png">
                                     </figure>
                                     <div class="tournament-bracket__team-info text-truncate">
-                                        <h6 class="tournament-bracket__team-name text-truncate">
-                                            {{(match.match.teamAway ? match.match.teamAway.name : match.teamAwayPlaceholder)}}
+                                        <h6 *ngIf="match.match.teamAway"
+                                            class="tournament-bracket__team-name text-truncate clickable"
+                                            [routerLink]="['/team-profile/', match.match.teamAwayId]">
+                                            {{(match.match.teamAway.name)}}
+                                        </h6>
+                                        <h6 *ngIf="!match.match.teamAway"
+                                            class="tournament-bracket__team-name text-truncate">
+                                            {{(match.teamAwayPlaceholder)}}
                                         </h6>
                                     </div>
                                 </td>

@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -48,6 +49,18 @@ namespace CoachBot.Model
         public ICollection<PlayerLineupSubstitute> PlayerSubstitutes { get; set; }
 
         public ICollection<PlayerTeam> Teams { get; set; }
+
+        [JsonIgnore]
+        public ICollection<PlayerTeam> CreatedPlayerTeams { get; set; }
+
+        [JsonIgnore]
+        public ICollection<PlayerTeam> UpdatedPlayerTeams { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Player> CreatedPlayers { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Player> UpdatedPlayers { get; set; }
 
         public string DisplayName
         {

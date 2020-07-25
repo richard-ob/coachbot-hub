@@ -53,50 +53,50 @@
             </h4>
         </div>
         <div class="card__content">
-            <form class="d-flex" #serverForm="ngForm">
-                <div class="form-group flex-fill p-2">
-                    <label for="serverName">Server Name</label>
-                    <input type="text" class="form-control" id="serverName" name="serverName"
-                        [(ngModel)]="newServer.name" required>
-                </div>
-                <div class="form-group flex-fill p-2">
-                    <label for="ipAddress">IP Address</label>
-                    <input type="text" class="form-control" id="ipAddress" name="ipAddress"
-                        [(ngModel)]="newServer.address"
-                        pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$"
-                        required>
-                </div>
-                <div class="form-group flex-fill p-2">
-                    <label for="rconPassword">RCON Password</label>
-                    <input type="text" class="form-control" id="rconPassword" name="rconPassword"
-                        [(ngModel)]="newServer.rconPassword">
-                </div>
-                <div class="form-group flex-fill p-2">
-                    <label for="countryId">Country</label>
-                    <select class="form-control" [(ngModel)]="newServer.countryId" name="countryId" id="countryId"
-                        required>
-                        <option *ngFor="let country of countries" [ngValue]="country.id">
-                            {{country.name}}
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group flex-fill p-2">
-                    <label for="regionId">Region</label>
-                    <select class="form-control" [(ngModel)]="newServer.regionId" name="regionId" id="regionId"
-                        required>
-                        <option *ngFor="let region of regions" [ngValue]="region.regionId">
-                            {{region.regionName}}
-                        </option>
-                    </select>
+            <form #serverForm="ngForm">
+                <div class="row">
+                    <div class="form-group col-12 col-lg-3">
+                        <label for="serverName">Server Name</label>
+                        <input type="text" class="form-control" id="serverName" name="serverName"
+                            [(ngModel)]="newServer.name" required>
+                    </div>
+                    <div class="form-group col-12 col-lg-3">
+                        <label for="ipAddress">IP Address</label>
+                        <input type="text" class="form-control" id="ipAddress" name="ipAddress"
+                            [(ngModel)]="newServer.address"
+                            pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$"
+                            required>
+                    </div>
+                    <div class="form-group col-12 col-lg-2">
+                        <label for="rconPassword">RCON Password</label>
+                        <input type="text" class="form-control" id="rconPassword" name="rconPassword"
+                            [(ngModel)]="newServer.rconPassword">
+                    </div>
+                    <div class="form-group col-12 col-lg-2">
+                        <label for="countryId">Country</label>
+                        <select class="form-control" [(ngModel)]="newServer.countryId" name="countryId" id="countryId"
+                            required>
+                            <option *ngFor="let country of countries" [ngValue]="country.id">
+                                {{country.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-lg-2">
+                        <label for="regionId">Region</label>
+                        <select class="form-control" [(ngModel)]="newServer.regionId" name="regionId" id="regionId"
+                            required>
+                            <option *ngFor="let region of regions" [ngValue]="region.regionId">
+                                {{region.regionName}}
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </form>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary float-right" (click)="addServer()"
-                    [disabled]="serverForm.invalid || isAdding">
-                    <i *ngIf="isAdding" class="fa fa-circle-notch fa-spin"></i>&nbsp;
-                    Add
-                </button>
-            </div>
+            <button type="submit" class="btn btn-primary float-right" (click)="addServer()"
+                [disabled]="serverForm.invalid || isAdding">
+                <i *ngIf="isAdding" class="fa fa-circle-notch fa-spin"></i>&nbsp;
+                Add
+            </button>
         </div>
     </div>
 </div>

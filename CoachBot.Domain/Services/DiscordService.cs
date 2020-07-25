@@ -116,9 +116,14 @@ namespace CoachBot.Domain.Services
                     {
                         Id = g.Id,
                         Name = g.Name,
-                        IsLinked = coachBotContext.Guilds.Any(cg => cg.DiscordGuildId == g.Id),
                         Emotes = g.Emotes.Select(e => new KeyValuePair<string, string>($"<:{e.Name}:{e.Id}>", e.Url)).ToList()
-                    });
+                    }).ToList();
+
+                // HACK: If we do this in the original projection, the context seems to have been disposed/not available in the calling scope..
+                foreach (var guild in guilds)
+                {
+                    guild.IsLinked = coachBotContext.Guilds.Any(g => g.DiscordGuildId == guild.Id);
+                }
             }
 
             return guilds;

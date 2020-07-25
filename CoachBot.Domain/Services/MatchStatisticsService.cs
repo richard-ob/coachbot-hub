@@ -16,12 +16,19 @@ namespace CoachBot.Domain.Services
         private readonly CoachBotContext _coachBotContext;
         private readonly FantasyService _fantasyService;
         private readonly DiscordNotificationService _discordNotificationService;
+        private readonly TournamentService _tournamentService;
 
-        public MatchStatisticsService(CoachBotContext coachBotContext, FantasyService fantasyService, DiscordNotificationService discordNotificationService)
+        public MatchStatisticsService(
+            CoachBotContext coachBotContext,
+            FantasyService fantasyService,
+            DiscordNotificationService discordNotificationService, 
+            TournamentService tournamentService
+        )
         {
             _coachBotContext = coachBotContext;
             _fantasyService = fantasyService;
             _discordNotificationService = discordNotificationService;
+            _tournamentService = tournamentService;
         }
 
         public void SaveMatchData(MatchData matchData, string token, string sourceAddress, int matchId, bool manualSave = false)
@@ -100,6 +107,7 @@ namespace CoachBot.Domain.Services
             {
                 var tournamentPhaseId = _coachBotContext.TournamentGroupMatches.Single(m => m.MatchId == match.Id).TournamentPhaseId;
                 _fantasyService.GenerateFantasyPhaseSnapshots(tournamentPhaseId);
+                _tournamentService.ManageTournamentProgress((int)match.TournamentId, match.Id);
             }
 
             _discordNotificationService.SendAuditChannelMessage($"New match statistics uploaded for {match.TeamHome.Name} vs {match.TeamAway.Name}").Wait();

@@ -39,6 +39,8 @@ namespace CoachBot.Domain.Model
             return MatchOutcomeType.Draw;
         }
 
+        public MatchDataTeamType MatchWinner => MatchGoalsHome > MatchGoalsAway ? MatchDataTeamType.Home : MatchDataTeamType.Away;
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
     }

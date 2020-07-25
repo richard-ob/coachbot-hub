@@ -94,6 +94,7 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(t => t.TournamentGroupMatches)
                     .ThenInclude(t => t.Match)
                     .ThenInclude(t => t.MatchStatistics)
+                .Include(t => t.WinningTeam)
                 .Single(t => t.Id == tournamentId);
         }
 
@@ -401,6 +402,20 @@ namespace CoachBot.Domain.Services
             }
         }
 
+        public void ManageTournamentProgress(int tournamentId, int matchId)
+        {
+            var tournament = _coachBotContext.Tournaments.First(t => t.Id == tournamentId);
+            switch (tournament.TournamentType)
+            {
+                case TournamentType.Knockout:
+                    ManageKnockoutProgress(tournamentId, matchId);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         public bool IsTournamentOrganiser(int tournamentId, ulong steamId)
         {
             return _coachBotContext.TournamentStaff.Any(t => t.TournamentId == tournamentId && t.Player.SteamID == steamId && t.Role == TournamentStaffRole.Organiser);
@@ -424,6 +439,90 @@ namespace CoachBot.Domain.Services
         }
 
         #region Knockout
+        private void ManageKnockoutProgress(int tournamentId, int matchId)
+        {
+            var match = _coachBotContext.TournamentGroupMatches.Include(m => m.Match).ThenInclude(m => m.MatchStatistics).Single(m => m.MatchId == matchId);
+            var currentPhase = _coachBotContext.TournamentPhases.Include(p => p.TournamentGroupMatches).Include(t => t.TournamentStage).FirstOrDefault(m => m.Id == match.TournamentPhaseId);
+            var nextPhase = _coachBotContext.TournamentPhases.Include(p => p.TournamentGroupMatches).ThenInclude(m => m.Match).FirstOrDefault(m => m.Id == currentPhase.Id + 1);
+
+            if (nextPhase != null)
+            {
+                var currentPhaseMatchIndex = currentPhase.TournamentGroupMatches.OrderBy(m => m.Id).ToList().FindIndex(m => m.MatchId == match.MatchId);
+                if (currentPhase.TournamentGroupMatches.Count == nextPhase.TournamentGroupMatches.Count)
+                {
+                    var nextMatch = nextPhase.TournamentGroupMatches.ElementAt(currentPhaseMatchIndex);
+                    if (nextMatch.Match.TeamAwayId == null)
+                    {
+                        var winner = match.Match.MatchStatistics.MatchWinner;
+                        if (winner.Equals(MatchDataTeamType.Home))
+                        {
+                            if (nextMatch.Match.TeamAwayId != null) throw new Exception("Unhandled knockout tournament scenario. Please investigate.");
+                            nextMatch.Match.TeamAwayId = match.Match.TeamHomeId;
+                        }
+                        else
+                        {
+                            if (nextMatch.Match.TeamAwayId != null) throw new Exception("Unhandled knockout tournament scenario. Please investigate.");
+                            nextMatch.Match.TeamAwayId = match.Match.TeamAwayId;
+                        }
+                        _coachBotContext.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new Exception("Unhandled knockout tournament scenario. Please investigate.");
+                    }
+                }
+                else if (currentPhase.TournamentGroupMatches.Count / 2 == nextPhase.TournamentGroupMatches.Count)
+                {
+                    var nextMatchIndex = currentPhaseMatchIndex / 2;
+                    var nextMatch = nextPhase.TournamentGroupMatches.ElementAt(nextMatchIndex);
+
+                    int winningTeamId;
+                    var winner = match.Match.MatchStatistics.MatchWinner;
+                    if (winner.Equals(MatchDataTeamType.Home))
+                    {
+                        winningTeamId = match.Match.TeamHomeId.Value;
+                    }
+                    else
+                    {
+                        winningTeamId = match.Match.TeamAwayId.Value;
+                    }
+
+                    if (currentPhaseMatchIndex % 2 == 0) // Even, meaning they will become the home team
+                    {
+                        if (nextMatch.Match.TeamAwayId != null) throw new Exception("Unhandled knockout tournament scenario. Please investigate.");
+                        nextMatch.Match.TeamHomeId = winningTeamId;
+                    }
+                    else
+                    {
+                        if (nextMatch.Match.TeamHomeId != null) throw new Exception("Unhandled knockout tournament scenario. Please investigate.");
+                        nextMatch.Match.TeamAwayId = winningTeamId;
+                    }
+                    _coachBotContext.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Unhandled knockout tournament scenario. Please investigate.");
+                }
+            }
+            else
+            {
+                var tournament = _coachBotContext.Tournaments.Single(t => t.Id == currentPhase.TournamentStage.TournamentId);
+
+                var winner = match.Match.MatchStatistics.MatchWinner;
+                if (winner.Equals(MatchDataTeamType.Home))
+                {
+                    tournament.WinningTeamId = match.Match.TeamHomeId.Value;
+                }
+                else
+                {
+                    tournament.WinningTeamId = match.Match.TeamAwayId.Value;
+                }
+
+                tournament.EndDate = DateTime.UtcNow;
+                _coachBotContext.SaveChanges();
+            }
+
+        }
 
         private void GenerateKnockoutTournament(int tournamentId)
         {

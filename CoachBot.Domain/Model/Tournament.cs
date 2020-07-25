@@ -32,6 +32,10 @@ namespace CoachBot.Domain.Model
 
         public int FantasyPointsLimit { get; set; } = 75;
 
+        public int? WinningTeamId { get; set; }
+
+        public Team WinningTeam { get; set; }
+
         public ICollection<TournamentStage> TournamentStages { get; set; }
 
         public ICollection<TournamentMatchDaySlot> TournamentMatchDays { get; set; }

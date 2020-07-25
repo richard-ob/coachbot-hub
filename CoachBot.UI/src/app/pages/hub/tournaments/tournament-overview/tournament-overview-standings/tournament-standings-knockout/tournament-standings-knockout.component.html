@@ -76,10 +76,14 @@
                             <tr class="tournament-bracket__team tournament-bracket__team--champ">
                                 <td class="tournament-bracket__inner">
                                     <figure class="tournament-bracket__team-thumb">
-                                        <img style="width: 25px" src="./assets/images/soccer/blank-crest.png">
+                                        <img *ngIf="tournament.winningTeam &&tournament.winningTeam.badgeImage"
+                                            style="width: 25px" [src]="tournament.winningTeam.badgeImage.extraSmallUrl">
+                                        <img *ngIf="!tournament.winningTeam || !tournament.winningTeam.badgeImage"
+                                            style="width: 25px" src="./assets/images/soccer/blank-crest.png">
                                     </figure>
                                     <div class="tournament-bracket__team-info text-truncate">
-                                        <h6 class="tournament-bracket__team-name text-truncate">TBC</h6>
+                                        <h6 class="tournament-bracket__team-name text-truncate">
+                                            {{ tournament.winningTeam ? tournament.winningTeam.name : 'TBC'}}</h6>
                                         <span class="tournament-bracket__team-desc text-truncate">Winner</span>
                                     </div>
                                 </td>

@@ -330,7 +330,7 @@ namespace CoachBot.Domain.Services
                  && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)))
             )
             {
-                player.Rating = GetRandomRating();
+                //player.Rating = GetRandomRating();
                 var fantasyPlayer = new FantasyPlayer()
                 {
                     TournamentId = tournamentId,

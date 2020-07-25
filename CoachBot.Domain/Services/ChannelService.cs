@@ -44,7 +44,7 @@ namespace CoachBot.Domain.Services
             existingChannel.Inactive = channel.Inactive;
             existingChannel.ChannelType = channel.ChannelType;
             existingChannel.SearchIgnoreList = channel.SearchIgnoreList;
-            existingChannel.SubTeamCode = channel.SubTeamCode.ToUpper();
+            existingChannel.SubTeamCode = channel.SubTeamCode?.ToUpper();
             existingChannel.SubTeamName = channel.SubTeamName;
             existingChannel.UseClassicLineup = channel.UseClassicLineup;
             existingChannel.UpdatedDate = DateTime.UtcNow;

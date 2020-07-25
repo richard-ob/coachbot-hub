@@ -17,6 +17,7 @@ import { Player } from '@pages/hub/shared/model/player.model';
 import { PlayerHubRole } from '@pages/hub/shared/model/player-hub-role.enum';
 import { ChannelType } from '@pages/hub/shared/model/channel-type.enum';
 import StringUtils from '@shared/utilities/string-utilities';
+import { MatchFormat } from '@pages/hub/shared/model/match-format.enum';
 
 @Component({
     selector: 'app-discord-channel-editor',
@@ -78,6 +79,7 @@ export class DiscordChannelEditorComponent implements OnInit {
         this.channel = new Channel();
         this.channel.teamId = teamId;
         this.isMixChannel = false;
+        this.setPositions(MatchFormat.EightVsEight);
         this.discordService.getChannelsForGuild(this.team.guild.discordGuildId).subscribe(discordChannels => {
             this.discordChannels = discordChannels;
             this.isLoading = false;

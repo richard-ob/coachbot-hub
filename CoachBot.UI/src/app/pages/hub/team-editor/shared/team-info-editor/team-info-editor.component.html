@@ -78,7 +78,7 @@
                 <div *ngIf="duplicateTeamCodeFound" class="alert alert-danger">
                     A team already exists with this team code in this region. Please enter a unique team code.
                 </div>
-                <button type="button" class="btn btn-primary" (click)="saveTeamProfile()"
+                <button type="button" class="btn btn-primary float-right" (click)="saveTeamProfile()"
                     [disabled]="isSaving || teamInfoForm.invalid">
                     <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i>
                     Save

@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div *ngIf="false" class="form-group">
             <label class="control-label mb-0" for="input-default">Sub Team Name</label>
             <small class="label-subtitle mb-2">If this is a secondary channel (i.e. not your team's main channel) then
                 you
@@ -58,7 +58,7 @@
             <input class="form-control" [(ngModel)]="channel.subTeamName" name="subTeamName" type="text">
         </div>
 
-        <div class="form-group">
+        <div *ngIf="isDuplicateTeamCode() || channel.subTeamCode" class="form-group">
             <label class="control-label mb-0" for="subTeamCode">Search Team Code</label>
             <small class="label-subtitle mb-2">This is used to identify your team in searches. If this channel is your
                 secondary channel, you will need to add an appropriate suffix (e.g. O for IOSO, if it were IOSoccer's

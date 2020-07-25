@@ -94,9 +94,14 @@ namespace CoachBot.Domain.Services
                 channels = guild.Channels.Select(c => new DiscordChannel()
                 {
                     Id = c.Id,
-                    Name = c.Name,
-                    IsConfigured = coachBotContext.Channels.Any(cc => cc.DiscordChannelId == c.Id)
+                    Name = c.Name
                 });
+
+                // HACK: If we do this in the original projection, the context seems to have been disposed/not available in the calling scope..
+                foreach (var channel in channels)
+                {
+                    channel.IsConfigured = coachBotContext.Channels.Any(cc => cc.DiscordChannelId == channel.Id);
+                }
             }
 
             return channels;

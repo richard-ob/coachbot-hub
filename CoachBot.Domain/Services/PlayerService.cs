@@ -25,6 +25,11 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.Players.Single(p => p.Id == playerId);
         }
 
+        public Player GetPlayer(ulong steamId)
+        {
+            return _coachBotContext.Players.Single(p => p.SteamID == steamId);
+        }
+
         public PagedResult<Player> GetPlayers(int page, int pageSize, string sortOrder)
         {
             return _coachBotContext.Players

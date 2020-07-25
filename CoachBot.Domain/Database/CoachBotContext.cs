@@ -1,13 +1,14 @@
 ﻿using CoachBot.Domain.Database;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
+using CoachBot.Shared.Extensions;
 using CoachBot.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace CoachBot.Database
 {
@@ -15,7 +16,10 @@ namespace CoachBot.Database
     {
         public CoachBotContext(DbContextOptions options)
                : base(options)
-        { }
+        {
+            ChangeTracker.Tracked += OnEntityTracked;
+            ChangeTracker.StateChanged += OnEntityStateChanged;
+        }
 
         public DbSet<Server> Servers { get; set; }
         public DbSet<Region> Regions { get; set; }
@@ -70,6 +74,62 @@ namespace CoachBot.Database
             }
         }
 
+        private void OnEntityStateChanged(object sender, EntityStateChangedEventArgs e)
+        {
+            if (e.NewState == EntityState.Modified)
+            {
+                if (e.Entry.Entity is IUserUpdateableEntity userUpdateableEntity)
+                {
+                    userUpdateableEntity.UpdatedDate = DateTime.Now;
+                    var playerId = CallContext.GetData(CallContextDataType.PlayerId);
+                    if (playerId != null)
+                    {
+                        userUpdateableEntity.UpdatedById = (int?)playerId;
+                    }
+                }
+                else if (e.Entry.Entity is IUpdateableEntity updateableEntity)
+                {
+                    updateableEntity.UpdatedDate = DateTime.Now;
+                }
+                else if (e.Entry.Entity is ISystemUpdateableEntity systemUpdateableEntity)
+                {
+                    systemUpdateableEntity.UpdatedDate = DateTime.Now;
+                }
+            }
+        }
+
+        void OnEntityTracked(object sender, EntityTrackedEventArgs e)
+        {
+            if (!e.FromQuery && e.Entry.State == EntityState.Added)
+            {
+                if (e.Entry.Entity is IUserUpdateableEntity userUpdateableEntity)
+                {
+                    userUpdateableEntity.CreatedDate = DateTime.UtcNow;
+                    userUpdateableEntity.UpdatedDate = DateTime.UtcNow;
+                    var playerId = CallContext.GetData(CallContextDataType.PlayerId);
+                    if (playerId != null)
+                    {
+                        userUpdateableEntity.CreatedById = (int?)playerId;
+                        userUpdateableEntity.UpdatedById = (int?)playerId;
+                    }
+                }
+                else if (e.Entry.Entity is IUpdateableEntity updateableEntity)
+                {
+                    updateableEntity.CreatedDate = DateTime.UtcNow;
+                    updateableEntity.UpdatedDate = DateTime.UtcNow;
+                    var playerId = CallContext.GetData(CallContextDataType.PlayerId);
+                    if (playerId != null)
+                    {
+                        updateableEntity.CreatedById = (int?)playerId;
+                    }
+                }
+                else if (e.Entry.Entity is ISystemEntity systemEntity)
+                {
+                    systemEntity.CreatedDate = DateTime.UtcNow;
+                }
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Many-to-many composite primary keys
@@ -77,6 +137,12 @@ namespace CoachBot.Database
             modelBuilder.Entity<PlayerLineupPosition>().HasKey(ptp => new { ptp.PlayerId, ptp.PositionId, ptp.LineupId });
             modelBuilder.Entity<PlayerLineupSubstitute>().HasKey(ptp => new { ptp.PlayerId, ptp.LineupId });
             modelBuilder.Entity<ChannelPosition>().HasKey(cp => new { cp.ChannelId, cp.PositionId });
+
+            // Manual relationships
+            modelBuilder.Entity<Player>().HasMany(p => p.Teams).WithOne("Player");
+            modelBuilder.Entity<PlayerTeam>().HasOne(pt => pt.Player);
+            modelBuilder.Entity<PlayerTeam>().HasOne(pt => pt.UpdatedBy);
+            modelBuilder.Entity<PlayerTeam>().HasOne(pt => pt.CreatedBy);
 
             // Unique constraints
             modelBuilder.Entity<Channel>().HasIndex(c => new { c.DiscordChannelId }).IsUnique(true);
@@ -118,6 +184,7 @@ namespace CoachBot.Database
             modelBuilder.Entity<TournamentGroupMatch>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentGroupTeam>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentMatchDaySlot>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TournamentSeries>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<TournamentStaff>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Organisation>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<FantasyPlayer>().Property(m => m.CreatedDate).HasDefaultValueSql("GETDATE()");
@@ -136,6 +203,33 @@ namespace CoachBot.Database
             // Seed data
             modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
         }
+    }
+
+    internal interface ISystemEntity
+    {
+        DateTime CreatedDate { get; set; }
+    }
+
+    internal interface ISystemUpdateableEntity : ISystemEntity
+    {
+        DateTime UpdatedDate { get; set; }
+    }
+
+    internal interface IEntity: ISystemEntity
+    {
+        int? CreatedById { get; set; }
+        Player CreatedBy { get; set; }
+    }
+
+    internal interface IUpdateableEntity: IEntity
+    {
+        DateTime UpdatedDate { get; set; }
+    }
+
+    internal interface IUserUpdateableEntity: IUpdateableEntity
+    {        
+        int? UpdatedById { get; set; }
+        Player UpdatedBy { get; set; }
     }
 
     public class CoachBotContextFactory : IDesignTimeDbContextFactory<CoachBotContext>

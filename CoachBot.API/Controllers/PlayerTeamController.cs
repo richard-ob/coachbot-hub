@@ -6,6 +6,7 @@ using CoachBot.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -25,7 +26,7 @@ namespace CoachBot.Controllers
             _playerService = playerService;
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost]
         public IActionResult Create(PlayerTeam playerTeam)
         {
@@ -39,7 +40,7 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPut]
         public IActionResult Update(PlayerTeam playerTeam)
         {

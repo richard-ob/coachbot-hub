@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -49,7 +50,7 @@ namespace CoachBot.Controllers
             return _playerService.GetPlayerBySteamId(User.GetSteamId(), createIfNotExists: true, playerName: User.Identity.Name);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost]
         [Route("@me")]
         public IActionResult UpdatePlayerProfile([FromBody]Player playerProfileUpdateDto)

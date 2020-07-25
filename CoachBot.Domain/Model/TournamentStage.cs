@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CoachBot.Database;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
-    public class TournamentStage
+    public class TournamentStage: ISystemEntity
     {
         [Key]
         public int Id { get; set; }
@@ -22,5 +23,6 @@ namespace CoachBot.Domain.Model
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
     }
 }

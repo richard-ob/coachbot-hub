@@ -7,6 +7,7 @@ using CoachBot.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -34,35 +35,34 @@ namespace CoachBot.Controllers
             return _fantasyService.GetFantasyTeam(id);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost]
         public void CreateFantasyTeam(FantasyTeam fantasyTeam)
         {
             _fantasyService.CreateFantasyTeam(fantasyTeam, User.GetSteamId());
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPut]
         public void UpdateFantasyTeam(FantasyTeam fantasyTeam)
         {
             _fantasyService.UpdateFantasyTeam(fantasyTeam, User.GetSteamId());
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost("{id}/selections")]
         public void AddFantasyTeamSelection(FantasyTeamSelection fantasySelection)
         {
             _fantasyService.AddFantasyTeamSelection(fantasySelection, User.GetSteamId());
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpDelete("{id}/selections/{fantasyTeamSelectionId}")]
         public void RemoveFantasyTeamSelection(int fantasyTeamSelectionId)
         {
             _fantasyService.RemoveFantasyTeamSelection(fantasyTeamSelectionId, User.GetSteamId());
         }
 
-        [Authorize]
         [HttpPost("tournament/{tournamentId}/players")]
         public PagedResult<FantasyPlayer> GetFantasyPlayers([FromBody]PagedPlayerStatisticsRequestDto pagedRequest)
         {

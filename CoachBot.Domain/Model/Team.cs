@@ -1,4 +1,5 @@
-﻿using CoachBot.Domain.Extensions;
+﻿using CoachBot.Database;
+using CoachBot.Domain.Extensions;
 using CoachBot.Model;
 using CoachBot.Shared.Extensions;
 using Discord;
@@ -9,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
-    public class Team
+    public class Team : IUserUpdateableEntity
     {
         [Key]
         public int Id { get; set; }
@@ -70,6 +71,14 @@ namespace CoachBot.Domain.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
 
+        public int? CreatedById { get; set; }
+
+        public Player CreatedBy { get; set; }
+
         public DateTime UpdatedDate { get; set; }
+
+        public int? UpdatedById { get; set; }
+
+        public Player UpdatedBy { get; set; }
     }
 }

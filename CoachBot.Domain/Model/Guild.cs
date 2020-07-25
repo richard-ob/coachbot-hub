@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CoachBot.Database;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Model
 {
-    public class Guild
+    public class Guild: IEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,5 +19,9 @@ namespace CoachBot.Model
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
+        public int? CreatedById { get; set; }
+
+        public Player CreatedBy { get; set; }
     }
 }

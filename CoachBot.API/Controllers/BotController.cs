@@ -56,7 +56,7 @@ namespace CoachBot.Controllers
         }
 
         [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
-        [HttpPost("logs")]
+        [HttpGet("logs")]
         public Task GetLogs()
         {
             return this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/logs");

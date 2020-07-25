@@ -1,4 +1,5 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Database;
+using CoachBot.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
-    public class FantasyPlayer
+    public class FantasyPlayer: ISystemEntity
     {
         [Key]
         public int Id { get; set; }

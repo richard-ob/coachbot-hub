@@ -1,4 +1,5 @@
-﻿using CoachBot.Domain.Model;
+﻿using CoachBot.Database;
+using CoachBot.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Model
 {
-    public class Player
+    public class Player: IUserUpdateableEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -55,5 +56,15 @@ namespace CoachBot.Model
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
+        public int? CreatedById { get; set; }
+
+        public Player CreatedBy { get; set; }
+
+        public DateTime UpdatedDate { get; set; }
+
+        public int? UpdatedById { get; set; }
+
+        public Player UpdatedBy { get; set; }
     }
 }

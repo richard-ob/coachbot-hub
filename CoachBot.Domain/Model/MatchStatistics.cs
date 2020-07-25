@@ -1,11 +1,12 @@
-﻿using CoachBot.Domain.Extensions;
+﻿using CoachBot.Database;
+using CoachBot.Domain.Extensions;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
-    public class MatchStatistics
+    public class MatchStatistics: ISystemEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

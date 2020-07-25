@@ -1,9 +1,10 @@
-﻿using System;
+﻿using CoachBot.Database;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoachBot.Domain.Model
 {
-    public class FantasyPlayerPhase
+    public class FantasyPlayerPhase: ISystemEntity
     {
         [Key]
         public int Id { get; set; }

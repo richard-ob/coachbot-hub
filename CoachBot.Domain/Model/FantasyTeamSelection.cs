@@ -1,10 +1,12 @@
-﻿using System;
+﻿using CoachBot.Database;
+using CoachBot.Model;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
-    public class FantasyTeamSelection
+    public class FantasyTeamSelection: IEntity
     {
         [Key]
         public int Id { get; set; }
@@ -21,5 +23,9 @@ namespace CoachBot.Domain.Model
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
+        public int? CreatedById { get; set; }
+
+        public Player CreatedBy { get; set; }
     }
 }

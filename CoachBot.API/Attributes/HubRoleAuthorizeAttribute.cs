@@ -1,6 +1,5 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
-using CoachBot.Extensions;
 using CoachBot.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +24,11 @@ namespace CoachBot.Attributes
                 }
 
                 var playerService = context.HttpContext.RequestServices.GetService(typeof(PlayerService)) as PlayerService;
-                var playerHubRole = playerService.GetPlayerHubRole(steamId);
+                var player = playerService.GetPlayer(steamId);
 
-                if (playerHubRole >= HubRole)
+                CallContext.SetData(CallContextDataType.PlayerId, player.Id);
+
+                if (player != null && player.HubRole >= HubRole)
                 {
                     return;
                 }

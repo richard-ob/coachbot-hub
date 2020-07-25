@@ -4,6 +4,7 @@ using CoachBot.Extensions;
 using CoachBot.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -45,6 +46,7 @@ namespace CoachBot.Controllers
             return Ok(channel);
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost]
         public IActionResult Create([FromBody]Channel channel)
         {
@@ -58,6 +60,7 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPut]
         public IActionResult Update([FromBody]Channel channel)
         {

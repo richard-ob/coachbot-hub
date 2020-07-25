@@ -5,6 +5,7 @@ using CoachBot.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -54,7 +55,7 @@ namespace CoachBot.Controllers
             return _teamService.GetTeams(regionId, teamType);
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost]
         public IActionResult Create(Team team)
         {
@@ -63,7 +64,7 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPut]
         public IActionResult Update(Team team)
         {
@@ -77,7 +78,7 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost]
         [Route("update-guild-id")]
         public IActionResult UpdateGuildId([FromBody]UpdateGuildIdDto updateGuildIdDto)

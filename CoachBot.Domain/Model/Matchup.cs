@@ -1,4 +1,5 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Database;
+using CoachBot.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace CoachBot.Domain.Model
 {
-    public class Matchup
+    public class Matchup : ISystemUpdateableEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -37,6 +38,8 @@ namespace CoachBot.Domain.Model
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
+        public DateTime UpdatedDate { get; set; }
 
         [JsonIgnore]
         [NotMapped]

@@ -30,6 +30,7 @@ namespace CoachBot.Shared.Extensions
 
     public enum CallContextDataType
     {
-        DiscordUser
+        DiscordUser,
+        PlayerId
     }
 }

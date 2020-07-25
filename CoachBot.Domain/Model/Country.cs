@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CoachBot.Database;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
-    public class Country
+    public class Country: ISystemEntity
     {
         [Key]
         public int Id { get; set; }

@@ -4,6 +4,7 @@ using CoachBot.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -54,15 +55,15 @@ namespace CoachBot.Controllers
         {
             return _scorePredictionService.GetMonthLeader();
         }
-
-        [Authorize]
+        
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost]
         public void CreateScorePrediction(ScorePrediction scorePrediction)
         {
             _scorePredictionService.CreateScorePrediction(scorePrediction, User.GetSteamId());
         }
 
-        [Authorize]
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPut]
         public void UpdateScorePrediction(ScorePrediction scorePrediction)
         {

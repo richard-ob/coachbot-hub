@@ -2,7 +2,7 @@
     <div class="card__header card__header--has-btn">
         <h4>Squad</h4>
         <button *ngIf="!isAddPlayerWizardOpen" type="button" (click)="toggleAddPlayerWizard()"
-            class="btn btn-primary-inverse btn-xs card-header__button">Add Player</button>
+            class="btn btn-primary btn-xs card-header__button float-right">Add Player</button>
     </div>
     <div class="card__content">
         <div *ngIf="!isLoading; else spinner" class="table-responsive">
@@ -27,7 +27,7 @@
                             </a>
                         </td>
                         <td>{{teamPlayer.joinDate | date:'short'}}</td>
-                        <td class="text-center">
+                        <td class="text-center" style="min-width: 100px">
                             <select *ngIf="teamPlayer.playerId !== currentPlayer.id" class="form-control input-xs"
                                 [(ngModel)]="teamPlayer.teamRole" (ngModelChange)="updatePlayerRole(teamPlayer, $event)"
                                 style="padding: 2px 10px;" name="teamPlayerRole">

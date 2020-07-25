@@ -1,12 +1,14 @@
-﻿using CoachBot.Model;
+﻿using CoachBot.Database;
+using CoachBot.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoachBot.Domain.Model
 {
-    public class AssetImage
+    public class AssetImage: IEntity
     {
         [Key]
         public int Id { get; set; }
@@ -22,14 +24,15 @@ namespace CoachBot.Domain.Model
         public string OriginalUrl => Url?.Replace(AssetImageSizes.ASSET_IMAGE_REPLACEMENT_TOKEN, AssetImageSizes.ASSET_IMAGE_SIZE_ORIGINAL.Name);
         public string LargeUrl => Url?.Replace(AssetImageSizes.ASSET_IMAGE_REPLACEMENT_TOKEN, AssetImageSizes.ASSET_IMAGE_SIZE_LARGE.Name);
         public string MediumUrl => Url?.Replace(AssetImageSizes.ASSET_IMAGE_REPLACEMENT_TOKEN, AssetImageSizes.ASSET_IMAGE_SIZE_MEDIUM.Name);
-        public string SmalUrl => Url?.Replace(AssetImageSizes.ASSET_IMAGE_REPLACEMENT_TOKEN, AssetImageSizes.ASSET_IMAGE_SIZE_SMALL.Name);
+        public string SmallUrl => Url?.Replace(AssetImageSizes.ASSET_IMAGE_REPLACEMENT_TOKEN, AssetImageSizes.ASSET_IMAGE_SIZE_SMALL.Name);
         public string ExtraSmallUrl => Url?.Replace(AssetImageSizes.ASSET_IMAGE_REPLACEMENT_TOKEN, AssetImageSizes.ASSET_IMAGE_SIZE_EXTRASMALL.Name);
 
-        public int PlayerId { get; set; }
-
-        public Player Player { get; set; }
-
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+
+        public int? CreatedById { get; set; }
+
+        public Player CreatedBy { get; set; }
 
     }
 

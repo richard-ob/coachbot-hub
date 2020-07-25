@@ -102,6 +102,8 @@ namespace CoachBot.LegacyImporter
             var teams = new List<Team>();
             var channels = new List<Channel>();
 
+            this.SetupAdministrator();
+
             var activeChannels = config.Channels
                 .Where(c => c.RegionId == 1)
                 .GroupBy(c => c.GuildName)
@@ -140,7 +142,7 @@ namespace CoachBot.LegacyImporter
                             Base64EncodedImage = assetImageContent,
                             FileName = discordChannel.Name.Replace("#", "").Replace(" ", "-"),
                             Url = iconUrl,
-                            PlayerId = 1
+                            CreatedById = 1
                         };
                         this.coachBotContext.AssetImages.Add(assetImage);
                         this.TeamAssetImages.Add(guildChannel.GuildName, assetImage);
@@ -253,8 +255,6 @@ namespace CoachBot.LegacyImporter
 
             this.FixTeamNames();
 
-            this.SetupAdministrator();
-
             this.AddCaptains();
 
             return teams;
@@ -271,16 +271,6 @@ namespace CoachBot.LegacyImporter
                 Rating = 7.2
             };
             this.coachBotContext.Players.Add(player);
-
-            var playerTeam = new PlayerTeam()
-            {
-                TeamId = coachBotContext.Teams.Single(t => t.Name == "Excel").Id,
-                IsPending = false,
-                JoinDate = DateTime.UtcNow,
-                TeamRole = TeamRole.Captain,
-                PlayerId = player.Id
-            };
-            coachBotContext.PlayerTeams.Add(playerTeam);
 
             this.coachBotContext.SaveChanges();
         }
@@ -303,7 +293,17 @@ namespace CoachBot.LegacyImporter
 
         private void AddCaptains()
         {
-            foreach(var captain in Captains.CaptainsList)
+            var thingePlayerTeam = new PlayerTeam()
+            {
+                TeamId = coachBotContext.Teams.Single(t => t.Name == "Excel").Id,
+                IsPending = false,
+                JoinDate = DateTime.UtcNow,
+                TeamRole = TeamRole.Captain,
+                PlayerId = 1
+            };
+            coachBotContext.PlayerTeams.Add(thingePlayerTeam);
+
+            foreach (var captain in Captains.CaptainsList)
             {
                 coachBotContext.Players.Add(captain.Player);
                 var playerTeam = new PlayerTeam()
@@ -329,7 +329,7 @@ namespace CoachBot.LegacyImporter
                     Base64EncodedImage = assetImageContent,
                     FileName = team.TeamCode + ".png",
                     Url = team.BadgeUrl,
-                    PlayerId = 1
+                    CreatedById = 1
                 };
                 this.coachBotContext.AssetImages.Add(assetImage);
 
@@ -349,7 +349,7 @@ namespace CoachBot.LegacyImporter
                 {
                     TeamCode = team.TeamCode,
                     Name = team.TeamName,
-                    BadgeEmote = BadgeEmote.GetBadgeEmote(guild.Name, team.BadgeEmote),
+                    BadgeEmote = team.BadgeEmote,
                     RegionId = 1,
                     TeamType = team.TeamType,
                     Color = TeamColours.GetColour(team.TeamName, team.Colour),

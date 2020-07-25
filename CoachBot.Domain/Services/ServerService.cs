@@ -61,7 +61,6 @@ namespace CoachBot.Domain.Services
             currentServer.Name = server.Name;
             currentServer.RconPassword = server.RconPassword;
             currentServer.RegionId = server.RegionId;
-            currentServer.DateModified = DateTime.UtcNow;
             _coachBotContext.Servers.Update(currentServer);
             _coachBotContext.SaveChanges();
         }
@@ -70,7 +69,6 @@ namespace CoachBot.Domain.Services
         {
             var currentServer = _coachBotContext.Servers.Single(s => s.Id == id);
             currentServer.RconPassword = rconPassword;
-            currentServer.DateModified = DateTime.UtcNow;
             _coachBotContext.SaveChanges();
         }
 

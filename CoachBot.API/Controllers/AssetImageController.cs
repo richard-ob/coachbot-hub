@@ -6,6 +6,7 @@ using CoachBot.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
@@ -21,6 +22,7 @@ namespace CoachBot.Controllers
             _assetImageService = assetImageService;
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost]
         public IActionResult CreateAssetImage(CreateAssetImageDto assetImageDto)
         {

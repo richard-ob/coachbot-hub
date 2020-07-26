@@ -129,6 +129,11 @@ namespace CoachBot.LegacyImporter
                     channelId = 708347875733667870;
                 }
 
+                if (guildChannel.GuildName == "IOSoccer")
+                {
+                    channelId = 669659754548690974;
+                }                
+
                 var discordChannel = this.discordSocketClient.GetChannel(channelId) as ITextChannel;
 
                 try
@@ -181,6 +186,11 @@ namespace CoachBot.LegacyImporter
                     if (leadChannel.GuildName == "False 11")
                     {
                         leadChannel = config.Channels.First(c => c.Id == 708347875733667870);
+                    }
+
+                    if (leadChannel.GuildName == "IOSoccer")
+                    {
+                        leadChannel = config.Channels.First(c => c.Id == 669659754548690974);
                     }
 
                     if (leadChannel.GuildName == "Portugal IOS")

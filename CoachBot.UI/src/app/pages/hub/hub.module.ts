@@ -61,6 +61,7 @@ import { BotManagerModule } from './bot-manager/bot-manager.module';
 import { TournamentManagerModule } from './tournaments/tournament-manager/tournament-manager.module';
 import { TeamNameDisplayModule } from './shared/components/team-name-display/team-name-display.module';
 import { MatchStatisticsModule } from './match-statistics/match-statistics.module';
+import { MatchDataUploaderComponent } from './match-editor/match-data-uploader/match-data-uploader.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { MatchStatisticsModule } from './match-statistics/match-statistics.modul
     OrganisationsComponent,
     OrganisationEditorComponent,
     MatchEditorComponent,
+    MatchDataUploaderComponent,
     MatchOverviewLineupComponent,
     MatchOverviewPlayerStatisticsComponent,
     MatchOverviewLineupPositionComponent,

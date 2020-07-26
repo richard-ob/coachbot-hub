@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Server } from 'selenium-webdriver/safari';
 import { ServerService } from '../shared/services/server.service';
 import { MatchStatistics } from '../shared/model/match-statistics.model';
-import { MatchStatisticsService } from '../shared/services/match-statistics.service';
 
 @Component({
     selector: 'app-match-editor',
@@ -19,12 +18,9 @@ export class MatchEditorComponent implements OnInit {
     matchStatistics: MatchStatistics;
     showDatepicker = false;
     isLoading = true;
-    isSubmittingStatistics = false;
-    isProccessingStatistics = false;
 
     constructor(
         private matchService: MatchService,
-        private matchStatisticsService: MatchStatisticsService,
         private serverService: ServerService,
         private route: ActivatedRoute
     ) { }
@@ -48,31 +44,4 @@ export class MatchEditorComponent implements OnInit {
         });
     }
 
-    updateMatch() {
-        this.isLoading = true;
-        this.matchService.updateMatch(this.match).subscribe(() => {
-            this.loadMatch();
-        });
-    }
-
-    updateMatchStatistics() {
-        this.isLoading = true;
-        this.matchStatisticsService.submitMatchStatistics(this.matchId, this.matchStatistics).subscribe(() => {
-            this.isLoading = false;
-            this.isProccessingStatistics = true;
-        });
-    }
-
-    fileSelected(event: any) {
-        const file = event.target.files[0];
-        const fileReader = new FileReader();
-        fileReader.addEventListener('load', () => {
-            try {
-                this.matchStatistics = JSON.parse(fileReader.result as string);
-            } catch (e) {
-                return;
-            }
-        });
-        fileReader.readAsText(file, '"UTF-8');
-    }
 }

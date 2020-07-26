@@ -50,24 +50,25 @@ namespace CoachBot
             int argPos = 0;
             if (!ParseTriggers(message)) return;
 
-            var context = new SocketCommandContext(_client, message);
-            var result = await _commands.ExecuteAsync(context, argPos, _provider);
-
-            var logMsg = $"[{message.Channel.Name} ({context.Guild.Name})] {message.Timestamp.ToString()}: @{message.Author.Username} {message.Content}";
-            Console.WriteLine(logMsg);
-            _logger.Information(logMsg);
-
             using (var scope = _provider.CreateScope())
             {
                 var channelService = scope.ServiceProvider.GetService<ChannelService>();
                 var matchmakingService = scope.ServiceProvider.GetService<MatchmakingService>();
+                var context = new SocketCommandContext(_client, message);
                 CallContext.SetData(CallContextDataType.DiscordUser, message.Author.Username);
 
                 if (!channelService.ChannelExists(context.Channel.Id))
                 {
                     return; // INFO: This can be removed when precondition is re-enabled
                 }
-                else if (result is PreconditionResult precondition && !precondition.IsSuccess)
+
+                var result = await _commands.ExecuteAsync(context, argPos, _provider);
+
+                var logMsg = $"[{message.Channel.Name} ({context.Guild.Name})] {message.Timestamp.ToString()}: @{message.Author.Username} {message.Content}";
+                Console.WriteLine(logMsg);
+                _logger.Information(logMsg);
+                
+                if (result is PreconditionResult precondition && !precondition.IsSuccess)
                 {
                     await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed(precondition.ErrorReason, ServiceResponseStatus.Failure));
                 }
@@ -110,7 +111,6 @@ namespace CoachBot
 
                     await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"An error occurred. Please contact an admin, {context.Message.Author.Mention}. [REF:{errorId}]", ServiceResponseStatus.Failure));
                 }
-            }
 
             try
             {
@@ -122,6 +122,8 @@ namespace CoachBot
             }
 
             _logger.Debug("Invoked {Command} in {Context} with {Result}", message, context.Channel, result);
+
+            }
         }
 
         private bool ParseTriggers(SocketUserMessage message)

@@ -9,10 +9,10 @@
             </a>
         </div>
         <div class="card__content table-responsive">
-            <div *ngIf="!player.teams.length" class="alert alert-info m-3">
+            <div *ngIf="!player || !player.teams || !player.teams.length" class="alert alert-info m-3">
                 You are not currently a member of any teams. Teams can invite you to join, or you can form a new team.
             </div>
-            <table *ngIf="player.teams.length" class="table table-striped">
+            <table *ngIf="player && player.teams && player.teams.length" class="table table-striped">
                 <thead>
                     <th style="width: 35px;"></th>
                     <th>Team</th>

@@ -14,10 +14,12 @@ namespace CoachBot.Domain.Services
     public class PlayerService
     {
         private readonly CoachBotContext _coachBotContext;
+        private readonly SteamService _steamService;
 
-        public PlayerService(CoachBotContext coachBotContext)
+        public PlayerService(CoachBotContext coachBotContext, SteamService steamService)
         {
             _coachBotContext = coachBotContext;
+            _steamService = steamService;
         }
 
         public Player GetPlayer(int playerId)
@@ -25,7 +27,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.Players.Single(p => p.Id == playerId);
         }
 
-        public Player GetPlayer(ulong steamId)
+        public Player GetPlayerBySteamId(ulong steamId)
         {
             return _coachBotContext.Players.Single(p => p.SteamID == steamId);
         }
@@ -93,7 +95,11 @@ namespace CoachBot.Domain.Services
 
             if (createIfNotExists && player == null)
             {
-                player = CreatePlayer(playerName, steamUserId);
+                if (string.IsNullOrEmpty(playerName))
+                {
+                    playerName = _steamService.GetSteamName(steamUserId).Result;
+                }
+                player = CreatePlayer(playerName, steamId: steamUserId);
             }
 
             return player;

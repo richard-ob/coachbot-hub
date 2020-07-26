@@ -24,7 +24,7 @@ namespace CoachBot.Attributes
                 }
 
                 var playerService = context.HttpContext.RequestServices.GetService(typeof(PlayerService)) as PlayerService;
-                var player = playerService.GetPlayer(steamId);
+                var player = playerService.GetPlayerBySteamId(steamId);
 
                 CallContext.SetData(CallContextDataType.PlayerId, player.Id);
 

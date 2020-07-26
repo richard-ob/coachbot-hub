@@ -12,10 +12,10 @@
         </div>
         <div class="card__content">
             <div *ngIf="!isLoading && !isChannelWizardOpen && !isGuildEditorOpen">
-                <div *ngIf="!channels" class="alert alert-info">
-                    You haven not added any channels yet
+                <div *ngIf="!channels.length" class="alert alert-info m-4">
+                    You have not added any channels yet. Click the "Add Channel" button to get started.
                 </div>
-                <table *ngIf="channels" class="table table-striped table-hover table-clickable">
+                <table *ngIf="channels && channels.length" class="table table-striped table-hover table-clickable">
                     <thead>
                         <th>Channel Name</th>
                         <th>Search Team Code</th>
@@ -27,7 +27,7 @@
                     <tbody>
                         <tr *ngFor="let channel of channels"
                             (click)="channelEditor.startEditWizard(channel.id); isChannelWizardOpen = true;">
-                            <td>{{channel.discordChannelName}}</td>
+                            <td>#{{channel.discordChannelName}}</td>
                             <td>{{channel.searchTeamCode}}</td>
                             <!--<td>
                                 <ng-container *ngIf="channel.subTeamName">

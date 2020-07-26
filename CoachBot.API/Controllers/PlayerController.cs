@@ -47,7 +47,7 @@ namespace CoachBot.Controllers
                 return null;
             }
 
-            return _playerService.GetPlayerBySteamId(User.GetSteamId(), createIfNotExists: true, playerName: User.Identity.Name);
+            return _playerService.GetPlayerBySteamId(steamId, createIfNotExists: true, playerName: User.Identity.Name);
         }
 
         [HubRolePermission(HubRole = PlayerHubRole.Player)]

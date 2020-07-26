@@ -65,11 +65,12 @@ namespace CoachBot
                 .AddTransient<MatchService>()
                 .AddTransient<MatchupService>()
                 .AddTransient<DiscordNotificationService>()
+                .AddTransient<SteamService>()
                 .AddSingleton<BotService>()
                 .AddSingleton<CacheService>()
                 .AddSingleton<BotInstance>()
                 .AddSingleton<AssetImageService>()
-                .AddSingleton<Importer>()
+                //.AddSingleton<Importer>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
 
             var provider = services.BuildServiceProvider();

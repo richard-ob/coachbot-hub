@@ -93,6 +93,7 @@ namespace CoachBot
                 .AddSingleton<DiscordService>()
                 .AddSingleton<CacheService>()
                 .AddTransient<AssetImageService>()
+                .AddTransient<SteamService>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
 
             services.AddProxies();

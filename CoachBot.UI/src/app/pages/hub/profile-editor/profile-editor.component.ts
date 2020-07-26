@@ -8,6 +8,8 @@ import { PositionService } from '../shared/services/position.service';
 import { Position } from '../shared/model/position';
 import { DiscordService } from '../shared/services/discord.service';
 import { DiscordUser } from '../shared/model/discord-user.model';
+import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-profile-editor',
@@ -27,25 +29,25 @@ export class ProfileEditorComponent implements OnInit {
         private playerService: PlayerService,
         private countryService: CountryService,
         private discordService: DiscordService,
-        private positionService: PositionService
+        private router: Router
     ) { }
 
     ngOnInit() {
         this.countryService.getCountries().subscribe(countries => {
             this.countries = countries;
             this.playerService.getCurrentPlayer().subscribe(player => {
+                if (!player) {
+                    this.router.navigate(['/login']);
+                }
                 this.player = player;
-                this.positionService.getPositions().subscribe(positions => {
-                    this.positions = positions;
-                    if (this.player.discordUserId && this.player.discordUserId.length) {
-                        this.discordService.getUser(this.player.discordUserId).subscribe(discordUser => {
-                            this.discordUser = discordUser;
-                            this.isLoading = false;
-                        });
-                    } else {
+                if (this.player.discordUserId && this.player.discordUserId.length) {
+                    this.discordService.getUser(this.player.discordUserId).subscribe(discordUser => {
+                        this.discordUser = discordUser;
                         this.isLoading = false;
-                    }
-                });
+                    });
+                } else {
+                    this.isLoading = false;
+                }
             });
         });
     }
@@ -73,7 +75,7 @@ export class ProfileEditorComponent implements OnInit {
     }
 
     startDiscordVerification() {
-        window.location.href = 'http://localhost/verify-discord';
+        window.location.href = environment.apiUrl + '/verify-discord';
     }
 
     getCountryCode(countryId: number) {

@@ -33,7 +33,7 @@ namespace CoachBot.Bot
             ChannelService channelService,
             DiscordNotificationService discordNotificationService,
             CacheService cacheService,
-            Importer importer,
+            //Importer importer,
             Config config
         )
         {
@@ -43,7 +43,7 @@ namespace CoachBot.Bot
             _channelService = channelService;
             _discordNotificationService = discordNotificationService;
             _cacheService = cacheService;
-            _importer = importer;
+            //_importer = importer;
             _config = config;
             Startup();
         }
@@ -115,7 +115,7 @@ namespace CoachBot.Bot
                     }
                 }
             }
-            _importer.GetTeams();
+            //_importer.GetTeams();
 
             return Task.CompletedTask;
         }

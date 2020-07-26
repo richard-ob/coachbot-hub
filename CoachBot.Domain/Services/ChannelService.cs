@@ -77,7 +77,7 @@ namespace CoachBot.Domain.Services
             channel.ChannelPositions = null;
             channel.Team = null;
             channel.UpdatedDate = DateTime.UtcNow;
-            channel.SubTeamCode = channel.SubTeamCode.ToUpper();
+            channel.SubTeamCode = channel.SubTeamCode?.ToUpper();
             _dbContext.Channels.Add(channel);
             _dbContext.SaveChanges();
 

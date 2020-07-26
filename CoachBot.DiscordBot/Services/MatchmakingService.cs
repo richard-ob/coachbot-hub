@@ -114,7 +114,7 @@ namespace CoachBot.Services
             var discordChannel = _discordClient.GetChannel(channelId) as ITextChannel;
 
             var serviceResponse = _matchupService.ReadyMatch(channelId, server.Id, out int matchId);
-            readiedMatchId = matchId;
+            readiedMatchId = matchup.Id;
 
             if (serviceResponse.Status != ServiceResponseStatus.Success)
             {

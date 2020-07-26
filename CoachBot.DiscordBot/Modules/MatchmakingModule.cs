@@ -202,10 +202,10 @@ namespace CoachBot.Modules.Matchmaker
                 var serverAvailable = await _channelServerService.ValidateServerAvailability(serverListItemId, Context.Message.Channel.Id);
                 if (serverAvailable)
                 {
-                    var success = _channelMatchService.ReadyMatch(Context.Message.Channel.Id, serverListItemId, out int readiedMatchId);
+                    var success = _channelMatchService.ReadyMatch(Context.Message.Channel.Id, serverListItemId, out int matchupId);
                     if (success)
                     {
-                        _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id, readiedMatchId);
+                        _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id, matchupId);
                     }
                 }
             }

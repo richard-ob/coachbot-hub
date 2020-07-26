@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CoachBot.Domain.Services
 {
@@ -138,8 +139,8 @@ namespace CoachBot.Domain.Services
 
             if (player.DiscordUserId != null && matchup.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is already signed");
             if (matchup.SignedPlayersAndSubs.Any(sp => sp.Name == player.Name)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is already signed");
-            if (position is null && positionName != null) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{positionName}** is already filled");
-            if (team != null && team.OccupiedPositions.Any(op => op == position)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{positionName}** is already filled");
+            if (position is null && positionName != null) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{positionName.ToUpper()}** is already filled");
+            if (team != null && team.OccupiedPositions.Any(op => op == position)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{positionName.ToUpper()}** is already filled");
             if (position is null && positionName == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There are no outfield positions available");
 
             var playerTeamPosition = new PlayerLineupPosition()
@@ -411,17 +412,48 @@ namespace CoachBot.Domain.Services
         private async void RemovePlayersFromOtherMatchups(Matchup readiedMatchup, bool respectDuplicityProtection = true)
         {
             var otherPlayerSignings = _coachBotContext.PlayerLineupPositions
-                .Where(ptp => ptp.Lineup.Matchup.ReadiedDate == null)
-                .Where(ptp => ptp.Lineup.Channel.DuplicityProtection == true || !respectDuplicityProtection)
-                .Where(ptp => readiedMatchup.SignedPlayers.Any(sp => sp.Id == ptp.PlayerId));
-
-            _coachBotContext.PlayerLineupPositions.RemoveRange(otherPlayerSignings);
-            _coachBotContext.SaveChanges();
+                .Where(ptp => (ptp.Lineup.HomeMatchup != null && ptp.Lineup.HomeMatchup.ReadiedDate == null) || (ptp.Lineup.AwayMatchup != null && ptp.Lineup.AwayMatchup.ReadiedDate == null))
+                .Where(ptp => readiedMatchup.SignedPlayers.Any(sp => sp.Id == ptp.PlayerId))
+                .Include(ptp => ptp.Player)
+                .Include(ptp => ptp.Lineup)
+                    .ThenInclude(l => l.Channel)
+                .ToList();
 
             foreach (var otherPlayerSigning in otherPlayerSignings)
             {
-                var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.TeamCode}** vs **{readiedMatchup.LineupAway.Channel.Team.TeamCode}**)";
-                await _discordNotificationService.SendChannelMessage(otherPlayerSigning.Lineup.Channel.DiscordChannelId, message);
+                if (otherPlayerSigning.Lineup.Channel.DuplicityProtection || !respectDuplicityProtection)
+                {
+                    _coachBotContext.PlayerLineupPositions.Remove(otherPlayerSigning);
+                    _coachBotContext.SaveChanges();
+                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.DisplayName}** vs **{readiedMatchup.LineupAway.Channel.Team.DisplayName}**) and has been removed from the lineup.";
+                    await _discordNotificationService.SendChannelMessage(otherPlayerSigning.Lineup.Channel.DiscordChannelId, message);
+                }
+                else
+                {
+                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.DisplayName}** vs **{readiedMatchup.LineupAway.Channel.Team.DisplayName}**)";
+                    await _discordNotificationService.SendChannelMessage(otherPlayerSigning.Lineup.Channel.DiscordChannelId, message);
+                }
+            }
+        }
+
+        private void NotifyOtherMatchups(Matchup readiedMatchup)
+        {
+            var otherPlayerNotifySigningsTmp = _coachBotContext.PlayerLineupPositions
+                .Include(ptp => ptp.Lineup)
+                .ThenInclude(l => l.Matchup)
+                .Include(ptp => ptp.Lineup)
+                .ThenInclude(ptp => ptp.Channel);
+
+            var otherPlayerNotifySignings = otherPlayerNotifySigningsTmp
+                .Where(ptp => ptp.Lineup.Matchup.ReadiedDate == null)
+                .Where(ptp => ptp.Lineup.Channel.DuplicityProtection == false)
+                .Where(ptp => readiedMatchup.SignedPlayers.Any(sp => sp.Id == ptp.PlayerId))
+                .ToList();
+
+            foreach (var otherPlayerNotifySigning in otherPlayerNotifySignings)
+            {
+                var message = $":stadium: **{otherPlayerNotifySigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.TeamCode}** vs **{readiedMatchup.LineupAway.Channel.Team.TeamCode}**)";
+                _discordNotificationService.SendChannelMessage(otherPlayerNotifySigning.Lineup.Channel.DiscordChannelId, message).Wait();
             }
         }
 

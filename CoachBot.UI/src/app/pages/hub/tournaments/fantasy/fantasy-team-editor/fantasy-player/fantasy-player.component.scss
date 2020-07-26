@@ -40,13 +40,12 @@
 }
 
 .fantasy-player-badge {
-    max-height: 15px;
-    top: 25px;
+    max-height: 12px;
+    top: 27px;
     position: absolute;
-    left: 48px;
-    transform: rotate3d(1, 1, 1, 11deg);
+    left: 50px;
+    opacity: 0.75;
     border: 1px solid rgba(0, 0, 0, 0);
-    /*filter: blur(0); // This works too for anti aliasing loosely*/
 } 
 
 .fantasy-player-position-group {

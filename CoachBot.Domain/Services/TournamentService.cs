@@ -47,7 +47,10 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext.Tournaments
                 .Include(t => t.TournamentSeries)
-                .ThenInclude(t => t.Organisation)
+                    .ThenInclude(t => t.Organisation)
+                    .ThenInclude(o => o.LogoImage)
+                .Include(t => t.WinningTeam)
+                .ThenInclude(t => t.BadgeImage)
                 .Where(t => t.EndDate < DateTime.UtcNow)
                 .Where(t => t.IsPublic)
                 .ToList();

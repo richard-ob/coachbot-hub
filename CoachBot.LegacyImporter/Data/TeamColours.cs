@@ -26,6 +26,8 @@ namespace CoachBot.LegacyImporter.Data
                     return "#9c0a0a";
                 case "NextGen":
                     return "#532580";
+                case "Dreamsent":
+                    return "#b501a4";
             }
 
             return teamColour;

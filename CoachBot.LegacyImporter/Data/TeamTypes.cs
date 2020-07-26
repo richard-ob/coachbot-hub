@@ -44,7 +44,8 @@ namespace CoachBot.LegacyImporter
             "CABRONES",
             "Cryptic",
             "Revolution",
-            "Dark SunRise"
+            "Dark SunRise",
+            "Dreamsent"
         };
 
         public static string[] DraftTeams => new string[]

@@ -27,6 +27,15 @@ namespace CoachBot.LegacyImporter.Data
                 Colour = "#5cdb33",
                 TeamType = Domain.Model.TeamType.Club
             },
+            /*new TeamSeed()
+            {
+                TeamName = "Dreamsent",
+                TeamCode = "Dream",
+                ChannelID = 736371554035826739,
+                BadgeEmote = "",
+                Colour = "#FF00FF",
+                TeamType = Domain.Model.TeamType.Club
+            },*/
             new TeamSeed()
             {
                 TeamName = "IOSoccer Overlap",

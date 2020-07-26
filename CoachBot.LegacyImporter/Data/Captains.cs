@@ -109,7 +109,7 @@ namespace CoachBot.LegacyImporter.Data
                     SteamID =  76561197978960120
                 }
             },
-            new Captain()
+            /*new Captain()
             {
                 TeamName = "Unity",
                 Role = TeamRole.Captain,
@@ -118,6 +118,17 @@ namespace CoachBot.LegacyImporter.Data
                     Name = "Kieran",
                     HubRole = PlayerHubRole.Player,
                     SteamID =  76561198061658353
+                }
+            },*/
+            new Captain()
+            {
+                TeamName = "Dreamsent",
+                Role = TeamRole.Captain,
+                Player = new Player()
+                {
+                    Name = "Phenom",
+                    HubRole = PlayerHubRole.Player,
+                    SteamID =  76561198214708181
                 }
             },
             new Captain()

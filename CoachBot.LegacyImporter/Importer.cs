@@ -173,6 +173,23 @@ namespace CoachBot.LegacyImporter
                         .ThenBy(c => !string.IsNullOrWhiteSpace(c.Team1.BadgeEmote))
                         .First(c => c.GuildName == guild.Name);
 
+                    if (leadChannel.GuildName == "Revolution")
+                    {
+                        leadChannel = config.Channels.First(c => c.Id == 613712939722997780);
+                    }
+
+                    if (leadChannel.GuildName == "False 11")
+                    {
+                        leadChannel = config.Channels.First(c => c.Id == 708347875733667870);
+                    }
+
+                    if (leadChannel.GuildName == "Portugal IOS")
+                    {
+                        leadChannel = config.Channels.First(c => c.Id == 616336914500288514);
+                    }
+
+                    var discordChannel = this.discordSocketClient.GetChannel(leadChannel.Id) as ITextChannel;
+
                     if (leadChannel == null)
                     {
                         continue;
@@ -193,7 +210,8 @@ namespace CoachBot.LegacyImporter
                         TeamType = TeamTypes.GetTeamTypeForTeam(guild.Name),
                         Color = TeamColours.GetColour(guild.Name, leadChannel.Team1.Color),
                         GuildId = guild.Id,
-                        BadgeImageId = this.TeamAssetImages.Where(t => t.Key == guild.Name).Select(t => (int?)t.Value.Id).FirstOrDefault()
+                        BadgeImageId = this.TeamAssetImages.Where(t => t.Key == guild.Name).Select(t => (int?)t.Value.Id).FirstOrDefault(),
+                        FoundedDate = discordChannel.Guild.CreatedAt.UtcDateTime
                     };
 
                     if (team.TeamType != TeamType.Draft)
@@ -323,15 +341,19 @@ namespace CoachBot.LegacyImporter
         {
             foreach(var team in Teams.TeamSeed)
             {
-                var assetImageContent = HttpImageRetrieval.GetImageAsBase64(team.BadgeUrl);
-                var assetImage = new AssetImage()
+                AssetImage assetImage = null;
+                if (!string.IsNullOrWhiteSpace(team.BadgeUrl))
                 {
-                    Base64EncodedImage = assetImageContent,
-                    FileName = team.TeamCode + ".png",
-                    Url = team.BadgeUrl,
-                    CreatedById = 1
-                };
-                this.coachBotContext.AssetImages.Add(assetImage);
+                    var assetImageContent = HttpImageRetrieval.GetImageAsBase64(team.BadgeUrl);
+                    assetImage = new AssetImage()
+                    {
+                        Base64EncodedImage = assetImageContent,
+                        FileName = team.TeamCode + ".png",
+                        Url = team.BadgeUrl,
+                        CreatedById = 1
+                    };
+                    this.coachBotContext.AssetImages.Add(assetImage);
+                }
 
                 var discordChannel = this.discordSocketClient.GetChannel(team.ChannelID) as ITextChannel;
 
@@ -343,7 +365,8 @@ namespace CoachBot.LegacyImporter
                 if (!coachBotContext.Guilds.Any(g => g.DiscordGuildId == guild.DiscordGuildId))
                 {
                     coachBotContext.Guilds.Add(guild);
-                }               
+                    coachBotContext.SaveChanges();
+                }
 
                 var newTeam = new Team()
                 {
@@ -354,7 +377,7 @@ namespace CoachBot.LegacyImporter
                     TeamType = team.TeamType,
                     Color = TeamColours.GetColour(team.TeamName, team.Colour),
                     GuildId = coachBotContext.Guilds.Single(g => g.DiscordGuildId == discordChannel.Guild.Id).Id,
-                    BadgeImageId = assetImage.Id
+                    BadgeImageId = assetImage != null ? assetImage.Id : (int?)null
                 };
                 coachBotContext.Teams.Add(newTeam);
 

@@ -22,6 +22,8 @@ namespace CoachBot.LegacyImporter.Data
                     return "<:slavs:651834089472655380>";
                 case "xGoal":
                     return "<:xgoal:715570220940656807>";
+                case "Dreamsent":
+                    return "<:dreamsent:737348216277958676>";
             }
 
             return badgeEmote;

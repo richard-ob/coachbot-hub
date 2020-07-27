@@ -56,6 +56,14 @@ namespace CoachBot.Services
         public Embed Reset(ulong channelId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
+            var currentMatchup = _matchupService.GetCurrentMatchupForChannel(channelId);
+
+            if ((currentMatchup.LineupHome != null && currentMatchup.LineupHome.ChannelId.HasValue && currentMatchup.LineupHome.ChannelId != channel.Id)
+                || (currentMatchup.LineupAway != null & currentMatchup.LineupAway.ChannelId.HasValue && currentMatchup.LineupAway.ChannelId != channel.Id))
+            {
+                return DiscordEmbedHelper.GenerateEmbed("Cannot reset the lineup as a challenge is in progress. Use `!unchallenge` to abandon.", ServiceResponseStatus.Failure);
+            }
+
             var response = _matchupService.CreateMatchup(channel.Id);
 
             ResetLastMentionTime(channelId);
@@ -352,7 +360,7 @@ namespace CoachBot.Services
 
         private async void SendReadyMessageForPlayers(Matchup matchup, List<Player> players, Server server)
         {
-            var message = $":soccer: Match ready! **{matchup.LineupHome.Channel.Team.DisplayName}** vs **{matchup.LineupAway.Channel.Team.DisplayName}** - Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible.";
+            var message = $":soccer: Match ready! **{matchup.LineupHome.Channel.Team.Name}{matchup.LineupHome.Channel.Team.BadgeEmote}** vs **{matchup.LineupAway.Channel.Team.BadgeEmote}{matchup.LineupAway.Channel.Team.Name}** - Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible.";
             foreach (var player in players.Where(p => p.DiscordUserId != null && !p.DisableDMNotifications))
             {
                 await _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, message);

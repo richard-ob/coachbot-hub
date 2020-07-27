@@ -1,22 +1,25 @@
 <ng-container *ngIf="wizardMode === wizardModes.Creating && wizardStep === wizardSteps.ChannelSelection">
-    <div class="form-group">
-        <label class="control-label" for="input-default">Channel</label>
-        <select class="form-control" id="input-default" [(ngModel)]="channel.discordChannelId"
-            (ngModelChange)="setChannelName($event)" placeholder="Select Discord server...">
-            <ng-container *ngFor="let channel of discordChannels">
-                <option *ngIf="!channel.isConfigured" [ngValue]="channel.id">{{channel.name}}</option>
-            </ng-container>
-        </select>
-    </div>
-    <div class="float-right">
-        <button class="btn btn-outline-primary mr-2" type="button" (click)="abortWizard()">
-            Cancel
-        </button>
-        <button class="btn btn-primary" type="button" [disabled]="!channel.discordChannelId"
-            (click)="wizardStep = wizardSteps.Configuration">
-            Next
-        </button>
-    </div>
+    <ng-container *ngIf="!isLoading">
+        <div class="form-group">
+            <label class="control-label" for="input-default">Channel</label>
+            <select class="form-control" id="input-default" [(ngModel)]="channel.discordChannelId"
+                (ngModelChange)="setChannelName($event)" placeholder="Select Discord server...">
+                <ng-container *ngFor="let channel of discordChannels">
+                    <option *ngIf="!channel.isConfigured" [ngValue]="channel.id">{{channel.name}}</option>
+                </ng-container>
+            </select>
+        </div>
+        <div class="float-right">
+            <button class="btn btn-outline-primary mr-2" type="button" (click)="abortWizard()">
+                Cancel
+            </button>
+            <button class="btn btn-primary" type="button" [disabled]="!channel.discordChannelId"
+                (click)="wizardStep = wizardSteps.Configuration">
+                Next
+            </button>
+        </div>
+    </ng-container>
+    <app-spinner *ngIf="isLoading"></app-spinner>
 </ng-container>
 <ng-container *ngIf="wizardMode !== wizardModes.Disabled && wizardStep === wizardSteps.Configuration">
     <form *ngIf="!isLoading" #editChannelForm="ngForm">

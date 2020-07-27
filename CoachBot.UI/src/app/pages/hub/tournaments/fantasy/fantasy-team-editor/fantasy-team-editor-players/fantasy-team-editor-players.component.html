@@ -100,23 +100,18 @@
                     <th style="width: 55px"></th>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let player of fantasyPlayers" title="Add player to your team">
-                        <td>
+                    <tr *ngFor="let player of fantasyPlayers" class="clickable" title="Add player to your team">
+                        <td (click)="selectFantasyPlayer(player, false)">
                             <img *ngIf="player.team.badgeImage" [src]="player.team.badgeImage.extraSmallUrl"
                                 style="max-height: 15px">
                         </td>
-                        <td>{{player.player.name}}</td>
-                        <td>{{player.rating | number : '1.2-2'}}</td>
-                        <td>{{player.positionGroup | positionGroup}}</td>
-                        <td style="width: 55px">
-                            <a href="javascript:void(0);" (click)="selectFantasyPlayer(player, false)"
-                                class="clickable mr-2" title="Add player">
-                                <i class="fas fa-plus" style="font-size: 13px"></i>
-                            </a>
-                            <a (click)="selectFantasyPlayer(player, true)" class="clickable text-muted"
-                                title="Add as flex player">
+                        <td (click)="selectFantasyPlayer(player, false)">{{player.player.name}}</td>
+                        <td (click)="selectFantasyPlayer(player, false)">{{player.rating | number : '1.2-2'}}</td>
+                        <td (click)="selectFantasyPlayer(player, false)">{{player.positionGroup | positionGroup}}</td>
+                        <td (click)="selectFantasyPlayer(player, true)" style="width: 55px">
+                            <span  class="text-muted" title="Add as flex player">
                                 <i class="fas fa-random" style="font-size: 13px"></i>
-                            </a>
+                            </span>
                         </td>
                     </tr>
                 </tbody>

@@ -1,4 +1,5 @@
 ﻿using CoachBot.Domain.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,8 +15,10 @@ namespace CoachBot.Model
 
         public string Name { get; set; }
 
+        [JsonIgnore]
         public ICollection<ChannelPosition> ChannelPositions { get; set; }
 
+        [JsonIgnore]
         public ICollection<PlayerLineupPosition> PlayerLineupPositions { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

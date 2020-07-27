@@ -25,7 +25,7 @@ namespace CoachBot.Domain.Services
         {
             var existingChannel = _dbContext.Channels.Find(channel.Id);
 
-            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => c.TeamId == channel.TeamId && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count))
+            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => c.TeamId == channel.TeamId && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count && string.IsNullOrWhiteSpace(c.SubTeamCode)))
             {
                 throw new Exception("Secondary channels must have a sub team code");
             }
@@ -108,13 +108,15 @@ namespace CoachBot.Domain.Services
 
         public List<Channel> GetChannelsForTeamGuild(ulong discordGuildId, int teamId)
         {
-            return _dbContext.Channels
+            var channels = _dbContext.Channels
                 .Include(c => c.Team)
                 .ThenInclude(t => t.Region)
                 .Include(c => c.ChannelPositions)
                     .ThenInclude(cp => cp.Position)
                 .Where(c => c.Team.Guild.DiscordGuildId == discordGuildId && c.TeamId == teamId)
                 .ToList();
+
+            return channels;
         }
 
         public List<Channel> GetChannelsByRegion(int regionId)

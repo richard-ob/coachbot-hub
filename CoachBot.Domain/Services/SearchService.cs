@@ -29,6 +29,8 @@ namespace CoachBot.Domain.Services
                 .Include(s => s.Channel)
                     .ThenInclude(c => c.Team)
                     .ThenInclude(t => t.Guild)
+                .Include(s => s.Channel)
+                    .ThenInclude(c => c.ChannelPositions)
                 .ToList();
 
             return searches;
@@ -63,6 +65,7 @@ namespace CoachBot.Domain.Services
                 .Where(c => c.Team.RegionId == challenger.Team.RegionId)
                 .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
                 .Where(c => c.SearchIgnoreList == null || !c.SearchIgnoreList.Any(i => i == challenger.TeamId))
+                .Where(c => c.ChannelPositions.Count == challenger.ChannelPositions.Count)
                 .Select(c => c.DiscordChannelId)
                 .ToList();
 
@@ -100,7 +103,7 @@ namespace CoachBot.Domain.Services
                 await discordChannel.DeleteMessagesAsync(new[] { messageId });
             }
 
-            return new ServiceResponse(ServiceResponseStatus.Success, $"Search successfully stopped");
+            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Search successfully stopped");
         }
 
         public Matchup GetCurrentMatchupForChannel(ulong channelId)

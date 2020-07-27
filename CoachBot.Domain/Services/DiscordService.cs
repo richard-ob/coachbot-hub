@@ -91,20 +91,21 @@ namespace CoachBot.Domain.Services
                 var coachBotContext = scope.ServiceProvider.GetService<CoachBotContext>();
                 var guild = _discordSocketClient.GetGuild(guildId);
 
-                channels = guild.Channels.Select(c => new DiscordChannel()
+                channels = guild.Channels.Where(c => c is ITextChannel).Select(c => new DiscordChannel()
                 {
                     Id = c.Id,
                     Name = c.Name
                 });
 
                 // HACK: If we do this in the original projection, the context seems to have been disposed/not available in the calling scope..
-                foreach (var channel in channels)
+                var matchmakingChannels = coachBotContext.Channels.Where(cc => cc.Team.Guild.DiscordGuildId == guildId).ToList();
+                return channels.Select(c => new DiscordChannel()
                 {
-                    channel.IsConfigured = coachBotContext.Channels.Any(cc => cc.DiscordChannelId == channel.Id);
-                }
+                    Id = c.Id,
+                    Name = c.Name,
+                    IsConfigured = matchmakingChannels.Any(cc => cc.DiscordChannelId == c.Id)
+                });
             }
-
-            return channels;
         }
 
         public IEnumerable<DiscordGuild> GetGuildsForUser(ulong steamUserId)
@@ -125,13 +126,14 @@ namespace CoachBot.Domain.Services
                     }).ToList();
 
                 // HACK: If we do this in the original projection, the context seems to have been disposed/not available in the calling scope..
-                foreach (var guild in guilds)
+                var matchmakingGuilds = coachBotContext.Guilds.Where(g => guilds.Any(dg => dg.Id == g.DiscordGuildId)).ToList();
+                return guilds.Select(dg => new DiscordGuild()
                 {
-                    guild.IsLinked = coachBotContext.Guilds.Any(g => g.DiscordGuildId == guild.Id);
-                }
+                    Id = dg.Id,
+                    Name = dg.Name,
+                    IsLinked = matchmakingGuilds.Any(g => g.DiscordGuildId == dg.Id)
+                });
             }
-
-            return guilds;
         }
 
         public bool UserIsGuildAdministrator(ulong steamUserId, ulong guildId)

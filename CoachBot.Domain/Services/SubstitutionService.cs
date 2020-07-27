@@ -38,7 +38,7 @@ namespace CoachBot.Domain.Services
             };
 
             var embed = new EmbedBuilder()
-                .WithDescription($":sos: A substitute{(string.IsNullOrEmpty(positionName) ? "" : " **" + positionName + "**")} is required urgently. Type **!acceptsub {token}** to sub in.")
+                .WithDescription($":sos: A substitute{(string.IsNullOrEmpty(positionName) ? "" : " **" + positionName.ToUpper() + "**")} is required urgently. Type **!acceptsub {token}** to sub in.")
                 .WithCurrentTimestamp()
                 .WithColor(new Color(254, 254, 254))
                 .WithFooter(new EmbedFooterBuilder().WithText("Requested by " + requestedBy))

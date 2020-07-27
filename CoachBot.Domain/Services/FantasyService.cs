@@ -325,12 +325,12 @@ namespace CoachBot.Domain.Services
             {
                 throw new Exception("Fantasy season already seeded");
             }
-
-            foreach (var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => p.Rating > 0 && p.Teams.Any(pt => pt.IsCurrentTeam
+            // TODO: Remove rating comment
+            foreach (var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => /*p.Rating > 0 &&*/ p.Teams.Any(pt => pt.IsCurrentTeam
                  && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)))
             )
             {
-                //player.Rating = GetRandomRating();
+                player.Rating = GetRandomRating();
                 var fantasyPlayer = new FantasyPlayer()
                 {
                     TournamentId = tournamentId,

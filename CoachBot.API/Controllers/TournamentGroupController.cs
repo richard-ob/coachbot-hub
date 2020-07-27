@@ -81,7 +81,7 @@ namespace CoachBot.Controllers
         }
 
         [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
-        [HttpPost("{id}/teams/{teamId}")]
+        [HttpDelete("{id}/teams/{teamId}")]
         public IActionResult RemoveTournamentGroupTeam(int id, int teamId)
         {
             var tournamentGroup = _tournamentService.GetTournamentGroup(id);

@@ -1,6 +1,8 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model;
+using CoachBot.Factories;
 using CoachBot.Model;
+using Discord;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -317,6 +319,57 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, "Team successfully unchallenged");
         }
 
+        public void SendTeamListToChannel(ulong channelId)
+        {
+            foreach(var teamEmbed in GenerateTeamList(channelId))
+            {
+                _discordNotificationService.SendChannelMessage(channelId, teamEmbed).Wait();
+            }
+        }
+
+        public List<Embed> GenerateTeamList(ulong channelId)
+        {
+            var channel = _channelService.GetChannelByDiscordId(channelId);
+            var matchup = GetCurrentMatchupForChannel(channelId);
+
+            if (!channel.UseClassicLineup) return GenerateTeamSheet(channelId);
+
+            var teamType = _channelService.GetTeamTypeForChannelTeamType(ChannelTeamType.TeamOne, channelId);
+            var teamLists = new List<Embed>() {
+                TeamListEmbedFactory.GenerateEmbed(channel, matchup, teamType)
+            };
+
+            if (matchup.IsMixMatch)
+            {
+                var awayTeamList = TeamListEmbedFactory.GenerateEmbed(channel, matchup, MatchTeamType.Away);
+                teamLists.Add(awayTeamList);
+            }
+
+            return teamLists;
+        }
+
+        private List<Embed> GenerateTeamSheet(ulong channelId)
+        {
+            var channel = _channelService.GetChannelByDiscordId(channelId);
+            var matchup = GetCurrentMatchupForChannel(channelId);
+
+            if (channel.UseClassicLineup) return GenerateTeamList(channelId);
+
+            var teamType = _channelService.GetTeamTypeForChannelTeamType(ChannelTeamType.TeamOne, channelId);
+            var teamSheets = new List<Embed>() {
+                TeamSheetEmbedFactory.GenerateEmbed(channel, matchup, teamType)
+            };
+
+            if (matchup.IsMixMatch)
+            {
+                var awayTeamSheet = TeamSheetEmbedFactory.GenerateEmbed(channel, matchup, MatchTeamType.Away);
+                teamSheets.Add(awayTeamSheet);
+            }
+
+            return teamSheets;
+        }
+
+
         #region Private methods
         private Matchup GetCurrentMatchForChannel(ulong channelId)
         {
@@ -423,10 +476,12 @@ namespace CoachBot.Domain.Services
             {
                 if (otherPlayerSigning.Lineup.Channel.DuplicityProtection || !respectDuplicityProtection)
                 {
+                    var channelId = otherPlayerSigning.Lineup.Channel.DiscordChannelId;
                     _coachBotContext.PlayerLineupPositions.Remove(otherPlayerSigning);
                     _coachBotContext.SaveChanges();
                     var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.DisplayName}** vs **{readiedMatchup.LineupAway.Channel.Team.DisplayName}**) and has been removed from the lineup.";
-                    await _discordNotificationService.SendChannelMessage(otherPlayerSigning.Lineup.Channel.DiscordChannelId, message);
+                    await _discordNotificationService.SendChannelMessage(channelId, message);
+                    SendTeamListToChannel(channelId);
                 }
                 else
                 {

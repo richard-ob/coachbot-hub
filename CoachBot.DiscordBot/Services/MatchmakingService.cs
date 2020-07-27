@@ -141,44 +141,7 @@ namespace CoachBot.Services
 
         public List<Embed> GenerateTeamList(ulong channelId)
         {
-            var channel = _channelService.GetChannelByDiscordId(channelId);
-            var matchup = _matchupService.GetCurrentMatchupForChannel(channelId);
-
-            if (!channel.UseClassicLineup) return GenerateTeamSheet(channelId);
-
-            var teamType = _channelService.GetTeamTypeForChannelTeamType(ChannelTeamType.TeamOne, channelId);
-            var teamLists = new List<Embed>() {
-                TeamListEmbedFactory.GenerateEmbed(channel, matchup, teamType)
-            };
-
-            if (matchup.IsMixMatch)
-            {
-                var awayTeamList = TeamListEmbedFactory.GenerateEmbed(channel, matchup, MatchTeamType.Away);
-                teamLists.Add(awayTeamList);
-            }
-
-            return teamLists;
-        }
-
-        private List<Embed> GenerateTeamSheet(ulong channelId)
-        {
-            var channel = _channelService.GetChannelByDiscordId(channelId);
-            var matchup = _matchupService.GetCurrentMatchupForChannel(channelId);
-
-            if (channel.UseClassicLineup) return GenerateTeamList(channelId);
-
-            var teamType = _channelService.GetTeamTypeForChannelTeamType(ChannelTeamType.TeamOne, channelId);
-            var teamSheets = new List<Embed>() {
-                TeamSheetEmbedFactory.GenerateEmbed(channel, matchup, teamType)
-            };
-
-            if (matchup.IsMixMatch)
-            {
-                var awayTeamSheet = TeamSheetEmbedFactory.GenerateEmbed(channel, matchup, MatchTeamType.Away);
-                teamSheets.Add(awayTeamSheet);
-            }
-
-            return teamSheets;
+            return _matchupService.GenerateTeamList(channelId);
         }
 
         public async Task<Embed> Search(ulong channelId, string challengerMention)

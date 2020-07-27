@@ -96,11 +96,27 @@ namespace CoachBot.LegacyImporter
             return positions;
         }
 
+        private void SetupAdministrator()
+        {
+            var player = new Player()
+            {
+                Name = "Thing'e'",
+                SteamID = 76561197960374238,
+                DiscordUserId = 166153339610857472,
+                HubRole = PlayerHubRole.Owner,
+                Rating = 7.2
+            };
+            coachBotContext.Players.Add(player);
+            coachBotContext.SaveChanges();
+        }
+
         public List<Team> GetTeams()
         {
             var guilds = new List<Guild>();
             var teams = new List<Team>();
             var channels = new List<Channel>();
+
+            SetupAdministrator();
 
             var activeChannels = config.Channels
                 .Where(c => c.RegionId == 1)

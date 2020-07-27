@@ -50,11 +50,11 @@ namespace CoachBot
             if (!ParseTriggers(message)) return;
 
             var context = new SocketCommandContext(_client, message);
-            var result = await _commands.ExecuteAsync(context, argPos, _provider);
             var matchmakerChannel = _configService.Config.Channels.FirstOrDefault(c => c.Id == context.Channel.Id);
-
             // INFO: Stop processing of European matchmaking
             if (matchmakerChannel == null || matchmakerChannel.RegionId == 1) return;
+
+            var result = await _commands.ExecuteAsync(context, argPos, _provider);
 
             var logMsg = $"[{message.Channel.Name} ({context.Guild.Name})] {message.Timestamp.ToString()}: @{message.Author.Username} {message.Content}";
             Console.WriteLine(logMsg);

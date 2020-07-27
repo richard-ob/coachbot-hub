@@ -44,4 +44,11 @@ export class MatchEditorComponent implements OnInit {
         });
     }
 
+    updateMatch() {
+        this.isLoading = true;
+        this.matchService.updateMatch(this.match).subscribe(() => {
+            this.loadMatch();
+        });
+    }
+
 }

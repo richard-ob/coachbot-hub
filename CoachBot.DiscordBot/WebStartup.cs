@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
-using System.IO;
 using CoachBot.Shared.Helpers;
 using CoachBot.Shared.Services;
 
@@ -74,9 +73,11 @@ namespace CoachBot
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
 
             var provider = services.BuildServiceProvider();
-
+            provider.GetService<CoachBotContext>().Initialize();
             provider.GetService<LogAdaptor>();
-            provider.GetService<BotInstance>();
+
+            var bot = provider.GetService<BotInstance>();
+            bot.Startup();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -85,6 +86,7 @@ namespace CoachBot
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseAuthentication();
             app.UseMvc();
         }

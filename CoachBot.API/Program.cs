@@ -1,9 +1,6 @@
-﻿using CoachBot.Model;
-using CoachBot.Shared.Helpers;
+﻿using CoachBot.Shared.Helpers;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 

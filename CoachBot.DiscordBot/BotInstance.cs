@@ -45,7 +45,6 @@ namespace CoachBot.Bot
             _cacheService = cacheService;
             //_importer = importer;
             _config = config;
-            Startup();
         }
 
         public async void Startup()

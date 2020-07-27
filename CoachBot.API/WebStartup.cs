@@ -17,10 +17,10 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
 using System;
-using System.IO;
 using CoachBot.Shared.Services;
 using CoachBot.Shared.Helpers;
 using CoachBot.Extensions;
+using Serilog;
 
 namespace CoachBot
 {
@@ -28,6 +28,7 @@ namespace CoachBot
     {
         public IConfiguration Configuration { get; }
         private DiscordSocketClient _client;
+        private ILoggerProvider _loggerProvider;
 
         public WebStartup(IConfiguration configuration)
         {
@@ -43,8 +44,9 @@ namespace CoachBot
             var config = ConfigHelper.GetConfig();
             var logger = LogAdaptor.CreateLogger();
             var loggerFactory = new LoggerFactory();
-            loggerFactory.AddProvider(new SerilogLoggerProvider(logger));
-
+            _loggerProvider = new SerilogLoggerProvider(logger);
+            loggerFactory.AddProvider(_loggerProvider);
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -121,8 +123,7 @@ namespace CoachBot
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
         }
-
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -132,6 +133,8 @@ namespace CoachBot
             app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseMvc();
+
+            loggerFactory.AddProvider(_loggerProvider);
         }
     }
 }

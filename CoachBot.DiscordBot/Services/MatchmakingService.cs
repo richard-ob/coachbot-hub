@@ -125,7 +125,14 @@ namespace CoachBot.Services
             else
             {
                 SendReadyMessageForTeam(matchup, matchup.LineupHome, server);
-                if (!matchup.IsMixMatch) SendReadyMessageForTeam(matchup, matchup.LineupAway, server);
+                if (!matchup.IsMixMatch)
+                {
+                    SendReadyMessageForTeam(matchup, matchup.LineupAway, server);
+                }
+                else
+                {
+                    SendReadyMessageForTeam(matchup, matchup.LineupAway, server, false);
+                }
                 SendReadyMessageForPlayers(matchup, matchup.SignedPlayers, server);
 
                 return true;
@@ -382,12 +389,15 @@ namespace CoachBot.Services
             }
         }
 
-        private async void SendReadyMessageForTeam(Matchup matchup, Lineup team, Server server)
+        private async void SendReadyMessageForTeam(Matchup matchup, Lineup team, Server server, bool sendChannelKickOffMessage = true)
         {
             var discordChannel = _discordClient.GetChannel(team.Channel.DiscordChannelId) as ITextChannel;
 
-            var embed = EmbedTools.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible. If you need to use a different server, use `!setupserver {matchup.Id} <server id>`", $":soccer: Kick Off! **{matchup.LineupHome.Channel.Team.DisplayName}** vs **{matchup.LineupAway.Channel.Team.DisplayName}**");
-            await discordChannel.SendMessageAsync("", embed: embed);
+            if (sendChannelKickOffMessage)
+            {
+                var embed = EmbedTools.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible. If you need to use a different server, use `!setupserver {matchup.Id} <server id>`", $":soccer: Kick Off! **{matchup.LineupHome.Channel.Team.DisplayName}** vs **{matchup.LineupAway.Channel.Team.DisplayName}**");
+                await discordChannel.SendMessageAsync("", embed: embed);
+            }
 
             var highlightMessage = string.Join(", ", team.PlayerLineupPositions.Where(ptp => ptp.Player.DiscordUserId != null).Select(ptp => ptp.Player.DisplayName));
             if (!string.IsNullOrEmpty(highlightMessage)) await discordChannel.SendMessageAsync(highlightMessage);

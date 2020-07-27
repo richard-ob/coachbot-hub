@@ -1,6 +1,6 @@
 ﻿namespace CoachBot.Tools
 {
-    public static class DiscordTools
+    public static class DiscordHelper
     {
         public static ulong ConvertMentionToUserID(string mention)
         {

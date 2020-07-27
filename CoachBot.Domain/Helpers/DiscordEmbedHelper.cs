@@ -1,12 +1,11 @@
 ﻿using CoachBot.Domain.Model;
-using CoachBot.Extensions;
 using CoachBot.Shared.Extensions;
 using Discord;
 using System.Text;
 
 namespace CoachBot.Tools
 {
-    public static class EmbedTools
+    public static class DiscordEmbedHelper
     {
         private const uint DEFAULT_EMBED_COLOUR = 1131364;
 

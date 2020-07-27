@@ -70,15 +70,15 @@ namespace CoachBot
                 
                 if (result is PreconditionResult precondition && !precondition.IsSuccess)
                 {
-                    await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed(precondition.ErrorReason, ServiceResponseStatus.Failure));
+                    await message.Channel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed(precondition.ErrorReason, ServiceResponseStatus.Failure));
                 }
                 else if (result is ParseResult parse && !parse.IsSuccess)
                 {
-                    await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed(parse.ErrorReason, ServiceResponseStatus.Failure));
+                    await message.Channel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed(parse.ErrorReason, ServiceResponseStatus.Failure));
                 }
                 else if (result is TypeReaderResult reader && !reader.IsSuccess)
                 {
-                    await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"Read Error: {reader.ErrorReason}", ServiceResponseStatus.Failure));
+                    await message.Channel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"Read Error: {reader.ErrorReason}", ServiceResponseStatus.Failure));
                 }
                 else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand && channelService.ChannelHasPosition(context.Channel.Id, context.Message.Content.Substring(1)))
                 {
@@ -99,7 +99,7 @@ namespace CoachBot
                 }
                 else if (!result.IsSuccess && result.Error == CommandError.UnknownCommand)
                 {
-                    await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"Unknown command, {context.Message.Author.Mention}", ServiceResponseStatus.Failure));
+                    await message.Channel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"Unknown command, {context.Message.Author.Mention}", ServiceResponseStatus.Failure));
                 }
                 else if (!result.IsSuccess)
                 {
@@ -109,7 +109,7 @@ namespace CoachBot
                         await auditChannel.SendMessageAsync("", embed: new EmbedBuilder().WithTitle($"Error - {message.Channel.Name} [REF:{errorId}]").WithDescription($":exclamation: {result.ErrorReason} ``{context.Message.Author.Username}: {context.Message.Content}``").WithCurrentTimestamp().Build());
                     }
 
-                    await message.Channel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"An error occurred. Please contact an admin, {context.Message.Author.Mention}. [REF:{errorId}]", ServiceResponseStatus.Failure));
+                    await message.Channel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"An error occurred. Please contact an admin, {context.Message.Author.Mention}. [REF:{errorId}]", ServiceResponseStatus.Failure));
                 }
 
             try

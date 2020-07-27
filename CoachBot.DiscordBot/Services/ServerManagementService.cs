@@ -122,7 +122,7 @@ namespace CoachBot.Services
             }
             else
             {
-                return EmbedTools.GenerateEmbed("Server information could not be retrieved. This server may be offline.", ServiceResponseStatus.Failure);
+                return DiscordEmbedHelper.GenerateEmbed("Server information could not be retrieved. This server may be offline.", ServiceResponseStatus.Failure);
             }
         }
 
@@ -140,7 +140,7 @@ namespace CoachBot.Services
             }
             else
             {
-                return EmbedTools.GenerateEmbed($"An error occurred whilst attempting to retrieve the map list from **{server.Name}**", ServiceResponseStatus.Failure);
+                return DiscordEmbedHelper.GenerateEmbed($"An error occurred whilst attempting to retrieve the map list from **{server.Name}**", ServiceResponseStatus.Failure);
             }
         }
 
@@ -151,7 +151,7 @@ namespace CoachBot.Services
 
             if (!maps.Contains(mapName) || mapName.Length < 6)
             {
-                return EmbedTools.GenerateEmbed($"**{server.Name}** does not have the map **{mapName}**. Please choose another.", ServiceResponseStatus.Failure);
+                return DiscordEmbedHelper.GenerateEmbed($"**{server.Name}** does not have the map **{mapName}**. Please choose another.", ServiceResponseStatus.Failure);
             }
 
             if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
@@ -168,12 +168,12 @@ namespace CoachBot.Services
                     }
                     messenger.CloseConnection();
 
-                    return EmbedTools.GenerateEmbed($"Map succesfully changed to **{mapName}** on **{server.Name}**", ServiceResponseStatus.Success);
+                    return DiscordEmbedHelper.GenerateEmbed($"Map succesfully changed to **{mapName}** on **{server.Name}**", ServiceResponseStatus.Success);
                 }
                 catch { }
             }
 
-            return EmbedTools.GenerateEmbed($"An error occurred attempting to change the map on **{server.Name}**", ServiceResponseStatus.Failure);
+            return DiscordEmbedHelper.GenerateEmbed($"An error occurred attempting to change the map on **{server.Name}**", ServiceResponseStatus.Failure);
         }
 
         private async Task<string> GetMapListAsync(Server server)
@@ -236,16 +236,16 @@ namespace CoachBot.Services
                         kitCount++;
                     }
 
-                    return EmbedTools.GenerateSimpleEmbed(sb.ToString(), ":shirt: Kits (" + server.Name + ")");
+                    return DiscordEmbedHelper.GenerateSimpleEmbed(sb.ToString(), ":shirt: Kits (" + server.Name + ")");
                 }
                 catch
                 {
-                    return EmbedTools.GenerateEmbed($"An error occurred trying to retrieve the kit list from **{server.Name}**", ServiceResponseStatus.Failure);
+                    return DiscordEmbedHelper.GenerateEmbed($"An error occurred trying to retrieve the kit list from **{server.Name}**", ServiceResponseStatus.Failure);
                 }
             }
             else
             {
-                return EmbedTools.GenerateEmbed($"**{server.Name}** is not configured for server management", ServiceResponseStatus.Failure);
+                return DiscordEmbedHelper.GenerateEmbed($"**{server.Name}** is not configured for server management", ServiceResponseStatus.Failure);
             }
         }
 
@@ -267,13 +267,13 @@ namespace CoachBot.Services
                     {
                         await messenger.ExecuteCommandAsync($"exec mp_teamkits {homeKitId} {awayKitId}");
                         await messenger.ExecuteCommandAsync($"say [Coach] Kits set from Discord by {user.Username}");
-                        await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(":stadium: The kits have been changed successfully"));
+                        await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The kits have been changed successfully"));
                     }
                     messenger.CloseConnection();
                 }
                 catch
                 {
-                    await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"The kits could not be set on {server.Name}", ServiceResponseStatus.Failure));
+                    await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"The kits could not be set on {server.Name}", ServiceResponseStatus.Failure));
                 }
             }
         }
@@ -288,7 +288,7 @@ namespace CoachBot.Services
 
             if (gameServerQuery == null || gameServerQuery.Game == null)
             {
-                await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"The server seems to be offline. Please choose another server and use the !ready command again.", ServiceResponseStatus.Failure));
+                await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"The server seems to be offline. Please choose another server and use the !ready command again.", ServiceResponseStatus.Failure));
 
                 return false;
             }
@@ -296,7 +296,7 @@ namespace CoachBot.Services
             if (!gameServerQuery.Map.StartsWith(matchFormat) && !string.IsNullOrEmpty(server.RconPassword))
             {
                 await discordChannel.SendMessageAsync("", embed:
-                    EmbedTools.GenerateEmbed(
+                    DiscordEmbedHelper.GenerateEmbed(
                         $"The server appears to be on a map (`{gameServerQuery.Map}`) that does not match the current format ({matchFormat}). Please use the `!map` command to change the map, and then use `!ready` again.",
                         ServiceResponseStatus.Failure
                     )
@@ -307,7 +307,7 @@ namespace CoachBot.Services
 
             if (int.TryParse(gameServerQuery.Map.Substring(0), out int mapFormat) && gameServerQuery.Players > mapFormat)
             {
-                await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"The selected server seems to be in use, as there are more than {channel.ChannelPositions.Count} players on the server.", ServiceResponseStatus.Failure));
+                await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"The selected server seems to be in use, as there are more than {channel.ChannelPositions.Count} players on the server.", ServiceResponseStatus.Failure));
 
                 return false;
             }
@@ -325,7 +325,7 @@ namespace CoachBot.Services
 
             if (DateTime.UtcNow.AddHours(-1) > matchup.ReadiedDate.Value)
             {
-                await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed("This match has already taken place, and so the server cannot be changed.", ServiceResponseStatus.Failure));
+                await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed("This match has already taken place, and so the server cannot be changed.", ServiceResponseStatus.Failure));
                 return;
             }
 
@@ -359,17 +359,17 @@ namespace CoachBot.Services
                         await messenger.ExecuteCommandAsync($"mp_teamnames \"{matchup.LineupHome.Channel.Team.TeamCode}: {matchup.LineupHome.Channel.Team.Name}, {matchup.LineupAway.Channel.Team.TeamCode}: {matchup.LineupAway.Channel.Team.Name}\"");
                         await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchupId, matchup.LineupHome.Channel.Team.TeamCode, matchup.LineupAway.Channel.Team.TeamCode));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
-                        await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
+                        await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
                     }
                     else
                     {
-                        await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed("The server could not be auto-configured. You may need to set the server up manually.", ServiceResponseStatus.Failure));
+                        await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed("The server could not be auto-configured. You may need to set the server up manually.", ServiceResponseStatus.Failure));
                     }
                     messenger.CloseConnection();
                 }
                 catch
                 {
-                    await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed("The server could not be auto-configured. You may need to set the server up manually.", ServiceResponseStatus.Failure));
+                    await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed("The server could not be auto-configured. You may need to set the server up manually.", ServiceResponseStatus.Failure));
                 }
             }
         }
@@ -393,13 +393,13 @@ namespace CoachBot.Services
                     {
                         await messenger.ExecuteCommandAsync($"exec {channel.ChannelPositions.Count}v{channel.ChannelPositions.Count}.cfg");
                         await messenger.ExecuteCommandAsync($"say [Coach] match config execution triggered from Discord by {user.Username}");
-                        await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
+                        await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
                     }
                     messenger.CloseConnection();
                 }
                 catch
                 {
-                    await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"The server config could not be executed.", ServiceResponseStatus.Failure));
+                    await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"The server config could not be executed.", ServiceResponseStatus.Failure));
                 }
             }
         }

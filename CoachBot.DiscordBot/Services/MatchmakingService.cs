@@ -60,7 +60,7 @@ namespace CoachBot.Services
 
             ResetLastMentionTime(channelId);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed AddPlayer(ulong channelId, IUser user, string positionName = null, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)
@@ -69,7 +69,7 @@ namespace CoachBot.Services
             var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
             var response = _matchupService.AddPlayerToLineup(channelId, player, positionName, teamType);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed AddPlayer(ulong channelId, string userName, string positionName = null, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)
@@ -78,7 +78,7 @@ namespace CoachBot.Services
             var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
             var response = _matchupService.AddPlayerToLineup(channelId, player, positionName, teamType);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed RemovePlayer(ulong channelId, IUser user)
@@ -86,7 +86,7 @@ namespace CoachBot.Services
             var player = _playerService.GetPlayer(user);
             var response = _matchupService.RemovePlayerFromMatch(channelId, player);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed RemovePlayer(ulong channelId, string userName)
@@ -94,7 +94,7 @@ namespace CoachBot.Services
             var player = _playerService.GetPlayer(userName);
             var response = _matchupService.RemovePlayerFromMatch(channelId, player);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed ClearPosition(ulong channelId, string position, ChannelTeamType channelTeamType = ChannelTeamType.TeamOne)
@@ -102,7 +102,7 @@ namespace CoachBot.Services
             var teamType = _channelService.GetTeamTypeForChannelTeamType(channelTeamType, channelId);
             var response = _matchupService.ClearPosition(channelId, position, teamType);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public bool ReadyMatch(ulong channelId, int serverListItemId, out int readiedMatchId)
@@ -118,7 +118,7 @@ namespace CoachBot.Services
 
             if (serviceResponse.Status != ServiceResponseStatus.Success)
             {
-                discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbedFromServiceResponse(serviceResponse));
+                discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbedFromServiceResponse(serviceResponse));
 
                 return false;
             }
@@ -149,7 +149,7 @@ namespace CoachBot.Services
             var challenger = _channelService.GetChannelByDiscordId(channelId);
             var response = await _searchService.Search(challenger.Id, challengerMention);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public async Task<Embed> StopSearch(ulong channelId)
@@ -157,7 +157,7 @@ namespace CoachBot.Services
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var response = await _searchService.StopSearch(channel.Id);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed Challenge(ulong challengerChannelId, string teamCode, string challengerMention)
@@ -165,19 +165,19 @@ namespace CoachBot.Services
             var challenger = _channelService.GetChannelByDiscordId(challengerChannelId);
             var opposition = _channelService.GetChannelBySearchTeamCode(teamCode, (MatchFormat)challenger.ChannelPositions.Count);
 
-            if (opposition == null) return EmbedTools.GenerateEmbed($"**{teamCode}** is not a valid team code", ServiceResponseStatus.Failure);
+            if (opposition == null) return DiscordEmbedHelper.GenerateEmbed($"**{teamCode}** is not a valid team code", ServiceResponseStatus.Failure);
 
             var response = _matchupService.Challenge(challengerChannelId, opposition.DiscordChannelId, challengerMention);
 
-            if (response.Status != ServiceResponseStatus.Success) return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            if (response.Status != ServiceResponseStatus.Success) return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
 
             var acceptMessage = $":handshake: {challenger.Team.DisplayName} have accepted the challenge! Contact {challengerMention} to arrange further.";
-            (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(acceptMessage));
+            (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(acceptMessage));
 
             (_discordClient.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId).First());
             (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(opposition.DiscordChannelId).First());
 
-            return EmbedTools.GenerateSimpleEmbed($":handshake: You have successfully challenged {opposition.Team.BadgeEmote}{opposition.Team.Name}. `!ready` will send both teams to the server");
+            return DiscordEmbedHelper.GenerateSimpleEmbed($":handshake: You have successfully challenged {opposition.Team.BadgeEmote}{opposition.Team.Name}. `!ready` will send both teams to the server");
         }
 
         public Embed ListChallenges(ulong challengerChannelId)
@@ -243,12 +243,12 @@ namespace CoachBot.Services
             if (response.Status == ServiceResponseStatus.NegativeSuccess)
             {
                 var unchallengeMessage = $"The game between **{homeChannel.Team.Name}** & **{awayChannel.Team.Name}** has been called off by **{challengerMention}**";
-                var embed = EmbedTools.GenerateSimpleEmbed(unchallengeMessage, ":thunder_cloud_rain: Match Abandoned!");
+                var embed = DiscordEmbedHelper.GenerateSimpleEmbed(unchallengeMessage, ":thunder_cloud_rain: Match Abandoned!");
                 await _discordNotificationService.SendChannelMessage(homeChannel.DiscordChannelId, embed: embed);
                 await _discordNotificationService.SendChannelMessage(awayChannel.DiscordChannelId, embed: embed);
             }
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed AddSub(ulong channelId, IUser user)
@@ -258,7 +258,7 @@ namespace CoachBot.Services
 
             var response = _matchupService.AddSubsitutePlayerToLineup(channelId, player, teamType);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed RemoveSub(ulong channelId, IUser user)
@@ -267,7 +267,7 @@ namespace CoachBot.Services
 
             var response = _matchupService.RemoveSubstitutePlayerFromMatch(channelId, player);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed RemoveSub(ulong channelId, string userName)
@@ -276,7 +276,7 @@ namespace CoachBot.Services
 
             var response = _matchupService.RemoveSubstitutePlayerFromMatch(channelId, player);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public async Task RequestSub(ulong channelId, int serverListItemId, string positionName, IUser user)
@@ -300,7 +300,7 @@ namespace CoachBot.Services
                 _serverManagementServiceService.SendServerMessage(server.Id, message);
             }
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed CancelSubRequest(string requestToken, IUser user)
@@ -309,7 +309,7 @@ namespace CoachBot.Services
 
             var response = _substitutionService.CancelSubstitution(requestToken, player);
 
-            return EmbedTools.GenerateEmbedFromServiceResponse(response);
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
         public Embed GenerateRecentMatchList(ulong channelId)
@@ -358,7 +358,7 @@ namespace CoachBot.Services
 
             if (sendChannelKickOffMessage)
             {
-                var embed = EmbedTools.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible. If you need to use a different server, use `!setupserver {matchup.Id} <server id>`", $":soccer: Kick Off! **{matchup.LineupHome.Channel.Team.DisplayName}** vs **{matchup.LineupAway.Channel.Team.DisplayName}**");
+                var embed = DiscordEmbedHelper.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible. If you need to use a different server, use `!setupserver {matchup.Id} <server id>`", $":soccer: Kick Off! **{matchup.LineupHome.Channel.Team.DisplayName}** vs **{matchup.LineupAway.Channel.Team.DisplayName}**");
                 await discordChannel.SendMessageAsync("", embed: embed);
             }
 

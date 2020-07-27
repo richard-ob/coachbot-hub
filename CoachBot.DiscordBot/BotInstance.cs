@@ -214,7 +214,7 @@ namespace CoachBot.Bot
                         var player = matchup.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                         if (player != null)
                         {
-                            await discordChannel.SendMessageAsync("", embed: EmbedTools.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning));
+                            await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning));
                             _matchmakingService.RemovePlayer(channel.DiscordChannelId, userPre);
                             foreach (var teamEmbed in scope.ServiceProvider.GetService<MatchmakingService>().GenerateTeamList(channel.DiscordChannelId))
                             {
@@ -230,7 +230,7 @@ namespace CoachBot.Bot
                         if (sub != null)
                         {
                             await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, _matchmakingService.RemoveSub(channel.DiscordChannelId, userPre));
-                            await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, embed: EmbedTools.GenerateEmbed($"Removed {sub.DisplayName} from the subs bench as they have gone offline", ServiceResponseStatus.Warning));
+                            await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, embed: DiscordEmbedHelper.GenerateEmbed($"Removed {sub.DisplayName} from the subs bench as they have gone offline", ServiceResponseStatus.Warning));
                         }
                     }
                 }

@@ -76,9 +76,9 @@ namespace CoachBot.Modules.Matchmaker
         [SendLineupMessage]
         public async Task CounterSignAsync(string positionName, [Remainder]string name)
         {
-            if (DiscordTools.IsMention(name))
+            if (DiscordHelper.IsMention(name))
             {
-                var user = await Context.Guild.GetUserAsync(DiscordTools.ConvertMentionToUserID(name));
+                var user = await Context.Guild.GetUserAsync(DiscordHelper.ConvertMentionToUserID(name));
                 var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, positionName);
                 await ReplyAsync("", embed: response);
             }
@@ -115,9 +115,9 @@ namespace CoachBot.Modules.Matchmaker
         [SendLineupMessage]
         public async Task CounterSignTeam2Async(string position, [Remainder]string name)
         {
-            if (DiscordTools.IsMention(name))
+            if (DiscordHelper.IsMention(name))
             {
-                var user = await Context.Guild.GetUserAsync(DiscordTools.ConvertMentionToUserID(name));
+                var user = await Context.Guild.GetUserAsync(DiscordHelper.ConvertMentionToUserID(name));
                 var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, position, ChannelTeamType.TeamTwo);
                 await ReplyAsync("", embed: response);
             }
@@ -144,9 +144,9 @@ namespace CoachBot.Modules.Matchmaker
         [SendLineupMessage]
         public async Task UnsignAsync([Remainder]string name)
         {
-            if (DiscordTools.IsMention(name))
+            if (DiscordHelper.IsMention(name))
             {
-                var user = await Context.Guild.GetUserAsync(DiscordTools.ConvertMentionToUserID(name));
+                var user = await Context.Guild.GetUserAsync(DiscordHelper.ConvertMentionToUserID(name));
                 var response = _channelMatchService.RemovePlayer(Context.Message.Channel.Id, user);
                 await ReplyAsync("", embed: response);
             }
@@ -190,7 +190,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task ReadyAsync()
         {
-            await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
+            await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
         }
 
         [Command("!ready")]
@@ -211,7 +211,7 @@ namespace CoachBot.Modules.Matchmaker
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
+                await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -229,7 +229,7 @@ namespace CoachBot.Modules.Matchmaker
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
+                await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -253,11 +253,11 @@ namespace CoachBot.Modules.Matchmaker
                 var timeRemaining = lastMention.Value.AddMinutes(HERE_INTERVAL).Subtract(DateTime.UtcNow).TotalMinutes;
                 if (timeRemaining >= 1)
                 {
-                    await ReplyAsync("", embed: EmbedTools.GenerateEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in {timeRemaining.ToString("0")} minutes.", ServiceResponseStatus.Failure));
+                    await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in {timeRemaining.ToString("0")} minutes.", ServiceResponseStatus.Failure));
                 }
                 else
                 {
-                    await ReplyAsync("", embed: EmbedTools.GenerateEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in 1 minute.", ServiceResponseStatus.Failure));
+                    await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"The last highlight was less than {HERE_INTERVAL} minutes ago. Please try again in 1 minute.", ServiceResponseStatus.Failure));
                 }
             }
             else
@@ -286,7 +286,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task ChallengeAsync()
         {
-            await ReplyAsync("", embed: EmbedTools.GenerateEmbed("You must provide a valid team code, or type !challenges to see the currently available challenges", ServiceResponseStatus.Failure));
+            await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("You must provide a valid team code, or type !challenges to see the currently available challenges", ServiceResponseStatus.Failure));
         }
 
         [Command("!challenge")]
@@ -338,7 +338,7 @@ namespace CoachBot.Modules.Matchmaker
         [RequireChannelConfigured]
         public async Task RequestSubAsync()
         {
-            await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Please provide a server id & required position, e.g. **!requestsub 3 LW**", ServiceResponseStatus.Failure));
+            await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("Please provide a server id & required position, e.g. **!requestsub 3 LW**", ServiceResponseStatus.Failure));
         }
 
         [Command("!requestsub")]
@@ -351,7 +351,7 @@ namespace CoachBot.Modules.Matchmaker
             }
             else
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateEmbed($"Please provide a valid server. Use `!servers` to see the full server list.", ServiceResponseStatus.Failure));
+                await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"Please provide a valid server. Use `!servers` to see the full server list.", ServiceResponseStatus.Failure));
             }
         }
 
@@ -361,7 +361,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (string.IsNullOrWhiteSpace(subToken))
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Please provide the sub request token, e.g. `!acceptsub dea53af`", ServiceResponseStatus.Failure));
+                await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("Please provide the sub request token, e.g. `!acceptsub dea53af`", ServiceResponseStatus.Failure));
             }
             else
             {
@@ -376,7 +376,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (string.IsNullOrWhiteSpace(subToken))
             {
-                await ReplyAsync("", embed: EmbedTools.GenerateEmbed("Please provide the sub request token, e.g. `!cancelsub dea53af`", ServiceResponseStatus.Failure));
+                await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("Please provide the sub request token, e.g. `!cancelsub dea53af`", ServiceResponseStatus.Failure));
             }
             else
             {

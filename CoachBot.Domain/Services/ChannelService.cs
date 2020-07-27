@@ -21,44 +21,16 @@ namespace CoachBot.Domain.Services
             _discordClient = discordClient;
         }
 
-        public void UpdateChannel(Channel channel)
-        {
-            var existingChannel = _dbContext.Channels.Find(channel.Id);
-
-            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => c.TeamId == channel.TeamId && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count && string.IsNullOrWhiteSpace(c.SubTeamCode)))
-            {
-                throw new Exception("Secondary channels must have a sub team code");
-            }
-
-            if (!string.IsNullOrWhiteSpace(channel.SubTeamCode) 
-                && _dbContext.Channels.Any(c => c.SubTeamCode.ToUpper() == channel.SubTeamCode.ToUpper() && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count))
-            {
-                throw new Exception("Secondary channels must have a unique sub team code");
-            }
-
-            existingChannel.DisableSearchNotifications = channel.DisableSearchNotifications;
-            existingChannel.DiscordChannelId = channel.DiscordChannelId;
-            existingChannel.DiscordChannelName = channel.DiscordChannelName;
-            existingChannel.DuplicityProtection = channel.DuplicityProtection;
-            existingChannel.Formation = channel.Formation;
-            existingChannel.Inactive = channel.Inactive;
-            existingChannel.ChannelType = channel.ChannelType;
-            existingChannel.SearchIgnoreList = channel.SearchIgnoreList;
-            existingChannel.SubTeamCode = channel.SubTeamCode?.ToUpper();
-            existingChannel.SubTeamName = channel.SubTeamName;
-            existingChannel.UseClassicLineup = channel.UseClassicLineup;
-            existingChannel.UpdatedDate = DateTime.UtcNow;
-
-            UpdatePositions(channel.ChannelPositions, channel.Id);
-
-            _dbContext.SaveChanges();
-        }
-
         public void CreateChannel(Channel channel)
         {
             if (_dbContext.Channels.Any(c => c.DiscordChannelId == channel.DiscordChannelId))
             {
                 throw new Exception("A Discord channel can only be attached to one team");
+            }
+
+            if (channel.DiscordChannelId < 1)
+            {
+                throw new Exception("A valid Discord channel ID must be provided");
             }
 
             if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => c.TeamId == channel.TeamId && c.ChannelPositions.Count == channel.ChannelPositions.Count))
@@ -82,6 +54,39 @@ namespace CoachBot.Domain.Services
             _dbContext.SaveChanges();
 
             UpdatePositions(channelPositions, channel.Id);
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateChannel(Channel channel)
+        {
+            var existingChannel = _dbContext.Channels.Find(channel.Id);
+
+            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => c.TeamId == channel.TeamId && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count && string.IsNullOrWhiteSpace(c.SubTeamCode)))
+            {
+                throw new Exception("Secondary channels must have a sub team code");
+            }
+
+            if (!string.IsNullOrWhiteSpace(channel.SubTeamCode)
+                && _dbContext.Channels.Any(c => c.SubTeamCode.ToUpper() == channel.SubTeamCode.ToUpper() && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count))
+            {
+                throw new Exception("Secondary channels must have a unique sub team code");
+            }
+
+            existingChannel.DisableSearchNotifications = channel.DisableSearchNotifications;
+            existingChannel.DiscordChannelId = channel.DiscordChannelId;
+            existingChannel.DiscordChannelName = channel.DiscordChannelName;
+            existingChannel.DuplicityProtection = channel.DuplicityProtection;
+            existingChannel.Formation = channel.Formation;
+            existingChannel.Inactive = channel.Inactive;
+            existingChannel.ChannelType = channel.ChannelType;
+            existingChannel.SearchIgnoreList = channel.SearchIgnoreList;
+            existingChannel.SubTeamCode = channel.SubTeamCode?.ToUpper();
+            existingChannel.SubTeamName = channel.SubTeamName;
+            existingChannel.UseClassicLineup = channel.UseClassicLineup;
+            existingChannel.UpdatedDate = DateTime.UtcNow;
+
+            UpdatePositions(channel.ChannelPositions, channel.Id);
+
             _dbContext.SaveChanges();
         }
 

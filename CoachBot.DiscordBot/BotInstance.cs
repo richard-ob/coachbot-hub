@@ -59,7 +59,7 @@ namespace CoachBot.Bot
 
             if (!_config.BotStealthMode)
             {
-                await _client.SetGameAsync("IOSoccer", "http://iosoccer.com"); // TODO: Uncomment when live
+                await _client.SetGameAsync("IOSoccer", "http://iosoccer.com");
                 _client.ChannelDestroyed += ChannelDestroyed;
                 _client.LeftGuild += GuildDestroyed;
                 _client.GuildMemberUpdated += (userPre, userPost) => { return UserUpdated(userPre, userPost); };

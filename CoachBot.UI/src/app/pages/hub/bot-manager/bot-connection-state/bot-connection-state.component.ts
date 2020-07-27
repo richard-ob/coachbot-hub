@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BotState } from '@pages/hub/shared/model/bot-state.model';
 import { BotService } from '@pages/hub/shared/services/bot.service';
 
@@ -6,12 +6,13 @@ import { BotService } from '@pages/hub/shared/services/bot.service';
     selector: 'app-bot-connection-state',
     templateUrl: './bot-connection-state.component.html'
 })
-export class BotConnectionStateComponent implements OnInit {
+export class BotConnectionStateComponent implements OnInit, OnDestroy {
 
     botState: BotState;
     isReconnecting = false;
     isRefreshing = false;
     isLoading = true;
+    autoRefreshInterval;
 
     constructor(private botService: BotService) { }
 
@@ -30,7 +31,7 @@ export class BotConnectionStateComponent implements OnInit {
     }
 
     startAutomaticRefresh() {
-        setInterval(() => this.refreshBotState(), 60000);
+        this.autoRefreshInterval = setInterval(() => this.refreshBotState(), 60000);
     }
 
     reconnectBot() {
@@ -61,6 +62,10 @@ export class BotConnectionStateComponent implements OnInit {
                 this.isReconnecting = false;
             });
         });
+    }
+
+    ngOnDestroy() {
+        clearInterval(this.autoRefreshInterval);
     }
 
 }

@@ -102,8 +102,6 @@ namespace CoachBot.LegacyImporter
             var teams = new List<Team>();
             var channels = new List<Channel>();
 
-            this.SetupAdministrator();
-
             var activeChannels = config.Channels
                 .Where(c => c.RegionId == 1)
                 .GroupBy(c => c.GuildName)
@@ -132,7 +130,7 @@ namespace CoachBot.LegacyImporter
                 if (guildChannel.GuildName == "IOSoccer")
                 {
                     channelId = 669659754548690974;
-                }                
+                }
 
                 var discordChannel = this.discordSocketClient.GetChannel(channelId) as ITextChannel;
 
@@ -145,7 +143,7 @@ namespace CoachBot.LegacyImporter
                         var assetImage = new AssetImage()
                         {
                             Base64EncodedImage = assetImageContent,
-                            FileName = discordChannel.Name.Replace("#", "").Replace(" ", "-"),
+                            FileName = guildChannel.GuildName.Replace("#", "").Replace(" ", "-"),
                             Url = iconUrl,
                             CreatedById = 1
                         };
@@ -286,21 +284,6 @@ namespace CoachBot.LegacyImporter
             this.AddCaptains();
 
             return teams;
-        }
-
-        private void SetupAdministrator()
-        {
-            var player = new Player()
-            {
-                Name = "Thing'e'",
-                SteamID = 76561197960374238,
-                DiscordUserId = 166153339610857472,
-                HubRole = PlayerHubRole.Owner,
-                Rating = 7.2
-            };
-            this.coachBotContext.Players.Add(player);
-
-            this.coachBotContext.SaveChanges();
         }
 
         private void FixTeamNames()

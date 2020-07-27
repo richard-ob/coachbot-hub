@@ -55,7 +55,7 @@ namespace CoachBot.Domain.Services
             TimeoutSearch(channelId);
 
             var embed = new EmbedBuilder()
-                .WithTitle($":mag: {challenger.Team.BadgeEmote ?? challenger.Team.Name} are searching for a team to face")
+                .WithTitle($":mag: {challenger.Team.BadgeEmote}{challenger.Team.Name} are searching for a team to face")
                 .WithDescription($"To challenge **{challenger.Team.Name}** type **!challenge {challenger.SearchTeamCode}** and contact {startedBy} for more information")
                 .WithCurrentTimestamp()
                 .WithColor(challenger.Team.SystemColor)

@@ -185,7 +185,7 @@ namespace CoachBot.Services
             (_discordClient.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId).First());
             (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(opposition.DiscordChannelId).First());
 
-            return DiscordEmbedHelper.GenerateSimpleEmbed($":handshake: You have successfully challenged {opposition.Team.BadgeEmote}{opposition.Team.Name}. `!ready` will send both teams to the server");
+            return DiscordEmbedHelper.GenerateEmbed($":handshake: You have successfully challenged {opposition.Team.BadgeEmote}{opposition.Team.Name}. `!ready` will send both teams to the server", ServiceResponseStatus.Success);
         }
 
         public Embed ListChallenges(ulong challengerChannelId)
@@ -196,25 +196,25 @@ namespace CoachBot.Services
 
             var embedBuilder = new EmbedBuilder();
 
-            embedBuilder.WithTitle($"Available Challenges");
+            embedBuilder.WithTitle($":mag: Available Challenges");
 
             var teamList = new StringBuilder();
             foreach (var search in searches)
             {
                 var match = _matchupService.GetCurrentMatchupForChannel(search.Channel.DiscordChannelId);
                 if (!string.IsNullOrEmpty(search.Channel.Team.BadgeEmote)) teamList.Append($"{search.Channel.Team.BadgeEmote} ");
-                //teamList.Append($"**{search.Channel.SearchTeamCode}** {search.Channel.Team.Name} ");
+                teamList.Append($"**{search.Channel.SearchTeamCode}** {search.Channel.Team.Name} ");
                 if (!match.LineupHome.HasGk) teamList.Append("(No GK)");
                 teamList.AppendLine("");
-                teamList.AppendLine(GenerateFormEmoteListForChannel(search.Channel.DiscordChannelId));
-                var searchMinutesAgo = search.CreatedDate.Subtract(DateTime.UtcNow).TotalMinutes.ToString("0");
+                //teamList.AppendLine(GenerateFormEmoteListForChannel(search.Channel.DiscordChannelId));
+                var searchMinutesAgo = DateTime.UtcNow.Subtract(search.CreatedDate).TotalMinutes.ToString("0");
                 if (searchMinutesAgo == "0" || searchMinutesAgo == "1")
                 {
                     teamList.AppendLine($"*Search started just now*");
                 }
                 else
                 {
-                    teamList.AppendLine($"*Searching for {DateTime.UtcNow.Subtract(search.CreatedDate).TotalMinutes.ToString("0")} minutes*");
+                    teamList.AppendLine($"*Searching for {searchMinutesAgo} minutes*");
                 }
                 teamList.AppendLine($"");
             }
@@ -232,7 +232,7 @@ namespace CoachBot.Services
                     mixTeamList.AppendLine("");
                     if (matchup.SignedPlayers.Any())
                     {
-                        mixTeamList.AppendLine(string.Join(", ", matchup.SignedPlayers.Select(p => p.Name)));
+                        mixTeamList.AppendLine("*" + string.Join(", ", matchup.SignedPlayers.Select(p => p.Name)) + "*");
                     }
                     else
                     {
@@ -244,7 +244,9 @@ namespace CoachBot.Services
             }
             embedBuilder.AddField("**Mixes**", mixTeamList.ToString().NullIfEmpty() ?? "*There are no mix teams currently available*");
 
-            return embedBuilder.WithDefaultColour().WithRequestedBy().Build();
+            var footer = new EmbedFooterBuilder().WithText("To challenge a team type !challenge teamcode").WithIconUrl("https://www.iosoccer.com/info.png");
+
+            return embedBuilder.WithDefaultColour().WithFooter(footer).Build();
         }
 
         public async Task<Embed> Unchallenge(ulong challengerChannelId, string challengerMention)
@@ -373,7 +375,7 @@ namespace CoachBot.Services
 
             if (sendChannelKickOffMessage)
             {
-                var embed = DiscordEmbedHelper.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible. If you need to use a different server, use `!setupserver {matchup.Id} <server id>`", $":soccer: Kick Off! **{matchup.LineupHome.Channel.Team.DisplayName}** vs **{matchup.LineupAway.Channel.Team.DisplayName}**");
+                var embed = DiscordEmbedHelper.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible. If you need to use a different server, use `!setupserver {matchup.Id} <server id>`", $"**{matchup.LineupHome.Channel.Team.Name} {matchup.LineupHome.Channel.Team.BadgeEmote}** vs **{matchup.LineupAway.Channel.Team.DisplayName} {matchup.LineupAway.Channel.Team.Name}**");
                 await discordChannel.SendMessageAsync("", embed: embed);
             }
 

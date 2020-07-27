@@ -23,14 +23,6 @@
     <None Remove="Services\Matchmaker\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="history.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="history.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
     <PackageReference Include="Discord.Addons.Interactive" Version="1.0.1" />
     <PackageReference Include="Discord.Addons.InteractiveCommands" Version="1.2.4" />
@@ -69,9 +61,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="legacy-config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Settings.job">

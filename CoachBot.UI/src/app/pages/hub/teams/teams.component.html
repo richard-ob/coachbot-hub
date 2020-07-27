@@ -26,7 +26,8 @@
                 </li>-->
             </ul>
         </div>
-        <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet in this region
+        <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet of this type in
+            this region
         </div>
         <div class="sponsors-grid row">
             <div *ngFor="let team of teams | filterBy:['inactive']:false" class="col-sm-6 col-lg-4">

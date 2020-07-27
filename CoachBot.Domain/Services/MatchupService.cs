@@ -479,13 +479,13 @@ namespace CoachBot.Domain.Services
                     var channelId = otherPlayerSigning.Lineup.Channel.DiscordChannelId;
                     _coachBotContext.PlayerLineupPositions.Remove(otherPlayerSigning);
                     _coachBotContext.SaveChanges();
-                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.DisplayName}** vs **{readiedMatchup.LineupAway.Channel.Team.DisplayName}**) and has been removed from the lineup.";
+                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.Name}{readiedMatchup.LineupHome.Channel.Team.BadgeEmote}** vs **{readiedMatchup.LineupAway.Channel.Team.BadgeEmote}{readiedMatchup.LineupAway.Channel.Team.Name}**) and has been removed from the lineup.";
                     await _discordNotificationService.SendChannelMessage(channelId, message);
                     SendTeamListToChannel(channelId);
                 }
                 else
                 {
-                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.DisplayName}** vs **{readiedMatchup.LineupAway.Channel.Team.DisplayName}**)";
+                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.Name}{readiedMatchup.LineupHome.Channel.Team.BadgeEmote}** vs **{readiedMatchup.LineupAway.Channel.Team.BadgeEmote}{readiedMatchup.LineupAway.Channel.Team.Name}**)";
                     await _discordNotificationService.SendChannelMessage(otherPlayerSigning.Lineup.Channel.DiscordChannelId, message);
                 }
             }

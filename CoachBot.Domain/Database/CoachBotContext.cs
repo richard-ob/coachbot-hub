@@ -203,8 +203,8 @@ namespace CoachBot.Database
             modelBuilder.Entity<Channel>().Property(p => p.SearchIgnoreList).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<int>>(v));
             modelBuilder.Entity<Team>().Property(p => p.Form).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<MatchOutcomeType>>(v));
 
-            // Seed data
-            modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
+            // Seed data - disabled after initial run, as the country culture approach is not supported by *nix
+            //modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
         }
     }
 

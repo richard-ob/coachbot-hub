@@ -67,8 +67,6 @@ namespace CoachBot.Domain.Services
             assetImage.Url = GenerateImageUri($"{assetImage.Id}_{AssetImageSizes.ASSET_IMAGE_REPLACEMENT_TOKEN}.png").ToString();
             _coachBotContext.SaveChanges();
 
-            GenerateAllAssetImageUrls();
-
             return assetImage.Id;
         }
 

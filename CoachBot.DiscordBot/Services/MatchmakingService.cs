@@ -165,19 +165,19 @@ namespace CoachBot.Services
             var challenger = _channelService.GetChannelByDiscordId(challengerChannelId);
             var opposition = _channelService.GetChannelBySearchTeamCode(teamCode, (MatchFormat)challenger.ChannelPositions.Count);
 
-            if (opposition == null) return EmbedTools.GenerateEmbed($"{teamCode} is not a valid team code", ServiceResponseStatus.Failure);
+            if (opposition == null) return EmbedTools.GenerateEmbed($"**{teamCode}** is not a valid team code", ServiceResponseStatus.Failure);
 
             var response = _matchupService.Challenge(challengerChannelId, opposition.DiscordChannelId, challengerMention);
 
             if (response.Status != ServiceResponseStatus.Success) return EmbedTools.GenerateEmbedFromServiceResponse(response);
 
-            var acceptMessage = $":handshake: {challenger.Team.Name} have accepted the challenge! Contact {challengerMention} to arrange further.";
+            var acceptMessage = $":handshake: {challenger.Team.DisplayName} have accepted the challenge! Contact {challengerMention} to arrange further.";
             (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: EmbedTools.GenerateSimpleEmbed(acceptMessage));
 
             (_discordClient.GetChannel(challengerChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(challengerChannelId).First());
             (_discordClient.GetChannel(opposition.DiscordChannelId) as SocketTextChannel).SendMessageAsync("", embed: GenerateTeamList(opposition.DiscordChannelId).First());
 
-            return EmbedTools.GenerateSimpleEmbed($":handshake: You have successfully challenged {opposition.Team.Name}. `!ready` will send both teams to the server");
+            return EmbedTools.GenerateSimpleEmbed($":handshake: You have successfully challenged {opposition.Team.BadgeEmote}{opposition.Team.Name}. `!ready` will send both teams to the server");
         }
 
         public Embed ListChallenges(ulong challengerChannelId)

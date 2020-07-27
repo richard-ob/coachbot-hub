@@ -1,6 +1,7 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
 using CoachBot.Model;
+using CoachBot.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -49,9 +50,17 @@ namespace CoachBot.Controllers
 
         [HubRolePermission(HubRole = PlayerHubRole.Manager)]
         [HttpPost]
-        public void Create(Server server)
+        public void Create(CreateServerDto serverDto)
         {
-            server.Name = server.Name.Trim();
+            var server = new Server()
+            {
+                Address = serverDto.Address.Trim(),
+                CountryId = serverDto.CountryId,
+                Name = serverDto.Name.Trim(),
+                RegionId = serverDto.RegionId,
+                RconPassword = serverDto.RconPassword.Trim()
+            };
+
             _serverService.AddServer(server);
         }
     }

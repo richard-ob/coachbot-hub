@@ -123,6 +123,14 @@ namespace CoachBot.Modules
         }
 
         [Command("!changemap")]
+        [Alias("!map", "!changelevel")]
+        public async Task ChangeMapsAsync(string mapName)
+        {
+            await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("Invalid server ID or map name provided. The correct syntax is `!changemap <server id> <map name>`. Use `!servers` to see the full server list or `!maps <server id>` for the full map list.", ServiceResponseStatus.Failure));
+        }
+
+        [Command("!changemap")]
+        [Alias("!map", "!changelevel")]
         public async Task ChangeMapsAsync(int serverListItemId = 0, string mapName = "")
         {
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId) && !string.IsNullOrWhiteSpace(mapName))
@@ -137,6 +145,7 @@ namespace CoachBot.Modules
         }
 
         [Command("!execconfig")]
+        [Alias("!execcfg", "!config", "!cfg")]
         public async Task ExecConfigAsync(int serverListItemId = 0)
         {
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
@@ -150,6 +159,7 @@ namespace CoachBot.Modules
         }
 
         [Command("!changekits")]
+        [Alias("!changekit", "!kit")]
         public async Task ChangeKitsAsync(int serverListItemId = 0, int homeKitId = 0, int awayKitId = 0)
         {
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId) && homeKitId > 0 && awayKitId > 0)

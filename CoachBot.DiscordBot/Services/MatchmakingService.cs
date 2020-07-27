@@ -195,7 +195,7 @@ namespace CoachBot.Services
             {
                 var match = _matchupService.GetCurrentMatchupForChannel(search.Channel.DiscordChannelId);
                 if (!string.IsNullOrEmpty(search.Channel.Team.BadgeEmote)) teamList.Append($"{search.Channel.Team.BadgeEmote} ");
-                teamList.Append($"**{search.Channel.SearchTeamCode}** {search.Channel.Team.Name} ");
+                //teamList.Append($"**{search.Channel.SearchTeamCode}** {search.Channel.Team.Name} ");
                 if (!match.LineupHome.HasGk) teamList.Append("(No GK)");
                 teamList.AppendLine("");
                 teamList.AppendLine(GenerateFormEmoteListForChannel(search.Channel.DiscordChannelId));
@@ -222,8 +222,15 @@ namespace CoachBot.Services
                     mixTeamList.Append($"**{mix.SearchTeamCode}** {mix.Team.Name} ");
                     if (!matchup.LineupHome.HasGk) mixTeamList.Append(" (No GK)");
                     mixTeamList.AppendLine("");
-                    mixTeamList.AppendLine(GenerateFormEmoteListForChannel(matchup.LineupHome.Channel.DiscordChannelId));
-                    mixTeamList.AppendLine($"*{matchup.SignedPlayersAndSubs.Count} players currently signed*");
+                    if (matchup.SignedPlayers.Any())
+                    {
+                        mixTeamList.AppendLine(string.Join(", ", matchup.SignedPlayers.Select(p => p.Name)));
+                    }
+                    else
+                    {
+                        mixTeamList.AppendLine($"*No players currently signed*");
+                    }
+                    //mixTeamList.AppendLine(GenerateFormEmoteListForChannel(matchup.LineupHome.Channel.DiscordChannelId));
                     mixTeamList.AppendLine($"");
                 }
             }

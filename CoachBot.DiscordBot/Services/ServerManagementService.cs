@@ -134,7 +134,7 @@ namespace CoachBot.Services
             if (!string.IsNullOrWhiteSpace(maps))
             {
                 var embedBuilder = new EmbedBuilder();
-                embedBuilder.AddField("Maps", maps);
+                embedBuilder.AddField(":map: Maps", maps);
 
                 return embedBuilder.WithRequestedBy().WithDefaultColour().Build();
             }
@@ -154,6 +154,11 @@ namespace CoachBot.Services
                 return DiscordEmbedHelper.GenerateEmbed($"**{server.Name}** does not have the map **{mapName}**. Please choose another.", ServiceResponseStatus.Failure);
             }
 
+            if (IsServerInUse(server.Id))
+            {
+                 return DiscordEmbedHelper.GenerateEmbed($"Cannot execute command as the selected server seems to be in use.", ServiceResponseStatus.Failure);
+            }
+
             if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
             {
                 try
@@ -168,7 +173,7 @@ namespace CoachBot.Services
                     }
                     messenger.CloseConnection();
 
-                    return DiscordEmbedHelper.GenerateEmbed($"Map succesfully changed to **{mapName}** on **{server.Name}**", ServiceResponseStatus.Success);
+                    return DiscordEmbedHelper.GenerateEmbed($"Map successfully changed to **{mapName}** on **{server.Name}**", ServiceResponseStatus.Success);
                 }
                 catch { }
             }
@@ -265,9 +270,9 @@ namespace CoachBot.Services
                     bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
                     if (authenticated)
                     {
-                        await messenger.ExecuteCommandAsync($"exec mp_teamkits {homeKitId} {awayKitId}");
+                        await messenger.ExecuteCommandAsync($"mp_teamkits {homeKitId} {awayKitId}");
                         await messenger.ExecuteCommandAsync($"say [Coach] Kits set from Discord by {user.Username}");
-                        await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The kits have been changed successfully"));
+                        await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"The kits have been changed successfully on **{server.Name}**", ServiceResponseStatus.Success));
                     }
                     messenger.CloseConnection();
                 }
@@ -313,6 +318,20 @@ namespace CoachBot.Services
             }
 
             return true;
+        }
+
+        public bool IsServerInUse(int serverId)
+        {
+            var server = _serverService.GetServer(serverId);
+
+            var gameServerQuery = new GameServerQuery(server.Address);
+
+            if (int.TryParse(gameServerQuery.Map.Substring(0), out int mapFormat) && gameServerQuery.Players > mapFormat)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public async void PrepareServer(int serverListItemId, ulong channelId, int matchupId)
@@ -381,6 +400,12 @@ namespace CoachBot.Services
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
             var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
 
+            if (IsServerInUse(server.Id))
+            {
+                await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"Cannot execute command as the selected server seems to be in use.", ServiceResponseStatus.Failure));
+                return;
+            }
+
             if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
             {
                 try
@@ -393,7 +418,7 @@ namespace CoachBot.Services
                     {
                         await messenger.ExecuteCommandAsync($"exec {channel.ChannelPositions.Count}v{channel.ChannelPositions.Count}.cfg");
                         await messenger.ExecuteCommandAsync($"say [Coach] match config execution triggered from Discord by {user.Username}");
-                        await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
+                        await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed($":stadium: The match has successfully been automatically set up on **{server.Name}**"));
                     }
                     messenger.CloseConnection();
                 }

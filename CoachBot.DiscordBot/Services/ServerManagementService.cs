@@ -42,7 +42,7 @@ namespace CoachBot.Services
         public bool ValidateServer(ulong channelId, int serverListItemId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
+            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId).Where(s => s.DeactivatedDate == null).ToList();
 
             return servers.Count >= serverListItemId && serverListItemId > 0;
         }
@@ -457,7 +457,7 @@ namespace CoachBot.Services
         public Server GetServerFromServerListItemId(int serverListItemId, ulong channelId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId, false);
-            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
+            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId).Where(s => s.DeactivatedDate == null).ToList();
 
             return servers[serverListItemId - 1];
         }
@@ -467,7 +467,7 @@ namespace CoachBot.Services
             var token = $"{server.Address}_{matchId}_{homeTeamCode}_{awayTeamCode}";
             var encodedToken = Encoding.UTF8.GetBytes(token);
 
-            return System.Convert.ToBase64String(encodedToken);
+            return Convert.ToBase64String(encodedToken);
         }
     }
 }

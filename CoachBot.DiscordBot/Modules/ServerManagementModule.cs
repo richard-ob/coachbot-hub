@@ -1,7 +1,6 @@
 ﻿using CoachBot.Bot.Preconditions;
 using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
-using CoachBot.Extensions;
 using CoachBot.Preconditions;
 using CoachBot.Services;
 using CoachBot.Shared.Extensions;
@@ -47,7 +46,7 @@ namespace CoachBot.Modules
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
-                var server = _serverService.GetServersByRegion((int)channel.Team.RegionId)[serverListItemId - 1];
+                var server = _discordServerService.GetServerFromServerListItemId(serverListItemId, Context.Message.Channel.Id);
                 await _discordServerService.ToggleSingleKeeper(server.Id, true);
             }
             else
@@ -62,7 +61,7 @@ namespace CoachBot.Modules
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
-                var server = _serverService.GetServersByRegion((int)channel.Team.RegionId)[serverListItemId - 1];
+                var server = _discordServerService.GetServerFromServerListItemId(serverListItemId, Context.Message.Channel.Id);
                 await _discordServerService.ToggleSingleKeeper(server.Id, false);
             }
             else
@@ -84,7 +83,7 @@ namespace CoachBot.Modules
             if (_discordServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var channel = _channelService.GetChannelByDiscordId(Context.Message.Channel.Id);
-                var server = _serverService.GetServersByRegion((int)channel.Team.RegionId)[serverListItemId - 1];
+                var server = _discordServerService.GetServerFromServerListItemId(serverListItemId, Context.Message.Channel.Id);
                 await ReplyAsync("", embed: _discordServerService.GetServerInfo(server.Id));
             }
             else

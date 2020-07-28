@@ -39,6 +39,17 @@ namespace CoachBot.Controllers
             var awayTeamCode = token.Split("_")[3];
             var match = _matchService.GetMatch(matchId);
             var sourceAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString().Replace("::ffff:", "");
+            var map = matchStatisticsDto.MatchData.MatchInfo.MapName;
+
+            if (matchStatisticsDto.MatchData.Players.Count < 6)
+            {
+                return BadRequest();
+            }
+
+            if (!string.IsNullOrWhiteSpace(map) && int.TryParse(map[0].ToString(), out int matchFormat) && matchFormat > matchStatisticsDto.MatchData.Players.Count)
+            {
+                return BadRequest();
+            }
 
             if (match == null)
             {

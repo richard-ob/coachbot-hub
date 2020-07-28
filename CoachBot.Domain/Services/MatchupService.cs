@@ -369,6 +369,15 @@ namespace CoachBot.Domain.Services
             return teamSheets;
         }
 
+        public bool IsPlayerSigned(ulong discordUserId)
+        {
+            if (!_coachBotContext.PlayerLineupPositions.Any(p => p.Player.DiscordUserId == discordUserId)) return false;
+
+            if (_coachBotContext.PlayerLineupPositions.Any(p => p.Player.DiscordUserId == discordUserId && p.Lineup.Matchup.ReadiedDate == null)) return true;
+
+            return false;
+        }
+
 
         #region Private methods
         private Matchup GetCurrentMatchForChannel(ulong channelId)

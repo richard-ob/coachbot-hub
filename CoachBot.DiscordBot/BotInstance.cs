@@ -171,16 +171,7 @@ namespace CoachBot.Bot
             var playerSigned = false;
             using (var scope = _serviceProvider.CreateScope())
             {
-                foreach (var channel in _channelService.GetChannels())
-                {
-                    var match = scope.ServiceProvider.GetService<MatchupService>().GetCurrentMatchupForChannel(channel.DiscordChannelId);
-                    var player = match.SignedPlayersAndSubs.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
-                    if (player != null)
-                    {
-                        playerSigned = true;
-                        break;
-                    }
-                }
+                playerSigned = scope.ServiceProvider.GetService<MatchupService>().IsPlayerSigned(userPost.Id);
             }
 
             if (!playerSigned) return Task.CompletedTask;

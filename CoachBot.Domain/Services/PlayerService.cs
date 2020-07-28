@@ -108,7 +108,7 @@ namespace CoachBot.Domain.Services
         public List<Player> SearchPlayersByName(string playerName)
         {
             return _coachBotContext.Players
-                .Where(p => p.Name.Contains(playerName))
+                .Where(p => p.Name.Contains(playerName) && p.SteamID != null)
                 .Take(10)
                 .ToList();
         }

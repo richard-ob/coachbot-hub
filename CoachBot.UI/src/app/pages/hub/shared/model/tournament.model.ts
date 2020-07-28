@@ -3,6 +3,7 @@ import { TournamentStage } from './tournament-stage.model';
 import { TournamentSeries } from './tournament-series.model';
 import { TournamentStaff } from './tournament-staff.model';
 import { TeamType } from './team-type.enum';
+import { Team } from './team.model';
 
 export class Tournament {
     id: number;
@@ -18,4 +19,5 @@ export class Tournament {
     fantasyPointsLimit: number;
     tournamentStages?: TournamentStage[];
     tournamentStaff: TournamentStaff[];
+    winningTeam: Team;
 }

@@ -379,7 +379,7 @@ namespace CoachBot.Domain.Services
         {
             if (!_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId)) return false;
 
-            if (_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup.Matchup.ReadiedDate == null)) return true;
+            if (_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup != null && p.Lineup.Matchup != null && p.Lineup.Matchup.ReadiedDate == null)) return true;
 
             return false;
         }

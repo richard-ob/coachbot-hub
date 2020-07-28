@@ -38,7 +38,13 @@ namespace CoachBot.Controllers
             var homeTeamCode = token.Split("_")[2];
             var awayTeamCode = token.Split("_")[3];
             var match = _matchService.GetMatch(matchId);
-            var sourceAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            var sourceAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString().Replace("::ffff:", "");
+
+            if (match == null)
+            {
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
+                return BadRequest();
+            }
 
             if (match.Server.Address != serverAddress)
             {

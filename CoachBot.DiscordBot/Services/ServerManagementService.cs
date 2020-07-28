@@ -52,7 +52,7 @@ namespace CoachBot.Services
             var serverId = 1;
             var embedBuilder = new EmbedBuilder().WithTitle(":desktop: Servers");
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
+            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId).Where(s => s.DeactivatedDate == null);
 
             foreach (var server in servers)
             {
@@ -376,7 +376,7 @@ namespace CoachBot.Services
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + _config.HubApiUrl + "/api/match-statistics" + "\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_enabled 1");
                         await messenger.ExecuteCommandAsync($"mp_teamnames \"{matchup.LineupHome.Channel.Team.TeamCode}: {matchup.LineupHome.Channel.Team.Name}, {matchup.LineupAway.Channel.Team.TeamCode}: {matchup.LineupAway.Channel.Team.Name}\"");
-                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchupId, matchup.LineupHome.Channel.Team.TeamCode, matchup.LineupAway.Channel.Team.TeamCode));
+                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchup.MatchId.Value, matchup.LineupHome.Channel.Team.TeamCode, matchup.LineupAway.Channel.Team.TeamCode));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
                         await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
                     }

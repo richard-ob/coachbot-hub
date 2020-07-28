@@ -36,7 +36,7 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.Tournament)
                 .Include(s => s.Server)
                     .ThenInclude(s => s.Country)
-                .Single(m => m.Id == matchId);
+                .FirstOrDefault(m => m.Id == matchId);
         }
 
         public PagedResult<Match> GetMatches(int page, int pageSize, string sortOrder, MatchFilters filters)

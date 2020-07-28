@@ -59,7 +59,7 @@ namespace CoachBot.Services
             var currentMatchup = _matchupService.GetCurrentMatchupForChannel(channelId);
 
             if ((currentMatchup.LineupHome != null && currentMatchup.LineupHome.ChannelId.HasValue && currentMatchup.LineupHome.ChannelId != channel.Id)
-                || (currentMatchup.LineupAway != null & currentMatchup.LineupAway.ChannelId.HasValue && currentMatchup.LineupAway.ChannelId != channel.Id))
+                || (currentMatchup.LineupAway != null && currentMatchup.LineupAway.ChannelId.HasValue && currentMatchup.LineupAway.ChannelId != channel.Id))
             {
                 return DiscordEmbedHelper.GenerateEmbed("Cannot reset the lineup as a challenge is in progress. Use `!unchallenge` to abandon.", ServiceResponseStatus.Failure);
             }
@@ -113,7 +113,7 @@ namespace CoachBot.Services
             return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
-        public bool ReadyMatch(ulong channelId, int serverListItemId, out int readiedMatchId)
+        public bool ReadyMatch(ulong channelId, int serverListItemId, out int readiedMatchupId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
@@ -122,7 +122,7 @@ namespace CoachBot.Services
             var discordChannel = _discordClient.GetChannel(channelId) as ITextChannel;
 
             var serviceResponse = _matchupService.ReadyMatch(channelId, server.Id, out int matchId);
-            readiedMatchId = matchup.Id;
+            readiedMatchupId = matchup.Id;
 
             if (serviceResponse.Status != ServiceResponseStatus.Success)
             {

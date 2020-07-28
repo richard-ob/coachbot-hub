@@ -121,6 +121,29 @@ namespace CoachBot.Domain.Services
                 throw new Exception("Administrators cannot verify their accounts in this manner");
             }
 
+            // INFO: We need to merge any existing player record which was created by the bot for lineups
+            if (_coachBotContext.Players.Any(p => p.DiscordUserId == p.DiscordUserId))
+            {
+                var existingDiscordPlayer = _coachBotContext.Players.Single(p => p.DiscordUserId == discordUserId);
+
+                var existingPlayerLineupPositions = _coachBotContext.PlayerLineupPositions.Where(p => p.PlayerId == existingDiscordPlayer.Id);
+                foreach(var existingPlayerLineupPosition in existingPlayerLineupPositions)
+                {
+                    existingPlayerLineupPosition.PlayerId = player.Id;
+                }
+                _coachBotContext.SaveChanges();
+
+                var existingPlayerLineupSubs = _coachBotContext.PlayerLineupSubstitutes.Where(p => p.PlayerId == existingDiscordPlayer.Id);
+                foreach (var existingPlayerLineupSub in existingPlayerLineupSubs)
+                {
+                    existingPlayerLineupSub.PlayerId = player.Id;
+                }
+                _coachBotContext.SaveChanges();
+
+                existingDiscordPlayer.DiscordUserId = null;
+                _coachBotContext.SaveChanges();
+            }
+
             player.DiscordUserId = discordUserId;
             _coachBotContext.SaveChanges();
         }

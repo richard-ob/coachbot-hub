@@ -173,6 +173,7 @@ namespace CoachBot.Services
             var challenger = _channelService.GetChannelByDiscordId(challengerChannelId);
             var opposition = _channelService.GetChannelBySearchTeamCode(teamCode, (MatchFormat)challenger.ChannelPositions.Count);
 
+            if (challenger.IsMixChannel) return DiscordEmbedHelper.GenerateEmbed($"Mix channels cannot challenge teams", ServiceResponseStatus.Failure);
             if (opposition == null) return DiscordEmbedHelper.GenerateEmbed($"**{teamCode}** is not a valid team code", ServiceResponseStatus.Failure);
 
             var response = _matchupService.Challenge(challengerChannelId, opposition.DiscordChannelId, challengerMention);

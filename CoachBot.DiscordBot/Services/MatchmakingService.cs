@@ -100,6 +100,13 @@ namespace CoachBot.Services
         public Embed RemovePlayer(ulong channelId, string userName)
         {
             var player = _playerService.GetPlayer(userName);
+
+            if (player == null)
+            {
+
+                return DiscordEmbedHelper.GenerateEmbed($"**{userName}** is not signed", ServiceResponseStatus.Failure);
+            }
+
             var response = _matchupService.RemovePlayerFromMatch(channelId, player);
 
             return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);

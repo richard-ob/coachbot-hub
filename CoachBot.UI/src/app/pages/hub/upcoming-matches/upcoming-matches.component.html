@@ -1,15 +1,15 @@
 <div class="container py-4">
     <app-spinner *ngIf="!matches"></app-spinner>
-    <div *ngIf="matches && !matches.length" class="alert alert-info">
-        There are currently no upcoming matches scheduled
-    </div>
-    <div *ngIf="matches && matches.length" class="card card--has-table">
+    <div *ngIf="matches" class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>Fixtures</h4>
+            <h4>Upcoming Fixtures</h4>
         </div>
         <div class="card__content table-responsive">
             <app-spinner *ngIf="!matches"></app-spinner>
-            <table *ngIf="matches" class="table table-striped">
+            <div *ngIf="matches && !matches.length" class="m-4 alert alert-info">
+                There are currently no upcoming matches scheduled
+            </div>
+            <table *ngIf="matches && matches.length" class="table table-striped">
                 <thead>
                     <tr>
                         <th class="team-result__date">Date</th>

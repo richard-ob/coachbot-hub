@@ -34,7 +34,8 @@
                             [sortByColumnName]="'Pos'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center" title="Position">
                         </th>
-                        <th>Player</th>
+                        <th sorter [sortByColumn]="'Player.Name'" [sortByColumnName]="'Player'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
                         <th class="text-center"></th>
                         <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>

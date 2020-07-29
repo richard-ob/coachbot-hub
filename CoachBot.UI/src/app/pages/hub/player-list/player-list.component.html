@@ -60,13 +60,21 @@
                 </ul>
             </div>
             <ul *ngIf="!hideFilters" class="team-result-filter d-none d-xl-inline float-right">
-                <li class="team-result-filter__item">
+                <!--<li class="team-result-filter__item">
                     <label class="checkbox checkbox-inline mr-2">
                         <input [(ngModel)]="filters.includeSubstituteAppearances" type="checkbox"
-                            name="includeSubstituteAppearances"> Include Sub Appearances
+                            name="includeSubstituteAppearances"> Sub Appearances
+                        <span class="checkbox-indicator"></span>
+                    </label>
+                </li>-->
+                <li class="team-result-filter__item">
+                    <label class="checkbox checkbox-inline mr-2">
+                        <input [(ngModel)]="includePartialAppearances" type="checkbox" name="includePartialAppearances"
+                            (ngModelChange)="setIncludePartialAppearances()"> Include Partial Appearances
                         <span class="checkbox-indicator"></span>
                     </label>
                 </li>
+
                 <li class="team-result-filter__item">
                     <select [(ngModel)]="filters.teamId" name="position" class="form-control" style="text-align-last: center;
                     text-align: center; max-width: 95px;" #teamSelect>
@@ -237,7 +245,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let odd = odd"
+                    <tr *ngFor="let statistics of playerStatistics | paginate: { itemsPerPage: PAGE_SIZE, currentPage: currentPage, totalItems: totalItems }; let odd = odd"
                         (click)="navigateToProfile(statistics.playerId)">
                         <td class="py-0 px-2" style="vertical-align: middle;">
                             <a *ngIf="statistics.steamUserProfile; else avatarSkeleton"

@@ -27,6 +27,7 @@ export class PlayerListComponent implements OnInit {
     playerSpotlightStatistic = PlayerSpotlightStatistic;
     playerStatType = PlayerStatType;
     currentPlayerStat = PlayerStatType.General;
+    includePartialAppearances = false;
     currentPage = 1;
     totalPages: number;
     totalItems: number;
@@ -36,6 +37,7 @@ export class PlayerListComponent implements OnInit {
     isLoading = true;
     isLoadingPage = false;
     filtersApplied = false;
+    readonly PAGE_SIZE = 10;
 
     constructor(
         private playerService: PlayerService,
@@ -49,6 +51,8 @@ export class PlayerListComponent implements OnInit {
         const regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.tournamentId = this.tournamentId;
         this.filters.regionId = regionId;
+        this.filters.includeSubstituteAppearances = false;
+        this.setIncludePartialAppearances();
         this.teamService.getTeams(regionId).subscribe(teams => {
             this.teams = teams;
             this.loadPage(1);
@@ -59,7 +63,7 @@ export class PlayerListComponent implements OnInit {
         this.isLoadingPage = true;
         this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
         this.sortBy = sortBy;
-        this.playerService.getPlayerStatistics(page, undefined, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
+        this.playerService.getPlayerStatistics(page, this.PAGE_SIZE, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
             this.playerStatistics = response.items;
             this.currentPage = response.page;
             this.totalPages = response.totalPages;
@@ -71,8 +75,17 @@ export class PlayerListComponent implements OnInit {
     }
 
     setFilters() {
+        this.sortOrder = this.sortOrder === 'DESC' ? 'ASC' : 'DESC';
         this.loadPage(1, this.sortBy);
         this.filtersApplied = true;
+    }
+
+    setIncludePartialAppearances() {
+        if (this.includePartialAppearances) {
+            this.filters.minimumSecondsPlayed = null;
+        } else {
+            this.filters.minimumSecondsPlayed = 60 * 90;
+        }
     }
 
     getSteamProfileLink(steamId: string) {

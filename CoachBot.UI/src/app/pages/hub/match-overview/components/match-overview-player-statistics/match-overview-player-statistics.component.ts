@@ -17,7 +17,7 @@ export class MatchOverviewPlayerStatisticsComponent implements OnInit {
     players: PlayerMatchStatistics[] | PlayerPositionMatchStatistics[];
     currentPage = 1;
     sortBy: string = null;
-    sortOrder = 'ASC';
+    sortOrder = 'DESC';
     showMoreStats = false;
     showAggregateStats = true;
     isLoading = true;
@@ -27,7 +27,8 @@ export class MatchOverviewPlayerStatisticsComponent implements OnInit {
 
     ngOnInit() {
         this.filters.matchId = this.matchId;
-        this.loadResults();
+        this.sortBy = 'Player.Name';
+        this.loadResults(this.sortBy);
     }
 
     loadResults(sortBy: string = null) {

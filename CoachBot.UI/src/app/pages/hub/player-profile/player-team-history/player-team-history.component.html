@@ -26,7 +26,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals"
-                        (click)="navigateToTeamProfile(playerTeamStatisticsTotal.playerTeam.team.id)">
+                        (click)="navigateToTeamProfile(playerTeamStatisticsTotal.playerTeam.team.id)" class="clickable">
                         <td class="pr-0">
                             <img *ngIf="playerTeamStatisticsTotal.playerTeam.team.badgeImage && playerTeamStatisticsTotal.playerTeam.team.badgeImage.extraSmallUrl"
                                 [src]="playerTeamStatisticsTotal.playerTeam.team.badgeImage.extraSmallUrl"

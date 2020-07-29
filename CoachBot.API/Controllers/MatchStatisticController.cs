@@ -57,12 +57,6 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            if (match.Server.Address != serverAddress)
-            {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
-                return BadRequest();
-            }
-
             if (match.MatchStatistics != null)
             {
                 // INFO: This could be either be a rematch or where the server has persisted the token after map change etc.
@@ -76,10 +70,10 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            if (serverAddress.Split(":")[0] != sourceAddress)
+            if (serverAddress == null || !match.Server.Address.StartsWith(sourceAddress))
             {
                 _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
-                return Unauthorized();
+                return BadRequest();
             }
 
             _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress, matchId);

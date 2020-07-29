@@ -84,7 +84,7 @@ namespace CoachBot.Domain.Services
                 ServerId = server?.Id,
                 MatchStatisticsId = matchStatisticsId,
                 KickOff = matchStatistics.KickOff,
-                Format = (MatchFormat)int.Parse(matchStatistics.MatchData.MatchInfo.MapName.Split('v').First()),
+                Format = GetMatchFormatFromMapName(matchStatistics.MatchData.MatchInfo.MapName),
                 MatchType = MatchType.RankedFriendly,
                 TeamHomeId = _coachBotContext.Teams.First(t => t.TeamCode == homeTeamCode && t.RegionId == server.RegionId).Id,
                 TeamAwayId = _coachBotContext.Teams.First(t => t.TeamCode == awayTeamCode && t.RegionId == server.RegionId).Id
@@ -94,6 +94,16 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
 
             GenerateStatsForMatch(match.Id);
+        }
+
+        private MatchFormat GetMatchFormatFromMapName(string mapName)
+        {
+            if (string.IsNullOrWhiteSpace(mapName) || !mapName.Contains('v'))
+            {
+                return MatchFormat.EightVsEight;
+            }
+
+            return (MatchFormat)int.Parse(mapName.Split('v').First());
         }
 
         public void GenerateStatsForMatch(int matchId)

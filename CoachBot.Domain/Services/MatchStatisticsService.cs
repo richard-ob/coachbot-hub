@@ -64,7 +64,9 @@ namespace CoachBot.Domain.Services
 
         public List<MatchStatistics> GetUnlinkedMatchData()
         {
-            return _coachBotContext.MatchStatistics.Where(ms => !_coachBotContext.Matches.Any(m => m.MatchStatisticsId == ms.Id)).ToList();
+            var unlinkedMatchStatistics = _coachBotContext.MatchStatistics.Where(ms => !_coachBotContext.Matches.Any(m => m.MatchStatisticsId == ms.Id)).ToList();
+
+            return unlinkedMatchStatistics.Where(ms => ms.MatchData.Players.Count > 5).ToList();
         }
 
         public void CreateMatchFromMatchData(int matchStatisticsId)

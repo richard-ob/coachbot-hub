@@ -35,6 +35,18 @@ namespace CoachBot.Domain.Services
             return await SendChannelMessage(discordChannelId, new EmbedBuilder().WithDescription(message).Build());
         }
 
+        public async Task<ulong> SendChannelTextMessage(ulong discordChannelId, string message)
+        {
+            if (_discordSocketClient.GetChannel(discordChannelId) is ITextChannel channel)
+            {
+                var result = await channel.SendMessageAsync(message);
+
+                return result.Id;
+            }
+
+            return 0;
+        }
+
         public async Task<Dictionary<ulong, ulong>> SendChannelMessage(List<ulong> discordChannelIds, Embed embed)
         {
             var messageIds = new Dictionary<ulong, ulong>();

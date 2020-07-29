@@ -162,11 +162,11 @@ namespace CoachBot.Bot
 
         private Task UserUpdated(SocketGuildUser userPre, SocketGuildUser userPost)
         {
+            if (userPost.Status.Equals(UserStatus.Online)) return Task.CompletedTask;
+
             var lastUserStatusCheck = (DateTime?)_cacheService.Get(CacheService.CacheItemType.LastUserStatusChangeCheck, userPost.Id.ToString());
             if (lastUserStatusCheck != null && lastUserStatusCheck.Value > DateTime.UtcNow.AddMinutes(-1)) return Task.CompletedTask;
             _cacheService.Set(CacheService.CacheItemType.LastUserStatusChangeCheck, userPost.Id.ToString(), DateTime.UtcNow);
-
-            if (userPost.Status.Equals(UserStatus.Online)) return Task.CompletedTask;
 
             var playerSigned = false;
             using (var scope = _serviceProvider.CreateScope())
@@ -191,7 +191,7 @@ namespace CoachBot.Bot
 
         private async Task UserOffline(SocketGuildUser userPre, SocketGuildUser userPost)
         {
-            Task.Delay(TimeSpan.FromMinutes(10)).Wait();
+            Task.Delay(TimeSpan.FromMinutes(1)).Wait();
             var currentState = _client.GetUser(userPre.Id);
             if (!currentState.Status.Equals(UserStatus.Offline)) return; // User is no longer offline
 
@@ -213,7 +213,7 @@ namespace CoachBot.Bot
                             }
                             if (player.DiscordUserId != null)
                             {
-                                await _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, $"You've been unsigned from the line-up in **{discordChannel.Name} ({discordChannel.Guild.Name})** as you've gone offline. Sorry champ.");
+                                await _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, $"You've been unsigned from the line-up in **#{discordChannel.Name} ({discordChannel.Guild.Name})** as you've gone offline. Sorry champ.");
                             }
                         }
 
@@ -231,7 +231,7 @@ namespace CoachBot.Bot
 
         private async Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)
         {
-            Task.Delay(TimeSpan.FromMinutes(15)).Wait(); // When user goes away, wait 15 minutes before notifying others
+            Task.Delay(TimeSpan.FromMinutes(1)).Wait(); // When user goes away, wait 15 minutes before notifying others
             var currentState = _client.GetUser(userPre.Id);
             if (currentState.Status.Equals(UserStatus.Online)) return; // User is no longer AFK/Idle
 

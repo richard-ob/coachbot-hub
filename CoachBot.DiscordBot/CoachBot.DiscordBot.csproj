@@ -66,5 +66,8 @@
     <None Update="Settings.job">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="start.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

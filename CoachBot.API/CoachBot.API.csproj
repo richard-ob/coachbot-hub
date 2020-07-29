@@ -250,5 +250,8 @@
     <None Update="SeedData\2020.04.18_01h.08m.26s_excel-vs-brazil_1-3.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="start.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -47,6 +47,8 @@ namespace CoachBot.Domain.Services
             var discordSearchMessage = await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, embed);
             request.DiscordMessageId = discordSearchMessage;
 
+            await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, "@here");
+
             _coachBotContext.SubstitutionRequests.Add(request);
             _coachBotContext.SaveChanges();
         }

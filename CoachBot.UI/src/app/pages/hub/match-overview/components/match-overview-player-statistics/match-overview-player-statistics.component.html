@@ -1,12 +1,17 @@
 <div [class.container]="!showMoreStats" [class.container-fluid]="showMoreStats" [class.px-5]="showMoreStats">
-
     <div class="card card--has-table" style="margin-left: -30px; margin-right: -30px;">
         <header class="card__header card__header--has-btn">
             <h4>Player Statistics</h4>
-            <!-- Result Filter -->
             <ul class="team-result-filter d-none d-md-inline float-right">
-                <li class="team-result-filter__item">
-                    <button type="button" class="btn btn-secondary btn-xs card-header__button d-none d-lg-block"
+                <li class="team-result-filter__item float-right">
+                    <button type="button" class="btn btn-secondary btn-xs d-none d-lg-inline-block mr-2"
+                        (click)="toggleStatAggregation()">
+                        Show
+                        <ng-container *ngIf="showAggregateStats">Position</ng-container>
+                        <ng-container *ngIf="!showAggregateStats">Aggregate</ng-container>
+                        Stats
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-xs d-none d-lg-inline-block"
                         (click)="showMoreStats = !showMoreStats">
                         Show
                         <ng-container *ngIf="!showMoreStats">More</ng-container>
@@ -25,9 +30,9 @@
                     <tr>
                         <th sorter [sortByColumn]="'Team.TeamCode'" [sortByColumnName]="'Team'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'Position.Name'" [sortByColumnName]="'Pos'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"
-                            title="Position">
+                        <th *ngIf="!showAggregateStats" sorter [sortByColumn]="'Position.Name'"
+                            [sortByColumnName]="'Pos'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadResults($event)" class="text-center" title="Position">
                         </th>
                         <th>Player</th>
                         <th class="text-center"></th>
@@ -98,7 +103,7 @@
                         title="View player's profile" [style.border-left-color]="player.team.color"
                         style="border-left: 5px solid transparent;">
                         <td class="team-result__status">{{player.team.teamCode}}</td>
-                        <td class="team-result__status">{{player.position.name}}</td>
+                        <td *ngIf="!showAggregateStats">{{player.position.name}}</td>
                         <td class="team-result__score">{{player.nickname}}</td>
                         <td class="text-center text-nowrap">
                             <span *ngIf="player.substitute" title="Substitute">
@@ -110,7 +115,7 @@
                             <span *ngIf="player.redCards > 0" title="Red carded">
                                 <i class="icon-svg icon-red-card mr-1"></i>
                             </span>
-                            <span *ngIf="player.position.name == 'GK' && !player.goalsConceded" title="Clean sheet">
+                            <span *ngIf="!showAggregateStats && player.position.name == 'GK' && !player.goalsConceded" title="Clean sheet">
                                 <i  class="icon-svg icon-keepers-glove"></i>
                             </span>
                         </td>
@@ -122,14 +127,7 @@
                         <td class="text-center">{{player.passesCompleted}}</td>
                         <td class="text-center">{{player.interceptions}}</td>
                         <td class="text-center">{{player.possessionPercentage | number : '1.0-0'}}%</td>
-                        <td class="text-center">
-                            <ng-container *ngIf="player.position.name === 'GK'; else notGk">
-                                {{player.keeperSaves}}
-                            </ng-container>
-                            <ng-template #notGk>
-                                <span class="text-muted">N/A</span>
-                            </ng-template>
-                        </td>
+                        <td class="text-center">{{ player.keeperSaves ? player.keeperSaves : 'N/A'}}</td>
                         <td class="text-center">{{player.offsides}}</td>
                         <td *ngIf="showMoreStats" class="text-center">
                             {{(player.distanceCovered / 1000) | number : '1.2-2'}}km</td>

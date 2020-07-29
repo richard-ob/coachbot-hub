@@ -43,37 +43,37 @@ namespace CoachBot.Controllers
 
             if (matchStatisticsDto.MatchData.Players.Count < 6)
             {
-                return BadRequest();
+                return Ok();
             }
 
             if (!string.IsNullOrWhiteSpace(map) && int.TryParse(map[0].ToString(), out int matchFormat) && matchFormat > matchStatisticsDto.MatchData.Players.Count)
             {
-                return BadRequest();
+                return Ok();
             }
 
             if (match == null)
             {
                 _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
-                return BadRequest();
+                return Ok();
             }
 
             if (match.MatchStatistics != null)
             {
                 // INFO: This could be either be a rematch or where the server has persisted the token after map change etc.
                 _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
-                return BadRequest();
+                return Ok();
             }
 
             if (match.TeamHome.TeamCode != homeTeamCode || match.TeamAway.TeamCode != awayTeamCode)
             {
                 _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
-                return BadRequest();
+                return Ok();
             }
 
             if (serverAddress == null || !match.Server.Address.StartsWith(sourceAddress))
             {
                 _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
-                return BadRequest();
+                return Ok();
             }
 
             _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress, matchId);

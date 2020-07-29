@@ -35,7 +35,7 @@
                             {{matchStatisticItem.sourceAddress || 'N/A'}}
                         </td>
                         <td class="text-left text-nowrap">
-                            {{matchStatisticItem.token || 'N/A'}}
+                            {{matchStatisticItem.token | matchDataToken}}
                         </td>
                         <td class="text-center">
                             <button type="button" class="btn btn-xs btn-secondary mr-2"

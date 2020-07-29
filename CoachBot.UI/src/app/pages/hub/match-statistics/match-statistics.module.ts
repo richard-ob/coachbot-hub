@@ -9,10 +9,12 @@ import { MatchStatisticsRoutingModule } from './match-statistics.routing-module'
 import { TeamNameDisplayModule } from '../shared/components/team-name-display/team-name-display.module';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { MatchDataTokenPipe } from './unlinked-match-statistics/match-data-token.pipe';
 
 @NgModule({
     declarations: [
-        UnlinkedMatchStatisticsComponent
+        UnlinkedMatchStatisticsComponent,
+        MatchDataTokenPipe
     ],
     imports: [
         CommonModule,

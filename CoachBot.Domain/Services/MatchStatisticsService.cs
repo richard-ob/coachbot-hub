@@ -95,9 +95,9 @@ namespace CoachBot.Domain.Services
             match.TeamHomeId = currentAwayTeamId;
             match.TeamAwayId = currentHomeTeamId;
 
-            //_coachBotContext.SaveChanges();
+            _coachBotContext.SaveChanges();
 
-            //GenerateTeamForm();
+            GenerateTeamForm();
         }
 
         public void CreateMatchFromMatchData(int matchStatisticsId)

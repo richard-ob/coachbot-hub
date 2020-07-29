@@ -64,7 +64,6 @@ export class MatchOverviewComponent implements OnInit {
   swapTeams() {
     this.isLoading = true;
     this.matchStatisticsService.swapTeams(this.match.matchStatistics.id).subscribe(() => {
-      this.isLoading = false;
       location.reload();
     });
   }

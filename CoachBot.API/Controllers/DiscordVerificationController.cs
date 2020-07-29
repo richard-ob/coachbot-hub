@@ -51,7 +51,7 @@ namespace CoachBot.Controllers
 
             HttpContext.SignOutAsync("Cookies").Wait();
 
-            return new RedirectResult(_config.ClientUrl + PROFILE_EDITOR_PATH);
+            return new RedirectResult($"{Request.Scheme}://{_config.ClientUrl}" + PROFILE_EDITOR_PATH);
         }
     }
 }

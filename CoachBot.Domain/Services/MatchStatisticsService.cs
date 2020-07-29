@@ -278,7 +278,10 @@ namespace CoachBot.Domain.Services
                             Substitute = matchDataPlayer.WasPlayerSubstitute(teamType, position)
                         };
                         playerPositionMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetPlayerTotals(teamType, position));
-                        _coachBotContext.PlayerPositionMatchStatistics.Add(playerPositionMatchStatistics);
+                        if (playerPositionMatchStatistics.SecondsPlayed > 0)
+                        {
+                            _coachBotContext.PlayerPositionMatchStatistics.Add(playerPositionMatchStatistics);
+                        }
                     }
                     var playerMatchStatistics = new PlayerMatchStatistics()
                     {
@@ -293,7 +296,10 @@ namespace CoachBot.Domain.Services
                         Substitute = matchDataPlayer.WasPlayerSubstitute(teamType)
                     };
                     playerMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetMatchStatisticsPlayerTotal());
-                    _coachBotContext.PlayerMatchStatistics.Add(playerMatchStatistics);
+                    if (playerMatchStatistics.SecondsPlayed > 0)
+                    {
+                        _coachBotContext.PlayerMatchStatistics.Add(playerMatchStatistics);
+                    }
                     _coachBotContext.SaveChanges();
                 }
             }

@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   player: Player;
   hubRoles = PlayerHubRole;
   apiUrl = environment.apiUrl;
+  isLoading = true;
 
   constructor(
     private playerService: PlayerService,
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
       this.selectedRegion = regions.find(r => r.regionId === this.userPreferenceService.getUserPreference(UserPreferenceType.Region));
       this.playerService.getCurrentPlayer().subscribe(player => {
         this.player = player;
+        this.isLoading = false;
       });
     });
     this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd)).subscribe(() => {

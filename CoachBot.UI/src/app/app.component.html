@@ -24,30 +24,37 @@
         <!-- Header Top Bar -->
         <div class="header__top-bar clearfix">
             <div class="container">
-                <div class="header__top-bar-inner">
+                <div class="header__top-bar-inner" style="min-height: 48px">
                     <!-- Account Navigation -->
+
                     <ul class="nav-account">
-                        <li *ngIf="player" class="nav-account__item"><a href="#" routerLink="./edit-profile">Your
-                                Account</a>
-                        </li>
-                        <li *ngIf="selectedRegion" class="nav-account__item has-children">
-                            <span class="main-nav__toggle"></span>
-                            <a href="javascript:void(0);">Region:
-                                <span class="highlight ml-1">{{selectedRegion.regionName}}</span>
-                            </a>
-                            <ul class="main-nav__sub">
-                                <li *ngFor="let region of regions">
-                                    <a href="javascript:void(0);"
-                                        (click)="setRegion(region.regionId)">{{region.regionName}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li *ngIf="!player" class="nav-account__item nav-account__item--login">
-                            <a class="text-primary" href="javascript:void(0);" routerLink="./login">Login</a>
-                        </li>
-                        <li *ngIf="player" class="nav-account__item nav-account__item--logout">
-                            <a class="text-primary" href="{{apiUrl}}/logout">Logout</a>
-                        </li>
+                        <ngx-skeleton-loader *ngIf="isLoading" style="margin-top: 9px; width: 330px;"
+                            [animation]="'progress-dark'"
+                            [theme]="{ 'background-color': '#4040408a', 'margin-bottom': '0' }">
+                        </ngx-skeleton-loader>
+                        <ng-container *ngIf="!isLoading">
+                            <li *ngIf="player" class="nav-account__item"><a href="#" routerLink="./edit-profile">Your
+                                    Account</a>
+                            </li>
+                            <li *ngIf="selectedRegion" class="nav-account__item has-children">
+                                <span class="main-nav__toggle"></span>
+                                <a href="javascript:void(0);">Region:
+                                    <span class="highlight ml-1">{{selectedRegion.regionName}}</span>
+                                </a>
+                                <ul class="main-nav__sub">
+                                    <li *ngFor="let region of regions">
+                                        <a href="javascript:void(0);"
+                                            (click)="setRegion(region.regionId)">{{region.regionName}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li *ngIf="!player" class="nav-account__item nav-account__item--login">
+                                <a class="text-primary" href="javascript:void(0);" routerLink="./login">Login</a>
+                            </li>
+                            <li *ngIf="player" class="nav-account__item nav-account__item--logout">
+                                <a class="text-primary" href="{{apiUrl}}/logout">Logout</a>
+                            </li>
+                        </ng-container>
                     </ul>
                     <!-- Account Navigation / End -->
                 </div>
@@ -202,6 +209,9 @@
                                         <li *ngIf="player.hubRole >= hubRoles.Manager"><a
                                                 routerLink="./region-manager">Regions</a></li>
                                         <li *ngIf="player.hubRole >= hubRoles.Owner"><a routerLink="./bot">Bot</a>
+                                        </li>
+                                        <li *ngIf="player.hubRole >= hubRoles.Owner"><a
+                                                routerLink="./unlinked-match-statistics">Match Statistics</a>
                                         </li>
                                     </ul>
                                 </div>

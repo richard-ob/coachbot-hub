@@ -191,7 +191,7 @@ namespace CoachBot.Bot
 
         private async Task UserOffline(SocketGuildUser userPre, SocketGuildUser userPost)
         {
-            Task.Delay(TimeSpan.FromMinutes(1)).Wait();
+            Task.Delay(TimeSpan.FromMinutes(10)).Wait();
             var currentState = _client.GetUser(userPre.Id);
             if (!currentState.Status.Equals(UserStatus.Offline)) return; // User is no longer offline
 
@@ -231,7 +231,7 @@ namespace CoachBot.Bot
 
         private async Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)
         {
-            Task.Delay(TimeSpan.FromMinutes(1)).Wait(); // When user goes away, wait 15 minutes before notifying others
+            Task.Delay(TimeSpan.FromMinutes(15)).Wait(); // When user goes away, wait 15 minutes before notifying others
             var currentState = _client.GetUser(userPre.Id);
             if (currentState.Status.Equals(UserStatus.Online)) return; // User is no longer AFK/Idle
 

@@ -14,11 +14,14 @@ export class MatchService {
 
     constructor(private http: HttpClient) { }
 
-    getMatches(page: number, pageSize = 10, filters: MatchFilters): Observable<PagedResult<Match>> {
+    getMatches(page: number, pageSize = 10, sortBy: string = null, sortOrder: string = null, filters: MatchFilters):
+        Observable<PagedResult<Match>> {
         const pagedMatchRequestDto = new PagedMatchRequestDto();
         pagedMatchRequestDto.page = page;
         pagedMatchRequestDto.pageSize = pageSize;
         pagedMatchRequestDto.filters = filters;
+        pagedMatchRequestDto.sortBy = sortBy;
+        pagedMatchRequestDto.sortOrder = sortOrder;
         return this.http.post<PagedResult<Match>>(`${environment.apiUrl}/api/match`, pagedMatchRequestDto);
     }
 

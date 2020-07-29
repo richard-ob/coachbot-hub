@@ -4,6 +4,8 @@ import { MatchTypes } from '../match-types.enum';
 export class PagedMatchRequestDto {
     page = 1;
     pageSize = 10;
+    sortBy: string;
+    sortOrder: string;
     filters: MatchFilters;
 }
 

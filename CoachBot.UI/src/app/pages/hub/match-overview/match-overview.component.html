@@ -11,6 +11,20 @@
 <ng-container *ngIf="!isLoading && matchData">
     <div class="page-heading p-0"
         [ngStyle]="{ 'background-image': 'url(./assets/images/maps/' + (matchData.matchInfo.mapName || '8v8_vienna') + '.jpg' }">
+        <div *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Owner"
+            class="btn-group btn-group-xs float-right m-2" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-secondary dropdown-toggle"
+                aria-controls="dropdown-basic">
+                <i class="fas fa-cog"></i>
+                <span class="caret"></span>
+            </button>
+            <ul id="dropdown-admin" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem">
+                    <a class="dropdown-item clickable" (click)="swapTeams()">Swap Teams</a>
+                </li>
+            </ul>
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 offset-md-1">

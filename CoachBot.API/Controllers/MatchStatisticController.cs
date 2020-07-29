@@ -121,6 +121,15 @@ namespace CoachBot.Controllers
         }
 
         [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HttpPost("{id}/swap-teams")]
+        public IActionResult SwapTeams(int id)
+        {
+            _matchStatisticsService.SwapTeams(id);
+
+            return Ok();
+        }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
         [HttpGet("generate")]
         public IActionResult Generate()
         {

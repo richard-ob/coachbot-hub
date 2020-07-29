@@ -69,6 +69,37 @@ namespace CoachBot.Domain.Services
             return unlinkedMatchStatistics.Where(ms => ms.MatchData.Players.Count > 5).ToList();
         }
 
+        public void SwapTeams(int matchStatisticsId)
+        {
+            var match = _coachBotContext.Matches.Single(m => m.MatchStatisticsId == matchStatisticsId);
+
+            var playerPositionMatchStatistics = _coachBotContext.PlayerPositionMatchStatistics.Where(p => p.MatchId == match.Id);
+            foreach(var playerPosition in playerPositionMatchStatistics)
+            {
+                playerPosition.TeamId = playerPosition.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamHomeId;
+                playerPosition.MatchOutcome = playerPosition.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : playerPosition.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
+                playerPosition.MatchTeamType = playerPosition.MatchTeamType == MatchTeamType.Away ? MatchTeamType.Home : MatchTeamType.Away;
+            }
+
+            var playerMatchStatistics = _coachBotContext.PlayerMatchStatistics.Where(p => p.MatchId == match.Id);
+            foreach (var player in playerMatchStatistics)
+            {
+                player.TeamId = player.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamHomeId;
+                player.MatchOutcome = player.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : player.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
+                player.MatchTeamType = player.MatchTeamType == MatchTeamType.Away ? MatchTeamType.Home : MatchTeamType.Away;
+            }
+
+            var currentHomeTeamId = match.TeamHomeId;
+            var currentAwayTeamId = match.TeamAwayId;
+
+            match.TeamHomeId = currentAwayTeamId;
+            match.TeamAwayId = currentHomeTeamId;
+
+            //_coachBotContext.SaveChanges();
+
+            //GenerateTeamForm();
+        }
+
         public void CreateMatchFromMatchData(int matchStatisticsId)
         {
             var matchStatistics = _coachBotContext.MatchStatistics.Single(m => m.Id == matchStatisticsId);

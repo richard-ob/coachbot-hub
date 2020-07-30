@@ -69,6 +69,19 @@ namespace CoachBot.Domain.Services
             return unlinkedMatchStatistics.Where(ms => ms.MatchData.Players.Count > 5).ToList();
         }
 
+        public void UnlinkMatchStatistics(int matchStatisticsId)
+        {
+            var match = _coachBotContext.Matches.Single(m => m.MatchStatisticsId == matchStatisticsId);
+
+            match.MatchStatisticsId = null;
+
+            _coachBotContext.PlayerMatchStatistics.RemoveRange(_coachBotContext.PlayerMatchStatistics.Where(m => m.MatchId == match.Id));
+            _coachBotContext.PlayerPositionMatchStatistics.RemoveRange(_coachBotContext.PlayerPositionMatchStatistics.Where(m => m.MatchId == match.Id));
+            _coachBotContext.TeamMatchStatistics.RemoveRange(_coachBotContext.TeamMatchStatistics.Where(m => m.MatchId == match.Id));
+
+            _coachBotContext.SaveChanges();
+        }
+
         public void SwapTeams(int matchStatisticsId)
         {
             var match = _coachBotContext.Matches.Single(m => m.MatchStatisticsId == matchStatisticsId);
@@ -87,6 +100,14 @@ namespace CoachBot.Domain.Services
                 player.TeamId = player.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamHomeId;
                 player.MatchOutcome = player.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : player.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
                 player.MatchTeamType = player.MatchTeamType == MatchTeamType.Away ? MatchTeamType.Home : MatchTeamType.Away;
+            }
+
+            var teamMatchStatistics = _coachBotContext.TeamMatchStatistics.Where(t => t.Match.Id == match.Id);
+            foreach(var team in teamMatchStatistics)
+            {
+                team.TeamId = team.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamAwayId;
+                team.MatchOutcome = team.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : team.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
+                team.MatchTeamType = team.MatchTeamType == MatchTeamType.Away ? MatchTeamType.Home : MatchTeamType.Away;
             }
 
             var currentHomeTeamId = match.TeamHomeId;

@@ -67,4 +67,11 @@ export class MatchOverviewComponent implements OnInit {
       location.reload();
     });
   }
+
+  unlinkMatchStatistics() {
+    this.isLoading = true;
+    this.matchStatisticsService.unlinkMatchStatistics(this.match.matchStatistics.id).subscribe(() => {
+      location.reload();
+    });
+  }
 }

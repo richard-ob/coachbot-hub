@@ -121,6 +121,15 @@ namespace CoachBot.Controllers
         }
 
         [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HttpPost("{id}/unlink")]
+        public IActionResult Unlink(int id)
+        {
+            _matchStatisticsService.UnlinkMatchStatistics(id);
+
+            return Ok();
+        }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
         [HttpPost("{id}/swap-teams")]
         public IActionResult SwapTeams(int id)
         {

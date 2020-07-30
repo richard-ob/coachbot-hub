@@ -24,6 +24,10 @@ export class MatchStatisticsService {
         return this.http.post<void>(`${environment.apiUrl}/api/match-statistics/${matchStatisticsId}/swap-teams`, null);
     }
 
+    unlinkMatchStatistics(matchStatisticsId: number): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/api/match-statistics/${matchStatisticsId}/unlink`, null);
+    }
+
     getUnlinkedMatchStatistics(): Observable<MatchStatistics[]> {
         return this.http.get<MatchStatistics[]>(`${environment.apiUrl}/api/match-statistics/unlinked`);
     }

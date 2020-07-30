@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
@@ -42,6 +43,11 @@ namespace CoachBot.Controllers
             var map = matchStatisticsDto.MatchData.MatchInfo.MapName;
 
             if (matchStatisticsDto.MatchData.Players.Count < 6)
+            {
+                return NoContent();
+            }
+
+            if (matchStatisticsDto.MatchData.Players.Any(p => p.Info.SteamId == "BOT"))
             {
                 return NoContent();
             }

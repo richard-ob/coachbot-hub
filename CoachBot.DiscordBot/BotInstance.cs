@@ -206,7 +206,7 @@ namespace CoachBot.Bot
                         if (player != null)
                         {
                             await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning));
-                            _matchmakingService.RemovePlayer(channel.DiscordChannelId, userPre);
+                            await _discordNotificationService.SendAuditChannelMessage(_matchmakingService.RemovePlayer(channel.DiscordChannelId, player.Id));
                             foreach (var teamEmbed in scope.ServiceProvider.GetService<MatchmakingService>().GenerateTeamList(channel.DiscordChannelId))
                             {
                                 await discordChannel.SendMessageAsync("", embed: teamEmbed);

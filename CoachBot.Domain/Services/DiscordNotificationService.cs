@@ -89,5 +89,10 @@ namespace CoachBot.Domain.Services
         {
             await SendChannelMessage(_config.AuditChannelId, message);
         }
+
+        public async Task SendAuditChannelMessage(Embed embed)
+        {
+            await SendChannelMessage(_config.AuditChannelId, embed);
+        }
     }
 }

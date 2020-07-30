@@ -89,6 +89,14 @@ namespace CoachBot.Services
             return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
+        public Embed RemovePlayer(ulong channelId, int playerId)
+        {
+            var player = _playerService.GetPlayer(playerId);
+            var response = _matchupService.RemovePlayerFromMatch(channelId, player);
+
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
+        }
+
         public Embed RemovePlayer(ulong channelId, IUser user)
         {
             var player = _playerService.GetPlayer(user);
@@ -123,7 +131,6 @@ namespace CoachBot.Services
         public bool ReadyMatch(ulong channelId, int serverListItemId, out int readiedMatchupId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
             var matchup = _matchupService.GetCurrentMatchupForChannel(channelId);
             var server = GetServerFromServerListItemId(serverListItemId, channelId);
             var discordChannel = _discordClient.GetChannel(channelId) as ITextChannel;
@@ -307,7 +314,7 @@ namespace CoachBot.Services
         public async Task RequestSub(ulong channelId, int serverListItemId, string positionName, IUser user)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId);
-            var server = _serverService.GetServersByRegion((int)channel.Team.RegionId)[serverListItemId - 1];
+            var server = _serverService.GetServersByRegion((int)channel.Team.RegionId).Where(t => t.DeactivatedDate == null).ToList()[serverListItemId - 1];
 
             await _substitutionService.CreateRequest(channel.Id, server.Id, positionName, user.Username);
         }
@@ -363,7 +370,7 @@ namespace CoachBot.Services
         private Server GetServerFromServerListItemId(int serverListItemId, ulong channelId)
         {
             var channel = _channelService.GetChannelByDiscordId(channelId, false);
-            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId);
+            var servers = _serverService.GetServersByRegion((int)channel.Team.RegionId).Where(t => t.DeactivatedDate == null).ToList();
 
             return servers[serverListItemId - 1];
         }

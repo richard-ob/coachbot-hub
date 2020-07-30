@@ -29,6 +29,7 @@ import { OrganisationEditorComponent } from '@pages/hub/tournaments/organisation
 import { PreviousTournamentsComponent } from '@pages/hub/tournaments/previous-tournaments/previous-tournaments.component';
 import { MediaComponent } from '@pages/media/media.component';
 import { TroubleshootingComponent } from '@pages/troubleshooting/troubleshooting.component';
+import { BotManualComponent } from '@pages/bot-manual/bot-manual.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,11 @@ const routes: Routes = [
     path: 'server-manual',
     component: ServerManualComponent,
     data: { title: 'Server Manual' }
+  },
+  {
+    path: 'bot-manual',
+    component: BotManualComponent,
+    data: { title: 'Bot Manual' }
   },
   {
     path: 'troubleshooting',

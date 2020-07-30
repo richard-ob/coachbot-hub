@@ -23,6 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MediaComponent } from '@pages/media/media.component';
 import { LightboxModule } from 'ngx-lightbox';
 import { TroubleshootingComponent } from '@pages/troubleshooting/troubleshooting.component';
+import { BotManualComponent } from '@pages/bot-manual/bot-manual.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { TroubleshootingComponent } from '@pages/troubleshooting/troubleshooting
     ServerManualComponent,
     NewsComponent,
     MediaComponent,
-    TroubleshootingComponent
+    TroubleshootingComponent,
+    BotManualComponent
   ],
   imports: [
     BrowserModule,

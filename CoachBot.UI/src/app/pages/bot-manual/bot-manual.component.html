@@ -1,0 +1,247 @@
+<div class="py-4 container">
+    <div class="card">
+        <div class="card__header">
+            <h4>Bot Manual</h4>
+        </div>
+        <div class="card__content">
+            <p>CoachBot is the community's matchmaking Discord Bot, which enables easy matchmaking between teams, in
+                multiple regions across the world.</p>
+            <h6 class="mb-2">Lineup Management</h6>
+            <table class="table table-striped mb-4">
+                <thead>
+                    <th>Name</th>
+                    <th>Command</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-nowrap">View Lineup</td>
+                        <td class="text-nowrap"><code>!list</code></td>
+                        <td class="text-nowrap"><code>!list</code></td>
+                        <td>Returns the current channel's lineup</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Reset Lineup</td>
+                        <td class="text-nowrap"><code>!reset</code></td>
+                        <td class="text-nowrap"><code>!reset</code></td>
+                        <td>Resets the current lineup</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Sign</td>
+                        <td class="text-nowrap"><code>!sign <em>position</em></code></td>
+                        <td class="text-nowrap"><code>!sign LW</code></td>
+                        <td>Sign to the current lineup in a particular position</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Countersign</td>
+                        <td class="text-nowrap"><code>!sign <em>position</em>&nbsp;<em>playerName</em></code></td>
+                        <td class="text-nowrap"><code>!sign LW Thinge</code></td>
+                        <td>Sign another player to the current lineup in a particular position</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Unsign</td>
+                        <td class="text-nowrap"><code>!unsign</code></td>
+                        <td class="text-nowrap"><code>!unsign</code></td>
+                        <td>Unsign yourself from the current lineup</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Counter-unsign</td>
+                        <td class="text-nowrap"><code>!unsign <em>name</em></code></td>
+                        <td class="text-nowrap"><code>!unsign Thinge</code></td>
+                        <td>Unsign another player from the current lineup</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Clear position</td>
+                        <td class="text-nowrap"><code>!clearpos <em>position</em></code></td>
+                        <td class="text-nowrap"><code>!clearpos LW</code></td>
+                        <td>Removes a player by position</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Join Subs Bench</td>
+                        <td class="text-nowrap"><code>!sub</code></td>
+                        <td class="text-nowrap"><code>!sub</code></td>
+                        <td>Joins a lineups sub bench, where you will be automatically inserted into the current lineup
+                            if someone unsigns</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Leave Subs Bench</td>
+                        <td class="text-nowrap"><code>!unsub</code></td>
+                        <td class="text-nowrap"><code>!unsub</code></td>
+                        <td>Leaves the lineups sub bench, so you will not replace anyone if they unsign</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h6 class="mb-2">Matchmaking</h6>
+            <table class="table table-striped mb-4">
+                <thead>
+                    <th>Name</th>
+                    <th>Command</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-nowrap">View Challenges</td>
+                        <td class="text-nowrap"><code>!challenges</code></td>
+                        <td class="text-nowrap"><code>!challenges</code></td>
+                        <td>Returns the current teams available to challenge</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Challenge Team</td>
+                        <td class="text-nowrap"><code>!challenge <em>teamCode</em></code></td>
+                        <td class="text-nowrap"><code>!challenge BB</code></td>
+                        <td>Challenges the specified team, by their team code</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Unchallenge Team</td>
+                        <td class="text-nowrap"><code>!unchallenge</code></td>
+                        <td class="text-nowrap"><code>!unchallenge</code></td>
+                        <td>Unchallenges the team you are currently challenging, abandoning the match</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Search For Opposition</td>
+                        <td class="text-nowrap"><code>!search</code></td>
+                        <td class="text-nowrap"><code>!search</code></td>
+                        <td>Starts an opposition search, where an advert will be sent to other team channels, and your
+                            team will appear on the challenges list.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Stop Search</td>
+                        <td class="text-nowrap"><code>!stopsearch</code></td>
+                        <td class="text-nowrap"><code>!stopsearch</code></td>
+                        <td>Stops the current search, if your team is searching (via <code>!search</code>)</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Ready Match</td>
+                        <td class="text-nowrap"><code>!ready <em>server id</em></code></td>
+                        <td class="text-nowrap"><code>!ready 12</code></td>
+                        <td>When the match is ready (a team is set and lineups are full), this starts the match, sending
+                            both teams to the specified server. Server ID's are from the <code>!servers</code> command
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Re-setup Server</td>
+                        <td class="text-nowrap">
+                            <code>!setupserver <em>serverId</em>&nbsp;<em>uniqueMatchId</em></code>
+                        </td>
+                        <td class="text-nowrap"><code>!setupserver 12</code></td>
+                        <td>If a match has been readied, and the server changes, or just needs to be re-setup, this
+                            command will handle it. The match id is available from the previous <code>!ready</code>
+                            message.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h6 class="mb-2">General</h6>
+            <table class="table table-striped mb-4">
+                <thead>
+                    <th>Name</th>
+                    <th>Command</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    <tr>
+                    <tr>
+                        <td class="text-nowrap">Request Sub</td>
+                        <td class="text-nowrap"><code>!requestsub position serverid</code></td>
+                        <td class="text-nowrap"><code>!requestsub LW 12</code></td>
+                        <td>Requests a sub in the current channel for the position specified. Once accepted, the player
+                            will be sent the server address to join.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Accept Sub Request</td>
+                        <td class="text-nowrap"><code>!acceptsub token</code></td>
+                        <td class="text-nowrap"><code>!acceptsub ae7543ba</code></td>
+                        <td>Accepts the sub request advertised by someone using the <code>!requestsub</code> command
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Cancel Sub Request</td>
+                        <td class="text-nowrap"><code>!cancelsub token</code></td>
+                        <td class="text-nowrap"><code>!cancelsub ae7543ba</code></td>
+                        <td>Cancels the sub request advertised by someone using the <code>!requestsub</code> command
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Highlight channel</td>
+                        <td class="text-nowrap"><code>!here</code></td>
+                        <td class="text-nowrap"><code>!here</code></td>
+                        <td>Tells CoachBot to highlight everyone in the channel via the @here mention, in order to get
+                            them to sign up</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Recent Match List</td>
+                        <td class="text-nowrap"><code>!recentmatches</code></td>
+                        <td class="text-nowrap"><code>!recentmatches</code></td>
+                        <td>Returns a list of matches recently played by the current channel</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h6 class="mb-2">Server Administration</h6>
+            <table class="table table-striped mb-4">
+                <thead>
+                    <th>Name</th>
+                    <th>Command</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-nowrap">Server List</td>
+                        <td class="text-nowrap"><code>!servers</code></td>
+                        <td class="text-nowrap"><code>N/A</code></td>
+                        <td>Get the full list of available servers for the current region</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Enable Single Keeper</td>
+                        <td class="text-nowrap"><code>!enablesinglekeeper <em>server id</em></code></td>
+                        <td class="text-nowrap"><code>!enablesinglekeeper 12</code></td>
+                        <td>Enables single keeper on the specified server</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Disable Single Keeper</td>
+                        <td class="text-nowrap"><code>!disablesinglekeeper <em>server id</em></code></td>
+                        <td class="text-nowrap"><code>!disablesinglekeeper 12</code></td>
+                        <td>Disables single keeper on the specified server</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">View Server Maps</td>
+                        <td class="text-nowrap"><code>!maps <em>server id</em></code></td>
+                        <td class="text-nowrap"><code>!maps 12</code></td>
+                        <td>Return the map list for the specified server</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Change Map</td>
+                        <td class="text-nowrap"><code>!changemap <em>serveId</em>&nbsp; <em>mapName</em></code></td>
+                        <td class="text-nowrap"><code>!changemap 12 8v8_vienna</code></td>
+                        <td>Changes the map to the specified map on the specified server</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">View Server Kits</td>
+                        <td class="text-nowrap"><code>!kits <em>server id</em></code></td>
+                        <td class="text-nowrap"><code>!kits 12</code></td>
+                        <td>Return the kit list for the specified server</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Change Kits</td>
+                        <td class="text-nowrap">
+                            <code>!changekits <em>server id</em> <em>homeKitId</em>&nbsp; <em>awayKitId</em></code></td>
+                        <td class="text-nowrap"><code>!changekits 12 31 42</code></td>
+                        <td>Changes the kits to the specified kits on the specified server</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Server Info</td>
+                        <td class="text-nowrap"><code>!serverinfo <em>server id</em></code></td>
+                        <td class="text-nowrap"><code>!serverinfo 12</code></td>
+                        <td>Returns granular server info for the specified server</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

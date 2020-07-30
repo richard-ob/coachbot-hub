@@ -2,6 +2,8 @@
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
+using CoachBot.Shared.Model;
+using Discord;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,18 +19,21 @@ namespace CoachBot.Domain.Services
         private readonly FantasyService _fantasyService;
         private readonly DiscordNotificationService _discordNotificationService;
         private readonly TournamentService _tournamentService;
+        private readonly Config _config;
 
         public MatchStatisticsService(
             CoachBotContext coachBotContext,
             FantasyService fantasyService,
             DiscordNotificationService discordNotificationService, 
-            TournamentService tournamentService
+            TournamentService tournamentService,
+            Config config
         )
         {
             _coachBotContext = coachBotContext;
             _fantasyService = fantasyService;
             _discordNotificationService = discordNotificationService;
             _tournamentService = tournamentService;
+            _config = config;
         }
 
         public void SaveMatchData(MatchData matchData, string token, string sourceAddress, int matchId, bool manualSave = false)
@@ -162,7 +167,17 @@ namespace CoachBot.Domain.Services
 
         public void GenerateStatsForMatch(int matchId)
         {
-            var match = _coachBotContext.Matches.Include(m => m.TeamHome).Include(m => m.TeamAway).Single(m => m.Id == matchId);
+            var match = _coachBotContext.Matches
+                .Include(m => m.MatchStatistics)
+                .Include(m => m.TeamHome)
+                .Include(m => m.TeamAway)
+                .Include(m => m.Matchup)
+                    .ThenInclude(m => m.LineupHome)
+                    .ThenInclude(l => l.Channel)
+                .Include(m => m.Matchup)
+                    .ThenInclude(m => m.LineupAway)
+                    .ThenInclude(l => l.Channel)
+                .Single(m => m.Id == matchId);
 
             GeneratePlayerMatchStatistics(match);
             GenerateTeamMatchStatistics(match);
@@ -176,6 +191,21 @@ namespace CoachBot.Domain.Services
 
             _discordNotificationService.SendAuditChannelMessage($"New match statistics uploaded for {match.TeamHome.Name} vs {match.TeamAway.Name}").Wait();
 
+            if (_config.EnableBotHubIntegration && match.Matchup != null)
+            {
+                var homeChannelId = match.Matchup.LineupHome.Channel.DiscordChannelId;
+                var awayChannelId = match.Matchup.LineupAway.Channel.DiscordChannelId;
+                var resultEmbed = new EmbedBuilder()
+                    .WithTitle($"{match.TeamHome.Name} {match.TeamHome.BadgeEmote} {match.MatchStatistics.MatchGoalsHome} - {match.MatchStatistics.MatchGoalsAway} {match.TeamAway.BadgeEmote} {match.TeamAway.Name}")
+                    .WithDescription($"The match overview is now available to view: https://{_config.ClientUrl}/match-overview/{match.Id}")
+                    .WithColor(new Color(254, 254, 254));
+    
+                _discordNotificationService.SendChannelMessage(homeChannelId, resultEmbed.Build()).Wait();
+                if (awayChannelId != homeChannelId)
+                {
+                    _discordNotificationService.SendChannelMessage(awayChannelId, resultEmbed.Build()).Wait();
+                }
+            }
         }
 
         public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, TeamStatisticsFilters filters)

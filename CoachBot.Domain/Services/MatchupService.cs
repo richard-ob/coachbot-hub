@@ -386,7 +386,6 @@ namespace CoachBot.Domain.Services
             return false;
         }
 
-
         #region Private methods
         private Matchup GetCurrentMatchForChannel(ulong channelId)
         {

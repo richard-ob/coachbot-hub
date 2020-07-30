@@ -85,12 +85,14 @@ namespace CoachBot.Domain.Services
         public List<Matchup> GetMatchupsForChannel(ulong channelId, bool readiedMatchesOnly = false, int limit = 10)
         {
             return GetMatchupQueryable()
-               .Where(m => m.LineupHome.Channel != null && m.LineupAway.Channel != null)
-               .Where(m => m.LineupHome.Channel.DiscordChannelId == channelId || m.LineupAway.Channel.DiscordChannelId == channelId)
-               .Where(m => !readiedMatchesOnly || m.ReadiedDate != null)
-               .OrderByDescending(m => m.CreatedDate)
-               .Take(limit)
-               .ToList();
+                .Include(m => m.Match)
+                    .ThenInclude(m => m.MatchStatistics)
+                .Where(m => m.LineupHome.Channel != null && m.LineupAway.Channel != null)
+                .Where(m => m.LineupHome.Channel.DiscordChannelId == channelId || m.LineupAway.Channel.DiscordChannelId == channelId)
+                .Where(m => !readiedMatchesOnly || m.ReadiedDate != null)
+                .OrderByDescending(m => m.CreatedDate)
+                .Take(limit)
+                .ToList();
         }
 
         public Matchup GetMatchup(int matchupId)

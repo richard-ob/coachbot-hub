@@ -3,6 +3,7 @@ using CoachBot.Domain.Services;
 using CoachBot.Factories;
 using CoachBot.Model;
 using CoachBot.Shared.Extensions;
+using CoachBot.Shared.Model;
 using CoachBot.Shared.Services;
 using CoachBot.Tools;
 using Discord;
@@ -27,6 +28,7 @@ namespace CoachBot.Services
         private readonly ServerManagementService _serverManagementServiceService;
         private readonly CacheService _cacheService;
         private readonly DiscordNotificationService _discordNotificationService;
+        private readonly Config _config;
         private readonly DiscordSocketClient _discordClient;
 
         public MatchmakingService(
@@ -39,7 +41,8 @@ namespace CoachBot.Services
             ServerManagementService serverManagementServiceService,
             CacheService cacheService,
             DiscordSocketClient discordClient,
-            DiscordNotificationService discordNotificationService)
+            DiscordNotificationService discordNotificationService,
+            Config config)
         {
             _matchupService = matchupService;
             _channelService = channelService;
@@ -50,6 +53,7 @@ namespace CoachBot.Services
             _serverManagementServiceService = serverManagementServiceService;
             _cacheService = cacheService;
             _discordNotificationService = discordNotificationService;
+            _config = config;
             _discordClient = discordClient;
         }
 
@@ -221,7 +225,7 @@ namespace CoachBot.Services
                 teamList.Append($"**{search.Channel.SearchTeamCode}** {search.Channel.Team.Name} ");
                 if (!match.LineupHome.HasGk) teamList.Append("(No GK)");
                 teamList.AppendLine("");
-                //teamList.AppendLine(GenerateFormEmoteListForChannel(search.Channel.DiscordChannelId));
+                if (_config.EnableBotHubIntegration) teamList.AppendLine(GenerateFormEmoteListForChannel(search.Channel.DiscordChannelId));
                 var searchMinutesAgo = DateTime.UtcNow.Subtract(search.CreatedDate).TotalMinutes.ToString("0");
                 if (searchMinutesAgo == "0" || searchMinutesAgo == "1")
                 {
@@ -253,7 +257,7 @@ namespace CoachBot.Services
                     {
                         mixTeamList.AppendLine($"*No players currently signed*");
                     }
-                    //mixTeamList.AppendLine(GenerateFormEmoteListForChannel(matchup.LineupHome.Channel.DiscordChannelId));
+                    if (_config.EnableBotHubIntegration) mixTeamList.AppendLine(GenerateFormEmoteListForChannel(matchup.LineupHome.Channel.DiscordChannelId));
                     mixTeamList.AppendLine($"");
                 }
             }
@@ -356,7 +360,20 @@ namespace CoachBot.Services
                 if (recentMatch.LineupAway.Channel.DiscordChannelId == channelId) playerList = $"{(playerList == "" ? "" : ", ")} {string.Join(", ", recentMatch.LineupAway.PlayerLineupPositions.Select(ptp => ptp.Player.Name))}";
                 if (playerList == "") playerList = "No player data available";
 
-                embedBuilder.AddField($"**{recentMatch.LineupHome.Channel.Team.DisplayName}** vs **{recentMatch.LineupAway.Channel.Team.DisplayName}** - {recentMatch.ReadiedDate.ToString()}", playerList);
+                string matchInfo;
+                string matchDetail = null;
+                if (_config.EnableBotHubIntegration && recentMatch.Match.MatchStatistics != null)
+                {
+                    var matchDetailBuilder = new StringBuilder().AppendLine(playerList).AppendLine($"https://{_config.ClientUrl}/match-overview/{recentMatch.Id}");
+                    matchDetail = matchDetailBuilder.ToString();
+                    matchInfo = $"**{recentMatch.LineupHome.Channel.Team.Name}** {recentMatch.LineupHome.Channel.Team.BadgeEmote} `{recentMatch.Match.MatchStatistics.MatchGoalsHome}` - `{recentMatch.Match.MatchStatistics.MatchGoalsAway}` {recentMatch.LineupAway.Channel.Team.BadgeEmote} **{recentMatch.LineupAway.Channel.Team.Name}** - `{recentMatch.ReadiedDate.ToString()}`";
+                }
+                else
+                {
+                    matchInfo = $"**{recentMatch.LineupHome.Channel.Team.DisplayName}** vs **{recentMatch.LineupAway.Channel.Team.DisplayName}** - {recentMatch.ReadiedDate.ToString()}";
+                }
+
+                embedBuilder.AddField(matchInfo, matchDetail ?? playerList);
             }
 
             return embedBuilder.WithRequestedBy().WithDefaultColour().Build();

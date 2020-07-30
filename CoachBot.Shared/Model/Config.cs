@@ -27,6 +27,8 @@
         public AzureAssetsConfig AzureAssetsConfig { get; set; }
 
         public bool BotStealthMode { get; set; } = false;
+
+        public bool EnableBotHubIntegration { get; set; } = false;
     }
 
     public class AzureAssetsConfig

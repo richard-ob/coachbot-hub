@@ -310,7 +310,14 @@ namespace CoachBot.Services
                 return false;
             }
 
-            if (int.TryParse(gameServerQuery.Map.Substring(0), out int mapFormat) && gameServerQuery.Players > mapFormat)
+            if (int.TryParse(gameServerQuery.Map.Substring(0, 1), out int mapFormat) && gameServerQuery.Players > mapFormat)
+            {
+                await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"The selected server seems to be in use, as there are more than {mapFormat} players on the server.", ServiceResponseStatus.Failure));
+
+                return false;
+            }
+
+            if (gameServerQuery.Players > channel.ChannelPositions.Count)
             {
                 await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"The selected server seems to be in use, as there are more than {channel.ChannelPositions.Count} players on the server.", ServiceResponseStatus.Failure));
 

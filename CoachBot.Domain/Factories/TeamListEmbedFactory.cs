@@ -44,7 +44,7 @@ namespace CoachBot.Factories
             foreach (var channelPosition in channel.ChannelPositions.OrderBy(cp => cp.Ordinal))
             {
                 var playerTeamPosition = team.PlayerLineupPositions.FirstOrDefault(p => p.Position.Name == channelPosition.Position.Name);
-                var playerName = playerTeamPosition?.Player.DiscordUserMention ?? playerTeamPosition?.Player.Name;
+                var playerName = playerTeamPosition?.Player.Name ?? playerTeamPosition?.Player.DiscordUserMention;
                 if (string.IsNullOrEmpty(playerName))
                 {
                     sb.Append($"{channelPosition.Position.Name}:{emptyPos} ");
@@ -55,7 +55,7 @@ namespace CoachBot.Factories
                 }
             }
 
-            if (team.PlayerSubstitutes.Any()) sb.Append($"*Subs*: **{string.Join(", ", team.PlayerSubstitutes.Select(ps => ps.Player.DiscordUserMention ?? ps.Player.Name))}**");
+            if (team.PlayerSubstitutes.Any()) sb.Append($"*Subs*: **{string.Join(", ", team.PlayerSubstitutes.Select(ps => ps.Player.Name ?? ps.Player.DiscordUserMention))}**");
 
             if (!matchup.IsMixMatch && oppositionTeam?.Channel != null)
             {

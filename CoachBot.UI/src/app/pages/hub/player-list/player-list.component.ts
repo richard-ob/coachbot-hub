@@ -61,8 +61,10 @@ export class PlayerListComponent implements OnInit {
 
     loadPage(page: number, sortBy: string = null) {
         this.isLoadingPage = true;
-        this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
-        this.sortBy = sortBy;
+        if (page === this.currentPage) {
+            this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
+            this.sortBy = sortBy;
+        }
         this.playerService.getPlayerStatistics(page, this.PAGE_SIZE, this.sortBy, this.sortOrder, this.filters).subscribe(response => {
             this.playerStatistics = response.items;
             this.currentPage = response.page;

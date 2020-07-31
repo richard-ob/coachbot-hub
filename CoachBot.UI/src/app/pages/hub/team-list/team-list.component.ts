@@ -43,8 +43,10 @@ export class TeamListComponent implements OnInit {
 
     loadPage(page: number, sortBy: string = null) {
         this.isLoadingPage = true;
-        this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
-        this.sortBy = sortBy;
+        if (page === this.currentPage) {
+            this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
+            this.sortBy = sortBy;
+        }
         this.teamService.getTeamStatistics(page, undefined, this.sortBy, this.sortOrder, this.filters)
             .subscribe(response => {
                 this.teamStatistics = response.items;

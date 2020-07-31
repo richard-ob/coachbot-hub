@@ -34,7 +34,6 @@ export class TeamProfilePlayersComponent implements OnInit {
         this.router.navigate(['/player-profile/', playerId]);
     }
 
-
     getSteamUserProfiles(playerTeamStatisticsTotals: PlayerTeamStatisticsTotals[]) {
         const steamIds = [];
         for (const player of playerTeamStatisticsTotals) {

@@ -25,7 +25,8 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals; let odd = odd"
-                        (click)="navigateToPlayerProfile(playerTeamStatisticsTotal.playerTeam.playerId)">
+                        (click)="navigateToPlayerProfile(playerTeamStatisticsTotal.playerTeam.playerId)"
+                        class="clickable">
                         <td>{{playerTeamStatisticsTotal.playerTeam.player.name}}</td>
                         <td>{{playerTeamStatisticsTotal.playerTeam.teamRole | teamRole}}</td>
                         <td>{{playerTeamStatisticsTotal.position?.name}}</td>

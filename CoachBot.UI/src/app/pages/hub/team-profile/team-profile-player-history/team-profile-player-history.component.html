@@ -17,14 +17,16 @@
                         <th class="team-result__status">Date From</th>
                         <th class="team-result__status">Date Until</th>
                         <th class="team-result__status">Appearances</th>
-                        <th class="team-result__status">Goals</th>
-                        <th class="team-result__status">Assists</th>
-                        <th class="team-result__status">Yellow Cards</th>
-                        <th class="team-result__status">Red Cards</th>
+                        <th class="text-center">Goals</th>
+                        <th class="text-center">Assists</th>
+                        <th class="text-center">Yellow Cards</th>
+                        <th class="text-center">Red Cards</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals">
+                    <tr *ngFor="let playerTeamStatisticsTotal of playerTeamStatisticsTotals"
+                        (click)="navigateToPlayerProfile(playerTeamStatisticsTotal.playerTeam.playerId)"
+                        class="clickable">
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.player.name}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.playerTeam.teamRole | teamRole}}</td>
                         <td class="team-result__date">{{playerTeamStatisticsTotal.position?.name}}</td>
@@ -37,11 +39,11 @@
                                 Present
                             </ng-template>
                         </td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.appearances}}</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.goals}}</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.assists}}</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.yellowCards}}</td>
-                        <td class="team-result__date">{{playerTeamStatisticsTotal.redCards}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.appearances}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.goals}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.assists}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.yellowCards}}</td>
+                        <td class="text-center">{{playerTeamStatisticsTotal.redCards}}</td>
                     </tr>
                 </tbody>
             </table>

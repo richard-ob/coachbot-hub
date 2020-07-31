@@ -22,7 +22,7 @@ export enum EventType {
     Save = 'SAVE',
     YellowCard = 'YELLOW CARD',
     RedCard = 'RED CARD',
-    SecondYellowCard = 'SECOND YELLOW CARD',
+    SecondYellowCard = 'SECOND YELLOW',
     Penalty = 'PENALTY',
     Foul = 'FOUL',
     OwnGoal = 'OWN GOAL',

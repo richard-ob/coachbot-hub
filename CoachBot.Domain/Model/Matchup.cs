@@ -96,5 +96,36 @@ namespace CoachBot.Domain.Model
                 return players;
             }
         }
+
+        public Team GetSignedTeam(string playerName)
+        {
+            if (LineupHome != null && LineupHome.PlayerLineupPositions.Any(plp => plp.Player.Name == playerName))
+            {
+                return LineupHome.Channel.Team;
+            }
+
+            if (LineupAway != null && LineupAway.PlayerLineupPositions.Any(plp => plp.Player.Name == playerName))
+            {
+                return LineupAway.Channel.Team;
+            }
+
+            return null;
+        }
+
+        public Team GetSignedTeam(ulong discordUserId)
+        {
+            if (LineupHome != null && LineupHome.PlayerLineupPositions.Any(plp => plp.Player.DiscordUserId == discordUserId))
+            {
+                return LineupHome.Channel.Team;
+            }
+
+            if (LineupAway != null && LineupAway.PlayerLineupPositions.Any(plp => plp.Player.DiscordUserId == discordUserId))
+            {
+                return LineupAway.Channel.Team;
+            }
+
+            return null;
+        }
+
     }
 }

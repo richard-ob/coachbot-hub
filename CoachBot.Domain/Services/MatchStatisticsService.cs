@@ -245,7 +245,7 @@ namespace CoachBot.Domain.Services
                 .Where(p => teamId == null || p.TeamId == teamId)
                 .Where(p => !p.IsPending)
                 .Where(p => !activeOnly || p.LeaveDate == null)
-                .OrderByDescending(p => p.JoinDate);
+                .OrderBy(p => p.JoinDate);
 
             var allPlayerTeamStatisticTotals = new List<PlayerTeamStatisticsTotals>();
 

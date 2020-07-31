@@ -6,7 +6,7 @@
     </div>
     <div *ngIf="(matches && matches.length) || hasFiltersApplied" class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>Matches</h4>
+            <h4>{{includeUpcoming ? 'Matches' : 'Results' }}</h4>
             <ul *ngIf="showFilters" class="team-result-filter d-none d-lg-inline float-right">
                 <li class="team-result-filter__item">
                     <mat-datepicker #dateFromPicker></mat-datepicker>

@@ -8,6 +8,7 @@ import { PlayerPositionMatchStatistics } from '@pages/hub/shared/model/player-po
 
 @Component({
     selector: 'app-match-overview-player-statistics',
+    styleUrls: ['./match-overview-player-statistics.component.scss'],
     templateUrl: './match-overview-player-statistics.component.html'
 })
 export class MatchOverviewPlayerStatisticsComponent implements OnInit {

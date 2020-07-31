@@ -30,20 +30,21 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-10 offset-md-1">
+                <div class="col-12 col-md-10 offset-md-1">
                     <section class="d-flex flex-column text-white my-4">
                         <div id="match-meta-data" class="match-meta-data row mb-4">
-                            <div id="match-meta-data-type" class="col-4 text-left">
+                            <div id="match-meta-data-type" class="col-md-4 d-none d-md-block text-left">
                                 {{matchData.matchInfo.type}}
                             </div>
-                            <div id="match-meta-data-server" class="col-4 text-center">
+                            <div id="match-meta-data-server" class="col-6 col-md-4 text-center">
                                 <div *ngIf="match.server" [attr.title]="match.server.address">
                                     <i class="flag-icon flag-icon-squared"
                                         [ngClass]="'flag-icon-' + match.server.country.code.toLowerCase()"></i>&nbsp;
                                     {{match.server.name}}
                                 </div>
                             </div>
-                            <div id="match-meta-data-date" class="col-4 text-right">{{matchDate | date:'medium'}}</div>
+                            <div id="match-meta-data-date" class="col-6 col-md-4 text-right">
+                                {{matchDate | date:'medium'}}</div>
                         </div>
                         <div id="match-headline-items" class="d-flex align-items-center mt-2 mb-3">
                             <div id="match-headline-items-home"
@@ -191,7 +192,7 @@
                                             <div class="game-result">
                                                 <div class="d-flex align-items-center">
                                                     <div class="text-center w-50">
-                                                        <h5>
+                                                        <h5 class="match-statistics--team-name">
                                                             <ng-container
                                                                 *ngIf="match.teamHome.badgeImage; else blankCrest">
                                                                 <img [src]="match.teamHome.badgeImage.extraSmallUrl"
@@ -205,7 +206,7 @@
                                                         </h5>
                                                     </div>
                                                     <div class="text-center w-50">
-                                                        <h5>
+                                                        <h5 class="match-statistics--team-name">
                                                             <ng-container
                                                                 *ngIf="match.teamAway.badgeImage; else blankCrest">
                                                                 <img [src]="match.teamAway.badgeImage.extraSmallUrl"

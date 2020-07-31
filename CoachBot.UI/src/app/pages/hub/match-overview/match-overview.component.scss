@@ -62,3 +62,30 @@
     max-height: 105px;
     max-width: 100%;
 }
+
+@media (max-width: 700px) {
+    .container {
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+    #match-headline-items-home, #match-headline-items-away {
+        h4 {
+            font-size: 1rem;
+            word-break: break-word;
+        }
+    }
+    #match-meta-data-server {
+        text-align: left !important;
+    }
+    .game-result__score {
+        font-size: 17px;
+    }
+    h5.match-statistics--team-name  {
+        min-height: 70px;
+        img {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+        }
+    }
+}

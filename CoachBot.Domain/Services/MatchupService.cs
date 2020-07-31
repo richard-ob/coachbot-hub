@@ -142,13 +142,13 @@ namespace CoachBot.Domain.Services
             }
 
             // INFO: Allows a player to type !lw in a mix channel and if the home team is full, it will add them to the away team
-            if (team != null && team.OccupiedPositions.Any(op => op == position) && teamType == MatchTeamType.Home && matchup.LineupAway != null && matchup.LineupAway.ChannelId == channel.Id)
+            if (matchup.IsMixMatch && team != null && team.OccupiedPositions.Any(op => op == position) && teamType == MatchTeamType.Home && matchup.LineupAway != null && matchup.LineupAway.ChannelId == channel.Id)
             {
                 team = matchup.LineupAway;
             }
 
-            if (player.DiscordUserId != null && matchup.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is already signed");
-            if (matchup.SignedPlayersAndSubs.Any(sp => sp.Name == player.Name)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is already signed");
+            if (player.DiscordUserId != null && matchup.SignedPlayersAndSubs.Any(sp => sp.DiscordUserId == player.DiscordUserId)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is already signed for **{matchup.GetSignedTeam((ulong)player.DiscordUserId)?.Name}**");
+            if (matchup.SignedPlayersAndSubs.Any(sp => sp.Name == player.Name)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{player.DisplayName}** is already signed for **{matchup.GetSignedTeam(player.Name)?.Name}**");
             if (team != null && team.OccupiedPositions.Any(op => op == position)) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{positionName.ToUpper()}** is already filled");
             if (position is null && positionName != null) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{positionName.ToUpper()}** is not a valid position for this team");
             if (position is null && positionName == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There are no outfield positions available");

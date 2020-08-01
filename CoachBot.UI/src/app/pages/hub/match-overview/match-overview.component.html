@@ -97,9 +97,16 @@
                         </div>
                         <div id="match-footer-items" class="d-flex align-items-start">
                             <div id="match-footer-items-home" class="match-footer-events  px-2 text-right">
-                                <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'home' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
-                                {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
-                                ({{goalEvents.second | secondsToMinutes}}’)
+                                <span *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:'home'" style="white-space: pre;">
+                                {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}                                
+                                <ng-container [ngSwitch]="goalEvents.event">
+                                    <ng-container *ngSwitchCase="eventType.Goal">
+                                        ({{goalEvents.second | secondsToMinutes}}’)
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="eventType.OwnGoal">
+                                        ({{goalEvents.second | secondsToMinutes}}’ OG)
+                                    </ng-container>
+                                </ng-container>
                             </span>
                             </div>
                             <div id="match-score-footer" class="d-flex flex-column text-center" style="flex: 0 0 150px">
@@ -115,9 +122,16 @@
                                 </div>
                             </div>
                             <div id="match-footer-items-away" class="match-footer-events px-2 text-left">
-                                <span *ngFor="let goalEvents of matchData.matchEvents  | arrayFilter:'team':'away' | arrayFilter:'event':eventType.Goal" style="white-space: pre;">
+                                <span *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:'away'" style="white-space: pre;">
                                 {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
-                                ({{goalEvents.second | secondsToMinutes}}’)
+                                <ng-container [ngSwitch]="goalEvents.event">
+                                    <ng-container *ngSwitchCase="eventType.Goal">
+                                        ({{goalEvents.second | secondsToMinutes}}’)
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="eventType.OwnGoal">
+                                        ({{goalEvents.second | secondsToMinutes}}’ OG)
+                                    </ng-container>
+                                </ng-container>
                             </span>
                             </div>
                         </div>

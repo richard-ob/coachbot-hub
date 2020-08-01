@@ -62,6 +62,7 @@ import { TournamentManagerModule } from './tournaments/tournament-manager/tourna
 import { TeamNameDisplayModule } from './shared/components/team-name-display/team-name-display.module';
 import { MatchStatisticsModule } from './match-statistics/match-statistics.module';
 import { MatchDataUploaderComponent } from './match-editor/match-data-uploader/match-data-uploader.component';
+import { MatchTeamGoalsPipe } from './match-overview/helpers/match-team-goals.pipe';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { MatchDataUploaderComponent } from './match-editor/match-data-uploader/m
     HorizontalBarGraphComponent,
     CircleGraphComponent,
     PercentageSharePipe,
+    MatchTeamGoalsPipe,
     ServerManagerComponent,
     RegionManagerComponent,
     UpcomingMatchesComponent,

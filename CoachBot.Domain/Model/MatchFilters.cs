@@ -8,6 +8,8 @@ namespace CoachBot.Domain.Model
 
         public MatchType? MatchType { get; set; }
 
+        public MatchFormat? MatchFormat { get; set; } = Model.MatchFormat.EightVsEight;
+
         public int? RegionId { get; set; }
 
         public int? PlayerId { get; set; }

@@ -94,6 +94,9 @@
     <None Update="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="iosoccer.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SeedData\2020.02.16_18h.46m.14s_netherlands-vs-spain_2-3.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

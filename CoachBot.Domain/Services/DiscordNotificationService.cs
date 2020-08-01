@@ -87,12 +87,12 @@ namespace CoachBot.Domain.Services
 
         public async Task SendAuditChannelMessage(string message)
         {
-            await SendChannelMessage(_config.AuditChannelId, message);
+            await SendChannelMessage(_config.DiscordConfig.AuditChannelId, message);
         }
 
         public async Task SendAuditChannelMessage(Embed embed)
         {
-            await SendChannelMessage(_config.AuditChannelId, embed);
+            await SendChannelMessage(_config.DiscordConfig.AuditChannelId, embed);
         }
     }
 }

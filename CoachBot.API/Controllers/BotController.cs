@@ -25,14 +25,14 @@ namespace CoachBot.Controllers
         [HttpGet("state")]
         public Task GetCurrentState()
         {
-            return this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/state");
+            return this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.WebServerConfig.BotApiPort}/api/bot/state");
         }
 
         [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("reconnect")]
         public async Task<IActionResult> Reconnect()
         {
-            await this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/reconnect");
+            await this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.WebServerConfig.BotApiPort}/api/bot/reconnect");
 
             return NoContent();
         }
@@ -41,7 +41,7 @@ namespace CoachBot.Controllers
         [HttpPost("disconnect")]
         public async Task<IActionResult> Disconnect()
         {
-            await this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/disconnect");
+            await this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.WebServerConfig.BotApiPort}/api/bot/disconnect");
 
             return NoContent();
         }
@@ -50,7 +50,7 @@ namespace CoachBot.Controllers
         [HttpPost("connect")]
         public async Task<IActionResult> Connect()
         {
-            await this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/connect");
+            await this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.WebServerConfig.BotApiPort}/api/bot/connect");
 
             return NoContent();
         }
@@ -59,7 +59,7 @@ namespace CoachBot.Controllers
         [HttpGet("logs")]
         public Task GetLogs()
         {
-            return this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.BotApiPort}/api/bot/logs");
+            return this.ProxyAsync($"{this.Request.Scheme}://{this.Request.Host.Host}:{_config.WebServerConfig.BotApiPort}/api/bot/logs");
         }
     }
 }

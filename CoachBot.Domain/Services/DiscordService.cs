@@ -28,7 +28,7 @@ namespace CoachBot.Domain.Services
 
         public string CreateEmote(string emoteName, string image)
         {
-            var guild = _discordSocketClient.GetGuild(_config.OwnerGuildId) as SocketGuild;
+            var guild = _discordSocketClient.GetGuild(_config.DiscordConfig.OwnerGuildId) as SocketGuild;
             var bytes = Convert.FromBase64String(image.Split(',')[1]); // Remove base64 header info
             var emote = guild.CreateEmoteAsync(emoteName, new Image(new MemoryStream(bytes))).Result;
 
@@ -40,7 +40,7 @@ namespace CoachBot.Domain.Services
             try
             {
                 var emoteId = ulong.Parse(emoteString.Split(':')[2].Replace(">", ""));
-                var guild = _discordSocketClient.GetGuild(_config.OwnerGuildId) as SocketGuild;
+                var guild = _discordSocketClient.GetGuild(_config.DiscordConfig.OwnerGuildId) as SocketGuild;
                 var emote = guild.GetEmoteAsync(emoteId).Result;
                 guild.DeleteEmoteAsync(emote).Wait();
             }
@@ -167,7 +167,7 @@ namespace CoachBot.Domain.Services
             if (_discordSocketClient.ConnectionState != ConnectionState.Connected || _discordSocketClient.LoginState != LoginState.LoggedIn)
             {
                 await _discordSocketClient.LogoutAsync();
-                await _discordSocketClient.LoginAsync(TokenType.Bot, _config.BotToken);
+                await _discordSocketClient.LoginAsync(TokenType.Bot, _config.DiscordConfig.BotToken);
                 await _discordSocketClient.StartAsync();
             }
 

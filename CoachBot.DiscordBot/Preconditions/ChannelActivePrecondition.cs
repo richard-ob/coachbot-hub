@@ -19,10 +19,10 @@ namespace CoachBot.Bot.Preconditions
 
                 var channel = channelService.GetChannelByDiscordId(context.Channel.Id);
                 if (channel != null && channel.Inactive == true)
-                    return Task.FromResult(PreconditionResult.FromError($":wrench: This channel marked as inactive. To change this, please visit {config.ClientUrl}"));
+                    return Task.FromResult(PreconditionResult.FromError($":wrench: This channel marked as inactive. To change this, please visit {config.WebServerConfig.ClientUrl}"));
 
                 if (channel != null && channel.Team != null && channel.Team.Inactive == true)
-                    return Task.FromResult(PreconditionResult.FromError($":wrench: This team is marked as inactive. To change this, please visit {config.ClientUrl}"));
+                    return Task.FromResult(PreconditionResult.FromError($":wrench: This team is marked as inactive. To change this, please visit {config.WebServerConfig.ClientUrl}"));
             }
 
             return Task.FromResult(PreconditionResult.FromSuccess());

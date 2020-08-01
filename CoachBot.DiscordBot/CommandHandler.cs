@@ -43,7 +43,7 @@ namespace CoachBot
 
         private async Task ProcessCommandAsync(SocketMessage pMsg)
         {
-            if (_config.BotStealthMode) return;
+            if (_config.BotConfig.BotStealthMode) return;
             if (!(pMsg is SocketUserMessage message)) return;
             if (!message.Content.StartsWith("!")) return;
 
@@ -104,7 +104,7 @@ namespace CoachBot
                 else if (!result.IsSuccess)
                 {
                     var errorId = DateTime.UtcNow.Ticks.ToString();
-                    if (_client.GetChannel(_config.AuditChannelId) is ITextChannel auditChannel)
+                    if (_client.GetChannel(_config.DiscordConfig.AuditChannelId) is ITextChannel auditChannel)
                     {
                         await auditChannel.SendMessageAsync("", embed: new EmbedBuilder().WithTitle($"Error - {message.Channel.Name} [REF:{errorId}]").WithDescription($":exclamation: {result.ErrorReason} ``{context.Message.Author.Username}: {context.Message.Content}``").WithCurrentTimestamp().Build());
                     }

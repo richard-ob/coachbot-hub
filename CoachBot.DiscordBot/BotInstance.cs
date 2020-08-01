@@ -50,14 +50,14 @@ namespace CoachBot.Bot
         public async void Startup()
         {
             Console.WriteLine("Connecting..");
-            await _client.LoginAsync(TokenType.Bot, _config.BotToken);
+            await _client.LoginAsync(TokenType.Bot, _config.DiscordConfig.BotToken);
             await _client.StartAsync();
 
             _client.Connected += Connected;
             _client.Disconnected += Disconnected;
             _client.Ready += BotReady;
 
-            if (!_config.BotStealthMode)
+            if (!_config.BotConfig.BotStealthMode)
             {
                 await _client.SetGameAsync("IOSoccer", "http://iosoccer.com");
                 _client.ChannelDestroyed += ChannelDestroyed;
@@ -79,7 +79,7 @@ namespace CoachBot.Bot
             {
                 Console.WriteLine("Attempting reconnection");
                 await _client.LogoutAsync();
-                await _client.LoginAsync(TokenType.Bot, _config.BotToken);
+                await _client.LoginAsync(TokenType.Bot, _config.DiscordConfig.BotToken);
                 await _client.StartAsync();
             }
 

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: '//iosoccer.com:8080'
+  apiUrl: 'https://iosoccer.com:44380'
 };

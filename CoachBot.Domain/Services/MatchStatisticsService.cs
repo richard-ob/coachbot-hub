@@ -191,13 +191,13 @@ namespace CoachBot.Domain.Services
 
             _discordNotificationService.SendAuditChannelMessage($"New match statistics uploaded for {match.TeamHome.Name} vs {match.TeamAway.Name}").Wait();
 
-            if (_config.EnableBotHubIntegration && match.Matchup != null)
+            if (_config.BotConfig.EnableBotHubIntegration && match.Matchup != null)
             {
                 var homeChannelId = match.Matchup.LineupHome.Channel.DiscordChannelId;
                 var awayChannelId = match.Matchup.LineupAway.Channel.DiscordChannelId;
                 var resultEmbed = new EmbedBuilder()
                     .WithTitle($"{match.TeamHome.Name} {match.TeamHome.BadgeEmote} {match.MatchStatistics.MatchGoalsHome} - {match.MatchStatistics.MatchGoalsAway} {match.TeamAway.BadgeEmote} {match.TeamAway.Name}")
-                    .WithDescription($"The match overview is now available to view: https://{_config.ClientUrl}/match-overview/{match.Id}")
+                    .WithDescription($"The match overview is now available to view: https://{_config.WebServerConfig.ClientUrl}/match-overview/{match.Id}")
                     .WithColor(new Color(254, 254, 254));
     
                 _discordNotificationService.SendChannelMessage(homeChannelId, resultEmbed.Build()).Wait();

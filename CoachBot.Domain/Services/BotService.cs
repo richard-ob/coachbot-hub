@@ -37,7 +37,7 @@ namespace CoachBot.Services.Matchmaker
             Console.WriteLine("Logging out..");
             await _client.LogoutAsync();
             Console.WriteLine("Logging in..");
-            await _client.LoginAsync(TokenType.Bot, _config.BotToken);
+            await _client.LoginAsync(TokenType.Bot, _config.DiscordConfig.BotToken);
             Console.WriteLine("Starting session..");
             await _client.StartAsync();
         }
@@ -51,7 +51,7 @@ namespace CoachBot.Services.Matchmaker
         public async Task Connect()
         {
             Console.WriteLine("Logging in..");
-            await _client.LoginAsync(TokenType.Bot, _config.BotToken);
+            await _client.LoginAsync(TokenType.Bot, _config.DiscordConfig.BotToken);
             Console.WriteLine("Starting session..");
             await _client.StartAsync();
         }

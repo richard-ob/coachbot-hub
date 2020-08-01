@@ -1,6 +1,7 @@
 ﻿using CoachBot.Shared.Helpers;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,12 +15,19 @@ namespace CoachBot
         private async Task RunAsync()
         {
             var config = ConfigHelper.GetConfig();
-            var port = config.BotApiPort > 0 ? config.ApiPort : 8080;
+            var httpPort = config.WebServerConfig.ApiPort > 0 ? config.WebServerConfig.ApiPort : 8080;
+            var httpsPort = config.WebServerConfig.SecureApiPort > 0 ? config.WebServerConfig.SecureApiPort : 44380;
             var host = WebHost
               .CreateDefaultBuilder()
-              .UseKestrel()
-              .UseStartup<WebStartup>()
-              .UseUrls($"http://*:{port}")
+              .UseKestrel(options =>
+              {
+                  options.Listen(IPAddress.Any, httpPort);
+                  options.Listen(IPAddress.Any, httpsPort, listenOptions =>
+                  {
+                      listenOptions.UseHttps(config.WebServerConfig.SecurityCertFile, config.WebServerConfig.SecurityCertPassword);
+                  });
+              })
+              .UseStartup<WebStartup>()               
               .Build();
             host.Start();
 

@@ -17,7 +17,7 @@ namespace CoachBot
         private async Task RunAsync()
         {
             var config = ConfigHelper.GetConfig();
-            var port = config.BotApiPort > 0 ? config.BotApiPort : 8080;
+            var port = config.WebServerConfig.BotApiPort > 0 ? config.WebServerConfig.BotApiPort : 8080;
             var host = WebHost
               .CreateDefaultBuilder()
               .UseKestrel()

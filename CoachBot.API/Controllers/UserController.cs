@@ -44,14 +44,14 @@ namespace CoachBot.Controllers
         [HttpGet("/login")]
         public IActionResult LogIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = $"{Request.Scheme}://{_config.ClientUrl}" }, SteamAuthenticationDefaults.AuthenticationScheme);
+            return Challenge(new AuthenticationProperties { RedirectUri = $"{Request.Scheme}://{_config.WebServerConfig.ClientUrl}" }, SteamAuthenticationDefaults.AuthenticationScheme);
         }
 
         [HttpGet("/logout")]
         public IActionResult LogOut()
         {
             HttpContext.SignOutAsync("Cookies").Wait();
-            return new RedirectResult($"{Request.Scheme}://{_config.ClientUrl}");
+            return new RedirectResult($"{Request.Scheme}://{_config.WebServerConfig.ClientUrl}");
         }
 
         [HttpGet("/unauthorized")]

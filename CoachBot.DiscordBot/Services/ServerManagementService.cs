@@ -380,7 +380,7 @@ namespace CoachBot.Services
                             await messenger.ExecuteCommandAsync("sv_singlekeeper 1");
                         }
                         await messenger.ExecuteCommandAsync("mp_matchinfo \"Ranked Friendly Match\"");
-                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + _config.HubApiUrl + "/api/match-statistics" + "\"");
+                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + _config.WebServerConfig.HubApiUrl + "/api/match-statistics" + "\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_enabled 1");
                         await messenger.ExecuteCommandAsync($"mp_teamnames \"{matchup.LineupHome.Channel.Team.TeamCode}: {matchup.LineupHome.Channel.Team.Name}, {matchup.LineupAway.Channel.Team.TeamCode}: {matchup.LineupAway.Channel.Team.Name}\"");
                         await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchup.MatchId.Value, matchup.LineupHome.Channel.Team.TeamCode, matchup.LineupAway.Channel.Team.TeamCode));

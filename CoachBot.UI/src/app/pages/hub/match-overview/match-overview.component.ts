@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EventType } from './model/match-data.interface';
+import { EventType, TeamEnum } from './model/match-data.interface';
 import { StatisticType } from './model/statistic-type.enum';
 import { TeamType } from './model/team-type.enum.js';
 import { DisplayValueMode } from './components/horizontal-bar-graph/horizontal-bar-graph.component.js';
@@ -23,6 +23,7 @@ export class MatchOverviewComponent implements OnInit {
   match: Match;
   statisticType = StatisticType;
   teamType = TeamType;
+  teamEnum = TeamEnum;
   matchTeamType = MatchTeamType;
   eventType = EventType;
   displayValueModes = DisplayValueMode;

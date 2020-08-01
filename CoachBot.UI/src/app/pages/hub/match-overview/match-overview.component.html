@@ -97,7 +97,7 @@
                         </div>
                         <div id="match-footer-items" class="d-flex align-items-start">
                             <div id="match-footer-items-home" class="match-footer-events  px-2 text-right">
-                                <span *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:'home'" style="white-space: pre;">
+                                <span *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:teamEnum.Home" style="white-space: pre;">
                                 {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}                                
                                 <ng-container [ngSwitch]="goalEvents.event">
                                     <ng-container *ngSwitchCase="eventType.Goal">
@@ -122,7 +122,7 @@
                                 </div>
                             </div>
                             <div id="match-footer-items-away" class="match-footer-events px-2 text-left">
-                                <span *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:'away'" style="white-space: pre;">
+                                <span *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:teamEnum.Away" style="white-space: pre;">
                                 {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
                                 <ng-container [ngSwitch]="goalEvents.event">
                                     <ng-container *ngSwitchCase="eventType.Goal">

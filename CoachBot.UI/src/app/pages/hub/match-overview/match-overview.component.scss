@@ -58,11 +58,24 @@
 
 .match-footer-events {
     flex: 0 1 50%;
-    overflow-y: auto;
+    overflow: auto;
+    min-height: 30px;
     max-height: 105px;
     max-width: 100%;
 }
 
+.match-admin-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    @media (max-width: 700px) {    
+        top: -4px;
+        right: -2px;
+        > button {
+            padding: 2px 7px;
+        }
+    }
+}
 @media (max-width: 700px) {
     .container {
         padding-right: 30px;

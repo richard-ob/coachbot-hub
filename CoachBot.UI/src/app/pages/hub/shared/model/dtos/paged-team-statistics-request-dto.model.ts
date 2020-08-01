@@ -1,6 +1,7 @@
 import { TimePeriod } from '../time-period.enum';
 import { TeamType } from '../team-type.enum';
 import { MatchOutcomeType } from '../match-outcome-type.enum';
+import { MatchFormat } from '../match-format.enum';
 
 export class PagedTeamStatisticsRequestDto {
     page = 1;
@@ -15,6 +16,7 @@ export class TeamStatisticFilters {
     teamId: number;
     teamType: TeamType;
     matchOutcome?: MatchOutcomeType;
+    matchFormat?: MatchFormat = MatchFormat.EightVsEight;
     tournamentId: number;
     regionId: number;
     includeInactive = true;

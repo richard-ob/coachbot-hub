@@ -2,6 +2,7 @@ import { TimePeriod } from '../time-period.enum';
 import { PositionGroup } from '../position-group.enum';
 import { MatchTeamType } from '../match-team-type.enum';
 import { MatchOutcomeType } from '../match-outcome-type.enum';
+import { MatchFormat } from '../match-format.enum';
 
 export class PagedPlayerStatisticsRequestDto {
     page = 1;
@@ -24,6 +25,7 @@ export class PlayerStatisticFilters {
     includeSubstituteAppearances = true;
     minimumSecondsPlayed?: number;
     matchOutcome?: MatchOutcomeType;
+    matchFormat?: MatchFormat = MatchFormat.EightVsEight;
     dateFrom?: Date;
     dateTo?: Date;
     minimumRating?: number;

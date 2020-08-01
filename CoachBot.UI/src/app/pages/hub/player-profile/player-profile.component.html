@@ -50,11 +50,11 @@
                                 <h6 class="player-info-details__title">National Team</h6>
                                 <div class="player-info-details__value">
                                     <span *ngIf="playerProfile.nationalTeam">
-                                                <a [routerLink]="['/team-profile/', playerProfile.nationalTeam.id]">
-                                                    <img *ngIf="playerProfile.nationalTeam.badgeImage" [src]="playerProfile.nationalTeam.badgeImage.extraSmallUrl" style="width: 20px">{{playerProfile.nationalTeam.name}}
-                                                    {{playerProfile.nationalTeam.name}}
-                                                </a>
-                                            </span>
+                                        <a class="player-info-details__team-link" [routerLink]="['/team-profile/', playerProfile.nationalTeam.id]">
+                                            <img *ngIf="playerProfile.nationalTeam.badgeImage" [src]="playerProfile.nationalTeam.badgeImage.extraSmallUrl" style="width: 20px">
+                                            {{playerProfile.nationalTeam.name}}
+                                        </a>
+                                    </span>
                                     <span *ngIf="!playerProfile.nationalTeam">None</span>
                                 </div>
                             </div>

@@ -122,7 +122,7 @@ namespace CoachBot.Domain.Services
             }
 
             // INFO: We need to merge any existing player record which was created by the bot for lineups
-            if (_coachBotContext.Players.Any(p => p.DiscordUserId == p.DiscordUserId))
+            if (_coachBotContext.Players.Any(p => p.DiscordUserId == discordUserId))
             {
                 var existingDiscordPlayer = _coachBotContext.Players.Single(p => p.DiscordUserId == discordUserId);
 

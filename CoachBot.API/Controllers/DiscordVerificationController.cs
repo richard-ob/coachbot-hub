@@ -41,15 +41,25 @@ namespace CoachBot.Controllers
         [HttpGet("/verification-complete")]
         public IActionResult VerificationComplete(ulong steamId, string token)
         {
-            var verificationSessionExpiry = _cacheService.Get(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString()) as DateTime?;
-            var verificationSessionToken = _cacheService.Get(CacheService.CacheItemType.DiscordVerificationSessionToken, steamId.ToString()) as string;
-            if (verificationSessionExpiry != null && verificationSessionExpiry.Value > DateTime.UtcNow && !string.IsNullOrEmpty(verificationSessionToken) && verificationSessionToken == token)
+            try
             {
-                _playerService.UpdateDiscordUserId(User.GetDiscordUserId(), steamId);
-                _cacheService.Remove(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString());
+                var verificationSessionExpiry = _cacheService.Get(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString()) as DateTime?;
+                var verificationSessionToken = _cacheService.Get(CacheService.CacheItemType.DiscordVerificationSessionToken, steamId.ToString()) as string;
+                if (verificationSessionExpiry != null && verificationSessionExpiry.Value > DateTime.UtcNow && !string.IsNullOrEmpty(verificationSessionToken) && verificationSessionToken == token)
+                {
+                    var discordUserId = User.GetDiscordUserId();
+                    if (discordUserId != null)
+                    {
+                        _playerService.UpdateDiscordUserId(discordUserId.Value, steamId);
+                    }
+                    _cacheService.Remove(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString());
+                }
             }
-
-            HttpContext.SignOutAsync("Cookies").Wait();
+            finally
+            {
+                // INFO: If we don't wrap the mechanism in try/finally, we don't log the temporary Discord user out, causing a player record to be created with the Discord User ID as Steam ID, due to the cookie created
+                HttpContext.SignOutAsync("Cookies").Wait();
+            }      
 
             return new RedirectResult($"{Request.Scheme}://{_config.WebServerConfig.ClientUrl}" + PROFILE_EDITOR_PATH);
         }

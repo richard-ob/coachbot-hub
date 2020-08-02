@@ -4,6 +4,7 @@ import { PlayerTeamService } from '@pages/hub/shared/services/player-team.servic
 import { PlayerService } from '@pages/hub/shared/services/player.service';
 import { TeamRole } from '@pages/hub/shared/model/team-role.enum';
 import { PlayerTeam } from '@pages/hub/shared/model/player-team.model';
+import { TeamType } from '@pages/hub/shared/model/team-type.enum';
 
 @Component({
     selector: 'app-team-editor-squad-add-player',
@@ -14,6 +15,7 @@ export class TeamEditorSquadAddPlayerComponent {
     @Output() wizardClosed = new EventEmitter<void>();
     @Output() playerAdded = new EventEmitter<void>();
     @Input() teamId: number;
+    @Input() teamType: TeamType;
     player: Player;
     role: TeamRole;
     teamRoles = TeamRole;
@@ -26,7 +28,7 @@ export class TeamEditorSquadAddPlayerComponent {
         this.isSaving = true;
         this.playerAddFailure = false;
         this.playerService.getPlayerProfile(this.player.id).subscribe(playerProfile => {
-            if (!playerProfile.clubTeam) {
+            if (!playerProfile.clubTeam || this.teamType !== TeamType.Club) {
                 const playerTeam: PlayerTeam = {
                     teamId: this.teamId,
                     teamRole: this.role,

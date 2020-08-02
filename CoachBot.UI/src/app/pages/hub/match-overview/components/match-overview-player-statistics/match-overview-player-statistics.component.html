@@ -54,8 +54,9 @@
                         <th sorter [sortByColumn]="'PassesCompleted'" [sortByColumnName]="'“ Completed'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                             class="text-center"></th>
-                        <th sorter [sortByColumn]="'Ints'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadResults($event)" class="text-center" title="Interceptions"></th>
+                        <th sorter [sortByColumn]="'Interceptions'" [sortByColumnName]="'Ints'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"
+                            title="Interceptions"></th>
                         <th sorter [sortByColumn]="'PossessionPercentage'" [sortByColumnName]="'Poss'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                             title="Possession %" class="text-center"></th>

@@ -205,7 +205,7 @@
                                         <li class="main-nav__title">Management</li>
                                         <li *ngIf="player.hubRole >= hubRoles.Owner"><a
                                                 routerLink="./tournament-creator">Competitions</a></li>
-                                        <li *ngIf="player.hubRole >= hubRoles.Owner"><a
+                                        <li *ngIf="player.hubRole >= hubRoles.Manager"><a
                                                 routerLink="./server-manager">Servers</a></li>
                                         <li *ngIf="player.hubRole >= hubRoles.Manager"><a
                                                 routerLink="./region-manager">Regions</a></li>

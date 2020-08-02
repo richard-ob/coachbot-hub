@@ -126,19 +126,9 @@ namespace CoachBot.Domain.Services
             {
                 var existingDiscordPlayer = _coachBotContext.Players.Single(p => p.DiscordUserId == discordUserId);
 
-                var existingPlayerLineupPositions = _coachBotContext.PlayerLineupPositions.Where(p => p.PlayerId == existingDiscordPlayer.Id);
-                foreach(var existingPlayerLineupPosition in existingPlayerLineupPositions)
-                {
-                    existingPlayerLineupPosition.PlayerId = player.Id;
-                }
-                _coachBotContext.SaveChanges();
-
-                var existingPlayerLineupSubs = _coachBotContext.PlayerLineupSubstitutes.Where(p => p.PlayerId == existingDiscordPlayer.Id);
-                foreach (var existingPlayerLineupSub in existingPlayerLineupSubs)
-                {
-                    existingPlayerLineupSub.PlayerId = player.Id;
-                }
-                _coachBotContext.SaveChanges();
+                // INFO: EF won't let us change the key of an object, so making the SQL call manually (yikes)
+                _coachBotContext.Database.ExecuteSqlCommand($"UPDATE dbo.PlayerLineupPositions SET PlayerId = {player.Id} WHERE PlayerId = {existingDiscordPlayer.Id}");
+                _coachBotContext.Database.ExecuteSqlCommand($"UPDATE dbo.PlayerLineupSubstitutes SET PlayerId = {player.Id} WHERE PlayerId = {existingDiscordPlayer.Id}");
 
                 existingDiscordPlayer.DiscordUserId = null;
                 _coachBotContext.SaveChanges();

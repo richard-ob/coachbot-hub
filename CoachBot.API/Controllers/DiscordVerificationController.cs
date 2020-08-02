@@ -32,6 +32,8 @@ namespace CoachBot.Controllers
             var steamId = User.GetSteamId();
             var token = Guid.NewGuid().ToString();
 
+            HttpContext.SignOutAsync("Cookies").Wait();
+
             _cacheService.Set(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString(), DateTime.UtcNow.AddMinutes(5));
             _cacheService.Set(CacheService.CacheItemType.DiscordVerificationSessionToken, steamId.ToString(), token);
 

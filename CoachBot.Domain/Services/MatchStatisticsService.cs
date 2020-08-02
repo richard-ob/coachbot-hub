@@ -254,6 +254,7 @@ namespace CoachBot.Domain.Services
             {
                 var filter = new PlayerStatisticFilters()
                 {
+                    PlayerId = playerTeam.PlayerId,
                     TeamId = playerTeam.TeamId,
                     DateFrom = playerTeam.JoinDate,
                     DateTo = playerTeam.LeaveDate

@@ -1,9 +1,9 @@
 import { Guild } from './guild';
 import { Region } from './region.model';
 import { Channel } from './channel.model';
-import { TeamType } from '../../match-overview/model/team-type.enum';
 import { AssetImage } from 'src/app/shared/models/asset-image.model';
 import { MatchOutcomeType } from './match-outcome-type.enum';
+import { TeamType } from './team-type.enum';
 
 export class Team {
     id: number;

@@ -1,6 +1,6 @@
 <div class="container py-4">
     <ng-container *ngIf="!isLoading && tournament; else spinner">
-        <app-tournament-standings-knockout *ngIf="tournament.tournamentType === tournamentTypes.Knockout; else table"
+        <app-tournament-standings-knockout *ngIf="tournament.tournamentType === tournamentTypes.Knockout"
             [tournament]="tournament">
         </app-tournament-standings-knockout>
         <app-tournament-standings-round-robin *ngIf="tournament.tournamentType === tournamentTypes.RoundRobin"

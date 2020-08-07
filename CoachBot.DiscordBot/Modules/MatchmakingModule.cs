@@ -229,7 +229,7 @@ namespace CoachBot.Modules.Matchmaker
             }
             else
             {
-                await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("Invalid server provided. Please try again in the format `!ready server-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
+                await ReplyAsync("", embed: DiscordEmbedHelper.GenerateEmbed("Invalid server provided. Please try again in the format `!setupserver server-id-here matchup-id-here`, e.g. `!ready 5`. Type `!servers` for the server list.", ServiceResponseStatus.Failure));
             }
         }
 

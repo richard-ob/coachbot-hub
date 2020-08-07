@@ -407,7 +407,7 @@ namespace CoachBot.Services
 
             if (sendChannelKickOffMessage)
             {
-                var embed = DiscordEmbedHelper.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible. If you need to use a different server, use `!setupserver {matchup.Id} <server id>`", $"**{matchup.LineupHome.Channel.Team.Name} {matchup.LineupHome.Channel.Team.BadgeEmote}** vs **{matchup.LineupAway.Channel.Team.DisplayName} {matchup.LineupAway.Channel.Team.Name}**");
+                var embed = DiscordEmbedHelper.GenerateSimpleEmbed($"Please join **{server.Name}** (steam://connect/{server.Address}) as soon as possible. If you need to use a different server, use `!setupserver <server id> {matchup.Id}`", $"**{matchup.LineupHome.Channel.Team.Name} {matchup.LineupHome.Channel.Team.BadgeEmote}** vs **{matchup.LineupAway.Channel.Team.DisplayName} {matchup.LineupAway.Channel.Team.Name}**");
                 await discordChannel.SendMessageAsync("", embed: embed);
             }
 

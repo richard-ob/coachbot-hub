@@ -40,8 +40,7 @@
 <div *ngIf="selectedPlayer" class="form-group">
     <label>Selected Player</label>
     <div>
-        <a [routerLink]="['/player-profile/' + selectedPlayer.id]"
-            target="_blank">{{selectedPlayer.displayName}}</a>&nbsp;
+        <a [routerLink]="['/player-profile/' + selectedPlayer.id]" target="_blank">{{selectedPlayer.name}}</a>&nbsp;
         <button class="btn btn-xs btn-secondary" type="button" (click)="deselectPlayer()">De-select</button>
     </div>
 </div>

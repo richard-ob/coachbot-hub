@@ -141,8 +141,9 @@
                                 <td class="text-center">{{match.passesCompleted}}</td>
                                 <td class="text-center">{{match.interceptions}}</td>
                                 <td class="text-center">{{(match.possessionPercentage  | number : '1.2-2') + '%'}}</td>
-                                <td class="text-center">{{match.keeperSaves}}</td>
-                                <td class="text-center">{{match.goalsConceded}}</td>
+                                <td class="text-center">{{match.position.name == 'GK' ? match.keeperSaves : 'N/A'}}</td>
+                                <td class="text-center">{{match.position.name == 'GK' ? match.goalsConceded : 'N/A'}}
+                                </td>
                                 <td class="text-center">{{match.offsides}}</td>
                                 <td class="text-center">{{match.yellowCards}}</td>
                                 <td class="text-center">{{match.redCards}}</td>

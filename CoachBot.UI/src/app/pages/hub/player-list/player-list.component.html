@@ -222,8 +222,8 @@
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center" [average]="true">
                         </th>
-                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping || currentPlayerStat === playerStatType.Defensive"
-                            sorter [sortByColumn]="'GoalsConcededAverage'" [sortByColumnName]="'Goals Conceded'"
+                        <th *ngIf="currentPlayerStat === playerStatType.Goalkeeping" sorter
+                            [sortByColumn]="'GoalsConcededAverage'" [sortByColumnName]="'Goals Conceded'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             class="text-center" [average]="true">
                         </th>
@@ -333,8 +333,7 @@
                         </td>
                         <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping" class="text-center">
                             {{statistics.keeperSavesCaughtAverage | number : '1.2-2'}}</td>
-                        <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping || currentPlayerStat === playerStatType.Defensive"
-                            class="text-center">
+                        <td *ngIf="currentPlayerStat === playerStatType.Goalkeeping" class="text-center">
                             {{statistics.goalsConcededAverage | number : '1.2-2'}}</td>
                         <td *ngIf="currentPlayerStat === playerStatType.Attacking" class="text-center">
                             {{statistics.offsidesAverage | number : '1.2-2'}}</td>

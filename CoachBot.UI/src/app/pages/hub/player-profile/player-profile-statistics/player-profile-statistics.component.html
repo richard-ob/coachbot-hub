@@ -200,12 +200,6 @@
                                 {{playerStatistics.keeperSavesCaughtAverage | number : '1.2-2'}}
                             </div>
                         </div>
-                        <div class="player-profile-statistics__statistic-box__item">
-                            <div class="player-profile-statistics__statistic-box__item-statistic">Goal Kicks</div>
-                            <div class="player-profile-statistics__statistic-box__item-value">
-                                {{playerStatistics.goalKicksAverage | number : '1.2-2'}}
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -237,6 +231,13 @@
                             </div>
                             <div class="player-profile-statistics__statistic-box__item-value">
                                 {{playerStatistics.slidingTacklesAverage | number : '1.2-2'}}
+                            </div>
+                        </div>
+                        <div class="player-profile-statistics__statistic-box__item">
+                            <div class="player-profile-statistics__statistic-box__item-statistic">Own Goals
+                            </div>
+                            <div class="player-profile-statistics__statistic-box__item-value">
+                                {{playerStatistics.ownGoals}}
                             </div>
                         </div>
                     </div>

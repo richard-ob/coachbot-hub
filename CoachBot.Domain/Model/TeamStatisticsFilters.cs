@@ -16,6 +16,8 @@ namespace CoachBot.Domain.Model
 
         public int? TournamentId { get; set; }
 
+        public int? TournamentGroupId { get; set; }
+
         public int? RegionId { get; set; }
 
         public bool IncludeInactive { get; set; } = true;

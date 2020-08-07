@@ -2,6 +2,7 @@
 using CoachBot.Shared.Model;
 using Discord;
 using Discord.WebSocket;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -53,8 +54,15 @@ namespace CoachBot.Domain.Services
 
             foreach (var discordChannelId in discordChannelIds)
             {
-                var discordMessageId = await SendChannelMessage(discordChannelId, embed);
-                if (discordMessageId != 0) messageIds.Add(discordChannelId, discordMessageId);
+                try
+                {
+                    var discordMessageId = await SendChannelMessage(discordChannelId, embed);
+                    if (discordMessageId != 0) messageIds.Add(discordChannelId, discordMessageId);
+                }
+                catch
+                {
+                    Console.WriteLine("Failed to send message to " + discordChannelId.ToString());
+                }
             }
 
             return messageIds;

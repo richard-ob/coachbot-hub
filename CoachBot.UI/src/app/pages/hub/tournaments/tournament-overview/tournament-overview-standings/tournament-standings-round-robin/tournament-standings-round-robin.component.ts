@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Tournament } from '@pages/hub/shared/model/tournament.model';
 import { TournamentGroupMatch } from '@pages/hub/shared/model/tournament-group-match.model';
-import { TeamStatistics } from '@pages/hub/shared/model/team-statistics.model';
-import { TeamStatisticFilters } from '@pages/hub/shared/model/dtos/paged-team-statistics-request-dto.model';
-import { TeamService } from '@pages/hub/shared/services/team.service';
+import { TournamentService } from '@pages/hub/shared/services/tournament.service';
+import { TournamentGroupStanding } from '@pages/hub/shared/model/tournament-group-standing.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-tournament-standings-round-robin',
@@ -12,19 +12,22 @@ import { TeamService } from '@pages/hub/shared/services/team.service';
 export class TournamentStandingsRoundRobinComponent implements OnInit {
 
     @Input() tournament: Tournament;
-    teamStatistics: TeamStatistics[];
-    filters: TeamStatisticFilters = new TeamStatisticFilters();
+    @Input() tournamentGroupId: number;
+    @Input() tournamentGroupName: string;
+    tournamentGroupStandings: TournamentGroupStanding[];
     isLoading = true;
     matches: TournamentGroupMatch;
 
-    constructor(private teamService: TeamService) { }
+    constructor(private tournamentService: TournamentService, private router: Router) { }
 
     ngOnInit() {
-        this.filters.tournamentId = this.tournament.id;
-        this.teamService.getTeamStatistics(1, 100, 'Points', 'DESC', this.filters)
-            .subscribe(response => {
-                this.teamStatistics = response.items;
-                this.isLoading = false;
-            });
+        this.tournamentService.getTournamentGroupStandings(this.tournamentGroupId).subscribe(standings => {
+            this.tournamentGroupStandings = standings;
+            this.isLoading = false;
+        });
+    }
+
+    navigateToTeamProfile(teamId: number) {
+        this.router.navigate(['/team-profile/', teamId]);
     }
 }

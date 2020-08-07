@@ -3,10 +3,12 @@
         <app-tournament-standings-knockout *ngIf="tournament.tournamentType === tournamentTypes.Knockout; else table"
             [tournament]="tournament">
         </app-tournament-standings-knockout>
-        <ng-template #table>
-            <app-tournament-standings-round-robin [tournament]="tournament">
-            </app-tournament-standings-round-robin>
-        </ng-template>
+        <app-tournament-standings-round-robin *ngIf="tournament.tournamentType === tournamentTypes.RoundRobin"
+            [tournament]="tournament">
+        </app-tournament-standings-round-robin>
+        <app-tournament-standings-round-robin-knockout
+            *ngIf="tournament.tournamentType === tournamentTypes.RoundRobinAndKnockout" [tournament]="tournament">
+        </app-tournament-standings-round-robin-knockout>
     </ng-container>
     <ng-template #spinner>
         <app-spinner></app-spinner>

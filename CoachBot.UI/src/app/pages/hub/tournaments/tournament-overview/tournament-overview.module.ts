@@ -25,6 +25,7 @@ import {
 } from './tournament-overview-standings/tournament-standings-round-robin/tournament-standings-round-robin.component';
 import { TabNavMobileComponent } from '@core/components/tab-nav-mobile/tab-nav-mobile.component';
 import { CoreModule } from '@core/core.module';
+import { TournamentStandingsRoundRobinKnockoutComponent } from './tournament-overview-standings/tournament-standings-round-robin-knockout/tournament-standings-round-robin-knockout.component';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { CoreModule } from '@core/core.module';
         TournamentOverviewTeamsComponent,
         TournamentOverviewStaffComponent,
         TournamentStandingsKnockoutComponent,
-        TournamentStandingsRoundRobinComponent
+        TournamentStandingsRoundRobinComponent,
+        TournamentStandingsRoundRobinKnockoutComponent
     ],
     imports: [
         CommonModule,

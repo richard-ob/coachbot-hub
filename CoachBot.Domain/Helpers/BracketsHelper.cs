@@ -7,12 +7,12 @@ namespace CoachBot.Domain.Helpers
 {
     public static class BracketsHelper
     {
-        public static List<Bracket> GenerateBrackets(List<Team> teams)
+        public static List<Bracket> GenerateBrackets(int teamCount)
         {
             var perfectBrackets = new int[] { 2, 4, 5, 8, 16, 32, 64 };
 
-            var baseNum = teams.Count;
-            var closestPerfectBracket = perfectBrackets.OrderBy(x => x).First(x => x >= teams.Count);
+            var baseNum = teamCount;
+            var closestPerfectBracket = perfectBrackets.OrderBy(x => x).First(x => x >= teamCount);
             var byes = closestPerfectBracket - baseNum;
 
             if (byes > 0)

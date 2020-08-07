@@ -100,7 +100,14 @@ namespace CoachBot.Domain.Services
             {
                 var discordChannel = _discordSocketClient.GetChannel(messageChannel) as ITextChannel;
                 var messageId = search.DiscordSearchMessages.GetValueOrDefault(messageChannel);
-                await discordChannel.DeleteMessagesAsync(new[] { messageId });
+                try
+                {
+                    await discordChannel.DeleteMessagesAsync(new[] { messageId });
+                }
+                catch
+                {
+                    Console.WriteLine("Could not delete stale serach message due to channel permissions");
+                }
             }
 
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Search successfully stopped");

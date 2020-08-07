@@ -9,6 +9,7 @@ export interface Match {
     teamAwayId: number;
     serverId: number;
     server: Server;
+    matchStatisticsId?: number;
     matchStatistics: MatchStatistics;
     kickOff: Date;
     createdDate: Date;

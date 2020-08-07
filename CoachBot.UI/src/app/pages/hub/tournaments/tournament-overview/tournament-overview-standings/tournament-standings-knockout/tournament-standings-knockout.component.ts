@@ -10,16 +10,17 @@ import { TournamentGroupMatch } from '@pages/hub/shared/model/tournament-group-m
 export class TournamentStandingsKnockoutComponent {
 
     @Input() tournament: Tournament;
+    @Input() tournamentStage = 0;
     matches: TournamentGroupMatch;
 
     constructor() { }
 
     nextRoundIncludesByedTeams(phaseIndex: number) {
-        const phases = this.tournament.tournamentStages[0].tournamentPhases;
+        const phases = this.tournament.tournamentStages[this.tournamentStage].tournamentPhases;
         const currentPhase = phases[phaseIndex];
         const nextPhase = phases.length > phaseIndex + 1 ? phases[phaseIndex + 1] : null;
         if (nextPhase) {
-            const matches = this.tournament.tournamentStages[0].tournamentGroups[0].tournamentGroupMatches;
+            const matches = this.tournament.tournamentStages[this.tournamentStage].tournamentGroups[0].tournamentGroupMatches;
             const currentPhaseMatches = matches.filter(m => m.tournamentPhaseId === currentPhase.id);
             const nextPhaseMatches = matches.filter(m => m.tournamentPhaseId === nextPhase.id);
             if (currentPhaseMatches && nextPhaseMatches && currentPhaseMatches.length === nextPhaseMatches.length) {

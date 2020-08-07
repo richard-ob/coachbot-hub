@@ -12,6 +12,7 @@ import { TournamentSeries } from '../model/tournament-series.model';
 import { Tournament } from '../model/tournament.model';
 import { TournamentStaff } from '../model/tournament-staff.model';
 import { Organisation } from '../model/organisation.model';
+import { TournamentGroupStanding } from '../model/tournament-group-standing.model';
 
 @Injectable({
     providedIn: 'root'
@@ -139,5 +140,9 @@ export class TournamentService {
 
     getOrganisations(): Observable<Organisation[]> {
         return this.http.get<Organisation[]>(`${environment.apiUrl}/api/organisations`);
+    }
+
+    getTournamentGroupStandings(tournamentGroupId: number): Observable<TournamentGroupStanding[]> {
+        return this.http.get<TournamentGroupStanding[]>(`${environment.apiUrl}/api/tournament-groups/${tournamentGroupId}/standings`);
     }
 }

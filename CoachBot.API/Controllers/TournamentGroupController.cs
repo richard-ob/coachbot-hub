@@ -3,6 +3,7 @@ using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
@@ -93,6 +94,12 @@ namespace CoachBot.Controllers
             _tournamentService.RemoveTournamentTeam(teamId, id);
 
             return Ok();
+        }
+
+        [HttpGet("{tournamentGroupId}/standings")]
+        public List<TournamentGroupStanding> GetTournamentStandings(int tournamentGroupId)
+        {
+            return _tournamentService.GetTournamentGroupStandings(tournamentGroupId);
         }
     }
 }

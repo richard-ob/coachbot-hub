@@ -610,6 +610,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext
                  .TeamMatchStatistics
                  .Where(t => filters.TournamentId == null || t.Match.TournamentId == filters.TournamentId)
+                 .Where(t => filters.TournamentGroupId == null || _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == t.MatchId && tg.TournamentGroupId == filters.TournamentGroupId))
                  .Where(t => filters.TeamId == null || t.TeamId == filters.TeamId)
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.IncludeInactive || t.Team.Inactive == false)

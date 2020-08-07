@@ -60,6 +60,7 @@
                         <label>Tournament Type</label>
                         <select [(ngModel)]="tournament.tournamentType" name="tournamentType" class="form-control"
                             required>
+                            <option [ngValue]="6">Round Robbin And Knockout</option>
                             <option [ngValue]="4">Round Robbin Ladder</option>
                             <option [ngValue]="0">Knockout Cup</option>
                         </select>

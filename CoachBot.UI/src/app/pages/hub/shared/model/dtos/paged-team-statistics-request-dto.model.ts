@@ -17,7 +17,8 @@ export class TeamStatisticFilters {
     teamType: TeamType;
     matchOutcome?: MatchOutcomeType;
     matchFormat?: MatchFormat = MatchFormat.EightVsEight;
-    tournamentId: number;
+    tournamentId?: number;
+    tournamentGroupId?: number;
     regionId: number;
     includeInactive = true;
 }

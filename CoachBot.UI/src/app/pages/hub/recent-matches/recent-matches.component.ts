@@ -5,6 +5,7 @@ import { MatchTypes } from '../shared/model/match-types.enum';
 import { MatchFilters } from '../shared/model/dtos/paged-match-request-dto.model';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import { Router } from '@angular/router';
+import { MatchOutcomeType } from '../shared/model/match-outcome-type.enum';
 @Component({
     selector: 'app-recent-matches',
     templateUrl: './recent-matches.component.html',
@@ -60,5 +61,20 @@ export class RecentMatchesComponent implements OnInit {
     setFilters() {
         this.loadPage(this.currentPage);
         this.hasFiltersApplied = true;
+    }
+
+    getMatchOutcomeForTeam(match: Match) {
+        const isHomeTeam = match.teamHomeId === this.teamId;
+        const goalsScored = isHomeTeam ? match.matchStatistics.matchGoalsHome : match.matchStatistics.matchGoalsAway;
+        const goalsConceded = isHomeTeam ? match.matchStatistics.matchGoalsAway : match.matchStatistics.matchGoalsHome;
+
+        if (goalsScored > goalsConceded) {
+            return MatchOutcomeType.Win;
+        }
+        if (goalsConceded > goalsScored) {
+            return MatchOutcomeType.Loss;
+        }
+
+        return MatchOutcomeType.Draw;
     }
 }

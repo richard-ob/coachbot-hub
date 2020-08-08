@@ -45,7 +45,7 @@ namespace CoachBot.Domain.Services
                 .FirstOrDefault();
         }
 
-        private Position GetMostCommonPosition(int playerId)
+        public Position GetMostCommonPosition(int playerId)
         {
             var topPosition = _coachBotContext.PlayerPositionMatchStatistics
                  .AsNoTracking()

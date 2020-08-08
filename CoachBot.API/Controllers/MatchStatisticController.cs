@@ -44,41 +44,50 @@ namespace CoachBot.Controllers
 
             if (matchStatisticsDto.MatchData.Players.Count < 6)
             {
-                return NoContent();
+                return BadRequest();
             }
 
             if (matchStatisticsDto.MatchData.Players.Any(p => p.Info.SteamId == "BOT"))
             {
-                return NoContent();
+                return BadRequest();
             }
 
             if (!string.IsNullOrWhiteSpace(map) && int.TryParse(map[0].ToString(), out int matchFormat) && matchFormat > matchStatisticsDto.MatchData.Players.Count)
             {
-                return NoContent();
+                return BadRequest();
             }
 
             if (match == null)
             {
                 _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
+                return BadRequest();
+            }
+
+            if (match.TeamHome.TeamCode != homeTeamCode || match.TeamAway.TeamCode != awayTeamCode)
+            {
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
+
+                return NoContent();
+            }
+
+            if (serverAddress == null || match.Server.Address.Split(".")[0] != sourceAddress.Split(".")[0]) // INFO: We only compare the first group of the IP, as the IP may not match exactly in some instances
+            {
+                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
+
                 return NoContent();
             }
 
             if (match.MatchStatistics != null)
             {
                 // INFO: This could be either be a rematch or where the server has persisted the token after map change etc.
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
-                return NoContent();
-            }
+                var matchStatisticsId = _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
 
-            if (match.TeamHome.TeamCode != homeTeamCode || match.TeamAway.TeamCode != awayTeamCode)
-            {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
-                return NoContent();
-            }
+                if (matchStatisticsDto.MatchData.Teams[0].MatchTotal.Name == match.TeamHome.Name && matchStatisticsDto.MatchData.Teams[1].MatchTotal.Name == match.TeamAway.Name)
+                {
+                    // INFO: We can be pretty confident this is a rematch
+                    _matchStatisticsService.CreateMatchFromMatchData(matchStatisticsId);
+                }
 
-            if (serverAddress == null || !match.Server.Address.StartsWith(sourceAddress))
-            {
-                _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
                 return NoContent();
             }
 

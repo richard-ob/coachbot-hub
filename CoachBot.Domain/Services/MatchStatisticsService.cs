@@ -54,7 +54,7 @@ namespace CoachBot.Domain.Services
             }
         }
 
-        public void SaveUnlinkedMatchData(MatchData matchData, string token, string sourceAddress)
+        public int SaveUnlinkedMatchData(MatchData matchData, string token, string sourceAddress)
         {
             var matchStatistics = new MatchStatistics()
             {
@@ -65,6 +65,8 @@ namespace CoachBot.Domain.Services
 
             _coachBotContext.MatchStatistics.Add(matchStatistics);
             _coachBotContext.SaveChanges();
+
+            return matchStatistics.Id;
         }
 
         public List<MatchStatistics> GetUnlinkedMatchData()

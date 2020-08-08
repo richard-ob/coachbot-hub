@@ -5,6 +5,7 @@
         Goalkeeper,
         Defence,
         Midfield,
-        Attack
+        Attack,
+        Unknown
     }
 }

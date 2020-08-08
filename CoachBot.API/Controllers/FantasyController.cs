@@ -125,6 +125,12 @@ namespace CoachBot.Controllers
             return _fantasyService.GetFantasyTeamSummary(fantasyTeamId);
         }
 
+        [HttpGet("{fantasyTeamId}/performances")]
+        public List<FantasyPlayerPerformance> GetFantasyPlayerPerformances(int fantasyTeamId, [FromQuery]int? tournamentPhaseId = null)
+        {
+            return _fantasyService.GetFantasyTeamPlayerPerformances(fantasyTeamId, tournamentPhaseId);
+        }
+
         [Authorize]
         [HttpGet("teams/@me")]
         public IEnumerable<FantasyTeamSummary> GetFantasyTeamSummariesForUser()

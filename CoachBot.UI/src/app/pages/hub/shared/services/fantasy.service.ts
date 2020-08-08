@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { FantasyTeam } from '../model/fantasy-team.model';
@@ -13,6 +13,7 @@ import { Tournament } from '../model/tournament.model';
 import { FantasyTeamRank } from '../model/fantasy-team-rank.model';
 import { FantasyPlayerRank } from '../model/fantasy-player-rank';
 import { FantasyTeamSummary } from '../model/fantasy-team-summary.model';
+import { FantasyPlayerPerformance } from '../model/fantasy-player-performance.model';
 
 @Injectable({
     providedIn: 'root'
@@ -98,6 +99,18 @@ export class FantasyService {
     getFantasyTeamSummary(fantasyTeamId: number): Observable<FantasyTeamSummary> {
         return this.http.get<FantasyTeamSummary>(
             `${environment.apiUrl}/api/fantasy/${fantasyTeamId}/summary`
+        );
+    }
+
+    getFantasyPlayerPeformances(fantasyTeamId: number, tournamentPhaseId: number = null) {
+        const params = new HttpParams();
+
+        if (tournamentPhaseId) {
+            params.set('tournamentPhaseId', tournamentPhaseId.toString());
+        }
+
+        return this.http.get<FantasyPlayerPerformance[]>(
+            `${environment.apiUrl}/api/fantasy/${fantasyTeamId}/performances`, { params }
         );
     }
 

@@ -27,41 +27,45 @@
                             <div class="corner bottom right marking"></div>
                             <div class="grass"></div>
                         </div>
-                        <div *ngIf="fantasyTeam && fantasyTeam.fantasyTeamSelections"
+                        <div *ngIf="fantasyTeam && fantasyPlayerPerformances"
                             class="fantasy-pitch--player-container flex-column">
                             <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
+                                <div *ngFor="let selection of fantasyPlayerPerformances | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Goalkeeper"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
+                                        [points]="selection.points" [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
+                                <div *ngFor="let selection of fantasyPlayerPerformances | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Defence"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
+                                        [points]="selection.points" [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
+                                <div *ngFor="let selection of fantasyPlayerPerformances | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Midfield"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
+                                        [points]="selection.points" [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
+                                <div *ngFor="let selection of fantasyPlayerPerformances | filterByImpure:['isFlex']:false | filterByImpure:['fantasyPlayer.positionGroup']:positionGroups.Attack"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [viewMode]="true">
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
+                                        [points]="selection.points" [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-around fantasy-pitch-player-container--row">
-                                <div *ngFor="let selection of fantasyTeam.fantasyTeamSelections | filterByImpure:['isFlex']:true"
+                                <div *ngFor="let selection of fantasyPlayerPerformances | filterByImpure:['isFlex']:true"
                                     class="fantasy-pitch--player">
-                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer" [isFlex]="true"
-                                        [viewMode]="true">
+                                    <app-fantasy-player [fantasyPlayer]="selection.fantasyPlayer"
+                                        [points]="selection.points" [isFlex]="true" [viewMode]="true">
                                     </app-fantasy-player>
                                 </div>
                             </div>
@@ -79,9 +83,9 @@
                         <a class="d-block"
                             [routerLink]="['/player-profile/', fantasyTeam.playerId]">{{fantasyTeam.player.name}}</a>
                         <label class="mb-0">Overall Points</label>
-                        <div>?</div>
+                        <div>{{fantasyTeamRanking ? fantasyTeamRanking.points : 'N/A'}}</div>
                         <label class="mb-0">Rank</label>
-                        <div>?</div>
+                        <div>{{fantasyTeamRanking ? fantasyTeamRanking.rank : 'N/A'}}</div>
                         <label class="mb-0">Tournament</label>
                         <div>{{fantasyTeam.tournament.name}}</div>
                         <label class="mb-0">Created</label>

@@ -1,6 +1,7 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
+using CoachBot.Model;
 using CoachBot.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,12 +23,14 @@ namespace CoachBot.Domain.Services
         private readonly CoachBotContext _coachBotContext;
         private readonly IBackgroundTaskQueue _queue;
         private readonly IServiceProvider serviceProvider;
+        private readonly PlayerProfileService _playerProfileService;
 
-        public FantasyService(CoachBotContext coachBotContext, IBackgroundTaskQueue queue, IServiceProvider serviceProvider)
+        public FantasyService(CoachBotContext coachBotContext, IBackgroundTaskQueue queue, IServiceProvider serviceProvider, PlayerProfileService playerProfileService)
         {
             _coachBotContext = coachBotContext;
             _queue = queue;
             this.serviceProvider = serviceProvider;
+            _playerProfileService = playerProfileService;
         }
 
         public IEnumerable<FantasyTeam> GetFantasyTeams(int tournamentId)
@@ -111,6 +114,49 @@ namespace CoachBot.Domain.Services
                         : s.Tournament.TournamentStages.Any(t => t.TournamentGroups.Any(g => g.TournamentGroupMatches.Any(m => m.Match.KickOff > DateTime.UtcNow))) ? FantasyTeamStatus.Pending
                         : FantasyTeamStatus.Settled
                 }).ToList();
+        }
+
+        public List<FantasyPlayerPerformance> GetFantasyTeamPlayerPerformances(int fantasyTeamId, int? fantasyPhaseId = null)
+        {
+            var fantasySelections = _coachBotContext.FantasyTeamSelections.Where(f => f.FantasyTeamId == fantasyTeamId).Select(f => f.FantasyPlayerId);
+
+            return _coachBotContext.FantasyPlayerPhases
+                .Where(f => fantasySelections.Any(s => s == f.FantasyPlayerId))
+                .Where(f => fantasyPhaseId == null || f.TournamentPhaseId == fantasyPhaseId)
+                .Select(n => new
+                {
+                    n.FantasyPlayer.PlayerId,
+                    n.FantasyPlayer.Player.Name,
+                    n.FantasyPlayer.Team.TeamCode,
+                    n.FantasyPlayer.Team.BadgeImage.Url,
+                    n.FantasyPlayer.PositionGroup,
+                    n.Points,
+                    n.FantasyPlayer.Rating
+                })
+                .GroupBy(p => new { p.PlayerId, p.Name, p.PositionGroup, p.TeamCode, p.Url, p.Rating }, (key, s) => new FantasyPlayerPerformance()
+                {
+                    FantasyPlayer = new FantasyPlayer()
+                    {
+                        Rating = key.Rating,
+                        PositionGroup = key.PositionGroup,
+                        Player = new Player()
+                        {
+                            Id = key.PlayerId.Value,
+                            Name = key.Name,
+
+                        },
+                        Team = new Team()
+                        {
+                            TeamCode = key.TeamCode,
+                            BadgeImage = new AssetImage()
+                            {
+                                Url = key.Url
+                            }
+                        }
+                    },
+                    Points = s.Sum(c => c.Points),
+                })
+                .ToList();
         }
 
         public void CreateFantasyTeam(FantasyTeam fantasyTeam, ulong steamId)
@@ -331,18 +377,29 @@ namespace CoachBot.Domain.Services
                  && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)))
             )
             {
-                //player.Rating = GetRandomRating();
                 var fantasyPlayer = new FantasyPlayer()
                 {
                     TournamentId = tournamentId,
                     PlayerId = player.Id,
-                    PositionGroup = GetRandomPositionGroup(),
+                    PositionGroup = GetPositionGroup(player.Id),
                     Rating = player.Rating,
                     TeamId = player.Teams.Where(t => t.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tg => tg.TeamId == t.TeamId && tg.TournamentGroup.TournamentStage.TournamentId == tournamentId)).Select(t => t.TeamId).First()
                 };
                 _coachBotContext.FantasyPlayers.Add(fantasyPlayer);
             }
             _coachBotContext.SaveChanges();
+        }
+
+        private PositionGroup GetPositionGroup(int playerId)
+        {
+            var position = _playerProfileService.GetMostCommonPosition(playerId);
+
+            if (position == null)
+            {
+                return PositionGroup.Unknown;
+            }
+
+            return MapPositionToPositionGroup(position.Name);
         }
 
         private static float GetRandomRating()
@@ -455,31 +512,36 @@ namespace CoachBot.Domain.Services
         }
 
         private PositionGroup DeterminePositionGroup(IEnumerable<PlayerPositionMatchStatistics> playerPositionMatchStatistics)
+        {       
+            var position = playerPositionMatchStatistics.OrderByDescending(p => p.SecondsPlayed).Select(p => p.Position.Name).First();
+
+            return MapPositionToPositionGroup(position);
+        }
+
+        private PositionGroup MapPositionToPositionGroup(string positionName)
         {
             var defPositions = new string[] { "LWB", "LB", "LCB", "SWP", "CB", "RCB", "RB", "RWB" };
             var midPositions = new string[] { "LM", "LCM", "CDM", "CM", "CAM", "RCM", "RM" };
             var attackPositions = new string[] { "LW", "LF", "CF", "SS", "ST", "RF", "RW" };
 
-            var position = playerPositionMatchStatistics.OrderByDescending(p => p.SecondsPlayed).Select(p => p.Position.Name).First();
-
-            if (position == "GK")
+            if (positionName == "GK")
             {
                 return PositionGroup.Goalkeeper;
             }
-            else if (defPositions.Any(p => p == position))
+            else if (defPositions.Any(p => p == positionName))
             {
                 return PositionGroup.Defence;
             }
-            else if (midPositions.Any(p => p == position))
+            else if (midPositions.Any(p => p == positionName))
             {
                 return PositionGroup.Midfield;
             }
-            else if (attackPositions.Any(p => p == position))
+            else if (attackPositions.Any(p => p == positionName))
             {
                 return PositionGroup.Attack;
             }
 
-            throw new Exception("No position matched");
+            return PositionGroup.Unknown;
         }
 
         private IQueryable<FantasyPlayer> GetFantasyPlayersQueryable(PlayerStatisticFilters playerStatisticFilters)
@@ -490,6 +552,7 @@ namespace CoachBot.Domain.Services
                     .Include(fp => fp.Player)
                     .Include(t => t.Team)
                     .ThenInclude(t => t.BadgeImage)
+                    .Where(p => p.PositionGroup != PositionGroup.Unknown)
                     .Where(p => string.IsNullOrWhiteSpace(playerStatisticFilters.PlayerName) || p.Player.Name.Contains(playerStatisticFilters.PlayerName))
                     .Where(p => playerStatisticFilters.MaximumRating == null || p.Player.Rating <= playerStatisticFilters.MaximumRating)
                     .Where(p => playerStatisticFilters.MinimumRating == null || p.Player.Rating >= playerStatisticFilters.MinimumRating)

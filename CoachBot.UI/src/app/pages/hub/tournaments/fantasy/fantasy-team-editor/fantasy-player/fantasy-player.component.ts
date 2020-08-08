@@ -13,6 +13,7 @@ export class FantasyPlayerComponent implements OnInit {
     @Input() fantasyPlayer: FantasyPlayer;
     @Input() viewMode = false;
     @Input() isFlex = false;
+    @Input() points;
     playerName: string;
     kitImageUrl: string;
     rating: number;

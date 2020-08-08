@@ -1,5 +1,6 @@
 import { TimePeriod } from '../time-period.enum';
 import { MatchTypes } from '../match-types.enum';
+import { MatchFormat } from '../match-format.enum';
 
 export class PagedMatchRequestDto {
     page = 1;
@@ -12,6 +13,7 @@ export class PagedMatchRequestDto {
 export class MatchFilters {
     timePeriod: TimePeriod = TimePeriod.AllTime;
     matchType: MatchTypes;
+    matchFormat: MatchFormat;
     regionId?: number;
     playerId?: number;
     teamId?: number;

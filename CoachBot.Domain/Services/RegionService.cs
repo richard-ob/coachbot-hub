@@ -25,7 +25,8 @@ namespace CoachBot.Domain.Services
                    RegionCode = r.RegionCode,
                    ServerCount = _coachBotContext.Servers.Count(s => s.RegionId == r.RegionId),
                    MatchCount = _coachBotContext.Matches.Count(m => m.Server.RegionId == r.RegionId),
-                   TeamCount = _coachBotContext.Teams.Count(t => t.RegionId == r.RegionId)
+                   TeamCount = _coachBotContext.Teams.Count(t => t.RegionId == r.RegionId),
+                   MatchFormat = r.MatchFormat
                }
            ).ToList();
         }

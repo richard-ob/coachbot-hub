@@ -8,6 +8,8 @@ import { TeamStatisticFilters } from '../shared/model/dtos/paged-team-statistics
 import EnumUtils from '@shared/utilities/enum-utilities';
 import { TeamType } from '../shared/model/team-type.enum';
 import { TeamSpotlightStatistic } from './team-spotlight/team-spotlight-statistic.enum';
+import { Region } from '../shared/model/region.model';
+import { RegionService } from '../shared/services/region.service';
 @Component({
     selector: 'app-team-list',
     templateUrl: './team-list.component.html',
@@ -32,13 +34,22 @@ export class TeamListComponent implements OnInit {
     isLoadingPage = false;
     filtersApplied = false;
 
-    constructor(private teamService: TeamService, private router: Router, private userPreferenceService: UserPreferenceService) { }
+    constructor(
+        private teamService: TeamService,
+        private regionService: RegionService,
+        private router: Router,
+        private userPreferenceService: UserPreferenceService
+    ) { }
 
     ngOnInit() {
         this.filters.tournamentId = this.tournamentId;
         this.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.regionId = this.regionId;
-        this.loadPage(1);
+        this.regionService.getRegions().subscribe(regions => {
+            const region = regions.find(r => r.regionId === this.regionId);
+            this.filters.matchFormat = region.matchFormat;
+            this.loadPage(1);
+        });
     }
 
     loadPage(page: number, sortBy: string = null) {

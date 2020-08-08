@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CoachBot.Model;
 
 namespace CoachBot.Model
 {
@@ -13,6 +14,24 @@ namespace CoachBot.Model
         public string RegionName { get; set; }
 
         public string RegionCode { get; set; }
+
+        public Domain.Model.MatchFormat MatchFormat
+        {
+            get
+            {
+                switch (RegionCode)
+                {
+                    case "EU":
+                        return Domain.Model.MatchFormat.EightVsEight;
+                    case "SA":
+                        return Domain.Model.MatchFormat.SixVsSix;
+                    case "NA":
+                        return Domain.Model.MatchFormat.SixVsSix;
+                    default:
+                        return Domain.Model.MatchFormat.EightVsEight;
+                }
+            }
+        }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }

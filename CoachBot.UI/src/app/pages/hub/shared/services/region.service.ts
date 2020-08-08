@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Region } from '../model/region.model';
 import { Injectable } from '@angular/core';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class RegionService {
     constructor(private http: HttpClient) { }
 
     getRegions(): Observable<Region[]> {
-        return this.http.get<Region[]>(`${environment.apiUrl}/api/region`).pipe();
+        return this.http.get<Region[]>(`${environment.apiUrl}/api/region`).pipe(shareReplay({ bufferSize: 1, refCount: true }));
     }
 
     addRegion(region: Region) {

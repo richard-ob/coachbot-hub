@@ -6,6 +6,8 @@ import { PlayerStatistics } from '@pages/hub/shared/model/player-statistics.mode
 import { TimePeriod } from '@pages/hub/shared/model/time-period.enum';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import { PlayerSpotlightStatistic } from './player-spotlight-statistic.enum';
+import { Region } from '@pages/hub/shared/model/region.model';
+import { RegionService } from '@pages/hub/shared/services/region.service';
 
 @Component({
     selector: 'app-player-spotlight',
@@ -29,6 +31,7 @@ export class PlayerSpotlightComponent implements OnInit {
 
     constructor(
         private playerService: PlayerService,
+        private regionService: RegionService,
         private userPreferencesService: UserPreferenceService,
         private router: Router
     ) {
@@ -44,11 +47,15 @@ export class PlayerSpotlightComponent implements OnInit {
         } else {
             this.filters.timePeriod = TimePeriod.Year;
         }
-        this.playerService.getPlayerStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters).subscribe(playerStatistics => {
-            if (playerStatistics.items.length > 0) {
-                this.spotlightPlayer = playerStatistics.items[0];
-            }
-            this.isLoading = false;
+        this.regionService.getRegions().subscribe(regions => {
+            const region = regions.find(r => r.regionId === this.filters.regionId);
+            this.filters.matchFormat = region.matchFormat;
+            this.playerService.getPlayerStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters).subscribe(playerStatistics => {
+                if (playerStatistics.items.length > 0) {
+                    this.spotlightPlayer = playerStatistics.items[0];
+                }
+                this.isLoading = false;
+            });
         });
     }
 

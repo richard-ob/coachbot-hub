@@ -6,6 +6,7 @@ import { PlayerProfileSpotlightStatistic } from './player-profile-spotlight-stat
 import { PlayerMatchStatistics } from '@pages/hub/shared/model/player-match-statistics.model';
 import { PlayerService } from '@pages/hub/shared/services/player.service';
 import { PlayerStatisticFilters } from '@pages/hub/shared/model/dtos/paged-player-statistics-request-dto.model';
+import { RegionService } from '@pages/hub/shared/services/region.service';
 
 @Component({
     selector: 'app-player-profile-spotlight',
@@ -27,21 +28,30 @@ export class PlayerProfileSpotlightComponent implements OnInit {
     playerSpotlightStatistic = PlayerProfileSpotlightStatistic;
     isLoading = true;
 
-    constructor(private playerService: PlayerService, private router: Router, private userPreferencesService: UserPreferenceService) { }
+    constructor(
+        private playerService: PlayerService,
+        private router: Router,
+        private regionService: RegionService,
+        private userPreferencesService: UserPreferenceService
+    ) { }
 
     ngOnInit() {
         this.setProperties(this.statistic);
         this.filters.regionId = this.userPreferencesService.getUserPreference(UserPreferenceType.Region);
         this.filters.timePeriod = TimePeriod.AllTime;
         this.filters.playerId = this.playerId;
-        this.playerService.getPlayerMatchStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters)
-            .subscribe(playerStatistics => {
-                if (playerStatistics.items.length > 0) {
-                    this.spotlight = playerStatistics.items[0];
-                    this.setOppositionName();
-                }
-                this.isLoading = false;
-            });
+        this.regionService.getRegions().subscribe(regions => {
+            const region = regions.find(r => r.regionId === this.filters.regionId);
+            this.filters.matchFormat = region.matchFormat;
+            this.playerService.getPlayerMatchStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters)
+                .subscribe(playerStatistics => {
+                    if (playerStatistics.items.length > 0) {
+                        this.spotlight = playerStatistics.items[0];
+                        this.setOppositionName();
+                    }
+                    this.isLoading = false;
+                });
+        });
     }
 
     setProperties(teamSpotlightStatistic: PlayerProfileSpotlightStatistic) {

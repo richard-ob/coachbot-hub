@@ -6,6 +6,7 @@ import { MatchFilters } from '../shared/model/dtos/paged-match-request-dto.model
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import { Router } from '@angular/router';
 import { MatchOutcomeType } from '../shared/model/match-outcome-type.enum';
+import { RegionService } from '../shared/services/region.service';
 @Component({
     selector: 'app-recent-matches',
     templateUrl: './recent-matches.component.html',
@@ -31,16 +32,26 @@ export class RecentMatchesComponent implements OnInit {
     hasFiltersApplied = false;
     isLoadingPage = false;
 
-    constructor(private matchService: MatchService, private userPreferenceService: UserPreferenceService, private router: Router) { }
-
-    ngOnInit() {
+    constructor(
+        private matchService: MatchService,
+        private userPreferenceService: UserPreferenceService,
+        private regionService: RegionService,
+        private router: Router
+    ) {
         this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.playerId = this.playerId;
         this.filters.teamId = this.teamId;
         this.filters.tournamentId = this.tournamentId;
         this.filters.includePast = this.includePast;
         this.filters.includeUpcoming = this.includeUpcoming;
-        this.loadPage(1);
+    }
+
+    ngOnInit() {
+        this.regionService.getRegions().subscribe((regions) => {
+            const region = regions.find(r => r.regionId === this.filters.regionId);
+            this.filters.matchFormat = region.matchFormat;
+            this.loadPage(1);
+        });
     }
 
     loadPage(page: number) {

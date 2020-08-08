@@ -10,6 +10,7 @@ import { Team } from '../shared/model/team.model';
 import { TeamService } from '../shared/services/team.service';
 import { PlayerSpotlightStatistic } from './player-spotlight/player-spotlight-statistic.enum';
 import { PlayerStatType } from './player-stat-type.enum';
+import { RegionService } from '../shared/services/region.service';
 
 @Component({
     selector: 'app-player-list',
@@ -43,6 +44,7 @@ export class PlayerListComponent implements OnInit {
         private playerService: PlayerService,
         private steamService: SteamService,
         private teamService: TeamService,
+        private regionService: RegionService,
         private router: Router,
         private userPreferenceService: UserPreferenceService
     ) { }
@@ -53,9 +55,13 @@ export class PlayerListComponent implements OnInit {
         this.filters.regionId = regionId;
         this.filters.includeSubstituteAppearances = false;
         this.setIncludePartialAppearances();
-        this.teamService.getTeams(regionId).subscribe(teams => {
-            this.teams = teams;
-            this.loadPage(1);
+        this.regionService.getRegions().subscribe(regions => {
+            const region = regions.find(r => r.regionId === regionId);
+            this.filters.matchFormat = region.matchFormat;
+            this.teamService.getTeams(regionId).subscribe(teams => {
+                this.teams = teams;
+                this.loadPage(1);
+            });
         });
     }
 

@@ -7,6 +7,7 @@ import { TeamProfileSpotlightStatistic } from './team-profile-spotlight-statisti
 import { TeamMatchStatistics } from '@pages/hub/shared/model/team-match-statistics.model';
 import { Router } from '@angular/router';
 import { MatchOutcomeType } from '@pages/hub/shared/model/match-outcome-type.enum';
+import { RegionService } from '@pages/hub/shared/services/region.service';
 
 @Component({
     selector: 'app-team-profile-spotlight',
@@ -28,19 +29,28 @@ export class TeamProfileSpotlightComponent implements OnInit {
     teamSpotlightStatistic = TeamProfileSpotlightStatistic;
     isLoading = true;
 
-    constructor(private teamService: TeamService, private router: Router, private userPreferencesService: UserPreferenceService) { }
+    constructor(
+        private teamService: TeamService,
+        private router: Router,
+        private regionService: RegionService,
+        private userPreferencesService: UserPreferenceService
+    ) { }
 
     ngOnInit() {
         this.setProperties(this.statistic);
         this.filters.regionId = this.userPreferencesService.getUserPreference(UserPreferenceType.Region);
         this.filters.timePeriod = TimePeriod.AllTime;
         this.filters.teamId = this.teamId;
-        this.teamService.getTeamMatchStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters).subscribe(teamStatistics => {
-            if (teamStatistics.items.length > 0) {
-                this.spotlightTeam = teamStatistics.items[0];
-                this.setOppositionName();
-            }
-            this.isLoading = false;
+        this.regionService.getRegions().subscribe(regions => {
+            const region = regions.find(r => r.regionId === this.filters.regionId);
+            this.filters.matchFormat = region.matchFormat;
+            this.teamService.getTeamMatchStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters).subscribe(teamStatistics => {
+                if (teamStatistics.items.length > 0) {
+                    this.spotlightTeam = teamStatistics.items[0];
+                    this.setOppositionName();
+                }
+                this.isLoading = false;
+            });
         });
     }
 

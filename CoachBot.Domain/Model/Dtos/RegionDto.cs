@@ -13,5 +13,7 @@
         public int MatchCount { get; set; }
 
         public int TeamCount { get; set; }
+
+        public MatchFormat MatchFormat { get; set; }
     }
 }

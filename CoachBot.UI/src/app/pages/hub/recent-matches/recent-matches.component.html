@@ -33,6 +33,16 @@
                     </div>
                 </li>
                 <li class="team-result-filter__item">
+                    <select [(ngModel)]="filters.matchFormat" name="matchFormat" class="form-control"
+                        #matchFormatSelect>
+                        <option [ngValue]="8">8v8</option>
+                        <option [ngValue]="6">6v6</option>
+                        <option [ngValue]="5">5v5</option>
+                        <option [ngValue]="4">4v4</option>
+                        <option [ngValue]="3">3v3</option>
+                    </select>
+                </li>
+                <li class="team-result-filter__item">
                     <select class="form-control" [(ngModel)]="filters.matchType">
                         <option [ngValue]="undefined">All</option>
                         <option [ngValue]="matchTypes.RankedFriendly">Friendlies</option>

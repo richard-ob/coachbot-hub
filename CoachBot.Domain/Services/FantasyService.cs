@@ -591,6 +591,12 @@ namespace CoachBot.Domain.Services
             var positionGroup = fantasyTeamSelection.FantasyPlayer.PositionGroup;
             var isFlex = fantasyTeamSelection.IsFlex;
 
+            // Unknown position group check
+            if (fantasyPlayer.PositionGroup == PositionGroup.Unknown)
+            {
+                throw new Exception("This player has no known position group");
+            }
+
             // Check player not already in team
             if (fantasyTeam.FantasyTeamSelections.Any(f => f.FantasyPlayerId == fantasyPlayer.Id))
             {

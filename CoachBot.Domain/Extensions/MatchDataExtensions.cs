@@ -52,7 +52,7 @@ namespace CoachBot.Domain.Extensions
 
         public static bool WasPlayerSubstitute(this MatchDataPlayer matchDataPlayer, string team, string position)
         {
-            return !matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == team && m.Info.Position == position).Any(m => m.Info.StartSecond == 0);
+            return !matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == team && m.Info.Position == position).Any(m => m.Info.StartSecond == 0 && m.Info.EndSecond > 0);
         }
 
         public static List<int> GetMatchStatisticsPlayerTotal(this MatchDataPlayer matchDataPlayer)

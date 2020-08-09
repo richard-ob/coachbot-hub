@@ -1,3 +1,8 @@
+<!--<div class="container py-4">
+    <div class="alert alert-warning">
+        Fantasy is down for maintenance. Come back soon!
+    </div>
+</div>-->
 <div class="container py-4">
     <ng-container *ngIf="!isLoading; else spinner">
         <ng-container *ngIf="!fantasyTeams.length && !availableTournaments.length; else fantasyTeamManager">

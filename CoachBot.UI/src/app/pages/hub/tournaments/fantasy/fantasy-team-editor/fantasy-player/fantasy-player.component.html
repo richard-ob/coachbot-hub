@@ -16,7 +16,8 @@
         {{playerName}}
     </div>
     <div class="fantasy-player-detail">
-        <div>{{rating | number : '1.2-2'}}</div>
+        <div *ngIf="!points && points !== 0">{{rating | number : '1.2-2'}}</div>
+        <div *ngIf="points || points === 0">{{points}}</div>
     </div>
 </div>
 <i *ngIf="!viewMode" class="fantasy-hover-icon fas fa-times text-danger mt-2"></i>

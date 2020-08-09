@@ -52,6 +52,8 @@
         public ulong OwnerGuildId { get; set; }
 
         public ulong AuditChannelId { get; set; } = 642879369366339635;
+
+        public ulong ResultStreamChannelId { get; set; } = 741956156985180170;
     }
 
     public class BotConfig

@@ -156,6 +156,39 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
 
             GenerateStatsForMatch(match.Id);
+
+            if (_config.BotConfig.EnableBotHubIntegration)
+            {
+                var resultMatch = _coachBotContext.Matches
+                    .Include(m => m.MatchStatistics)
+                    .Include(m => m.TeamHome)
+                    .Include(m => m.TeamAway)
+                    .Single(m => m.Id == match.Id);
+
+                var resultEmbed = GetResultEmbed(match);
+
+                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.ResultStreamChannelId, resultEmbed).Wait();
+
+                var originalMatch = _coachBotContext.Matches
+                    .Include(m => m.Matchup)
+                        .ThenInclude(m => m.LineupHome)
+                        .ThenInclude(l => l.Channel)
+                    .Include(m => m.Matchup)
+                        .ThenInclude(m => m.LineupAway)
+                        .ThenInclude(l => l.Channel)
+                    .SingleOrDefault(m => m.Id == matchId);
+
+                if (originalMatch != null && originalMatch.Matchup != null)
+                {
+                    var homeChannelId = originalMatch.Matchup.LineupHome.Channel.DiscordChannelId;
+                    var awayChannelId = originalMatch.Matchup.LineupAway.Channel.DiscordChannelId;
+                    _discordNotificationService.SendChannelMessage(homeChannelId, resultEmbed).Wait();
+                    if (awayChannelId != homeChannelId)
+                    {
+                        _discordNotificationService.SendChannelMessage(awayChannelId, resultEmbed).Wait();
+                    }
+                }
+            }
         }
 
         private MatchFormat GetMatchFormatFromMapName(string mapName)
@@ -196,19 +229,27 @@ namespace CoachBot.Domain.Services
 
             if (_config.BotConfig.EnableBotHubIntegration && match.Matchup != null)
             {
+                var resultEmbed = GetResultEmbed(match);
+
+                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.ResultStreamChannelId, resultEmbed).Wait();
+
                 var homeChannelId = match.Matchup.LineupHome.Channel.DiscordChannelId;
                 var awayChannelId = match.Matchup.LineupAway.Channel.DiscordChannelId;
-                var resultEmbed = new EmbedBuilder()
-                    .WithTitle($"{match.TeamHome.Name} {match.TeamHome.BadgeEmote} {match.MatchStatistics.MatchGoalsHome} - {match.MatchStatistics.MatchGoalsAway} {match.TeamAway.BadgeEmote} {match.TeamAway.Name}")
-                    .WithDescription($"The match overview is now available to view: https://{_config.WebServerConfig.ClientUrl}/match-overview/{match.Id}")
-                    .WithColor(new Color(254, 254, 254));
-    
-                _discordNotificationService.SendChannelMessage(homeChannelId, resultEmbed.Build()).Wait();
+                _discordNotificationService.SendChannelMessage(homeChannelId, resultEmbed).Wait();
                 if (awayChannelId != homeChannelId)
                 {
-                    _discordNotificationService.SendChannelMessage(awayChannelId, resultEmbed.Build()).Wait();
+                    _discordNotificationService.SendChannelMessage(awayChannelId, resultEmbed).Wait();
                 }
             }
+        }
+
+        private Embed GetResultEmbed(Match match)
+        {
+            return new EmbedBuilder()
+                    .WithTitle($"FULL TIME - {match.TeamHome.Name} {match.TeamHome.BadgeEmote} {match.MatchStatistics.MatchGoalsHome} - {match.MatchStatistics.MatchGoalsAway} {match.TeamAway.BadgeEmote} {match.TeamAway.Name}")
+                    .WithDescription($"The match overview is now available to view: https://{_config.WebServerConfig.ClientUrl}match-overview/{match.Id}")
+                    .WithColor(new Color(254, 254, 254))
+                    .Build();
         }
 
         public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, TeamStatisticsFilters filters)

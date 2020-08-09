@@ -225,7 +225,7 @@ namespace CoachBot.Services
                 teamList.Append($"**{search.Channel.SearchTeamCode}** {search.Channel.Team.Name} ");
                 if (!match.LineupHome.HasGk) teamList.Append("(No GK)");
                 teamList.AppendLine("");
-                if (_config.BotConfig.EnableBotHubIntegration) teamList.AppendLine(GenerateFormEmoteListForChannel(search.Channel.DiscordChannelId));
+                //if (_config.BotConfig.EnableBotHubIntegration) teamList.AppendLine(GenerateFormEmoteListForChannel(search.Channel.DiscordChannelId));
                 var searchMinutesAgo = DateTime.UtcNow.Subtract(search.CreatedDate).TotalMinutes.ToString("0");
                 if (searchMinutesAgo == "0" || searchMinutesAgo == "1")
                 {
@@ -257,7 +257,7 @@ namespace CoachBot.Services
                     {
                         mixTeamList.AppendLine($"*No players currently signed*");
                     }
-                    if (_config.BotConfig.EnableBotHubIntegration) mixTeamList.AppendLine(GenerateFormEmoteListForChannel(matchup.LineupHome.Channel.DiscordChannelId));
+                    //if (_config.BotConfig.EnableBotHubIntegration) mixTeamList.AppendLine(GenerateFormEmoteListForChannel(matchup.LineupHome.Channel.DiscordChannelId));
                     mixTeamList.AppendLine($"");
                 }
             }
@@ -363,8 +363,7 @@ namespace CoachBot.Services
                 string matchInfo;
                 string matchDetail = null;
 
-                // INFO: Disabled as it seems to push Discord over its field limit
-                /*if (_config.BotConfig.EnableBotHubIntegration && recentMatch.Match.MatchStatistics != null)
+                if (_config.BotConfig.EnableBotHubIntegration && recentMatch.Match.MatchStatistics != null)
                 {
                     var matchDetailBuilder = new StringBuilder().AppendLine(playerList).AppendLine($"https://{_config.WebServerConfig.ClientUrl}match-overview/{recentMatch.Id}");
                     matchDetail = matchDetailBuilder.ToString();
@@ -373,7 +372,7 @@ namespace CoachBot.Services
                 else
                 {
                     matchInfo = $"**{recentMatch.LineupHome.Channel.Team.DisplayName}** vs **{recentMatch.LineupAway.Channel.Team.DisplayName}** - {recentMatch.ReadiedDate.ToString()}";
-                }*/
+                }
 
                 matchInfo = $"**{recentMatch.LineupHome.Channel.Team.DisplayName}** vs **{recentMatch.LineupAway.Channel.Team.DisplayName}** - {recentMatch.ReadiedDate.ToString()}";
 

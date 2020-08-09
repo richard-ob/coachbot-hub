@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CoachBot.Shared.Helpers;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
 using System.IO;
@@ -86,7 +87,19 @@ namespace CoachBot.Tools
 
         public GameServerQuery(string address)
         {
-            var ep = CreateIPEndPoint(address);
+            IPEndPoint ep = null;
+            if (ServerAddressHelper.IsValidIpAddress(address))
+            {
+                ep = CreateIPEndPoint(address);
+            }
+            else if (ServerAddressHelper.IsValidHostname(address))
+            {
+                ep = GetIPEndPointFromHostName(address);
+            }
+            else
+            {
+                throw new Exception("Invalid IP address or hostname");
+            }
             UdpClient udp = new UdpClient();
             udp.Client.SendTimeout = 1000;
             udp.Client.ReceiveTimeout = 1000;
@@ -169,6 +182,21 @@ namespace CoachBot.Tools
                 throw new FormatException("Invalid port");
             }
             return new IPEndPoint(ip, port);
+        }
+
+        public static IPEndPoint GetIPEndPointFromHostName(string address)
+        {
+            var hostName = address.Split(":")[0];
+            var port = int.Parse(address.Split(":")[1]);
+            var addresses = Dns.GetHostAddresses(hostName);
+            if (addresses.Length == 0)
+            {
+                throw new ArgumentException(
+                    "Unable to retrieve address from specified host name.",
+                    "hostName"
+                );
+            }
+            return new IPEndPoint(addresses[0], port);
         }
 
         private string GetCountryFromIpData(string address)

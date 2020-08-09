@@ -365,7 +365,7 @@ namespace CoachBot.Services
 
                 if (_config.BotConfig.EnableBotHubIntegration && recentMatch.Match.MatchStatistics != null)
                 {
-                    var matchDetailBuilder = new StringBuilder().AppendLine(playerList).AppendLine($"https://{_config.WebServerConfig.ClientUrl}match-overview/{recentMatch.Id}");
+                    var matchDetailBuilder = new StringBuilder().AppendLine(playerList).AppendLine($"https://{_config.WebServerConfig.ClientUrl}match-overview/{recentMatch.Match.Id}");
                     matchDetail = matchDetailBuilder.ToString();
                     matchInfo = $"**{recentMatch.LineupHome.Channel.Team.Name}** {recentMatch.LineupHome.Channel.Team.BadgeEmote} `{recentMatch.Match.MatchStatistics.MatchGoalsHome}` - `{recentMatch.Match.MatchStatistics.MatchGoalsAway}` {recentMatch.LineupAway.Channel.Team.BadgeEmote} **{recentMatch.LineupAway.Channel.Team.Name}** - `{recentMatch.ReadiedDate.ToString()}`";
                 }
@@ -373,8 +373,6 @@ namespace CoachBot.Services
                 {
                     matchInfo = $"**{recentMatch.LineupHome.Channel.Team.DisplayName}** vs **{recentMatch.LineupAway.Channel.Team.DisplayName}** - {recentMatch.ReadiedDate.ToString()}";
                 }
-
-                matchInfo = $"**{recentMatch.LineupHome.Channel.Team.DisplayName}** vs **{recentMatch.LineupAway.Channel.Team.DisplayName}** - {recentMatch.ReadiedDate.ToString()}";
 
                 embedBuilder.AddField(matchInfo, matchDetail ?? playerList);
             }

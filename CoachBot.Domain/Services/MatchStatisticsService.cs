@@ -99,7 +99,6 @@ namespace CoachBot.Domain.Services
             {
                 playerPosition.TeamId = playerPosition.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamHomeId;
                 playerPosition.MatchOutcome = playerPosition.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : playerPosition.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
-                playerPosition.MatchTeamType = playerPosition.MatchTeamType == MatchTeamType.Away ? MatchTeamType.Home : MatchTeamType.Away;
             }
 
             var playerMatchStatistics = _coachBotContext.PlayerMatchStatistics.Where(p => p.MatchId == match.Id);
@@ -107,7 +106,6 @@ namespace CoachBot.Domain.Services
             {
                 player.TeamId = player.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamHomeId;
                 player.MatchOutcome = player.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : player.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
-                player.MatchTeamType = player.MatchTeamType == MatchTeamType.Away ? MatchTeamType.Home : MatchTeamType.Away;
             }
 
             var teamMatchStatistics = _coachBotContext.TeamMatchStatistics.Where(t => t.Match.Id == match.Id);
@@ -115,7 +113,6 @@ namespace CoachBot.Domain.Services
             {
                 team.TeamId = team.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamAwayId;
                 team.MatchOutcome = team.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : team.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
-                team.MatchTeamType = team.MatchTeamType == MatchTeamType.Away ? MatchTeamType.Home : MatchTeamType.Away;
             }
 
             var currentHomeTeamId = match.TeamHomeId;

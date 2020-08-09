@@ -11,5 +11,7 @@ namespace CoachBot.Domain.Model
 
         public int Points { get; set; }
 
+        public bool IsFlex { get; set; }
+
     }
 }

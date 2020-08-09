@@ -118,10 +118,18 @@ namespace CoachBot.Domain.Services
 
         public List<FantasyPlayerPerformance> GetFantasyTeamPlayerPerformances(int fantasyTeamId, int? fantasyPhaseId = null)
         {
-            var fantasySelections = _coachBotContext.FantasyTeamSelections.Where(f => f.FantasyTeamId == fantasyTeamId).Select(f => f.FantasyPlayerId);
+            var fantasySelections = _coachBotContext.FantasyTeamSelections
+                .Where(f => f.FantasyTeamId == fantasyTeamId)
+                .Include(f => f.FantasyPlayer)
+                    .ThenInclude(f => f.Player)
+                .Include(f => f.FantasyPlayer)
+                    .ThenInclude(f => f.Team)
+                    .ThenInclude(f => f.BadgeImage)
+                .ToList();
+            var fantasySelectionIds = fantasySelections.Select(f => f.FantasyPlayerId);
 
-            return _coachBotContext.FantasyPlayerPhases
-                .Where(f => fantasySelections.Any(s => s == f.FantasyPlayerId))
+            var playerPerformances =_coachBotContext.FantasyPlayerPhases
+                .Where(f => fantasySelectionIds.Any(s => s == f.FantasyPlayerId))
                 .Where(f => fantasyPhaseId == null || f.TournamentPhaseId == fantasyPhaseId)
                 .Select(n => new
                 {
@@ -154,9 +162,29 @@ namespace CoachBot.Domain.Services
                             }
                         }
                     },
+                    IsFlex = fantasySelections.First(f => f.FantasyPlayerId == key.PlayerId.Value).IsFlex,
                     Points = s.Sum(c => c.Points),
                 })
                 .ToList();
+
+            var missingPlayers = fantasySelections
+                .Where(f => !playerPerformances.Any(p => p.FantasyPlayer.Id == f.FantasyPlayerId))
+                .Select(f => new FantasyPlayerPerformance()
+                {
+                    FantasyPlayer = new FantasyPlayer()
+                    {
+                        Rating = f.FantasyPlayer.Rating,
+                        PositionGroup = f.FantasyPlayer.PositionGroup,
+                        Player = f.FantasyPlayer.Player,
+                        PlayerId = f.FantasyPlayer.PlayerId,
+                        Team = f.FantasyPlayer.Team,
+                        TeamId = f.FantasyPlayer.TeamId
+                    },
+                    IsFlex = fantasySelections.First(s => s.FantasyPlayer.PlayerId == f.FantasyPlayer.PlayerId).IsFlex,
+                    Points = 0
+                }).ToList();
+
+            return playerPerformances.Concat(missingPlayers).ToList();
         }
 
         public void CreateFantasyTeam(FantasyTeam fantasyTeam, ulong steamId)

@@ -25,7 +25,7 @@ export class PlayerStatisticFilters {
     includeSubstituteAppearances = true;
     minimumSecondsPlayed?: number;
     matchOutcome?: MatchOutcomeType;
-    matchFormat?: MatchFormat = MatchFormat.EightVsEight;
+    matchFormat?: MatchFormat;
     dateFrom?: Date;
     dateTo?: Date;
     minimumRating?: number;

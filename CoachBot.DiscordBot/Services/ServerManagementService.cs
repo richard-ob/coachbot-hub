@@ -2,6 +2,7 @@
 using CoachBot.Domain.Services;
 using CoachBot.Extensions;
 using CoachBot.Model;
+using CoachBot.Shared.Helpers;
 using CoachBot.Shared.Model;
 using CoachBot.Tools;
 using Discord;
@@ -85,7 +86,7 @@ namespace CoachBot.Services
         public async Task ToggleSingleKeeper(int serverId, bool enable)
         {
             var server = _serverService.GetServer(serverId);
-            if (server == null || string.IsNullOrEmpty(server.RconPassword) || !server.Address.Contains(":")) return;
+            if (server == null || string.IsNullOrEmpty(server.RconPassword) || !ServerAddressHelper.IsValidAddress(server.Address)) return;
 
             INetworkSocket socket = new RconSocket();
             RconMessenger messenger = new RconMessenger(socket);
@@ -159,7 +160,7 @@ namespace CoachBot.Services
                  return DiscordEmbedHelper.GenerateEmbed($"Cannot execute command as the selected server seems to be in use.", ServiceResponseStatus.Failure);
             }
 
-            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
             {
                 try
                 {
@@ -183,7 +184,7 @@ namespace CoachBot.Services
 
         private async Task<string> GetMapListAsync(Server server)
         {
-            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
             {
                 try
                 {
@@ -214,7 +215,7 @@ namespace CoachBot.Services
         {
             var server = GetServerFromServerListItemId(serverListItemId, channelId);
 
-            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
             {
                 try
                 {
@@ -260,7 +261,7 @@ namespace CoachBot.Services
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
 
-            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
             {
                 try
                 {
@@ -360,7 +361,7 @@ namespace CoachBot.Services
                 _matchService.UpdateServerForMatch((int)matchup.MatchId, server.Id);
             }
 
-            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
             {
                 try
                 {
@@ -413,7 +414,7 @@ namespace CoachBot.Services
                 return;
             }
 
-            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
             {
                 try
                 {
@@ -440,7 +441,7 @@ namespace CoachBot.Services
         {
             var server = _serverService.GetServer(serverId);
 
-            if (!string.IsNullOrEmpty(server.RconPassword) && server.Address.Contains(":"))
+            if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
             {
                 try
                 {

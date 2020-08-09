@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Model;
+using CoachBot.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -46,9 +47,9 @@ namespace CoachBot.Domain.Services
 
         public void AddServer(Server server)
         {
-            if (!IsValidServerAddress(server.Address))
+            if (!ServerAddressHelper.IsValidAddress(server.Address))
             {
-                throw new Exception("The server address provided is not a valid IPv4 IP and port");
+                throw new Exception("The server address provided is not a valid IPv4 IP or hostname, and port");
             }
 
             _coachBotContext.Servers.Add(server);
@@ -79,13 +80,6 @@ namespace CoachBot.Domain.Services
             server.DeactivatedDate = DateTime.UtcNow;
             _coachBotContext.Servers.Update(server);
             _coachBotContext.SaveChanges();
-        }
-
-        private bool IsValidServerAddress(string ip)
-        {
-            var isMatch = Regex.Match(ip, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$");
-
-            return isMatch.Success;
         }
     }
 }

@@ -58,7 +58,7 @@ namespace CoachBot.Controllers
                 CountryId = serverDto.CountryId,
                 Name = serverDto.Name.Trim(),
                 RegionId = serverDto.RegionId,
-                RconPassword = serverDto.RconPassword.Trim()
+                RconPassword = serverDto.RconPassword?.Trim()
             };
 
             _serverService.AddServer(server);

@@ -32,7 +32,8 @@
                             <img *ngIf="tournamentGroupStanding.badgeImageUrl"
                                 [src]="tournamentGroupStanding.badgeImageUrl">
                         </td>
-                        <td class="team-result__score">{{tournamentGroupStanding.teamName}}</td>
+                        <td class="team-result__score" style="font-weight: 600;">{{tournamentGroupStanding.teamName}}
+                        </td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.matchesPlayed}}</td>
                         <td class="team-result__statu text-centers">{{tournamentGroupStanding.wins}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.draws}}</td>

@@ -48,7 +48,7 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
-            if (matchStatisticsDto.MatchData.Players.Any(p => p.Info.SteamId == "BOT"))
+            if (matchStatisticsDto.MatchData.Players.Any(p => p.Info.SteamId == "BOT" && p.Info.Name.ToLower().Contains("bot")))
             {
                 return BadRequest();
             }

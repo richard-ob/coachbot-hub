@@ -510,10 +510,15 @@ namespace CoachBot.Domain.Services
 
         private void RemoveMatchesForTournament(int tournamentId)
         {
-            var matches = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentGroup.TournamentStage.TournamentId == tournamentId);
-            if (matches != null & matches.Any())
+            var tournamentMatches = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentGroup.TournamentStage.TournamentId == tournamentId);
+            if (tournamentMatches != null & tournamentMatches.Any())
             {
-                _coachBotContext.TournamentGroupMatches.RemoveRange(matches);
+                _coachBotContext.TournamentGroupMatches.RemoveRange(tournamentMatches);
+                var matches = _coachBotContext.Matches.Where(t => t.TournamentId == tournamentId);
+                if (matches.Count() < 20)
+                {
+                    _coachBotContext.Matches.RemoveRange(matches);
+                }
             }
             _coachBotContext.TournamentPhases.RemoveRange(_coachBotContext.TournamentPhases.Where(t => t.TournamentStage.TournamentId == tournamentId));
             _coachBotContext.SaveChanges();

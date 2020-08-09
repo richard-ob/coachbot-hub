@@ -38,15 +38,15 @@ export class RecentMatchesComponent implements OnInit {
         private regionService: RegionService,
         private router: Router
     ) {
+    }
+
+    ngOnInit() {
         this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.playerId = this.playerId;
         this.filters.teamId = this.teamId;
         this.filters.tournamentId = this.tournamentId;
         this.filters.includePast = this.includePast;
         this.filters.includeUpcoming = this.includeUpcoming;
-    }
-
-    ngOnInit() {
         this.regionService.getRegions().subscribe((regions) => {
             const region = regions.find(r => r.regionId === this.filters.regionId);
             this.filters.matchFormat = region.matchFormat;

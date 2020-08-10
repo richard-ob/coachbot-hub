@@ -78,7 +78,7 @@ namespace CoachBot.Controllers
                 return NoContent();
             }
 
-            if (ServerAddressHelper.IsValidIpAddress(match.Server.Address) && match.Server.Address.Split(".")[0] != sourceAddress.Split(".")[0]) // INFO: We only compare the first group of the IP, as the IP may not match exactly in some instances
+            if (ServerAddressHelper.IsValidIpAddress(match.Server.Address) && ServerAddressHelper.IsValidIpAddressWithoutPort(sourceAddress) && match.Server.Address.Split(".")[0] != sourceAddress.Split(".")[0]) // INFO: We only compare the first group of the IP, as the IP may not match exactly in some instances
             {
                 _matchStatisticsService.SaveUnlinkedMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress);
 

@@ -24,6 +24,8 @@ namespace CoachBot.Domain.Model
 
         public bool IncludeUnpublished { get; set; } = false;
 
+        public bool IncludePlaceholders { get; set; } = false;
+
         public DateTime? DateFrom { get; set; }
 
         public DateTime? DateTo { get; set; }

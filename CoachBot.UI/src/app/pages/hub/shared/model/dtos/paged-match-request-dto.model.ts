@@ -21,6 +21,7 @@ export class MatchFilters {
     includeUpcoming = false;
     includePast = false;
     includeUnpublished = false;
+    includePlaceholders = false;
     dateFrom?: Date;
     dateTo?: Date;
 }

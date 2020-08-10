@@ -19,12 +19,13 @@ export class RecentMatchesComponent implements OnInit {
     @Input() tournamentId: number;
     @Input() includePast = true;
     @Input() includeUpcoming = false;
+    @Input() includePlaceholders = false;
     @Input() showFilters = true;
     @Input() verticalPadding = true;
+    @Input() sortOrder = 'DESC';
     filters = new MatchFilters();
     matchTypes = MatchTypes;
     matches: Match[];
-    sortOrder = 'DESC';
     sortBy = 'KickOff';
     currentPage = 1;
     totalPages: number;
@@ -47,6 +48,7 @@ export class RecentMatchesComponent implements OnInit {
         this.filters.tournamentId = this.tournamentId;
         this.filters.includePast = this.includePast;
         this.filters.includeUpcoming = this.includeUpcoming;
+        this.filters.includePlaceholders = this.includePlaceholders;
         this.regionService.getRegions().subscribe((regions) => {
             const region = regions.find(r => r.regionId === this.filters.regionId);
             this.filters.matchFormat = region.matchFormat;

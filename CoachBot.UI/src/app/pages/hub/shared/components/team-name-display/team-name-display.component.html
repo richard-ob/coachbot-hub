@@ -1,22 +1,24 @@
-<ng-container *ngIf="team">
+<ng-container>
     <ng-container *ngIf="isHomeTeam">
-        <strong class="clickable" [routerLink]="['/team-profile/', team.id]"
+        <strong *ngIf="team" class="clickable" [routerLink]="['/team-profile/', team.id]"
             [attr.title]="team.name">{{ useTeamCodes ? team.teamCode : team.name }}</strong>
+        <strong *ngIf="!team" title="To Be Confirmed">TBC</strong>
         <span class="pl-1">
-            <img *ngIf="team.badgeImage"
+            <img *ngIf="team && team.badgeImage"
                 [src]="team.badgeImage.extraSmallUrl" style="max-height: 20px">
-                <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                <img *ngIf="!team || !team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                     style="max-height: 20px">
         </span>
     </ng-container>
     <ng-container *ngIf="!isHomeTeam">
         <span class="pr-1">
-            <img *ngIf="team.badgeImage"
+            <img *ngIf="team && team.badgeImage"
                 [src]="team.badgeImage.extraSmallUrl" style="max-height: 20px">
-                <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                <img *ngIf="!team || !team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                     style="max-height: 20px">
         </span>
-        <strong class="clickable" [routerLink]="['/team-profile/', team.id]"
+        <strong *ngIf="team" class="clickable" [routerLink]="['/team-profile/', team.id]"
             [attr.title]="team.name">{{ useTeamCodes ? team.teamCode : team.name }}</strong>
+        <strong *ngIf="!team" title="To Be Confirmed">TBC</strong>
     </ng-container>
 </ng-container>

@@ -7,6 +7,8 @@ import { Tournament } from '@pages/hub/shared/model/tournament.model';
 import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 import { FantasyPlayerPerformance } from '@pages/hub/shared/model/fantasy-player-performance.model';
 import { FantasyTeamRank } from '@pages/hub/shared/model/fantasy-team-rank.model';
+import { TournamentService } from '@pages/hub/shared/services/tournament.service';
+import { TournamentPhase } from '@pages/hub/shared/model/tournament-phase.model';
 
 @Component({
     selector: 'app-fantasy-team-overview',
@@ -19,13 +21,15 @@ export class FantasyTeamOverviewComponent implements OnInit {
     fantasyTeam: FantasyTeam;
     fantasyPlayerPerformances: FantasyPlayerPerformance[];
     fantasyTeamRanking: FantasyTeamRank;
-    tournament: Tournament;
+    phases: TournamentPhase[];
+    currentPhase: number = undefined;
     positionGroups = PositionGroup;
     isLoading = true;
     isUpdating = false;
 
     constructor(
         private fantasyService: FantasyService,
+        private tournamentService: TournamentService,
         private route: ActivatedRoute,
         public readonly swalTargets: SwalPortalTargets
     ) { }
@@ -35,16 +39,36 @@ export class FantasyTeamOverviewComponent implements OnInit {
             this.fantasyTeamId = +params.get('id');
             this.fantasyService.getFantasyTeam(this.fantasyTeamId).subscribe(fantasyTeam => {
                 this.fantasyTeam = fantasyTeam;
-                this.fantasyService.getFantasyPlayerPeformances(this.fantasyTeamId).subscribe(playerPerformances => {
-                    this.fantasyPlayerPerformances = playerPerformances;
-                    this.fantasyService.getFantasyTeamRankings(this.fantasyTeam.tournamentId).subscribe(rankings => {
-                        if (rankings.some(r => r.fantasyTeamId === this.fantasyTeamId)) {
-                            this.fantasyTeamRanking = rankings.find(r => r.fantasyTeamId === this.fantasyTeamId);
-                        }
-                        this.isLoading = false;
+                this.tournamentService.getTournament(this.fantasyTeam.tournamentId).subscribe(tournament => {
+                    this.setPhases(tournament);
+                    this.fantasyService.getFantasyPlayerPeformances(this.fantasyTeamId).subscribe(playerPerformances => {
+                        this.fantasyPlayerPerformances = playerPerformances;
+                        this.fantasyService.getFantasyTeamRankings(this.fantasyTeam.tournamentId).subscribe(rankings => {
+                            if (rankings.some(r => r.fantasyTeamId === this.fantasyTeamId)) {
+                                this.fantasyTeamRanking = rankings.find(r => r.fantasyTeamId === this.fantasyTeamId);
+                            }
+                            this.isLoading = false;
+                        });
                     });
                 });
             });
+        });
+    }
+
+    setPhases(tournament: Tournament) {
+        let phases = [];
+        console.log(tournament);
+        for (const stage of tournament.tournamentStages) {
+            phases = phases.concat(stage.tournamentPhases);
+        }
+        this.phases = phases;
+    }
+
+    loadPhase() {
+        this.isUpdating = true;
+        this.fantasyService.getFantasyPlayerPeformances(this.fantasyTeamId, this.currentPhase).subscribe(playerPerformances => {
+            this.fantasyPlayerPerformances = playerPerformances;
+            this.isUpdating = false;
         });
     }
 }

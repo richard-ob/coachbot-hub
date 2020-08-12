@@ -8,7 +8,11 @@ namespace CoachBot.Domain.Model
 
         public Country Country { get; set; }
 
+        public double Rating { get; set; }
+
         public Team ClubTeam { get; set; }
+
+        public TeamRole ClubTeamRole { get; set; }
 
         public Team NationalTeam { get; set; }
 

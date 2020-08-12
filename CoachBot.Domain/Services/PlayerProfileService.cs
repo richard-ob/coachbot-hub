@@ -23,6 +23,7 @@ namespace CoachBot.Domain.Services
             var playerProfile = new PlayerProfile()
             {
                 Position = GetMostCommonPosition(playerId),
+                Rating = player.Rating,
                 ClubTeam = GetTeam(playerId, TeamType.Club),
                 NationalTeam = GetTeam(playerId, TeamType.National),
                 Country = player.Country,

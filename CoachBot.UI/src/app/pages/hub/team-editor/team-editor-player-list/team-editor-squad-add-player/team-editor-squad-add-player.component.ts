@@ -30,7 +30,10 @@ export class TeamEditorSquadAddPlayerComponent {
         this.playerAddFailure = false;
         this.teamService.getTeam(this.teamId).subscribe(team => {
             this.playerService.getPlayerProfile(this.player.id).subscribe(playerProfile => {
-                if (!playerProfile.clubTeam || team.teamType !== TeamType.Club || this.role === TeamRole.Loanee) {
+                if (!playerProfile.clubTeam ||
+                    team.teamType !== TeamType.Club ||
+                    (this.role === TeamRole.Loanee && playerProfile.clubTeamRole === TeamRole.Loaned)
+                ) {
                     const playerTeam: PlayerTeam = {
                         teamId: this.teamId,
                         teamRole: this.role,

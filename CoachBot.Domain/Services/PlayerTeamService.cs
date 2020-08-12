@@ -32,9 +32,9 @@ namespace CoachBot.Domain.Services
 
             var team = _dbContext.Teams.Single(t => t.Id == teamId);
 
-            if (team.TeamType == TeamType.Club && _dbContext.PlayerTeams.Any(pt => pt.LeaveDate == null && pt.PlayerId == playerId && pt.Team.TeamType == TeamType.Club))
+            if (team.TeamType == TeamType.Club && _dbContext.PlayerTeams.Any(pt => pt.LeaveDate == null && pt.PlayerId == playerId && pt.Team.TeamType == TeamType.Club && pt.TeamRole != TeamRole.Loaned))
             {
-                throw new Exception("A player cannot belong to two club teams at once");
+                throw new Exception("A player cannot belong to two club teams at once, unless a loan has been arranged (loan & loanee roles)");
             }
 
             if (_dbContext.PlayerTeams.Any(pt => pt.TeamId == teamId && pt.PlayerId == playerId && pt.LeaveDate == null))

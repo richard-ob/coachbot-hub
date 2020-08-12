@@ -68,6 +68,7 @@ namespace CoachBot.Domain.Services
             }
 
             team.FoundedDate = team.FoundedDate ?? DateTime.UtcNow;
+            team.Inactive = false;
             _dbContext.Teams.Add(team);
 
             var playerTeam = new PlayerTeam()
@@ -101,6 +102,15 @@ namespace CoachBot.Domain.Services
                     _discordService.DeleteEmote(existingTeam.BadgeEmote);
                 }
                 existingTeam.BadgeEmote = _discordService.CreateEmote(emoteName, badgeImage.Base64EncodedImage);
+            }
+
+            if (!existingTeam.Inactive && team.Inactive)
+            {
+                var playerTeams = _dbContext.PlayerTeams.Where(pt => pt.LeaveDate == null && pt.TeamId == existingTeam.Id);
+                foreach(var playerTeam in playerTeams)
+                {
+                    playerTeam.LeaveDate = DateTime.UtcNow;
+                }
             }
 
             existingTeam.BadgeImageId = team.BadgeImageId;

@@ -133,5 +133,8 @@
       }
     }
   },
-  "defaultProject": "coachbot-ui"
+  "defaultProject": "coachbot-ui",
+  "cli": {
+    "analytics": false
+  }
 }

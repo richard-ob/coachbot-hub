@@ -58,6 +58,10 @@
                                     <span *ngIf="!playerProfile.nationalTeam">None</span>
                                 </div>
                             </div>
+                            <div *ngIf="playerProfile.rating" class="player-info-details__item">
+                                <h6 class="player-info-details__title">Rating</h6>
+                                <div class="player-info-details__value">{{ playerProfile.rating }}</div>
+                            </div>
                             <div *ngIf="playingTime" class="player-info-details__item">
                                 <h6 class="player-info-details__title">Playing Time</h6>
                                 <div class="player-info-details__value">{{playingTime}}</div>

@@ -288,6 +288,11 @@ namespace CoachBot.Domain.Services
                 .Where(p => !activeOnly || p.LeaveDate == null)
                 .OrderBy(p => p.JoinDate);
 
+            if (activeOnly)
+            {
+                playerTeams = playerTeams.OrderBy(pt => pt.TeamRole).ThenBy(pt => pt.JoinDate);
+            }
+
             var allPlayerTeamStatisticTotals = new List<PlayerTeamStatisticsTotals>();
 
             foreach (var playerTeam in playerTeams.Take(40))

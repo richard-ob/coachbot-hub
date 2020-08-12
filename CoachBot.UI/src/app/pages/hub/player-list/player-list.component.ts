@@ -91,10 +91,8 @@ export class PlayerListComponent implements OnInit {
     setIncludePartialAppearances() {
         if (this.includePartialAppearances) {
             this.filters.minimumSecondsPlayed = null;
-            this.filters.includeSubstituteAppearances = true;
         } else {
             this.filters.minimumSecondsPlayed = 60 * 90;
-            this.filters.includeSubstituteAppearances = false;
         }
     }
 

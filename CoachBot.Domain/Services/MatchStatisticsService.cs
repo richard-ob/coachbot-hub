@@ -546,7 +546,7 @@ namespace CoachBot.Domain.Services
                  .Where(p => filters.IncludeSubstituteAppearances || !p.Substitute)
                  .Where(p => filters.MatchId == null || p.MatchId == filters.MatchId)
                  .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId)
-                 .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId)
+                 .Where(p => filters.TeamId == null || p.TeamId == filters.TeamId && p.Player.Teams.Any(pt => pt.TeamId == filters.TeamId))
                  .Where(p => filters.PositionId == null || p.PositionId == filters.PositionId)
                  .Where(p => string.IsNullOrWhiteSpace(filters.PositionName) || p.Position.Name == filters.PositionName)
                  .Where(p => filters.MinimumSecondsPlayed == null || p.SecondsPlayed > filters.MinimumSecondsPlayed)

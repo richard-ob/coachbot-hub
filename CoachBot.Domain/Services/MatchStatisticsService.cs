@@ -290,7 +290,7 @@ namespace CoachBot.Domain.Services
 
             if (activeOnly)
             {
-                playerTeams = playerTeams.OrderBy(pt => pt.TeamRole).ThenBy(pt => pt.JoinDate);
+                playerTeams = playerTeams.OrderByDescending(pt => pt.TeamRole).ThenBy(pt => pt.JoinDate);
             }
 
             var allPlayerTeamStatisticTotals = new List<PlayerTeamStatisticsTotals>();

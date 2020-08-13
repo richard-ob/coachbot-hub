@@ -8,7 +8,7 @@ namespace CoachBot.Shared.Extensions
     {
         public static ulong GetSteamId(this ClaimsPrincipal claimsPrincipal)
         {
-            var userIdClaim = claimsPrincipal.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier);
+            var userIdClaim = claimsPrincipal.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             if (userIdClaim == null)
             {
                 throw new UnauthorizedAccessException("No Steam ID claim found");

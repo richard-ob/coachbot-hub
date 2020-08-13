@@ -99,7 +99,7 @@ export class FantasyTeamEditorComponent implements OnInit {
     }
 
     private canAddToGroup(positionGroup: PositionGroup, isFlex: boolean) {
-        if (isFlex && this.fantasyTeam.fantasyTeamSelections.filter(f => f.isFlex).length < 4) {
+        if (isFlex && this.fantasyTeam.fantasyTeamSelections.filter(f => f.isFlex).length < 3) {
             return true;
         } else if (isFlex) {
             return false;

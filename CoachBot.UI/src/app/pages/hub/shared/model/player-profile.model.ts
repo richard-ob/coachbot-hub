@@ -5,6 +5,7 @@ import { TeamRole } from './team-role.enum';
 
 export interface PlayerProfile {
     name: string;
+    rating: number;
     country: Country;
     clubTeam: Team;
     clubTeamRole: TeamRole;

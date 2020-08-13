@@ -20,12 +20,16 @@ namespace CoachBot.Domain.Services
         {
             var player = _coachBotContext.Players.Include(p => p.Country).Single(p => p.Id == playerId);
 
+            var clubPlayerTeam = GetTeam(playerId, TeamType.Club);
+            var nationalPlayerTeam = GetTeam(playerId, TeamType.National);
+
             var playerProfile = new PlayerProfile()
             {
                 Position = GetMostCommonPosition(playerId),
                 Rating = player.Rating,
-                ClubTeam = GetTeam(playerId, TeamType.Club),
-                NationalTeam = GetTeam(playerId, TeamType.National),
+                ClubTeam = clubPlayerTeam.Team,
+                ClubTeamRole = clubPlayerTeam.TeamRole,
+                NationalTeam = nationalPlayerTeam.Team,
                 Country = player.Country,
                 Name = player.DisplayName
             };
@@ -33,7 +37,7 @@ namespace CoachBot.Domain.Services
             return playerProfile;
         }
 
-        private Team GetTeam(int playerId, TeamType teamType)
+        private PlayerTeam GetTeam(int playerId, TeamType teamType)
         {
             return _coachBotContext.PlayerTeams
                 .Where(pt => pt.PlayerId == playerId)
@@ -41,8 +45,8 @@ namespace CoachBot.Domain.Services
                 .Where(pt => pt.LeaveDate == null)
                 .Where(pt => pt.IsPending == false)
                 .OrderByDescending(pt => pt.JoinDate)
-                .Select(pt => pt.Team)
-                .Include(t => t.BadgeImage)
+                .Include(t => t.Team)
+                .ThenInclude(t => t.BadgeImage)
                 .FirstOrDefault();
         }
 

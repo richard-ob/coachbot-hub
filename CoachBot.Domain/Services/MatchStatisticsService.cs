@@ -375,6 +375,7 @@ namespace CoachBot.Domain.Services
             {
                 var team = _coachBotContext.Teams.Include(t => t.TeamMatchStatistics).Single(t => t.Id == teamId);
                 team.Form = team.TeamMatchStatistics.OrderByDescending(t => t.CreatedDate).Take(5).Select(m => m.MatchOutcome).ToList();
+                team.Form.Reverse();
             }
             _coachBotContext.SaveChanges();
         }

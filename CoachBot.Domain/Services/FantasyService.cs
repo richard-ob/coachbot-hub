@@ -271,7 +271,8 @@ namespace CoachBot.Domain.Services
                                     FantasyTeams.Name AS FantasyTeamName,
                                     Players.Id AS PlayerId,
                                     Players.Name AS PlayerName,
-                                    FantasyTeams.TournamentId, SUM(FantasyPlayerPhases.Points) AS Points,
+                                    FantasyTeams.TournamentId AS TournamentId,
+                                    ISNULL(SUM(FantasyPlayerPhases.Points), 0) AS Points,
                                     CONVERT(INT, DENSE_RANK() OVER(ORDER BY SUM(FantasyPlayerPhases.Points) DESC)) AS Rank
                             FROM dbo.FantasyTeams FantasyTeams
                             INNER JOIN dbo.FantasyTeamSelections FantasyTeamSelections
@@ -294,7 +295,8 @@ namespace CoachBot.Domain.Services
                                     FantasyTeams.Name AS FantasyTeamName,
                                     Players.Id AS PlayerId,
                                     Players.Name AS PlayerName,
-                                    FantasyTeams.TournamentId, SUM(FantasyPlayerPhases.Points) AS Points,
+                                    FantasyTeams.TournamentId AS TournamentId,
+                                    SUM(FantasyPlayerPhases.Points) AS Points,
                                     CONVERT(INT, DENSE_RANK() OVER(ORDER BY SUM(FantasyPlayerPhases.Points) DESC)) AS Rank
                             FROM dbo.FantasyTeams FantasyTeams
                             INNER JOIN dbo.FantasyTeamSelections FantasyTeamSelections
@@ -316,17 +318,17 @@ namespace CoachBot.Domain.Services
                     .FromSql($@"SELECT  Players.Id AS PlayerId,
                                         Players.Name AS PlayerName,
                                         FantasyPlayers.Rating,
-                                        SUM(FantasyPlayerPhases.Points) AS Points,
+                                        ISNULL(SUM(FantasyPlayerPhases.Points), 0) AS Points,
                                         CONVERT(INT, DENSE_RANK() OVER(ORDER BY SUM(FantasyPlayerPhases.Points) DESC)) AS Rank,
-                                        SUM(PlayerMatchStatistics.Goals) AS Goals,
-                                        SUM(PlayerMatchStatistics.Assists) AS Assists,
-                                        SUM(CASE WHEN PlayerMatchStatistics.GoalsConceded = 0 THEN 1 ELSE 0 END) AS CleanSheets,
-                                        SUM(PlayerMatchStatistics.OwnGoals) AS OwnGoals,
-                                        SUM(PlayerMatchStatistics.YellowCards) AS YellowCards,
-                                        SUM(PlayerMatchStatistics.RedCards) AS RedCards,
-                                        SUM(PlayerMatchStatistics.KeeperSaves) AS KeeperSaves,
-                                        SUM(PlayerMatchStatistics.GoalsConceded) AS GoalsConceded,
-                                        SUM(PlayerMatchStatistics.SecondsPlayed) AS SecondsPlayed
+                                        ISNULL(SUM(PlayerMatchStatistics.Goals), 0) AS Goals,
+                                        ISNULL(SUM(PlayerMatchStatistics.Assists), 0)  AS Assists,
+                                        ISNULL(SUM(CASE WHEN PlayerMatchStatistics.GoalsConceded = 0 THEN 1 ELSE 0 END), 0)  AS CleanSheets,
+                                        ISNULL(SUM(PlayerMatchStatistics.OwnGoals), 0)  AS OwnGoals,
+                                        ISNULL(SUM(PlayerMatchStatistics.YellowCards), 0)  AS YellowCards,
+                                        ISNULL(SUM(PlayerMatchStatistics.RedCards), 0)  AS RedCards,
+                                        ISNULL(SUM(PlayerMatchStatistics.KeeperSaves), 0)  AS KeeperSaves,
+                                        ISNULL(SUM(PlayerMatchStatistics.GoalsConceded), 0) AS GoalsConceded,
+                                        ISNULL(SUM(PlayerMatchStatistics.SecondsPlayed), 0) AS SecondsPlayed
                                 FROM dbo.FantasyPlayers FantasyPlayers
                                 INNER JOIN dbo.Players Players
                                     ON Players.Id = FantasyPlayers.PlayerId

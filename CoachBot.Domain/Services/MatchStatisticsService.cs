@@ -409,6 +409,10 @@ namespace CoachBot.Domain.Services
                             Substitute = matchDataPlayer.WasPlayerSubstitute(teamType, position)
                         };
                         playerPositionMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetPlayerTotals(teamType, position));
+                        if (position.ToUpper() != "GK")
+                        {
+                            playerPositionMatchStatistics.GoalsConceded = match.MatchStatistics.MatchData.GetPlayerPositionGoalsConceded(matchDataPlayer, teamType, position);
+                        }
                         if (playerPositionMatchStatistics.SecondsPlayed > 0)
                         {
                             _coachBotContext.PlayerPositionMatchStatistics.Add(playerPositionMatchStatistics);
@@ -427,6 +431,7 @@ namespace CoachBot.Domain.Services
                         Substitute = matchDataPlayer.WasPlayerSubstitute(teamType)
                     };
                     playerMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetMatchStatisticsPlayerTotal());
+                    playerMatchStatistics.GoalsConceded = match.MatchStatistics.MatchData.GetPlayerGoalsConceded(matchDataPlayer, teamType);
                     if (playerMatchStatistics.SecondsPlayed > 0)
                     {
                         _coachBotContext.PlayerMatchStatistics.Add(playerMatchStatistics);

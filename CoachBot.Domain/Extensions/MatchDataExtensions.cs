@@ -114,6 +114,27 @@ namespace CoachBot.Domain.Extensions
             }
         }
 
+        private static IEnumerable<MatchEvent> GetGoalConcededEvents(this MatchData matchData, string team)
+        {
+            return matchData.MatchEvents.Where(m => (m.Event == MatchEventTypes.Goal && m.Team != team) || (m.Event == MatchEventTypes.OwnGoal && m.Team == team));
+        }
+
+        public static int GetPlayerPositionGoalsConceded(this MatchData matchData, MatchDataPlayer matchDataPlayer, string team, string position)
+        {
+            var oppositeTeamGoalEvents = matchData.GetGoalConcededEvents(team);
+            var goalsConceded = oppositeTeamGoalEvents.Where(m => matchDataPlayer.MatchPeriodData.Any(p => p.Info.Team == team && p.Info.Position == position && p.Info.StartSecond < m.Second && p.Info.EndSecond > m.Second)).Count();
+
+            return goalsConceded;
+        }
+
+        public static int GetPlayerGoalsConceded(this MatchData matchData, MatchDataPlayer matchDataPlayer, string team)
+        {
+            var oppositeTeamGoalEvents = matchData.GetGoalConcededEvents(team);
+            var goalsConceded = oppositeTeamGoalEvents.Where(m => matchDataPlayer.MatchPeriodData.Any(p => p.Info.Team == team && p.Info.StartSecond < m.Second && p.Info.EndSecond > m.Second)).Count();
+
+            return goalsConceded;
+        }
+
         public static bool IsValid(this MatchData matchData, Match match, bool manualSave)
         {
             if (manualSave)

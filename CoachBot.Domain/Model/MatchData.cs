@@ -8,7 +8,17 @@ namespace CoachBot.Domain.Model
         public MatchDataMatchInfo MatchInfo { get; set; }
         public List<MatchDataTeam> Teams { get; set; }
         public List<MatchDataPlayer> Players { get; set; }
-        public List<object> MatchEvents { get; set; }
+        public List<MatchEvent> MatchEvents { get; set; }
+    }
+
+    public class MatchEvent
+    {
+        public string Event { get; set; } // See MatchEventTypes constants
+        public string Period { get; set; } 
+        public string Player1SteamId { get; set; }
+        public string Player2SteamId { get; set; }
+        public int Second { get; set; }
+        public string Team { get; set; }
     }
 
     public class MatchDataMatchInfo
@@ -114,5 +124,38 @@ namespace CoachBot.Domain.Model
         Possession,
         DistanceCovered,
         KeeperSavesCaught
+    }
+
+    public static class MatchEventTypes
+    {
+        public const string Goal = "GOAL";
+        public const string OwnGoal = "OWN GOAL";
+        public const string FreeKick = "FREE KICK";
+        public const string GoalKick = "GOAL KICK";
+        public const string KickOff = "KICK-OFF";
+        public const string CornerKick = "CORNER KICK";
+        public const string ThrowIn = "THROW-IN";
+        public const string Foul = "FOUL";
+        public const string Penalty = "PENALTY";
+        public const string MatchEnd = "MATCH END";
+        public const string ExtraTime = "EXTRA TIME";
+        public const string Penalties = "PENALTIES";
+        public const string WarmUp = "WARM-UP";
+        public const string Offside = "OFFSIDE";
+        public const string YellowCard = "YELLOW CARD";
+        public const string SecondYellow = "SECOND YELLOW";
+        public const string RedCard = "RED CARD";
+        public const string Assist = "ASSIST";
+        public const string DoubleTouch = "DOUBLE TOUCH";
+        public const string HalfTime = "HALF-TIME";
+        public const string Save = "SAVE";
+        public const string Dribble = "DRIBBLE";
+        public const string Pass = "PASS";
+        public const string Interception = "INTERCEPTION";
+        public const string Timeout = "TIMEOUT";
+        public const string TimeoutPending = "TIMEOUT PENDING";
+        public const string Miss = "MISS";
+        public const string Advantage = "ADVANTAGE";
+        public const string Celebration = "CELEBRATION";
     }
 }

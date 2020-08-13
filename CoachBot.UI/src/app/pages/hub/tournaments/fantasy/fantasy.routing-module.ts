@@ -4,12 +4,14 @@ import { FantasyTeamEditorComponent } from './fantasy-team-editor/fantasy-team-e
 import { FantasyTeamManagerComponent } from './fantasy-team-manager/fantasy-team-manager.component';
 import { FantasyOverviewComponent } from './fantasy-overview/fantasy-overview.component';
 import { FantasyTeamOverviewComponent } from './fantasy-team-overview/fantasy-team-overview.component';
+import { AuthGuard } from '@core/guards/auth.guard';
 
 const routes: Routes = [
     {
         path: 'fantasy',
         component: FantasyTeamManagerComponent,
-        data: { title: 'Fantasy Manager' }
+        data: { title: 'Fantasy Manager' },
+        canActivate: [AuthGuard]
     },
     {
         path: 'fantasy/:tournamentId',
@@ -19,7 +21,8 @@ const routes: Routes = [
     {
         path: 'fantasy-editor/:id',
         component: FantasyTeamEditorComponent,
-        data: { title: 'Fantasy Team Editor' }
+        data: { title: 'Fantasy Team Editor' },
+        canActivate: [AuthGuard]
     },
     {
         path: 'fantasy-overview/:id',

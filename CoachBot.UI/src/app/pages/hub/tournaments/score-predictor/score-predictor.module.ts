@@ -22,6 +22,7 @@ import {
 } from './score-predictor-hub/score-predictor-hub-current-tournaments/score-predictor-hub-current-tournaments.component';
 import { ScorePredictorSpotlightComponent } from './score-predictor-hub/score-predictor-spotlight/score-predictor-spotlight.component';
 import { TeamNameDisplayModule } from '@pages/hub/shared/components/team-name-display/team-name-display.module';
+import { CoreModule } from '@core/core.module';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import { TeamNameDisplayModule } from '@pages/hub/shared/components/team-name-di
         ScorePredictorSpotlightComponent
     ],
     imports: [
+        CoreModule,
         CommonModule,
         RouterModule,
         FormsModule,

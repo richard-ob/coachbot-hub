@@ -30,6 +30,7 @@ import { PreviousTournamentsComponent } from '@pages/hub/tournaments/previous-to
 import { MediaComponent } from '@pages/media/media.component';
 import { TroubleshootingComponent } from '@pages/troubleshooting/troubleshooting.component';
 import { BotManualComponent } from '@pages/bot-manual/bot-manual.component';
+import { AuthGuard } from '@core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -84,12 +85,14 @@ const routes: Routes = [
   {
     path: 'server-manager',
     component: ServerManagerComponent,
-    data: { title: 'Server Manager' }
+    data: { title: 'Server Manager' },
+    canActivate: [AuthGuard]
   },
   {
     path: 'region-manager',
     component: RegionManagerComponent,
-    data: { title: 'Region Manager' }
+    data: { title: 'Region Manager' },
+    canActivate: [AuthGuard]
   },
   {
     path: 'recent-matches',
@@ -114,12 +117,14 @@ const routes: Routes = [
   {
     path: 'edit-profile',
     component: ProfileEditorComponent,
-    data: { title: 'Edit Profile' }
+    data: { title: 'Edit Profile' },
+    canActivate: [AuthGuard]
   },
   {
     path: 'team-editor-list',
     component: TeamEditorListComponent,
-    data: { title: 'Manage Teams' }
+    data: { title: 'Manage Teams' },
+    canActivate: [AuthGuard]
   },
   {
     path: 'teams',
@@ -133,7 +138,8 @@ const routes: Routes = [
   {
     path: 'tournament-creator',
     component: TournamentCreatorComponent,
-    data: { title: 'Tournament Creator' }
+    data: { title: 'Tournament Creator' },
+    canActivate: [AuthGuard]
   },
   {
     path: 'tournament-editor/:id',
@@ -153,12 +159,14 @@ const routes: Routes = [
   {
     path: 'organisations',
     component: OrganisationsComponent,
-    data: { title: 'Organisations' }
+    data: { title: 'Organisations' },
+    canActivate: [AuthGuard]
   },
   {
     path: 'organisation-editor/:id',
     component: OrganisationEditorComponent,
-    data: { title: 'Organisation Editor' }
+    data: { title: 'Organisation Editor' },
+    canActivate: [AuthGuard]
   },
   {
     path: 'matchmaking',
@@ -167,7 +175,8 @@ const routes: Routes = [
   {
     path: 'match-editor/:id',
     component: MatchEditorComponent,
-    data: { title: 'Organisations' }
+    data: { title: 'Organisations' },
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',

@@ -4,6 +4,7 @@ import { ScorePredictorComponent } from './score-predictor.component';
 import { ScorePredictorHubComponent } from './score-predictor-hub/score-predictor-hub.component';
 import { ScorePredictorPlayerTournamentComponent } from './score-predictor-player-tournament/score-predictor-player-tournament.component';
 import { ScorePredictorPlayerHistoryComponent } from './score-predictor-player-history/score-predictor-player-history.component';
+import { AuthGuard } from '@core/guards/auth.guard';
 
 const routes: Routes = [
     {
@@ -14,7 +15,8 @@ const routes: Routes = [
     {
         path: 'tournament/:id/score-predictor',
         component: ScorePredictorComponent,
-        data: { title: 'Score Predictor' }
+        data: { title: 'Score Predictor' },
+        canActivate: [AuthGuard]
     },
     {
         path: 'tournament/:tournamentId/score-predictor/player/:playerId',

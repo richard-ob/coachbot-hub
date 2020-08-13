@@ -5,12 +5,14 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UnauthorizedInterceptor } from './interceptors/unauthorized.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { TabNavMobileComponent } from './components/tab-nav-mobile/tab-nav-mobile.component';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
     imports: [
         CommonModule
     ],
     providers: [
+        AuthGuard,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: RequestOptionsInterceptor,

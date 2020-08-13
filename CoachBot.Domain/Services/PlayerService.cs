@@ -145,6 +145,8 @@ namespace CoachBot.Domain.Services
             existingPlayer.CountryId = player.CountryId;
             existingPlayer.DisableDMNotifications = player.DisableDMNotifications;
             existingPlayer.PlayingSince = player.PlayingSince;
+            existingPlayer.Rating = player.Rating;
+
             _coachBotContext.Players.Update(player);
             _coachBotContext.SaveChanges();
         }

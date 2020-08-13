@@ -13,7 +13,7 @@
                         <div class="player-info__title player-info__title--desktop">
                             <h1 class="player-info__name">
                                 <span class="player-info__first-name">{{player.name}} 
-                                    <a *ngIf="currentPlayer && player && currentPlayer.id === player.id" class="btn btn-primary-inverse btn-xs ml-2" routerLink="/edit-profile">Edit Profile</a>
+                                    <a *ngIf="currentPlayer && currentPlayer.id === player.id" class="btn btn-primary-inverse btn-xs ml-2" routerLink="/edit-profile">Edit Profile</a>
                                 </span>
                             </h1>
                         </div>
@@ -37,7 +37,11 @@
                             </div>
                             <div *ngIf="playerProfile.rating" class="player-info-details__item">
                                 <h6 class="player-info-details__title">Rating</h6>
-                                <div class="player-info-details__value">{{ playerProfile.rating }}</div>
+                                <div class="player-info-details__value">{{ player.rating }}
+                                    <a *ngIf="currentPlayer && currentPlayer.hubRole === playerHubRoles.Owner"
+                                        class="btn btn-primary-inverse btn-xs ml-2"
+                                        (click)="editRatingModal.fire()">Edit Rating</a>
+                                </div>
                             </div>
                             <div class="player-info-details__item player-info-details__item--college">
                                 <h6 class="player-info-details__title">Club Team</h6>
@@ -100,4 +104,21 @@
     <div class="py-4">
         <router-outlet></router-outlet>
     </div>
+    <swal #editRatingModal (confirm)="updateRating()">
+        <ng-container *swalPortal="swalTargets.title">
+            <h5>Update Rating</h5>
+        </ng-container>
+        <form *swalPortal>
+            <div class="form-group">
+                <label>Rating</label>
+                <input type="number" class="form-control" name="rating" [(ngModel)]="player.rating">
+            </div>
+        </form>
+        <ng-container *swalPortal="swalTargets.cancelButton">
+            Cancel
+        </ng-container>
+        <ng-container *swalPortal="swalTargets.confirmButton">
+            Save
+        </ng-container>
+    </swal>
 </ng-container>

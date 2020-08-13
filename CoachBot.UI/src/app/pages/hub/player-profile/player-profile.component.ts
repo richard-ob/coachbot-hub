@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Player } from '../shared/model/player.model';
 import { PlayerService } from '../shared/services/player.service';
 import { ActivatedRoute } from '@angular/router';
 import { SteamService } from '../../../shared/services/steam.service.';
 import { SteamUserProfile } from '../shared/model/steam-user-profile.model';
-import * as humanizeDuration from 'humanize-duration';
 import { PlayerProfile } from '../shared/model/player-profile.model';
 import ColourUtils from '@shared/utilities/colour-utilities';
+import { SwalPortalTargets, SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import * as humanizeDuration from 'humanize-duration';
+import { PlayerHubRole } from '../shared/model/player-hub-role.enum';
 
 /*
     IDEAS:
@@ -20,17 +22,20 @@ import ColourUtils from '@shared/utilities/colour-utilities';
 })
 export class PlayerProfileComponent implements OnInit {
 
+    @ViewChild('editRatingModal', { static: false }) editServerModal: SwalComponent;
     currentPlayer: Player;
     player: Player;
     playerProfile: PlayerProfile;
     steamUserProfile: SteamUserProfile;
+    playerHubRoles = PlayerHubRole;
     playingTime: string;
     isLoading = true;
 
     constructor(
         private playerService: PlayerService,
         private steamService: SteamService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public readonly swalTargets: SwalPortalTargets
     ) { }
 
     ngOnInit() {
@@ -73,5 +78,12 @@ export class PlayerProfileComponent implements OnInit {
         const gradientSrc =
             'linear-gradient(90deg,' + ColourUtils.hexToRgbA(colour, 0.6) + ',' + ColourUtils.hexToRgbA(colour, 0.3) + ')';
         return gradientSrc;
+    }
+
+    updateRating() {
+        this.isLoading = true;
+        this.playerService.updatePlayerRating(this.player).subscribe(() => {
+            this.isLoading = false;
+        });
     }
 }

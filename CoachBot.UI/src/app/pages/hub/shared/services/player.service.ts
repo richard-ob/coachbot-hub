@@ -103,6 +103,10 @@ export class PlayerService {
         return this.http.post<void>(`${environment.apiUrl}/api/player/@me`, player);
     }
 
+    updatePlayerRating(player: Player) {
+        return this.http.post<void>(`${environment.apiUrl}/api/player/update-rating`, player);
+    }
+
     updateSteamId(steamId: string): Observable<void> {
         const steamIdDto = {
             steamId

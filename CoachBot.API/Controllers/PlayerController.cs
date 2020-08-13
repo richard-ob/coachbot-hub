@@ -67,7 +67,27 @@ namespace CoachBot.Controllers
             player.CountryId = playerProfileUpdateDto.CountryId;
             player.DisableDMNotifications = playerProfileUpdateDto.DisableDMNotifications;
             player.PlayingSince = playerProfileUpdateDto.PlayingSince;
-            player.Positions = playerProfileUpdateDto.Positions.ToList();
+            // player.Positions = playerProfileUpdateDto.Positions.ToList(); // TODO: Decide if to revive this
+
+            _playerService.UpdatePlayer(player);
+
+            return Ok();
+        }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HttpPost]
+        [Route("update-rating")]
+        public IActionResult UpdatePlayerRating([FromBody]Player playerRatingUpdateDto)
+        {
+            var player = _playerService.GetPlayer(playerRatingUpdateDto.Id);
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            // TODO: Switch to AutoMapper
+            player.Rating = playerRatingUpdateDto.Rating;
 
             _playerService.UpdatePlayer(player);
 

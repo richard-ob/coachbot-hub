@@ -106,11 +106,11 @@ namespace CoachBot.Domain.Extensions
 
             if (matchDataTeamType == MatchDataTeamType.Home)
             {
-                return (homePossession / totalPosession) * 100;
+                return (int)(((float)homePossession / (float)totalPosession) * 100);
             }
             else
             {
-                return (awayPossession / totalPosession) * 100;
+                return (int)(((float)awayPossession / (float)totalPosession) * 100);
             }
         }
 

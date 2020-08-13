@@ -398,14 +398,15 @@ namespace CoachBot.Domain.Services
                 throw new Exception("There are no teams added to this tournament yet");
             }
 
-            if (_coachBotContext.FantasyPlayers.Any(t => t.TournamentId == tournamentId))
-            {
-                throw new Exception("Fantasy season already seeded");
-            }
+            var players = _coachBotContext.Players
+                .Include(p => p.Teams)
+                .Where(p => 
+                    p.Rating > 0 &&
+                    p.Teams.Any(pt => pt.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)) &&
+                    !_coachBotContext.FantasyPlayers.Any(fp => fp.PlayerId == p.Id && fp.TournamentId == tournamentId)
+                );
 
-            foreach (var player in _coachBotContext.Players.Include(p => p.Teams).Where(p => p.Rating > 0 && p.Teams.Any(pt => pt.IsCurrentTeam
-                 && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)))
-            )
+            foreach (var player in players)
             {
                 var fantasyPlayer = new FantasyPlayer()
                 {
@@ -417,6 +418,7 @@ namespace CoachBot.Domain.Services
                 };
                 _coachBotContext.FantasyPlayers.Add(fantasyPlayer);
             }
+
             _coachBotContext.SaveChanges();
         }
 

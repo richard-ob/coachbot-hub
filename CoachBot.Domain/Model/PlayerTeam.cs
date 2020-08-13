@@ -21,7 +21,7 @@ namespace CoachBot.Domain.Model
 
         public TeamRole TeamRole { get; set; } = TeamRole.Player;
 
-        public bool IsCurrentTeam => LeaveDate == null;
+        public bool IsCurrentTeam => LeaveDate == null && TeamRole != TeamRole.Loaned;
 
         public bool IsPending { get; set; } = true;
 

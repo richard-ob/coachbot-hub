@@ -68,10 +68,10 @@
                     </label>
                 </li>-->
                 <li class="team-result-filter__item">
-                    <label class="checkbox checkbox-inline mr-2">
-                        <input [(ngModel)]="includePartialAppearances" type="checkbox" name="includePartialAppearances"
-                            (ngModelChange)="setIncludePartialAppearances()">
-                        <span class="d-none d-xxl-inline">Include</span> Partial Appearances
+                    <label class="checkbox checkbox-inline mr-2" for="includePartialAppearances">
+                        <input [(ngModel)]="includePartialAppearances" type="checkbox" id="includePartialAppearances"
+                            name="includePartialAppearances" (ngModelChange)="setIncludePartialAppearances()">
+                        Include Partial Apps
                         <span class="checkbox-indicator"></span>
                     </label>
                 </li>

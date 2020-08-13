@@ -276,10 +276,10 @@ namespace CoachBot.Domain.Services
                             FROM dbo.FantasyTeams FantasyTeams
                             INNER JOIN dbo.FantasyTeamSelections FantasyTeamSelections
                                 ON FantasyTeams.Id = FantasyTeamSelections.FantasyTeamId
-                            INNER JOIN dbo.FantasyPlayerPhases FantasyPlayerPhases
-                                ON FantasyPlayerPhases.FantasyPlayerId = FantasyTeamSelections.FantasyPlayerId
                             INNER JOIN dbo.Players Players
                                 ON Players.Id = FantasyTeams.PlayerId
+                            LEFT OUTER JOIN dbo.FantasyPlayerPhases FantasyPlayerPhases
+                                ON FantasyPlayerPhases.FantasyPlayerId = FantasyTeamSelections.FantasyPlayerId
                             WHERE FantasyTeams.TournamentId = {tournamentId}
                             GROUP BY FantasyTeams.Id, FantasyTeams.Name, FantasyTeams.TournamentId, Players.Id, Players.Name
                             ORDER BY SUM(POINTS) DESC")
@@ -328,11 +328,11 @@ namespace CoachBot.Domain.Services
                                         SUM(PlayerMatchStatistics.GoalsConceded) AS GoalsConceded,
                                         SUM(PlayerMatchStatistics.SecondsPlayed) AS SecondsPlayed
                                 FROM dbo.FantasyPlayers FantasyPlayers
-                                INNER JOIN dbo.FantasyPlayerPhases FantasyPlayerPhases
-                                    ON FantasyPlayerPhases.FantasyPlayerId = FantasyPlayers.Id
                                 INNER JOIN dbo.Players Players
                                     ON Players.Id = FantasyPlayers.PlayerId
-                                INNER JOIN dbo.PlayerMatchStatistics PlayerMatchStatistics
+                                LEFT OUTER JOIN dbo.FantasyPlayerPhases FantasyPlayerPhases
+                                    ON FantasyPlayerPhases.FantasyPlayerId = FantasyPlayers.Id
+                                LEFT OUTER JOIN dbo.PlayerMatchStatistics PlayerMatchStatistics
                                     ON PlayerMatchStatistics.Id = FantasyPlayerPhases.PlayerMatchStatisticsId
                                 WHERE FantasyPlayers.TournamentId = {tournamentId}
                                 GROUP BY Players.Id, Players.Name, FantasyPlayers.Rating

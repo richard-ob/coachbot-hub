@@ -12,7 +12,7 @@ namespace CoachBot.Domain.Model
 
         public Team ClubTeam { get; set; }
 
-        public TeamRole ClubTeamRole { get; set; }
+        public TeamRole? ClubTeamRole { get; set; }
 
         public Team NationalTeam { get; set; }
 

@@ -27,9 +27,9 @@ namespace CoachBot.Domain.Services
             {
                 Position = GetMostCommonPosition(playerId),
                 Rating = player.Rating,
-                ClubTeam = clubPlayerTeam.Team,
-                ClubTeamRole = clubPlayerTeam.TeamRole,
-                NationalTeam = nationalPlayerTeam.Team,
+                ClubTeam = clubPlayerTeam?.Team,
+                ClubTeamRole = clubPlayerTeam?.TeamRole,
+                NationalTeam = nationalPlayerTeam?.Team,
                 Country = player.Country,
                 Name = player.DisplayName
             };

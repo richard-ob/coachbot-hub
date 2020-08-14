@@ -12,6 +12,7 @@ export interface Player {
     steamID: string;
     countryId: number;
     country: Country;
+    rating: number;
     disableDMNotifications: boolean;
     playerStatisticsTotalsId: number;
     playerStatisticsTotals: any;

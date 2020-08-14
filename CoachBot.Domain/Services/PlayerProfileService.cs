@@ -50,12 +50,13 @@ namespace CoachBot.Domain.Services
                 .FirstOrDefault();
         }
 
-        public Position GetMostCommonPosition(int playerId)
+        public Position GetMostCommonPosition(int playerId, int? teamId = null)
         {
             var topPosition = _coachBotContext.PlayerPositionMatchStatistics
                  .AsNoTracking()
                  .Where(p => p.PlayerId == playerId)
                  .Where(p => p.Match.KickOff > DateTime.UtcNow.AddMonths(-6))
+                 .Where(p => teamId == null || p.TeamId == teamId)
                  .GroupBy(p => new { p.Position.Id, p.Position.Name })
                  .Select(p => new PositionAppearances()
                  {

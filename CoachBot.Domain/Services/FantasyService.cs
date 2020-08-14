@@ -408,13 +408,14 @@ namespace CoachBot.Domain.Services
 
             foreach (var player in players)
             {
+                var teamId = player.Teams.Where(t => t.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tg => tg.TeamId == t.TeamId && tg.TournamentGroup.TournamentStage.TournamentId == tournamentId)).Select(t => t.TeamId).First();
                 var fantasyPlayer = new FantasyPlayer()
                 {
                     TournamentId = tournamentId,
                     PlayerId = player.Id,
-                    PositionGroup = GetPositionGroup(player.Id),
+                    PositionGroup = GetPositionGroup(player.Id, teamId),
                     Rating = player.Rating,
-                    TeamId = player.Teams.Where(t => t.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tg => tg.TeamId == t.TeamId && tg.TournamentGroup.TournamentStage.TournamentId == tournamentId)).Select(t => t.TeamId).First()
+                    TeamId = teamId
                 };
                 _coachBotContext.FantasyPlayers.Add(fantasyPlayer);
             }
@@ -422,9 +423,9 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
-        private PositionGroup GetPositionGroup(int playerId)
+        private PositionGroup GetPositionGroup(int playerId, int teamId)
         {
-            var position = _playerProfileService.GetMostCommonPosition(playerId);
+            var position = _playerProfileService.GetMostCommonPosition(playerId, teamId);
 
             if (position == null)
             {

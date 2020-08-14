@@ -22,7 +22,8 @@
                 <tr *ngFor="let fantasyPlayer of fantasyPlayerRankings"
                     [class.fantasy-team-current-player]="fantasyPlayer.playerId === currentPlayerId">
                     <td class="text-center">{{fantasyPlayer.rank}}</td>
-                    <td><a [routerLink]="['/player-profile/', fantasyPlayer.playerId]">{{fantasyPlayer.playerName}}</a>
+                    <td class="text-strong"><a
+                            [routerLink]="['/player-profile/', fantasyPlayer.playerId]">{{fantasyPlayer.playerName}}</a>
                     </td>
                     <td class="text-center">{{fantasyPlayer.points}}</td>
                     <td class="text-center">{{fantasyPlayer.goals}}</td>

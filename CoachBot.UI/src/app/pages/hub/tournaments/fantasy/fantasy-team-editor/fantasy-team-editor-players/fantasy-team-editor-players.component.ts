@@ -20,6 +20,7 @@ export class FantasyTeamEditorPlayersComponent implements OnChanges, OnInit {
     fantasyPlayers: FantasyPlayer[];
     teams: Team[];
     ratingRange: number[] = [0, 10];
+    addAsFlex = false;
     positionGroups = PositionGroup;
     currentPage = 1;
     totalPages: number;
@@ -62,8 +63,8 @@ export class FantasyTeamEditorPlayersComponent implements OnChanges, OnInit {
         });
     }
 
-    selectFantasyPlayer(fantasyPlayer: FantasyPlayer, isFlex: boolean) {
-        this.playerSelected.emit([fantasyPlayer, isFlex]);
+    selectFantasyPlayer(fantasyPlayer: FantasyPlayer) {
+        this.playerSelected.emit([fantasyPlayer, this.addAsFlex]);
     }
 
     setRatingRange() {

@@ -69,9 +69,10 @@
                         <th *ngIf="teamId"></th>
                         <th></th>
                         <th class="team-result__vs text-left" colspan="2">Match</th>
-                        <th class="team-result__status">Match Type</th>
+                        <th *ngIf="!filters.tournamentId" class="team-result__status">Match Type</th>
                         <th class="team-result__status text-center">Match Format</th>
                         <th class="team-result__ball-posession text-center">Location</th>
+                        <th *ngIf="filters.tournamentId">Venue</th>
                         <th class="team-result__game-overview text-center">Match Overview</th>
                     </tr>
                 </thead>
@@ -103,7 +104,7 @@
                             <app-team-name [team]="match.teamAway" [isHomeTeam]="false">
                             </app-team-name>
                         </td>
-                        <td class="team-result__status text-nowrap">
+                        <td *ngIf="!filters.tournamentId" class="team-result__status text-nowrap">
                             <ng-container [ngSwitch]="match.matchType">
                                 <span *ngSwitchCase="matchTypes.UnrankedFriendly">Unranked Friendly</span>
                                 <span *ngSwitchCase="matchTypes.RankedFriendly">Ranked Friendly</span>
@@ -117,6 +118,10 @@
                             <img *ngIf="match.server && match.server.country"
                                 src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png"
                                 title="{{match.server.country.name}}">
+                        </td>
+                        <td *ngIf="filters.tournamentId" class="team-result__status text-nowrap">
+                            <a *ngIf="match.server">{{match.server.name}}</a>
+                            <span *ngIf="!match.server" class="text-muted">TBC</span>
                         </td>
                         <td class="team-result__game-overview text-center">
                             <a *ngIf="match.matchStatistics" [routerLink]="['/match-overview', match.id]"

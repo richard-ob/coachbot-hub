@@ -1,7 +1,7 @@
 <ng-container *ngIf="!isLoading; else spinner">
     <div class="card" [class.card--has-table]="leaderboard && leaderboard.length">
         <div class="card__header">
-            <h4>Global Leaderboard</h4>
+            <h4>Global Prediction Leaderboard</h4>
         </div>
         <div class="card__content card--overflow-40 table-responsive">
             <app-spinner *ngIf="!leaderboard"></app-spinner>

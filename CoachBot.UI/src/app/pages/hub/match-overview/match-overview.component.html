@@ -35,7 +35,8 @@
                         <div id="match-meta-data" class="match-meta-data row mb-4">
                             <div id="match-meta-data-type" class="col-md-4 d-none d-md-block text-left">
                                 <ng-container *ngIf="match.tournament; else matchType">
-                                    <a [routerLink]="['/tournament/', match.tournamentId]">{{match.tournament.name}}</a>
+                                    <a class="text-white"
+                                        [routerLink]="['/tournament/', match.tournamentId]">{{match.tournament.name}}</a>
                                 </ng-container>
                                 <ng-template #matchType>
                                     {{matchData.matchInfo.type}}

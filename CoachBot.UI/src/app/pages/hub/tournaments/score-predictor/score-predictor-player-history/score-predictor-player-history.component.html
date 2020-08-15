@@ -21,7 +21,7 @@
                             </th>
                             <th class="text-center">Prediction</th>
                             <th class="text-center">Actual</th>
-                            <th>Outcome</th>
+                            <th class="text-center">Outcome</th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let prediction of scorePredictions">
@@ -57,7 +57,7 @@
                                     </ng-container>
                                     <ng-template #tbc><span class="team-result--score-tbc">TBC</span></ng-template>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <ng-container *ngIf="prediction.match.matchStatistics; else pending">
                                         <ng-container
                                             *ngIf="prediction.match.matchStatistics

@@ -88,8 +88,8 @@ namespace CoachBot.Domain.Services
                  {
                      m.PlayerId,
                      m.Player.Name,
-                     m.Match.MatchStatistics.HomeGoals,
-                     m.Match.MatchStatistics.AwayGoals,
+                     m.Match.MatchStatistics.MatchGoalsHome,
+                     m.Match.MatchStatistics.MatchGoalsAway,
                      m.HomeGoalsPrediction,
                      m.AwayGoalsPrediction,
                      m.MatchId,
@@ -99,9 +99,10 @@ namespace CoachBot.Domain.Services
                  {
                      PlayerId = key.PlayerId,
                      PlayerName = key.Name,
-                     Points = s.Sum(p => p.HomeGoals == p.HomeGoalsPrediction && p.AwayGoals == p.AwayGoalsPrediction ? 1 : 0),
+                     Points = s.Sum(p => p.MatchGoalsHome == p.HomeGoalsPrediction && p.MatchGoalsAway == p.AwayGoalsPrediction ? 1 : 0),
                      Predictions = s.Count()
                  })
+                 .OrderByDescending(p => p.Points)
                  .ToList();
         }
 
@@ -116,8 +117,8 @@ namespace CoachBot.Domain.Services
                  {
                      m.PlayerId,
                      m.Player.Name,
-                     m.Match.MatchStatistics.HomeGoals,
-                     m.Match.MatchStatistics.AwayGoals,
+                     m.Match.MatchStatistics.MatchGoalsHome,
+                     m.Match.MatchStatistics.MatchGoalsAway,
                      m.HomeGoalsPrediction,
                      m.AwayGoalsPrediction,
                      m.MatchId,
@@ -127,7 +128,7 @@ namespace CoachBot.Domain.Services
                  {
                      PlayerId = key.PlayerId,
                      PlayerName = key.Name,
-                     Points = s.Sum(p => p.HomeGoals == p.HomeGoalsPrediction && p.AwayGoals == p.AwayGoalsPrediction ? 1 : 0),
+                     Points = s.Sum(p => p.MatchGoalsHome == p.HomeGoalsPrediction && p.MatchGoalsAway == p.AwayGoalsPrediction ? 1 : 0),
                      Predictions = s.Count()
                  })
                  .OrderByDescending(s => s.Points)

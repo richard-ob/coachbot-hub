@@ -4,7 +4,7 @@
             <div class="card__header">
                 <h4>Leaderboard</h4>
             </div>
-            <div class="card__content table-responsive">
+            <div class="card__content table-responsive" style="max-height: 60vh; overflow-y: auto;">
                 <app-spinner *ngIf="!leaderboard"></app-spinner>
                 <div *ngIf="leaderboard && !leaderboard.length" class="alert alert-info">
                     No leaderboard yet!
@@ -20,8 +20,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let player of leaderboard; let index = index">
-                                <td class="text-center">{{index + 1}}</td>
-                                <td>
+                                <td class="text-center text-strong">{{index + 1}}</td>
+                                <td class="text-strong">
                                     <a [routerLink]="['/player-profile/' + player.playerId]">{{player.playerName}}</a>
                                 </td>
                                 <td class="text-center">{{player.predictions}}</td>

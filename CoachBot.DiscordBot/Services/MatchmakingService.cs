@@ -161,6 +161,11 @@ namespace CoachBot.Services
                 }
                 SendReadyMessageForPlayers(matchup, matchup.SignedPlayers, server);
 
+                if (matchup.IsMixMatch && !channel.ChannelPositions.Any(c => c.Position.Name.ToUpper() == "GK"))
+                {
+                    SendSuggestedLineups(matchup, discordChannel);
+                }
+
                 return true;
             }
         }
@@ -414,6 +419,38 @@ namespace CoachBot.Services
 
             var highlightMessage = string.Join(", ", team.PlayerLineupPositions.Where(ptp => ptp.Player.DiscordUserId != null).Select(ptp => ptp.Player.DisplayName));
             if (!string.IsNullOrEmpty(highlightMessage)) await discordChannel.SendMessageAsync(highlightMessage);
+        }
+
+        private async void SendSuggestedLineups(Matchup matchup, ITextChannel discordChannel)
+        {
+            var homeTeam = new List<Player>();
+            var awayTeam = new List<Player>();
+            var orderedPlayers = matchup.SignedPlayers.OrderByDescending(p => p.Rating);
+
+            if (orderedPlayers.Count() < 6) return;
+
+            homeTeam.Add(orderedPlayers.ElementAt(0));
+            awayTeam.Add(orderedPlayers.ElementAt(1));
+            awayTeam.Add(orderedPlayers.ElementAt(2));
+            homeTeam.Add(orderedPlayers.ElementAt(3));
+            awayTeam.Add(orderedPlayers.ElementAt(4));
+
+            var isHomeTeam = true;
+            foreach (var player in orderedPlayers.Where(p => !homeTeam.Any(t => t.Id == p.Id) && !awayTeam.Any(t => t.Id == p.Id)))
+            {
+                if (isHomeTeam)
+                {
+                    homeTeam.Add(player);
+                }
+                else
+                {
+                    awayTeam.Add(player);
+                }
+                isHomeTeam = !isHomeTeam;
+            }
+
+            var embed = DiscordEmbedHelper.GenerateSimpleEmbed($"**Mix #1:** {string.Join(", ", homeTeam.Select(p => p.Name))} **Mix #2:** {string.Join(", ", awayTeam.Select(p => p.Name))}", $"**Suggested Teams**");
+            await discordChannel.SendMessageAsync("", embed: embed);
         }
 
         private string GenerateFormEmoteListForChannel(ulong channelId)

@@ -164,7 +164,8 @@ namespace CoachBot.Domain.Services
 
                 var resultEmbed = GetResultEmbed(match);
 
-                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.ResultStreamChannelId, resultEmbed).Wait();
+                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.AuditChannelId, GetResultDetailedEmbed(match)).Wait();
+                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.ResultStreamChannelId, GetResultDetailedEmbed(match)).Wait();
 
                 var originalMatch = _coachBotContext.Matches
                     .Include(m => m.Matchup)
@@ -173,6 +174,7 @@ namespace CoachBot.Domain.Services
                     .Include(m => m.Matchup)
                         .ThenInclude(m => m.LineupAway)
                         .ThenInclude(l => l.Channel)
+                    .Include(m => m.Server)
                     .SingleOrDefault(m => m.Id == matchId);
 
                 if (originalMatch != null && originalMatch.Matchup != null)
@@ -210,6 +212,7 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.Matchup)
                     .ThenInclude(m => m.LineupAway)
                     .ThenInclude(l => l.Channel)
+                .Include(m => m.Server)
                 .Single(m => m.Id == matchId);
 
             GeneratePlayerMatchStatistics(match);
@@ -224,18 +227,22 @@ namespace CoachBot.Domain.Services
 
             _discordNotificationService.SendAuditChannelMessage($"New match statistics uploaded for {match.TeamHome.Name} vs {match.TeamAway.Name}").Wait();
 
-            if (_config.BotConfig.EnableBotHubIntegration && match.Matchup != null)
+            if (_config.BotConfig.EnableBotHubIntegration)
             {
                 var resultEmbed = GetResultEmbed(match);
 
-                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.ResultStreamChannelId, resultEmbed).Wait();
+                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.AuditChannelId, GetResultDetailedEmbed(match)).Wait();
+                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.ResultStreamChannelId, GetResultDetailedEmbed(match)).Wait();
 
-                var homeChannelId = match.Matchup.LineupHome.Channel.DiscordChannelId;
-                var awayChannelId = match.Matchup.LineupAway.Channel.DiscordChannelId;
-                _discordNotificationService.SendChannelMessage(homeChannelId, resultEmbed).Wait();
-                if (awayChannelId != homeChannelId)
+                if (match.Matchup != null)
                 {
-                    _discordNotificationService.SendChannelMessage(awayChannelId, resultEmbed).Wait();
+                    var homeChannelId = match.Matchup.LineupHome.Channel.DiscordChannelId;
+                    var awayChannelId = match.Matchup.LineupAway.Channel.DiscordChannelId;
+                    _discordNotificationService.SendChannelMessage(homeChannelId, resultEmbed).Wait();
+                    if (awayChannelId != homeChannelId)
+                    {
+                        _discordNotificationService.SendChannelMessage(awayChannelId, resultEmbed).Wait();
+                    }
                 }
             }
         }
@@ -243,9 +250,22 @@ namespace CoachBot.Domain.Services
         private Embed GetResultEmbed(Match match)
         {
             return new EmbedBuilder()
-                    .WithTitle($"FULL TIME - {match.TeamHome.Name} {match.TeamHome.BadgeEmote} {match.MatchStatistics.MatchGoalsHome} - {match.MatchStatistics.MatchGoalsAway} {match.TeamAway.BadgeEmote} {match.TeamAway.Name}")
+                    .WithTitle($"FULL TIME: {match.TeamHome.Name} {match.TeamHome.BadgeEmote} {match.MatchStatistics.MatchGoalsHome} - {match.MatchStatistics.MatchGoalsAway} {match.TeamAway.BadgeEmote} {match.TeamAway.Name}")
                     .WithDescription($"The match overview is now available to view: https://{_config.WebServerConfig.ClientUrl}match-overview/{match.Id}")
                     .WithColor(new Color(254, 254, 254))
+                    .Build();
+        }
+
+        private Embed GetResultDetailedEmbed(Match match)
+        {
+            return new EmbedBuilder()
+                    .WithTitle($"FULL TIME: {match.TeamHome.Name} {match.TeamHome.BadgeEmote} {match.MatchStatistics.MatchGoalsHome} - {match.MatchStatistics.MatchGoalsAway} {match.TeamAway.BadgeEmote} {match.TeamAway.Name}")
+                    .WithColor(new Color(254, 254, 254))
+                    .AddField(new EmbedFieldBuilder().WithIsInline(true).WithName("Server").WithValue($"{match.Server.Name}"))
+                    .AddField(new EmbedFieldBuilder().WithIsInline(true).WithName("Format").WithValue($"{(int)match.Format}v{(int)match.Format}"))
+                    .AddField(new EmbedFieldBuilder().WithIsInline(true).WithName("Type").WithValue($"{match.MatchType.ToString()}"))
+                    .AddField(new EmbedFieldBuilder().WithIsInline(false).WithName("Overview").WithValue($"https://{_config.WebServerConfig.ClientUrl}match-overview/{match.Id}"))
+                    .WithCurrentTimestamp()
                     .Build();
         }
 
@@ -336,8 +356,8 @@ namespace CoachBot.Domain.Services
 
             foreach (var match in matches)
             {
-                GeneratePlayerMatchStatistics(match);
-                GenerateTeamMatchStatistics(match);
+                GeneratePlayerMatchStatisticsGoalsConceded(match);
+                GenerateTeamMatchStatisticsPossession(match);
             }
         }
 
@@ -381,6 +401,114 @@ namespace CoachBot.Domain.Services
         }
 
         #region Private Methods
+        private void GeneratePlayerMatchStatisticsGoalsConceded(Match match)
+        {
+            foreach (var matchDataPlayer in match.MatchStatistics.MatchData.Players.Where(p => p.MatchPeriodData != null && p.MatchPeriodData.Any()))
+            {
+                if (matchDataPlayer.Info.SteamId == "BOT") continue;
+
+                var player = GetOrCreatePlayer(matchDataPlayer);
+                foreach (var teamType in matchDataPlayer.MatchPeriodData.Select(m => m.Info.Team).Distinct())
+                {
+                    var isHomeTeam = teamType == MatchDataSideConstants.Home;
+                    var team = isHomeTeam ? match.TeamHome : match.TeamAway;
+                    foreach (var position in matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == teamType).Select(m => m.Info.Position).Distinct())
+                    {
+                        var positionId = _coachBotContext.Positions.Where(p => p.Name == position).Select(p => p.Id).FirstOrDefault();
+                        var playerPositionMatchStatistics = new PlayerPositionMatchStatistics()
+                        {
+                            PlayerId = player.Id,
+                            MatchId = match.Id,
+                            MatchTeamType = isHomeTeam ? MatchTeamType.Home : MatchTeamType.Away,
+                            TeamId = team.Id,
+                            PositionId = positionId > 0 ? positionId : _coachBotContext.Positions.FirstOrDefault().Id,
+                            MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
+                            SecondsPlayed = matchDataPlayer.GetPlayerPositionSeconds(teamType, position),
+                            PossessionPercentage = match.MatchStatistics.MatchData.GetPlayerPositionPossession(matchDataPlayer, teamType, position),
+                            Nickname = matchDataPlayer.Info.Name,
+                            Substitute = matchDataPlayer.WasPlayerSubstitute(teamType, position)
+                        };
+                        playerPositionMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetPlayerTotals(teamType, position));
+                        if (position.ToUpper() != "GK")
+                        {
+                            playerPositionMatchStatistics.GoalsConceded = match.MatchStatistics.MatchData.GetPlayerPositionGoalsConceded(matchDataPlayer, teamType, position);
+                        }
+                        if (playerPositionMatchStatistics.SecondsPlayed > 0)
+                        {
+                            var foundStats = _coachBotContext.PlayerPositionMatchStatistics.FirstOrDefault(
+                                p => p.MatchId == playerPositionMatchStatistics.MatchId
+                                && p.PlayerId == playerPositionMatchStatistics.PlayerId
+                                && p.TeamId == playerPositionMatchStatistics.TeamId
+                                && p.PositionId == playerPositionMatchStatistics.PositionId
+                                && p.MatchTeamType == playerPositionMatchStatistics.MatchTeamType
+                            );
+                            if (foundStats != null)
+                            {
+                                foundStats.GoalsConceded = playerPositionMatchStatistics.GoalsConceded;
+                                _coachBotContext.SaveChanges();
+                            }
+                        }
+                    }
+                    var playerMatchStatistics = new PlayerMatchStatistics()
+                    {
+                        PlayerId = player.Id,
+                        MatchId = match.Id,
+                        TeamId = team.Id,
+                        MatchTeamType = isHomeTeam ? MatchTeamType.Home : MatchTeamType.Away,
+                        MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
+                        SecondsPlayed = matchDataPlayer.GetPlayerSeconds(teamType),
+                        PossessionPercentage = match.MatchStatistics.MatchData.GetPlayerPossession(matchDataPlayer),
+                        Nickname = matchDataPlayer.Info.Name,
+                        Substitute = matchDataPlayer.WasPlayerSubstitute(teamType)
+                    };
+                    playerMatchStatistics.AddMatchDataStatistics(matchDataPlayer.GetMatchStatisticsPlayerTotal());
+                    playerMatchStatistics.GoalsConceded = match.MatchStatistics.MatchData.GetPlayerGoalsConceded(matchDataPlayer, teamType);
+                    if (playerMatchStatistics.SecondsPlayed > 0)
+                    {
+                        var foundStats = _coachBotContext.PlayerMatchStatistics.FirstOrDefault(
+                            p => p.MatchId == playerMatchStatistics.MatchId
+                            && p.PlayerId == playerMatchStatistics.PlayerId
+                            && p.TeamId == playerMatchStatistics.TeamId
+                            && p.MatchTeamType == playerMatchStatistics.MatchTeamType
+                        );
+                        if (foundStats != null)
+                        {
+                            foundStats.GoalsConceded = playerMatchStatistics.GoalsConceded;
+                            _coachBotContext.SaveChanges();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void GenerateTeamMatchStatisticsPossession(Match match)
+        {
+            foreach (var matchDataTeam in match.MatchStatistics.MatchData.Teams)
+            {
+                var isHomeTeam = matchDataTeam.MatchTotal.Side == MatchDataSideConstants.Home;
+                var team = isHomeTeam ? match.TeamHome : match.TeamAway;
+                var teamMatchStatistics = new TeamMatchStatistics()
+                {
+                    MatchId = match.Id,
+                    MatchTeamType = isHomeTeam ? MatchTeamType.Home : MatchTeamType.Away,
+                    TeamId = team.Id,
+                    MatchOutcome = match.MatchStatistics.GetMatchOutcomeTypeForTeam(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
+                    PossessionPercentage = match.MatchStatistics.MatchData.GetTeamPosession(isHomeTeam ? MatchDataTeamType.Home : MatchDataTeamType.Away),
+                    TeamName = matchDataTeam.MatchTotal.Name
+                };
+                teamMatchStatistics.AddMatchDataStatistics(matchDataTeam.MatchTotal.Statistics);
+                var foundStats = _coachBotContext.TeamMatchStatistics.FirstOrDefault(p => 
+                    p.MatchId == teamMatchStatistics.MatchId
+                    && p.TeamId == teamMatchStatistics.TeamId
+                    && p.MatchTeamType == teamMatchStatistics.MatchTeamType
+                );
+                if (foundStats != null)
+                {
+                    foundStats.PossessionPercentage = teamMatchStatistics.PossessionPercentage;
+                    _coachBotContext.SaveChanges();
+                }
+            }
+        }
 
         private void GeneratePlayerMatchStatistics(Match match)
         {

@@ -263,10 +263,21 @@ namespace CoachBot.Domain.Services
                     .WithColor(new Color(254, 254, 254))
                     .AddField(new EmbedFieldBuilder().WithIsInline(true).WithName("Server").WithValue($"{match.Server.Name}"))
                     .AddField(new EmbedFieldBuilder().WithIsInline(true).WithName("Format").WithValue($"{(int)match.Format}v{(int)match.Format}"))
-                    .AddField(new EmbedFieldBuilder().WithIsInline(true).WithName("Type").WithValue($"{match.MatchType.ToString()}"))
+                    .AddField(new EmbedFieldBuilder().WithIsInline(true).WithName("Type").WithValue($"{GetMatchType(match.MatchType)}"))
                     .AddField(new EmbedFieldBuilder().WithIsInline(false).WithName("Overview").WithValue($"https://{_config.WebServerConfig.ClientUrl}match-overview/{match.Id}"))
                     .WithCurrentTimestamp()
                     .Build();
+
+            string GetMatchType(MatchType matchType)
+            {
+                switch(matchType)
+                {
+                    case MatchType.Competition:
+                        return "Tournament";
+                    default:
+                        return "Friendly";
+                }
+            }
         }
 
         public Model.Dtos.PagedResult<TeamStatisticTotals> GetTeamStatistics(int page, int pageSize, string sortOrder, TeamStatisticsFilters filters)

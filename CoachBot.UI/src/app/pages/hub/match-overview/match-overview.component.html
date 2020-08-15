@@ -34,7 +34,12 @@
                     <section class="d-flex flex-column text-white my-4">
                         <div id="match-meta-data" class="match-meta-data row mb-4">
                             <div id="match-meta-data-type" class="col-md-4 d-none d-md-block text-left">
-                                {{matchData.matchInfo.type}}
+                                <ng-container *ngIf="match.tournament; else matchType">
+                                    <a [routerLink]="['/tournament/', match.tournamentId]">{{match.tournament.name}}</a>
+                                </ng-container>
+                                <ng-template #matchType>
+                                    {{matchData.matchInfo.type}}
+                                </ng-template>
                             </div>
                             <div id="match-meta-data-server" class="col-6 col-md-4 text-center">
                                 <div *ngIf="match.server" [attr.title]="match.server.address">

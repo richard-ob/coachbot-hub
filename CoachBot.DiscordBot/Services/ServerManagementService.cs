@@ -401,6 +401,59 @@ namespace CoachBot.Services
             }
         }
 
+        public async Task PrepareServerTournament(int matchId)
+        {
+            var match = _matchService.GetMatch(matchId);
+            var server = match.Server;
+
+            if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
+            {
+                try
+                {
+                    INetworkSocket socket = new RconSocket();
+                    RconMessenger messenger = new RconMessenger(socket);
+                    bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                    bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                    if (authenticated)
+                    {
+                        await messenger.ExecuteCommandAsync($"exec 8v8.cfg");
+                        await messenger.ExecuteCommandAsync($"exec league.cfg");
+                        await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
+                        await messenger.ExecuteCommandAsync("mp_matchinfo \"Tournament Match\"");
+                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + _config.WebServerConfig.HubApiUrl + "/api/match-statistics" + "\"");
+                        await messenger.ExecuteCommandAsync("sv_webserver_matchdata_enabled 1");
+                        await messenger.ExecuteCommandAsync($"mp_teamnames \"{match.TeamHome.TeamCode}: {match.TeamHome.Name}, {match.TeamAway.TeamCode}: {match.TeamAway.Name}\"");
+                        await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, match.Id, match.TeamHome.TeamCode, match.TeamAway.TeamCode));
+                        await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
+                    }
+                    messenger.CloseConnection();
+                }
+                catch
+                {
+                    
+                }
+            }
+
+            var homeChannel = _channelService.GetChannelBySearchTeamCode(match.TeamHome.TeamCode, MatchFormat.EightVsEight) ?? _channelService.GetChannelByTeamCode(match.TeamHome.TeamCode);
+            var awayChannel = _channelService.GetChannelBySearchTeamCode(match.TeamAway.TeamCode, MatchFormat.EightVsEight) ?? _channelService.GetChannelByTeamCode(match.TeamAway.TeamCode);
+            await SendTournamentReadyMessage(homeChannel);
+            await SendTournamentReadyMessage(awayChannel);
+
+            if (_discordClient.GetChannel(_config.DiscordConfig.ResultStreamChannelId) is SocketTextChannel resultsStreamChannel)
+            {
+                await resultsStreamChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed($"**{match.TeamHome.Name}** {match.TeamHome.BadgeEmote} vs {match.TeamAway.BadgeEmote} **{match.TeamAway.Name}** - 10 minutes until kick off!", $"**{match.Tournament.Name}:**"));
+            }
+
+            async Task SendTournamentReadyMessage(Channel channel)
+            {
+                if (channel != null)
+                {
+                    var discordChannel = _discordClient.GetChannel(channel.DiscordChannelId) as SocketTextChannel;
+                    await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed($"10 minutes to go! Join the server now for your tournament match - **{match.Server.Name}** steam://connect/{match.Server.Address}", $"**{match.TeamHome.Name}** {match.TeamHome.BadgeEmote} vs {match.TeamAway.BadgeEmote} **{match.TeamAway.Name}**"));
+                }
+            }
+        }
+
         public async void ExecConfigAsync(int serverListItemId, ulong channelId, IUser user)
         {
             var server = GetServerFromServerListItemId(serverListItemId, channelId);

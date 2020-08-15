@@ -1,5 +1,5 @@
 <div class="fantasy-player d-flex flex-column justify-content-center align-items-center"
-    [class.fantasy-player-deletable]="!viewMode" title="Remove player">
+    [class.fantasy-player-deletable]="!viewMode" [attr.title]="viewMode ? playerName : 'Remove player'">
     <div class="fantasy-kit-container">
         <div class="fantasy-player-position-group">
             <ng-container *ngIf="!isFlex; else isFlexSelection">

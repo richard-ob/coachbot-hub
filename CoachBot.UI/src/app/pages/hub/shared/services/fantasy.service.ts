@@ -103,10 +103,10 @@ export class FantasyService {
     }
 
     getFantasyPlayerPeformances(fantasyTeamId: number, tournamentPhaseId: number = null) {
-        const params = new HttpParams();
+        let params = new HttpParams();
 
         if (tournamentPhaseId) {
-            params.set('tournamentPhaseId', tournamentPhaseId.toString());
+            params = new HttpParams().set('tournamentPhaseId', `${tournamentPhaseId}`);
         }
 
         return this.http.get<FantasyPlayerPerformance[]>(

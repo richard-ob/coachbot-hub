@@ -133,6 +133,7 @@ namespace CoachBot.Domain.Services
                 .Where(f => fantasyPhaseId == null || f.TournamentPhaseId == fantasyPhaseId)
                 .Select(n => new
                 {
+                    n.FantasyPlayerId,
                     n.FantasyPlayer.PlayerId,
                     n.FantasyPlayer.Player.Name,
                     n.FantasyPlayer.Team.TeamCode,
@@ -141,10 +142,11 @@ namespace CoachBot.Domain.Services
                     n.Points,
                     n.FantasyPlayer.Rating
                 })
-                .GroupBy(p => new { p.PlayerId, p.Name, p.PositionGroup, p.TeamCode, p.Url, p.Rating }, (key, s) => new FantasyPlayerPerformance()
+                .GroupBy(p => new { p.FantasyPlayerId, p.PlayerId, p.Name, p.PositionGroup, p.TeamCode, p.Url, p.Rating }, (key, s) => new FantasyPlayerPerformance()
                 {
                     FantasyPlayer = new FantasyPlayer()
                     {
+                        Id = key.FantasyPlayerId,
                         Rating = key.Rating,
                         PositionGroup = key.PositionGroup,
                         Player = new Player()
@@ -162,7 +164,7 @@ namespace CoachBot.Domain.Services
                             }
                         }
                     },
-                    IsFlex = fantasySelections.First(f => f.FantasyPlayerId == key.PlayerId.Value).IsFlex,
+                    IsFlex = fantasySelections.First(f => f.FantasyPlayer.PlayerId == key.PlayerId.Value).IsFlex,
                     Points = s.Sum(c => c.Points),
                 })
                 .ToList();

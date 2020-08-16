@@ -45,7 +45,7 @@ export class PlayerSpotlightComponent implements OnInit {
         if (this.tournamentId) {
             this.filters.tournamentId = this.tournamentId;
         } else {
-            this.filters.timePeriod = TimePeriod.Year;
+            this.filters.timePeriod = TimePeriod.Week;
         }
         this.regionService.getRegions().subscribe(regions => {
             const region = regions.find(r => r.regionId === this.filters.regionId);

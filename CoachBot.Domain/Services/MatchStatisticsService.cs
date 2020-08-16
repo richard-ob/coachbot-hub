@@ -156,17 +156,6 @@ namespace CoachBot.Domain.Services
 
             if (_config.BotConfig.EnableBotHubIntegration)
             {
-                var resultMatch = _coachBotContext.Matches
-                    .Include(m => m.MatchStatistics)
-                    .Include(m => m.TeamHome)
-                    .Include(m => m.TeamAway)
-                    .Single(m => m.Id == match.Id);
-
-                var resultEmbed = GetResultEmbed(match);
-
-                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.AuditChannelId, GetResultDetailedEmbed(match)).Wait();
-                _discordNotificationService.SendChannelMessage(_config.DiscordConfig.ResultStreamChannelId, GetResultDetailedEmbed(match)).Wait();
-
                 var originalMatch = _coachBotContext.Matches
                     .Include(m => m.Matchup)
                         .ThenInclude(m => m.LineupHome)
@@ -179,6 +168,12 @@ namespace CoachBot.Domain.Services
 
                 if (originalMatch != null && originalMatch.Matchup != null)
                 {
+                    var resultMatch = _coachBotContext.Matches
+                        .Include(m => m.MatchStatistics)
+                        .Include(m => m.TeamHome)
+                        .Include(m => m.TeamAway)
+                        .Single(m => m.Id == match.Id);
+                    var resultEmbed = GetResultEmbed(match);
                     var homeChannelId = originalMatch.Matchup.LineupHome.Channel.DiscordChannelId;
                     var awayChannelId = originalMatch.Matchup.LineupAway.Channel.DiscordChannelId;
                     _discordNotificationService.SendChannelMessage(homeChannelId, resultEmbed).Wait();
@@ -363,7 +358,7 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.MatchStatistics)
                 .Include(m => m.TeamHome)
                 .Include(m => m.TeamAway)
-                .Where(m => m.MatchStatistics != null);
+                .Where(m => m.MatchStatistics != null && _coachBotContext.TeamMatchStatistics.Any(tm => tm.MatchId == m.Id && tm.PossessionPercentage == 0));
 
             foreach (var match in matches)
             {

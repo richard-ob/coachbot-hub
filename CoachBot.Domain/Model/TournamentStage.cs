@@ -1,4 +1,5 @@
 ﻿using CoachBot.Database;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,7 @@ namespace CoachBot.Domain.Model
 
         public int TournamentId { get; set; }
 
+        [JsonIgnore]
         public Tournament Tournament { get; set; }
 
         public ICollection<TournamentPhase> TournamentPhases { get; set; }

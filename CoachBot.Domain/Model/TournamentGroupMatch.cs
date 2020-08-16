@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,10 +16,12 @@ namespace CoachBot.Domain.Model
 
         public int TournamentGroupId { get; set; }
 
+        [JsonIgnore]
         public TournamentGroup TournamentGroup { get; set; }
 
         public int TournamentPhaseId { get; set; }
 
+        [JsonIgnore]
         public TournamentPhase TournamentPhase { get; set; }
 
         public string TeamHomePlaceholder { get; set; }

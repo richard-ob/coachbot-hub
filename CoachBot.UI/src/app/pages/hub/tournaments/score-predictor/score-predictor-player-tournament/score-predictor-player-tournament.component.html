@@ -42,8 +42,8 @@
                                     <ng-container *ngIf="prediction.match.matchStatistics; else tbc">
                                         <ng-container
                                             *ngIf="prediction.match.matchStatistics 
-                                        && prediction.homeGoalsPrediction === prediction.match.matchStatistics.homeGoals
-                                        && prediction.awayGoalsPrediction === prediction.match.matchStatistics.awayGoals; else incorrect">
+                                                && prediction.homeGoalsPrediction === prediction.match.matchStatistics.matchGoalsHome
+                                                && prediction.awayGoalsPrediction === prediction.match.matchStatistics.matchGoalsAway; else incorrect">
                                             <span class="badge badge-success">Exact Result</span>
                                         </ng-container>
                                         <ng-template #incorrect>

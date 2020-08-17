@@ -10,7 +10,8 @@ const routes: Routes = [
     {
         path: 'score-predictor',
         component: ScorePredictorHubComponent,
-        data: { title: 'Score Predictor' }
+        data: { title: 'Score Predictor' },
+        canActivate: [AuthGuard]
     },
     {
         path: 'tournament/:id/score-predictor',
@@ -21,12 +22,14 @@ const routes: Routes = [
     {
         path: 'tournament/:tournamentId/score-predictor/player/:playerId',
         component: ScorePredictorPlayerTournamentComponent,
-        data: { title: 'Score Predictor' }
+        data: { title: 'Score Predictor' },
+        canActivate: [AuthGuard]
     },
     {
         path: 'score-predictor/player/:playerId',
         component: ScorePredictorPlayerHistoryComponent,
-        data: { title: 'Score Predictor' }
+        data: { title: 'Score Predictor' },
+        canActivate: [AuthGuard]
     }
 ];
 @NgModule({

@@ -123,7 +123,7 @@ export class TeamPerformanceTrackerComponent implements OnInit {
                 snapshot => (
                     {
                         value: snapshot[property],
-                        name: DateUtils.getDateString(snapshot.year, snapshot.month, snapshot.week, snapshot.day)
+                        name: DateUtils.getDateString(snapshot.year, snapshot.month - 1, snapshot.week, snapshot.day)
                     }
                 )
             )

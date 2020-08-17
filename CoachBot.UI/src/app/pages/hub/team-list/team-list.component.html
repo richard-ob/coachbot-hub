@@ -148,8 +148,9 @@
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
                             [average]="true">
                         </th>
-                        <th sorter [sortByColumn]="'Points'" [sortByColumnName]="'Form'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
+                        <th *ngIf="!tournamentId" sorter [sortByColumn]="'Points'" [sortByColumnName]="'Form'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
+                            class="text-center">
                         </th>
                     </tr>
                 </thead>
@@ -192,7 +193,7 @@
                         </td>
                         <td class="team-result__status text-center">{{statistics.redCardsAverage | number : '1.2-2'}}
                         </td>
-                        <td class="team-result__status text-center" style="min-width: 175px">
+                        <td *ngIf="!tournamentId" class="team-result__status text-center" style="min-width: 175px">
                             <app-form-indicator [form]="statistics.form"></app-form-indicator>
                         </td>
                     </tr>

@@ -7,13 +7,15 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-tournament-standings-round-robin',
-    templateUrl: './tournament-standings-round-robin.component.html'
+    templateUrl: './tournament-standings-round-robin.component.html',
+    styleUrls: ['./tournament-standings-round-robin.component.scss']
 })
 export class TournamentStandingsRoundRobinComponent implements OnInit {
 
     @Input() tournament: Tournament;
     @Input() tournamentGroupId: number;
     @Input() tournamentGroupName: string;
+    @Input() lastQualificationSpot: number;
     tournamentGroupStandings: TournamentGroupStanding[];
     isLoading = true;
     matches: TournamentGroupMatch;

@@ -24,6 +24,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let tournamentGroupStanding of tournamentGroupStandings; let i = index;"
+                        [class.border-bottom-qualification]="lastQualificationSpot && lastQualificationSpot === i + 1"
                         (click)="navigateToTeamProfile(tournamentGroupStanding.teamId)">
                         <td class="team-result__score" class="text-center" style="font-weight: 600;">
                             {{tournamentGroupStanding.position}}

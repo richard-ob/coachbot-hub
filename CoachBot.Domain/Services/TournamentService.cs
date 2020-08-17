@@ -424,7 +424,7 @@ namespace CoachBot.Domain.Services
                  })
                  .ToList()
                  .OrderByDescending(s => s.Points)
-                 .ThenBy(s => s.GoalDifference);
+                 .ThenByDescending(s => s.GoalDifference);
 
             var unpositioned = _coachBotContext
                  .TournamentGroupTeams
@@ -618,17 +618,36 @@ namespace CoachBot.Domain.Services
 
             var knockoutStage = tournament.TournamentStages.Last();
             var earliestMatchDate = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentPhase.TournamentStage.TournamentId == tournamentId).Max(m => m.Match.KickOff).Value;
-            var numberOfTeams = _coachBotContext.TournamentGroupTeams
-                .Where(t => t.TournamentGroup.TournamentStageId == knockoutStage.Id)
-                .Count();
-            var maxNumberOfTeams = numberOfTeams / 3 * 2; // TODO: Figure out the actual correct formula for this
+            var numberOfGroups = _coachBotContext.TournamentGroups.Count(g => g.TournamentStageId == groupStage.Id);
+            var numberOfTeams = _coachBotContext.TournamentGroups.Where(g => g.TournamentStageId == groupStage.Id).Max(g => g.TournamentGroupTeams.Count());
+
+            var knockoutGroupSize = GetNumberOfQualifyingTeams(numberOfTeams, numberOfGroups);
             var teams = new List<Team>();
-            for (int i = 1; i <= maxNumberOfTeams; i++)
+            for (int i = 1; i <= knockoutGroupSize; i++)
             {
                 teams.Add(new Team());
             }
             GenerateKnockoutMatches(tournament, knockoutStage, teams, (DateTime)earliestMatchDate, false);
 
+            int GetNumberOfQualifyingTeams(int groupSize, int groups = 1)
+            {
+                switch (groupSize)
+                {
+                    case 3:
+                        return 2 * groups;
+                    case 4:
+                        return 2 * groups;
+                    case 5:
+                        return 3 * groups;
+                    case 6:
+                        return 4 * groups;
+                    case 7:
+                        return 4 * groups;
+                    case 8:
+                        return 5 * groups;
+                }
+                throw new ArgumentException("Group size not supported");
+            }
         }
         #endregion
 

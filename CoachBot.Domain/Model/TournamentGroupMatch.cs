@@ -21,7 +21,6 @@ namespace CoachBot.Domain.Model
 
         public int TournamentPhaseId { get; set; }
 
-        [JsonIgnore]
         public TournamentPhase TournamentPhase { get; set; }
 
         public string TeamHomePlaceholder { get; set; }

@@ -80,7 +80,12 @@
                     <tr *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
                         (click)="navigateToMatchOverview(match.id)">
                         <td class="team-result__date text-nowrap">
-                            {{(match.kickOff)| date:'medium'}}
+                            <ng-container *ngIf="tournamentId">
+                                {{match.kickOff | date:'EEE, MMM d y, HH:mm (zzz)'}}
+                            </ng-container>
+                            <ng-container *ngIf="!tournamentId">
+                                {{match.kickOff | date:'EEE, MMM d y, h:mmaa'}}
+                            </ng-container>
                         </td>
                         <td *ngIf="teamId">
                             <app-form-indicator [form]="[getMatchOutcomeForTeam(match)]"></app-form-indicator>

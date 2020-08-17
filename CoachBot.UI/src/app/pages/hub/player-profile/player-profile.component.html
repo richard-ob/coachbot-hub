@@ -43,12 +43,17 @@
                                         (click)="editRatingModal.fire()">Edit Rating</a>
                                 </div>
                             </div>
+                            <div
+                                *ngIf="!playerProfile.rating && currentPlayer && currentPlayer.hubRole === playerHubRoles.Owner">
+                                <a class="btn btn-primary-inverse btn-xs ml-2" (click)="editRatingModal.fire()">Edit
+                                    Rating</a>
+                            </div>
                             <div class="player-info-details__item player-info-details__item--college">
                                 <h6 class="player-info-details__title">Club Team</h6>
                                 <div class="player-info-details__value">
                                     <span *ngIf="playerProfile.clubTeam">
                                         <a class="player-info-details__team-link" [routerLink]="['/team-profile/', playerProfile.clubTeam.id]">                                                    
-                                            <img *ngIf="playerProfile.clubTeam.badgeImage" [src]="playerProfile.clubTeam.badgeImage.extraSmallUrl" style="width: 20px">{{playerProfile.clubTeam.name}}
+                                            <img *ngIf="playerProfile.clubTeam.badgeImage" [src]="playerProfile.clubTeam.badgeImage.extraSmallUrl" style="width: 20px; padding-right: 3px;">{{playerProfile.clubTeam.name}}
                                         </a>
                                     </span>
                                     <span *ngIf="!playerProfile.clubTeam">None</span>

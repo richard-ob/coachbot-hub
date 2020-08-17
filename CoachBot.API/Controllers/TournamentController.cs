@@ -156,5 +156,14 @@ namespace CoachBot.Controllers
 
             return Ok();
         }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HttpPost("{tournamentId}/progress/{matchId}")]
+        public IActionResult ProgressTournament(int tournamentId, int matchId)
+        {
+            _tournamentService.ManageTournamentProgress(tournamentId, matchId);
+
+            return Ok();
+        }
     }
 }

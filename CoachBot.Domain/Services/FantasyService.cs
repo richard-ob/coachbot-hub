@@ -283,7 +283,7 @@ namespace CoachBot.Domain.Services
                                 ON Players.Id = FantasyTeams.PlayerId
                             LEFT OUTER JOIN dbo.FantasyPlayerPhases FantasyPlayerPhases
                                 ON FantasyPlayerPhases.FantasyPlayerId = FantasyTeamSelections.FantasyPlayerId
-                            WHERE FantasyTeams.TournamentId = {tournamentId}
+                            WHERE FantasyTeams.TournamentId = {tournamentId} AND (SELECT COUNT(*) FROM dbo.FantasyTeamSelections WHERE FantasyTeamId = FantasyTeams.Id) = 11
                             GROUP BY FantasyTeams.Id, FantasyTeams.Name, FantasyTeams.TournamentId, Players.Id, Players.Name
                             ORDER BY SUM(POINTS) DESC")
                 .ToList();
@@ -307,7 +307,7 @@ namespace CoachBot.Domain.Services
                                 ON FantasyPlayerPhases.FantasyPlayerId = FantasyTeamSelections.FantasyPlayerId
                             INNER JOIN dbo.Players Players
                                 ON Players.Id = FantasyTeams.PlayerId
-                            WHERE FantasyPlayerPhases.TournamentPhaseId = {tournamentPhaseId}
+                            WHERE FantasyPlayerPhases.TournamentPhaseId = {tournamentPhaseId} AND (SELECT COUNT(*) FROM dbo.FantasyTeamSelections WHERE FantasyTeamId = FantasyTeams.Id) = 11
                             GROUP BY FantasyTeams.Id, FantasyTeams.Name, FantasyTeams.TournamentId, FantasyPlayerPhases.TournamentPhaseId, Players.Id, Players.Name
                             ORDER BY SUM(POINTS) DESC")
                    .ToList();

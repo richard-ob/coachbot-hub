@@ -46,10 +46,15 @@
                                         type="button" class="btn btn-primary btn-xs">
                                         Edit
                                     </button>
-                                    <button *ngIf="fantasyTeam.fantasyTeamStatus !== fantasyTeamStatuses.Open"
-                                        type="button" class="btn btn-primary btn-xs">
-                                        View
-                                    </button>
+                                    <ng-container *ngIf="fantasyTeam.fantasyTeamStatus !== fantasyTeamStatuses.Open">
+                                        <button type="button" class="btn btn-primary btn-xs">
+                                            View Team
+                                        </button>
+                                        <a [routerLink]="['/fantasy/', fantasyTeam.tournamentId]"
+                                            class="ml-2 btn btn-primary btn-xs">
+                                            Leaderboard
+                                        </a>
+                                    </ng-container>
                                 </td>
                             </tr>
                         </tbody>

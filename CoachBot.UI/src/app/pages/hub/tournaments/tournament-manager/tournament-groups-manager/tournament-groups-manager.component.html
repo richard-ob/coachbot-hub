@@ -41,6 +41,7 @@
                             <th>Home Team</th>
                             <th>Away Team</th>
                             <th>Phase</th>
+                            <th>Result</th>
                             <th>Actions</th>
                         </thead>
                         <tbody>
@@ -50,10 +51,17 @@
                                 <td>{{groupMatch.match.teamAway?.name || groupMatch.teamAwayPlaceholder || 'TBC'}}</td>
                                 <td>{{groupMatch.tournamentPhase.name}}</td>
                                 <td>
-                                    <button class="btn btn-primary btn-xs" type="button"
-                                        (click)="editMatch(groupMatch.match.id)">
+                                    <ng-container ngIf="groupMatch.match.matchStatistics; else noResult">
+                                        {{groupMatch.match.matchStatistics.matchGoalsHome}} -
+                                        {{groupMatch.match.matchStatistics.matchGoalsAway}}
+                                    </ng-container>
+                                    <ng-template #noResult>TBC</ng-template>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary btn-xs" type="button"
+                                        [routerLink]="['/match-editor/', groupMatch.match.id]">
                                         Edit Match
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>

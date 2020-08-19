@@ -5,6 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Server } from 'selenium-webdriver/safari';
 import { ServerService } from '../shared/services/server.service';
 import { MatchStatistics } from '../shared/model/match-statistics.model';
+import { TeamService } from '../shared/services/team.service';
+import { Team } from '../shared/model/team.model';
+import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 
 @Component({
     selector: 'app-match-editor',
@@ -15,6 +18,7 @@ export class MatchEditorComponent implements OnInit {
     match: Match;
     matchId: number;
     servers: Server[];
+    teams: Team[];
     matchStatistics: MatchStatistics;
     showDatepicker = false;
     isLoading = true;
@@ -22,6 +26,8 @@ export class MatchEditorComponent implements OnInit {
     constructor(
         private matchService: MatchService,
         private serverService: ServerService,
+        private teamService: TeamService,
+        private userPreferenceService: UserPreferenceService,
         private route: ActivatedRoute
     ) { }
 
@@ -30,7 +36,10 @@ export class MatchEditorComponent implements OnInit {
             this.matchId = +params.get('id');
             this.serverService.getServers().subscribe(servers => {
                 this.servers = servers;
-                this.loadMatch();
+                this.teamService.getTeams(this.userPreferenceService.getUserPreference(UserPreferenceType.Region)).subscribe(teams => {
+                    this.teams = teams;
+                    this.loadMatch();
+                });
             });
         });
     }

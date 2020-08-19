@@ -511,6 +511,11 @@ namespace CoachBot.Domain.Services
         private void RemoveMatchesForTournament(int tournamentId)
         {
             var tournamentMatches = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentGroup.TournamentStage.TournamentId == tournamentId);
+            if (tournamentMatches.Any(t => t.Match.MatchStatisticsId != null))
+            {
+                throw new Exception("Cannot regenerate schedule as matches have already taken place");
+            }
+
             if (tournamentMatches != null & tournamentMatches.Any())
             {
                 _coachBotContext.TournamentGroupMatches.RemoveRange(tournamentMatches);
@@ -847,16 +852,21 @@ namespace CoachBot.Domain.Services
         #endregion Round Robin
 
         #region Tournament Helpers
-        public void GenerateRoundRobinMatches(Tournament tournament, TournamentStage stage, DateTime earliestMatchDate)
+        public void GenerateRoundRobinMatches(Tournament tournament, TournamentStage stage, DateTime startDate)
         {
             var maxNumberOfTeams = _coachBotContext.TournamentGroupTeams
                     .Where(t => t.TournamentGroup.TournamentStageId == stage.Id)
                     .GroupBy(t => t.TournamentGroupId)
                     .Max(t => t.Count());
-
-            _coachBotContext.TournamentPhases.AddRange(GenerateTournamentPhases(maxNumberOfTeams, stage.Id));
+            var generatedPhases = GenerateTournamentPhases(maxNumberOfTeams, stage.Id);
+            foreach(var generatedPhase in generatedPhases)
+            {
+                _coachBotContext.TournamentPhases.Add(generatedPhase);
+                _coachBotContext.SaveChanges();
+            }
             foreach (var group in stage.TournamentGroups)
             {
+                var earliestMatchDate = startDate;
                 var matchDaySlots = _coachBotContext.TournamentMatchDays.Where(t => t.TournamentId == tournament.Id).OrderBy(t => t.MatchDay).OrderBy(t => t.MatchTime).ToList();
                 var currentSlotIndex = 0;
                 var currentPhaseNumber = 1;
@@ -1038,14 +1048,14 @@ namespace CoachBot.Domain.Services
         }
 
         private List<TournamentPhase> GenerateTournamentPhases(int numberOfteams, int tournamentStageId)
-            {
+        {
             var phases = new List<TournamentPhase>();
             // INFO: Numbers of phases is number of teams minus 1, so this for logic is intentional
             for (int i = 1; i <= numberOfteams; i++)
             {
                 var phase = new TournamentPhase()
                 {
-                    Name = "Matchweek " + i.ToString(),
+                    Name = "Round " + i.ToString(),
                     TournamentStageId = tournamentStageId
                 };
                 phases.Add(phase);

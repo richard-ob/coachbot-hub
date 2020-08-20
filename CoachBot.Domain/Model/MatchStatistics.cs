@@ -30,8 +30,8 @@ namespace CoachBot.Domain.Model
 
         public MatchOutcomeType GetMatchOutcomeTypeForTeam(MatchDataTeamType teamType)
         {
-            var teamGoals = MatchData.GetMatchStatistic(MatchDataStatisticType.Goals, teamType);
-            var opponentGoals = MatchData.GetMatchStatistic(MatchDataStatisticType.Goals, 1 - teamType);
+            var teamGoals = teamType == MatchDataTeamType.Home ? MatchGoalsHome : MatchGoalsAway;
+            var opponentGoals = teamType == MatchDataTeamType.Home ? MatchGoalsAway : MatchGoalsHome;
 
             if (teamGoals > opponentGoals) return MatchOutcomeType.Win;
             if (opponentGoals > teamGoals) return MatchOutcomeType.Loss;
@@ -39,7 +39,7 @@ namespace CoachBot.Domain.Model
             return MatchOutcomeType.Draw;
         }
 
-        public MatchDataTeamType MatchWinner => MatchGoalsHome > MatchGoalsAway ? MatchDataTeamType.Home : MatchDataTeamType.Away;
+        public MatchDataTeamType KnockoutMatchWinner => MatchGoalsHome > MatchGoalsAway ? MatchDataTeamType.Home : MatchDataTeamType.Away;
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }

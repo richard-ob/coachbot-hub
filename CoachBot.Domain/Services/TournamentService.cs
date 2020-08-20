@@ -393,33 +393,62 @@ namespace CoachBot.Domain.Services
 
         public List<TournamentGroupStanding> GetTournamentGroupStandings(int tournamentGroupId)
         {
-            var standings = _coachBotContext
+            var statisticResults = _coachBotContext
                  .TeamMatchStatistics
                  .Where(t => _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == t.MatchId && tg.TournamentGroupId == tournamentGroupId))
                  .Where(t => t.Match.MatchStatistics != null)
                  .AsNoTracking()
-                 .Select(m => new
+                 .Select(m => new StandingGroupSubEntry()
                  {
-                     m.TeamId,
-                     m.GoalsConceded,
-                     m.Goals,
-                     m.MatchOutcome,
-                     m.Team.BadgeImage.SmallUrl,
-                     m.Team.Form,
-                     m.Team.Name
-                 })
-                 .GroupBy(p => new { p.TeamId, p.Name, p.SmallUrl }, (key, s) => new TournamentGroupStanding()
+                     TeamId = (int)m.TeamId,
+                     GoalsConceded = m.GoalsConceded,
+                     GoalsScored = m.Goals,
+                     MatchOutcome = m.MatchOutcome,
+                     SmallUrl = m.Team.BadgeImage.SmallUrl,
+                     TeamName = m.Team.Name
+                 }).ToList();
+
+            var overrideResultsHome = _coachBotContext.Matches
+                   .Where(m => _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == m.Id && tg.TournamentGroupId == tournamentGroupId))
+                   .Where(m => m.MatchStatisticsId == null && m.MatchStatistics.HomeGoals != null && m.MatchStatistics.AwayGoals != null)
+                   .Select(m => new StandingGroupSubEntry()
+                   {
+                       TeamId = (int) m.TeamHomeId,
+                       GoalsConceded = (int)m.MatchStatistics.AwayGoals,
+                       GoalsScored = (int)m.MatchStatistics.HomeGoals,
+                       MatchOutcome = m.MatchStatistics.GetMatchOutcomeTypeForTeam(MatchDataTeamType.Home),
+                       SmallUrl = m.TeamHome.BadgeImage.SmallUrl,
+                       TeamName = m.TeamHome.Name
+                   }).ToList();
+
+            var overrideResultsAway = _coachBotContext.Matches
+                   .Where(m => _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == m.Id && tg.TournamentGroupId == tournamentGroupId))
+                   .Where(m => m.MatchStatisticsId == null && m.MatchStatistics.HomeGoals != null && m.MatchStatistics.AwayGoals != null)
+                   .Select(m => new StandingGroupSubEntry()
+                   {
+                       TeamId = (int)m.TeamAwayId,
+                       GoalsConceded = (int)m.MatchStatistics.HomeGoals,
+                       GoalsScored = (int)m.MatchStatistics.AwayGoals,
+                       MatchOutcome = m.MatchStatistics.GetMatchOutcomeTypeForTeam(MatchDataTeamType.Away),
+                       SmallUrl = m.TeamAway.BadgeImage.SmallUrl,
+                       TeamName = m.TeamAway.Name
+                   }).ToList();
+
+            var standings = statisticResults
+                 .Concat(overrideResultsHome)
+                 .Concat(overrideResultsAway)
+                 .GroupBy(p => new { p.TeamId, p.TeamName, p.SmallUrl }, (key, s) => new TournamentGroupStanding()
                  {
-                     GoalsScored = s.Sum(p => p.Goals),
+                     GoalsScored = s.Sum(p => p.GoalsScored),
                      GoalsConceded = s.Sum(p => p.GoalsConceded),
                      MatchesPlayed = s.Count(),
                      Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
                      Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
                      Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
                      TeamId = (int)key.TeamId,
-                     TeamName = key.Name,
+                     TeamName = key.TeamName,
                      BadgeImageUrl = key.SmallUrl,
-                     GoalDifference = s.Sum(p => p.Goals) - s.Sum(p => p.GoalsConceded),
+                     GoalDifference = s.Sum(p => p.GoalsScored) - s.Sum(p => p.GoalsConceded),
                      Points = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 3 : p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)
                  })
                  .ToList()
@@ -453,6 +482,16 @@ namespace CoachBot.Domain.Services
                      Points = s.Points,
                      Position = i + 1
                  }).ToList();
+        }
+
+        public struct StandingGroupSubEntry
+        {
+            public int TeamId { get; set; }
+            public int GoalsScored {get; set; }
+            public int GoalsConceded { get; set; }
+            public MatchOutcomeType MatchOutcome { get; set; }
+            public string SmallUrl { get; set; }
+            public string TeamName { get; set; }
         }
 
         public void GenerateTournamentSchedule(int tournamentId, int? tournamentStageId = null)
@@ -671,7 +710,7 @@ namespace CoachBot.Domain.Services
                     var nextMatch = nextPhase.TournamentGroupMatches.ElementAt(currentPhaseMatchIndex);
                     if (nextMatch.Match.TeamAwayId == null)
                     {
-                        var winner = match.Match.MatchStatistics.MatchWinner;
+                        var winner = match.Match.MatchStatistics.KnockoutMatchWinner;
                         if (winner.Equals(MatchDataTeamType.Home))
                         {
                             if (nextMatch.Match.TeamAwayId != null) throw new Exception("Unhandled knockout tournament scenario. Please investigate.");
@@ -695,7 +734,7 @@ namespace CoachBot.Domain.Services
                     var nextMatch = nextPhase.TournamentGroupMatches.ElementAt(nextMatchIndex);
 
                     int winningTeamId;
-                    var winner = match.Match.MatchStatistics.MatchWinner;
+                    var winner = match.Match.MatchStatistics.KnockoutMatchWinner;
                     if (winner.Equals(MatchDataTeamType.Home))
                     {
                         winningTeamId = match.Match.TeamHomeId.Value;
@@ -726,7 +765,7 @@ namespace CoachBot.Domain.Services
             {
                 var tournament = _coachBotContext.Tournaments.Single(t => t.Id == currentPhase.TournamentStage.TournamentId);
 
-                var winner = match.Match.MatchStatistics.MatchWinner;
+                var winner = match.Match.MatchStatistics.KnockoutMatchWinner;
                 if (winner.Equals(MatchDataTeamType.Home))
                 {
                     tournament.WinningTeamId = match.Match.TeamHomeId.Value;

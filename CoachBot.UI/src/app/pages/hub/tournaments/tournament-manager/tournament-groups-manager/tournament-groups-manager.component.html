@@ -51,7 +51,7 @@
                                 <td>{{groupMatch.match.teamAway?.name || groupMatch.teamAwayPlaceholder || 'TBC'}}</td>
                                 <td>{{groupMatch.tournamentPhase.name}}</td>
                                 <td>
-                                    <ng-container ngIf="groupMatch.match.matchStatistics; else noResult">
+                                    <ng-container *ngIf="groupMatch.match.matchStatistics; else noResult">
                                         {{groupMatch.match.matchStatistics.matchGoalsHome}} -
                                         {{groupMatch.match.matchStatistics.matchGoalsAway}}
                                     </ng-container>

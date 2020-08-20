@@ -74,6 +74,8 @@ namespace CoachBot.Domain.Services
             var existingMatch = _coachBotContext.Matches.Single(m => m.Id == match.Id);
             existingMatch.KickOff = match.KickOff;
             existingMatch.ServerId = match.ServerId;
+            existingMatch.TeamHomeId = match.TeamHomeId;
+            existingMatch.TeamAwayId = match.TeamAwayId;
             _coachBotContext.SaveChanges();
         }
 

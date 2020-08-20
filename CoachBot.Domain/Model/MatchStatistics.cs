@@ -24,9 +24,9 @@ namespace CoachBot.Domain.Model
 
         public int? AwayGoals { get; set; }
 
-        public int MatchGoalsHome => MatchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Home);
+        public int MatchGoalsHome => HomeGoals ?? MatchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Home);
 
-        public int MatchGoalsAway => MatchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Away);
+        public int MatchGoalsAway => AwayGoals ?? MatchData.GetMatchStatistic(MatchDataStatisticType.Goals, MatchDataTeamType.Away);
 
         public MatchOutcomeType GetMatchOutcomeTypeForTeam(MatchDataTeamType teamType)
         {

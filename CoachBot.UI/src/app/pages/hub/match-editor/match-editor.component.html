@@ -49,5 +49,34 @@
             </ng-template>
         </div>
     </div>
+
     <app-match-data-uploader *ngIf="match" [matchId]="match.id"></app-match-data-uploader>
+
+    <div class="card">
+        <div class="card__header">
+            <h4>Match Result Override</h4>
+        </div>
+        <div class="card__content">
+            <ng-container *ngIf="!isLoading; else spinner">
+                <p class="text-muted">
+                    This will override any submitted result, as well as acting as a substitute for where match data is
+                    not available
+                </p>
+                <div class="form-group">
+                    <label>Home Goals</label>
+                    <input class="form-control" type="number" name="homeGoalsOverride"
+                        [(ngModel)]="match.matchStatistics.homeGoals">
+                </div>
+                <div class="form-group">
+                    <label>Away Goals</label>
+                    <input class="form-control" type="number" name="homeGoalsOverride"
+                        [(ngModel)]="match.matchStatistics.awayGoals">
+                </div>
+                <button class="btn btn-primary" (click)="submitMatchResultOverride()" type="button">Save</button>
+            </ng-container>
+            <ng-template #spinner>
+                <app-spinner></app-spinner>
+            </ng-template>
+        </div>
+    </div>
 </div>

@@ -8,6 +8,7 @@ import { MatchStatistics } from '../shared/model/match-statistics.model';
 import { TeamService } from '../shared/services/team.service';
 import { Team } from '../shared/model/team.model';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
+import { MatchStatisticsService } from '../shared/services/match-statistics.service';
 
 @Component({
     selector: 'app-match-editor',
@@ -19,7 +20,6 @@ export class MatchEditorComponent implements OnInit {
     matchId: number;
     servers: Server[];
     teams: Team[];
-    matchStatistics: MatchStatistics;
     showDatepicker = false;
     isLoading = true;
 
@@ -27,6 +27,7 @@ export class MatchEditorComponent implements OnInit {
         private matchService: MatchService,
         private serverService: ServerService,
         private teamService: TeamService,
+        private matchStatisticsService: MatchStatisticsService,
         private userPreferenceService: UserPreferenceService,
         private route: ActivatedRoute
     ) { }
@@ -49,6 +50,7 @@ export class MatchEditorComponent implements OnInit {
         this.matchService.getMatch(this.matchId).subscribe(match => {
             this.match = match;
             this.match.kickOff = new Date(this.match.kickOff);
+            this.match.matchStatistics = this.match.matchStatistics || {} as any;
             this.isLoading = false;
         });
     }
@@ -57,6 +59,15 @@ export class MatchEditorComponent implements OnInit {
         this.isLoading = true;
         this.matchService.updateMatch(this.match).subscribe(() => {
             this.loadMatch();
+        });
+    }
+
+    submitMatchResultOverride() {
+        this.isLoading = true;
+        this.matchStatisticsService.createMatchResultOverride(
+            this.matchId, this.match.matchStatistics.homeGoals, this.match.matchStatistics.awayGoals
+        ).subscribe(() => {
+            this.isLoading = false;
         });
     }
 

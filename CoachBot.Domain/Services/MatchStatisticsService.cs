@@ -185,6 +185,17 @@ namespace CoachBot.Domain.Services
             }
         }
 
+        public void CreateMatchResultOverride(int matchId, int homeGoals, int awayGoals)
+        {
+            var match = _coachBotContext.Matches.Include(m => m.MatchStatistics).Single(m => m.Id == matchId);
+
+            match.MatchStatistics = match.MatchStatistics ?? new MatchStatistics();
+            match.MatchStatistics.HomeGoals = homeGoals;
+            match.MatchStatistics.AwayGoals = awayGoals;
+
+            _coachBotContext.SaveChanges();
+        }
+
         private MatchFormat GetMatchFormatFromMapName(string mapName)
         {
             if (string.IsNullOrWhiteSpace(mapName) || !mapName.Contains('v'))

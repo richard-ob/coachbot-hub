@@ -559,7 +559,7 @@ namespace CoachBot.Domain.Services
             {
                 _coachBotContext.TournamentGroupMatches.RemoveRange(tournamentMatches);
                 var matches = _coachBotContext.Matches.Where(t => t.TournamentId == tournamentId);
-                if (matches.Count() < 20)
+                if (matches.Count() < 200)
                 {
                     _coachBotContext.Matches.RemoveRange(matches);
                 }

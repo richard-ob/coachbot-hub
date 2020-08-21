@@ -32,4 +32,8 @@ export class MatchStatisticsService {
         return this.http.get<MatchStatistics[]>(`${environment.apiUrl}/api/match-statistics/unlinked`);
     }
 
+    createMatchResultOverride(matchId: number, homeGoals: number, awayGoals: number) {
+        return this.http.post<void>(`${environment.apiUrl}/api/match-statistics/${matchId}/override`, { homeGoals, awayGoals });
+    }
+
 }

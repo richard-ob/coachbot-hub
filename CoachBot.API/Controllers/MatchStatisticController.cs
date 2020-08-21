@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
+using CoachBot.Models;
 using CoachBot.Models.Dto;
 using CoachBot.Shared.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -148,6 +149,15 @@ namespace CoachBot.Controllers
         public IActionResult Unlink(int id)
         {
             _matchStatisticsService.UnlinkMatchStatistics(id);
+
+            return Ok();
+        }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HttpPost("{matchId}/override")]
+        public IActionResult CreateMatchResultOverride([FromBody]MatchResultOverrideDto matchResultOverrideDto, int matchId)
+        {
+            _matchStatisticsService.CreateMatchResultOverride(matchId, matchResultOverrideDto.HomeGoals, matchResultOverrideDto.AwayGoals);
 
             return Ok();
         }

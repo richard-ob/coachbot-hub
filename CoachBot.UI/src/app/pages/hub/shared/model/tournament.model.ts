@@ -20,4 +20,6 @@ export class Tournament {
     tournamentStages?: TournamentStage[];
     tournamentStaff: TournamentStaff[];
     winningTeam: Team;
+    hasStarted: boolean;
+    hasEnded: boolean;
 }

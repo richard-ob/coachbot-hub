@@ -38,15 +38,11 @@
                                 </ng-template>
                             </div>
                         </div>
-                        <div class="player-info-details__item player-info-details__item--height">
+                        <div *ngIf="tournament.endDate"
+                            class="player-info-details__item player-info-details__item--height">
                             <h6 class="player-info-details__title">End Date</h6>
                             <div class="player-info-details__value">
-                                <ng-container *ngIf="tournament.endDate; else noEndDate">
-                                    {{tournament.endDate | date}}
-                                </ng-container>
-                                <ng-template #noEndDate>
-                                    Unknown
-                                </ng-template>
+                                {{tournament.endDate | date}}
                             </div>
                         </div>
                     </div>

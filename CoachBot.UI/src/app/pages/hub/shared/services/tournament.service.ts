@@ -45,6 +45,10 @@ export class TournamentService {
         return this.http.get<Tournament>(`${environment.apiUrl}/api/tournaments/${tournamentId}`);
     }
 
+    getTournamentOverview(tournamentId: number): Observable<Tournament> {
+        return this.http.get<Tournament>(`${environment.apiUrl}/api/tournaments/${tournamentId}/overview`);
+    }
+
     createTournamentSeries(tournamentSeries: TournamentSeries): Observable<void> {
         return this.http.post<void>(`${environment.apiUrl}/api/tournament-series`, tournamentSeries);
     }

@@ -48,6 +48,12 @@ namespace CoachBot.Controllers
             return _tournamentService.GetTournament(id);
         }
 
+        [HttpGet("{id}/overview")]
+        public Tournament GetTournamentOverview(int id)
+        {
+            return _tournamentService.GetTournamentSimple(id);
+        }
+
         [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost]
         public IActionResult CreateTournament(Tournament tournament)

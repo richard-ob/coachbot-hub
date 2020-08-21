@@ -35,9 +35,12 @@
         </div>
 
         <div class="col-4">
-            <app-fantasy-team-spotlight [tournamentId]="tournamentId"></app-fantasy-team-spotlight>
-            <app-fantasy-player-spotlight [tournamentId]="tournamentId"></app-fantasy-player-spotlight>
-            <a class="btn btn-primary btn-block" [routerLink]="['/fantasy/']">
+            <app-fantasy-team-spotlight [tournamentId]="tournamentId" [hasTournamentFinished]="tournament.hasEnded">
+            </app-fantasy-team-spotlight>
+            <app-fantasy-player-spotlight [tournamentId]="tournamentId" [hasTournamentFinished]="tournament.hasEnded">
+            </app-fantasy-player-spotlight>
+            <a *ngIf="tournament && !tournament.hasStarted" class="btn btn-primary btn-block"
+                [routerLink]="['/fantasy/']">
                 Create Fantasy Team
             </a>
         </div>

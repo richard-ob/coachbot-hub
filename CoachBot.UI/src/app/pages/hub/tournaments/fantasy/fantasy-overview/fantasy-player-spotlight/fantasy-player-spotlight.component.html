@@ -1,6 +1,11 @@
-<div class="card statistic-spotlight-card" (click)="spotlightPlayer && navigateToPlayer(spotlightPlayer.playerId)">
-    <div class="card__content statistic-spotlight-card widget-player--soccer">
-        <h4 class="statistic-spotlight-title mb-2">Player of the Round</h4>
+<div class="card statistic-spotlight-card" [class.statistic-spotlight-winner]="hasTournamentFinished"
+    (click)="spotlightPlayer && navigateToPlayer(spotlightPlayer.playerId)">
+    <div class="card__content  widget-player--soccer">
+        <h4 class="statistic-spotlight-title mb-2">
+            Player of the
+            <ng-container *ngIf="!hasTournamentFinished">Round</ng-container>
+            <ng-container *ngIf="hasTournamentFinished">Tournament</ng-container>
+        </h4>
         <ng-container *ngIf="!isLoading; else spinner">
             <div class="widget-player__ribbon">
                 <div class="fa fa-star"></div>

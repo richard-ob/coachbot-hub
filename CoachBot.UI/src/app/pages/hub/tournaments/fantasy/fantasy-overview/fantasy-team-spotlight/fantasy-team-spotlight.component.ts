@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class FantasyTeamSpotlightComponent implements OnInit {
 
     @Input() tournamentId: number;
+    @Input() hasTournamentFinished = false;
     spotlightTeam: FantasyTeamRank;
     isCreating = false;
     isLoading = true;

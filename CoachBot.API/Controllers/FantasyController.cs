@@ -110,7 +110,7 @@ namespace CoachBot.Controllers
         [HttpGet("tournament/{tournamentId}/current-phase-spotlight-team")]
         public FantasyTeamRank GetCurrentPhaseSpotlightTeam(int tournamentId)
         {
-            return _fantasyService.GetFantasyTeamrRankSpotlight(tournamentId);
+            return _fantasyService.GetFantasyTeamRankSpotlight(tournamentId);
         }
 
         [HttpGet("tournament/{tournamentId}/team-summaries")]

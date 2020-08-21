@@ -22,7 +22,11 @@ namespace CoachBot.Domain.Model
 
         public DateTime? StartDate { get; set; }
 
+        public bool HasStarted => StartDate != null && StartDate < DateTime.UtcNow;
+
         public DateTime? EndDate { get; set; }
+
+        public bool HasEnded => EndDate != null && EndDate < DateTime.UtcNow;
 
         public TournamentType TournamentType { get; set; }
 

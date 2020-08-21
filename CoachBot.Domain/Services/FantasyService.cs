@@ -377,16 +377,31 @@ namespace CoachBot.Domain.Services
 
         public FantasyPlayerRank GetFantasyPlayerRankSpotlight(int tournamentId)
         {
-            var recentPhase = _coachBotContext.FantasyPlayerPhases.Where(f => f.TournamentPhase.TournamentGroupMatches.Any(m => m.Match.MatchStatistics != null)).OrderByDescending(f => f.Id).FirstOrDefault();
+            // INFO: If tournament has ended, just return the highest ranked
+            if (_coachBotContext.Tournaments.Any(t => t.Id == tournamentId && t.EndDate != null)) {
+                return GetFantasyPlayerRankings(tournamentId).FirstOrDefault();
+            }
+
+            var recentPhase = _coachBotContext.FantasyPlayerPhases
+                .Where(f => f.TournamentPhase.TournamentStage.TournamentId == tournamentId && f.TournamentPhase.TournamentGroupMatches.Any(m => m.Match.MatchStatistics != null))
+                .OrderByDescending(f => f.Id).FirstOrDefault();
 
             if (recentPhase == null) return null;
 
             return GetFantasyPlayerPhaseRankings((int)recentPhase.TournamentPhaseId).FirstOrDefault();
         }
 
-        public FantasyTeamRank GetFantasyTeamrRankSpotlight(int tournamentId)
+        public FantasyTeamRank GetFantasyTeamRankSpotlight(int tournamentId)
         {
-            var recentPhase = _coachBotContext.FantasyPlayerPhases.Where(f => f.TournamentPhase.TournamentGroupMatches.Any(m => m.Match.MatchStatistics != null)).OrderByDescending(f => f.Id).FirstOrDefault();
+            // INFO: If tournament has ended, just return the highest ranked
+            if (_coachBotContext.Tournaments.Any(t => t.Id == tournamentId && t.EndDate != null))
+            {
+                return GetFantasyTeamRankings(tournamentId).FirstOrDefault();
+            }
+
+            var recentPhase = _coachBotContext.FantasyPlayerPhases
+                .Where(f => f.TournamentPhase.TournamentStage.TournamentId == tournamentId && f.TournamentPhase.TournamentGroupMatches.Any(m => m.Match.MatchStatistics != null))
+                .OrderByDescending(f => f.Id).FirstOrDefault();
 
             if (recentPhase == null) return null;
 

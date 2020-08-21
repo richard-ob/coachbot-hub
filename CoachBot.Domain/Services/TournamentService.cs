@@ -56,6 +56,11 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
+        public Tournament GetTournamentSimple(int tournamentId)
+        {
+            return _coachBotContext.Tournaments.Single(t => t.Id == tournamentId);
+        }
+
         public Tournament GetTournament(int tournamentId)
         {
             return _coachBotContext.Tournaments

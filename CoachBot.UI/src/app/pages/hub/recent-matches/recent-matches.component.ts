@@ -7,6 +7,8 @@ import { UserPreferenceService, UserPreferenceType } from '@shared/services/user
 import { Router } from '@angular/router';
 import { MatchOutcomeType } from '../shared/model/match-outcome-type.enum';
 import { RegionService } from '../shared/services/region.service';
+import { TournamentService } from '../shared/services/tournament.service';
+import { Team } from '../shared/model/team.model';
 @Component({
     selector: 'app-recent-matches',
     templateUrl: './recent-matches.component.html',
@@ -26,6 +28,7 @@ export class RecentMatchesComponent implements OnInit {
     filters = new MatchFilters();
     matchTypes = MatchTypes;
     matches: Match[];
+    teams: Team[];
     sortBy = 'KickOff';
     currentPage = 1;
     totalPages: number;
@@ -37,6 +40,7 @@ export class RecentMatchesComponent implements OnInit {
         private matchService: MatchService,
         private userPreferenceService: UserPreferenceService,
         private regionService: RegionService,
+        private tournamentService: TournamentService,
         private router: Router
     ) {
     }
@@ -52,7 +56,14 @@ export class RecentMatchesComponent implements OnInit {
         this.regionService.getRegions().subscribe((regions) => {
             const region = regions.find(r => r.regionId === this.filters.regionId);
             this.filters.matchFormat = region.matchFormat;
-            this.loadPage(1);
+            if (this.filters.tournamentId) {
+                this.tournamentService.getTournamentTeams(this.tournamentId).subscribe(tournamentTeams => {
+                    this.teams = tournamentTeams;
+                    this.loadPage(1);
+                });
+            } else {
+                this.loadPage(1);
+            }
         });
     }
 

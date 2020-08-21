@@ -7,48 +7,59 @@
     <div *ngIf="(matches && matches.length) || hasFiltersApplied" class="card card--has-table">
         <div class="card__header card__header--has-btn">
             <h4>{{includeUpcoming ? 'Matches' : 'Results' }}</h4>
-            <ul *ngIf="showFilters" class="team-result-filter d-none d-lg-inline float-right">
-                <li class="team-result-filter__item">
-                    <mat-datepicker #dateFromPicker></mat-datepicker>
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend clickable">
-                            <span class="input-group-text" id="basic-addon1" (click)="dateFromPicker.open()">
-                                <i class="fas fa-calendar"></i>
-                            </span>
+            <ul class="team-result-filter d-none d-lg-inline float-right">
+                <ng-container *ngIf="showFilters">
+                    <li class="team-result-filter__item">
+                        <mat-datepicker #dateFromPicker></mat-datepicker>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend clickable">
+                                <span class="input-group-text" id="basic-addon1" (click)="dateFromPicker.open()">
+                                    <i class="fas fa-calendar"></i>
+                                </span>
+                            </div>
+                            <input matInput class="form-control input-xs" [matDatepicker]="dateFromPicker"
+                                [(ngModel)]="filters.dateFrom" placeholder="Date From" (click)="dateFromPicker.open()">
                         </div>
-                        <input matInput class="form-control input-xs" [matDatepicker]="dateFromPicker"
-                            [(ngModel)]="filters.dateFrom" placeholder="Date From" (click)="dateFromPicker.open()">
-                    </div>
-                </li>
-                <li class="team-result-filter__item">
-                    <mat-datepicker #dateToPicker></mat-datepicker>
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend clickable">
-                            <span class="input-group-text" id="basic-addon1" (click)="dateToPicker.open()">
-                                <i class="fas fa-calendar"></i>
-                            </span>
+                    </li>
+                    <li class="team-result-filter__item">
+                        <mat-datepicker #dateToPicker></mat-datepicker>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend clickable">
+                                <span class="input-group-text" id="basic-addon1" (click)="dateToPicker.open()">
+                                    <i class="fas fa-calendar"></i>
+                                </span>
+                            </div>
+                            <input matInput class="form-control input-xs" [matDatepicker]="dateToPicker"
+                                [(ngModel)]="filters.dateTo" placeholder="Date To" (click)="dateToPicker.open()">
                         </div>
-                        <input matInput class="form-control input-xs" [matDatepicker]="dateToPicker"
-                            [(ngModel)]="filters.dateTo" placeholder="Date To" (click)="dateToPicker.open()">
-                    </div>
-                </li>
-                <li class="team-result-filter__item">
-                    <select [(ngModel)]="filters.matchFormat" name="matchFormat" class="form-control"
-                        #matchFormatSelect>
-                        <option [ngValue]="8">8v8</option>
-                        <option [ngValue]="6">6v6</option>
-                        <option [ngValue]="5">5v5</option>
-                        <option [ngValue]="4">4v4</option>
-                        <option [ngValue]="3">3v3</option>
-                    </select>
-                </li>
-                <li class="team-result-filter__item">
-                    <select class="form-control" [(ngModel)]="filters.matchType">
-                        <option [ngValue]="undefined">All</option>
-                        <option [ngValue]="matchTypes.RankedFriendly">Friendlies</option>
-                        <option [ngValue]="matchTypes.Competition">Competitive</option>
-                    </select>
-                </li>
+                    </li>
+                    <li class="team-result-filter__item">
+                        <select [(ngModel)]="filters.matchFormat" name="matchFormat" class="form-control"
+                            #matchFormatSelect>
+                            <option [ngValue]="8">8v8</option>
+                            <option [ngValue]="6">6v6</option>
+                            <option [ngValue]="5">5v5</option>
+                            <option [ngValue]="4">4v4</option>
+                            <option [ngValue]="3">3v3</option>
+                        </select>
+                    </li>
+                    <li class="team-result-filter__item">
+                        <select class="form-control" [(ngModel)]="filters.matchType">
+                            <option [ngValue]="undefined">All</option>
+                            <option [ngValue]="matchTypes.RankedFriendly">Friendlies</option>
+                            <option [ngValue]="matchTypes.Competition">Competitive</option>
+                        </select>
+                    </li>
+                </ng-container>
+                <ng-container *ngIf="tournamentId">
+                    <li class="team-result-filter__item">
+                        <select [(ngModel)]="filters.teamId" name="teamId" class="form-control" style="text-align-last: center;
+                        text-align: center;" #teamSelect>
+                            <option [ngValue]="undefined">All Teams</option>
+                            <option *ngFor="let team of teams" [ngValue]="team.id">{{team.name}}</option>
+                        </select>
+                    </li>
+                </ng-container>
                 <li class="team-result-filter__item">
                     <button type="button" class="btn btn-secondary btn-xs card-header__button" (click)="setFilters()"
                         title="Filter results">

@@ -206,6 +206,7 @@ namespace CoachBot.Domain.Services
                 .Where(t => t.TournamentGroup.TournamentStage.TournamentId == tournamentId)
                 .Select(t => t.Team)
                 .Distinct()
+                .OrderBy(t => t.Name)
                 .ToList();
         }
 

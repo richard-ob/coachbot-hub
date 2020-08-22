@@ -134,7 +134,7 @@
     <form *swalPortal>
         <div class="form-group">
             <label>Team Name</label>
-            <input type="text" class="form-control" name="teamName" [(ngModel)]="teamName">
+            <input type="text" class="form-control" name="teamName" maxlength="50" [(ngModel)]="teamName">
         </div>
     </form>
     <ng-container *swalPortal="swalTargets.cancelButton">

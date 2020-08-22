@@ -20,6 +20,8 @@ export class MatchEditorComponent implements OnInit {
     matchId: number;
     servers: Server[];
     teams: Team[];
+    homeGoalsOverride: number;
+    awayGoalsOverride: number;
     showDatepicker = false;
     isLoading = true;
 
@@ -50,7 +52,10 @@ export class MatchEditorComponent implements OnInit {
         this.matchService.getMatch(this.matchId).subscribe(match => {
             this.match = match;
             this.match.kickOff = new Date(this.match.kickOff);
-            this.match.matchStatistics = this.match.matchStatistics || {} as any;
+            if (this.match.matchStatistics) {
+                this.homeGoalsOverride = this.match.matchStatistics.homeGoals;
+                this.awayGoalsOverride = this.match.matchStatistics.awayGoals;
+            }
             this.isLoading = false;
         });
     }

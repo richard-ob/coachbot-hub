@@ -15,8 +15,10 @@ namespace CoachBot.Domain.Model
         [Key]
         public int Id { get; set; }
 
+        [MaxLength(40)]
         public string Name { get; set; }
 
+        [MaxLength(6)]
         public string TeamCode { get; set; }
 
         public string KitEmote { get; set; }

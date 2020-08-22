@@ -14,6 +14,7 @@ namespace CoachBot.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [MaxLength(50)]
         public string Name { get; set; }
 
         public ulong? DiscordUserId { get; set; }

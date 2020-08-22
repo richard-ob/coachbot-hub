@@ -12,6 +12,7 @@ namespace CoachBot.Domain.Model
         [Key]
         public int Id { get; set; }
 
+        [MaxLength(50)]
         public string Name { get; set; }
 
         public bool IsComplete { get; set; } = false;

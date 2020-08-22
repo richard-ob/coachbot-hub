@@ -64,13 +64,11 @@
                 </p>
                 <div class="form-group">
                     <label>Home Goals</label>
-                    <input class="form-control" type="number" name="homeGoalsOverride"
-                        [(ngModel)]="match.matchStatistics.homeGoals">
+                    <input class="form-control" type="number" name="homeGoalsOverride" [(ngModel)]="homeGoalsOverride">
                 </div>
                 <div class="form-group">
                     <label>Away Goals</label>
-                    <input class="form-control" type="number" name="homeGoalsOverride"
-                        [(ngModel)]="match.matchStatistics.awayGoals">
+                    <input class="form-control" type="number" name="homeGoalsOverride" [(ngModel)]="awayGoalsOverride">
                 </div>
                 <button class="btn btn-primary" (click)="submitMatchResultOverride()" type="button">Save</button>
             </ng-container>

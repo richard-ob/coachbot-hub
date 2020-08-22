@@ -26,7 +26,7 @@ export class FantasyPlayerComponent implements OnInit {
         this.rating = this.fantasyPlayer.rating;
         this.positionGroup = this.fantasyPlayer.positionGroup;
         this.playerName = this.fantasyPlayer.player.name;
-        this.kitImageUrl = 'assets/images/iosoccer/fantasy/kits/' + this.fantasyPlayer.team.teamCode.toLowerCase() + '_orig.png';
+        this.kitImageUrl = 'assets/images/iosoccer/fantasy/kits/' + this.fantasyPlayer.team.teamCode.toLowerCase() + '.png';
         if (this.fantasyPlayer.team.badgeImage) {
             this.badge = this.fantasyPlayer.team.badgeImage.extraSmallUrl;
         }

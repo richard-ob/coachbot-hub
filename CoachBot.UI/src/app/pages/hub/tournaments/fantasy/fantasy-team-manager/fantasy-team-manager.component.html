@@ -42,19 +42,18 @@
                                 </td>
                                 <td class="text-center">{{fantasyTeam.fantasyTeamStatus | fantasyTeamStatus }}</td>
                                 <td class="text-center">
+                                    <button *ngIf="fantasyTeam.fantasyTeamStatus !== fantasyTeamStatuses.Open"
+                                        type="button" class="btn btn-primary btn-xs">
+                                        View Team
+                                    </button>
                                     <button *ngIf="fantasyTeam.fantasyTeamStatus === fantasyTeamStatuses.Open"
                                         type="button" class="btn btn-primary btn-xs">
-                                        Edit
+                                        Edit Team
                                     </button>
-                                    <ng-container *ngIf="fantasyTeam.fantasyTeamStatus !== fantasyTeamStatuses.Open">
-                                        <button type="button" class="btn btn-primary btn-xs">
-                                            View Team
-                                        </button>
-                                        <a [routerLink]="['/fantasy/', fantasyTeam.tournamentId]"
-                                            class="ml-2 btn btn-primary btn-xs">
-                                            Leaderboard
-                                        </a>
-                                    </ng-container>
+                                    <a [routerLink]="['/fantasy/', fantasyTeam.tournamentId]"
+                                        class="ml-2 btn btn-primary btn-xs">
+                                        Leaderboard
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -71,7 +70,7 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <input [(ngModel)]="fantasyTeam.name" name="fantasyTeamName" type="text" required
-                                    class="form-control">
+                                    maxlength="50" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Tournament</label>

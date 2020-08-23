@@ -59,7 +59,7 @@ export class TeamEditorSquadComponent implements OnInit {
         playerTeam.teamRole = teamRole;
         this.playerTeamService.updatePlayerTeam(playerTeam).subscribe(() => {
             this.loadPlayers();
-            this.snackBar.open('Role changed for ' + playerTeam.player.name, 'Dismiss');
+            this.snackBar.open('Role changed for ' + playerTeam.player.name, 'Dismiss', { duration: 5000 });
         });
     }
 

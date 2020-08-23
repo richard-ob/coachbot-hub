@@ -660,7 +660,7 @@ namespace CoachBot.Domain.Services
             }
 
             // Check not over budget
-            if (fantasyTeam.FantasyTeamSelections.Sum(f => f.FantasyPlayer.Rating) + fantasyPlayer.Rating > fantasyTeam.Tournament.FantasyPointsLimit)
+            if (Math.Round(fantasyTeam.FantasyTeamSelections.Sum(f => f.FantasyPlayer.Rating), 2) + fantasyPlayer.Rating > fantasyTeam.Tournament.FantasyPointsLimit)
             {
                 throw new Exception("The budget for the team would be exceeded if this player were added");
             }

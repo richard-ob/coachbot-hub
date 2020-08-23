@@ -123,7 +123,7 @@ export class FantasyTeamEditorComponent implements OnInit {
     }
 
     getSquadValue(): number {
-        return this.fantasyTeam.fantasyTeamSelections.reduce((a, b) => a + b.fantasyPlayer.rating, 0);
+        return +this.fantasyTeam.fantasyTeamSelections.reduce((a, b) => a + b.fantasyPlayer.rating, 0).toFixed(2);
     }
 
     isSquadFull(): boolean {

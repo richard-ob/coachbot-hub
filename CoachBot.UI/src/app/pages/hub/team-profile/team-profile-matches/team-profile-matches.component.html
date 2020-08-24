@@ -1,4 +1,4 @@
-<app-recent-matches *ngIf="!isLoading; else spinner" [teamId]="teamId" [includePast]="true" [includeUpcoming]="true"
+<app-recent-matches *ngIf="!isLoading; else spinner" [teamId]="teamId" [includePast]="true" [includeUpcoming]="false"
     [verticalPadding]="false">
 </app-recent-matches>
 <ng-template #spinner>

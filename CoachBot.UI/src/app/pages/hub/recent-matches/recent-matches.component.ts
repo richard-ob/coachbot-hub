@@ -88,6 +88,10 @@ export class RecentMatchesComponent implements OnInit {
     }
 
     getMatchOutcomeForTeam(match: Match) {
+        if (!match.matchStatistics) {
+            return;
+        }
+
         const isHomeTeam = match.teamHomeId === this.teamId;
         const goalsScored = isHomeTeam ? match.matchStatistics.matchGoalsHome : match.matchStatistics.matchGoalsAway;
         const goalsConceded = isHomeTeam ? match.matchStatistics.matchGoalsAway : match.matchStatistics.matchGoalsHome;

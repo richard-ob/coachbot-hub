@@ -48,8 +48,10 @@ export class PlayerProfileMatchesComponent implements OnInit {
 
     loadPage(page: number, sortBy: string = null) {
         this.isLoading = true;
-        this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
-        this.sortBy = sortBy;
+        if (page === this.currentPage) {
+            this.sortOrder = SortingUtils.getSortOrder(this.sortBy, sortBy, this.sortOrder);
+        }
+        this.sortBy = sortBy || this.sortBy;
         this.playerService.getPlayerPositionMatchStatistics(page, undefined, this.sortBy, this.sortOrder, this.filters)
             .subscribe(response => {
                 this.matches = response.items;

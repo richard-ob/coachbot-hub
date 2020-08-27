@@ -19,12 +19,12 @@ namespace CoachBot.Domain.Services
         public void CreateScorePrediction(ScorePrediction scorePrediction, ulong steamId)
         {
             var player = _coachBotContext.Players.Single(p => p.SteamID == steamId);
-            var tournamentPhase = _coachBotContext.TournamentPhases.Single(p => p.Id == scorePrediction.TournamentPhaseId);
+            var match = _coachBotContext.Matches.Single(m => m.Id == scorePrediction.MatchId);
             scorePrediction.PlayerId = player.Id;
 
-            if (_coachBotContext.TournamentPhases.Any(tp => tp.Id == scorePrediction.TournamentPhaseId && tp.TournamentGroupMatches.Any(g => g.Match.KickOff < DateTime.UtcNow)))
+            if (match.KickOff < DateTime.UtcNow)
             {
-                throw new Exception("This tournament phase has already started");
+                throw new Exception("Prediction can't be submitted after match has already kicked off");
             }
 
             if (_coachBotContext.ScorePredictions.Any(s => s.PlayerId == scorePrediction.PlayerId && s.MatchId == scorePrediction.MatchId))
@@ -45,10 +45,16 @@ namespace CoachBot.Domain.Services
         {
             var player = _coachBotContext.Players.Single(p => p.SteamID == steamId);
             var existing = _coachBotContext.ScorePredictions.Single(p => p.Id == scorePrediction.Id);
+            var match = _coachBotContext.Matches.Single(m => m.Id == scorePrediction.MatchId);
 
             if (player.Id != existing.PlayerId)
             {
                 throw new Exception("Predictions can only be updated by the player they belong to");
+            }
+
+            if (match.KickOff < DateTime.UtcNow)
+            {
+                throw new Exception("Prediction can't be submitted after match has already kicked off");
             }
 
             existing.HomeGoalsPrediction = scorePrediction.HomeGoalsPrediction;

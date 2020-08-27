@@ -157,6 +157,16 @@ namespace CoachBot.Modules.Matchmaker
             }
         }
 
+        [Command("!unsignglobal")]
+        [Alias("!ug", "!removeglobal")]
+        [RequireChannelConfigured]
+        [SendLineupMessage]
+        public async Task UnsignGlobalAsync()
+        {
+            var response = _channelMatchService.RemovePlayer(Context.Message.Author);
+            await ReplyAsync("", embed: response);
+        }
+
         [Command("!unsignpos")]
         [Alias("!up", "!clearpos")]
         [RequireChannelConfigured]

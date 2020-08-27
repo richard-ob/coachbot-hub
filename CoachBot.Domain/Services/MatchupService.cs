@@ -2,6 +2,7 @@
 using CoachBot.Domain.Model;
 using CoachBot.Factories;
 using CoachBot.Model;
+using CoachBot.Tools;
 using Discord;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -245,6 +246,75 @@ namespace CoachBot.Domain.Services
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed **{player.DisplayName}**");
         }
 
+        public ServiceResponse RemovePlayerGlobally(ulong discordUserId, bool offlineMessage = false, bool respectDuplicityProtection = false)
+        {
+            var player = _coachBotContext.Players.Single(p => p.DiscordUserId == discordUserId);
+
+            var playerSignings = _coachBotContext.PlayerLineupPositions
+                .Include(plp => plp.Lineup)
+                .ThenInclude(l => l.Channel)
+                .Include(plp => plp.Lineup)
+                .ThenInclude(l => l.HomeMatchup)
+                .Include(plp => plp.Lineup)
+                .ThenInclude(l => l.AwayMatchup)
+                .Where(plp => plp.Player != null && plp.Player.DiscordUserId != null && (ulong)plp.Player.DiscordUserId == discordUserId)
+                .Where(plp => plp.Lineup.AwayMatchup.ReadiedDate == null || plp.Lineup.HomeMatchup == null)
+                .Where(plp => respectDuplicityProtection == false || plp.Lineup.Channel.DuplicityProtection == true);
+
+            foreach (var signing in playerSignings)
+            {
+                var channelId = signing.Lineup.Channel.DiscordChannelId;
+                var currentChannelMatchup = GetCurrentMatchForChannel(channelId);
+                if (currentChannelMatchup.Id == signing.Lineup.Matchup.Id)
+                {
+                    _coachBotContext.PlayerLineupPositions.Remove(signing);
+                    _coachBotContext.SaveChanges();
+                    var embed = offlineMessage ? DiscordEmbedHelper.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning)
+                        : DiscordEmbedHelper.GenerateEmbed($"Removed **{player.DisplayName}**", ServiceResponseStatus.NegativeSuccess);
+                    _discordNotificationService.SendChannelMessage(channelId, embed).Wait();
+                    foreach (var teamEmbed in GenerateTeamList(channelId))
+                    {
+                        _discordNotificationService.SendChannelMessage(channelId, teamEmbed).Wait();
+                    }
+                }
+
+            }
+
+            var playerSubSignings = _coachBotContext.PlayerLineupSubstitutes
+                .Include(plp => plp.Lineup)
+                .ThenInclude(l => l.Channel)
+                .Include(plp => plp.Lineup)
+                .ThenInclude(l => l.HomeMatchup)
+                .Include(plp => plp.Lineup)
+                .ThenInclude(l => l.AwayMatchup)
+                .Where(plp => (ulong)plp.Player.DiscordUserId == discordUserId)
+                .Where(plp => plp.Lineup.AwayMatchup.ReadiedDate == null || plp.Lineup.HomeMatchup == null)
+                .Where(plp => respectDuplicityProtection == false || plp.Lineup.Channel.DuplicityProtection == true);
+
+            foreach (var signing in playerSubSignings)
+            {
+                var channelId = signing.Lineup.Channel.DiscordChannelId;
+                var currentChannelMatchup = GetCurrentMatchForChannel(channelId);
+                if (currentChannelMatchup.Id == signing.Lineup.Matchup.Id)
+                {
+                    _coachBotContext.PlayerLineupSubstitutes.Remove(signing);
+                    _coachBotContext.SaveChanges();
+                    var embed = offlineMessage ? DiscordEmbedHelper.GenerateEmbed($"Removed {player.DisplayName} from the subs bench as they have gone offline", ServiceResponseStatus.Warning)
+                        : DiscordEmbedHelper.GenerateEmbed($"Removed **{player.DisplayName}** from the subs bench", ServiceResponseStatus.NegativeSuccess);
+                    _discordNotificationService.SendChannelMessage(channelId, embed).Wait();
+                    foreach (var teamEmbed in GenerateTeamList(channelId))
+                    {
+                        _discordNotificationService.SendChannelMessage(channelId, teamEmbed).Wait();
+                    }
+                }
+
+            }
+
+            _coachBotContext.SaveChanges();
+
+            return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Removed **{player.DisplayName}** from all lineups");
+        }
+
         public ServiceResponse ReadyMatch(ulong channelId, int serverId, out int matchId)
         {
             var matchup = GetCurrentMatchupForChannel(channelId);
@@ -380,13 +450,46 @@ namespace CoachBot.Domain.Services
 
         public bool IsPlayerSigned(ulong discordUserId)
         {
-            if (!_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId)) return false;
+            if (!_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId) && !_coachBotContext.PlayerLineupSubstitutes.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId)) return false;
 
             if (_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup != null && p.Lineup.AwayMatchup != null && p.Lineup.AwayMatchup.ReadiedDate == null)) return true;
 
             if (_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup != null && p.Lineup.HomeMatchup != null && p.Lineup.HomeMatchup.ReadiedDate == null)) return true;
 
+            if (_coachBotContext.PlayerLineupSubstitutes.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup != null && p.Lineup.AwayMatchup != null && p.Lineup.AwayMatchup.ReadiedDate == null)) return true;
+
+            if (_coachBotContext.PlayerLineupSubstitutes.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup != null && p.Lineup.HomeMatchup != null && p.Lineup.HomeMatchup.ReadiedDate == null)) return true;
+
             return false;
+        }
+
+        public async void RemovePlayersFromOtherMatchups(Matchup readiedMatchup, bool respectDuplicityProtection = true)
+        {
+            var otherPlayerSignings = _coachBotContext.PlayerLineupPositions
+                .Where(ptp => (ptp.Lineup.HomeMatchup != null && ptp.Lineup.HomeMatchup.ReadiedDate == null) || (ptp.Lineup.AwayMatchup != null && ptp.Lineup.AwayMatchup.ReadiedDate == null))
+                .Where(ptp => readiedMatchup.SignedPlayers.Any(sp => sp.Id == ptp.PlayerId))
+                .Include(ptp => ptp.Player)
+                .Include(ptp => ptp.Lineup)
+                    .ThenInclude(l => l.Channel)
+                .ToList();
+
+            foreach (var otherPlayerSigning in otherPlayerSignings)
+            {
+                if (otherPlayerSigning.Lineup.Channel.DuplicityProtection || !respectDuplicityProtection)
+                {
+                    var channelId = otherPlayerSigning.Lineup.Channel.DiscordChannelId;
+                    _coachBotContext.PlayerLineupPositions.Remove(otherPlayerSigning);
+                    _coachBotContext.SaveChanges();
+                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.Name} {readiedMatchup.LineupHome.Channel.Team.BadgeEmote}** vs **{readiedMatchup.LineupAway.Channel.Team.BadgeEmote} {readiedMatchup.LineupAway.Channel.Team.Name}**) and has been removed from the lineup.";
+                    await _discordNotificationService.SendChannelMessage(channelId, message);
+                    SendTeamListToChannel(channelId);
+                }
+                else
+                {
+                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.Name} {readiedMatchup.LineupHome.Channel.Team.BadgeEmote}** vs **{readiedMatchup.LineupAway.Channel.Team.BadgeEmote} {readiedMatchup.LineupAway.Channel.Team.Name}**)";
+                    await _discordNotificationService.SendChannelMessage(otherPlayerSigning.Lineup.Channel.DiscordChannelId, message);
+                }
+            }
         }
 
         #region Private methods
@@ -479,35 +582,6 @@ namespace CoachBot.Domain.Services
             }
 
             return sub;
-        }
-
-        private async void RemovePlayersFromOtherMatchups(Matchup readiedMatchup, bool respectDuplicityProtection = true)
-        {
-            var otherPlayerSignings = _coachBotContext.PlayerLineupPositions
-                .Where(ptp => (ptp.Lineup.HomeMatchup != null && ptp.Lineup.HomeMatchup.ReadiedDate == null) || (ptp.Lineup.AwayMatchup != null && ptp.Lineup.AwayMatchup.ReadiedDate == null))
-                .Where(ptp => readiedMatchup.SignedPlayers.Any(sp => sp.Id == ptp.PlayerId))
-                .Include(ptp => ptp.Player)
-                .Include(ptp => ptp.Lineup)
-                    .ThenInclude(l => l.Channel)
-                .ToList();
-
-            foreach (var otherPlayerSigning in otherPlayerSignings)
-            {
-                if (otherPlayerSigning.Lineup.Channel.DuplicityProtection || !respectDuplicityProtection)
-                {
-                    var channelId = otherPlayerSigning.Lineup.Channel.DiscordChannelId;
-                    _coachBotContext.PlayerLineupPositions.Remove(otherPlayerSigning);
-                    _coachBotContext.SaveChanges();
-                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.Name} {readiedMatchup.LineupHome.Channel.Team.BadgeEmote}** vs **{readiedMatchup.LineupAway.Channel.Team.BadgeEmote} {readiedMatchup.LineupAway.Channel.Team.Name}**) and has been removed from the lineup.";
-                    await _discordNotificationService.SendChannelMessage(channelId, message);
-                    SendTeamListToChannel(channelId);
-                }
-                else
-                {
-                    var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.Name} {readiedMatchup.LineupHome.Channel.Team.BadgeEmote}** vs **{readiedMatchup.LineupAway.Channel.Team.BadgeEmote} {readiedMatchup.LineupAway.Channel.Team.Name}**)";
-                    await _discordNotificationService.SendChannelMessage(otherPlayerSigning.Lineup.Channel.DiscordChannelId, message);
-                }
-            }
         }
 
         private void CombineMixLineups(Matchup matchup, Channel channel)

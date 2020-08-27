@@ -93,6 +93,13 @@ namespace CoachBot.Services
             return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
         }
 
+        public Embed RemovePlayer(IUser user)
+        {
+            var response = _matchupService.RemovePlayerGlobally(user.Id);
+
+            return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);
+        }
+
         public Embed RemovePlayer(ulong channelId, int playerId)
         {
             var player = _playerService.GetPlayer(playerId);
@@ -339,6 +346,7 @@ namespace CoachBot.Services
                 var server = _substitutionService.GetServerForSubstitionRequest(requestToken);
                 var message = $"{user.Username} is coming to the server as a substitute";
                 _serverManagementServiceService.SendServerMessage(server.Id, message);
+                _matchupService.RemovePlayerGlobally(user.Id, false, true);
             }
 
             return DiscordEmbedHelper.GenerateEmbedFromServiceResponse(response);

@@ -191,42 +191,15 @@ namespace CoachBot.Bot
 
         private async Task UserOffline(SocketGuildUser userPre, SocketGuildUser userPost)
         {
-            Task.Delay(TimeSpan.FromMinutes(10)).Wait();
+            await Task.Delay(TimeSpan.FromMinutes(1));
             var currentState = _client.GetUser(userPre.Id);
             if (!currentState.Status.Equals(UserStatus.Offline)) return; // User is no longer offline
 
             using (var scope = _serviceProvider.CreateScope())
             {
-                foreach (var channel in scope.ServiceProvider.GetService<ChannelService>().GetChannels())
-                {
-                    var matchup = scope.ServiceProvider.GetService<MatchupService>().GetCurrentMatchupForChannel(channel.DiscordChannelId);
-                    if (_client.GetChannel(channel.DiscordChannelId) is ITextChannel discordChannel)
-                    {
-                        var player = matchup.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
-                        if (player != null)
-                        {
-                            await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning));
-                            await _discordNotificationService.SendAuditChannelMessage(_matchmakingService.RemovePlayer(channel.DiscordChannelId, player.Id));
-                            foreach (var teamEmbed in scope.ServiceProvider.GetService<MatchmakingService>().GenerateTeamList(channel.DiscordChannelId))
-                            {
-                                await discordChannel.SendMessageAsync("", embed: teamEmbed);
-                            }
-                            if (player.DiscordUserId != null)
-                            {
-                                await _discordNotificationService.SendUserMessage((ulong)player.DiscordUserId, $"You've been unsigned from the line-up in **#{discordChannel.Name} ({discordChannel.Guild.Name})** as you've gone offline. Sorry champ.");
-                            }
-                        }
-
-                        var sub = matchup.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
-                        if (sub != null)
-                        {
-                            await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, _matchmakingService.RemoveSub(channel.DiscordChannelId, userPre));
-                            await _discordNotificationService.SendChannelMessage(channel.DiscordChannelId, embed: DiscordEmbedHelper.GenerateEmbed($"Removed {sub.DisplayName} from the subs bench as they have gone offline", ServiceResponseStatus.Warning));
-                        }
-                    }
-                }
+                var matchupService = scope.ServiceProvider.GetService<MatchupService>();
+                matchupService.RemovePlayerGlobally(userPre.Id, true);
             }
-
         }
 
         private async Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)

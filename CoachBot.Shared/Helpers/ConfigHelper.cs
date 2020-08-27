@@ -8,7 +8,7 @@ namespace CoachBot.Shared.Helpers
     {
         public static Config GetConfig()
         {
-            return JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config.json"));
+            return JsonConvert.DeserializeObject<Config>(File.ReadAllText(@"config-dev.json"));
         }
     }
 }

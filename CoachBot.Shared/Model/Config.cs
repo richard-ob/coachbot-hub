@@ -39,6 +39,8 @@
         public string SecurityCertPassword { get; set; }
 
         public int BotApiPort { get; set; } = 8080;
+
+        public int SecureBotApiPort { get; set; } = 8080;
     }
 
     public class DiscordConfig

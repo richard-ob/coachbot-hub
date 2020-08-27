@@ -4,6 +4,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,12 +18,19 @@ namespace CoachBot
         private async Task RunAsync()
         {
             var config = ConfigHelper.GetConfig();
-            var port = config.WebServerConfig.BotApiPort > 0 ? config.WebServerConfig.BotApiPort : 8080;
+            var httpPort = config.WebServerConfig.BotApiPort > 0 ? config.WebServerConfig.BotApiPort : 8080;
+            var httpsPort = config.WebServerConfig.SecureBotApiPort > 0 ? config.WebServerConfig.SecureBotApiPort : 44381;
             var host = WebHost
               .CreateDefaultBuilder()
-              .UseKestrel()
+              .UseKestrel(options =>
+              {
+                  options.Listen(IPAddress.Any, httpPort);
+                  options.Listen(IPAddress.Any, httpsPort, listenOptions =>
+                  {
+                      listenOptions.UseHttps(config.WebServerConfig.SecurityCertFile, config.WebServerConfig.SecurityCertPassword);
+                  });
+              })
               .UseStartup<WebStartup>()
-              .UseUrls($"http://*:{port}")
               .Build();
             host.Start();
 

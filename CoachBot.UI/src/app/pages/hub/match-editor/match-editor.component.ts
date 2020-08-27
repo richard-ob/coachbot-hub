@@ -4,11 +4,12 @@ import { Match } from '../shared/model/match.model';
 import { ActivatedRoute } from '@angular/router';
 import { Server } from 'selenium-webdriver/safari';
 import { ServerService } from '../shared/services/server.service';
-import { MatchStatistics } from '../shared/model/match-statistics.model';
 import { TeamService } from '../shared/services/team.service';
 import { Team } from '../shared/model/team.model';
 import { UserPreferenceService, UserPreferenceType } from '@shared/services/user-preferences.service';
 import { MatchStatisticsService } from '../shared/services/match-statistics.service';
+import { MapService } from '../shared/services/map.service';
+import { Map } from '../shared/model/map.model';
 
 @Component({
     selector: 'app-match-editor',
@@ -20,8 +21,10 @@ export class MatchEditorComponent implements OnInit {
     matchId: number;
     servers: Server[];
     teams: Team[];
+    maps: Map[];
     homeGoalsOverride: number;
     awayGoalsOverride: number;
+    matchToken: string;
     showDatepicker = false;
     isLoading = true;
 
@@ -31,6 +34,7 @@ export class MatchEditorComponent implements OnInit {
         private teamService: TeamService,
         private matchStatisticsService: MatchStatisticsService,
         private userPreferenceService: UserPreferenceService,
+        private mapService: MapService,
         private route: ActivatedRoute
     ) { }
 
@@ -41,7 +45,10 @@ export class MatchEditorComponent implements OnInit {
                 this.servers = servers;
                 this.teamService.getTeams(this.userPreferenceService.getUserPreference(UserPreferenceType.Region)).subscribe(teams => {
                     this.teams = teams;
-                    this.loadMatch();
+                    this.mapService.getMaps().subscribe(maps => {
+                        this.maps = maps;
+                        this.loadMatch();
+                    });
                 });
             });
         });
@@ -56,6 +63,7 @@ export class MatchEditorComponent implements OnInit {
                 this.homeGoalsOverride = this.match.matchStatistics.homeGoals;
                 this.awayGoalsOverride = this.match.matchStatistics.awayGoals;
             }
+            this.matchToken = this.generateMatchToken();
             this.isLoading = false;
         });
     }
@@ -70,10 +78,19 @@ export class MatchEditorComponent implements OnInit {
     submitMatchResultOverride() {
         this.isLoading = true;
         this.matchStatisticsService.createMatchResultOverride(
-            this.matchId, this.match.matchStatistics.homeGoals, this.match.matchStatistics.awayGoals
+            this.matchId, this.homeGoalsOverride, this.awayGoalsOverride
         ).subscribe(() => {
             this.isLoading = false;
         });
+    }
+
+    generateMatchToken() {
+        if (this.match.teamHome && this.match.teamAway) {
+            const token = `${this.match.server.address}_${this.match.id}_${this.match.teamHome.teamCode}_${this.match.teamAway.teamCode}`;
+            return btoa(token);
+        }
+
+        return;
     }
 
 }

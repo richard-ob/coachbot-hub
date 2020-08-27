@@ -143,6 +143,9 @@
                             <a *ngIf="match.matchStatistics" [routerLink]="['/match-overview', match.id]"
                                 class="btn btn-xs btn-primary">Match
                                 Overview</a>
+                            <ng-container *ngIf="!match.matchStatistics">
+                                N/A
+                            </ng-container>
                         </td>
                     </tr>
                 </tbody>

@@ -30,6 +30,7 @@
     <Compile Include="Controllers\FantasyController.cs" />
     <Compile Include="Controllers\GuildController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\MatchStatisticController.cs" />
     <Compile Include="Controllers\OrganisationController.cs" />

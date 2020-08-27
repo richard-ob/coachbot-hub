@@ -39,6 +39,10 @@ namespace CoachBot.Domain.Model
 
         public MatchType MatchType { get; set; } = MatchType.RankedFriendly;
 
+        public int? MapId { get; set; }
+
+        public Map Map { get; set; }
+
         public int? TournamentId { get; set; }
 
         public Tournament Tournament { get; set; }

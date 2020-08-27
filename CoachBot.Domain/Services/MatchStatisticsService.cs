@@ -49,6 +49,7 @@ namespace CoachBot.Domain.Services
             if (matchData.IsValid(match, manualSave))
             {
                 match.KickOff = match.KickOff ?? match.MatchStatistics.KickOff;
+                match.MapId = GetOrCreateMap(matchData.MatchInfo.MapName);
                 _coachBotContext.SaveChanges();
                 GenerateStatsForMatch(match.Id);
             }
@@ -145,6 +146,7 @@ namespace CoachBot.Domain.Services
                 KickOff = matchStatistics.KickOff,
                 Format = GetMatchFormatFromMapName(matchStatistics.MatchData.MatchInfo.MapName),
                 MatchType = MatchType.RankedFriendly,
+                MapId = GetOrCreateMap(matchStatistics.MatchData.MatchInfo.MapName),
                 TeamHomeId = _coachBotContext.Teams.First(t => t.TeamCode == homeTeamCode && t.RegionId == server.RegionId).Id,
                 TeamAwayId = _coachBotContext.Teams.First(t => t.TeamCode == awayTeamCode && t.RegionId == server.RegionId).Id
             };
@@ -1171,6 +1173,28 @@ namespace CoachBot.Domain.Services
             }
 
             return player;
+        }
+
+        private int? GetOrCreateMap(string mapName)
+        {
+            if (string.IsNullOrWhiteSpace(mapName))
+            {
+                return null;
+            }
+
+            var map = _coachBotContext.Maps.FirstOrDefault(m => m.Name == mapName.ToLower());
+
+            if (map == null)
+            {
+                map = new Map()
+                {
+                    Name = mapName.ToLower()
+                };
+                _coachBotContext.Maps.Add(map);
+                _coachBotContext.SaveChanges();
+            }
+
+            return map.Id;
         }
 
         private PlayerTeam MapToSimplePlayerTeamInstance(PlayerTeam playerTeam)

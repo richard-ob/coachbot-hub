@@ -34,12 +34,13 @@ internal class TimedHostedService : IHostedService, IDisposable
             var coachBotContext = scope.ServiceProvider.GetRequiredService<CoachBotContext>();
             var discordNotificationService = scope.ServiceProvider.GetRequiredService<DiscordNotificationService>();
 
-            var kickOffTimeBuffer = DateTime.UtcNow.AddMinutes(10).ToString("g");
+            var kickOffTimeBuffer = DateTime.UtcNow.AddMinutes(16).ToString("g");
 
             var matches = coachBotContext.Matches
                 .Where(m => m.KickOff != null && ((DateTime)m.KickOff).ToString("g") == kickOffTimeBuffer && m.ServerId != null && m.TournamentId != null)
                 .Include(m => m.TeamHome)
-                .Include(m => m.TeamAway);
+                .Include(m => m.TeamAway)
+                .Include(m => m.Map);
 
             foreach (var match in matches)
             {

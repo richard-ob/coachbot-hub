@@ -22,6 +22,7 @@ namespace CoachBot.Services
         private readonly MatchupService _matchupService;
         private readonly MatchService _matchService;
         private readonly DiscordSocketClient _discordClient;
+        private readonly DiscordNotificationService _discordNotificationService;
         private readonly Config _config;
 
         public ServerManagementService(
@@ -30,6 +31,7 @@ namespace CoachBot.Services
             MatchupService matchupService,
             MatchService matchService,
             DiscordSocketClient discordClient,
+            DiscordNotificationService discordNotificationService,
             Config config)
         {
             _serverService = serverService;
@@ -37,6 +39,7 @@ namespace CoachBot.Services
             _matchupService = matchupService;
             _matchService = matchService;
             _discordClient = discordClient;
+            _discordNotificationService = discordNotificationService;
             _config = config;
         }
 
@@ -416,8 +419,12 @@ namespace CoachBot.Services
                     bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
                     if (authenticated)
                     {
-                        await messenger.ExecuteCommandAsync($"exec 8v8.cfg");
-                        await messenger.ExecuteCommandAsync($"exec league.cfg");
+                        if (match.Map != null)
+                        {
+                            await messenger.ExecuteCommandAsync($"changelevel {match.Map.Name}");
+                        }
+                        await messenger.ExecuteCommandAsync("exec 8v8.cfg");
+                        await messenger.ExecuteCommandAsync("exec league.cfg");
                         await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
                         await messenger.ExecuteCommandAsync("mp_matchinfo \"Tournament Match\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + _config.WebServerConfig.HubApiUrl + "/api/match-statistics" + "\"");
@@ -430,7 +437,7 @@ namespace CoachBot.Services
                 }
                 catch
                 {
-                    
+                    await _discordNotificationService.SendAuditChannelMessage($"Couldn't set up tournament match: {match.Id} ({match.TeamHome.Name} vs {match.TeamAway.Name}) [KO: {((DateTime)match.KickOff).ToString("g")}]");
                 }
             }
 
@@ -441,7 +448,7 @@ namespace CoachBot.Services
 
             if (_discordClient.GetChannel(_config.DiscordConfig.ResultStreamChannelId) is SocketTextChannel resultsStreamChannel)
             {
-                await resultsStreamChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed($"**{match.TeamHome.Name}** {match.TeamHome.BadgeEmote} vs {match.TeamAway.BadgeEmote} **{match.TeamAway.Name}** - 10 minutes until kick off!", $"**{match.Tournament.Name}:**"));
+                await resultsStreamChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed($"**{match.TeamHome.Name}** {match.TeamHome.BadgeEmote} vs {match.TeamAway.BadgeEmote} **{match.TeamAway.Name}** - 15 minutes until kick off!", $"**{match.Tournament.Name}:**"));
             }
 
             async Task SendTournamentReadyMessage(Channel channel)
@@ -449,7 +456,7 @@ namespace CoachBot.Services
                 if (channel != null)
                 {
                     var discordChannel = _discordClient.GetChannel(channel.DiscordChannelId) as SocketTextChannel;
-                    await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed($"10 minutes to go! Join the server now for your tournament match - **{match.Server.Name}** steam://connect/{match.Server.Address}", $"**{match.TeamHome.Name}** {match.TeamHome.BadgeEmote} vs {match.TeamAway.BadgeEmote} **{match.TeamAway.Name}**"));
+                    await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed($"15 minutes to go! Join the server now for your tournament match - **{match.Server.Name}** steam://connect/{match.Server.Address}", $"**{match.TeamHome.Name}** {match.TeamHome.BadgeEmote} vs {match.TeamAway.BadgeEmote} **{match.TeamAway.Name}**"));
                 }
             }
         }

@@ -36,6 +36,7 @@ namespace CoachBot.Domain.Services
                 .Include(m => m.Tournament)
                 .Include(s => s.Server)
                     .ThenInclude(s => s.Country)
+                .Include(m => m.Map)
                 .FirstOrDefault(m => m.Id == matchId);
         }
 
@@ -76,6 +77,7 @@ namespace CoachBot.Domain.Services
             existingMatch.ServerId = match.ServerId;
             existingMatch.TeamHomeId = match.TeamHomeId;
             existingMatch.TeamAwayId = match.TeamAwayId;
+            existingMatch.MapId = match.MapId;
             _coachBotContext.SaveChanges();
         }
 

@@ -18,7 +18,7 @@ namespace CoachBot.Domain.Model
         [MaxLength(40)]
         public string Name { get; set; }
 
-        [MaxLength(6)]
+        [MaxLength(8)]
         public string TeamCode { get; set; }
 
         public string KitEmote { get; set; }

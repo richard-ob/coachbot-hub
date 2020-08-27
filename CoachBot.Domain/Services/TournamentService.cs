@@ -416,7 +416,7 @@ namespace CoachBot.Domain.Services
 
             var overrideResultsHome = _coachBotContext.Matches
                    .Where(m => _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == m.Id && tg.TournamentGroupId == tournamentGroupId))
-                   .Where(m => m.MatchStatisticsId == null && m.MatchStatistics.HomeGoals != null && m.MatchStatistics.AwayGoals != null)
+                   .Where(m => m.MatchStatistics.MatchData == null && m.MatchStatistics.HomeGoals != null && m.MatchStatistics.AwayGoals != null)
                    .Select(m => new StandingGroupSubEntry()
                    {
                        TeamId = (int) m.TeamHomeId,
@@ -429,7 +429,7 @@ namespace CoachBot.Domain.Services
 
             var overrideResultsAway = _coachBotContext.Matches
                    .Where(m => _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == m.Id && tg.TournamentGroupId == tournamentGroupId))
-                   .Where(m => m.MatchStatisticsId == null && m.MatchStatistics.HomeGoals != null && m.MatchStatistics.AwayGoals != null)
+                   .Where(m => m.MatchStatistics.MatchData == null && m.MatchStatistics.HomeGoals != null && m.MatchStatistics.AwayGoals != null)
                    .Select(m => new StandingGroupSubEntry()
                    {
                        TeamId = (int)m.TeamAwayId,

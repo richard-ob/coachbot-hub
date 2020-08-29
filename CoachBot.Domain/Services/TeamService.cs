@@ -128,6 +128,18 @@ namespace CoachBot.Domain.Services
             _dbContext.SaveChanges();
         }
 
+        public void DeleteTeam(int teamId)
+        {
+            if (_dbContext.TeamMatchStatistics.Any(t => t.TeamId == teamId))
+            {
+                throw new Exception("Cannot delete teams who have played matches. Please mark as inactive.");
+            }
+            _dbContext.PlayerTeams.RemoveRange(_dbContext.PlayerTeams.Where(pt => pt.TeamId == teamId));
+            _dbContext.Channels.RemoveRange(_dbContext.Channels.Where(c => c.TeamId == teamId));
+            _dbContext.Teams.Remove(_dbContext.Teams.Single(t => t.Id == teamId));
+            _dbContext.SaveChanges();
+        }
+
         public void UpdateTeamGuildId(int teamId, int guildId)
         {
             var team = _dbContext.Teams.Single(t => t.Id == teamId);

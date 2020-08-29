@@ -40,4 +40,11 @@ export class TeamsComponent {
             this.isLoading = false;
         });
     }
+
+    deleteTeam(teamId: number) {
+        this.isLoading = true;
+        this.teamService.deleteTeam(teamId).subscribe(() => {
+            this.getTeams(this.teamType);
+        });
+    }
 }

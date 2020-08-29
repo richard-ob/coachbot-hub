@@ -46,10 +46,14 @@
                     <footer class="card__footer sponsor-card__footer p-2">
                         <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
                             View Team Profile</a>
-                        <a *ngIf="currentPlayer && currentPlayer.hubRole === hubRoles.Owner"
-                            class="btn btn-xs btn-block btn-dark" [routerLink]="['/team/' + team.id + '/manage']">
-                            Manage
-                        </a>
+                        <ng-container *ngIf="currentPlayer && currentPlayer.hubRole === hubRoles.Owner">
+                            <a class="btn btn-xs btn-block btn-dark" [routerLink]="['/team/' + team.id + '/manage']">
+                                Manage
+                            </a>
+                            <button class="btn btn-xs btn-block btn-danger" type="button" (click)="deleteTeam(team.id)">
+                                Delete
+                            </button>
+                        </ng-container>
                     </footer>
                 </div>
             </div>
@@ -62,7 +66,8 @@
                         [style.background-color]="team.color ? team.color : '#292c31'">
                         <figure class="sponsor-card__logo">
                             <a href="#">
-                                <img *ngIf="team.badgeImage" [src]="team.badgeImage.mediumUrl">
+                                <img *ngIf="team.badgeImage" [src]="team.badgeImage.mediumUrl"
+                                    style="max-height: 140px">
                                 <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
                                     style="max-height: 140px">
                             </a>

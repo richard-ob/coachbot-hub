@@ -99,6 +99,10 @@ export class TeamService {
         return this.http.post<void>(`${environment.apiUrl}/api/team`, team);
     }
 
+    deleteTeam(teamId: number) {
+        return this.http.delete<void>(`${environment.apiUrl}/api/team/${teamId}`);
+    }
+
     updateGuildId(teamId: number, guildId: number) {
         const updateGuildIdDto = {
             teamId,

@@ -64,6 +64,15 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
+        [HttpDelete("{teamId}")]
+        public IActionResult Delete(int teamId)
+        {
+            _teamService.DeleteTeam(teamId);
+
+            return Ok();
+        }
+
         [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPut]
         public IActionResult Update(Team team)

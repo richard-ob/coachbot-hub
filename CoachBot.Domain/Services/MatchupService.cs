@@ -265,7 +265,7 @@ namespace CoachBot.Domain.Services
             {
                 var channelId = signing.Lineup.Channel.DiscordChannelId;
                 var currentChannelMatchup = GetCurrentMatchForChannel(channelId);
-                if (currentChannelMatchup.Id == signing.Lineup.Matchup.Id)
+                if (currentChannelMatchup != null && signing.Lineup != null && signing.Lineup.Matchup != null && currentChannelMatchup.Id == signing.Lineup.Matchup.Id)
                 {
                     _coachBotContext.PlayerLineupPositions.Remove(signing);
                     _coachBotContext.SaveChanges();
@@ -277,7 +277,6 @@ namespace CoachBot.Domain.Services
                         _discordNotificationService.SendChannelMessage(channelId, teamEmbed).Wait();
                     }
                 }
-
             }
 
             var playerSubSignings = _coachBotContext.PlayerLineupSubstitutes
@@ -287,7 +286,7 @@ namespace CoachBot.Domain.Services
                 .ThenInclude(l => l.HomeMatchup)
                 .Include(plp => plp.Lineup)
                 .ThenInclude(l => l.AwayMatchup)
-                .Where(plp => (ulong)plp.Player.DiscordUserId == discordUserId)
+                .Where(plp => plp.Player != null && plp.Player.DiscordUserId != null && (ulong)plp.Player.DiscordUserId == discordUserId)
                 .Where(plp => plp.Lineup.AwayMatchup.ReadiedDate == null || plp.Lineup.HomeMatchup == null)
                 .Where(plp => respectDuplicityProtection == false || plp.Lineup.Channel.DuplicityProtection == true);
 
@@ -295,7 +294,7 @@ namespace CoachBot.Domain.Services
             {
                 var channelId = signing.Lineup.Channel.DiscordChannelId;
                 var currentChannelMatchup = GetCurrentMatchForChannel(channelId);
-                if (currentChannelMatchup.Id == signing.Lineup.Matchup.Id)
+                if (currentChannelMatchup != null && signing.Lineup != null && signing.Lineup.Matchup != null && currentChannelMatchup.Id == signing.Lineup.Matchup.Id)
                 {
                     _coachBotContext.PlayerLineupSubstitutes.Remove(signing);
                     _coachBotContext.SaveChanges();

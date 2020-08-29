@@ -134,8 +134,13 @@ namespace CoachBot.Domain.Services
             {
                 throw new Exception("Cannot delete teams who have played matches. Please mark as inactive.");
             }
+
             _dbContext.PlayerTeams.RemoveRange(_dbContext.PlayerTeams.Where(pt => pt.TeamId == teamId));
+            _dbContext.SaveChanges();
+
             _dbContext.Channels.RemoveRange(_dbContext.Channels.Where(c => c.TeamId == teamId));
+            _dbContext.SaveChanges();
+
             _dbContext.Teams.Remove(_dbContext.Teams.Single(t => t.Id == teamId));
             _dbContext.SaveChanges();
         }

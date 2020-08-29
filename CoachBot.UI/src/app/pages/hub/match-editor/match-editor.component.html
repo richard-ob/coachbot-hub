@@ -52,11 +52,11 @@
                 <div class="form-group">
                     <label>Token</label>
                     <input type="text" readonly [(ngModel)]="matchToken" class="form-control">
-                    <textarea (click)="document.execCommand('copy')">
+                    <pre>
                         sv_webserver_matchdata_url "http://www.iosoccer.com:8080/api/match-statistics"
                         sv_webserver_matchdata_enabled 1
                         sv_webserver_matchdata_accesstoken "{{matchToken}}"
-                    </textarea>
+                    </pre>
                 </div>
 
                 <button class="btn btn-primary" (click)="updateMatch()" type="button">Save</button>

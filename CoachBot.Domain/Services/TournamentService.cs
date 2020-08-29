@@ -584,38 +584,48 @@ namespace CoachBot.Domain.Services
                 .ThenInclude(t => t.TournamentStage)
                 .Include(t => t.TournamentGroup)
                 .Single(m => m.MatchId == matchId);
-            var stages = _coachBotContext.TournamentStages.Include(t => t.TournamentGroups).Where(t => t.TournamentId == tournamentId).OrderBy(t => t.Id);
+            var stages = _coachBotContext.TournamentStages.Include(t => t.TournamentGroups).ThenInclude(t => t.TournamentGroupTeams).Where(t => t.TournamentId == tournamentId).OrderBy(t => t.Id);
             if (tournamentGroupMatch.TournamentPhase.TournamentStageId == stages.First().Id) // INFO: This means its the group stage
             {
                 var stage = stages.First();
                 var groups = stage.TournamentGroups.OrderBy(t => t.Id);
+                if (groups.Count() != 2) return; // INFO: We don't support knockout tournaments with more than two groups
                 var phases = _coachBotContext.TournamentPhases.Where(t => t.TournamentStageId == tournamentGroupMatch.TournamentPhase.TournamentStageId).OrderBy(t => t.Id);
                 var knockoutGroup = _coachBotContext.TournamentGroups.First(t => t.TournamentStageId == stages.Last().Id);
                 if (tournamentGroupMatch.TournamentPhaseId != phases.Last().Id) return; // INFO: Unless its the last phase/round of matches, don't do anything
                 if (_coachBotContext.TournamentGroupMatches.Where(t => t.TournamentPhase.TournamentStageId == stage.Id && t.MatchId != tournamentGroupMatch.MatchId).Any(t => t.Match.MatchStatisticsId == null)) return; // Don't do anything unless all matches are complete
 
-                foreach(var group in groups)
+                var knockoutFixtures = _coachBotContext.TournamentGroupMatches
+                    .Where(t => t.TournamentGroupId == knockoutGroup.Id)
+                    .Where(t => t.TournamentPhaseId == phases.OrderBy(p => p.Id).First(p => p.TournamentStageId == stages.Last().Id).Id) // INFO: First phase of knockout fixtures only
+                    .Include(t => t.Match)
+                    .OrderBy(t => t.Id)
+                    .ToList();
+
+                var qualifiedTeamsGroupA = new List<int>();
+                var qualifiedTeamsGroupB = new List<int>();
+                var numberOfQualifiers = GetNumberOfQualifyingKnockoutTeams(groups.First().TournamentGroupTeams.Count(), groups.Count());
+                qualifiedTeamsGroupA.AddRange(GetTournamentGroupStandings(groups.First().Id).Select(t => t.TeamId).Take(numberOfQualifiers));
+                qualifiedTeamsGroupB.AddRange(GetTournamentGroupStandings(groups.Last().Id).Select(t => t.TeamId).Take(numberOfQualifiers));
+
+                var groupA = true;
+                foreach (var knockoutFixture in knockoutFixtures)
                 {
-                    var isHomeTeam = groups.ToList().FindIndex(g => g.Id == group.Id) % 2 == 0; // INFO: Group A would be the home team, as its an even number index
-                    var teamStandings = GetTournamentGroupStandings(group.Id);
-                    var groupWinner = teamStandings.First();
-                    var runnerUp = teamStandings.ElementAt(1);
-                    if (isHomeTeam)
+                    if (groupA)
                     {
-                        var fixtures = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentGroupId == knockoutGroup.Id && t.Match.TeamHomeId == null).Include(t => t.Match).OrderBy(t => t.Id).Take(2).ToList();
-                        var groupWinnerFixture = fixtures.ElementAt(0);
-                        groupWinnerFixture.Match.TeamHomeId = groupWinner.TeamId;
-                        var runnerUpFixture = fixtures.ElementAt(1);
-                        runnerUpFixture.Match.TeamHomeId = runnerUp.TeamId;
+                        knockoutFixture.Match.TeamHomeId = qualifiedTeamsGroupA.First();
+                        knockoutFixture.Match.TeamAwayId = qualifiedTeamsGroupB.Last();
+                        qualifiedTeamsGroupA = qualifiedTeamsGroupA.Where(t => t != knockoutFixture.Match.TeamHomeId).ToList();
+                        qualifiedTeamsGroupB = qualifiedTeamsGroupB.Where(t => t != knockoutFixture.Match.TeamAwayId).ToList();
                     }
                     else
                     {
-                        var fixtures = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentGroupId == knockoutGroup.Id && t.Match.TeamAwayId == null).Include(t => t.Match).OrderBy(t => t.Id).Take(2).ToList();
-                        var groupWinnerFixture = fixtures.ElementAt(1); // Invert the fixtures, so its not group winner vs group winner etc
-                        groupWinnerFixture.Match.TeamAwayId = groupWinner.TeamId;
-                        var runnerUpFixture = fixtures.ElementAt(0);
-                        runnerUpFixture.Match.TeamAwayId = runnerUp.TeamId;
+                        knockoutFixture.Match.TeamHomeId = qualifiedTeamsGroupB.First();
+                        knockoutFixture.Match.TeamAwayId = qualifiedTeamsGroupA.Last();
+                        qualifiedTeamsGroupA = qualifiedTeamsGroupA.Where(t => t != knockoutFixture.Match.TeamAwayId).ToList();
+                        qualifiedTeamsGroupB = qualifiedTeamsGroupB.Where(t => t != knockoutFixture.Match.TeamHomeId).ToList();
                     }
+                    groupA = !groupA;
                 }
             }
             else
@@ -671,7 +681,7 @@ namespace CoachBot.Domain.Services
             var numberOfGroups = _coachBotContext.TournamentGroups.Count(g => g.TournamentStageId == groupStage.Id);
             var numberOfTeams = _coachBotContext.TournamentGroups.Where(g => g.TournamentStageId == groupStage.Id).Max(g => g.TournamentGroupTeams.Count());
 
-            var knockoutGroupSize = GetNumberOfQualifyingTeams(numberOfTeams, numberOfGroups);
+            var knockoutGroupSize = GetNumberOfQualifyingKnockoutTeams(numberOfTeams, numberOfGroups);
             var teams = new List<Team>();
             for (int i = 1; i <= knockoutGroupSize; i++)
             {
@@ -679,25 +689,27 @@ namespace CoachBot.Domain.Services
             }
             GenerateKnockoutMatches(tournament, knockoutStage, teams, (DateTime)earliestMatchDate, false);
 
-            int GetNumberOfQualifyingTeams(int groupSize, int groups = 1)
+           
+        }
+
+        private int GetNumberOfQualifyingKnockoutTeams(int groupSize, int groups = 1)
+        {
+            switch (groupSize)
             {
-                switch (groupSize)
-                {
-                    case 3:
-                        return 2 * groups;
-                    case 4:
-                        return 2 * groups;
-                    case 5:
-                        return 3 * groups;
-                    case 6:
-                        return 4 * groups;
-                    case 7:
-                        return 4 * groups;
-                    case 8:
-                        return 5 * groups;
-                }
-                throw new ArgumentException("Group size not supported");
+                case 3:
+                    return 2 * groups;
+                case 4:
+                    return 2 * groups;
+                case 5:
+                    return 3 * groups;
+                case 6:
+                    return 4 * groups;
+                case 7:
+                    return 4 * groups;
+                case 8:
+                    return 5 * groups;
             }
+            throw new ArgumentException("Group size not supported");
         }
         #endregion
 

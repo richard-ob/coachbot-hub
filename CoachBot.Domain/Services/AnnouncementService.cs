@@ -21,6 +21,7 @@ namespace CoachBot.Domain.Services
         {
             var channels = this.coachBotContext.Channels
                 .Where(c => this.coachBotContext.Matchups.Any(m => c.Id == m.LineupHome.ChannelId || c.Id == m.LineupAway.ChannelId && m.CreatedDate > DateTime.UtcNow.AddMonths(-1))) // INFO: Active channels only
+                .Where(c => !c.Inactive)
                 .Where(c => regionId == null || c.Team.RegionId == regionId)
                 .Select(c => c.DiscordChannelId)
                 .ToList();

@@ -66,6 +66,7 @@ namespace CoachBot.Domain.Services
                 .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
                 .Where(c => c.SearchIgnoreList == null || !c.SearchIgnoreList.Any(i => i == challenger.TeamId))
                 .Where(c => c.ChannelPositions.Count == challenger.ChannelPositions.Count)
+                .Where(c => !c.Inactive)
                 .Select(c => c.DiscordChannelId)
                 .ToList();
 

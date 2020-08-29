@@ -66,5 +66,10 @@ namespace CoachBot.Domain.Services
             region.AuthorizationToken = Convert.ToBase64String(plainTextBytes);
             _coachBotContext.SaveChanges();
         }
+
+        public bool ValidateAuthorizationToken(int regionId, string token)
+        {
+            return _coachBotContext.Regions.Any(r => r.RegionId == regionId && r.AuthorizationToken == token);
+        }
     }
 }

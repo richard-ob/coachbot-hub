@@ -16,6 +16,7 @@ export class TeamInfoEditorComponent implements OnInit {
     regions: Region[];
     teamTypes = TeamType;
     duplicateTeamCodeFound = false;
+    invalidToken = false;
     isSaving = false;
     isLoading = true;
 
@@ -37,9 +38,15 @@ export class TeamInfoEditorComponent implements OnInit {
                 this.isSaving = false;
             } else {
                 if (!this.team.id) {
-                    this.teamService.createTeam(this.team).subscribe(() => {
-                        this.router.navigate(['team-editor-list']);
-                    });
+                    this.teamService.createTeam(this.team).subscribe(
+                        (success) => {
+                            this.router.navigate(['team-editor-list']);
+                        },
+                        (failure) => {
+                            this.invalidToken = true;
+                            this.isSaving = false;
+                        }
+                    );
                 } else {
                     this.teamService.updateTeam(this.team).subscribe(() => {
                         this.teamService.getTeam(this.team.id).subscribe(team => {

@@ -16,12 +16,14 @@ namespace CoachBot.Controllers
     {
         private readonly TeamService _teamService;
         private readonly PlayerService _playerService;
+        private readonly RegionService _regionService;
         private readonly MatchStatisticsService _matchStatisticsService;
 
-        public TeamController(TeamService teamService, PlayerService playerService, MatchStatisticsService matchStatisticsService)
+        public TeamController(TeamService teamService, PlayerService playerService, RegionService regionService, MatchStatisticsService matchStatisticsService)
         {
             _teamService = teamService;
             _playerService = playerService;
+            _regionService = regionService;
             _matchStatisticsService = matchStatisticsService;
         }
 
@@ -59,6 +61,11 @@ namespace CoachBot.Controllers
         [HttpPost]
         public IActionResult Create(CreateTeamDto team)
         {
+            if (!_regionService.ValidateAuthorizationToken((int)team.RegionId, team.Token))
+            {
+                return BadRequest();
+            }
+
             _teamService.CreateTeam(team, User.GetSteamId(), team.Token);
 
             return Ok();

@@ -24,4 +24,8 @@ export class RegionService {
     removeRegion(regionId: number) {
         return this.http.delete(`${environment.apiUrl}/api/region/${regionId}`).pipe();
     }
+
+    generateNewRegionToken(regionId: number) {
+        return this.http.post(`${environment.apiUrl}/api/region/${regionId}/regenerate-token`, null).pipe();
+    }
 }

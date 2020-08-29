@@ -17,7 +17,7 @@ namespace CoachBot.Model
         public string RegionCode { get; set; }
 
         [JsonIgnore]
-        public string CreateTeamToken { get; set; }
+        public string AuthorizationToken { get; set; }
 
         public Domain.Model.MatchFormat MatchFormat
         {

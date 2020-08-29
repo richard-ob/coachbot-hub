@@ -29,6 +29,9 @@
                                     <td>{{region.teamCount}}</td>
                                     <td>{{region.matchCount}}</td>
                                     <td>
+                                        <button class="btn btn-outline-primary btn-xs mr-2"
+                                            (click)="regenerateToken(region.regionId)">
+                                            <i class="fa fa-refresh"></i> Regenerate Token</button>
                                         <button class="btn btn-outline-danger btn-xs"
                                             (click)="removeRegion(region.regionId)" [disabled]="region.serverCount">
                                             <i class="fa fa-times"></i> Remove</button>

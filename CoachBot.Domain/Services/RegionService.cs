@@ -1,6 +1,7 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Model.Dtos;
 using CoachBot.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,6 +53,17 @@ namespace CoachBot.Domain.Services
         {
             var region = _coachBotContext.Regions.First(s => s.RegionId == id);
             _coachBotContext.Regions.Remove(region);
+            _coachBotContext.SaveChanges();
+        }
+
+        public void RegenerateAuthorizationToken(int regionId)
+        {
+            var region = _coachBotContext.Regions.Single(r => r.RegionId == regionId);
+
+            var token = Guid.NewGuid().ToString();
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(token);
+
+            region.AuthorizationToken = Convert.ToBase64String(plainTextBytes);
             _coachBotContext.SaveChanges();
         }
     }

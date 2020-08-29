@@ -59,7 +59,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public IActionResult Create(CreateTeamDto team)
         {
-            _teamService.CreateTeam(team, User.GetSteamId());
+            _teamService.CreateTeam(team, User.GetSteamId(), team.Token);
 
             return Ok();
         }

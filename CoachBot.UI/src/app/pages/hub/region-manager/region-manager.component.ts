@@ -30,4 +30,8 @@ export class RegionManagerComponent {
             this.regionService.getRegions().subscribe(regions => this.regions = regions);
         });
     }
+
+    regenerateToken(regionId: number) {
+        this.regionService.generateNewRegionToken(regionId).subscribe();
+    }
 }

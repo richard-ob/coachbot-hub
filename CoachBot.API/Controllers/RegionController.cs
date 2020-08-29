@@ -48,5 +48,12 @@ namespace CoachBot.Controllers
         {
             _regionService.Delete(id);
         }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HttpPost("{id}/regenerate-token")]
+        public void RegenerateAuthorizationToken(int id)
+        {
+            _regionService.RegenerateAuthorizationToken(id);
+        }
     }
 }

@@ -178,6 +178,17 @@
             </select>
         </div>
 
+        <div *ngIf="channel.id" class="form-group">
+            <label class="control-label mb-0" for="inactive">Inactive</label>
+            <small class="label-subtitle"> Mark a channel as inactive to delete it from your channel list</small>
+            <div>
+                <label class="checkbox mr-2">
+                    <input [(ngModel)]="channel.inactive" type="checkbox" name="inactive">
+                    <span class="checkbox-indicator"></span>
+                </label>
+            </div>
+        </div>
+
         <div *ngIf="isDuplicateTeamCode()" class="alert alert-warning">
             There is already a channel for your team with this search team code and match format
         </div>

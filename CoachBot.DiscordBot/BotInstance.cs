@@ -114,7 +114,6 @@ namespace CoachBot.Bot
                     }
                 }
             }
-            //_importer.GetTeams();
 
             return Task.CompletedTask;
         }

@@ -80,7 +80,7 @@ namespace CoachBot.Domain.Services
 
         public async void TimeoutSearch(int channelId)
         {
-            await Task.Delay(30 * 60 * 1000);
+            await Task.Delay(TimeSpan.FromMinutes(30));
             if (_coachBotContext.Searches.Any(s => s.ChannelId == channelId))
             {
                 var channel = _coachBotContext.Channels.Find(channelId);

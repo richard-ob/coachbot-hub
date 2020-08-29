@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BotState } from '../model/bot-state.model';
+import { Announcement } from '../model/announcement.model';
 
 @Injectable({
     providedIn: 'root'
@@ -29,5 +30,9 @@ export class BotService {
 
     disconnectBot() {
         return this.http.post(`${environment.apiUrl}/api/bot/disconnect`, null).pipe();
+    }
+
+    sendAnnouncement(announcement: Announcement) {
+        return this.http.post(`${environment.apiUrl}/api/announcement`, announcement).pipe();
     }
 }

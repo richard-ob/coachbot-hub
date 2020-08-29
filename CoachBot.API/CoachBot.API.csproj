@@ -20,6 +20,7 @@
     <None Remove="Controllers\**" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AnnouncementController.cs" />
     <Compile Include="Controllers\AssetImageController.cs" />
     <Compile Include="Controllers\BotController.cs" />
     <Compile Include="Controllers\ChannelController.cs" />

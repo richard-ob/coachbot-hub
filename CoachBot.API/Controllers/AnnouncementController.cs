@@ -1,36 +1,30 @@
-﻿using CoachBot.Domain.Services;
-using CoachBot.Model;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
+using CoachBot.Models;
 using CoachBot.Services.Matchmaker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
+using static CoachBot.Attributes.HubRoleAuthorizeAttribute;
 
 namespace CoachBot.Controllers
 {
-
     [Produces("application/json")]
     [Route("api/[controller]")]
     [Authorize]
     public class AnnouncementController : Controller
     {
         private readonly AnnouncementService _announcementService;
-        private readonly BotService _botService;
 
         public AnnouncementController(AnnouncementService announcementService, BotService botService)
         {
             _announcementService = announcementService;
-            _botService = botService;
         }
 
+        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
         [HttpPost]
-        public void Say([FromBody]ChatMessage message)
+        public async void SendAnnouncement([FromBody]AnnouncementDto announcementDto)
         {
-            if (!_botService.UserIsOwningGuildAdmin(ulong.Parse(User.Claims.First().Value)))
-            {
-                throw new Exception();
-            }
-            _announcementService.Say(message.Message);
+            await _announcementService.SendGlobalMessage(announcementDto.Title, announcementDto.Message, announcementDto.RegionId);
         }
     }
 

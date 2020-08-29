@@ -59,7 +59,7 @@ namespace CoachBot.Services.Matchmaker
         public void LeaveGuild(string id)
         {
             var parsedId = ulong.Parse(id);
-            _client.GetGuild(parsedId).LeaveAsync();
+            _client.GetGuild(parsedId).LeaveAsync().Wait();
         }
     }
 }

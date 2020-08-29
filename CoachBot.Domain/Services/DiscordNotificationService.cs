@@ -52,6 +52,8 @@ namespace CoachBot.Domain.Services
         {
             var messageIds = new Dictionary<ulong, ulong>();
 
+            int batchCount = 0;
+            int batchLimit = 25;
             foreach (var discordChannelId in discordChannelIds)
             {
                 try
@@ -62,6 +64,12 @@ namespace CoachBot.Domain.Services
                 catch
                 {
                     Console.WriteLine("Failed to send message to " + discordChannelId.ToString());
+                }
+                batchCount++;
+                if (batchLimit == batchCount)
+                {
+                    batchCount = 0;
+                    await Task.Delay(TimeSpan.FromSeconds(15));
                 }
             }
 

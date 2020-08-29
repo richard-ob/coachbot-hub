@@ -57,7 +57,7 @@ namespace CoachBot.Controllers
 
         [HubRolePermission(HubRole = PlayerHubRole.Player)]
         [HttpPost]
-        public IActionResult Create(Team team)
+        public IActionResult Create(CreateTeamDto team)
         {
             _teamService.CreateTeam(team, User.GetSteamId());
 

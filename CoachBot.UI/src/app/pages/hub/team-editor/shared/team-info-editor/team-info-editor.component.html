@@ -7,6 +7,12 @@
         <div class="card__content">
             <form #teamInfoForm="ngForm">
                 <div *ngIf="team.inactive" class="alert alert-warning">This team is not active</div>
+                <div *ngIf=!team.id" class="form-group">
+                    <label class="control-label required" for="token">Token</label>
+                    <small class="label-subtitle mb-2">Please ask your region's community administrator for a team
+                        creation token.</small>
+                    <input type="text" class="form-control" id="token" required [(ngModel)]="team.token" name="token">
+                </div>
                 <div class="form-group">
                     <label class="control-label required" for="teamName">Team Name</label>
                     <input type="text" class="form-control" id="teamName" required [(ngModel)]="team.name"

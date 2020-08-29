@@ -25,6 +25,7 @@ export class Team {
     inactive: boolean;
     channels: Channel[];
     form: MatchOutcomeType[];
+    token?: string;
     createdDate: Date;
     updatedDate: Date;
 }

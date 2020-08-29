@@ -51,9 +51,14 @@ namespace CoachBot.Domain.Services
                 .ToList();
         }
 
-        public void CreateTeam(Team team, ulong captainSteamUserId)
+        public void CreateTeam(Team team, ulong captainSteamUserId, string token)
         {
             var player = _dbContext.GetPlayerBySteamId(captainSteamUserId);
+
+            if (!_dbContext.Regions.Any(r => r.RegionId == team.RegionId && r.CreateTeamToken == token))
+            {
+                throw new Exception("Invalid token provided for team creation");
+            }
 
             if (_dbContext.Teams.Any(t => t.Id != team.Id && t.RegionId == team.RegionId && t.TeamCode == team.TeamCode))
             {

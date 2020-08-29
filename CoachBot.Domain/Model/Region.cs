@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CoachBot.Model;
+using Newtonsoft.Json;
 
 namespace CoachBot.Model
 {
@@ -14,6 +15,9 @@ namespace CoachBot.Model
         public string RegionName { get; set; }
 
         public string RegionCode { get; set; }
+
+        [JsonIgnore]
+        public string CreateTeamToken { get; set; }
 
         public Domain.Model.MatchFormat MatchFormat
         {

@@ -29,5 +29,8 @@
         public int GoalsConceded { get; set; }
 
         public int SecondsPlayed { get; set; }
+
+        public int? PickCount { get; set; }
+
     }
 }

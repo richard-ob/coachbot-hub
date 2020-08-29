@@ -330,7 +330,8 @@ namespace CoachBot.Domain.Services
                                         ISNULL(SUM(PlayerMatchStatistics.RedCards), 0)  AS RedCards,
                                         ISNULL(SUM(PlayerMatchStatistics.KeeperSaves), 0)  AS KeeperSaves,
                                         ISNULL(SUM(PlayerMatchStatistics.GoalsConceded), 0) AS GoalsConceded,
-                                        ISNULL(SUM(PlayerMatchStatistics.SecondsPlayed), 0) AS SecondsPlayed
+                                        ISNULL(SUM(PlayerMatchStatistics.SecondsPlayed), 0) AS SecondsPlayed,
+                                        (SELECT COUNT(*) FROM dbo.FantasyTeamSelections WHERE FantasyPlayerId = FantasyPlayers.Id) AS PickCount
                                 FROM dbo.FantasyPlayers FantasyPlayers
                                 INNER JOIN dbo.Players Players
                                     ON Players.Id = FantasyPlayers.PlayerId

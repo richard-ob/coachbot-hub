@@ -352,6 +352,8 @@ namespace CoachBot.Services
             var matchup = _matchupService.GetMatchup(matchupId);
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
             var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
+            var teamHomeCode = matchup.LineupHome.Channel.TeamId == matchup.LineupAway.Channel.TeamId ? matchup.LineupHome.Channel.Team.TeamCode + 'A' : matchup.LineupHome.Channel.Team.TeamCode;
+            var awayTeamCode = matchup.LineupAway.Channel.TeamId == matchup.LineupAway.Channel.TeamId ? matchup.LineupAway.Channel.Team.TeamCode + 'B' : matchup.LineupAway.Channel.Team.TeamCode;
 
             if (DateTime.UtcNow.AddHours(-1) > matchup.ReadiedDate.Value)
             {
@@ -386,7 +388,7 @@ namespace CoachBot.Services
                         await messenger.ExecuteCommandAsync("mp_matchinfo \"Ranked Friendly Match\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_url \"" + _config.WebServerConfig.HubApiUrl + "/api/match-statistics" + "\"");
                         await messenger.ExecuteCommandAsync("sv_webserver_matchdata_enabled 1");
-                        await messenger.ExecuteCommandAsync($"mp_teamnames \"{matchup.LineupHome.Channel.Team.TeamCode}: {matchup.LineupHome.Channel.Team.Name}, {matchup.LineupAway.Channel.Team.TeamCode}: {matchup.LineupAway.Channel.Team.Name}\"");
+                        await messenger.ExecuteCommandAsync($"mp_teamnames \"{teamHomeCode}: {matchup.LineupHome.Channel.Team.Name}, {awayTeamCode}: {matchup.LineupAway.Channel.Team.Name}\"");
                         await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchup.MatchId.Value, matchup.LineupHome.Channel.Team.TeamCode, matchup.LineupAway.Channel.Team.TeamCode));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
                         await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));

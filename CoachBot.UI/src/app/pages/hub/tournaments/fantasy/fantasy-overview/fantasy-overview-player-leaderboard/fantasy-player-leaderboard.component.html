@@ -8,6 +8,7 @@
                 <th class="text-center">Rank</th>
                 <th>Player</th>
                 <th class="text-center">Points</th>
+                <th class="text-center" title="How many teams the player has been picked for">Picked</th>
                 <th class="text-center" title="Goals Scored">GS</th>
                 <th class="text-center" title="Assists">A</th>
                 <th class="text-center" title="Clean Sheets">CS</th>
@@ -26,6 +27,7 @@
                             [routerLink]="['/player-profile/', fantasyPlayer.playerId]">{{fantasyPlayer.playerName}}</a>
                     </td>
                     <td class="text-center">{{fantasyPlayer.points}}</td>
+                    <td class="text-center">{{fantasyPlayer.pickCount}}</td>
                     <td class="text-center">{{fantasyPlayer.goals}}</td>
                     <td class="text-center">{{fantasyPlayer.assists}}</td>
                     <td class="text-center">{{fantasyPlayer.cleanSheets}}</td>

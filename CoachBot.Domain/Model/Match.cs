@@ -43,6 +43,10 @@ namespace CoachBot.Domain.Model
 
         public Map Map { get; set; }
 
+        public int? PlayerOfTheMatchId { get; set; }
+
+        public Player PlayerOfTheMatch { get; set; }
+
         public int? TournamentId { get; set; }
 
         public Tournament Tournament { get; set; }

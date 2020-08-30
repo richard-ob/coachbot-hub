@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Extensions;
+using CoachBot.Domain.Helpers;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
 using CoachBot.Shared.Services;
@@ -451,7 +452,7 @@ namespace CoachBot.Domain.Services
                 return PositionGroup.Unknown;
             }
 
-            return MapPositionToPositionGroup(position.Name);
+            return PositionGroupHelper.MapPositionToPositionGroup(position.Name);
         }
 
         private static float GetRandomRating()
@@ -502,7 +503,7 @@ namespace CoachBot.Domain.Services
                                 TournamentPhaseId = tournamentPhaseId,
                                 FantasyPlayerId = fantasyPlayer.Id,
                                 Points = CalculateFantasyPoints(playerMatchStatistics, playerMatchPositionStatistics),
-                                PositionGroup = DeterminePositionGroup(playerMatchPositionStatistics)
+                                PositionGroup = PositionGroupHelper.DeterminePositionGroup(playerMatchPositionStatistics)
                             };
 
                             context.FantasyPlayerPhases.Add(fantasyPlayerPhase);
@@ -515,9 +516,9 @@ namespace CoachBot.Domain.Services
             Thread.Sleep(1000);
         }
 
-        private int CalculateFantasyPoints(PlayerMatchStatistics playerMatchStatistics, IEnumerable<PlayerPositionMatchStatistics> playerMatchPositionStatistics)
+        public int CalculateFantasyPoints(PlayerMatchStatistics playerMatchStatistics, IEnumerable<PlayerPositionMatchStatistics> playerMatchPositionStatistics)
         {
-            var mainPosition = DeterminePositionGroup(playerMatchPositionStatistics);
+            var mainPosition = PositionGroupHelper.DeterminePositionGroup(playerMatchPositionStatistics);
 
             // Appearance
             var currentScore = 1; // Playing a game is 1 point
@@ -561,39 +562,6 @@ namespace CoachBot.Domain.Services
             if (playerMatchStatistics.Interceptions >= 20) currentScore += 5;
 
             return currentScore;
-        }
-
-        private PositionGroup DeterminePositionGroup(IEnumerable<PlayerPositionMatchStatistics> playerPositionMatchStatistics)
-        {       
-            var position = playerPositionMatchStatistics.OrderByDescending(p => p.SecondsPlayed).Select(p => p.Position.Name).First();
-
-            return MapPositionToPositionGroup(position);
-        }
-
-        private PositionGroup MapPositionToPositionGroup(string positionName)
-        {
-            var defPositions = new string[] { "LWB", "LB", "LCB", "SWP", "CB", "RCB", "RB", "RWB" };
-            var midPositions = new string[] { "LM", "LCM", "CDM", "CM", "CAM", "RCM", "RM" };
-            var attackPositions = new string[] { "LW", "LF", "CF", "SS", "ST", "RF", "RW" };
-
-            if (positionName == "GK")
-            {
-                return PositionGroup.Goalkeeper;
-            }
-            else if (defPositions.Any(p => p == positionName))
-            {
-                return PositionGroup.Defence;
-            }
-            else if (midPositions.Any(p => p == positionName))
-            {
-                return PositionGroup.Midfield;
-            }
-            else if (attackPositions.Any(p => p == positionName))
-            {
-                return PositionGroup.Attack;
-            }
-
-            return PositionGroup.Unknown;
         }
 
         private IQueryable<FantasyPlayer> GetFantasyPlayersQueryable(PlayerStatisticFilters playerStatisticFilters)

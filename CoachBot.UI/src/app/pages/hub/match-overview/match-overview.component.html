@@ -387,9 +387,10 @@
                         <!-- Sidebar -->
                         <div class=" col-lg-4">
 
-                            <!-- Widget: Lineup -->
-
-                            <!-- Widget: Lineup / End -->
+                            <!-- Widget: Player of the Match -->
+                            <app-player-of-the-match *ngIf="match && match.playerOfTheMatch"
+                                [playerOfTheMatch]="match.playerOfTheMatch"></app-player-of-the-match>
+                            <!-- Widget: Player of the Match / End -->
 
                             <!-- Widget: Game Commentary -->
                             <aside class="widget card card--no-paddings widget--sidebar widget-commentary">

@@ -1,5 +1,6 @@
 ﻿using CoachBot.Database;
 using CoachBot.Domain.Extensions;
+using CoachBot.Domain.Helpers;
 using CoachBot.Domain.Model;
 using CoachBot.Model;
 using CoachBot.Shared.Model;
@@ -225,6 +226,7 @@ namespace CoachBot.Domain.Services
 
             GeneratePlayerMatchStatistics(match);
             GenerateTeamMatchStatistics(match);
+            GeneratePlayerOfTheMatch(match);
             GenerateTeamForm();
             if (match.TournamentId.HasValue && match.TournamentId > 0)
             {
@@ -606,6 +608,28 @@ namespace CoachBot.Domain.Services
                 };
                 teamMatchStatistics.AddMatchDataStatistics(matchDataTeam.MatchTotal.Statistics);
                 _coachBotContext.TeamMatchStatistics.Add(teamMatchStatistics);
+                _coachBotContext.SaveChanges();
+            }
+        }
+
+        private void GeneratePlayerOfTheMatch(Match match)
+        {
+            var playerMatchStatistics = _coachBotContext.PlayerMatchStatistics.Include(p => p.Player).Where(p => p.MatchId == match.Id);
+            var playerPoints = new List<Tuple<Player, int>>();
+            foreach(var player in playerMatchStatistics)
+            {
+                var playerPositionMatchStatistics = _coachBotContext.PlayerPositionMatchStatistics.Where(p => p.PlayerId == player.PlayerId && p.MatchId == match.Id);
+                var fantasyPoints = _fantasyService.CalculateFantasyPoints(player, playerPositionMatchStatistics);
+                var mainPositionGroup = PositionGroupHelper.DeterminePositionGroup(playerPositionMatchStatistics);
+
+                playerPoints.Add(new Tuple<Player, int>(player.Player, fantasyPoints));
+            }
+
+            var playerOfTheMatch = playerPoints.OrderByDescending(p => p.Item2).Select(p => p.Item1).FirstOrDefault();
+
+            if (playerOfTheMatch != null)
+            {
+                match.PlayerOfTheMatchId = playerOfTheMatch.Id;
                 _coachBotContext.SaveChanges();
             }
         }

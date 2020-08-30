@@ -30,6 +30,13 @@
 .progress__bar--success {
     background-color: #dc3545;
 }
+
+@media (min-width: 992px) {
+    .site-content, .section {
+        padding: 40px 0;
+    }
+}
+
 .site-content > .container > .row {
     margin-right: -45px;
     margin-left: -45px;

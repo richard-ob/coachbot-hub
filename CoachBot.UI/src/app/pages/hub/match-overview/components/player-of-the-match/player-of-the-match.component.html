@@ -1,0 +1,17 @@
+<div class="card statistic-spotlight-card" (click)="playerOfTheMatch && navigateToPlayer()">
+    <div class="card__content  widget-player--soccer">
+        <h4 class="statistic-spotlight-title mb-2">
+            Player of the Match
+        </h4>
+        <ng-container *ngIf="!isLoading; else spinner">
+            <div class="widget-player__ribbon">
+                <div class="fa fa-star"></div>
+            </div>
+            <h4 class="statistic-spotlight-name">{{playerOfTheMatch.name}}</h4>
+            <i class="statistic-spotlight-icon icon-svg icon-shirt-alt"></i>
+        </ng-container>
+        <ng-template #spinner>
+            <app-spinner [verticalMargins]="false"></app-spinner>
+        </ng-template>
+    </div>
+</div>

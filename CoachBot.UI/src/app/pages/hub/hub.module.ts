@@ -63,6 +63,7 @@ import { TeamNameDisplayModule } from './shared/components/team-name-display/tea
 import { MatchStatisticsModule } from './match-statistics/match-statistics.module';
 import { MatchDataUploaderComponent } from './match-editor/match-data-uploader/match-data-uploader.component';
 import { MatchTeamGoalsPipe } from './match-overview/helpers/match-team-goals.pipe';
+import { PlayerOfTheMatchComponent } from './match-overview/components/player-of-the-match/player-of-the-match.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import { MatchTeamGoalsPipe } from './match-overview/helpers/match-team-goals.pi
     MatchOverviewLineupComponent,
     MatchOverviewPlayerStatisticsComponent,
     MatchOverviewLineupPositionComponent,
+    PlayerOfTheMatchComponent,
     CurrentTournamentsComponent,
     PreviousTournamentsComponent,
     TeamsComponent

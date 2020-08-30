@@ -37,6 +37,7 @@ namespace CoachBot.Domain.Services
                 .Include(s => s.Server)
                     .ThenInclude(s => s.Country)
                 .Include(m => m.Map)
+                .Include(m => m.PlayerOfTheMatch)
                 .FirstOrDefault(m => m.Id == matchId);
         }
 

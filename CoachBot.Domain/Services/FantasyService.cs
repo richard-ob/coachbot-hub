@@ -340,7 +340,7 @@ namespace CoachBot.Domain.Services
                                 LEFT OUTER JOIN dbo.PlayerMatchStatistics PlayerMatchStatistics
                                     ON PlayerMatchStatistics.Id = FantasyPlayerPhases.PlayerMatchStatisticsId
                                 WHERE FantasyPlayers.TournamentId = {tournamentId}
-                                GROUP BY Players.Id, Players.Name, FantasyPlayers.Rating
+                                GROUP BY Players.Id, Players.Name, FantasyPlayers.Rating, FantasyPlayers.Id
                                 ORDER BY SUM(POINTS) DESC")
                    .ToList();
         }
@@ -362,7 +362,8 @@ namespace CoachBot.Domain.Services
                                         SUM(PlayerMatchStatistics.RedCards) AS RedCards,
                                         SUM(PlayerMatchStatistics.KeeperSaves) AS KeeperSaves,
                                         SUM(PlayerMatchStatistics.GoalsConceded) AS GoalsConceded,
-                                        SUM(PlayerMatchStatistics.SecondsPlayed) AS SecondsPlayed
+                                        SUM(PlayerMatchStatistics.SecondsPlayed) AS SecondsPlayed,
+                                        NULL AS PickCount
                                 FROM dbo.FantasyPlayers FantasyPlayers
                                 INNER JOIN dbo.FantasyPlayerPhases FantasyPlayerPhases
                                     ON FantasyPlayerPhases.FantasyPlayerId = FantasyPlayers.Id

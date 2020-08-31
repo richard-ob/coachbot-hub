@@ -388,8 +388,8 @@
                         <div class=" col-lg-4">
 
                             <!-- Widget: Player of the Match -->
-                            <app-player-of-the-match *ngIf="match && match.playerOfTheMatch"
-                                [playerOfTheMatch]="match.playerOfTheMatch"></app-player-of-the-match>
+                            <app-player-of-the-match *ngIf="match && match.playerOfTheMatchId" [matchId]="match.id">
+                            </app-player-of-the-match>
                             <!-- Widget: Player of the Match / End -->
 
                             <!-- Widget: Game Commentary -->

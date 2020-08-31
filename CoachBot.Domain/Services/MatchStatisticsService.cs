@@ -410,6 +410,29 @@ namespace CoachBot.Domain.Services
                 }).ToList();
         }
 
+        public PlayerOfTheMatchStatistics GetPlayerOfTheMatch(int matchId)
+        {
+            var match = _coachBotContext.Matches.Single(m => m.Id == matchId);
+            var playerMatchPositionStatistics = _coachBotContext.PlayerPositionMatchStatistics.Include(p => p.Position).Where(p => p.MatchId == matchId && p.PlayerId == match.PlayerOfTheMatchId);
+            var mainPositionGroup = PositionGroupHelper.DeterminePositionGroup(playerMatchPositionStatistics);
+
+            return _coachBotContext.PlayerMatchStatistics
+                .OrderByDescending(p => p.SecondsPlayed)
+                .Where(p => p.PlayerId == match.PlayerOfTheMatchId && p.MatchId == matchId)
+                .Select(p => new PlayerOfTheMatchStatistics()
+                {
+                    PlayerId = p.PlayerId,
+                    PlayerName = p.Player.Name,
+                    Goals = p.Goals,
+                    Assists = p.Assists,
+                    GoalsConceded = p.GoalsConceded,
+                    Interceptions = p.Interceptions,
+                    KeeperSaves = p.KeeperSaves,
+                    PassCompletion = (int)(Convert.ToDouble(p.Passes) > 0 ? Convert.ToDouble(p.PassesCompleted) / Convert.ToDouble(p.Passes) : 0),
+                    PositionGroup = mainPositionGroup
+                }).FirstOrDefault();
+        }
+
         public void GenerateTeamForm()
         {
             foreach (var teamId in _coachBotContext.TeamMatchStatistics.Select(t => t.TeamId).Distinct())
@@ -618,7 +641,7 @@ namespace CoachBot.Domain.Services
             var playerPoints = new List<Tuple<Player, int>>();
             foreach(var player in playerMatchStatistics)
             {
-                var playerPositionMatchStatistics = _coachBotContext.PlayerPositionMatchStatistics.Where(p => p.PlayerId == player.PlayerId && p.MatchId == match.Id);
+                var playerPositionMatchStatistics = _coachBotContext.PlayerPositionMatchStatistics.Include(p => p.Position).Where(p => p.PlayerId == player.PlayerId && p.MatchId == match.Id);
                 var fantasyPoints = _fantasyService.CalculateFantasyPoints(player, playerPositionMatchStatistics);
                 var mainPositionGroup = PositionGroupHelper.DeterminePositionGroup(playerPositionMatchStatistics);
 

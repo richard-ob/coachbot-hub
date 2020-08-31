@@ -12,10 +12,12 @@ namespace CoachBot.Controllers
     public class MatchController : Controller
     {
         private readonly MatchService _matchService;
+        private readonly MatchStatisticsService _matchStatisticsService;
 
-        public MatchController(MatchService matchService)
+        public MatchController(MatchService matchService, MatchStatisticsService matchStatisticsService)
         {
             _matchService = matchService;
+            _matchStatisticsService = matchStatisticsService;
         }
 
         [HttpGet("{id}")]
@@ -35,6 +37,12 @@ namespace CoachBot.Controllers
         public void UpdateMatch([FromBody]Match match)
         {
             _matchService.UpdateMatch(match);
+        }
+
+        [HttpGet("{id}/player-of-the-match")]
+        public PlayerOfTheMatchStatistics GetPlayerOfTheMatch(int id)
+        {
+            return _matchStatisticsService.GetPlayerOfTheMatch(id);
         }
     }
 }

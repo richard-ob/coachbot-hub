@@ -1,4 +1,4 @@
-<div class="card statistic-spotlight-card" (click)="playerOfTheMatch && navigateToPlayer()">
+<div class="card statistic-spotlight-card" (click)="playerOfTheMatchStatistics && navigateToPlayer()">
     <div class="card__content  widget-player--soccer">
         <h4 class="statistic-spotlight-title mb-2">
             Player of the Match
@@ -7,8 +7,58 @@
             <div class="widget-player__ribbon">
                 <div class="fa fa-star"></div>
             </div>
-            <h4 class="statistic-spotlight-name">{{playerOfTheMatch.name}}</h4>
+            <h4 class="statistic-spotlight-name">{{playerOfTheMatchStatistics.playerName}}</h4>
             <i class="statistic-spotlight-icon icon-svg icon-shirt-alt"></i>
+            <div *ngIf="playerOfTheMatchStatistics" class="d-flex">
+                <div *ngIf="showKeeperSaves" class="statistic-spotlight-stat-container pr-3">
+                    <div class="statistic-spotlight-stat-value">
+                        {{playerOfTheMatchStatistics.keeperSaves}}
+                    </div>
+                    <div class="statistic-spotlight-stat-measure">
+                        Saves
+                    </div>
+                </div>
+                <div *ngIf="showGoals" class="statistic-spotlight-stat-container pr-3">
+                    <div class="statistic-spotlight-stat-value">
+                        {{playerOfTheMatchStatistics.goals}}
+                    </div>
+                    <div class="statistic-spotlight-stat-measure">
+                        Goals
+                    </div>
+                </div>
+                <div *ngIf="showAssists" class="statistic-spotlight-stat-container pr-3">
+                    <div class="statistic-spotlight-stat-value">
+                        {{playerOfTheMatchStatistics.assists}}
+                    </div>
+                    <div class="statistic-spotlight-stat-measure">
+                        Assists
+                    </div>
+                </div>
+                <div *ngIf="showPassCompletion" class="statistic-spotlight-stat-container pr-3">
+                    <div class="statistic-spotlight-stat-value">
+                        {{playerOfTheMatchStatistics.passCompletion}}%
+                    </div>
+                    <div class="statistic-spotlight-stat-measure">
+                        Pass Completion
+                    </div>
+                </div>
+                <div *ngIf="showInterceptions" class="statistic-spotlight-stat-container pr-3">
+                    <div class="statistic-spotlight-stat-value">
+                        {{playerOfTheMatchStatistics.interceptions}}
+                    </div>
+                    <div class="statistic-spotlight-stat-measure">
+                        Interceptions
+                    </div>
+                </div>
+                <div *ngIf="showConceded" class="statistic-spotlight-stat-container pr-3">
+                    <div class="statistic-spotlight-stat-value">
+                        {{playerOfTheMatchStatistics.goalsConceded}}
+                    </div>
+                    <div class="statistic-spotlight-stat-measure">
+                        Goals Conceded
+                    </div>
+                </div>
+            </div>
         </ng-container>
         <ng-template #spinner>
             <app-spinner [verticalMargins]="false"></app-spinner>

@@ -34,15 +34,29 @@ internal class TimedHostedService : IHostedService, IDisposable
             var coachBotContext = scope.ServiceProvider.GetRequiredService<CoachBotContext>();
             var discordNotificationService = scope.ServiceProvider.GetRequiredService<DiscordNotificationService>();
 
-            var kickOffTimeBuffer = DateTime.UtcNow.AddMinutes(16).ToString("g");
-
-            var matches = coachBotContext.Matches
-                .Where(m => m.KickOff != null && ((DateTime)m.KickOff).ToString("g") == kickOffTimeBuffer && m.ServerId != null && m.TournamentId != null)
+            // INFO: Restart servers 20 minutes before game
+            var kickOffTimeRestartBuffer = DateTime.UtcNow.AddMinutes(20).ToString("g");
+            var restartMatches = coachBotContext.Matches
+                .Where(m => m.KickOff != null && ((DateTime)m.KickOff).ToString("g") == kickOffTimeRestartBuffer && m.ServerId != null && m.TournamentId != null)
                 .Include(m => m.TeamHome)
                 .Include(m => m.TeamAway)
                 .Include(m => m.Map);
 
-            foreach (var match in matches)
+            foreach (var match in restartMatches)
+            {
+                await discordNotificationService.SendAuditChannelMessage($"Restarting server for tournament match: {match.Id} ({match.TeamHome.Name} vs {match.TeamAway.Name}) [KO: {((DateTime)match.KickOff).ToString("g")}]");
+                await serverManagementService.RestartServer(match.ServerId.Value);
+            }
+
+            // INFO: Setup servers ~15 minutes for the game
+            var kickOffTimeSetupBuffer = DateTime.UtcNow.AddMinutes(16).ToString("g");
+            var kickOffMatches = coachBotContext.Matches
+                .Where(m => m.KickOff != null && ((DateTime)m.KickOff).ToString("g") == kickOffTimeSetupBuffer && m.ServerId != null && m.TournamentId != null)
+                .Include(m => m.TeamHome)
+                .Include(m => m.TeamAway)
+                .Include(m => m.Map);
+
+            foreach (var match in kickOffMatches)
             {
                 await discordNotificationService.SendAuditChannelMessage($"Setting up tournament match: {match.Id} ({match.TeamHome.Name} vs {match.TeamAway.Name}) [KO: {((DateTime)match.KickOff).ToString("g")}]");
                 await serverManagementService.PrepareServerTournament(match.Id);

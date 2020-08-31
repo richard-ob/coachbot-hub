@@ -353,7 +353,7 @@ namespace CoachBot.Services
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
             var matchFormat = channel.ChannelPositions.Count + "v" + channel.ChannelPositions.Count;
             var teamHomeCode = matchup.LineupHome.Channel.TeamId == matchup.LineupAway.Channel.TeamId ? matchup.LineupHome.Channel.Team.TeamCode + 'A' : matchup.LineupHome.Channel.Team.TeamCode;
-            var awayTeamCode = matchup.LineupAway.Channel.TeamId == matchup.LineupAway.Channel.TeamId ? matchup.LineupAway.Channel.Team.TeamCode + 'B' : matchup.LineupAway.Channel.Team.TeamCode;
+            var awayTeamCode = matchup.LineupHome.Channel.TeamId == matchup.LineupAway.Channel.TeamId ? matchup.LineupAway.Channel.Team.TeamCode + 'B' : matchup.LineupAway.Channel.Team.TeamCode;
 
             if (DateTime.UtcNow.AddHours(-1) > matchup.ReadiedDate.Value)
             {
@@ -459,6 +459,33 @@ namespace CoachBot.Services
                 {
                     var discordChannel = _discordClient.GetChannel(channel.DiscordChannelId) as SocketTextChannel;
                     await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed($"15 minutes to go! Join the server now for your tournament match - **{match.Server.Name}** steam://connect/{match.Server.Address}", $"**{match.TeamHome.Name}** {match.TeamHome.BadgeEmote} vs {match.TeamAway.BadgeEmote} **{match.TeamAway.Name}**"));
+                }
+            }
+        }
+
+        public async Task RestartServer(int serverId)
+        {
+            var server = _serverService.GetServer(serverId);
+
+            if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
+            {
+                try
+                {
+                    INetworkSocket socket = new RconSocket();
+                    RconMessenger messenger = new RconMessenger(socket);
+                    bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                    bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                    if (authenticated)
+                    {
+                        await messenger.ExecuteCommandAsync("say [Coach] Server is automatically restarting to prepare for tournament match..");
+                        await Task.Delay(TimeSpan.FromSeconds(10));
+                        await messenger.ExecuteCommandAsync("quit");
+                    }
+                    messenger.CloseConnection();
+                }
+                catch
+                {
+
                 }
             }
         }

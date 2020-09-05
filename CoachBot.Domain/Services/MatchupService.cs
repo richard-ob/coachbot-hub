@@ -360,11 +360,12 @@ namespace CoachBot.Domain.Services
             if (challenger.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"Mix channels cannot challenge teams");
             if (!challenger.IsMixChannel && challengerMatchup.LineupAway != null && challengerMatchup.LineupAway.ChannelId != challengerMatchup.LineupHome.ChannelId) return new ServiceResponse(ServiceResponseStatus.Failure, $"You are already challenging **{challengerMatchup.LineupAway.Channel.Team.Name}**");
             if (opposition.IsMixChannel && !oppositionMatchup.IsMixMatch) return new ServiceResponse(ServiceResponseStatus.Failure, $"{opposition.Team.Name} already has opposition challenging");
+            if (opposition.IsMixChannel && oppositionMatchup.IsMixMatch && oppositionMatchup.SignedPlayers.Count >= (opposition.ChannelPositions.Count() * 1.75)) return new ServiceResponse(ServiceResponseStatus.Failure, $"{opposition.Team.Name} has an active mix vs mix challenge underway and cannot be challenged presently");
             if (!opposition.IsMixChannel && oppositionMatchup.LineupAwayId != null) return new ServiceResponse(ServiceResponseStatus.Failure, $"{opposition.Team.Name} already has opposition challenging");
             if (!_searchService.GetSearches().Any(s => s.ChannelId == opposition.Id) && !opposition.IsMixChannel) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{opposition.Team.Name}** aren't searching for a team to face");
             if (challengerChannelId == oppositionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"You can't face yourself. Don't waste my time.");
             if (challenger.ChannelPositions.Count() != opposition.ChannelPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"Sorry, **{opposition.Team.Name}** are looking for an **{opposition.ChannelPositions.Count()}v{opposition.ChannelPositions.Count()}** match");
-            if (Math.Round(challenger.ChannelPositions.Count() * 0.7) > GetCurrentMatchForChannel(challengerChannelId).LineupHome.OccupiedPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"At least **{Math.Round(challenger.ChannelPositions.Count() * 0.7)}** positions must be filled");
+            if (Math.Round(challenger.ChannelPositions.Count() * 0.7) > challengerMatchup.LineupHome.OccupiedPositions.Count()) return new ServiceResponse(ServiceResponseStatus.Failure, $"At least **{Math.Round(challenger.ChannelPositions.Count() * 0.7)}** positions must be filled");
             if (challenger.Team.RegionId != opposition.Team.RegionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"You can't challenge opponents from other regions");
 
             if (opposition.IsMixChannel)

@@ -428,7 +428,7 @@ namespace CoachBot.Domain.Services
                     GoalsConceded = p.GoalsConceded,
                     Interceptions = p.Interceptions,
                     KeeperSaves = p.KeeperSaves,
-                    PassCompletion = (int)(Convert.ToDouble(p.Passes) > 0 ? Convert.ToDouble(p.PassesCompleted) / Convert.ToDouble(p.Passes) : 0),
+                    PassCompletion = (int)(Convert.ToDouble(p.Passes) > 0 ? (Convert.ToDouble(p.PassesCompleted) / Convert.ToDouble(p.Passes)) * 100 : 0),
                     PositionGroup = mainPositionGroup
                 }).FirstOrDefault();
         }

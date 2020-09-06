@@ -85,6 +85,7 @@ namespace CoachBot.Domain.Services
             match.MatchStatisticsId = null;
             match.KickOff = null;
 
+            _coachBotContext.FantasyPlayerPhases.RemoveRange(_coachBotContext.FantasyPlayerPhases.Where(m => m.PlayerMatchStatistics.Match.Id == match.Id));
             _coachBotContext.PlayerMatchStatistics.RemoveRange(_coachBotContext.PlayerMatchStatistics.Where(m => m.MatchId == match.Id));
             _coachBotContext.PlayerPositionMatchStatistics.RemoveRange(_coachBotContext.PlayerPositionMatchStatistics.Where(m => m.MatchId == match.Id));
             _coachBotContext.TeamMatchStatistics.RemoveRange(_coachBotContext.TeamMatchStatistics.Where(m => m.MatchId == match.Id));

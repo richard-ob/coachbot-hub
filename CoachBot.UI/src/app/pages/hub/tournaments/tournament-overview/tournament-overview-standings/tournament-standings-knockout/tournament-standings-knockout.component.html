@@ -31,7 +31,13 @@
                                     </div>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number text-white">{{match.match.matchStatistics?.matchGoalsHome || '?'}}</span>
+                                    <ng-container
+                                        *ngIf="match.match.matchStatistics?.matchGoalsHome === 0 || match.match.matchStatistics?.matchGoalsHome; else homeGoalsTbc">
+                                        {{match.match.matchStatistics.matchGoalsHome}}
+                                    </ng-container>
+                                    <ng-template #homeGoalsTbc>
+                                        ?
+                                    </ng-template>
                                 </td>
                             </tr>
                             <tr class="tournament-bracket__team"
@@ -56,7 +62,14 @@
                                     </div>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number text-white">{{match.match.matchStatistics?.matchGoalsAway || '?'}}</span>
+                                    <span class="tournament-bracket__number text-white">
+                                        <ng-container *ngIf="match.match.matchStatistics?.matchGoalsAway === 0 || match.match.matchStatistics?.matchGoalsAway; else awayGoalsTbc">
+                                            {{match.match.matchStatistics.matchGoalsAway}}
+                                        </ng-container>
+                                        <ng-template #awayGoalsTbc>
+                                            ?
+                                        </ng-template>
+                                    </span>
                                 </td>
                             </tr>
                         </tbody>

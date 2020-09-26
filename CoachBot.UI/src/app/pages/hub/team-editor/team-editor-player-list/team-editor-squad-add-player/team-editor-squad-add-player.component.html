@@ -21,7 +21,8 @@
         <button class="btn btn-outline-primary mr-2" type="button" (click)="wizardClosed.emit()">
             Cancel
         </button>
-        <button class="btn btn-primary" type="button" [disabled]="isSaving || !role || !player" (click)="addPlayer()">
+        <button class="btn btn-primary" type="button"
+            [disabled]="isSaving || role === null || role === undefined || !player" (click)="addPlayer()">
             <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i> Add
         </button>
     </div>

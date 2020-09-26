@@ -57,6 +57,7 @@ export class TeamPerformanceTrackerComponent implements OnInit {
         this.currentPerformanceTrackerTime = PerformanceTrackerTime.Weekly;
         this.teamService.getWeeklyTeamPerformance(this.teamId).subscribe(playerPerformanceSnapshots => {
             this.playerPerformanceSnapshots = playerPerformanceSnapshots;
+            this.mapPerformanceToPoints();
             this.isLoading = false;
         });
     }

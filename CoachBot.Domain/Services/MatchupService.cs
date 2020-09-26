@@ -573,7 +573,7 @@ namespace CoachBot.Domain.Services
 
         private Player ReplaceWithSubstitute(Position position, Lineup team)
         {
-            var sub = team.PlayerSubstitutes.Select(p => p.Player).FirstOrDefault();
+            var sub = team.PlayerSubstitutes.OrderBy(s => s.CreatedDate).Select(p => p.Player).FirstOrDefault();
 
             if (sub != null)
             {

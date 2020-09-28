@@ -31,13 +31,15 @@
                                     </div>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <ng-container
-                                        *ngIf="match.match.matchStatistics?.matchGoalsHome === 0 || match.match.matchStatistics?.matchGoalsHome; else homeGoalsTbc">
-                                        {{match.match.matchStatistics.matchGoalsHome}}
-                                    </ng-container>
-                                    <ng-template #homeGoalsTbc>
-                                        ?
-                                    </ng-template>
+                                    <span class="tournament-bracket__number text-white">
+                                        <ng-container
+                                            *ngIf="match.match.matchStatistics?.matchGoalsHome === 0 || match.match.matchStatistics?.matchGoalsHome; else homeGoalsTbc">
+                                            {{match.match.matchStatistics.matchGoalsHome}}
+                                        </ng-container>
+                                        <ng-template #homeGoalsTbc>
+                                            ?
+                                        </ng-template>
+                                    </span>
                                 </td>
                             </tr>
                             <tr class="tournament-bracket__team"

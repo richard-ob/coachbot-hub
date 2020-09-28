@@ -25,6 +25,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PlayerProfileSpotlightComponent } from './player-profile-statistics/player-profile-spotlight/player-profile-spotlight.component';
 import { FormIndicatorModule } from '../shared/components/form-indictator/form-indicator.module';
+import { TeamNameDisplayModule } from '../shared/components/team-name-display/team-name-display.module';
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ import { FormIndicatorModule } from '../shared/components/form-indictator/form-i
         ThSorterModule,
         NgxChartsModule,
         FormIndicatorModule,
+        TeamNameDisplayModule,
         BsDropdownModule.forRoot()
     ]
 })

@@ -391,6 +391,12 @@ namespace CoachBot.Services
                         await messenger.ExecuteCommandAsync($"mp_teamnames \"{teamHomeCode}: {matchup.LineupHome.Channel.Team.Name}, {awayTeamCode}: {matchup.LineupAway.Channel.Team.Name}\"");
                         await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, matchup.MatchId.Value, matchup.LineupHome.Channel.Team.TeamCode, matchup.LineupAway.Channel.Team.TeamCode));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
+                        var homeKitId = await GetKitForTeam(messenger, matchup.LineupHome.Channel.Team.Name);
+                        var awayKitId = await GetKitForTeam(messenger, matchup.LineupAway.Channel.Team.Name);
+                        if (homeKitId > 0 || awayKitId > 0)
+                        {
+                            await messenger.ExecuteCommandAsync($"mp_teamkits {homeKitId ?? 1} {awayKitId ?? 1}");
+                        }
                         await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
                     }
                     else
@@ -434,6 +440,12 @@ namespace CoachBot.Services
                         await messenger.ExecuteCommandAsync($"mp_teamnames \"{match.TeamHome.TeamCode}: {match.TeamHome.Name}, {match.TeamAway.TeamCode}: {match.TeamAway.Name}\"");
                         await messenger.ExecuteCommandAsync($"sv_webserver_matchdata_accesstoken " + GenerateMatchDataAuthToken(server, match.Id, match.TeamHome.TeamCode, match.TeamAway.TeamCode));
                         await messenger.ExecuteCommandAsync("say Have a great game, and remember what I taught you in training - Coach");
+                        var homeKitId = await GetKitForTeam(messenger, match.TeamHome.Name);
+                        var awayKitId = await GetKitForTeam(messenger, match.TeamAway.Name);
+                        if (homeKitId > 0 || awayKitId > 0)
+                        {
+                            await messenger.ExecuteCommandAsync($"mp_teamkits {homeKitId ?? 1} {awayKitId ?? 1}");
+                        }
                     }
                     messenger.CloseConnection();
                 }
@@ -565,6 +577,19 @@ namespace CoachBot.Services
             var encodedToken = Encoding.UTF8.GetBytes(token);
 
             return Convert.ToBase64String(encodedToken);
+        }
+
+        private async Task<int?> GetKitForTeam(RconMessenger rconMessenger, string teamName)
+        {
+            var kitsCsv = await rconMessenger.ExecuteCommandAsync($"mp_teamkits_csv {teamName.ToLower().Replace(' ', '_')}");
+            var kits = kitsCsv.Split(',').Where(k => k.Contains(':') && k.Contains('_'));
+
+            if (!kits.Any())
+            {
+                return null;
+            }
+
+            return kits.Select(k => Int32.Parse(k.Split(':').FirstOrDefault())).FirstOrDefault();
         }
     }
 }

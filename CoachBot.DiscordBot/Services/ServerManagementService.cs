@@ -345,7 +345,7 @@ namespace CoachBot.Services
             return false;
         }
 
-        public async void PrepareServer(int serverListItemId, ulong channelId, int matchupId)
+        public async void PrepareServer(int serverListItemId, ulong channelId, int matchupId, bool execConfig = true)
         {
             var server = GetServerFromServerListItemId(serverListItemId, channelId);
             var channel = _channelService.GetChannelByDiscordId(channelId);
@@ -376,7 +376,10 @@ namespace CoachBot.Services
                     bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
                     if (authenticated)
                     {
-                        await messenger.ExecuteCommandAsync($"exec {channel.ChannelPositions.Count}v{channel.ChannelPositions.Count}.cfg");
+                        if (execConfig)
+                        {
+                            await messenger.ExecuteCommandAsync($"exec {channel.ChannelPositions.Count}v{channel.ChannelPositions.Count}.cfg");
+                        }
                         if (matchup.LineupHome.HasGk && matchup.LineupAway.HasGk)
                         {
                             await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
@@ -397,7 +400,14 @@ namespace CoachBot.Services
                         {
                             await messenger.ExecuteCommandAsync($"mp_teamkits {homeKitId ?? 1} {awayKitId ?? 1}");
                         }
-                        await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
+                        if (execConfig)
+                        {
+                            await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up"));
+                        }
+                        else
+                        {
+                            await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateSimpleEmbed(":stadium: The stadium has successfully been automatically set up for statistics, however the match config has not been executed, as the server may be in use"));
+                        }
                     }
                     else
                     {

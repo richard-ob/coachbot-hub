@@ -231,10 +231,7 @@ namespace CoachBot.Modules.Matchmaker
             if (_channelServerService.ValidateServer(Context.Channel.Id, serverListItemId))
             {
                 var serverAvailable = await _channelServerService.ValidateServerAvailability(serverListItemId, Context.Message.Channel.Id);
-                if (serverAvailable)
-                {
-                    _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id, matchupId);
-                }
+                _channelServerService.PrepareServer(serverListItemId, Context.Channel.Id, matchupId, serverAvailable);
             }
             else
             {

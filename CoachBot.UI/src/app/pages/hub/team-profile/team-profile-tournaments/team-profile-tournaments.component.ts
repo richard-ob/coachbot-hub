@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TeamService } from '../../shared/services/team.service';
-import { TeamStatistics } from '../../shared/model/team-statistics.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TournamentService } from '@pages/hub/shared/services/tournament.service';
+import { Tournament } from '@pages/hub/shared/model/tournament.model';
 
 @Component({
     selector: 'app-team-profile-tournaments',
@@ -10,15 +10,23 @@ import { TeamStatistics } from '../../shared/model/team-statistics.model';
 export class TeamProfileTournamentsComponent implements OnInit {
 
     teamId: number;
-    teamStatistics: TeamStatistics;
+    tournaments: Tournament[];
     isLoading = true;
 
-    constructor(private route: ActivatedRoute, private teamService: TeamService) { }
+    constructor(private router: Router, private route: ActivatedRoute, private tournamentService: TournamentService) { }
 
     ngOnInit() {
         this.route.parent.paramMap.pipe().subscribe(params => {
             this.teamId = +params.get('id');
+            this.tournamentService.getTournamentsForTeam(this.teamId).subscribe(tournaments => {
+                this.tournaments = tournaments;
+                this.isLoading = false;
+            });
         });
+    }
+
+    navigateToTournament(tournamentId: number) {
+        this.router.navigate(['/tournament', tournamentId]);
     }
 
 }

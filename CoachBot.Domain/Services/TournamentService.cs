@@ -106,6 +106,20 @@ namespace CoachBot.Domain.Services
                 .Single(t => t.Id == tournamentId);
         }
 
+        public List<Tournament> GetTournamentsForTeam(int teamId)
+        {
+            return _coachBotContext.Tournaments
+                .Include(t => t.TournamentSeries)
+                    .ThenInclude(t => t.Organisation)
+                    .ThenInclude(o => o.LogoImage)
+                .Include(t => t.WinningTeam)
+                    .ThenInclude(t => t.BadgeImage)
+                .Where(t => _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TeamId == teamId && tgt.TournamentGroup.TournamentStage.TournamentId == t.Id))
+                .Where(t => t.IsPublic)
+                .OrderByDescending(t => t.StartDate)
+                .ToList();
+        }
+
         public List<Organisation> GetOrganisations()
         {
             return _coachBotContext.Organisations.ToList();

@@ -1,6 +1,24 @@
 <div class="lineup-player--position-container d-flex flex-column justify-content-center align-items-center">
 
     <div style="position: relative; width: 50px; height:50px; display: inline-block;">
+        <div class="lineup-player--stats">
+            <div *ngIf="player.goals > 0" class="position-relative" title="Goal Scored">
+                <i class="lineup-player--goals icon-svg icon-soccer-ball"></i>
+                <span *ngIf="player.goals > 1" class="lineup-player--stat-count">{{player.goals}}</span>
+            </div>
+            <div *ngIf="player.ownGoals > 0" class="position-relative" title="Own Goal Scored">
+                <i class="lineup-player--goals icon-svg icon-soccer-ball-own-goal"></i>
+                <span *ngIf="player.ownGoals > 1" class="lineup-player--stat-count">{{player.ownGoals}}</span>
+            </div>
+            <div *ngIf="player.assists > 0" class="position-relative" title="Assisted">
+                <i class="lineup-player--assists icon-svg icon-soccer-shoe"></i>
+                <span *ngIf="player.assists > 1" class="lineup-player--stat-count">{{player.assists}}</span>
+            </div>
+            <div *ngIf="player.position.name === 'GK' && player.goalsConceded ===  0" class="position-relative"
+                title="Clean Sheet">
+                <i class="lineup-player--clean-sheet icon-svg icon-keepers-glove"></i>
+            </div>
+        </div>
         <i *ngIf="player.yellowCards > 0" class="lineup-player--yellow-card icon-svg icon-yellow-card"></i>
         <i *ngIf="player.redCards > 0" class="lineup-player--red-card icon-svg icon-red-card"></i>
         <svg viewBox="0 0 45 45" style="enable-background:new 0 0 45 45;">

@@ -40,7 +40,7 @@ export class TeamSpotlightComponent implements OnInit {
         if (this.tournamentId) {
             this.filters.tournamentId = this.tournamentId;
         } else {
-            this.filters.timePeriod = TimePeriod.Year;
+            this.filters.timePeriod = TimePeriod.Week;
         }
         this.teamService.getTeamStatistics(1, 1, this.apiModelProperty, this.ordering, this.filters).subscribe(teamStatistics => {
             if (teamStatistics.items.length > 0) {

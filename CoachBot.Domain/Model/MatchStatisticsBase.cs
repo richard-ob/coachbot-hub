@@ -1,4 +1,5 @@
 ﻿using CoachBot.Domain.Attributes;
+using System;
 
 namespace CoachBot.Domain.Model
 {
@@ -84,5 +85,9 @@ namespace CoachBot.Domain.Model
         public int PossessionPercentage { get; set; }
 
         public MatchOutcomeType MatchOutcome { get; set; }
+
+        // Auto computed stats
+
+        public double PassCompletionPercentage => Passes > 0 ? Convert.ToDouble(PassesCompleted) / Convert.ToDouble(Passes) : 0;
     }
 }

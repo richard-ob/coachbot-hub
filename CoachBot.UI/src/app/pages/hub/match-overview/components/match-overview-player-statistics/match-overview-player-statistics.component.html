@@ -54,6 +54,9 @@
                         <th sorter [sortByColumn]="'PassesCompleted'" [sortByColumnName]="'“ Completed'"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                             class="text-center"></th>
+                        <th sorter [sortByColumn]="'PassCompletionPercentage'" [sortByColumnName]="'“ %'"
+                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                            class="text-center"></th>
                         <th sorter [sortByColumn]="'Interceptions'" [sortByColumnName]="'Ints'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"
                             title="Interceptions"></th>
@@ -62,8 +65,8 @@
                             title="Possession %" class="text-center"></th>
                         <th sorter [sortByColumn]="'KeeperSaves'" [sortByColumnName]="'Saves'" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'Offsides'" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadResults($event)" class="text-center"></th>
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'Offsides'" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
                         <th *ngIf="showMoreStats" sorter [sortByColumn]="'DistanceCovered'"
                             [sortByColumnName]="'Distance'" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
@@ -127,10 +130,12 @@
                         <td class="text-center">{{player.assists}}</td>
                         <td class="text-center">{{player.passes}}</td>
                         <td class="text-center">{{player.passesCompleted}}</td>
+                        <td class="text-center">{{player.passCompletionPercentage | number : '1.2-2' | percent }}
+                        </td>
                         <td class="text-center">{{player.interceptions}}</td>
                         <td class="text-center">{{player.possessionPercentage | number : '1.0-0'}}%</td>
                         <td class="text-center">{{ player.keeperSaves ? player.keeperSaves : 'N/A'}}</td>
-                        <td class="text-center">{{player.offsides}}</td>
+                        <td *ngIf="showMoreStats" class="text-center">{{player.offsides}}</td>
                         <td *ngIf="showMoreStats" class="text-center">
                             {{(player.distanceCovered / 1000) | number : '1.2-2'}}km</td>
                         <td *ngIf="showMoreStats" class="text-center">{{player.fouls}}</td>

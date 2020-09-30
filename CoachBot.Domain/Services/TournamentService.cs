@@ -53,6 +53,7 @@ namespace CoachBot.Domain.Services
                 .ThenInclude(t => t.BadgeImage)
                 .Where(t => t.EndDate < DateTime.UtcNow)
                 .Where(t => t.IsPublic)
+                .OrderByDescending(t => t.StartDate)
                 .ToList();
         }
 

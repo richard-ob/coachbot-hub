@@ -33,13 +33,13 @@ namespace CoachBot.Domain.Services
                 throw new Exception("A valid Discord channel ID must be provided");
             }
 
-            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => c.TeamId == channel.TeamId && c.ChannelPositions.Count == channel.ChannelPositions.Count))
+            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => !c.Inactive && c.TeamId == channel.TeamId && c.ChannelPositions.Count == channel.ChannelPositions.Count))
             {
                 throw new Exception("Secondary channels must have a sub team code");
             }
 
             if (!string.IsNullOrWhiteSpace(channel.SubTeamCode)
-                && _dbContext.Channels.Any(c => c.SubTeamCode.ToUpper() == channel.SubTeamCode.ToUpper() && c.TeamId == channel.TeamId && c.ChannelPositions.Count == channel.ChannelPositions.Count))
+                && _dbContext.Channels.Any(c => !c.Inactive && c.SubTeamCode.ToUpper() == channel.SubTeamCode.ToUpper() && c.TeamId == channel.TeamId && c.ChannelPositions.Count == channel.ChannelPositions.Count))
             {
                 throw new Exception("Secondary channels must have a unique sub team code");
             }
@@ -61,13 +61,13 @@ namespace CoachBot.Domain.Services
         {
             var existingChannel = _dbContext.Channels.Find(channel.Id);
 
-            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => c.TeamId == channel.TeamId && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count && string.IsNullOrWhiteSpace(c.SubTeamCode)))
+            if (string.IsNullOrWhiteSpace(channel.SubTeamCode) && _dbContext.Channels.Any(c => !c.Inactive && c.TeamId == channel.TeamId && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count && string.IsNullOrWhiteSpace(c.SubTeamCode)))
             {
                 throw new Exception("Secondary channels must have a sub team code");
             }
 
             if (!string.IsNullOrWhiteSpace(channel.SubTeamCode)
-                && _dbContext.Channels.Any(c => c.SubTeamCode.ToUpper() == channel.SubTeamCode.ToUpper() && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count))
+                && _dbContext.Channels.Any(c => !c.Inactive && c.SubTeamCode.ToUpper() == channel.SubTeamCode.ToUpper() && c.TeamId == channel.TeamId && channel.Id != c.Id && c.ChannelPositions.Count == channel.ChannelPositions.Count))
             {
                 throw new Exception("Secondary channels must have a unique sub team code");
             }

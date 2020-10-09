@@ -32,7 +32,7 @@ export class TeamEditorComponent implements OnInit {
 
             this.playerService.getCurrentPlayer().subscribe(player => {
                 if (player.teams.some(t => t.teamId === teamId && [TeamRole.Captain, TeamRole.ViceCaptain].some(tr => tr === t.teamRole))
-                    || player.hubRole === PlayerHubRole.Owner) {
+                    || player.hubRole === PlayerHubRole.Owner || player.hubRole === PlayerHubRole.Administrator) {
                     this.teamService.getTeam(teamId).subscribe(team => {
                         this.team = team;
                         this.isLoading = false;

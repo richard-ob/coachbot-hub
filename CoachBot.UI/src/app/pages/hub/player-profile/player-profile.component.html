@@ -38,13 +38,13 @@
                             <div *ngIf="playerProfile.rating" class="player-info-details__item">
                                 <h6 class="player-info-details__title">Rating</h6>
                                 <div class="player-info-details__value">{{ player.rating }}
-                                    <a *ngIf="currentPlayer && currentPlayer.hubRole === playerHubRoles.Owner"
+                                    <a *ngIf="currentPlayer && currentPlayer.hubRole >= playerHubRoles.Administrator"
                                         class="btn btn-primary-inverse btn-xs ml-2"
                                         (click)="editRatingModal.fire()">Edit Rating</a>
                                 </div>
                             </div>
                             <div
-                                *ngIf="!playerProfile.rating && currentPlayer && currentPlayer.hubRole === playerHubRoles.Owner">
+                                *ngIf="!playerProfile.rating && currentPlayer && currentPlayer.hubRole >= playerHubRoles.Administrator">
                                 <a class="btn btn-primary-inverse btn-xs ml-2" (click)="editRatingModal.fire()">Edit
                                     Rating</a>
                             </div>

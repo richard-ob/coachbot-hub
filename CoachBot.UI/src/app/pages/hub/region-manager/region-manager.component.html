@@ -15,7 +15,7 @@
                                 <th>Server Count</th>
                                 <th>Team Count</th>
                                 <th>Match Count</th>
-                                <th>Actions</th>
+                                <th *ngIf="currentPlayer && currentPlayer.hubRole === playerHubRoles.Owner">Actions</th>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let region of regions">
@@ -28,7 +28,7 @@
                                     </td>
                                     <td>{{region.teamCount}}</td>
                                     <td>{{region.matchCount}}</td>
-                                    <td>
+                                    <td *ngIf="currentPlayer && currentPlayer.hubRole === playerHubRoles.Owner">
                                         <button class="btn btn-outline-primary btn-xs mr-2"
                                             (click)="regenerateToken(region.regionId)">
                                             <i class="fa fa-refresh"></i> Regenerate Token</button>

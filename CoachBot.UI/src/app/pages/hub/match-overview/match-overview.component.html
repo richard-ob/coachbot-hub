@@ -11,7 +11,7 @@
 <ng-container *ngIf="!isLoading && matchData">
     <div class="page-heading p-0"
         [ngStyle]="{ 'background-image': 'url(./assets/images/maps/' + (matchData.matchInfo.mapName || '8v8_vienna') + '.jpg' }">
-        <div *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Owner"
+        <div *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Administrator"
             class="btn-group btn-group-xs match-admin-button m-2" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-secondary dropdown-toggle"
                 aria-controls="dropdown-basic">

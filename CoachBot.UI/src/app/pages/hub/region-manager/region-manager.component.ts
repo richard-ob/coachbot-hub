@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Region } from '../shared/model/region.model';
 import { RegionService } from '../shared/services/region.service';
+import { PlayerService } from '../shared/services/player.service';
+import { Player } from '../shared/model/player.model';
+import { PlayerHubRole } from '../shared/model/player-hub-role.enum';
 
 @Component({
     selector: 'app-region-manager',
@@ -8,12 +11,17 @@ import { RegionService } from '../shared/services/region.service';
 })
 export class RegionManagerComponent {
 
+    currentPlayer: Player;
     newRegion: Region = new Region();
     regions: Region[];
+    playerHubRoles = PlayerHubRole;
     isAdding = false;
 
-    constructor(private regionService: RegionService) {
+    constructor(private regionService: RegionService, private playerService: PlayerService) {
         this.regionService.getRegions().subscribe(regions => this.regions = regions);
+        this.playerService.getCurrentPlayer().subscribe(currentPlayer => {
+            this.currentPlayer = currentPlayer;
+        });
     }
 
     addRegion() {

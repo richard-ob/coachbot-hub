@@ -144,7 +144,7 @@ namespace CoachBot.Controllers
             return _matchStatisticsService.GetUnlinkedMatchData();
         }
 
-        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/unlink")]
         public IActionResult Unlink(int id)
         {
@@ -162,7 +162,7 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
-        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("{id}/swap-teams")]
         public IActionResult SwapTeams(int id)
         {

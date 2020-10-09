@@ -101,7 +101,7 @@
             </span>
         </div>
 
-        <div *ngIf="currentPlayer.hubRole !== hubRoles.Owner" class="form-group">
+        <div *ngIf="currentPlayer.hubRole < hubRoles.Administrator" class="form-group">
             <label class="control-label mb-0" for="isMixChannel">Is Mix Channel?</label>
             <small class="label-subtitle">The default opponent will be a second mix team that players can sign up
                 to</small>
@@ -114,7 +114,7 @@
             </div>
         </div>
 
-        <div *ngIf="currentPlayer.hubRole === hubRoles.Owner" class="form-group">
+        <div *ngIf="currentPlayer.hubRole >= hubRoles.Administrator" class="form-group">
             <label class="control-label mb-0 required" for="channelType">Channel Type</label>
             <small class="label-subtitle mb-2">Public mixes are reserved for official mix channels that can be
                 challenged</small>

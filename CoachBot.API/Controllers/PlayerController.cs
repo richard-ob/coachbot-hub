@@ -74,7 +74,7 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
-        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost]
         [Route("update-rating")]
         public IActionResult UpdatePlayerRating([FromBody]Player playerRatingUpdateDto)

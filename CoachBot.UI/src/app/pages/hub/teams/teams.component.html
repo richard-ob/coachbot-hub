@@ -46,14 +46,14 @@
                     <footer class="card__footer sponsor-card__footer p-2">
                         <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
                             View Team Profile</a>
-                        <ng-container *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Administrator">
-                            <a class="btn btn-xs btn-block btn-dark" [routerLink]="['/team/' + team.id + '/manage']">
-                                Manage
-                            </a>
-                            <button class="btn btn-xs btn-block btn-danger" type="button" (click)="deleteTeam(team.id)">
-                                Delete
-                            </button>
-                        </ng-container>
+                        <a *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Administrator"
+                            class="btn btn-xs btn-block btn-dark" [routerLink]="['/team/' + team.id + '/manage']">
+                            Manage
+                        </a>
+                        <button *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Owner"
+                            class="btn btn-xs btn-block btn-danger" type="button" (click)="deleteTeam(team.id)">
+                            Delete
+                        </button>
                     </footer>
                 </div>
             </div>

@@ -19,6 +19,7 @@
                     <tr *ngFor="let teamPlayer of teamPlayers">
                         <td>
                             <a [routerLink]="['/player-profile/' + teamPlayer.playerId]">{{teamPlayer.player.name}}</a>
+                            <span *ngIf="teamPlayer.isPending" class="ml-1 badge badge-warning">Pending</span>
                         </td>
                         <td>
                             <a href="https://steamcommunity.com/profiles/{{teamPlayer.player.steamID}}"

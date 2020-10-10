@@ -13,7 +13,7 @@
                     <th>SteamID</th>
                     <th>Join Date</th>
                     <th class="text-center">Role</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center"></th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let teamPlayer of teamPlayers">
@@ -45,8 +45,9 @@
                             </span>
                         </td>
                         <td class="text-center">
-                            <button *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Administrator"
-                                class="btn btn-xs btn-outline-success" (click)="acceptInvite(teamPlayer)">Accept Invite
+                            <button
+                                *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Administrator && teamPlayer.isPending"
+                                class="btn btn-xs btn-outline-success mr-2" (click)="acceptInvite(teamPlayer)">Approve
                             </button>
                             <button *ngIf="teamPlayer.playerId !== currentPlayer.id"
                                 class="btn btn-xs btn-outline-danger"

@@ -5,6 +5,8 @@
         </div>
         <div class="card__content">
             <ng-container *ngIf="!isLoading; else spinner">
+                <small class="text-muted">Editing home & away teams does not currently change the underlying
+                    statistics</small>
                 <div class="form-group">
                     <label>Home Team</label>
                     <select [(ngModel)]="match.teamHomeId" name="teamHome" class="form-control">
@@ -53,9 +55,9 @@
                     <label>Token</label>
                     <input type="text" readonly [(ngModel)]="matchToken" class="form-control">
                     <pre>
-                        sv_webserver_matchdata_url "http://www.iosoccer.com:8080/api/match-statistics"
-                        sv_webserver_matchdata_enabled 1
-                        sv_webserver_matchdata_accesstoken "{{matchToken}}"
+sv_webserver_matchdata_url "http://www.iosoccer.com:8080/api/match-statistics"
+sv_webserver_matchdata_enabled 1
+sv_webserver_matchdata_accesstoken "{{matchToken}}"
                     </pre>
                 </div>
 

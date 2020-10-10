@@ -15,41 +15,30 @@ import { SwalPortalTargets, SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 })
 export class ServerManagerComponent {
 
-  @ViewChild('editServerModal', { static: false }) editServerModal: SwalComponent;
+  @ViewChild('editServerPasswordModal', { static: false }) editServerPasswordModal: SwalComponent;
+  @ViewChild('editServerNameModal', { static: false }) editServerNameModal: SwalComponent;
   newServer: Server = new Server();
   servers: Server[];
   regions: Region[];
   countries: Country[];
   serverToEdit: Server;
   isLoading = true;
-  isAdding = false;
   isRemoving = false;
   isUpdating = false;
 
   constructor(
     private serverService: ServerService,
-    private regionService: RegionService,
-    private countryService: CountryService,
     public readonly swalTargets: SwalPortalTargets
   ) {
-    forkJoin(
-      this.serverService.getServers(),
-      this.regionService.getRegions(),
-      this.countryService.getCountries()
-    ).subscribe(([servers, regions, countries]) => {
-      this.servers = servers;
-      this.regions = regions;
-      this.countries = countries;
-      this.isLoading = false;
-    });
+    this.getServers();
   }
 
-  addServer() {
-    this.isAdding = true;
-    this.serverService.addServer(this.newServer).subscribe(() => {
-      this.serverService.getServers().subscribe(servers => this.servers = servers);
-      this.newServer = new Server();
-      this.isAdding = false;
+  getServers() {
+    this.isUpdating = true;
+    this.serverService.getServers().subscribe((servers) => {
+      this.servers = servers;
+      this.isUpdating = false;
+      this.isLoading = false;
     });
   }
 
@@ -63,15 +52,32 @@ export class ServerManagerComponent {
     });
   }
 
-  editServer(server: Server) {
+  editServerPassword(server: Server) {
     this.serverToEdit = { ...server };
-    this.editServerModal.fire();
+    this.editServerPasswordModal.fire();
   }
 
-  updateServer() {
+  editServerName(server: Server) {
+    this.serverToEdit = { ...server };
+    this.editServerNameModal.fire();
+  }
+
+  updateServerRcon() {
     this.isUpdating = true;
     this.serverService.updateServerRconPassword(this.serverToEdit.id, this.serverToEdit.rconPassword).subscribe(() => {
-      this.editServerModal.dismiss();
+      this.editServerPasswordModal.dismiss();
+      this.serverToEdit = null;
+      this.serverService.getServers().subscribe((servers) => {
+        this.servers = servers;
+        this.isUpdating = false;
+      });
+    });
+  }
+
+  updateServerName() {
+    this.isUpdating = true;
+    this.serverService.updateServer(this.serverToEdit).subscribe(() => {
+      this.editServerNameModal.dismiss();
       this.serverToEdit = null;
       this.serverService.getServers().subscribe((servers) => {
         this.servers = servers;

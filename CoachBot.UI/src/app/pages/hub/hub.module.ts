@@ -64,6 +64,8 @@ import { MatchStatisticsModule } from './match-statistics/match-statistics.modul
 import { MatchDataUploaderComponent } from './match-editor/match-data-uploader/match-data-uploader.component';
 import { MatchTeamGoalsPipe } from './match-overview/helpers/match-team-goals.pipe';
 import { PlayerOfTheMatchComponent } from './match-overview/components/player-of-the-match/player-of-the-match.component';
+import { ServerRecoveryComponent } from './server-manager/server-recovery/server-recovery.component';
+import { ServerCreatorComponent } from './server-manager/server-creator/server-creator.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +81,8 @@ import { PlayerOfTheMatchComponent } from './match-overview/components/player-of
     PercentageSharePipe,
     MatchTeamGoalsPipe,
     ServerManagerComponent,
+    ServerCreatorComponent,
+    ServerRecoveryComponent,
     RegionManagerComponent,
     UpcomingMatchesComponent,
     SteamProfileFlagPipe,

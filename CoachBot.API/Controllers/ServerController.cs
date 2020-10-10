@@ -34,6 +34,12 @@ namespace CoachBot.Controllers
             return _serverService.GetServers();
         }
 
+        [HttpGet("deactivated")]
+        public IEnumerable<Server> GetDeactivatedServers()
+        {
+            return _serverService.GetDeactivatedServers();
+        }
+
         [HubRolePermission(HubRole = PlayerHubRole.Manager)]
         [HttpDelete("{id}")]
         public void Delete(int id)
@@ -46,6 +52,20 @@ namespace CoachBot.Controllers
         public void UpdateRconPassword(int id, [FromForm]string rconPassword)
         {
             _serverService.UpdateServerRconPassword(id, rconPassword);
+        }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Manager)]
+        [HttpPatch("{id}/reactivate")]
+        public void ReactivateServer(int id)
+        {
+            _serverService.ReactivateServer(id);
+        }
+
+        [HubRolePermission(HubRole = PlayerHubRole.Manager)]
+        [HttpPut]
+        public void Update(Server server)
+        {
+            _serverService.UpdateServer(server);
         }
 
         [HubRolePermission(HubRole = PlayerHubRole.Manager)]

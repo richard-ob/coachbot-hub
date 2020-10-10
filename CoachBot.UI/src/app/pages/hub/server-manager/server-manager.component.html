@@ -4,12 +4,16 @@
         <div class="card card--has-table">
             <div class="widget__title card__header card__header--has-btn">
                 <h4>Servers</h4>
+                <div class="float-right">
+                    <app-server-creator (serverCreated)="getServers()"></app-server-creator>
+                    <app-server-recovery (serverRecovered)="getServers()"></app-server-recovery>
+                </div>
             </div>
             <div class="card__content widget__content" [class.widget__content--loading]="isUpdating || isRemoving">
                 <div class="table-responsive">
                     <app-spinner *ngIf="!servers"></app-spinner>
                     <div *ngIf="servers">
-                        <table class="table table--lg">
+                        <table class="table table-striped table-hover table--lg">
                             <thead>
                                 <th>Server Name</th>
                                 <th>Address</th>
@@ -35,8 +39,12 @@
                                     <td class="text-center">
                                         <button
                                             class="btn btn-outline-secondary btn-xs mr-2 mb-2 d-block d-lg-inline-block"
-                                            (click)="editServer(server)" [disabled]="isRemoving">
-                                            <i class="fa fa-times"></i> Edit RCON</button>
+                                            (click)="editServerName(server)" [disabled]="isRemoving">
+                                            <i class="fa fa-pencil"></i> Edit Name</button>
+                                        <button
+                                            class="btn btn-outline-secondary btn-xs mr-2 mb-2 d-block d-lg-inline-block"
+                                            (click)="editServerPassword(server)" [disabled]="isRemoving">
+                                            <i class="fa fa-key"></i> Edit RCON</button>
                                         <button class="btn btn-outline-danger btn-xs mb-2 d-block d-lg-inline-block"
                                             (click)="removeServer(server.id)" [disabled]="isRemoving">
                                             <i class="fa fa-times"></i> Remove</button>
@@ -48,67 +56,35 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card__header">
-                <h4>
-                    Add Server
-                </h4>
-            </div>
-            <div class="card__content">
-                <form #serverForm="ngForm">
-                    <div class="row">
-                        <div class="form-group col-12 col-lg-3">
-                            <label for="serverName">Server Name</label>
-                            <input type="text" class="form-control" id="serverName" name="serverName"
-                                [(ngModel)]="newServer.name" required>
-                        </div>
-                        <div class="form-group col-12 col-lg-3">
-                            <label for="ipAddress">IP Address</label>
-                            <input type="text" class="form-control" id="ipAddress" name="ipAddress"
-                                [(ngModel)]="newServer.address" pattern="(.+:.+)$" required>
-                        </div>
-                        <div class="form-group col-12 col-lg-2">
-                            <label for="rconPassword">RCON Password</label>
-                            <input type="text" class="form-control" id="rconPassword" name="rconPassword"
-                                [(ngModel)]="newServer.rconPassword">
-                        </div>
-                        <div class="form-group col-12 col-lg-2">
-                            <label for="countryId">Country</label>
-                            <select class="form-control" [(ngModel)]="newServer.countryId" name="countryId"
-                                id="countryId" required>
-                                <option *ngFor="let country of countries" [ngValue]="country.id">
-                                    {{country.name}}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group col-12 col-lg-2">
-                            <label for="regionId">Region</label>
-                            <select class="form-control" [(ngModel)]="newServer.regionId" name="regionId" id="regionId"
-                                required>
-                                <option *ngFor="let region of regions" [ngValue]="region.regionId">
-                                    {{region.regionName}}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-                <button type="submit" class="btn btn-primary float-right" (click)="addServer()"
-                    [disabled]="serverForm.invalid || isAdding">
-                    <i *ngIf="isAdding" class="fa fa-circle-notch fa-spin"></i>&nbsp;
-                    Add
-                </button>
-            </div>
-        </div>
     </ng-container>
 </div>
-<swal #editServerModal (confirm)="updateServer()">
+
+<swal #editServerPasswordModal (confirm)="updateServerRcon()">
     <ng-container *swalPortal="swalTargets.title">
-        <h5>Update Server</h5>
+        <h5>Update Server Password</h5>
     </ng-container>
     <form *swalPortal>
         <div class="form-group">
             <label>RCON Password</label>
             <input type="text" class="form-control" name="rconPasswordEdit" [(ngModel)]="serverToEdit.rconPassword">
+        </div>
+    </form>
+    <ng-container *swalPortal="swalTargets.cancelButton">
+        Cancel
+    </ng-container>
+    <ng-container *swalPortal="swalTargets.confirmButton">
+        Save
+    </ng-container>
+</swal>
+
+<swal #editServerNameModal (confirm)="updateServerName()">
+    <ng-container *swalPortal="swalTargets.title">
+        <h5>Update Server Name</h5>
+    </ng-container>
+    <form *swalPortal>
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" name="serverNameToEdit" [(ngModel)]="serverToEdit.name">
         </div>
     </form>
     <ng-container *swalPortal="swalTargets.cancelButton">

@@ -15,6 +15,10 @@ export class ServerService {
         return this.http.get<Server[]>(`${environment.apiUrl}/api/server`).pipe();
     }
 
+    getDeactivatedServers(): Observable<Server[]> {
+        return this.http.get<Server[]>(`${environment.apiUrl}/api/server/deactivated`).pipe();
+    }
+
     getServer(id: number): Observable<Server> {
         return this.http.get<Server>(`${environment.apiUrl}/api/server/${id}`).pipe();
     }
@@ -33,6 +37,10 @@ export class ServerService {
             formData.append('rconPassword', rconPassword);
         }
         return this.http.patch(`${environment.apiUrl}/api/server/${serverId}`, formData).pipe();
+    }
+
+    reactivateServer(serverId: number) {
+        return this.http.patch(`${environment.apiUrl}/api/server/${serverId}/reactivate`, null).pipe();
     }
 
     removeServer(id: number) {

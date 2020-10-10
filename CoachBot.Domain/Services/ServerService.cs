@@ -24,7 +24,19 @@ namespace CoachBot.Domain.Services
                 .Include(s => s.Region)
                 .Include(s => s.Country)
                 .Where(s => s.IsActive == true)
-                .OrderBy(s => s.Name)
+                .OrderBy(s => s.RegionId)
+                .ThenBy(s => s.Name)
+                .ToList();
+        }
+
+        public List<Server> GetDeactivatedServers()
+        {
+            return _coachBotContext.Servers
+                .Include(s => s.Region)
+                .Include(s => s.Country)
+                .Where(s => s.IsActive == false)
+                .OrderBy(s => s.RegionId)
+                .ThenBy(s => s.Name)
                 .ToList();
         }
 
@@ -60,9 +72,7 @@ namespace CoachBot.Domain.Services
         {
             var currentServer = _coachBotContext.Servers.Single(s => s.Id == server.Id);
             currentServer.Name = server.Name;
-            currentServer.RconPassword = server.RconPassword;
             currentServer.RegionId = server.RegionId;
-            _coachBotContext.Servers.Update(currentServer);
             _coachBotContext.SaveChanges();
         }
 
@@ -73,12 +83,19 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
+        public void ReactivateServer(int serverId)
+        {
+            var server = _coachBotContext.Servers.Single(s => s.Id == serverId);
+            server.IsActive = true;
+            server.DeactivatedDate = null;
+            _coachBotContext.SaveChanges();
+        }
+
         public void RemoveServer(int id)
         {
             var server = _coachBotContext.Servers.Single(s => s.Id == id);
             server.IsActive = false;
             server.DeactivatedDate = DateTime.UtcNow;
-            _coachBotContext.Servers.Update(server);
             _coachBotContext.SaveChanges();
         }
     }

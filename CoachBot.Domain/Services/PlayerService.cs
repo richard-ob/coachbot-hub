@@ -163,6 +163,11 @@ namespace CoachBot.Domain.Services
             return player.HubRole.Equals(PlayerHubRole.Owner);
         }
 
+        public bool IsAdminOrOwner(ulong steamId)
+        {
+            return IsAdmin(steamId) || IsOwner(steamId);
+        }
+
         public PlayerHubRole GetPlayerHubRole(ulong steamId)
         {
             var player = GetPlayerBySteamId(steamId);

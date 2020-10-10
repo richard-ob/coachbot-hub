@@ -66,7 +66,7 @@ namespace CoachBot.Domain.Services
                 throw new UnauthorizedAccessException("You cannot remove yourself as a captain of a team without closing the team");
             }
 
-            if (current.PlayerId == player.Id && !playerTeam.IsPending && current.IsPending)
+            if ((current.PlayerId == player.Id || player.HubRole >= PlayerHubRole.Administrator) && !playerTeam.IsPending && current.IsPending)
             {
                 current.IsPending = false;
             }

@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { PlayerService } from '@pages/hub/shared/services/player.service';
 import { Player } from '@pages/hub/shared/model/player.model';
+import { PlayerHubRole } from '@pages/hub/shared/model/player-hub-role.enum';
 
 @Component({
     selector: 'app-team-editor-squad',
@@ -18,6 +19,7 @@ export class TeamEditorSquadComponent implements OnInit {
     currentPlayer: Player;
     teamPlayers: PlayerTeam[];
     teamRoles = TeamRole;
+    hubRoles = PlayerHubRole;
     isLoading = true;
     isUpdating = true;
     isAddPlayerWizardOpen = false;
@@ -61,6 +63,12 @@ export class TeamEditorSquadComponent implements OnInit {
             this.loadPlayers();
             this.snackBar.open('Role changed for ' + playerTeam.player.name, 'Dismiss', { duration: 5000 });
         });
+    }
+
+    acceptInvite(playerTeam: PlayerTeam) {
+        this.isLoading = true;
+        playerTeam.isPending = false;
+        this.playerTeamService.updatePlayerTeam(playerTeam).subscribe(() => this.isLoading = false);
     }
 
     toggleAddPlayerWizard() {

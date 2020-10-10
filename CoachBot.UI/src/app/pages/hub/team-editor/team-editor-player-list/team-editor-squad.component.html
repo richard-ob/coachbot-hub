@@ -45,10 +45,14 @@
                             </span>
                         </td>
                         <td class="text-center">
+                            <button *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Administrator"
+                                class="btn btn-xs btn-outline-success" (click)="acceptInvite(teamPlayer)">Accept Invite
+                            </button>
                             <button *ngIf="teamPlayer.playerId !== currentPlayer.id"
                                 class="btn btn-xs btn-outline-danger"
                                 [swal]="{ title: 'Are you sure?', text: 'This player will be kicked immediately', icon: 'warning', showCancelButton: true }"
-                                (confirm)="kickPlayer(teamPlayer)">Kick</button>
+                                (confirm)="kickPlayer(teamPlayer)">Kick
+                            </button>
                         </td>
                     </tr>
                 </tbody>

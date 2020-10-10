@@ -17,6 +17,10 @@
         Couldn't add player. Players can only belong to one club team at any one time. For loanees,
         their parent club must set them to loaned first.
     </div>
+    <div *ngIf="playerAlreadyAdded" class="alert alert-danger">
+        Couldn't add player, as they're already in your squad. If they are showing as pending, you will need them to
+        accept your invite.
+    </div>
     <div class="float-right">
         <button class="btn btn-outline-primary mr-2" type="button" (click)="wizardClosed.emit()">
             Cancel

@@ -16,11 +16,13 @@ export class TeamEditorSquadAddPlayerComponent {
     @Output() wizardClosed = new EventEmitter<void>();
     @Output() playerAdded = new EventEmitter<void>();
     @Input() teamId: number;
+    @Input() teamPlayers: Player[];
     teamType: TeamType;
     player: Player;
     role: TeamRole;
     teamRoles = TeamRole;
     playerAddFailure = false;
+    playerAlreadyAdded = false;
     isSaving = false;
 
     constructor(private playerTeamService: PlayerTeamService, private playerService: PlayerService, private teamService: TeamService) { }
@@ -28,8 +30,13 @@ export class TeamEditorSquadAddPlayerComponent {
     addPlayer() {
         this.isSaving = true;
         this.playerAddFailure = false;
+        this.playerAlreadyAdded = false;
         this.teamService.getTeam(this.teamId).subscribe(team => {
             this.playerService.getPlayerProfile(this.player.id).subscribe(playerProfile => {
+                if (this.teamPlayers.some(tp => tp.id === this.player.id)) {
+                    this.playerAlreadyAdded = true;
+                    return;
+                }
                 if (!playerProfile.clubTeam ||
                     team.teamType !== TeamType.Club ||
                     (this.role === TeamRole.Loanee && playerProfile.clubTeamRole === TeamRole.Loaned)

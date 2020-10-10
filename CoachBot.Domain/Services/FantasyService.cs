@@ -421,8 +421,8 @@ namespace CoachBot.Domain.Services
             var players = _coachBotContext.Players
                 .Include(p => p.Teams)
                 .Where(p => 
-                    p.Rating > 0 &&
-                    p.Teams.Any(pt => pt.IsCurrentTeam && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)) &&
+                    p.Rating > 0 &&                    
+                    p.Teams.Any(pt => pt.IsCurrentTeam && pt.TeamRole != TeamRole.Reserve && _coachBotContext.TournamentGroupTeams.Any(tgt => tgt.TournamentGroup.TournamentStage.TournamentId == tournamentId && tgt.TeamId == pt.TeamId)) &&
                     !_coachBotContext.FantasyPlayers.Any(fp => fp.PlayerId == p.Id && fp.TournamentId == tournamentId)
                 );
 

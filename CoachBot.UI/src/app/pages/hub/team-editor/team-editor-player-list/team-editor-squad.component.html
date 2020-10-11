@@ -59,7 +59,7 @@
                 </tbody>
             </table>
             <app-team-editor-squad-add-player *ngIf="isAddPlayerWizardOpen" [teamId]="teamId"
-                (wizardClosed)="toggleAddPlayerWizard()" (playerAdded)="loadPlayers()">
+                [teamPlayers]="teamPlayers" (wizardClosed)="toggleAddPlayerWizard()" (playerAdded)="loadPlayers()">
             </app-team-editor-squad-add-player>
         </div>
         <ng-template #spinner>

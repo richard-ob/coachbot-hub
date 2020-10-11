@@ -13,6 +13,7 @@ export class ServerRecoveryComponent {
     @Output() serverRecovered = new EventEmitter<void>();
     servers: Server[];
     isLoading = true;
+    isRecovering = false;
 
     constructor(
         private serverService: ServerService,
@@ -28,10 +29,12 @@ export class ServerRecoveryComponent {
         this.serverService.getDeactivatedServers().subscribe((servers) => {
             this.servers = servers;
             this.isLoading = false;
+            this.isRecovering = false;
         });
     }
 
     recoverServer(serverId: number): void {
+        this.isRecovering = true;
         this.serverService.reactivateServer(serverId).subscribe(() => {
             this.getDeactivatedServers();
             this.serverRecovered.emit();

@@ -355,6 +355,14 @@
                                                     </app-horizontal-bar-graph>
 
                                                     <app-horizontal-bar-graph
+                                                        [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Interceptions]"
+                                                        [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Interceptions]"
+                                                        [homeColour]="match.teamHome.color"
+                                                        [awayColour]="match.teamAway.color" [title]="'Interceptions'"
+                                                        [displayValueMode]="displayValueModes.Value">
+                                                    </app-horizontal-bar-graph>
+
+                                                    <app-horizontal-bar-graph
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Corners]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Corners]"
                                                         [homeColour]="match.teamHome.color"

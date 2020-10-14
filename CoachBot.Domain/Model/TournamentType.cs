@@ -9,6 +9,7 @@
         RoundRobinLadder,
         DoubleRoundRobinLadder,
         RoundRobinAndKnockout,
-        DoubleRoundRobinAndKnockout
+        DoubleRoundRobinAndKnockout,
+        QuadrupleRoundRobin
     }
 }

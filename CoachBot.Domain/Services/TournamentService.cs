@@ -201,6 +201,14 @@ namespace CoachBot.Domain.Services
                     GenerateRoundRobinTournament(tournament.Id);
                     break;
 
+                case TournamentType.DoubleRoundRobin:
+                    GenerateRoundRobinTournament(tournament.Id);
+                    break;
+
+                case TournamentType.QuadrupleRoundRobin:
+                    GenerateRoundRobinTournament(tournament.Id);
+                    break;
+
                 case TournamentType.Knockout:
                     GenerateKnockoutTournament(tournament.Id);
                     break;
@@ -538,6 +546,14 @@ namespace CoachBot.Domain.Services
                     GenerateRoundRobinSchedule(tournamentId);
                     break;
 
+                case TournamentType.DoubleRoundRobin:
+                    GenerateMultipleRoundRobinSchedule(tournamentId, 2);
+                    break;
+
+                case TournamentType.QuadrupleRoundRobin:
+                    GenerateMultipleRoundRobinSchedule(tournamentId, 4);
+                    break;
+
                 case TournamentType.Knockout:
                     GenerateKnockoutSchedule(tournamentId);
                     break;
@@ -564,6 +580,8 @@ namespace CoachBot.Domain.Services
                     ManageRoundRobinAndKnockoutProgress(tournamentId, matchId);
                     break;
 
+                // TODO: Handle standard Round Robin tournaments. If the season is complete, then mark the winner.
+                
                 default:
                     break;
             }
@@ -897,7 +915,7 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
-        private void GenerateRoundRobinSchedule(int tournamentId)
+        private void GenerateRoundRobinSchedule(int tournamentId, int numberOfCycles = 1)
         {
             var tournament = _coachBotContext.Tournaments
                 .Include(t => t.TournamentSeries)
@@ -936,6 +954,76 @@ namespace CoachBot.Domain.Services
         }
 
         #endregion Round Robin
+
+        #region MultipleRoundRobin
+        private void GenerateMultipleRoundRobinSchedule(int tournamentId, int numberOfCycles = 1)
+        {
+            var tournament = _coachBotContext.Tournaments
+                .Include(t => t.TournamentSeries)
+                .Include(t => t.TournamentStages)
+                    .ThenInclude(t => t.TournamentGroups)
+                    .ThenInclude(t => t.TournamentGroupTeams)
+                .Include(t => t.TournamentStages)
+                    .ThenInclude(t => t.TournamentGroups)
+                    .ThenInclude(t => t.TournamentGroupMatches)
+                    .ThenInclude(t => t.Match)
+                .Include(t => t.TournamentMatchDays)
+                .First(t => t.Id == tournamentId);
+
+            if (!tournament.TournamentStages.Any(s => s.TournamentGroups.Any()))
+            {
+                throw new Exception("There are no groups for this tournament");
+            }
+
+            if (!tournament.TournamentStages.Any(s => s.TournamentGroups.Any(g => g.TournamentGroupTeams.Any())))
+            {
+                throw new Exception("There are no teams assigned to any groups");
+            }
+
+            RemoveMatchesForTournament(tournamentId);
+
+            var stage = tournament.TournamentStages.First();
+            var group = stage.TournamentGroups.First();
+            var numberOfMatchDays = tournament.TournamentMatchDays.Count();
+            var numberOfTeams = group.TournamentGroupTeams.Count();
+            var totalSeasonMatches = (numberOfCycles * ((numberOfTeams * (numberOfTeams - 1)) / 2));
+            var totalMatchesPerRound = (totalSeasonMatches / numberOfTeams) / numberOfCycles;
+            var totalRounds = totalSeasonMatches / totalMatchesPerRound;
+
+            for (int i = 1; i <= totalRounds; i++)
+            {
+                var phase = new TournamentPhase()
+                {
+                    Name = "Round " + i.ToString(),
+                    TournamentStageId = stage.Id
+                };
+                _coachBotContext.TournamentPhases.Add(phase);
+                _coachBotContext.SaveChanges();
+            }
+
+            foreach (var phase in _coachBotContext.TournamentPhases.Where(t => t.TournamentStageId == stage.Id))
+            {
+                for (int i = 0; i < totalMatchesPerRound; i++)
+                {
+                    var match = new TournamentGroupMatch()
+                    {
+                        TournamentGroupId = group.Id,
+                        TournamentPhaseId = phase.Id,                        
+                        Match = new Match()
+                        {
+                            MatchType = MatchType.Competition,
+                            Format = tournament.Format,
+                            TournamentId = tournament.Id,
+                            KickOff = tournament.StartDate
+                        }
+                    };
+                    _coachBotContext.TournamentGroupMatches.Add(match);
+                    _coachBotContext.SaveChanges();
+                }
+            }
+
+        }
+        #endregion
 
         #region Tournament Helpers
         public void GenerateRoundRobinMatches(Tournament tournament, TournamentStage stage, DateTime startDate)
@@ -1133,7 +1221,7 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
-        private List<TournamentPhase> GenerateTournamentPhases(int numberOfteams, int tournamentStageId)
+        private List<TournamentPhase> GenerateTournamentPhases(int numberOfteams, int tournamentStageId, int numberOfIterations = 1)
         {
             var phases = new List<TournamentPhase>();
             // INFO: Numbers of phases is number of teams minus 1, so this for logic is intentional

@@ -11,6 +11,10 @@ export class TournamentTypePipe implements PipeTransform {
                 return 'Knockout';
             case TournamentType.RoundRobinAndKnockout:
                 return 'Group Knockout';
+            case TournamentType.DoubleRoundRobin:
+                return 'League';
+            case TournamentType.QuadrupleRoundRobin:
+                return 'League';
             default:
                 return '';
         }

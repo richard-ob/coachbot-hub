@@ -32,5 +32,7 @@ namespace CoachBot.Domain.Model
 
         public int Points { get; set; }
 
+        public List<MatchOutcomeType> Form { get; set; } = new List<MatchOutcomeType>();
+
     }
 }

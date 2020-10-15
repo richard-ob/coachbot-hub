@@ -8,3 +8,9 @@
     background-repeat: repeat;
     opacity: 0.1;
 }
+
+@media (min-width: 992px) {
+    .player-info__item--details {
+        flex-basis: 40%;
+    }
+}

@@ -509,6 +509,8 @@ namespace CoachBot.Domain.Services
                      BadgeImageUrl = t.Team.BadgeImage.SmallUrl
                  }).ToList();
 
+            var tournamentId = _coachBotContext.TournamentGroups.Where(g => g.Id == tournamentGroupId).Select(tg => tg.TournamentStage.TournamentId).First();
+
             return standings.Concat(unpositioned)
                  .Select((s, i) => new TournamentGroupStanding()
                  {
@@ -523,8 +525,23 @@ namespace CoachBot.Domain.Services
                      BadgeImageUrl = s.BadgeImageUrl,
                      GoalDifference = s.GoalDifference,
                      Points = s.Points,
-                     Position = i + 1
+                     Position = i + 1,
+                     Form = GenerateTeamTournamentForm(s.TeamId)
                  }).ToList();
+
+            List<MatchOutcomeType> GenerateTeamTournamentForm(int teamId)
+            {
+                var form = _coachBotContext.TeamMatchStatistics
+                    .Where(t => t.TeamId == teamId && t.Match.TournamentId == tournamentId)
+                    .OrderByDescending(t => t.CreatedDate)
+                    .Take(5)
+                    .Select(m => m.MatchOutcome)
+                    .ToList();
+
+                form.Reverse();
+
+                return form;
+            }
         }
 
         public struct StandingGroupSubEntry

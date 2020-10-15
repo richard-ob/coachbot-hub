@@ -9,6 +9,9 @@
         <span *ngSwitchCase="matchOutcomeType.Loss" class="form-indicator--circle form-indicator--circle__loss" title="Loss">
                 L
         </span>
+        <span *ngSwitchCase="matchOutcomeType.Unknown" class="form-indicator--circle form-indicator--circle__unknown" title="Unknown">
+                ?
+        </span>
     </ng-container>
     <span *ngIf="form && !form.length">N/A</span>
 </ng-container>

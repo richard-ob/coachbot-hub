@@ -1,3 +1,5 @@
+import { MatchOutcomeType } from './match-outcome-type.enum';
+
 export interface TournamentGroupStanding {
     goalsConceded: number;
     goalsScored: number;
@@ -12,4 +14,5 @@ export interface TournamentGroupStanding {
     teamName: string;
     teamId: number;
     teamCode: string;
+    form: MatchOutcomeType[];
 }

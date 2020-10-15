@@ -12,14 +12,60 @@
                         <th class="team-result__date" style="width: 10px;"></th>
                         <th class="team-result__date" style="width: 35px;"></th>
                         <th class="team-result__date">Team</th>
-                        <th class="team-result__status text-center" title="Matches Played">P</th>
-                        <th class="team-result__game-overview text-center" title="Wins">W</th>
-                        <th class="team-result__game-overview text-center" title="Draws">D</th>
-                        <th class="team-result__game-overview text-center" title="Losses">L</th>
-                        <th class="team-result__game-overview text-center" title="Goals For">GF</th>
-                        <th class="team-result__game-overview text-center" title="Goals Against">GA</th>
-                        <th class="team-result__game-overview text-center" title="Goal Difference">GD</th>
+                        <th class="team-result__status text-center" title="Matches Played">
+                            <ng-container *ngIf="showFullHeaders">
+                                <span class="d-none d-lg-block">Played</span>
+                                <span class="d-block d-lg-none">P</span>
+                            </ng-container>
+                            <ng-container *ngIf="!showFullHeaders">P</ng-container>
+                        </th>
+                        <th class="team-result__game-overview text-center" title="Wins">
+                            <ng-container *ngIf="showFullHeaders">
+                                <span class="d-none d-lg-block">Wins</span>
+                                <span class="d-block d-lg-none">W</span>
+                            </ng-container>
+                            <ng-container *ngIf="!showFullHeaders">W</ng-container>
+                        </th>
+                        <th class="team-result__game-overview text-center" title="Draws">
+                            <ng-container *ngIf="showFullHeaders">
+                                <span class="d-none d-lg-block">Draws</span>
+                                <span class="d-block d-lg-none">D</span>
+                            </ng-container>
+                            <ng-container *ngIf="!showFullHeaders">D</ng-container>
+                        </th>
+                        <th class="team-result__game-overview text-center" title="Losses">
+                            <ng-container *ngIf="showFullHeaders">
+                                <span class="d-none d-lg-block">Losses</span>
+                                <span class="d-block d-lg-none">L</span>
+                            </ng-container>
+                            <ng-container *ngIf="!showFullHeaders">L</ng-container>
+                        </th>
+                        <th class="team-result__game-overview text-center" title="Goal Difference">
+                            <ng-container *ngIf="showFullHeaders">
+                                <span class="d-none d-lg-block">Goal Difference</span>
+                                <span class="d-block d-lg-none">GD</span>
+                            </ng-container>
+                            <ng-container *ngIf="!showFullHeaders">GD</ng-container>
+                        </th>
+                        <th class="team-result__game-overview text-center" title="Goals For">
+                            <ng-container *ngIf="showFullHeaders">
+                                <span class="d-none d-lg-block">For</span>
+                                <span class="d-block d-lg-none">GF</span>
+                            </ng-container>
+                            <ng-container *ngIf="!showFullHeaders">GF</ng-container>
+                        </th>
+                        <th class="team-result__game-overview text-center" title="Goals Against">
+                            <ng-container *ngIf="showFullHeaders">
+                                <span class="d-none d-lg-block">Against</span>
+                                <span class="d-block d-lg-none">GA</span>
+                            </ng-container>
+                            <ng-container *ngIf="!showFullHeaders">GA</ng-container>
+                        </th>
                         <th class="team-result__game-overview text-center" title="Points">Points</th>
+                        <th class="team-result__game-overview text-center d-none d-xl-table-cell" title="Form">Form</th>
+                        <th *ngIf="showFullHeaders"
+                            class="team-result__game-overview text-center d-none d-xl-table-cell">
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,13 +82,20 @@
                         <td style="font-weight: 600;">{{tournamentGroupStanding.teamName}}
                         </td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.matchesPlayed}}</td>
-                        <td class="team-result__statu text-centers">{{tournamentGroupStanding.wins}}</td>
+                        <td class="team-result__status text-center">{{tournamentGroupStanding.wins}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.draws}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.losses}}</td>
+                        <td class="team-result__status text-center">{{tournamentGroupStanding.goalDifference}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.goalsScored}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.goalsConceded}}</td>
-                        <td class="team-result__status text-center">{{tournamentGroupStanding.goalDifference}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.points}}</td>
+                        <td class="text-center d-none d-xl-table-cell">
+                            <app-form-indicator [form]="tournamentGroupStanding.form"></app-form-indicator>
+                        </td>
+                        <td *ngIf="showFullHeaders" class="team-result__status text-center d-none d-xl-table-cell">
+                            <a class="btn btn-primary btn-xs" type="button"
+                                [routerLink]="['/team-profile/', tournamentGroupStanding.teamId]">View Profile</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

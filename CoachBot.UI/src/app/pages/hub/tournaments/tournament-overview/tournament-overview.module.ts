@@ -26,6 +26,7 @@ import {
 import { TabNavMobileComponent } from '@core/components/tab-nav-mobile/tab-nav-mobile.component';
 import { CoreModule } from '@core/core.module';
 import { TournamentStandingsRoundRobinKnockoutComponent } from './tournament-overview-standings/tournament-standings-round-robin-knockout/tournament-standings-round-robin-knockout.component';
+import { FormIndicatorModule } from '@pages/hub/shared/components/form-indictator/form-indicator.module';
 
 @NgModule({
     declarations: [
@@ -52,7 +53,8 @@ import { TournamentStandingsRoundRobinKnockoutComponent } from './tournament-ove
         RecentMatchesModule,
         HubPipesModule,
         NgPipesModule,
-        CoreModule
+        CoreModule,
+        FormIndicatorModule
     ]
 })
 export class TournamentOverviewModule { }

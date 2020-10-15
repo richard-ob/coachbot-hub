@@ -85,7 +85,7 @@ export class MatchEditorComponent implements OnInit {
     }
 
     generateMatchToken() {
-        if (this.match.teamHome && this.match.teamAway) {
+        if (this.match.teamHome && this.match.teamAway && this.match.server) {
             const token = `${this.match.server.address}_${this.match.id}_${this.match.teamHome.teamCode}_${this.match.teamAway.teamCode}`;
             return btoa(token);
         }

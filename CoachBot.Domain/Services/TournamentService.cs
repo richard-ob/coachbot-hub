@@ -227,6 +227,7 @@ namespace CoachBot.Domain.Services
             var existingTournament = _coachBotContext.Tournaments.Single(m => m.Id == tournament.Id);
             existingTournament.IsPublic = tournament.IsPublic;
             existingTournament.StartDate = tournament.StartDate;
+            existingTournament.FantasyPointsLimit = tournament.FantasyPointsLimit;
 
             var tournamentSeries = _coachBotContext.TournamentSeries.Single(ts => ts.Tournaments.Any(t => ts.Id == tournament.TournamentSeriesId));
             if (tournament.IsPublic)

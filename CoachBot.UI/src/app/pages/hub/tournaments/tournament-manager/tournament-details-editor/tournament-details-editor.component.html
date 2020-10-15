@@ -22,6 +22,11 @@
             </div>
         </div>
         <div class="form-group">
+            <label>Fantasy Points Limit</label>
+            <input class="form-control" type="number" [(ngModel)]="tournament.fantasyPointsLimit"
+                name="fantasyPointsLimit" required>
+        </div>
+        <div class="form-group">
             <label>Is Public</label>
             <input class="d-block" type="checkbox" [(ngModel)]="tournament.isPublic" name="isPublic" required>
         </div>

@@ -19,7 +19,8 @@
                             <span class="player-info__first-name">{{tournament.name}}</span>
                         </h1>
                         <div class="mt-2">
-                            <a class="btn btn-xs btn-primary mr-2" [routerLink]="['/fantasy/', tournament.id]">Fantasy
+                            <a *ngIf="tournament.fantasyPointsLimit" class="btn btn-xs btn-primary mr-2"
+                                [routerLink]="['/fantasy/', tournament.id]">Fantasy
                                 Game</a>
                             <a class="btn btn-xs btn-primary"
                                 [routerLink]="['/tournament/' + tournament.id + '/score-predictor']">Score Predictor

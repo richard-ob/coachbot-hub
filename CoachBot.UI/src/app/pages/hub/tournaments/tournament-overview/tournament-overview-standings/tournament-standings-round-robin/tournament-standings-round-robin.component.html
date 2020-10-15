@@ -62,7 +62,8 @@
                             <ng-container *ngIf="!showFullHeaders">GA</ng-container>
                         </th>
                         <th class="team-result__game-overview text-center" title="Points">Points</th>
-                        <th class="team-result__game-overview text-center d-none d-xl-table-cell" title="Form">Form</th>
+                        <th *ngIf="showFullHeaders"
+                            class="team-result__game-overview text-center d-none d-xl-table-cell" title="Form">Form</th>
                         <th *ngIf="showFullHeaders"
                             class="team-result__game-overview text-center d-none d-xl-table-cell">
                         </th>
@@ -85,11 +86,13 @@
                         <td class="team-result__status text-center">{{tournamentGroupStanding.wins}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.draws}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.losses}}</td>
-                        <td class="team-result__status text-center">{{tournamentGroupStanding.goalDifference}}</td>
+                        <td class="team-result__status text-center">
+                            {{tournamentGroupStanding.goalDifference > 0 ? '+' : ''}}{{tournamentGroupStanding.goalDifference}}
+                        </td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.goalsScored}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.goalsConceded}}</td>
                         <td class="team-result__status text-center">{{tournamentGroupStanding.points}}</td>
-                        <td class="text-center d-none d-xl-table-cell">
+                        <td *ngIf="showFullHeaders" class="text-center d-none d-xl-table-cell">
                             <app-form-indicator [form]="tournamentGroupStanding.form"></app-form-indicator>
                         </td>
                         <td *ngIf="showFullHeaders" class="team-result__status text-center d-none d-xl-table-cell">

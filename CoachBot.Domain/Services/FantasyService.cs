@@ -534,14 +534,14 @@ namespace CoachBot.Domain.Services
             currentScore += playerMatchStatistics.Assists * 3; // Assists
 
             // Clean sheets
-            if ((mainPosition == PositionGroup.Goalkeeper || mainPosition == PositionGroup.Defence) && playerMatchStatistics.GoalsConceded == 0) currentScore += 4;
-            if (mainPosition == PositionGroup.Midfield && playerMatchStatistics.GoalsConceded == 0) currentScore += 1;
+            if ((mainPosition == PositionGroup.Goalkeeper || mainPosition == PositionGroup.Defence) && playerMatchStatistics.GoalsConceded == 0) currentScore += 6;
+            if (mainPosition == PositionGroup.Midfield && playerMatchStatistics.GoalsConceded == 0) currentScore += 3;
 
             // Saves
-            if (playerMatchStatistics.KeeperSaves > 0) currentScore += (int)playerMatchStatistics.KeeperSaves / 3;
+            if (playerMatchStatistics.KeeperSaves > 0) currentScore += (int)playerMatchStatistics.KeeperSaves / 2;
 
             // Goals Conceded
-            if (mainPosition == PositionGroup.Goalkeeper || mainPosition == PositionGroup.Defence) currentScore -= playerMatchStatistics.GoalsConceded;
+            if (mainPosition == PositionGroup.Goalkeeper || mainPosition == PositionGroup.Defence) currentScore -= ((int)playerMatchStatistics.GoalsConceded / 3);
 
             // Cards
             currentScore -= playerMatchStatistics.YellowCards;
@@ -552,14 +552,17 @@ namespace CoachBot.Domain.Services
 
             // Pass Completion
             var passCompletion = playerMatchStatistics.Passes > 0 ? (playerMatchStatistics.PassesCompleted / playerMatchStatistics.Passes) * 100 : 0;
-            if (passCompletion >= 70 && passCompletion < 80) currentScore += 1;
-            if (passCompletion >= 80 && passCompletion < 90) currentScore += 3;
-            if (passCompletion >= 90) currentScore += 5;
+            if (passCompletion >= 70 && passCompletion < 80) currentScore += 2;
+            if (passCompletion >= 80 && passCompletion < 90) currentScore += 4;
+            if (passCompletion >= 90) currentScore += 6;
 
             // Interceptions
-            if (playerMatchStatistics.Interceptions >= 10 && playerMatchStatistics.Interceptions < 15) currentScore += 1;
-            if (playerMatchStatistics.Interceptions >= 15 && playerMatchStatistics.Interceptions < 20) currentScore += 3;
-            if (playerMatchStatistics.Interceptions >= 20) currentScore += 5;
+            if (playerMatchStatistics.Interceptions >= 10 && playerMatchStatistics.Interceptions < 15) currentScore += 2;
+            if (playerMatchStatistics.Interceptions >= 15 && playerMatchStatistics.Interceptions < 20) currentScore += 4;
+            if (playerMatchStatistics.Interceptions >= 20) currentScore += 6;
+
+            // Player Of The Match
+            if (playerMatchStatistics.Match != null && playerMatchStatistics.Match.PlayerOfTheMatchId == playerMatchStatistics.PlayerId) currentScore += 3;
 
             return currentScore;
         }

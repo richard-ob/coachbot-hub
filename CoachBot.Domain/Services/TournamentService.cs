@@ -40,6 +40,7 @@ namespace CoachBot.Domain.Services
                 .ThenInclude(o => o.LogoImage)
                 .Where(t => !excludeInactive || (t.EndDate == null || t.EndDate > DateTime.UtcNow))
                 .Where(t => t.IsPublic)
+                .OrderBy(t => t.StartDate)
                 .ToList();
         }
 

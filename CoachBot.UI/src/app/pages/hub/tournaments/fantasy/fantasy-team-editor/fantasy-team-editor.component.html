@@ -113,6 +113,8 @@
                     </app-fantasy-team-editor-players>
                     <a type="button" class="btn btn-primary btn-block"
                         [routerLink]="['/fantasy-overview/', fantasyTeam.id]">Fantasy Team Profile</a>
+                    <button type="button" class="btn btn-primary btn-block" (click)="scoringModal.fire()">View Scoring
+                        System</button>
                 </div>
             </div>
         </ng-container>
@@ -143,4 +145,100 @@
     <ng-container *swalPortal="swalTargets.confirmButton">
         Save
     </ng-container>
+</swal>
+
+<swal #scoringModal>
+    <ng-container *swalPortal="swalTargets.title">
+        <h5>Fantasy Scoring</h5>
+    </ng-container>
+    <div *swalPortal>
+        <table class="table table-striped table-hover table-sm fantasy-scoring-table">
+            <thead>
+                <th class="text-center">Action</th>
+                <th class="text-center">Points</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Appearance</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>Appearance lasting more than 60 minutes</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>Goal (GK/DEF)</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>Goal (MID)</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Goal (ATTACK)</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>Assist</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>Clean Sheet (GK/DEF)</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>Clean Sheet (MID)</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>Every 2 Saves (GK)</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>Player Of The Match</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>Every 3 Goals Conceded (GK/DEF)</td>
+                    <td>-1</td>
+                </tr>
+                <tr>
+                    <td>Yellow Card</td>
+                    <td>-1</td>
+                </tr>
+                <tr>
+                    <td>Red Card</td>
+                    <td>-3</td>
+                </tr>
+                <tr>
+                    <td>Own Goal</td>
+                    <td>-2</td>
+                </tr>
+                <tr>
+                    <td>Pass Completion 70% - 79%</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>Pass Completion 80% - 89%</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>Pass Completion 90%+</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>Interceptions 10-14</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>Interceptions 15-19</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>Interceptions 20+</td>
+                    <td>6</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </swal>

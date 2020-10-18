@@ -549,12 +549,15 @@ namespace CoachBot.Domain.Services
 
             // Own Goals
             currentScore -= playerMatchStatistics.OwnGoals * 2;
-
+            
             // Pass Completion
-            var passCompletion = playerMatchStatistics.Passes > 0 ? (playerMatchStatistics.PassesCompleted / playerMatchStatistics.Passes) * 100 : 0;
-            if (passCompletion >= 70 && passCompletion < 80) currentScore += 2;
-            if (passCompletion >= 80 && passCompletion < 90) currentScore += 4;
-            if (passCompletion >= 90) currentScore += 6;
+            if ((playerMatchStatistics.SecondsPlayed * 60) > 75)
+            {
+                var passCompletion = playerMatchStatistics.Passes > 0 ? (playerMatchStatistics.PassesCompleted / playerMatchStatistics.Passes) * 100 : 0;
+                if (passCompletion >= 70 && passCompletion < 80) currentScore += 2;
+                if (passCompletion >= 80 && passCompletion < 90) currentScore += 4;
+                if (passCompletion >= 90) currentScore += 6;
+            } 
 
             // Interceptions
             if (playerMatchStatistics.Interceptions >= 10 && playerMatchStatistics.Interceptions < 15) currentScore += 2;

@@ -6,6 +6,7 @@ using CoachBot.Shared.Model;
 using CoachBot.Shared.Services;
 using CoachBot.Tools;
 using Discord;
+using Discord.Rest;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,6 +19,7 @@ namespace CoachBot.Bot
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly DiscordSocketClient _client;
+        private readonly DiscordRestClient _discordRestClient;
         private readonly MatchmakingService _matchmakingService;
         private readonly ChannelService _channelService;
         private readonly DiscordNotificationService _discordNotificationService;
@@ -33,8 +35,8 @@ namespace CoachBot.Bot
             ChannelService channelService,
             DiscordNotificationService discordNotificationService,
             CacheService cacheService,
-            //Importer importer,
-            Config config
+            Config config,
+            DiscordRestClient discordRestClient
         )
         {
             _serviceProvider = serviceProvider;
@@ -43,13 +45,15 @@ namespace CoachBot.Bot
             _channelService = channelService;
             _discordNotificationService = discordNotificationService;
             _cacheService = cacheService;
-            //_importer = importer;
             _config = config;
+            _discordRestClient = discordRestClient;
         }
 
         public async void Startup()
         {
             Console.WriteLine("Connecting..");
+            await _discordRestClient.LoginAsync(TokenType.Bot, _config.DiscordConfig.BotToken);
+
             await _client.LoginAsync(TokenType.Bot, _config.DiscordConfig.BotToken);
             await _client.StartAsync();
 
@@ -190,8 +194,8 @@ namespace CoachBot.Bot
 
         private async Task UserOffline(SocketGuildUser userPre, SocketGuildUser userPost)
         {
-            await Task.Delay(TimeSpan.FromMinutes(1));
-            var currentState = _client.GetUser(userPre.Id);
+            await Task.Delay(TimeSpan.FromMinutes(5));
+            var currentState = _discordRestClient.GetUserAsync(userPre.Id).Result;
             if (!currentState.Status.Equals(UserStatus.Offline)) return; // User is no longer offline
 
             using (var scope = _serviceProvider.CreateScope())
@@ -204,7 +208,7 @@ namespace CoachBot.Bot
         private async Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)
         {
             Task.Delay(TimeSpan.FromMinutes(15)).Wait(); // When user goes away, wait 15 minutes before notifying others
-            var currentState = _client.GetUser(userPre.Id);
+            var currentState = _discordRestClient.GetUserAsync(userPre.Id).Result;
             if (currentState.Status.Equals(UserStatus.Online)) return; // User is no longer AFK/Idle
 
             using (var scope = _serviceProvider.CreateScope())

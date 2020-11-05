@@ -1,11 +1,15 @@
 ﻿using CoachBot.Database;
+using CoachBot.Domain.Model;
 using CoachBot.Model;
 using CoachBot.Shared.Model;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoachBot.Services.Matchmaker
@@ -13,12 +17,14 @@ namespace CoachBot.Services.Matchmaker
     public class BotService
     {
         private DiscordSocketClient _client;
+        private IServiceProvider _map;
         private Config _config;
 
-        public BotService(DiscordSocketClient client, Config config)
+        public BotService(DiscordSocketClient client, IServiceProvider map, Config config)
         {
             _client = client;
-            _config = _config;
+            _map = map;
+            _config = config;
         }
 
         public BotState GetCurrentBotState()
@@ -31,7 +37,7 @@ namespace CoachBot.Services.Matchmaker
 
             return botState;
         }
-
+        
         public async Task Reconnect()
         {
             Console.WriteLine("Logging out..");

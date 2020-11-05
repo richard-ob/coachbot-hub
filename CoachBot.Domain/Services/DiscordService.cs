@@ -3,6 +3,7 @@ using CoachBot.Domain.Extensions;
 using CoachBot.Domain.Model;
 using CoachBot.Shared.Model;
 using Discord;
+using Discord.Rest;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,12 +18,14 @@ namespace CoachBot.Domain.Services
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly DiscordSocketClient _discordSocketClient;
+        private readonly DiscordRestClient _discordRestClient;
         private readonly Config _config;
 
-        public DiscordService(IServiceProvider serviceProvider, DiscordSocketClient discordSocketClient, Config config)
+        public DiscordService(IServiceProvider serviceProvider, DiscordSocketClient discordSocketClient, DiscordRestClient discordRestClient, Config config)
         {
             _serviceProvider = serviceProvider;
             _discordSocketClient = discordSocketClient;
+            _discordRestClient = discordRestClient;
             _config = config;
         }
 
@@ -68,7 +71,7 @@ namespace CoachBot.Domain.Services
 
         public DiscordUser GetDiscordUser(ulong userId)
         {
-            var user = _discordSocketClient.GetUser(userId);
+            var user = _discordRestClient.GetUserAsync(userId).Result;
 
             if (user == null)
             {
@@ -166,6 +169,9 @@ namespace CoachBot.Domain.Services
         {
             if (_discordSocketClient.ConnectionState != ConnectionState.Connected || _discordSocketClient.LoginState != LoginState.LoggedIn)
             {
+                await _discordRestClient.LogoutAsync();
+                await _discordRestClient.LoginAsync(TokenType.Bot, _config.DiscordConfig.BotToken);
+
                 await _discordSocketClient.LogoutAsync();
                 await _discordSocketClient.LoginAsync(TokenType.Bot, _config.DiscordConfig.BotToken);
                 await _discordSocketClient.StartAsync();

@@ -1,8 +1,11 @@
-﻿using CoachBot.Extensions;
+﻿using CoachBot.Domain.Model;
+using CoachBot.Extensions;
 using CoachBot.Services.Matchmaker;
 using CoachBot.Shared.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +32,12 @@ namespace CoachBot.Controllers
             }
 
             return Ok(_botService.GetCurrentBotState());
+        }
+
+        [HttpGet("guilds")]
+        public List<DiscordGuild> GetGuilds()
+        {
+            throw new NotImplementedException();
         }
 
         [HttpPost("reconnect")]

@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
 using CoachBot.Shared.Helpers;
 using CoachBot.Shared.Services;
+using Discord.Rest;
 
 namespace CoachBot
 {
@@ -25,6 +26,7 @@ namespace CoachBot
     {
         public IConfiguration Configuration { get; }
         private DiscordSocketClient _client;
+        private DiscordRestClient _restClient;
 
         public WebStartup(IConfiguration configuration)
         {
@@ -33,6 +35,7 @@ namespace CoachBot
             {
                 LogLevel = LogSeverity.Debug
             });
+            _restClient = new DiscordRestClient(new DiscordRestConfig() { LogLevel = LogSeverity.Debug });
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -49,6 +52,7 @@ namespace CoachBot
 
             services
                 .AddSingleton(_client)
+                .AddSingleton(_restClient)
                 .AddSingleton(new CommandService(new CommandServiceConfig { CaseSensitiveCommands = false, ThrowOnError = false }))
                 .AddSingleton(logger)
                 .AddSingleton(config)

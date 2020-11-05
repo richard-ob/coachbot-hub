@@ -1,6 +1,7 @@
 ﻿using CoachBot.Model;
 using CoachBot.Shared.Model;
 using Discord;
+using Discord.Rest;
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,13 @@ namespace CoachBot.Domain.Services
     public class DiscordNotificationService
     {
         private readonly DiscordSocketClient _discordSocketClient;
+        private readonly DiscordRestClient _discordRestClient;
         private readonly Config _config;
 
-        public DiscordNotificationService(DiscordSocketClient discordSocketClient, Config config)
+        public DiscordNotificationService(DiscordSocketClient discordSocketClient, DiscordRestClient discordRestClient, Config config)
         {
             _discordSocketClient = discordSocketClient;
+            _discordRestClient = discordRestClient;
             _config = config;
         }
 
@@ -91,7 +94,8 @@ namespace CoachBot.Domain.Services
 
         public async Task<ulong> SendUserMessage(ulong discordUserId, string message)
         {
-            if (await _discordSocketClient.GetUser(discordUserId).GetOrCreateDMChannelAsync() is IDMChannel dmChannel)
+            var user = await _discordRestClient.GetUserAsync(discordUserId);
+            if (user != null && await user.GetOrCreateDMChannelAsync() is IDMChannel dmChannel)
             {
                 var result = await dmChannel.SendMessageAsync(message);
 

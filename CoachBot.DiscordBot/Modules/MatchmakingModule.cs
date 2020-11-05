@@ -8,6 +8,7 @@ using CoachBot.Shared.Services;
 using CoachBot.Tools;
 using Discord;
 using Discord.Commands;
+using Discord.Rest;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,12 +20,14 @@ namespace CoachBot.Modules.Matchmaker
     {
         private readonly MatchmakingService _channelMatchService;
         private readonly ServerManagementService _channelServerService;
+        private readonly DiscordRestClient _discordRestClient;
         private readonly CacheService _cacheService;
 
-        public MatchmakingModule(MatchmakingService channelMatchService, ServerManagementService channelServerService, CacheService cacheService)
+        public MatchmakingModule(MatchmakingService channelMatchService, ServerManagementService channelServerService, DiscordRestClient discordRestClient, CacheService cacheService)
         {
             _channelMatchService = channelMatchService;
             _channelServerService = channelServerService;
+            _discordRestClient = discordRestClient;
             _cacheService = cacheService;
         }
 
@@ -78,7 +81,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (DiscordHelper.IsMention(name))
             {
-                var user = await Context.Guild.GetUserAsync(DiscordHelper.ConvertMentionToUserID(name));
+                var user = await _discordRestClient.GetUserAsync(DiscordHelper.ConvertMentionToUserID(name));
                 var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, positionName);
                 await ReplyAsync("", embed: response);
             }
@@ -117,7 +120,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (DiscordHelper.IsMention(name))
             {
-                var user = await Context.Guild.GetUserAsync(DiscordHelper.ConvertMentionToUserID(name));
+                var user = await _discordRestClient.GetUserAsync(DiscordHelper.ConvertMentionToUserID(name));
                 var response = _channelMatchService.AddPlayer(Context.Message.Channel.Id, user, position, ChannelTeamType.TeamTwo);
                 await ReplyAsync("", embed: response);
             }
@@ -146,7 +149,7 @@ namespace CoachBot.Modules.Matchmaker
         {
             if (DiscordHelper.IsMention(name))
             {
-                var user = await Context.Guild.GetUserAsync(DiscordHelper.ConvertMentionToUserID(name));
+                var user = await _discordRestClient.GetUserAsync(DiscordHelper.ConvertMentionToUserID(name));
                 var response = _channelMatchService.RemovePlayer(Context.Message.Channel.Id, user);
                 await ReplyAsync("", embed: response);
             }

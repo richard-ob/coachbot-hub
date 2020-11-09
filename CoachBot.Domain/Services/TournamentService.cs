@@ -1155,6 +1155,7 @@ namespace CoachBot.Domain.Services
                     TournamentStageId = stage.Id
                 };
                 _coachBotContext.TournamentPhases.Add(phase);
+                _coachBotContext.SaveChanges();
 
                 if (round > 1)
                 {
@@ -1233,6 +1234,7 @@ namespace CoachBot.Domain.Services
                         }
                     };
                     _coachBotContext.TournamentGroupMatches.Add(match);
+                    _coachBotContext.SaveChanges();
                     matches.Add(match);
                     currentMatchNumberOfRound++;
                 }

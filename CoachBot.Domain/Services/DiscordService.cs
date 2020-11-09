@@ -92,9 +92,9 @@ namespace CoachBot.Domain.Services
             using (var scope = _serviceProvider.CreateScope())
             {
                 var coachBotContext = scope.ServiceProvider.GetService<CoachBotContext>();
-                var guild = _discordSocketClient.GetGuild(guildId);
+                var guild = _discordRestClient.GetGuildAsync(guildId).Result;
 
-                channels = guild.Channels.Where(c => c is ITextChannel).Select(c => new DiscordChannel()
+                channels = guild.GetTextChannelsAsync().Result.Select(c => new DiscordChannel()
                 {
                     Id = c.Id,
                     Name = c.Name
@@ -113,20 +113,28 @@ namespace CoachBot.Domain.Services
 
         public IEnumerable<DiscordGuild> GetGuildsForUser(ulong steamUserId)
         {
-            IEnumerable<DiscordGuild> guilds;
+            var guilds = new List<DiscordGuild>();
             using (var scope = _serviceProvider.CreateScope())
             {
                 var coachBotContext = scope.ServiceProvider.GetService<CoachBotContext>();
 
                 var discordUserId = coachBotContext.Players.Single(s => s.SteamID == steamUserId).DiscordUserId;
-                guilds = _discordSocketClient.Guilds
-                    .Where(g => g.Users.Any(u => u.Id == discordUserId && u.GuildPermissions.Administrator))
-                    .Select(g => new DiscordGuild()
+                if (discordUserId == null) return new List<DiscordGuild>();
+
+                foreach(var guild in _discordRestClient.GetGuildsAsync().Result)
+                {
+                    var guildUser = guild.GetUserAsync((ulong)discordUserId).Result;
+                    if (guildUser != null && guildUser.GuildPermissions.Administrator)
                     {
-                        Id = g.Id,
-                        Name = g.Name,
-                        Emotes = g.Emotes.Select(e => new KeyValuePair<string, string>($"<:{e.Name}:{e.Id}>", e.Url)).ToList()
-                    }).ToList();
+                        var guildWithUserIsAdmin = new DiscordGuild()
+                        {
+                            Id = guild.Id,
+                            Name = guild.Name,
+                            Emotes = guild.Emotes.Select(e => new KeyValuePair<string, string>($"<:{e.Name}:{e.Id}>", e.Url)).ToList()
+                        };
+                        guilds.Add(guildWithUserIsAdmin);
+                    }
+                }
 
                 // HACK: If we do this in the original projection, the context seems to have been disposed/not available in the calling scope..
                 var matchmakingGuilds = coachBotContext.Guilds.Where(g => guilds.Any(dg => dg.Id == g.DiscordGuildId)).ToList();
@@ -134,6 +142,7 @@ namespace CoachBot.Domain.Services
                 {
                     Id = dg.Id,
                     Name = dg.Name,
+                    Emotes = dg.Emotes,
                     IsLinked = matchmakingGuilds.Any(g => g.DiscordGuildId == dg.Id)
                 });
             }

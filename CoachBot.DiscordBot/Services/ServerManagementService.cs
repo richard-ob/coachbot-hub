@@ -429,6 +429,28 @@ namespace CoachBot.Services
 
             if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
             {
+                if (match.Map != null)
+                {
+                    try
+                    {
+                        INetworkSocket socket = new RconSocket();
+                        RconMessenger messenger = new RconMessenger(socket);
+                        bool isConnected = await messenger.ConnectAsync(server.Address.Split(':')[0], int.Parse(server.Address.Split(':')[1]));
+                        bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
+                        if (authenticated)
+                        {
+                            await messenger.ExecuteCommandAsync($"changelevel {match.Map.Name}");
+                        }
+                        messenger.CloseConnection();
+                    }
+                    catch
+                    {
+                        await _discordNotificationService.SendAuditChannelMessage($"Couldn't set up map for tournament match: {match.Id} ({match.TeamHome.Name} vs {match.TeamAway.Name}) [KO: {((DateTime)match.KickOff).ToString("g")}]");
+                    }
+                }
+
+                await Task.Delay(TimeSpan.FromSeconds(10));
+
                 try
                 {
                     INetworkSocket socket = new RconSocket();
@@ -437,10 +459,6 @@ namespace CoachBot.Services
                     bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
                     if (authenticated)
                     {
-                        if (match.Map != null)
-                        {
-                            await messenger.ExecuteCommandAsync($"changelevel {match.Map.Name}");
-                        }
                         await messenger.ExecuteCommandAsync("exec 8v8.cfg");
                         await messenger.ExecuteCommandAsync("exec league.cfg");
                         await messenger.ExecuteCommandAsync("sv_singlekeeper 0");

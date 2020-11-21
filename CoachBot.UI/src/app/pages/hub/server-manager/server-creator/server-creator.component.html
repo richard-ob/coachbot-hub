@@ -1,27 +1,27 @@
 <button type="button" class="btn-primary btn btn-xs mr-2" (click)="openModal()">Add Server</button>
 <swal #createServerModal (confirm)="addServer()" [showCancelButton]="true">
     <ng-container *swalPortal="swalTargets.title">
-        <h5>Create Server</h5>
+        <h5 i18n="@@serverEditor.createServer">Create Server</h5>
     </ng-container>
     <form *swalPortal>
         <form #createServerForm="ngForm">
             <div class="form-group">
-                <label for="serverName" class="required">Server Name</label>
+                <label for="serverName" class="required" i18n="@@globals.serverName">Server Name</label>
                 <input type="text" class="form-control" id="serverName" name="serverName"
                     [(ngModel)]="serverToCreate.name" required>
             </div>
             <div class="form-group">
-                <label for="ipAddress" class="required">IP Address</label>
+                <label for="ipAddress" class="required"i18n="@@globals.ipAddress">IP Address</label>
                 <input type="text" class="form-control" id="ipAddress" name="ipAddress"
                     [(ngModel)]="serverToCreate.address" pattern="(.+:.+)$" required>
             </div>
             <div class="form-group">
-                <label for="rconPassword">RCON Password</label>
+                <label for="rconPassword"i18n="@@globals.rconPassword">RCON Password</label>
                 <input type="text" class="form-control" id="rconPassword" name="rconPassword"
                     [(ngModel)]="serverToCreate.rconPassword">
             </div>
             <div class="form-group">
-                <label for="countryId" class="required">Country</label>
+                <label for="countryId" class="required" i18n="@@globals.country">Country</label>
                 <select class="form-control" [(ngModel)]="serverToCreate.countryId" name="countryId" id="countryId"
                     required>
                     <option *ngFor="let country of countries" [ngValue]="country.id">
@@ -30,7 +30,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="regionId" class="required">Region</label>
+                <label for="regionId" class="required" i18n="@@globals.region">Region</label>
                 <select class="form-control" [(ngModel)]="serverToCreate.regionId" name="regionId" id="regionId"
                     required>
                     <option *ngFor="let region of regions" [ngValue]="region.regionId">
@@ -39,7 +39,7 @@
                 </select>
             </div>
         </form>
-        <ng-container *swalPortal="swalTargets.confirmButton">
+        <ng-container *swalPortal="swalTargets.confirmButton" i18n="@@globals.confirm">
             Confirm
         </ng-container>
     </form>

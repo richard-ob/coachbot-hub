@@ -3,15 +3,15 @@
         <div class="col-8">
             <div class="card card--has-table">
                 <div class="card__header">
-                    <h4>Fantasy Team Leaderboard</h4>
+                    <h4 i18n="@@fantasy.teamLeaderboard">Fantasy Team Leaderboard</h4>
                 </div>
                 <div class="card__content table-responsive" style="overflow-y: auto; max-height: 60vh;">
                     <table class="table table-striped table-hover">
                         <thead>
-                            <th class="text-center">Rank</th>
-                            <th>Fantasy Team</th>
-                            <th>Manager</th>
-                            <th class="text-center">Points</th>
+                            <th class="text-center" i18n="@@globals.rank">Rank</th>
+                            <th i18n="@@fantasy.fantasyTeam">Fantasy Team</th>
+                            <th i18n="@@globals.manager">Manager</th>
+                            <th class="text-center" i18n="@@globals.points">Points</th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let fantasyTeam of fantasyTeamRankings"
@@ -40,7 +40,7 @@
             <app-fantasy-player-spotlight [tournamentId]="tournamentId" [hasTournamentFinished]="tournament.hasEnded">
             </app-fantasy-player-spotlight>
             <a *ngIf="tournament && !tournament.hasStarted" class="btn btn-primary btn-block"
-                [routerLink]="['/fantasy/']">
+                [routerLink]="['/fantasy/']"  i18n="@@fantasy.createFantasyTeam">
                 Create Fantasy Team
             </a>
         </div>

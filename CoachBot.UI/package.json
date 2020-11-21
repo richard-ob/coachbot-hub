@@ -7,7 +7,9 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "translate": "ng build --prod && npx locl extract -s=dist/coachbot-ui/*.js -f=json -o=\"src/assets/locales/en/en.json\" locales=en",
+    "translate-auto": "npm run translate && npx json-autotranslate -i src/assets/locales -d -c gcp-config.json -m i18next --type keybased && node scripts/autotranslate.js"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~9.1.12",
     "@angular/router": "~9.1.12",
     "@iplab/ngx-color-picker": "^1.0.7",
+    "@locl/core": "^1.0.1",
     "@ng-bootstrap/ng-bootstrap": "^5.3.1",
     "@sweetalert2/ngx-sweetalert2": "^7.3.0",
     "@swimlane/ngx-charts": "^12.0.0",
@@ -53,9 +56,10 @@
     "@angular/cli": "~9.1.12",
     "@angular/compiler-cli": "~9.1.12",
     "@angular/language-service": "~9.1.12",
-    "@types/node": "^12.11.1",
+    "@locl/cli": "^1.0.0",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",

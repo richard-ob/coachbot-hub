@@ -20,28 +20,28 @@
                         </h1>
                         <div class="mt-2">
                             <a *ngIf="tournament.fantasyPointsLimit" class="btn btn-xs btn-primary mr-2"
-                                [routerLink]="['/fantasy/', tournament.id]">Fantasy
+                                [routerLink]="['/fantasy/', tournament.id]" i18n="@@tournament.fantasyGame">Fantasy
                                 Game</a>
                             <a class="btn btn-xs btn-primary"
-                                [routerLink]="['/tournament/' + tournament.id + '/score-predictor']">Score Predictor
+                                [routerLink]="['/tournament/' + tournament.id + '/score-predictor']"  i18n="@@tournament.scorePredictorGame">Score Predictor
                                 Game</a></div>
                     </div>
                     <div class="player-info-details">
                         <div class="player-info-details__item player-info-details__item--height"
                             style="flex-basis: 30%;">
-                            <h6 class="player-info-details__title">Start Date</h6>
+                            <h6 class="player-info-details__title"  i18n="@@globals.startDate">Start Date</h6>
                             <div class="player-info-details__value">
                                 <ng-container *ngIf="tournament.startDate; else noStartDate">
                                     {{tournament.startDate | date}}
                                 </ng-container>
-                                <ng-template #noStartDate>
+                                <ng-template #noStartDate  i18n="@@globals.tbc">
                                     TBC
                                 </ng-template>
                             </div>
                         </div>
                         <div *ngIf="tournament.endDate"
                             class="player-info-details__item player-info-details__item--height">
-                            <h6 class="player-info-details__title">End Date</h6>
+                            <h6 class="player-info-details__title" i18n="@@globals.endDate">End Date</h6>
                             <div class="player-info-details__value">
                                 {{tournament.endDate | date}}
                             </div>
@@ -60,27 +60,27 @@
                 <a href="javascript:void(0);" (click)="tabNav.toggle()" class="content-filter__toggle"></a>
                 <ul class="content-filter__list" appTabNavMobile #tabNav>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./standings']" class="content-filter__link">
+                        <a [routerLink]="['./standings']" class="content-filter__link"  i18n="@@globals.standings">
                             Standings
                         </a>
                     </li>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./fixtures']" class="content-filter__link">
+                        <a [routerLink]="['./fixtures']" class="content-filter__link"  i18n="@@globals.fixtures">
                             Fixtures
                         </a>
                     </li>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./teams']" class="content-filter__link">
+                        <a [routerLink]="['./teams']" class="content-filter__link"  i18n="@@globals.teams">
                             Teams
                         </a>
                     </li>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./players']" class="content-filter__link">
+                        <a [routerLink]="['./players']" class="content-filter__link"  i18n="@@globals.playes">
                             Players
                         </a>
                     </li>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./staff']" class="content-filter__link">
+                        <a [routerLink]="['./staff']" class="content-filter__link"  i18n="@@globals.staff">
                             Staff
                         </a>
                     </li>

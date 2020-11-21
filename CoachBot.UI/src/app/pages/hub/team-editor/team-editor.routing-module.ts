@@ -16,12 +16,12 @@ const routes: Routes = [
             { path: 'squad', component: TeamEditorSquadComponent },
             { path: 'discord', component: TeamEditorDiscordIntegrationComponent }
         ],
-        data: { title: 'Team Editor' }
+        data: { title: $localize`:@@globals.teamEditor:Team Editor` }
     },
     {
         path: 'create-team',
         component: TeamCreatorComponent,
-        data: { title: 'Team Creator' }
+        data: { title: $localize`:@@globals.teamCreator:Team Creator` }
     }
 ];
 @NgModule({

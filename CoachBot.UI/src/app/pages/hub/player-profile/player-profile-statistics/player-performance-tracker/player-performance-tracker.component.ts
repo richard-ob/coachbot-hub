@@ -78,31 +78,31 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
         let series: GraphSeries;
         switch (this.currentPerformanceTrackerAttribute) {
             case PerformanceTrackerAttribute.AverageGoals:
-                series = this.generateSeries('Average Goals', 'averageGoals');
+                series = this.generateSeries($localize`:@@globals.averageGoals:Average Goals`, 'averageGoals');
                 this.performanceSeries = [series];
                 this.showLegend = false;
                 this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.AverageAssists:
-                series = this.generateSeries('Average Assists', 'averageAssists');
+                series = this.generateSeries($localize`:@@globals.averageAssists:Average Assists`, 'averageAssists');
                 this.performanceSeries = [series];
                 this.showLegend = false;
                 this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.GoalsConceded:
-                series = this.generateSeries('Average Goals Conceded', 'averageGoalsConceded');
+                series = this.generateSeries($localize`:@@globals.averageGoalsConceded:Average Goals Conceded`, 'averageGoalsConceded');
                 this.performanceSeries = [series];
                 this.showLegend = false;
                 this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.Cleansheets:
-                series = this.generateSeries('Cleansheets', 'cleanSheets');
+                series = this.generateSeries($localize`:@@globals.cleansheets:Cleansheets`, 'cleanSheets');
                 this.performanceSeries = [series];
                 this.showLegend = false;
                 this.setDefaultTheme();
                 break;
             case PerformanceTrackerAttribute.Appearances:
-                series = this.generateSeries('Appearances', 'appearances');
+                series = this.generateSeries($localize`:@@globals.appearances:Appearances`, 'appearances');
                 this.performanceSeries = [series];
                 this.showLegend = false;
                 this.setDefaultTheme();
@@ -135,7 +135,9 @@ export class PlayerPerformanceTrackerComponent implements OnInit {
 
     generateMatchOutcomeData() {
         this.performanceSeries = [
-            this.generateSeries('Wins', 'wins'), this.generateSeries('Draws', 'draws'), this.generateSeries('Losses', 'losses')
+            this.generateSeries($localize`:@@globals.wins:Wins`, 'wins'),
+            this.generateSeries($localize`:@@globals.draws:Draws`, 'draws'), 
+            this.generateSeries($localize`:@@globals.losses:Losses`, 'losses')
         ];
     }
 

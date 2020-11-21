@@ -13,7 +13,7 @@
                     {{player[statisticProperty]}}</div>
             </div>
         </div>
-        <div *ngIf="!isLoading && !playerStatistics.length" class="player-profile-statistics__no-data m-4">
+        <div *ngIf="!isLoading && !playerStatistics.length" class="player-profile-statistics__no-data m-4" i18n="@@globals.noMatchDataAvailable">
             No match data available
         </div>
         <ng-template #spinner>

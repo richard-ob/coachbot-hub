@@ -59,8 +59,8 @@ export class PlayerProfileSpotlightComponent implements OnInit {
             case PlayerProfileSpotlightStatistic.MostGoals:
                 this.modelProperty = 'goals';
                 this.apiModelProperty = 'Goals';
-                this.heading = 'Most Goals';
-                this.measureName = 'Goals';
+                this.heading = $localize`:@@globals.mostGoals:Most Goals`;
+                this.measureName = $localize`:@@globals.goals:Goals`;
                 this.ordering = 'DESC';
                 this.iconClass = '';
                 this.iconClass = 'icon-soccer-ball';
@@ -68,16 +68,16 @@ export class PlayerProfileSpotlightComponent implements OnInit {
             case PlayerProfileSpotlightStatistic.MostAssists:
                 this.modelProperty = 'assists';
                 this.apiModelProperty = 'Assists';
-                this.heading = 'Most Assists';
-                this.measureName = 'Assists';
+                this.heading = $localize`:@@globals.mostAssists:Most Assists`;
+                this.measureName = $localize`:@@globals.assists:Assists`;
                 this.ordering = 'DESC';
                 this.iconClass = 'icon-keepers-glove';
                 break;
             case PlayerProfileSpotlightStatistic.MostCompletedPasses:
                 this.modelProperty = 'passesCompleted';
                 this.apiModelProperty = 'passesCompleted';
-                this.heading = 'Most Completed Passes';
-                this.measureName = 'Passes';
+                this.heading = $localize`:@@globals.mostCompletedPasses:Most Completed Passes`;
+                this.measureName = $localize`:@@globals.passes:Passes`;
                 this.ordering = 'DESC';
                 this.iconClass = 'icon-soccer-shots';
                 break;

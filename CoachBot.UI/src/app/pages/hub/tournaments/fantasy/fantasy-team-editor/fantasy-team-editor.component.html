@@ -14,11 +14,11 @@
                             </h4>
                             <div class="fantasy-pitch-header--budget">
                                 <div>
-                                    <span *ngIf="!isSquadFull()" class="badge badge-warning">Incomplete Squad</span>
-                                    <span *ngIf="isSquadFull()" class="badge badge-success">Complete</span>
+                                    <span *ngIf="!isSquadFull()" class="badge badge-warning" i18n="@@fantasy.editor.incompleteSquad">Incomplete Squad</span>
+                                    <span *ngIf="isSquadFull()" class="badge badge-success" i18n="@@fantasy.editor.complete">Complete</span>
                                 </div>
                                 <div>
-                                    <label class="text-muted mb-0">Budget</label>
+                                    <label class="text-muted mb-0" i18n="@@fantasy.editor.budget">Budget</label>
                                 </div>
                                 <div>
                                     <h6 class="mb-0" [class.text-warning]="getSquadValue() > 70">
@@ -90,17 +90,17 @@
                     </div>
                     <div class="card">
                         <div class="card__header">
-                            <h4>Rules & Guidance</h4>
+                            <h4 i18n="@@fantasy.rulesAndGuidance">Rules & Guidance</h4>
                         </div>
                         <div class="card__content">
                             <ul class="list">
-                                <li>You can spend up to {{tournament.fantasyPointsLimit}} points.</li>
-                                <li>You must pick: 1 Goalkeeper, 3 Defenders, 1 Midfielder, 3 Attackers, and 3 Flex
+                                <li i18n="@@fantasy.rules.pointsLimit">You can spend up to {{tournament.fantasyPointsLimit}} points.</li>
+                                <li i18n="@@fantasy.rules.positionLimit">You must pick: 1 Goalkeeper, 3 Defenders, 1 Midfielder, 3 Attackers, and 3 Flex
                                     Players</li>
-                                <li>Flex players can be used for any position.</li>
-                                <li>You can only select maximum of 3 players from the same team.</li>
-                                <li>You have to fill all 11 slots for your squad to be complete.</li>
-                                <li>Your team can be changed up until the first game, however it must be complete at
+                                <li i18n="@@fantasy.rules.flex">Flex players can be used for any position.</li>
+                                <li i18n="@@fantasy.rules.teamLimit">You can only select maximum of 3 players from the same team.</li>
+                                <li i18n="@@fantasy.rules.playerLimit">You have to fill all 11 slots for your squad to be complete.</li>
+                                <li i18n="@@fantasy.rules.timeLimit">Your team can be changed up until the first game, however it must be complete at
                                     kick
                                     off to qualify.</li>
                             </ul>
@@ -112,14 +112,14 @@
                         (playerSelected)="addFantasyTeamSelection($event)">
                     </app-fantasy-team-editor-players>
                     <a type="button" class="btn btn-primary btn-block"
-                        [routerLink]="['/fantasy-overview/', fantasyTeam.id]">Fantasy Team Profile</a>
-                    <button type="button" class="btn btn-primary btn-block" (click)="scoringModal.fire()">View Scoring
+                        [routerLink]="['/fantasy-overview/', fantasyTeam.id]" i18n="@@fantasy.fantasyTeamProfile">Fantasy Team Profile</a>
+                    <button type="button" class="btn btn-primary btn-block" (click)="scoringModal.fire()" i18n="@@fantasy.viewScoringSystem">View Scoring
                         System</button>
                 </div>
             </div>
         </ng-container>
         <ng-template #finalised>
-            <div class="alert alert-info">
+            <div class="alert alert-info" i18n="@@fantasy.editingClosed">
                 Editing of fantasy teams for this tournament has closed
             </div>
         </ng-template>
@@ -131,25 +131,25 @@
 
 <swal #editTeamNameModal (confirm)="teamName.length > 1 && updateTeamName()">
     <ng-container *swalPortal="swalTargets.title">
-        <h5>Update Fantasy Team</h5>
+        <h5 i18n="@@fantasy.updateFantasyTeam">Update Fantasy Team</h5>
     </ng-container>
     <form *swalPortal>
         <div class="form-group">
-            <label>Team Name</label>
+            <label i18n="@@globals.teamName">Team Name</label>
             <input type="text" class="form-control" name="teamName" maxlength="50" [(ngModel)]="teamName">
         </div>
     </form>
-    <ng-container *swalPortal="swalTargets.cancelButton">
+    <ng-container *swalPortal="swalTargets.cancelButton" i18n="@@fantasy.cancel">
         Cancel
     </ng-container>
-    <ng-container *swalPortal="swalTargets.confirmButton">
+    <ng-container *swalPortal="swalTargets.confirmButton" i18n="@@globals.save">
         Save
     </ng-container>
 </swal>
 
 <swal #scoringModal>
     <ng-container *swalPortal="swalTargets.title">
-        <h5>Fantasy Scoring</h5>
+        <h5 i18n="@@fantasy.scoring">Fantasy Scoring</h5>
     </ng-container>
     <div *swalPortal>
         <table class="table table-striped table-hover table-sm fantasy-scoring-table">

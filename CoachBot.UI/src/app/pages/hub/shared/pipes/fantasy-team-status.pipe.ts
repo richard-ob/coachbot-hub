@@ -6,11 +6,11 @@ export class FantasyTeamStatusPipe implements PipeTransform {
     transform(fantasyTeamStatus: FantasyTeamStatus): string {
         switch (fantasyTeamStatus) {
             case FantasyTeamStatus.Open:
-                return 'Open';
+                return $localize`:@@globals.open:Open`;
             case FantasyTeamStatus.Pending:
-                return 'Pending';
+                return $localize`:@@globals.pending:Pending`;
             case FantasyTeamStatus.Settled:
-                return 'Settled';
+                return $localize`:@@globals.settled:Settled`;
             default:
                 return '';
         }

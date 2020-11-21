@@ -9,6 +9,8 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { PlayerHubRole } from '@pages/hub/shared/model/player-hub-role.enum';
+import { LocaleService } from '@shared/services/locale-service';
+import { Language } from '@shared/services/language.model';
 
 @Component({
   selector: 'app-root',
@@ -22,16 +24,22 @@ export class AppComponent implements OnInit {
   player: Player;
   hubRoles = PlayerHubRole;
   apiUrl = environment.apiUrl;
+  currentLanguage: Language;
+  availableLanguages: Language[];
   isLoading = true;
 
   constructor(
     private playerService: PlayerService,
     private userPreferenceService: UserPreferenceService,
     private regionService: RegionService,
+    private localeService: LocaleService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title
-  ) { }
+  ) {
+    this.currentLanguage = this.localeService.getLanguage();
+    this.availableLanguages = this.localeService.getLanguages();
+  }
 
   ngOnInit() {
     this.regionService.getRegions().subscribe(regions => {
@@ -56,6 +64,10 @@ export class AppComponent implements OnInit {
 
   setRegion(regionId: number) {
     this.userPreferenceService.setUserPreference(UserPreferenceType.Region, regionId);
+  }
+
+  setLanguage(code: string) {
+    this.localeService.setLanguage(code);
   }
 
   toggleSectionOpen(section: Element, toggle: Element) {

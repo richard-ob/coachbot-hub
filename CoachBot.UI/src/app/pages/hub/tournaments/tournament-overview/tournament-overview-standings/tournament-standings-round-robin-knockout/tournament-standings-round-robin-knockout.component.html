@@ -1,4 +1,4 @@
-<h4>Group Stage</h4>
+<h4  i18n="@@tournament.groupStage">Group Stage</h4>
 <div class="row">
     <div *ngFor="let group of tournament.tournamentStages[0].tournamentGroups" class="col-12 col-lg-6">
         <app-tournament-standings-round-robin [tournamentGroupId]="group.id" [tournamentGroupName]="group.name"
@@ -6,5 +6,5 @@
         </app-tournament-standings-round-robin>
     </div>
 </div>
-<h4 class="mt-3">Knockout Stage</h4>
+<h4 class="mt-3"  i18n="@@tournament.knockoutStage">Knockout Stage</h4>
 <app-tournament-standings-knockout [tournament]="tournament" [tournamentStage]="1"></app-tournament-standings-knockout>

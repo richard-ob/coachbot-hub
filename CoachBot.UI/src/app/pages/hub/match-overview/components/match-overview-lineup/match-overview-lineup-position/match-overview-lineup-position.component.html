@@ -2,20 +2,20 @@
 
     <div style="position: relative; width: 50px; height:50px; display: inline-block;">
         <div class="lineup-player--stats">
-            <div *ngIf="player.goals > 0" class="position-relative" title="Goal Scored">
+            <div *ngIf="player.goals > 0" class="position-relative" title="Goal Scored" i18n-title="@@matchOverview.goalScored">
                 <i class="lineup-player--goals icon-svg icon-soccer-ball"></i>
                 <span *ngIf="player.goals > 1" class="lineup-player--stat-count">{{player.goals}}</span>
             </div>
-            <div *ngIf="player.ownGoals > 0" class="position-relative" title="Own Goal Scored">
+            <div *ngIf="player.ownGoals > 0" class="position-relative" title="Own Goal Scored" i18n-title="@@matchOverview.ownGoalScored">
                 <i class="lineup-player--goals icon-svg icon-soccer-ball-own-goal"></i>
                 <span *ngIf="player.ownGoals > 1" class="lineup-player--stat-count">{{player.ownGoals}}</span>
             </div>
-            <div *ngIf="player.assists > 0" class="position-relative" title="Assisted">
+            <div *ngIf="player.assists > 0" class="position-relative" title="Assisted" i18n-title="@@globals.assisted">
                 <i class="lineup-player--assists icon-svg icon-soccer-shoe"></i>
                 <span *ngIf="player.assists > 1" class="lineup-player--stat-count">{{player.assists}}</span>
             </div>
             <div *ngIf="player.position.name === 'GK' && player.goalsConceded ===  0" class="position-relative"
-                title="Clean Sheet">
+                title="Clean Sheet" i18n-title="@@globals.cleanSheet">
                 <i class="lineup-player--clean-sheet icon-svg icon-keepers-glove"></i>
             </div>
         </div>

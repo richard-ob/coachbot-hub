@@ -8,7 +8,7 @@
                         <ul class=" team-result-filter d-none d-lg-inline float-right">
                             <li class="team-result-filter__item">
                                 <select class="form-control" [(ngModel)]="currentPhase" (ngModelChange)="loadPhase()">
-                                    <option [ngValue]=" undefined">All Rounds</option>
+                                    <option [ngValue]="undefined"  i18n="@@fantasy.allRounds">All Rounds</option>
                                     <option *ngFor="let phase of phases" [ngValue]="phase.id">
                                         {{phase.name}}</option>
                                 </select>
@@ -85,24 +85,24 @@
             <div class="col-12 col-lg-4">
                 <div class="card">
                     <div class="card__header">
-                        <h4>Team Info</h4>
+                        <h4  i18n="@@fantasy.teamInfo">Team Info</h4>
                     </div>
                     <div class="card__content">
-                        <label class="mb-0">Player</label>
+                        <label class="mb-0" i18n="@@globals.player">Player</label>
                         <a class="d-block"
                             [routerLink]="['/player-profile/', fantasyTeam.playerId]">{{fantasyTeam.player.name}}</a>
-                        <label class="mb-0">Overall Points</label>
+                        <label class="mb-0"  i18n="@@fantasy.overallPoints">Overall Points</label>
                         <div>{{fantasyTeamRanking ? fantasyTeamRanking.points : 'N/A'}}</div>
-                        <label class="mb-0">Rank</label>
+                        <label class="mb-0" i18n="@@fantasy.rank">Rank</label>
                         <div>{{fantasyTeamRanking ? fantasyTeamRanking.rank : 'N/A'}}</div>
-                        <label class="mb-0">Tournament</label>
+                        <label class="mb-0" i18n="@@globals.tournament">Tournament</label>
                         <div>{{fantasyTeam.tournament.name}}</div>
-                        <label class="mb-0">Created</label>
+                        <label class="mb-0" i18n="@@globals.created">Created</label>
                         <div>{{fantasyTeam.createdDate | date }}</div>
                     </div>
                 </div>
                 <a type="button" class="btn btn-primary btn-block"
-                    [routerLink]="['/fantasy/', fantasyTeam.tournamentId]">Leaderboard</a>
+                    [routerLink]="['/fantasy/', fantasyTeam.tournamentId]" i18n="@@globals.leaderboard">Leaderboard</a>
             </div>
         </div>
     </ng-container>

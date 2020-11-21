@@ -1,27 +1,27 @@
 <div id="team-profile-discord">
     <div class="card" [class.card--has-table]="!isChannelWizardOpen && !isGuildEditorOpen">
         <div class="card__header card__header--has-btn">
-            <h4>Manage Discord Integration</h4>
+            <h4  i18n="@@teamEditor.manageDiscord">Manage Discord Integration</h4>
             <ng-container *ngIf="isDiscordGuildSet && !isChannelWizardOpen && !isGuildEditorOpen">
                 <button type="button" (click)="channelEditor.startCreateWizard(teamId); isChannelWizardOpen = true;"
-                    class="btn btn-primary-inverse btn-xs card-header__button" [disabled]="">Add Channel</button>
+                    class="btn btn-primary-inverse btn-xs card-header__button" [disabled]="" i18n="@@teamEditor.addChannel">Add Channel</button>
                 <button type="button" class="btn btn-primary btn-xs card-header__button mr-2"
-                    (click)="guildEditor.openGuildEditor(teamId, team.guild.discordGuildId); isGuildEditorOpen = true;">Edit
+                    (click)="guildEditor.openGuildEditor(teamId, team.guild.discordGuildId); isGuildEditorOpen = true;" i18n="@@teamEditor.editServer">Edit
                     Server Settings</button>
             </ng-container>
         </div>
         <div class="card__content">
             <div *ngIf="!isLoading && !isChannelWizardOpen && !isGuildEditorOpen">
-                <div *ngIf="!channels.length" class="alert alert-info m-4">
+                <div *ngIf="!channels.length" class="alert alert-info m-4" i18n="@@teamEditor.noChannelsAdded">
                     You have not added any channels yet. Click the "Add Channel" button to get started.
                 </div>
                 <table *ngIf="channels && channels.length" class="table table-striped table-hover table-clickable">
                     <thead>
-                        <th>Channel Name</th>
-                        <th>Search Team Code</th>
+                        <th i18n="@@teamEditor.channelName">Channel Name</th>
+                        <th i18n="@@teamEditor.searchTeamCode">Search Team Code</th>
                         <!--<th>Sub Team</th>-->
-                        <th>Format</th>
-                        <th class="text-center">Is Mix</th>
+                        <th i18n="@@globals.format">Format</th>
+                        <th class="text-center"  i18n="@@teamEditor.channel.isMix">Is Mix</th>
                         <th></th>
                     </thead>
                     <tbody>
@@ -45,7 +45,7 @@
                                 <i *ngIf="!channel.isMixChannel" class="text-danger fa fa-times"></i>
                             </td>
                             <td class="text-center"><button type="button" class="btn btn-xs btn-outline-primary"
-                                    (click)="channelEditor.startEditWizard(channel.id); isChannelWizardOpen = true;">Edit
+                                    (click)="channelEditor.startEditWizard(channel.id); isChannelWizardOpen = true;"   i18n="@@teamEditor.channel.edit">Edit
                                     Channel</button>
                             </td>
                         </tr>

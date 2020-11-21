@@ -1,30 +1,25 @@
-<!--<div class="container py-4">
-    <div class="alert alert-warning">
-        Fantasy is down for maintenance. Come back soon!
-    </div>
-</div>-->
 <div class="container py-4">
     <ng-container *ngIf="!isLoading; else spinner">
         <ng-container *ngIf="!fantasyTeams.length && !availableTournaments.length; else fantasyTeamManager">
-            <div *ngIf="!fantasyTeams.length" class="alert alert-info">
+            <div *ngIf="!fantasyTeams.length" class="alert alert-info" i18n="@@fantasy.noFantasyTournaments">
                 There are no fantasy tournament games yet. Come back soon!
             </div>
         </ng-container>
         <ng-template #fantasyTeamManager>
-            <div *ngIf="!fantasyTeams.length" class="alert alert-info">
+            <div *ngIf="!fantasyTeams.length" class="alert alert-info" i18n="@@fantasy.noPreviousEntries">
                 You haven't entered any fantasy tournaments yet. Once you have, they will appear here.
             </div>
             <div *ngIf="fantasyTeams.length" class="card card--has-table">
                 <div class="card__header">
-                    <h4>My Fantasy Teams</h4>
+                    <h4 i18n="@@fantasy.myFantasyTeams">My Fantasy Teams</h4>
                 </div>
                 <div class="card__content">
                     <table class="table table-striped table-hover table-clickable">
                         <thead>
-                            <th>Name</th>
-                            <th>Tournament</th>
-                            <th class="text-center">Squad Complete?</th>
-                            <th class="text-center">Status</th>
+                            <th i18n="@@globals.name">Name</th>
+                            <th i18n="@@globals.tournament">Tournament</th>
+                            <th class="text-center" i18n="@@fantasy.squadComplete">Squad Complete?</th>
+                            <th class="text-center" i18n="@@globals.status">Status</th>
                             <th class="text-center"></th>
                         </thead>
                         <tbody>
@@ -43,15 +38,15 @@
                                 <td class="text-center">{{fantasyTeam.fantasyTeamStatus | fantasyTeamStatus }}</td>
                                 <td class="text-center">
                                     <button *ngIf="fantasyTeam.fantasyTeamStatus !== fantasyTeamStatuses.Open"
-                                        type="button" class="btn btn-primary btn-xs">
+                                        type="button" class="btn btn-primary btn-xs" i18n="@@fantasy.viewTeam">
                                         View Team
                                     </button>
                                     <button *ngIf="fantasyTeam.fantasyTeamStatus === fantasyTeamStatuses.Open"
-                                        type="button" class="btn btn-primary btn-xs">
+                                        type="button" class="btn btn-primary btn-xs" i18n="@@fantasy.editTeam">
                                         Edit Team
                                     </button>
                                     <a [routerLink]="['/fantasy/', fantasyTeam.tournamentId]"
-                                        class="ml-2 btn btn-primary btn-xs">
+                                        class="ml-2 btn btn-primary btn-xs" i18n="@@globals.leaderboard">
                                         Leaderboard
                                     </a>
                                 </td>
@@ -62,18 +57,18 @@
             </div>
             <div class="card">
                 <div class="card__header">
-                    <h4>Fantasy Team Creator</h4>
+                    <h4 i18n="@@fantasy.fantasyTeamCreator">Fantasy Team Creator</h4>
                 </div>
                 <div class="card__content">
                     <ng-container *ngIf="availableTournaments.length; else noAvailableTournaments">
                         <form #fantasyTeamForm="ngForm">
                             <div class="form-group">
-                                <label>Name</label>
+                                <label i18n="@@globals.name">Name</label>
                                 <input [(ngModel)]="fantasyTeam.name" name="fantasyTeamName" type="text" required
                                     maxlength="50" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label>Tournament</label>
+                                <label i18n="@@globals.tournament">Tournament</label>
                                 <select class="form-control" [(ngModel)]="fantasyTeam.tournamentId"
                                     name="fantasyTournamentId" required>
                                     <option *ngFor="let tournament of availableTournaments" [ngValue]="tournament.id">
@@ -83,11 +78,11 @@
                             </div>
 
                             <button class="btn btn-primary" (click)="createFantasyTeam()" type="button"
-                                [disabled]="isCreating || fantasyTeamForm.invalid">Create</button>
+                                [disabled]="isCreating || fantasyTeamForm.invalid" i18n="@@globals.create">Create</button>
                         </form>
                     </ng-container>
                     <ng-template #noAvailableTournaments>
-                        <div class="alert alert-info">There are currently no fantasy tournaments to enter</div>
+                        <div class="alert alert-info" i18n="@@fantasy.noTournamentsToEnter">There are currently no fantasy tournaments to enter</div>
                     </ng-template>
                 </div>
             </div>

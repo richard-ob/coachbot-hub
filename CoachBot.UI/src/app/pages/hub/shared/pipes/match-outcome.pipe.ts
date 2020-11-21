@@ -6,11 +6,11 @@ export class MatchOutcomePipe implements PipeTransform {
     transform(matchOutcome: MatchOutcomeType): string {
         switch (matchOutcome) {
             case MatchOutcomeType.Win:
-                return 'Win';
+                return $localize`:@@globals.win:Win`;
             case MatchOutcomeType.Draw:
-                return 'Draw';
+                return $localize`:@@globals.draw:Draw`;
             case MatchOutcomeType.Loss:
-                return 'Loss';
+                return $localize`:@@globals.loss:Loss`;
             default:
                 return '';
         }

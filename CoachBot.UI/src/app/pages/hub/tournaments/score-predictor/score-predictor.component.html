@@ -2,20 +2,20 @@
     <ng-container *ngIf="!isLoading; else spinner">
         <div class="card" [class.card--has-table]="leaderboard && leaderboard.length">
             <div class="card__header">
-                <h4>Leaderboard</h4>
+                <h4 i18n="@@globals.leaderboard">Leaderboard</h4>
             </div>
             <div class="card__content table-responsive" style="max-height: 60vh; overflow-y: auto;">
                 <app-spinner *ngIf="!leaderboard"></app-spinner>
-                <div *ngIf="leaderboard && !leaderboard.length" class="alert alert-info">
+                <div *ngIf="leaderboard && !leaderboard.length" class="alert alert-info" i18n="@@scorePredictor.noLeaderboard">
                     No leaderboard yet!
                 </div>
                 <ng-container *ngIf="leaderboard && leaderboard.length">
                     <table class="table table-striped">
                         <thead>
-                            <th class="text-center">Rank</th>
-                            <th>Player</th>
-                            <th class="text-center">Predictions</th>
-                            <th class="text-center">Correct Results</th>
+                            <th class="text-center" i18n="@@globals.rank">Rank</th>
+                            <th i18n="@@globals.player">Player</th>
+                            <th class="text-center" i18n="@@scorePredictor.predictions">Predictions</th>
+                            <th class="text-center" i18n="@@scorePredictor.correctResults">Correct Results</th>
                             <th></th>
                         </thead>
                         <tbody>
@@ -28,7 +28,7 @@
                                 <td class="text-center">{{player.points}}</td>
                                 <td>
                                     <a type="button" class="btn btn-xs btn-primary"
-                                        [routerLink]="['./player/' + player.playerId]">
+                                        [routerLink]="['./player/' + player.playerId]" i18n="@@scorePredictor.viewPredictions">
                                         View Predictions
                                     </a>
                                 </td>
@@ -38,8 +38,8 @@
                 </ng-container>
             </div>
         </div>
-        <h4 class="mt-4">Submit Predictions</h4>
-        <div *ngIf="!phase || !phase.tournamentGroupMatches.length" class="alert alert-info">
+        <h4 class="mt-4" i18n="@@scorePredictor.submitPredictions">Submit Predictions</h4>
+        <div *ngIf="!phase || !phase.tournamentGroupMatches.length" class="alert alert-info" i18n="@@scorePredictor.noMatchesToPredict">
             No matches currently available to predict
         </div>
         <div *ngIf="phase" class="row">

@@ -1,20 +1,20 @@
 <ng-container *ngIf="!isLoading; else spinner">
     <div class="card" [class.card--has-table]="leaderboard && leaderboard.length">
         <div class="card__header">
-            <h4>Global Prediction Leaderboard</h4>
+            <h4  i18n="@@scorePredictor.globalPredictionLeaderboard">Global Prediction Leaderboard</h4>
         </div>
         <div class="card__content card--overflow-40 table-responsive">
             <app-spinner *ngIf="!leaderboard"></app-spinner>
-            <div *ngIf="leaderboard && !leaderboard.length" class="alert alert-info">
+            <div *ngIf="leaderboard && !leaderboard.length" class="alert alert-info"  i18n="@@globals.noLeaderboard">
                 No leaderboard yet!
             </div>
             <ng-container *ngIf="leaderboard && leaderboard.length">
                 <table class="table table-striped">
                     <thead>
-                        <th class="text-center">Rank</th>
-                        <th>Player</th>
-                        <th class="text-center">Predictions</th>
-                        <th class="text-center">Correct Results</th>
+                        <th class="text-center"  i18n="@@globals.rank">Rank</th>
+                        <th  i18n="@@globals.player">Player</th>
+                        <th class="text-center" i18n="@@scorePredictor.predictions">Predictions</th>
+                        <th class="text-center"  i18n="@@globals.correctResults">Correct Results</th>
                         <th></th>
                     </thead>
                     <tbody>
@@ -27,7 +27,7 @@
                             <td class="text-center">{{player.points}}</td>
                             <td>
                                 <a type="button" class="btn btn-xs btn-primary"
-                                    [routerLink]="['./player/' + player.playerId]">
+                                    [routerLink]="['./player/' + player.playerId]" i18n="@@scorePredictor.viewPredictions">
                                     View Predictions
                                 </a>
                             </td>

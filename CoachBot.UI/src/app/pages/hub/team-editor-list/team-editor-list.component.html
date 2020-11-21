@@ -3,23 +3,23 @@
     <app-spinner *ngIf="isLoading"></app-spinner>
     <div *ngIf="!isLoading && player" class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>My Teams</h4>
-            <a [routerLink]="['/create-team']" class="btn btn-primary btn-xs float-right">
+            <h4 i18n="@@teamEditor.myTeams">My Teams</h4>
+            <a [routerLink]="['/create-team']" class="btn btn-primary btn-xs float-right"  i18n="@@teamEditor.createNewTeam">
                 Create New Team
             </a>
         </div>
         <div class="card__content table-responsive">
-            <div *ngIf="!player || !player.teams || !player.teams.length" class="alert alert-info m-3">
+            <div *ngIf="!player || !player.teams || !player.teams.length" class="alert alert-info m-3" i18n="@@teamEditor.youAreNotMember">
                 You are not currently a member of any teams. Teams can invite you to join, or you can form a new team.
             </div>
             <table *ngIf="player && player.teams && player.teams.length" class="table table-striped">
                 <thead>
                     <th style="width: 35px;"></th>
-                    <th>Team</th>
-                    <th>Team Type</th>
-                    <th>Role</th>
-                    <th>Date Joined</th>
-                    <th>Actions</th>
+                    <th  i18n="@@globals.team">Team</th>
+                    <th  i18n="@@globals.teamType">Team Type</th>
+                    <th  i18n="@@globals.role">Role</th>
+                    <th  i18n="@@globals.joined">Date Joined</th>
+                    <th  i18n="@@globals.actions">Actions</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let playerTeam of player.teams | filterBy: ['isCurrentTeam']:'true'">
@@ -36,7 +36,7 @@
                         <td>
                             <ng-container *ngIf="playerTeam.isPending">
                                 <button class="btn btn-xs btn-outline-success" type="button"
-                                    (click)="acceptInvite(playerTeam)">
+                                    (click)="acceptInvite(playerTeam)"  i18n="@@teamEditor.acceptInvite">
                                     Accept Invite
                                 </button>
                             </ng-container>
@@ -44,14 +44,14 @@
                                 <ng-container
                                     *ngIf="playerTeam.teamRole === teamRoles.Captain || playerTeam.teamRole === teamRoles.ViceCaptain; else playerRole">
                                     <a class="btn btn-xs btn-outline-primary" type="button"
-                                        [routerLink]="['/team/' + playerTeam.team.id + '/manage']">
+                                        [routerLink]="['/team/' + playerTeam.team.id + '/manage']"  i18n="@@teamEditor.manage">
                                         Manage
                                     </a>
                                 </ng-container>
                                 <ng-template #playerRole>
                                     <button class="btn btn-xs btn-outline-danger" type="button"
                                         [swal]="{ title: 'Are you sure?', text: 'You will leave the team immediately', icon: 'warning', showCancelButton: true }"
-                                        (confirm)="leaveTeam(playerTeam)">
+                                        (confirm)="leaveTeam(playerTeam)"  i18n="@@teamEditor.leave">
                                         Leave
                                     </button>
                                 </ng-template>

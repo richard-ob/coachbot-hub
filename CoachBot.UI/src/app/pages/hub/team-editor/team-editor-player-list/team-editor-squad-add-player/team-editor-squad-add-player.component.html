@@ -1,33 +1,33 @@
 <ng-container>
-    <h5>Add Player</h5>
+    <h5  i18n="@@teamEditor.addPlayer">Add Player</h5>
     <app-player-selector (playerSelected)="selectPlayer($event)"></app-player-selector>
     <div class="form-group">
-        <label>Role</label>
-        <select class="form-control" [(ngModel)]="role">
-            <option [ngValue]="teamRoles.Captain">Captain</option>
-            <option [ngValue]="teamRoles.ViceCaptain">Vice Captain</option>
-            <option [ngValue]="teamRoles.Player">Player</option>
-            <option [ngValue]="teamRoles.Loaned">Loaned</option>
-            <option [ngValue]="teamRoles.Loanee">Loanee</option>
-            <option [ngValue]="teamRoles.Reserve">Reserve</option>
-            <option [ngValue]="teamRoles.Trialist">Trialist</option>
+        <label  i18n="@@globals.role">Role</label>
+        <select class="form-control" [(ngModel)]="role">            
+            <option [ngValue]="teamRoles.Captain"  i18n="@@playerRoles.captain">Captain</option>
+            <option [ngValue]="teamRoles.ViceCaptain" i18n="@@playerRoles.viceCaptain">Vice Captain</option>
+            <option [ngValue]="teamRoles.Player" i18n="@@playerRoles.player">Player</option>
+            <option [ngValue]="teamRoles.Loaned" i18n="@@playerRoles.loaned" >Loaned</option>
+            <option [ngValue]="teamRoles.Loanee" i18n="@@playerRoles.loanee">Loanee</option>
+            <option [ngValue]="teamRoles.Reserve" i18n="@@playerRoles.reserve">Reserve</option>
+            <option [ngValue]="teamRoles.Trialist" i18n="@@playerRoles.trialist">Trialist</option>
         </select>
     </div>
-    <div *ngIf="playerAddFailure" class="alert alert-danger">
+    <div *ngIf="playerAddFailure" class="alert alert-danger" i18n="@@teamEditor.playerAlreadyTeamed">
         Couldn't add player. Players can only belong to one club team at any one time. For loanees,
         their parent club must set them to loaned first.
     </div>
-    <div *ngIf="playerAlreadyAdded" class="alert alert-danger">
+    <div *ngIf="playerAlreadyAdded" class="alert alert-danger" i18n="@@teamEditor.playerAlreadyInSquad">
         Couldn't add player, as they're already in your squad. If they are showing as pending, you will need them to
         accept your invite.
     </div>
     <div class="float-right">
-        <button class="btn btn-outline-primary mr-2" type="button" (click)="wizardClosed.emit()">
+        <button class="btn btn-outline-primary mr-2" type="button" (click)="wizardClosed.emit()"  i18n="@@globals.cancel">
             Cancel
         </button>
         <button class="btn btn-primary" type="button"
             [disabled]="isSaving || role === null || role === undefined || !player" (click)="addPlayer()">
-            <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i> Add
+            <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i> <ng-container i18n="@@globals.add">Add</ng-container>
         </button>
     </div>
 </ng-container>

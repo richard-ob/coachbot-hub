@@ -1,32 +1,32 @@
 <div class="container position-relative py-4">
     <app-spinner *ngIf="isLoading" class="my-4"></app-spinner>
     <ng-container *ngIf="!isLoading">
-        <h4>Current</h4>
+        <h4 i18n="@@globals.current">Current</h4>
         <div class="btn-group" dropdown style="position: absolute; top: 15px; right: 15px;">
             <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle"
                 aria-controls="dropdown-basic">
                 <ng-container [ngSwitch]="teamType">
-                    <span *ngSwitchCase="teamTypes.Club">Club Teams</span>
-                    <span *ngSwitchCase="teamTypes.National">National Teams</span>
-                    <span *ngSwitchCase="teamTypes.Mix">Mix Teams</span>
-                    <span *ngSwitchCase="teamTypes.Draft">Draft Teams</span>
+                    <span *ngSwitchCase="teamTypes.Club" i18n="@@globals.teamTypes.clubTeams">Club Teams</span>
+                    <span *ngSwitchCase="teamTypes.National" i18n="@@globals.teamTypes.nationalTeams">National Teams</span>
+                    <span *ngSwitchCase="teamTypes.Mix" i18n="@@globals.teamTypes.mixTeams">Mix Teams</span>
+                    <span *ngSwitchCase="teamTypes.Draft" i18n="@@globals.teamTypes.draftTeams">Draft Teams</span>
                 </ng-container>
                 <span class="caret"></span>
             </button>
             <ul id="dropdown-teamtype" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Club)">Club Teams</a>
+                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Club)" i18n="@@globals.teamTypes.clubTeams">Club Teams</a>
                 </li>
-                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.National)">National
+                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.National)" i18n="@@globals.teamTypes.nationalTeams">National
                         Teams</a>
                 </li>
-                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Mix)">Mix Teams</a>
+                <li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Mix)" i18n="@@globals.teamTypes.mixTeams">Mix Teams</a>
                 </li>
                 <!--<li role="menuitem"><a class="dropdown-item clickable" (click)="getTeams(teamTypes.Draft)">Draft
                         Teams</a>
                 </li>-->
             </ul>
         </div>
-        <div *ngIf="!isLoading && !teams.length" class="alert alert-info">No teams have been created yet of this type in
+        <div *ngIf="!isLoading && !teams.length" class="alert alert-info" i18n="@@teams.noTeamsCreated">No teams have been created yet of this type in
             this region
         </div>
         <div class="sponsors-grid row">
@@ -44,21 +44,21 @@
                         <h6 class="m-0">{{team.name}}</h6>
                     </div>
                     <footer class="card__footer sponsor-card__footer p-2">
-                        <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
+                        <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]" i18n="@@teams.viewTeamProfile">
                             View Team Profile</a>
                         <a *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Administrator"
-                            class="btn btn-xs btn-block btn-dark" [routerLink]="['/team/' + team.id + '/manage']">
+                            class="btn btn-xs btn-block btn-dark" [routerLink]="['/team/' + team.id + '/manage']" i18n="@@globas.manage">
                             Manage
                         </a>
                         <button *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Owner"
-                            class="btn btn-xs btn-block btn-danger" type="button" (click)="deleteTeam(team.id)">
+                            class="btn btn-xs btn-block btn-danger" type="button" (click)="deleteTeam(team.id)" i18n="@@globals.delete">
                             Delete
                         </button>
                     </footer>
                 </div>
             </div>
         </div>
-        <h4>Past</h4>
+        <h4 i18n="@@globals.past">Past</h4>
         <div class="sponsors-grid row">
             <div *ngFor="let team of teams | filterBy:['inactive']:true" class="col-sm-6 col-lg-4">
                 <div class="card sponsor-card">
@@ -77,18 +77,18 @@
                         <h6 class="m-0">{{team.name}}</h6>
                     </div>
                     <footer class="card__footer sponsor-card__footer p-2">
-                        <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]">
+                        <a class="btn btn-dark btn-xs btn-block" [routerLink]="['/team-profile/' + team.id]" i18n="@@globals.viewTeamProfile">
                             View Team Profile</a>
                         <a *ngIf="currentPlayer && currentPlayer.hubRole >= hubRoles.Administrator"
                             class="btn btn-xs  btn-block btn-dark" type="button"
-                            [routerLink]="['/team/' + team.id + '/manage']">
+                            [routerLink]="['/team/' + team.id + '/manage']" i18n="@@globals.manage">
                             Manage
                         </a>
                     </footer>
                 </div>
             </div>
         </div>
-        <div *ngIf="!(teams | filterBy:['inactive']:true).length" class="alert alert-info">
+        <div *ngIf="!(teams | filterBy:['inactive']:true).length" class="alert alert-info" i18n="@@globals.noTeamsDiedYet">
             No teams have died yet. Great!
         </div>
     </ng-container>

@@ -13,54 +13,54 @@
                         <div class="player-info__title player-info__title--desktop">
                             <h1 class="player-info__name">
                                 <span class="player-info__first-name">{{player.name}} 
-                                    <a *ngIf="currentPlayer && currentPlayer.id === player.id" class="btn btn-primary-inverse btn-xs ml-2" routerLink="/edit-profile">Edit Profile</a>
+                                    <a *ngIf="currentPlayer && currentPlayer.id === player.id" class="btn btn-primary-inverse btn-xs ml-2" routerLink="/edit-profile" i18n="@@globals.editProfile">Edit Profile</a>
                                 </span>
                             </h1>
                         </div>
                         <div class="player-info-details">
                             <div class="player-info-details__item player-info-details__item--height">
-                                <h6 class="player-info-details__title">Position</h6>
+                                <h6 class="player-info-details__title" i18n="@@globals.position">Position</h6>
                                 <div class="player-info-details__value">{{playerProfile?.position?.name || 'Unknown'}}
                                 </div>
                             </div>
                             <div class="player-info-details__item player-info-details__item--weight">
-                                <h6 class="player-info-details__title">Country</h6>
+                                <h6 class="player-info-details__title"  i18n="@@globals.country">Country</h6>
                                 <div class="player-info-details__value">
                                     <ng-container *ngIf="steamUserProfile">
                                         <span *ngIf="steamUserProfile.loccountrycode; else unknownFlag" class="flag-icon"
                                                     [ngClass]="'flag-icon-' + steamUserProfile.loccountrycode.toLowerCase()"></span>
                                         <ng-template #unknownFlag>
-                                            <span>Unknown</span>
+                                            <span i18n="@@globals.unknown">Unknown</span>
                                         </ng-template>
                                     </ng-container>
                                 </div>
                             </div>
                             <div *ngIf="playerProfile.rating" class="player-info-details__item">
-                                <h6 class="player-info-details__title">Rating</h6>
+                                <h6 class="player-info-details__title" i18n="@@globals.rating">Rating</h6>
                                 <div class="player-info-details__value">{{ player.rating }}
                                     <a *ngIf="currentPlayer && currentPlayer.hubRole >= playerHubRoles.Administrator"
                                         class="btn btn-primary-inverse btn-xs ml-2"
-                                        (click)="editRatingModal.fire()">Edit Rating</a>
+                                        (click)="editRatingModal.fire()" i18n="@@playerProfile.editRating">Edit Rating</a>
                                 </div>
                             </div>
                             <div
                                 *ngIf="!playerProfile.rating && currentPlayer && currentPlayer.hubRole >= playerHubRoles.Administrator">
-                                <a class="btn btn-primary-inverse btn-xs ml-2" (click)="editRatingModal.fire()">Edit
+                                <a class="btn btn-primary-inverse btn-xs ml-2" (click)="editRatingModal.fire()" i18n="@@playerProfile.editRating">Edit
                                     Rating</a>
                             </div>
                             <div class="player-info-details__item player-info-details__item--college">
-                                <h6 class="player-info-details__title">Club Team</h6>
+                                <h6 class="player-info-details__title" i18n="@@playerProfile.clubTeam">Club Team</h6>
                                 <div class="player-info-details__value">
                                     <span *ngIf="playerProfile.clubTeam">
                                         <a class="player-info-details__team-link" [routerLink]="['/team-profile/', playerProfile.clubTeam.id]">                                                    
                                             <img *ngIf="playerProfile.clubTeam.badgeImage" [src]="playerProfile.clubTeam.badgeImage.extraSmallUrl" style="width: 20px; padding-right: 3px;">{{playerProfile.clubTeam.name}}
                                         </a>
                                     </span>
-                                    <span *ngIf="!playerProfile.clubTeam">None</span>
+                                    <span *ngIf="!playerProfile.clubTeam" i18n="@@globals.none">None</span>
                                 </div>
                             </div>
                             <div class="player-info-details__item player-info-details__item--born">
-                                <h6 class="player-info-details__title">National Team</h6>
+                                <h6 class="player-info-details__title"i18n="@@playerProfile.nationalTeam">National Team</h6>
                                 <div class="player-info-details__value">
                                     <span *ngIf="playerProfile.nationalTeam">
                                         <a class="player-info-details__team-link" [routerLink]="['/team-profile/', playerProfile.nationalTeam.id]">
@@ -68,11 +68,11 @@
                                             {{playerProfile.nationalTeam.name}}
                                         </a>
                                     </span>
-                                    <span *ngIf="!playerProfile.nationalTeam">None</span>
+                                    <span *ngIf="!playerProfile.nationalTeam" i18n="@@globals.none">None</span>
                                 </div>
                             </div>
                             <div *ngIf="playingTime" class="player-info-details__item">
-                                <h6 class="player-info-details__title">Playing Time</h6>
+                                <h6 class="player-info-details__title" i18n="@@playerProfile.playingTime">Playing Time</h6>
                                 <div class="player-info-details__value">{{playingTime}}</div>
                             </div>
                         </div>
@@ -92,16 +92,16 @@
             <a href="javascript:void(0);" (click)="tabNav.toggle()" class="content-filter__toggle"></a>
             <ul class="content-filter__list" appTabNavMobile #tabNav>
                 <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                    <a [routerLink]="['./statistics']" class="content-filter__link">Statistics</a>
+                    <a [routerLink]="['./statistics']" class="content-filter__link" i18n="@@globals.statistics">Statistics</a>
                 </li>
                 <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                    <a [routerLink]="['./matches']" class="content-filter__link">Matches</a>
+                    <a [routerLink]="['./matches']" class="content-filter__link"i18n="@@globals.matches">Matches</a>
                 </li>
                 <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                    <a [routerLink]="['./teams']" class="content-filter__link">Team History</a>
+                    <a [routerLink]="['./teams']" class="content-filter__link" i18n="@@globals.teamHistory">Team History</a>
                 </li>
                 <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                    <a [routerLink]="['./tournaments']" class="content-filter__link">Tournaments</a>
+                    <a [routerLink]="['./tournaments']" class="content-filter__link"i18n="@@globals.tournaments">Tournaments</a>
                 </li>
             </ul>
         </div>
@@ -111,18 +111,18 @@
     </div>
     <swal #editRatingModal (confirm)="updateRating()">
         <ng-container *swalPortal="swalTargets.title">
-            <h5>Update Rating</h5>
+            <h5 i18n="@@playerProfile.updateRating">Update Rating</h5>
         </ng-container>
         <form *swalPortal>
             <div class="form-group">
-                <label>Rating</label>
+                <label i18n="@@globals.rating">Rating</label>
                 <input type="number" class="form-control" name="rating" [(ngModel)]="player.rating">
             </div>
         </form>
-        <ng-container *swalPortal="swalTargets.cancelButton">
+        <ng-container *swalPortal="swalTargets.cancelButton" i18n="@@globals.cancel">
             Cancel
         </ng-container>
-        <ng-container *swalPortal="swalTargets.confirmButton">
+        <ng-container *swalPortal="swalTargets.confirmButton" i18n="@@globals.save">
             Save
         </ng-container>
     </swal>

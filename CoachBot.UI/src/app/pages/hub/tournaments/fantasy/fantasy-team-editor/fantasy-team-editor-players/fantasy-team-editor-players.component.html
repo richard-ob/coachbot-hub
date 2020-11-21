@@ -1,15 +1,15 @@
 <aside class="widget card widget--sidebar widget-filter-price">
     <div class="widget__title card__header card__header--has-btn">
-        <h4>Filters</h4>
+        <h4 i18n="@@globals.filters">Filters</h4>
         <button class="btn btn-default btn-outline btn-xs card-header__button ml-2"
-            (click)="loadFantasyPlayers()">Filter</button>
+            (click)="loadFantasyPlayers()" i18n="@@globals.filter">Filter</button>
     </div>
     <div class="widget__content card__content">
         <div class="form-group">
-            <label>Position</label>
+            <label i18n="@@globals.position">Position</label>
             <div class="fantasy-player-filters--container">
                 <div class="fantasy-player-filters--position-group" (click)="filters.positionGroup = null"
-                    [class.active]="filters.positionGroup == null">
+                    [class.active]="filters.positionGroup == null" i18n="@@globals.all">
                     All
                 </div>
                 <div class="fantasy-player-filters--position-group"
@@ -35,12 +35,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Price</label>
+            <label i18n="@@fantasy.price">Price</label>
             <nouislider [connect]="true" [min]="0" [max]="10" [(ngModel)]="ratingRange" [step]="0.25"
                 [tooltips]="[ true, true ]" (ngModelChange)="setRatingRange()"></nouislider>
         </div>
         <div class="form-group">
-            <label>Team</label>
+            <label i18n="@@globals.team">Team</label>
             <select class="form-control input-sm" [(ngModel)]="filters.teamId">
                 <option [ngValue]="undefined" selected>All Teams</option>
                 <option *ngFor="let team of teams" [ngValue]="team.id">
@@ -49,8 +49,8 @@
             </select>
         </div>
         <div class="form-group">
-            <label>Name</label>
-            <input class="form-control input-sm" type="text" [(ngModel)]="filters.playerName"
+            <label i18n="@@globals.name">Name</label>
+            <input class="form-control input-sm" type="text" [(ngModel)]="filters.playerName" i18n-placeholder="@@fantasy.searchByPlayerName"
                 placeholder="Search by player name">
         </div>
     </div>
@@ -58,7 +58,7 @@
 <aside class="widget card widget--sidebar widget-filter-price card--has-table">
     <div class="widget__title card__header ">
         <h4>
-            Players
+            <ng-container i18n="@@globals.players">Players</ng-container>
             <span class="badge badge-primary badge-pill">{{totalItems}}</span>
 
             <span class="float-right switch switch-sm">
@@ -75,7 +75,7 @@
                     <th></th>
                     <th (click)="loadFantasyPlayers(currentPage, 'Player.Name')">
                         <span style="white-space: nowrap; ">
-                            Player&nbsp;
+                            <ng-container i18n="@@globals.player">Player</ng-container>&nbsp;
                             <i *ngIf="sortBy === 'Player.Name' && sortOrder === 'ASC'"
                                 class="fas fa-sort-up"></i>
                             <i *ngIf="sortBy === 'Player.Name' && sortOrder === 'DESC'"
@@ -85,7 +85,7 @@
                     </th>
                     <th (click)="loadFantasyPlayers(currentPage, 'Rating')">
                         <span style="white-space: nowrap; ">
-                            Value&nbsp;
+                            <ng-container i18n="@@fantasy.value">Value</ng-container>&nbsp;
                             <i *ngIf="sortBy === 'Rating' && sortOrder === 'ASC'"
                                 class="fas fa-sort-up"></i>
                             <i *ngIf="sortBy === 'Rating' && sortOrder === 'DESC'"
@@ -95,6 +95,7 @@
                     </th>
                     <th (click)="loadFantasyPlayers(currentPage, 'PositionGroup')">
                         <span style=" white-space: nowrap; ">
+                            <ng-container i18n="@@globals.positionShort">Pos</ng-container>&nbsp;
                             Pos&nbsp;
                             <i *ngIf="sortBy === 'PositionGroup' && sortOrder === 'ASC'"
                                 class="fas fa-sort-up"></i>
@@ -106,7 +107,8 @@
                     <th style="width: 55px"></th>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let player of fantasyPlayers" class="clickable" (click)="selectFantasyPlayer(player)"
+                    <tr *ngFor="let player of fantasyPlayers" class="clickable" (click)="selectFantasyPlayer(player)" 
+                    i18n-title="@@fantasy.addPlayerToTeam"
                         title="Add player to your team">
                         <td>
                             <img *ngIf="player.team.badgeImage" [src]="player.team.badgeImage.extraSmallUrl"

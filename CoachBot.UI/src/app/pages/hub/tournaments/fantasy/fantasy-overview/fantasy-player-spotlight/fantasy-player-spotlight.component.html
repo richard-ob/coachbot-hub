@@ -2,9 +2,9 @@
     (click)="spotlightPlayer && navigateToPlayer(spotlightPlayer.playerId)">
     <div class="card__content  widget-player--soccer">
         <h4 class="statistic-spotlight-title mb-2">
-            Player of the
-            <ng-container *ngIf="!hasTournamentFinished">Round</ng-container>
-            <ng-container *ngIf="hasTournamentFinished">Tournament</ng-container>
+            <ng-container  i18n="@@fantasy.playerOfThe">Player of the</ng-container>
+            <ng-container *ngIf="!hasTournamentFinished"  i18n="@@fantasy.round">Round</ng-container>
+            <ng-container *ngIf="hasTournamentFinished"  i18n="@@globals.tournament">Tournament</ng-container>
         </h4>
         <ng-container *ngIf="!isLoading; else spinner">
             <div class="widget-player__ribbon">
@@ -17,7 +17,7 @@
                     <div class="statistic-spotlight-stat-value">
                         {{spotlightPlayer.points}}
                     </div>
-                    <div class="statistic-spotlight-stat-measure">
+                    <div class="statistic-spotlight-stat-measure"  i18n="@@globals.points">
                         Points
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <div class="statistic-spotlight-stat-value">
                         {{spotlightPlayer.goals}}
                     </div>
-                    <div class="statistic-spotlight-stat-measure">
+                    <div class="statistic-spotlight-stat-measure"  i18n="@@globals.goals">
                         Goals
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                     <div class="statistic-spotlight-stat-value">
                         {{spotlightPlayer.assists}}
                     </div>
-                    <div class="statistic-spotlight-stat-measure">
+                    <div class="statistic-spotlight-stat-measure" i18n="@@globals.assists">
                         Assists
                     </div>
                 </div>

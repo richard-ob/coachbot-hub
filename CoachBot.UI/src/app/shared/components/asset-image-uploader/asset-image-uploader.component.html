@@ -1,18 +1,20 @@
 <div class="mb-2 position-relative" style="max-width: 200px;">
-    <span *ngIf="!hasUploaded" class="badge badge-primary" style="position: absolute; top: 0; left: 0;">Pending Upload</span>
+    <span *ngIf="!hasUploaded" class="badge badge-primary" style="position: absolute; top: 0; left: 0;" i18n="@@imageUploader.pendingUpload">
+        Pending Upload
+    </span>
     <img *ngIf="!file && currentAssetImage" [src]="currentAssetImage">
     <img *ngIf="file && file.base64EncodedImage && !invalidImage" [src]="file.base64EncodedImage">
 </div>
 <div class="mb-3">
-    <div *ngIf="invalidImage" class="alert alert-danger mb-3">
+    <div *ngIf="invalidImage" class="alert alert-danger mb-3" i18n="@@imageUploader.invalidImage">
         Invalid image. The image must not exceed 250KB and be of type PNG.
     </div>
-    <div *ngIf="uploadSuccessful" class="alert alert-success mb-3">
+    <div *ngIf="uploadSuccessful" class="alert alert-success mb-3" i18n="@@imageUploader.imageUploaded">
         Image successfully uploaded. Changes will not take affect until you press Save.
     </div>
     <input type="file" (change)="fileSelected($event)">
 </div>
 <button type="button" class="btn btn-primary btn-xs" [disabled]="invalidImage || isUploading" (click)="uploadFile()">
     <i *ngIf="isUploading" class="fas fa-spin fa-circle-notch"></i>
-    Upload
+    <ng-container i18n="@@globals.upload">Upload</ng-container>
 </button>

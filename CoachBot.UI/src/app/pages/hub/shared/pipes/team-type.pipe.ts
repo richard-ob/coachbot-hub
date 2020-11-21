@@ -6,13 +6,13 @@ export class TeamTypePipe implements PipeTransform {
     transform(teamType: TeamType): string {
         switch (teamType) {
             case TeamType.Club:
-                return 'Club';
+                return $localize`:@@teamTypes.club:Club`;
             case TeamType.Mix:
-                return 'Mix';
+                return $localize`:@@teamTypes.mx:Mix`;
             case TeamType.National:
-                return 'National';
+                return $localize`:@@teamTypes.national:National`;
             case TeamType.Draft:
-                return 'Draft';
+                return $localize`:@@teamTypes.draft:League`;
             default:
                 return '';
         }

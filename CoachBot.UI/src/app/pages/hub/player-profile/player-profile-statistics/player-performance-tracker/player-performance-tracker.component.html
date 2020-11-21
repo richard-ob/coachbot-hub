@@ -1,29 +1,29 @@
 <div class="card card--has-table">
     <div class="card__header card__header--has-btn" style="overflow: visible;">
-        <h4>Performance Tracker</h4>
+        <h4 i18n="@@globals.performanceTracker">Performance Tracker</h4>
         <div class="btn-group btn-group-xs float-right ml-2" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-secondary dropdown-toggle"
                 aria-controls="dropdown-basic">
                 <ng-container [ngSwitch]="currentPerformanceTrackerTime">
-                    <span *ngSwitchCase="performanceTrackerTime.Continuous">Continuous</span>
-                    <span *ngSwitchCase="performanceTrackerTime.Daily">Daily</span>
-                    <span *ngSwitchCase="performanceTrackerTime.Weekly">Weekly</span>
-                    <span *ngSwitchCase="performanceTrackerTime.Monthly">Monthly</span>
+                    <span *ngSwitchCase="performanceTrackerTime.Continuous" i18n="@@globals.continuous">Continuous</span>
+                    <span *ngSwitchCase="performanceTrackerTime.Daily" i18n="@@globals.daily">Daily</span>
+                    <span *ngSwitchCase="performanceTrackerTime.Weekly"i18n="@@globals.weekly">Weekly</span>
+                    <span *ngSwitchCase="performanceTrackerTime.Monthly"i18n="@@globals.monthly">Monthly</span>
                 </ng-container>
                 <span class="caret"></span>
             </button>
             <ul id="dropdown-teamtype" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
                 <li role="menuitem">
-                    <a class="dropdown-item clickable" (click)="getContinuousPlayerPerformance()">Continuous</a>
+                    <a class="dropdown-item clickable" (click)="getContinuousPlayerPerformance()" i18n="@@globals.continuous">Continuous</a>
                 </li>
                 <li role="menuitem">
-                    <a class="dropdown-item clickable" (click)="getDailyPlayerPerformance()">Daily</a>
+                    <a class="dropdown-item clickable" (click)="getDailyPlayerPerformance()" i18n="@@globals.daily">Daily</a>
                 </li>
                 <li role="menuitem">
-                    <a class="dropdown-item clickable" (click)="getWeeklyPlayerPerformance()">Weekly</a>
+                    <a class="dropdown-item clickable" (click)="getWeeklyPlayerPerformance()" i18n="@@globals.weekly">Weekly</a>
                 </li>
                 <li role="menuitem">
-                    <a class="dropdown-item clickable" (click)="getMonthlyPlayerPerformance()">Monthly</a>
+                    <a class="dropdown-item clickable" (click)="getMonthlyPlayerPerformance()"i18n="@@globals.monthly">Monthly</a>
                 </li>
             </ul>
         </div>
@@ -32,33 +32,33 @@
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.MatchOutcomes"
-                        (click)="setAttribute(performanceTrackerAttribute.MatchOutcomes)">
+                        (click)="setAttribute(performanceTrackerAttribute.MatchOutcomes)" i18n="@@globals.matchOutcomes">
                         Match Outcomes
                     </button>
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageGoals"
                         (click)="setAttribute(performanceTrackerAttribute.AverageGoals)">
-                        <span class="d-none d-xl-inline">Average&nbsp;</span>Goals
+                        <span class="d-none d-xl-inline" i18n="@@globals.average">Average&nbsp;</span><ng-container i18n="@@globals.goals">Goals</ng-container>
                     </button>
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.AverageAssists"
                         (click)="setAttribute(performanceTrackerAttribute.AverageAssists)">
-                        <span class="d-none d-xl-inline">Average&nbsp;</span>Assists
+                        <span class="d-none d-xl-inline"i18n="@@globals.average">Average&nbsp;</span><ng-container i18n="@@globals.assists">Assists</ng-container>
                     </button>
                     <button type="button" class="btn btn-xs btn-light"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.GoalsConceded"
                         (click)="setAttribute(performanceTrackerAttribute.GoalsConceded)">
-                        <span class="d-none d-xl-inline">Average Goals&nbsp;</span>Conceded
+                        <span class="d-none d-xl-inline" i18n="@@globals.averageGoals">Average Goals&nbsp;</span><ng-container i18n="@@globals.conceded">Conceded</ng-container>
                     </button>
                     <button type="button" class="btn btn-xs btn-light d-none d-xl-inline"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.Cleansheets"
-                        (click)="setAttribute(performanceTrackerAttribute.Cleansheets)">
+                        (click)="setAttribute(performanceTrackerAttribute.Cleansheets)" i18n="@@globals.cleanSheets">
                         Cleansheets</button>
                     <button type="button" class="btn btn-xs btn-light d-none d-xl-inline"
                         [class.active]="currentPerformanceTrackerAttribute === performanceTrackerAttribute.Appearances"
                         (click)="setAttribute(performanceTrackerAttribute.Appearances)">
-                        <span class="d-none d-xl-inline">Appearances</span>
-                        <span class="d-inline d-xl-none">Apps</span>
+                        <span class="d-none d-xl-inline" i18n="@@globals.appearances">Appearances</span>
+                        <span class="d-inline d-xl-none" i18n="@@globals.appearancesShort">Apps</span>
                     </button>
                 </div>
             </li>
@@ -74,8 +74,8 @@
         </div>
         <div *ngIf="performanceSeries && performanceSeries.length && performanceSeries[0].series.length <= 1"
             class="performance-tracker-no-data d-flex align-items-center justify-content-center">
-            <i class="fas fa-exclamation-triangle mr-2"></i>&nbsp;There is not yet enough historical data for this
-            player
+            <i class="fas fa-exclamation-triangle mr-2"></i>&nbsp;<ng-container i18n="@@playerProfile.performanceTracker.notEnoughData">There is not yet enough historical data for this
+            player</ng-container>
         </div>
     </div>
 </div>

@@ -2,26 +2,26 @@
     <ng-container *ngIf="!isLoading; else spinner">
         <div class="card card--has-table">
             <div class="card__header">
-                <h4>{{player.name}}'s Prediction History
+                <h4 i18n="@@scorePredictor.xPlayersPredictionHistory">{{player.name}}'s Prediction History
                 </h4>
             </div>
             <div class="card__content table-responsive" [class.card--overflow-40]="verticalOverflow">
                 <app-spinner *ngIf="!scorePredictions"></app-spinner>
-                <div *ngIf="scorePredictions && !scorePredictions.length" class="m-4 alert alert-info">
+                <div *ngIf="scorePredictions && !scorePredictions.length" class="m-4 alert alert-info" i18n="@@scorePredictor.playerNoPredictions">
                     This player hasn't made any predictions yet!
                 </div>
                 <ng-container *ngIf="scorePredictions && scorePredictions.length">
                     <table class="table table-striped">
                         <thead>
-                            <th>Prediction Date</th>
-                            <th>Match Date</th>
+                            <th i18n="@@scorePredictor.predictionDate">Prediction Date</th>
+                            <th i18n="@@globals.matchDate">Match Date</th>
                             <th></th>
                             <th colspan="2" class="mx-0 px-0">
-                                <span style="margin-left: -13px">Match</span>
+                                <span style="margin-left: -13px" i18n="@@globals.match">Match</span>
                             </th>
-                            <th class="text-center">Prediction</th>
-                            <th class="text-center">Actual</th>
-                            <th class="text-center">Outcome</th>
+                            <th i18n="@@scorePredictor.prediction">Prediction</th>
+                            <th i18n="@@scorePredictor.actual">Actual</th>
+                            <th i18n="@@scorePredictor.outcome">Outcome</th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let prediction of scorePredictions">
@@ -63,14 +63,14 @@
                                             *ngIf="prediction.match.matchStatistics
                                                 && prediction.homeGoalsPrediction === prediction.match.matchStatistics.matchGoalsHome
                                                 && prediction.awayGoalsPrediction === prediction.match.matchStatistics.matchGoalsAway; else incorrect">
-                                            <span class="badge badge-success">Exact Result</span>
+                                            <span class="badge badge-success" i18n="@@scorePredictor.exactResult">Exact Result</span>
                                         </ng-container>
                                         <ng-template #incorrect>
-                                            <span class="badge badge-danger">Incorrect</span>
+                                            <span class="badge badge-danger" i18n="@@scorePredictor.incorrect">Incorrect</span>
                                         </ng-template>
                                     </ng-container>
                                     <ng-template #pending>
-                                        <span class="badge badge-info">Pending</span>
+                                        <span class="badge badge-info" i18n="@@scorePredictor.pending">Pending</span>
                                     </ng-template>
                                 </td>
                             </tr>

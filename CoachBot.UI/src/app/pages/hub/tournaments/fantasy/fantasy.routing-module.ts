@@ -10,24 +10,24 @@ const routes: Routes = [
     {
         path: 'fantasy',
         component: FantasyTeamManagerComponent,
-        data: { title: 'Fantasy Manager' },
+        data: { title: $localize`:@@globals.fantasyManager:Fantasy Manager` },
         canActivate: [AuthGuard]
     },
     {
         path: 'fantasy/:tournamentId',
         component: FantasyOverviewComponent,
-        data: { title: 'Fantasy Tournament Overview' }
+        data: { title: $localize`:@@globals.fantasyTournamentOverview:Fantasy Tournament Overview` }
     },
     {
         path: 'fantasy-editor/:id',
         component: FantasyTeamEditorComponent,
-        data: { title: 'Fantasy Team Editor' },
+        data: { title: $localize`:@@globals.fantasyTeamEditor:Fantasy Team Editor` },
         canActivate: [AuthGuard]
     },
     {
         path: 'fantasy-overview/:id',
         component: FantasyTeamOverviewComponent,
-        data: { title: 'Fantasy Team Overview' }
+        data: { title: $localize`:@@globals.fantasyTeamOverview:Fantasy Team Overview` }
     },
 ];
 @NgModule({

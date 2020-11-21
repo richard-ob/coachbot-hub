@@ -1,23 +1,23 @@
 <div class="card card--has-table">
     <div class="card__header">
-        <h4>Fantasy Player Leaderboard</h4>
+        <h4 i18n="@@fantasy.playerLeaderboard">Fantasy Player Leaderboard</h4>
     </div>
     <div class="card__content" style="overflow-y: auto; max-height: 60vh;">
         <table class="table table-striped table-hover">
             <thead>
-                <th class="text-center">Rank</th>
-                <th>Player</th>
+                <th class="text-center" i18n="@@globals.rank">Rank</th>
+                <th  i18n="@@globals.player">Player</th>
                 <th class="text-center">Points</th>
-                <th class="text-center" title="How many teams the player has been picked for">Picked</th>
-                <th class="text-center" title="Goals Scored">GS</th>
-                <th class="text-center" title="Assists">A</th>
-                <th class="text-center" title="Clean Sheets">CS</th>
-                <th class="text-center" title="Own Goals">OG</th>
-                <th class="text-center" title="Yellow Cards">YC</th>
-                <th class="text-center" title="Red Cards">RC</th>
-                <th class="text-center" title="Saves">S</th>
-                <th class="text-center" title="Goals Conceded">GC</th>
-                <th class="text-center" title="Minutes Played">MP</th>
+                <th class="text-center"  i18n-title="@@fantasy.playerLeaderboard.howManyTeams" title="How many teams the player has been picked for">Picked</th>
+                <th class="text-center" i18n-title="@@globals.goalsScored" title="Goals Scored">GS</th>
+                <th class="text-center" i18n-title="@@globals.assists" title="Assists">A</th>
+                <th class="text-center" i18n-title="@@globals.cleanSheets" title="Clean Sheets">CS</th>
+                <th class="text-center" i18n-title="@@globals.ownGoals" title="Own Goals">OG</th>
+                <th class="text-center" i18n-title="@@globals.yellowCards" title="Yellow Cards">YC</th>
+                <th class="text-center" i18n-title="@@globals.redCards" title="Red Cards">RC</th>
+                <th class="text-center" i18n-title="@@globals.saves" title="Saves">S</th>
+                <th class="text-center" i18n-title="@@globals.goalsConceded" title="Goals Conceded">GC</th>
+                <th class="text-center"i18n-title="@@globals.minutesPlayed" title="Minutes Played">MP</th>
             </thead>
             <tbody>
                 <tr *ngFor="let fantasyPlayer of fantasyPlayerRankings"

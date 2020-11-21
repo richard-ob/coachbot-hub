@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label>Search Players</label>
+    <label i18n="@@playerSelector.searchPlayers">Search Players</label>
     <div class="input-group mb-3">
         <input class="form-control" [(ngModel)]="searchQuery" type="text" name="searchQuery" (keyup.enter)="search()">
         <div class="input-group-append clickable" (click)="search()">
@@ -11,7 +11,7 @@
     <table *ngIf="playerSearchResults && playerSearchResults.length"
         class="table table-striped table-clickable table-hover">
         <thead>
-            <th>Player</th>
+            <th i18n="@@globals.player">Player</th>
             <th>SteamID</th>
             <th style="width: 30px" class="text-center"></th>
         </thead>
@@ -33,14 +33,14 @@
         </tbody>
     </table>
     <app-spinner *ngIf="isSearching"></app-spinner>
-    <div *ngIf="playerSearchResults && !playerSearchResults.length" class="alert alert-warning">
+    <div *ngIf="playerSearchResults && !playerSearchResults.length" class="alert alert-warning" i18n="@@playerSelector.noPlayersFoundMatching">
         No players found matching the name provided
     </div>
 </div>
 <div *ngIf="selectedPlayer" class="form-group">
-    <label>Selected Player</label>
+    <label i18n="@@playerSelector.selectedPlayer">Selected Player</label>
     <div>
         <a [routerLink]="['/player-profile/' + selectedPlayer.id]" target="_blank">{{selectedPlayer.name}}</a>&nbsp;
-        <button class="btn btn-xs btn-secondary" type="button" (click)="deselectPlayer()">De-select</button>
+        <button class="btn btn-xs btn-secondary" type="button" (click)="deselectPlayer()" i18n="@@globals.deSelect">De-select</button>
     </div>
 </div>

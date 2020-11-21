@@ -1,47 +1,47 @@
 <div *ngIf="team && !isLoading; else spinner" id="team-profile-info">
     <div class="card">
         <div class="card__header">
-            <h4 *ngIf="team.id">Edit Team Info</h4>
-            <h4 *ngIf="!team.id">Create Team</h4>
+            <h4 *ngIf="team.id"  i18n="@@teamEditor.editTeamInfo" >Edit Team Info</h4>
+            <h4 *ngIf="!team.id"  i18n="@@teamEditor.createTeam" >Create Team</h4>
         </div>
         <div class="card__content">
             <form #teamInfoForm="ngForm">
-                <div *ngIf="team.inactive" class="alert alert-warning">This team is not active</div>
+                <div *ngIf="team.inactive" class="alert alert-warning" i18n="@@teamEditor.teamNotActive" >This team is not active</div>
                 <div *ngIf="!team.id" class="form-group">
-                    <label class="control-label required" for="token" required>Token</label>
-                    <small class="label-subtitle mb-2">Please ask your region's community administrator for a team
+                    <label class="control-label required" for="token" required i18n="@@teamEditor.token">Token</label>
+                    <small class="label-subtitle mb-2"i18n="@@teamEditor.tokenBlurb">Please ask your region's community administrator for a team
                         creation token.</small>
                     <input type="text" class="form-control" id="token" required [(ngModel)]="team.token" name="token">
                 </div>
                 <div class="form-group">
-                    <label class="control-label required" for="teamName">Team Name</label>
+                    <label class="control-label required" for="teamName" i18n="@@globas.teamName">Team Name</label>
                     <input type="text" class="form-control" id="teamName" required [(ngModel)]="team.name"
                         maxlength="40" placeholder="Full team name, e.g. Ball Breakers" name="teamName">
                 </div>
                 <div class="form-group">
-                    <label class="control-label required" for="teamCode">Team Code</label>
-                    <small class="label-subtitle mb-2">This must be unique in the region your team plays in. It will be
+                    <label class="control-label required" for="teamCode" i18n="@@globals.teamCode">Team Code</label>
+                    <small class="label-subtitle mb-2" i18n="@@teamEditor.teamCodeblurb">This must be unique in the region your team plays in. It will be
                         used ingame, and also for matchmaking searches.</small>
                     <input type="text" class="form-control" id="teamCode" required [(ngModel)]="team.teamCode"
                         name="teamCode" placeholder="Short team code, e.g. BB" maxlength="6">
                 </div>
                 <div *ngIf="!team.id" class="form-group">
-                    <label class="control-label required" for="teamType">Team Type</label>
+                    <label class="control-label required" for="teamType" i18n="@@globals.teamType">Team Type</label>
                     <select class="form-control" id="teamType" [(ngModel)]="team.teamType" name="teamType" required>
-                        <option [ngValue]="teamTypes.Club">Club</option>
-                        <option [ngValue]="teamTypes.National">National</option>
-                        <option [ngValue]="teamTypes.Mix">Mix</option>
+                        <option [ngValue]="teamTypes.Club" i18n="@@teamTypes.club">Club</option>
+                        <option [ngValue]="teamTypes.National" i18n="@@teamTypes.national">National</option>
+                        <option [ngValue]="teamTypes.Mix" i18n="@@teamTypes.mix">Mix</option>
                         <!--<option [ngValue]="teamTypes.Draft">Draft</option>-->
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="teamBadge">Team Badge</label>
+                    <label class="control-label" for="teamBadge" i18n="@@globals.teamBadge">Team Badge</label>
                     <app-asset-image-uploader (imageUploaded)="updateBadgeImageId($event)"
                         [currentAssetImageId]="team.badgeImageId">
                     </app-asset-image-uploader>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="teamColour">Team Colour</label>
+                    <label class="control-label" for="teamColour" i18n="@@globals.teamColour">Team Colour</label>
                     <div class="clickable"
                         style="width: 100%; height: 50px; border-radius: 2px; border: 1px #dedede solid"
                         [style.background-color]="team.color" (click)="colourPicker.showColorPicker()">
@@ -51,7 +51,7 @@
                     </app-chrome-colour-picker>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="dateFounded">Date Founded</label>
+                    <label class="control-label" for="dateFounded" i18n="@@globals.dateFounded">Date Founded</label>
                     <mat-datepicker #picker></mat-datepicker>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend clickable">
@@ -64,8 +64,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label required" for="region">Region</label>
-                    <select class="form-control" id="region" [(ngModel)]="team.regionId" required
+                    <label class="control-label required" for="region" i18n="@@globals.regions">Region</label>
+                    <select class="form-control" id="region" [(ngModel)]="team.regionId" required i18n-placeholder="@@teamEditor.selectRegion"
                         placeholder="Select region..." name="regionId">
                         <option *ngFor="let region of regions" [ngValue]="region.regionId">
                             {{region.regionName}}
@@ -73,7 +73,7 @@
                     </select>
                 </div>
                 <div *ngIf="team.id" class="form-group">
-                    <label class="control-label" for="inactive">Inactive</label>
+                    <label class="control-label" for="inactive" i18n="@@globals.inactive">Inactive</label>
                     <div>
                         <label class="checkbox checkbox-inline">
                             <input [(ngModel)]="team.inactive" type="checkbox" name="inactive" id="inactive">
@@ -81,16 +81,16 @@
                         </label>
                     </div>
                 </div>
-                <div *ngIf="duplicateTeamCodeFound" class="alert alert-danger">
+                <div *ngIf="duplicateTeamCodeFound" class="alert alert-danger" i18n="@@teamEditor.teamCodeAlreadyExists">
                     A team already exists with this team code in this region. Please enter a unique team code.
                 </div>
-                <div *ngIf="invalidToken" class="alert alert-danger">
+                <div *ngIf="invalidToken" class="alert alert-danger" i18n="@@teamEditor.invalidToken">
                     Invalid token provided. Please contact your region's administrator to obtain a new token.
                 </div>
                 <button type="button" class="btn btn-primary float-right" (click)="saveTeamProfile()"
                     [disabled]="isSaving || teamInfoForm.invalid">
                     <i *ngIf="isSaving" class="fas fa-circle-notch fa-spin"></i>
-                    Save
+                    <ng-container i18n="@@globals.save">Save</ng-container>
                 </button>
             </form>
         </div>

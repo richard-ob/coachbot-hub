@@ -33,12 +33,23 @@
                             [theme]="{ 'background-color': '#4040408a', 'margin-bottom': '0' }">
                         </ngx-skeleton-loader>
                         <ng-container *ngIf="!isLoading">
-                            <li *ngIf="player" class="nav-account__item"><a href="#" routerLink="./edit-profile">Your
+                            <li *ngIf="player" class="nav-account__item"><a href="#" routerLink="./edit-profile" i18n="@@container.yourAccount">Your
                                     Account</a>
                             </li>
                             <li *ngIf="selectedRegion" class="nav-account__item has-children">
                                 <span class="main-nav__toggle"></span>
-                                <a href="javascript:void(0);">Region:
+                                <a href="javascript:void(0);"><span i18n="@@globals.language">Language:</span>
+                                    <span class="ml-1 flag-icon" [ngClass]="'flag-icon-' + currentLanguage.flag"></span>
+                                </a>
+                                <ul class="main-nav__sub">
+                                    <li *ngFor="let language of availableLanguages">
+                                        <a href="javascript:void(0);" (click)="setLanguage(language.code)">{{language.name}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li *ngIf="selectedRegion" class="nav-account__item has-children">
+                                <span class="main-nav__toggle"></span>
+                                <a href="javascript:void(0);"><span i18n="@@globals.region">Region:</span>
                                     <span class="highlight ml-1">{{selectedRegion.regionName}}</span>
                                 </a>
                                 <ul class="main-nav__sub">
@@ -49,10 +60,10 @@
                                 </ul>
                             </li>
                             <li *ngIf="!player" class="nav-account__item nav-account__item--login">
-                                <a class="text-primary" href="javascript:void(0);" routerLink="./login">Login</a>
+                                <a class="text-primary" href="javascript:void(0);" routerLink="./login"i18n="@@globals.login">Login</a>
                             </li>
                             <li *ngIf="player" class="nav-account__item nav-account__item--logout">
-                                <a class="text-primary" href="{{apiUrl}}/logout">Logout</a>
+                                <a class="text-primary" href="{{apiUrl}}/logout" i18n="@@globals.logout">Logout</a>
                             </li>
                         </ng-container>
                     </ul>
@@ -78,11 +89,11 @@
                     <!-- try 2px border with the brand colour, plus white icon, transparent bg etc -->
                     <a class="btn btn-sm btn-primary d-none d-xl-inline-block header--steam-button"
                         href="steam://run/673560/">
-                        Install Via Steam&nbsp;<i class="fa fa-lg fa-steam"></i>
+                        <span i18n="@@container.installViaSteam">Install Via Steam</span>&nbsp;<i class="fa fa-lg fa-steam"></i>
                     </a>
                     <a class="btn btn-sm btn-primary-inverse ml-4 header--discord-button"
                         href="https://discord.gg/FkT6Q3N" target="_blank">
-                        Join Our Discord&nbsp;<i class="fab fa-lg fa-discord"></i>
+                        <span i18n="@@container.joinOurDiscord">Join Our Discord</span>&nbsp;<i class="fab fa-lg fa-discord"></i>
                     </a>
                     <!-- Social Links -->
                     <ul class="social-links social-links--inline social-links--main-nav">
@@ -143,95 +154,95 @@
                     <nav class="main-nav clearfix">
                         <ul class="main-nav__list">
                             <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                                <a routerLink="/">
+                                <a routerLink="/" i18n="@@menu.home">
                                     Home
                                 </a>
                             </li>
-                            <li routerLinkActive="active"><a routerLink="/news">News</a></li>
+                            <li routerLinkActive="active"><a routerLink="/news"i18n="@@menu.news">News</a></li>
                             <li routerLinkActive="active"><a href="https://store.steampowered.com/app/673560/IOSoccer/"
-                                    target="_blank">Download</a></li>
-                            <li routerLinkActive="active"><a routerLink="/media">Media</a></li>
+                                    target="_blank" i18n="@@menu.download">Download</a></li>
+                            <li routerLinkActive="active"><a routerLink="/media"i18n="@@menu.media">Media</a></li>
                             <li class="has-children" routerLinkActive="active"
                                 (click)="toggleSectionOpen(manualsSection, manualsToggle)">
-                                <a href="javascript:void(0);">Manuals</a>
+                                <a href="javascript:void(0);"i18n="@@menu.manuals">Manuals</a>
                                 <span class="main-nav__toggle" #manualsToggle></span>
                                 <ul class="main-nav__sub" #manualsSection>
-                                    <li><a routerLink="/manual">Player Manual</a></li>
-                                    <li><a routerLink="/troubleshooting">Troubleshooting</a></li>
-                                    <li><a routerLink="/server-manual">Server Admin Manual</a></li>
-                                    <li><a routerLink="/bot-manual">Bot Manual</a></li>
+                                    <li><a routerLink="/manual" i18n="@@menu.playerManual">Player Manual</a></li>
+                                    <li><a routerLink="/troubleshooting"i18n="@@menu.troubleshooting">Troubleshooting</a></li>
+                                    <li><a routerLink="/server-manual"i18n="@@menu.serverAdminManual">Server Admin Manual</a></li>
+                                    <li><a routerLink="/bot-manual"i18n="@@menu.botManual">Bot Manual</a></li>
                                 </ul>
                             </li>
                             <li class="has-children" routerLinkActive="active"
                                 [routerLinkActiveOptions]="{exact: false}"
                                 (click)="toggleSectionOpen(matchHubSection, matchHubToggle)">
-                                <a href="javascript:void(0);">Hub</a>
+                                <a href="javascript:void(0);"i18n="@@menu.hub">Hub</a>
                                 <span class="badge badge-pill badge-warning d-none d-xl-inline main-nav--badge">Beta</span>
                                 <span class="main-nav__toggle" #matchHubToggle></span>
                                 <div class="main-nav__megamenu clearfix" #matchHubSection>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                        <li class="main-nav__title">Matches</li>
-                                        <li><a routerLink="./recent-matches">Results</a></li>
-                                        <li><a routerLink="./upcoming-matches">Fixtures</a></li>
+                                        <li class="main-nav__title"i18n="@@menu.matches">Matches</li>
+                                        <li><a routerLink="./recent-matches"i18n="@@menu.results">Results</a></li>
+                                        <li><a routerLink="./upcoming-matches"i18n="@@menu.fixtures">Fixtures</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                        <li class="main-nav__title">Teams</li>
-                                        <li><a routerLink="./team-list">Team Statistics</a></li>
+                                        <li class="main-nav__title" i18n="@@menu.teams">Teams</li>
+                                        <li><a routerLink="./team-list"i18n="@@menu.teamStatistics">Team Statistics</a></li>
                                         <li>
-                                            <a routerLink="./teams">Team List</a>
+                                            <a routerLink="./teams"i18n="@@menu.teamList">Team List</a>
                                         </li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                        <li class="main-nav__title">Players</li>
-                                        <li><a routerLink="./player-list">Player Statistics</a></li>
+                                        <li class="main-nav__title"i18n="@@menu.players">Players</li>
+                                        <li><a routerLink="./player-list"i18n="@@menu.playerStatistics">Player Statistics</a></li>
                                     </ul>
                                     <ul class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                        <li class="main-nav__title">Tournaments</li>
-                                        <li><a routerLink="/tournaments">Current</a></li>
-                                        <li><a routerLink="./tournament-history">Past</a></li>
+                                        <li class="main-nav__title"i18n="@@menu.tournaments">Tournaments</li>
+                                        <li><a routerLink="/tournaments"i18n="@@menu.current">Current</a></li>
+                                        <li><a routerLink="./tournament-history"i18n="@@menu.past">Past</a></li>
                                     </ul>
                                     <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                        <li class="main-nav__title">My Hub</li>
-                                        <li><a routerLink="./player-profile/{{player.id}}">Profile</a></li>
-                                        <li><a routerLink="./team-editor-list">Teams</a></li>
+                                        <li class="main-nav__title"i18n="@@menu.hub">My Hub</li>
+                                        <li><a routerLink="./player-profile/{{player.id}}"i18n="@@menu.profile">Profile</a></li>
+                                        <li><a routerLink="./team-editor-list" i18n="@@menu.teams">Teams</a></li>
                                     </ul>
                                     <ul *ngIf="player" class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                        <li class="main-nav__title">Games</li>
-                                        <li><a routerLink="./fantasy">Fantasy</a></li>
-                                        <li><a routerLink="./score-predictor">Score Predictor</a></li>
+                                        <li class="main-nav__title"i18n="@@menu.games">Games</li>
+                                        <li><a routerLink="./fantasy"i18n="@@menu.fantasy">Fantasy</a></li>
+                                        <li><a routerLink="./score-predictor"i18n="@@menu.scorePredictor">Score Predictor</a></li>
                                     </ul>
                                     <ul *ngIf="player && player.hubRole > hubRoles.Player"
                                         class="col-lg-2 col-md-3 col-12 main-nav__ul">
-                                        <li class="main-nav__title">Management</li>
+                                        <li class="main-nav__title"i18n="@@menu.management">Management</li>
                                         <li *ngIf="player.hubRole >= hubRoles.Administrator"><a
-                                                routerLink="./tournament-creator">Competitions</a></li>
+                                                routerLink="./tournament-creator"i18n="@@menu.competitions">Competitions</a></li>
                                         <li *ngIf="player.hubRole >= hubRoles.Manager"><a
-                                                routerLink="./server-manager">Servers</a></li>
+                                                routerLink="./server-manager"i18n="@@menu.servers">Servers</a></li>
                                         <li *ngIf="player.hubRole >= hubRoles.Manager"><a
-                                                routerLink="./region-manager">Regions</a></li>
+                                                routerLink="./region-manager"i18n="@@menu.regions">Regions</a></li>
                                         <li *ngIf="player.hubRole >= hubRoles.Administrator"><a
-                                                routerLink="./bot">Bot</a>
+                                                routerLink="./bot"i18n="@@menu.bot">Bot</a>
                                         </li>
-                                        <li *ngIf="player.hubRole >= hubRoles.Owner"><a
-                                                routerLink="./unlinked-match-statistics">Match Statistics</a>
+                                        <li *ngIf="player.hubRole >= hubRoles.Owner" ><a
+                                                routerLink="./unlinked-match-statistics"i18n="@@menu.matchStatistics">Match Statistics</a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="has-children" routerLinkActive="active"
                                 (click)="toggleSectionOpen(infoSection, infoToggle)">
-                                <a href="javascript:void(0);">Info</a>
+                                <a href="javascript:void(0);"i18n="@@menu.info">Info</a>
                                 <span class="main-nav__toggle" #infoToggle></span>
                                 <ul class="main-nav__sub" #infoSection>
-                                    <li><a routerLink="/about">About</a></li>
-                                    <li><a routerLink="/team">Team</a></li>
+                                    <li><a routerLink="/about"i18n="@@menu.about">About</a></li>
+                                    <li><a routerLink="/team"i18n="@@menu.team">Team</a></li>
                                 </ul>
                             </li>
-                            <li class=""><a href="https://discord.gg/FkT6Q3N" target="_blank">Discord Chat</a></li>
+                            <li class=""><a href="https://discord.gg/FkT6Q3N" target="_blank"i18n="@@menu.discordChat">Discord Chat</a></li>
                             <li class="d-block d-lg-none">
                                 <a *ngIf="!player" class="text-primary" href="javascript:void(0);"
-                                    routerLink="./login">Login</a>
-                                <a *ngIf="player" class="text-primary" href="{{apiUrl}}/logout">Logout</a>
+                                    routerLink="./login"i18n="@@globals.login">Login</a>
+                                <a *ngIf="player" class="text-primary" href="{{apiUrl}}/logout"i18n="@@globals.logout">Logout</a>
                             </li>
                         </ul>
                     </nav>
@@ -282,7 +293,7 @@
                                 <div class="widget widget--footer widget-contact-info">
                                     <div class="widget__content">
                                         <div class="widget-contact-info__desc">
-                                            <p>IOSoccer is a unique free non-commercial competitive third-person online
+                                            <p i18n="@@layout.iosBlurb">IOSoccer is a unique free non-commercial competitive third-person online
                                                 multiplayer soccer game.</p>
                                         </div>
                                         <div class="widget-contact-info__body info-block">
@@ -290,7 +301,7 @@
                                                 <svg role="img" class="df-icon df-icon--soccer-ball">
                                                     <use xlink:href="assets/images/icons-soccer.svg#soccer-ball" />
                                                 </svg>
-                                                <h6 class="info-block__heading">Contact Us</h6>
+                                                <h6 class="info-block__heading"i18n="@@layout.contactUs">Contact Us</h6>
                                                 <a class="info-block__link"
                                                     href="mailto:info@iosoccer.com">info@iosoccer.com</a>
                                             </div>
@@ -298,7 +309,7 @@
                                                 <svg role="img" class="df-icon df-icon--whistle">
                                                     <use xlink:href="assets/images/icons-soccer.svg#whistle" />
                                                 </svg>
-                                                <h6 class="info-block__heading">Join Our Team!</h6>
+                                                <h6 class="info-block__heading"i18n="@@layout.joinOurTeam">Join Our Team!</h6>
                                                 <a class="info-block__link"
                                                     href="mailto:info@iosoccer.com">info@iosoccer.com</a>
                                             </div>
@@ -355,19 +366,19 @@
 
                                 <!-- Widget: Contact / End -->
                                 <div class="widget widget--footer widget-contact">
-                                    <h4 class="widget__title">Quick Contact</h4>
+                                    <h4 class="widget__title" i18n="@@contact.quickContact">Quick Contact</h4>
                                     <div class="widget__content">
-                                        <p>Feel free to send us any support queries, requests, or enquiries, below.</p>
+                                        <p i18n="@@contact.emailUsBlurb">Feel free to send us any support queries, requests, or enquiries, below.</p>
                                         <form action="https://formspree.io/xeqrepby" method="POST" class="contact-form">
                                             <div class="form-group form-group--xs">
                                                 <input type="email" class="form-control input-sm"
-                                                    id="contact-form-email" placeholder="Your email address...">
+                                                    id="contact-form-email" i18n-placeholder="@@contact.yourEmailAddress" placeholder="Your email address...">
                                             </div>
                                             <div class="form-group form-group--xs">
                                                 <textarea class="form-control input-sm" name="contact-form-message"
-                                                    rows="4" placeholder="Your message..."></textarea>
+                                                    rows="4" i18n-placeholder="@@contact.yourMessage" placeholder="Your message..."></textarea>
                                             </div>
-                                            <button type="submit" class="btn btn-primary-inverse btn-sm btn-block">
+                                            <button type="submit" class="btn btn-primary-inverse btn-sm btn-block" i18n="@@contact.sendYourMessage">
                                                 Send Your Message
                                             </button>
                                         </form>
@@ -384,7 +395,7 @@
             <!-- Sponsors -->
             <div class="container">
                 <div class="sponsors">
-                    <h6 class="sponsors-title">Our Sponsor:</h6>
+                    <h6 class="sponsors-title" i18n="@@layout.sponsor">Our Sponsor:</h6>
                     <ul class="sponsors-logos">
                         <li class="sponsors__item">
                             <a href="https://www.simrai.com/" target="_blank" title="SimRai Hosting"><img
@@ -415,99 +426,4 @@
         <!-- Footer Secondary / End -->
     </footer>
     <!-- Footer / End -->
-
-
-    <!-- Login/Register Tabs Modal -->
-    <div class="modal fade" id="modal-login-register-tabs" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg modal--login modal--login-only" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="modal-account-holder">
-                        <div class="modal-account__item modal-account__item--logo">
-                            <p class="modal-account__item-register-txt">Don’t have an account? <a href="#">Register
-                                    Now</a> and
-                                enjoy all our benefits!</p>
-                        </div>
-                        <div class="modal-account__item">
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-
-                                <!-- Tab: Login -->
-                                <div role="tabpanel" class="tab-pane fade show active" id="tab-login">
-
-                                    <!-- Login Form -->
-                                    <form action="#" class="modal-form">
-                                        <h5>Login to your account</h5>
-                                        <div class="form-group">
-                                            <input type="email" class="form-control"
-                                                placeholder="Enter your email address...">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="password" class="form-control"
-                                                placeholder="Enter your password...">
-                                        </div>
-                                        <div class="form-group form-group--pass-reminder">
-                                            <label class="checkbox checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox1" value="option1" checked>
-                                                Remember Me
-                                                <span class="checkbox-indicator"></span>
-                                            </label>
-                                            <a href="#">Forgot your password?</a>
-                                        </div>
-                                        <div class="form-group form-group--submit">
-                                            <a href="_soccer_shop-account.html"
-                                                class="btn btn-primary-inverse btn-block">Enter to your
-                                                account</a>
-                                        </div>
-                                        <div class="modal-form--social">
-                                            <h6>or Login with your social profile:</h6>
-                                            <ul class="social-links social-links--btn text-center">
-                                                <li class="social-links__item">
-                                                    <a href="#"
-                                                        class="social-links__link social-links__link--lg social-links__link--fb"><i
-                                                            class="fa fa-facebook"></i></a>
-                                                </li>
-                                                <li class="social-links__item">
-                                                    <a href="#"
-                                                        class="social-links__link social-links__link--lg social-links__link--twitter"><i
-                                                            class="fa fa-twitter"></i></a>
-                                                </li>
-                                                <li class="social-links__item">
-                                                    <a href="#"
-                                                        class="social-links__link social-links__link--lg social-links__link--gplus"><i
-                                                            class="fa fa-google-plus"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </form>
-                                    <!-- Login Form / End -->
-
-                                </div>
-                                <!-- Tab: Login / End -->
-                            </div>
-
-                            <!-- Nav tabs -->
-                            <div class="nav-tabs-login-wrapper">
-                                <ul class="nav nav-tabs nav-justified nav-tabs--login" role="tablist">
-                                    <li class="nav-item"><a class="nav-link active" href="#tab-login" role="tab"
-                                            data-toggle="tab">Login</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab-register" role="tab"
-                                            data-toggle="tab">Register</a></li>
-                                </ul>
-                            </div>
-                            <!-- Nav tabs / End -->
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Login/Register Tabs Modal / End -->
 </div>

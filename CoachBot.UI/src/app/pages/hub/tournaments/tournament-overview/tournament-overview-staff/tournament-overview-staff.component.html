@@ -2,14 +2,14 @@
     <ng-container *ngIf="tournamentStaff && !isLoading; else spinner">
         <div *ngIf="tournamentStaff.length" class="card card--has-table">
             <div class="card__header">
-                <h4>Tournament Staff</h4>
+                <h4  i18n="@@tournament.tournamentStaff">Tournament Staff</h4>
             </div>
             <div class="card__content">
                 <table class="table table-striped">
                     <thead>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Date Since</th>
+                        <th i18n="@@globals.name">Name</th>
+                        <th i18n="@@globals.role">Role</th>
+                        <th i18n="@@tournament.staff.dateSince">Date Since</th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let staff of tournamentStaff">
@@ -21,7 +21,7 @@
                 </table>
             </div>
         </div>
-        <div *ngIf="!tournamentStaff.length" class="alert alert-info">
+        <div *ngIf="!tournamentStaff.length" class="alert alert-info" i18n="@@tournament.staff.noStaffAdded">
             No staff members added yet
         </div>
     </ng-container>

@@ -9,7 +9,7 @@
                     <div *ngFor="let newsItem of news" class="post-grid__item col-md-6 col-lg-4">
                         <div class="posts__item posts__item--card posts__item--category-1 card">
                             <figure class="posts__thumb">
-                                <div class="posts__cat"><span class="label posts__cat-label">News</span></div>
+                                <div class="posts__cat"><span class="label posts__cat-label" i18n="@@globals.news">News</span></div>
                                 <a [attr.href]="newsItem.url" target="_blank">
                                     <img [src]="newsItem.image" alt="">
                                 </a>

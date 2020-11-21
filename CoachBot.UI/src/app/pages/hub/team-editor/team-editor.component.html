@@ -3,10 +3,10 @@
         <a href="javascript:void(0);" (click)="tabNav.toggle()" class="content-filter__toggle"></a>
         <ul class="content-filter__list" appTabNavMobile #tabNav>
             <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                <a [routerLink]="['./info']" class="content-filter__link">Info</a>
+                <a [routerLink]="['./info']" class="content-filter__link"  i18n="@@globals.info">Info</a>
             </li>
             <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                <a [routerLink]="['./squad']" class="content-filter__link">Squad</a>
+                <a [routerLink]="['./squad']" class="content-filter__link"  i18n="@@globals.squad">Squad</a>
             </li>
             <li class="content-filter__item" routerLinkActive="content-filter__item--active">
                 <a [routerLink]="['./discord']" class="content-filter__link">Discord</a>
@@ -15,7 +15,7 @@
     </div>
 </nav>
 <div class="container py-4">
-    <div *ngIf="accessDenied" class="alert alert-danger">
+    <div *ngIf="accessDenied" class="alert alert-danger"  i18n="@@teamEditor.accessDenied">
         You do not have access to manage this team
     </div>
     <router-outlet *ngIf="!isLoading && !accessDenied"></router-outlet>

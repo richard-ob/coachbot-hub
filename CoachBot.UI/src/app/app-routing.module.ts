@@ -40,96 +40,96 @@ const routes: Routes = [
   {
     path: 'manual',
     component: ManualComponent,
-    data: { title: 'Manual' }
+    data: { title:  $localize`:@@globals.manual:Manual` }
   },
   {
     path: 'server-manual',
     component: ServerManualComponent,
-    data: { title: 'Server Manual' }
+    data: { title: $localize`:@@globals.serverManual:Server Manual` }
   },
   {
     path: 'bot-manual',
     component: BotManualComponent,
-    data: { title: 'Bot Manual' }
+    data: { title: $localize`:@@globals.botManual:Bot Manual` }
   },
   {
     path: 'troubleshooting',
     component: TroubleshootingComponent,
-    data: { title: 'Troubleshooting' }
+    data: { title: $localize`:@@globals.troubleshooting:Troubleshooting` }
   },
   {
     path: 'news',
     component: NewsComponent,
-    data: { title: 'News' }
+    data: { title: $localize`:@@globals.news:News` }
   },
   {
     path: 'media',
     component: MediaComponent,
-    data: { title: 'Media' }
+    data: { title: $localize`:@@globals.media:Media` }
   },
   {
     path: 'team',
     component: TeamComponent,
-    data: { title: 'Team' }
+    data: { title: $localize`:@@globals.team:Team` }
   },
   {
     path: 'about',
     component: AboutComponent,
-    data: { title: 'About' }
+    data: { title: $localize`:@@globals.about:About` }
   },
   {
     path: 'match-overview/:id',
     component: MatchOverviewComponent,
-    data: { title: 'Match Overview' }
+    data: { title: $localize`:@@globals.matchOverview:Match Overview` }
   },
   {
     path: 'server-manager',
     component: ServerManagerComponent,
-    data: { title: 'Server Manager' },
+    data: { title: $localize`:@@globals.serverManager:Server Manager` },
     canActivate: [AuthGuard]
   },
   {
     path: 'region-manager',
     component: RegionManagerComponent,
-    data: { title: 'Region Manager' },
+    data: { title: $localize`:@@globals.regionManager:Region Manager` },
     canActivate: [AuthGuard]
   },
   {
     path: 'recent-matches',
     component: RecentMatchesComponent,
-    data: { title: 'Results' }
+    data: { title: $localize`:@@globals.results:Results` }
   },
   {
     path: 'upcoming-matches',
     component: UpcomingMatchesComponent,
-    data: { title: 'Fixtures' }
+    data: { title: $localize`:@@globals.fixtures:Fixtures` }
   },
   {
     path: 'player-list',
     component: PlayerListComponent,
-    data: { title: 'Player Statistics' }
+    data: { title: $localize`:@@globals.playerStatistics:Player Statistics` }
   },
   {
     path: 'team-list',
     component: TeamListComponent,
-    data: { title: 'Team Statistics' }
+    data: { title: $localize`:@@globals.teamStatistics:Team Statistics` }
   },
   {
     path: 'edit-profile',
     component: ProfileEditorComponent,
-    data: { title: 'Edit Profile' },
+    data: { title: $localize`:@@globals.editProfile:Edit Profile` },
     canActivate: [AuthGuard]
   },
   {
     path: 'team-editor-list',
     component: TeamEditorListComponent,
-    data: { title: 'Manage Teams' },
+    data: { title: $localize`:@@globals.manageTeams:Manage Teams` },
     canActivate: [AuthGuard]
   },
   {
     path: 'teams',
     component: TeamsComponent,
-    data: { title: 'Teams' }
+    data: { title: $localize`:@@globals.teams:Teams` }
   },
   {
     path: 'validate-steamid',
@@ -138,34 +138,34 @@ const routes: Routes = [
   {
     path: 'tournament-creator',
     component: TournamentCreatorComponent,
-    data: { title: 'Tournament Creator' },
+    data: { title: $localize`:@@globals.tournamentCreator:Tournament Creator` },
     canActivate: [AuthGuard]
   },
   {
     path: 'tournament-editor/:id',
     component: TournamentSeriesEditorComponent,
-    data: { title: 'Tournament' }
+    data: { title: $localize`:@@globals.tournament:Tournament` }
   },
   {
     path: 'tournaments',
     component: CurrentTournamentsComponent,
-    data: { title: 'Tournaments' }
+    data: { title: $localize`:@@globals.tournaments:Tournaments` }
   },
   {
     path: 'tournament-history',
     component: PreviousTournamentsComponent,
-    data: { title: 'Tournament History' }
+    data: { title: $localize`:@@globals.tournamentHistory:Tournament History` }
   },
   {
     path: 'organisations',
     component: OrganisationsComponent,
-    data: { title: 'Organisations' },
+    data: { title: $localize`:@@globals.organisations:Organisations` },
     canActivate: [AuthGuard]
   },
   {
     path: 'organisation-editor/:id',
     component: OrganisationEditorComponent,
-    data: { title: 'Organisation Editor' },
+    data: { title: $localize`:@@globals.organisationEditor:Organisation Editor` },
     canActivate: [AuthGuard]
   },
   {
@@ -175,13 +175,13 @@ const routes: Routes = [
   {
     path: 'match-editor/:id',
     component: MatchEditorComponent,
-    data: { title: 'Organisations' },
+    data: { title: $localize`:@@globals.matchEditor:Match Editor` },
     canActivate: [AuthGuard]
   },
   {
     path: 'login',
     component: LoginComponent,
-    data: { title: 'Login' }
+    data: { title: $localize`:@@globals.login:Login` }
   },
   {
     path: 'error',

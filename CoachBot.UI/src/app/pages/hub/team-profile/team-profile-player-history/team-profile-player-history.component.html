@@ -1,26 +1,26 @@
 <div class="container">
     <app-spinner *ngIf="!playerTeamStatisticsTotals"></app-spinner>
-    <div *ngIf="playerTeamStatisticsTotals && !playerTeamStatisticsTotals.length" class="alert alert-info">
+    <div *ngIf="playerTeamStatisticsTotals && !playerTeamStatisticsTotals.length" class="alert alert-info" i18n="@@team.squad.noPlayers">
         This team doesn't have any players yet.. Sad.
     </div>
     <div *ngIf="playerTeamStatisticsTotals && playerTeamStatisticsTotals.length" class="card card--has-table">
         <div class="card__header">
-            <h4>Player History</h4>
+            <h4 i18n="@@team.squadHistory.playerHistory">Player History</h4>
         </div>
         <div class="card__content">
             <table class="table table-striped table--large">
                 <thead>
                     <tr>
-                        <th class="team-result__vs">Name</th>
-                        <th class="team-result__vs">Role</th>
-                        <th class="team-result__score">Positions</th>
-                        <th class="team-result__status">Date From</th>
-                        <th class="team-result__status">Date Until</th>
-                        <th class="team-result__status">Appearances</th>
-                        <th class="text-center">Goals</th>
-                        <th class="text-center">Assists</th>
-                        <th class="text-center">Yellow Cards</th>
-                        <th class="text-center">Red Cards</th>
+                        <th class="team-result__vs" i18n="@@globals.name">Name</th>
+                        <th class="team-result__vs" i18n="@@globals.role">Role</th>
+                        <th class="team-result__score" i18n="@@globals.positions">Positions</th>
+                        <th class="team-result__status" i18n="@@globals.dateFrom">Date From</th>
+                        <th class="team-result__status" i18n="@@globals.dateUntil">Date Until</th>
+                        <th class="team-result__status" i18n="@@globals.appearances">Appearances</th>
+                        <th class="text-center" i18n="@@globals.goals">Goals</th>
+                        <th class="text-center" i18n="@@globals.assists">Assists</th>
+                        <th class="text-center" i18n="@@globals.yellowCards">Yellow Cards</th>
+                        <th class="text-center" i18n="@@globals.redCards">Red Cards</th>
                     </tr>
                 </thead>
                 <tbody>

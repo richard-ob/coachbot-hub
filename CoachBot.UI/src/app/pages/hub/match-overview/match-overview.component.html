@@ -1,7 +1,5 @@
-<!-- Page Heading
-================================================== -->
 <div *ngIf="!isLoading && !matchData" class="container py-4">
-    <div class="alert alert-info">
+    <div class="alert alert-info" i18n="@@matchOverview.resultPending">
         This match result is still pending. Check back soon for the final result!
     </div>
 </div>
@@ -21,13 +19,13 @@
             <ul id="dropdown-admin" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu"
                 aria-labelledby="button-basic">
                 <li role="menuitem">
-                    <a class="dropdown-item clickable" (click)="swapTeams()">Swap Teams</a>
+                    <a class="dropdown-item clickable" (click)="swapTeams()" i18n="@@matchOverview.swapTeams">Swap Teams</a>
                 </li>
                 <li role="menuitem">
-                    <a class="dropdown-item clickable" [routerLink]="['/match-editor', match.id]">Edit Match</a>
+                    <a class="dropdown-item clickable" [routerLink]="['/match-editor', match.id]" i18n="@@matchOverview.editMatch">Edit Match</a>
                 </li>
                 <li role="menuitem">
-                    <a class="dropdown-item clickable" (click)="unlinkMatchStatistics()">Unlink Data</a>
+                    <a class="dropdown-item clickable" (click)="unlinkMatchStatistics()" i18n="@@matchOverview.unlinkData">Unlink Data</a>
                 </li>
             </ul>
         </div>
@@ -127,7 +125,7 @@
                                         <span *ngSwitchCase="5">PENS</span>
                                     </ng-container>
                                 </div>
-                                <div id="match-score-status" class="game-result__score-label text-white">Final Score
+                                <div id="match-score-status" class="game-result__score-label text-white" i18n="@@globals.finalScore">Final Score
                                 </div>
                             </div>
                             <div id="match-footer-items-away" class="match-footer-events px-2 text-left">
@@ -207,7 +205,7 @@
 
                                     <div class="card">
                                         <header class="card__header">
-                                            <h4>Team Statistics</h4>
+                                            <h4 i18n="@@globals.teamStatistics">Team Statistics</h4>
                                         </header>
                                         <div class="card__content">
 
@@ -255,7 +253,8 @@
                                                                             <app-circle-graph
                                                                                 [totalValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]"
                                                                                 [partValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]"
-                                                                                [title]="'Shot Accuracy'"
+                                                                                i18n-title="@@globals.shotAccuracy"
+                                                                                title="Shot Accuracy"
                                                                                 [fillColour]="match.teamHome.color ? match.teamHome.color : '#38a9ff'">
                                                                             </app-circle-graph>
                                                                         </div>
@@ -263,7 +262,8 @@
                                                                             <app-circle-graph
                                                                                 [totalValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Passes]"
                                                                                 [partValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.PassesCompleted]"
-                                                                                [title]="'Pass Accuracy'"
+                                                                                i18n-title="@@globals.passAccuracy"
+                                                                                title="Pass Accuracy"
                                                                                 [fillColour]="match.teamHome.color ? match.teamHome.color : '#38a9ff'">
                                                                             </app-circle-graph>
                                                                         </div>
@@ -278,8 +278,9 @@
                                                                         <div class="col-6">
                                                                             <app-circle-graph
                                                                                 [totalValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
-                                                                                [partValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
-                                                                                [title]="'Shot Accuracy'"
+                                                                                [partValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"                                                                                
+                                                                                i18n-title="@@globals.shotAccuracy"
+                                                                                title="Shot Accuracy"
                                                                                 [fillColour]="match.teamAway.color ? match.teamAway.color  : '#dc3545'">
                                                                             </app-circle-graph>
                                                                         </div>
@@ -287,7 +288,8 @@
                                                                             <app-circle-graph
                                                                                 [totalValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
                                                                                 [partValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
-                                                                                [title]="'Pass Accuracy'"
+                                                                                i18n-title="@@globals.shotAccuracy"
+                                                                                title="Pass Accuracy"
                                                                                 [fillColour]="match.teamAway.color ? match.teamAway.color : '#dc3545'">
                                                                             </app-circle-graph>
                                                                         </div>
@@ -310,7 +312,7 @@
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Possession]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Possession]"
                                                         [homeColour]="match.teamHome.color"
-                                                        [awayColour]="match.teamAway.color" [title]="'Possession'"
+                                                        [awayColour]="match.teamAway.color" i18n-title="@@globals.possession" title="Possession"
                                                         [displayValueMode]="displayValueModes.Percentage">
                                                     </app-horizontal-bar-graph>
 
@@ -318,7 +320,7 @@
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Shots]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Shots]"
                                                         [homeColour]="match.teamHome.color"
-                                                        [awayColour]="match.teamAway.color" [title]="'Shots'"
+                                                        [awayColour]="match.teamAway.color" i18n-title="@@globals.shots" title="Shots"
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
@@ -326,7 +328,7 @@
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.ShotsOnGoal]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.ShotsOnGoal]"
                                                         [homeColour]="match.teamHome.color"
-                                                        [awayColour]="match.teamAway.color" [title]="'Shots On Goal'"
+                                                        [awayColour]="match.teamAway.color" i18n-title="@@globals.shotsOnGoal" title="Shots On Goal"
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
@@ -334,7 +336,7 @@
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.KeeperSaves]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.KeeperSaves]"
                                                         [homeColour]="match.teamHome.color"
-                                                        [awayColour]="match.teamAway.color" [title]="'Saves'"
+                                                        [awayColour]="match.teamAway.color" i18n-title="@@globals.saves" title="Saves"
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
@@ -342,7 +344,7 @@
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Passes]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Passes]"
                                                         [homeColour]="match.teamHome.color"
-                                                        [awayColour]="match.teamAway.color" [title]="'Passes'"
+                                                        [awayColour]="match.teamAway.color" i18-title="@@globals.passes" title="Passes"
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
@@ -350,7 +352,7 @@
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.PassesCompleted]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.PassesCompleted]"
                                                         [homeColour]="match.teamHome.color"
-                                                        [awayColour]="match.teamAway.color" [title]="'Passes Completed'"
+                                                        [awayColour]="match.teamAway.color" i18-title="@@globals.passesCompleted" title="Passes Completed"
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
@@ -358,7 +360,7 @@
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Interceptions]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Interceptions]"
                                                         [homeColour]="match.teamHome.color"
-                                                        [awayColour]="match.teamAway.color" [title]="'Interceptions'"
+                                                        [awayColour]="match.teamAway.color" i18-title="@@globals.interceptions" title="Interceptions" 
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
@@ -366,7 +368,7 @@
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Corners]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Corners]"
                                                         [homeColour]="match.teamHome.color"
-                                                        [awayColour]="match.teamAway.color" [title]="'Corners'"
+                                                        [awayColour]="match.teamAway.color"  i18-title="@@globals.corners" title="Corners" 
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
@@ -374,7 +376,7 @@
                                                         [homeValue]="matchData.teams[teamType.Home].matchTotal.statistics[statisticType.Fouls]"
                                                         [awayValue]="matchData.teams[teamType.Away].matchTotal.statistics[statisticType.Fouls]"
                                                         [homeColour]="match.teamHome.color"
-                                                        [awayColour]="match.teamAway.color" [title]="'Fouls'"
+                                                        [awayColour]="match.teamAway.color"   i18-title="@@globals.fuls" title="Fouls" 
                                                         [displayValueMode]="displayValueModes.Value">
                                                     </app-horizontal-bar-graph>
 
@@ -406,7 +408,7 @@
                             <!-- Widget: Game Commentary -->
                             <aside class="widget card card--no-paddings widget--sidebar widget-commentary">
                                 <div class="widget__title card__header">
-                                    <h4>Game Highlights</h4>
+                                    <h4 i18n="@@matchOverview.gameHighlights">Game Highlights</h4>
                                 </div>
                                 <div class="widget__content card__content"
                                     [class.with-player-of-the-match]="match && match.playerOfTheMatchId">
@@ -439,11 +441,11 @@
                                                 <span *ngIf="matchEvent.event === eventType.SecondYellowCard">Received a second yellow card</span>
                                                 <ng-container *ngIf="matchEvent.player2SteamId">
                                                     <ng-container [ngSwitch]="matchEvent.event">
-                                                        <span *ngSwitchCase="eventType.Goal">&nbsp;Assist by
+                                                        <span *ngSwitchCase="eventType.Goal">&nbsp;<ng-container i18n="@@goals.assistBy">Assist by</ng-container>&nbsp;
                                                         <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:matchData.players}}</strong></span>
-                                                        <span *ngSwitchCase="eventType.Save">&nbsp;Shot by
+                                                        <span *ngSwitchCase="eventType.Save">&nbsp;<ng-container i18n="@@goals.shotBy">Shot by</ng-container>&nbsp;
                                                         <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:matchData.players}}</strong></span>
-                                                        <span *ngSwitchCase="eventType.Foul">&nbsp;Foul on
+                                                        <span *ngSwitchCase="eventType.Foul">&nbsp;<ng-container i18n="@@goals.shotBy">Foul on</ng-container>&nbsp;
                                                     <strong>{{matchEvent.player2SteamId | steamIdToPlayerName:matchData.players}}</strong></span>
                                                     </ng-container>
                                                 </ng-container>

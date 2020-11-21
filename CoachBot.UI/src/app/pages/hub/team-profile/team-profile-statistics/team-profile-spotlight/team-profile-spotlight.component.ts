@@ -59,8 +59,8 @@ export class TeamProfileSpotlightComponent implements OnInit {
             case TeamProfileSpotlightStatistic.BiggestWin:
                 this.modelProperty = 'goals';
                 this.apiModelProperty = 'Goals';
-                this.heading = 'Biggest Win';
-                this.measureName = 'Goals Scored';
+                this.heading = $localize`:@@spotlight.biggestWin:Biggest Win`;
+                this.measureName = $localize`:@@globals.goalsScored:Goals Scored`;
                 this.ordering = 'DESC';
                 this.iconClass = '';
                 this.iconClass = 'icon-soccer-ball';
@@ -69,8 +69,8 @@ export class TeamProfileSpotlightComponent implements OnInit {
             case TeamProfileSpotlightStatistic.BiggestLoss:
                 this.modelProperty = 'goalsConceded';
                 this.apiModelProperty = 'GoalsConceded';
-                this.heading = 'Biggest Loss';
-                this.measureName = 'Goals Conceded';
+                this.heading = $localize`:@@spotlight.biggestLoss:Biggest Loss`;
+                this.measureName = $localize`:@@globals.goalsConceded:Goals Conceded`;
                 this.ordering = 'DESC';
                 this.iconClass = 'icon-keepers-glove';
                 this.filters.matchOutcome = MatchOutcomeType.Loss;
@@ -78,8 +78,8 @@ export class TeamProfileSpotlightComponent implements OnInit {
             case TeamProfileSpotlightStatistic.BestPassing:
                 this.modelProperty = 'passesCompleted';
                 this.apiModelProperty = 'passesCompleted';
-                this.heading = 'Most Completed Passes';
-                this.measureName = 'Passes';
+                this.heading = $localize`:@@spotlight.mostCompletedPasses:Most Completed Passes`;
+                this.measureName = $localize`:@@globals.passes:Passes`;
                 this.ordering = 'DESC';
                 this.iconClass = 'icon-soccer-shots';
                 this.filters.matchOutcome = null;

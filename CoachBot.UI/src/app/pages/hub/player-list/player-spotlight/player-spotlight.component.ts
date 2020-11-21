@@ -64,8 +64,8 @@ export class PlayerSpotlightComponent implements OnInit {
             case PlayerSpotlightStatistic.Goals:
                 this.modelProperty = 'goalsAverage';
                 this.apiModelProperty = 'GoalsAverage';
-                this.heading = 'Goal Scorer of the Week';
-                this.measureName = 'Average Goals';
+                this.heading = $localize`:@@spotlight.goalScorersOfWeek:Goal Scorer of the Week`;
+                this.measureName = $localize`:@@globals.averageGoals:Average Goals`;
                 this.ordering = 'DESC';
                 this.filters.positionName = null;
                 this.iconClass = 'icon-soccer-ball';
@@ -73,8 +73,8 @@ export class PlayerSpotlightComponent implements OnInit {
             case PlayerSpotlightStatistic.Assists:
                 this.modelProperty = 'assistsAverage';
                 this.apiModelProperty = 'AssistsAverage';
-                this.heading = 'Assister of the Week';
-                this.measureName = 'Average Assists';
+                this.heading = $localize`:@@spotlight.assisterOfTheWeek:Assister of the Week`;
+                this.measureName = $localize`:@@globals.averageAssists:Average Assists`;
                 this.ordering = 'DESC';
                 this.filters.positionName = null;
                 this.iconClass = 'icon-soccer-shoe';
@@ -82,8 +82,8 @@ export class PlayerSpotlightComponent implements OnInit {
             case PlayerSpotlightStatistic.GoalsConceded:
                 this.modelProperty = 'goalsConcededAverage';
                 this.apiModelProperty = 'GoalsConcededAverage';
-                this.heading = 'Keeper of the Week';
-                this.measureName = 'Average Goals Conceded';
+                this.heading = $localize`:@@spotlight.keeperOfTheWeek:Keeper of the Week`;
+                this.measureName = $localize`:@@globals.averageGoalsConceded:Average Goals Conceded`;
                 this.ordering = 'ASC';
                 this.filters.positionName = 'GK';
                 this.iconClass = 'icon-keepers-glove';
@@ -91,8 +91,8 @@ export class PlayerSpotlightComponent implements OnInit {
             case PlayerSpotlightStatistic.PassCompletion:
                 this.modelProperty = 'passCompletionPercentageAverage';
                 this.apiModelProperty = 'PassCompletionPercentageAverage';
-                this.heading = 'Passer of the Week';
-                this.measureName = 'Pass Completion';
+                this.heading = $localize`:@@spotlight.passerOfTheWeek:Passer of the Week`;
+                this.measureName = $localize`:@@globals.passCompletion:Pass Completion`;
                 this.ordering = 'DESC';
                 this.filters.positionName = null;
                 this.iconClass = 'icon-soccer-shots';

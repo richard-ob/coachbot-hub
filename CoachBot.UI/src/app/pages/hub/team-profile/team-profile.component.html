@@ -17,20 +17,20 @@
                     </div>
                     <div class="player-info-details mb-2">
                         <div class="player-info-details__item player-info-details__item--height">
-                            <h6 class="player-info-details__title">Team Code</h6>
+                            <h6 class="player-info-details__title" i18n="@@globals.teamCode">Team Code</h6>
                             <div class="player-info-details__value">{{team.teamCode}}</div>
                         </div>
                         <div class="player-info-details__item player-info-details__item--height">
-                            <h6 class="player-info-details__title">Region</h6>
+                            <h6 class="player-info-details__title" i18n="@@globals.region">Region</h6>
                             <div class="player-info-details__value">{{team.region.regionName}}</div>
                         </div>
                         <div class="player-info-details__item player-info-details__item--height">
-                            <h6 class="player-info-details__title">Founded</h6>
+                            <h6 class="player-info-details__title" i18n="@@globals.founded">Founded</h6>
                             <div class="player-info-details__value">
                                 <ng-container *ngIf="team.foundedDate; else noFoundedDate">
                                     {{team.foundedDate | date}}
                                 </ng-container>
-                                <ng-template #noFoundedDate>
+                                <ng-template #noFoundedDate i18n="@@globals.unknown">
                                     Unknown
                                 </ng-template>
                             </div>
@@ -56,27 +56,27 @@
                 <a href="javascript:void(0);" (click)="tabNav.toggle()" class="content-filter__toggle"></a>
                 <ul class="content-filter__list" appTabNavMobile #tabNav>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./statistics']" class="content-filter__link">
+                        <a [routerLink]="['./statistics']" class="content-filter__link" i18n="@@globals.statistics">
                             Statistics
                         </a>
                     </li>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./matches']" class="content-filter__link">
+                        <a [routerLink]="['./matches']" class="content-filter__link" i18n="@@globals.results">
                             Results
                         </a>
                     </li>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./squad']" class="content-filter__link">
+                        <a [routerLink]="['./squad']" class="content-filter__link" i18n="@@globals.squad">
                             Squad
                         </a>
                     </li>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./player-history']" class="content-filter__link">
+                        <a [routerLink]="['./player-history']" class="content-filter__link" i18n="@@globals.playerHistory">
                             Player History
                         </a>
                     </li>
                     <li class="content-filter__item" routerLinkActive="content-filter__item--active">
-                        <a [routerLink]="['./tournaments']" class="content-filter__link">
+                        <a [routerLink]="['./tournaments']" class="content-filter__link" i18n="@@globals.tournaments">
                             Tournaments
                         </a>
                     </li>

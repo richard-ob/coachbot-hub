@@ -19,7 +19,7 @@ const routes: Routes = [
             { path: 'match-days', component: TournamentMatchDaySlotManagerComponent },
             { path: 'actions', component: TournamentActionsComponent },
         ],
-        data: { title: 'Tournament Manager' }
+        data: { title: $localize`:@@globals.tournamentManager:Tournament Manager` }
     },
 ];
 @NgModule({

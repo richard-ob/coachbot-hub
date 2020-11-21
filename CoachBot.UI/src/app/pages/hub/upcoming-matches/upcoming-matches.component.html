@@ -2,23 +2,23 @@
     <app-spinner *ngIf="!matches"></app-spinner>
     <div *ngIf="matches" class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>Upcoming Fixtures</h4>
+            <h4 i18n="@@fixtures.upcomingFixtures">Upcoming Fixtures</h4>
         </div>
         <div class="card__content table-responsive">
             <app-spinner *ngIf="!matches"></app-spinner>
-            <div *ngIf="matches && !matches.length" class="m-4 alert alert-info">
+            <div *ngIf="matches && !matches.length" class="m-4 alert alert-info"  i18n="@@fixtures.noUpcomingFixtures">
                 There are currently no upcoming matches scheduled
             </div>
             <table *ngIf="matches && matches.length" class="table table-striped">
                 <thead>
                     <tr>
-                        <th class="team-result__date">Date</th>
+                        <th class="team-result__date" i18n="@@globals.date">Date</th>
                         <th></th>
-                        <th colspan="2"><span style="margin-left: -22px;">Match</span></th>
-                        <th class="team-result__status">Match Type</th>
-                        <th class="text-center">Match Format</th>
-                        <th class="text-center">Venue</th>
-                        <th class="text-center">Country</th>
+                        <th colspan="2"><span style="margin-left: -22px;" i18n="@@globals.match">Match</span></th>
+                        <th class="team-result__status" i18n="@@globals.matchType">Match Type</th>
+                        <th class="text-center" i18n="@@globals.matchFormat">Match Format</th>
+                        <th class="text-center" i18n="@@globals.venue">Venue</th>
+                        <th class="text-center" i18n="@@globals.country">Country</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,8 +42,8 @@
                             </ng-container>
                             <ng-template #matchType>
                                 <ng-container [ngSwitch]="match.matchType">
-                                    <span *ngSwitchCase="matchTypes.UnrankedFriendly">Unranked Friendly</span>
-                                    <span *ngSwitchCase="matchTypes.RankedFriendly">Ranked Friendly</span>
+                                    <span *ngSwitchCase="matchTypes.UnrankedFriendly" i18n="@@globals.unrankedFriendly">Unranked Friendly</span>
+                                    <span *ngSwitchCase="matchTypes.RankedFriendly"  i18n="@@globals.rankedFriendly">Ranked Friendly</span>
                                 </ng-container>
                             </ng-template>
                         </td>

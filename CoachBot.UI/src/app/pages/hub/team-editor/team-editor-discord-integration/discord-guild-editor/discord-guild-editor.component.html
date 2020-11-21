@@ -1,12 +1,12 @@
 <ng-container *ngIf="isEditing">
     <ng-container *ngIf="!isLoading; else spinner">
         <form #editGuildForm="ngForm">
-            <div *ngIf="!userDiscordAccountLinked" class="alert alert-warning" role="alert">
+            <div *ngIf="!userDiscordAccountLinked" class="alert alert-warning" role="alert"   i18n="@@teamEditor.linkDiscordAccountProfile">
                 You must link your Discord account to your own profile first, via the <a routerLink="/edit-profile"
                     href="#">edit
                     profile screen</a>
             </div>
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-info" role="alert" i18n="@@teamEditor.inviteCoachBotServer">
                 To add a channel, you must have
                 <a
                     href="https://discordapp.com/oauth2/authorize?client_id=310871748562386954&scope=bot&permissions=1141374016">invited
@@ -16,15 +16,15 @@
             </div>
             <div class="form-group">
                 <label class="control-label" for="input-default">Discord Server</label>
-                <select class="form-control" id="input-default" [(ngModel)]="selectedDiscordGuildId"
+                <select class="form-control" id="input-default" [(ngModel)]="selectedDiscordGuildId" i18n-placeholder="@@teamEditor.selectDiscordServer"
                     placeholder="Select Discord server..." name="selectedDiscordGuildId" required>
                     <option *ngFor="let guild of discordGuilds" [ngValue]="guild.id">{{guild.name}}
                     </option>
                 </select>
             </div>
             <div class="form-group">
-                <label class="control-label mb-0" for="input-default">Kit Emote</label>
-                <small class="label-subtitle mb-2">This is only used if you have enabled the team sheet view on a
+                <label class="control-label mb-0" for="input-default" i18n="@@teamEditor.kitEmote">Kit Emote</label>
+                <small class="label-subtitle mb-2" i18n="@@teamEditor.kitEmoteBlurb">This is only used if you have enabled the team sheet view on a
                     channel, to display an empty position.</small>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend clickable">
@@ -34,7 +34,7 @@
                         </span>
                     </div>
                     <select [(ngModel)]="team.kitEmote" name="kitEmote" class="form-control">
-                        <option [ngValue]="null">None</option>
+                        <option [ngValue]="null" i18n="@@globals.none">None</option>
                         <ng-container *ngIf="team.guild && team.guild.discordGuildId">
                             <option
                                 *ngFor="let emote of (discordGuilds | arrayFilter:'id':selectedDiscordGuildId)[0].emotes"
@@ -47,11 +47,11 @@
             </div>
             <div class="float-right">
                 <button class="btn btn-outline-primary mr-2" type="button" (click)="closeEditor()"
-                    *ngIf="discordGuildPreviouslySet">
+                    *ngIf="discordGuildPreviouslySet" i18n="@@globals.cancel">
                     Cancel
                 </button>
                 <button class="btn btn-primary" type="button" (click)="updateDiscordGuild()"
-                    [disabled]="isLoading || editGuildForm.invalid">
+                    [disabled]="isLoading || editGuildForm.invalid" i18n="@@globals.save">
                     Save
                 </button>
             </div>

@@ -55,8 +55,8 @@ export class TeamSpotlightComponent implements OnInit {
             case TeamSpotlightStatistic.Goals:
                 this.modelProperty = 'goalsAverage';
                 this.apiModelProperty = 'GoalsAverage';
-                this.heading = 'Goal Scorers of the Week';
-                this.measureName = 'Average Goals';
+                this.heading = $localize`:@@spotlight.goalScorersOfWeek:Goal Scorers of the Week`;
+                this.measureName = $localize`:@@globals.averageGoals:Average Goals`;
                 this.ordering = 'DESC';
                 this.iconClass = '';
                 this.iconClass = 'icon-soccer-ball';
@@ -64,23 +64,23 @@ export class TeamSpotlightComponent implements OnInit {
             case TeamSpotlightStatistic.Wins:
                 this.modelProperty = 'wins';
                 this.apiModelProperty = 'Wins';
-                this.heading = 'Winners of the Week';
-                this.measureName = 'Wins';
+                this.heading = $localize`:@@spotlight.winnersOfWeek:Winners of the Week`;
+                this.measureName = $localize`:@@globals.wins:Wins`;
                 this.ordering = 'DESC';
                 this.iconClass = 'icon-trophy';
                 break;
             case TeamSpotlightStatistic.GoalsConceded:
                 this.modelProperty = 'goalsConcededAverage';
                 this.apiModelProperty = 'GoalsConcededAverage';
-                this.heading = 'Defensive Team of the Week';
-                this.measureName = 'Average Goals Conceded';
+                this.heading = $localize`:@@spotlight.defensiveTeamOfWeek:Defensive Team of the Week`;
+                this.measureName = $localize`:@@globals.averageGoalsConced:Average Goals Conceded`;
                 this.ordering = 'ASC';
                 this.iconClass = 'icon-keepers-glove';
                 break;
             case TeamSpotlightStatistic.PassCompletion:
                 this.modelProperty = 'passCompletionPercentageAverage';
                 this.apiModelProperty = 'PassCompletionPercentageAverage';
-                this.heading = 'Passers of the Week';
+                this.heading = $localize`:@@spotlight.passersOfWeek:Passers of the Week`;
                 this.measureName = 'Pass Completion';
                 this.ordering = 'DESC';
                 this.iconClass = 'icon-soccer-shots';

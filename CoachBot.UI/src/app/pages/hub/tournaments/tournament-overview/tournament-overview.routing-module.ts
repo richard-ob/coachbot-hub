@@ -19,7 +19,7 @@ const routes: Routes = [
             { path: 'teams', component: TournamentOverviewTeamsComponent },
             { path: 'staff', component: TournamentOverviewStaffComponent }
         ],
-        data: { title: 'Tournament Overview' }
+        data: { title: $localize`:@@globals.tournamentOverview:Tournament Overview` }
     }
 ];
 @NgModule({

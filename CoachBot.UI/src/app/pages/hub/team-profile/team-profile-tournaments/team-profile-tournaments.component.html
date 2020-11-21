@@ -1,11 +1,11 @@
 <div class="container py-4">
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>Tournaments</h4>
+            <h4 i18n="@@globals.tournaments">Tournaments</h4>
         </div>
         <div class="card__content">
             <app-spinner *ngIf="!tournaments"></app-spinner>
-            <div *ngIf="tournaments && !tournaments.length" class="alert alert-info m-4">
+            <div *ngIf="tournaments && !tournaments.length" class="alert alert-info m-4" i18n="@@team.tournaments.noTournaments">
                 This team hasn't taken part in any tournaments yet. Shame.
             </div>
             <table *ngIf="tournaments && tournaments.length" class=" table table-striped table-clickable table-hover
@@ -13,13 +13,13 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Organisation</th>
-                        <th class="team-result__date">Tournament</th>
-                        <th class="team-result__status">Tournament Format</th>
-                        <th class="text-center">Match Format</th>
-                        <th class="team-result__vs">Start Date</th>
-                        <th class="team-result__score">End Date</th>
-                        <th>Result</th>
+                        <th i18n="@@globals.organisation">Organisation</th>
+                        <th class="team-result__date" i18n="@@globals.tournament">Tournament</th>
+                        <th class="team-result__status" i18n="@@globals.tournamentFormat">Tournament Format</th>
+                        <th class="text-center"i18n="@@globals.matchFormat">Match Format</th>
+                        <th class="team-result__vs" i18n="@@globals.startDate">Start Date</th>
+                        <th class="team-result__score" i18n="@@globals.endDate">End Date</th>
+                        <th i18n="@@globals.result">Result</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,9 +37,9 @@
                         <td class="team-result__date">{{tournament.startDate | date:'mediumDate'}}</td>
                         <td class="team-result__date">{{tournament.endDate | date:'mediumDate'}}</td>
                         <td>
-                            <ng-container *ngIf="!tournament.winningTeam">Result Pending</ng-container>
-                            <ng-container *ngIf="tournament.winningTeamId === teamId">Won</ng-container>
-                            <ng-container *ngIf="tournament.winningTeamId && tournament.winningTeamId !== teamId">Lost
+                            <ng-container *ngIf="!tournament.winningTeam" i18n="@@globals.resultPending">Result Pending</ng-container>
+                            <ng-container *ngIf="tournament.winningTeamId === teamId" i18n="@@globals.won">Won</ng-container>
+                            <ng-container *ngIf="tournament.winningTeamId && tournament.winningTeamId !== teamId" i18n="@@globals.lost">Lost
                             </ng-container>
                         </td>
                     </tr>

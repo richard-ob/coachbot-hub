@@ -5,7 +5,9 @@
             <div class="widget-player__ribbon">
                 <div class="fa fa-star"></div>
             </div>
-            <h4 class="statistic-spotlight-name">{{spotlightTeam ? spotlightTeam.teamName : 'TBC'}}
+            <h4 class="statistic-spotlight-name">
+                <ng-container *ngIf="spotlightTeam">{{spotlightTeam.teamName }}</ng-container>
+                <ng-container *ngIf="!spotlightTeam" i18n="@@globals.toBeConfirmed">TBC</ng-container>
             </h4>
             <i class="statistic-spotlight-icon icon-svg" [ngClass]="iconClass"></i>
             <div *ngIf="spotlightTeam" class="d-flex">

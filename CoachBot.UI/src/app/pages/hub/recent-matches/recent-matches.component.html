@@ -1,12 +1,15 @@
 <div class="container" [class.py-4]="verticalPadding">
     <!-- Team Latest Results -->
     <app-spinner *ngIf="!matches"></app-spinner>
-    <div *ngIf="matches && !matches.length && !hasFiltersApplied" class="alert alert-info">
+    <div *ngIf="matches && !matches.length && !hasFiltersApplied" class="alert alert-info" i18n="@@recentMatches.noMatchesYet">
         No matches played yet. Come back soon!
     </div>
     <div *ngIf="(matches && matches.length) || hasFiltersApplied" class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>{{includeUpcoming ? 'Matches' : 'Results' }}</h4>
+            <h4>
+                <ng-container *ngIf="includeUpcoming" i18n="@@globals.matches">Matches</ng-container>
+                <ng-container *ngIf="!includeUpcoming" i18n="@@globals.results">Results</ng-container>
+            </h4>
             <ul class="team-result-filter d-none d-lg-inline float-right">
                 <ng-container *ngIf="showFilters">
                     <li class="team-result-filter__item">
@@ -18,7 +21,7 @@
                                 </span>
                             </div>
                             <input matInput class="form-control input-xs" [matDatepicker]="dateFromPicker"
-                                [(ngModel)]="filters.dateFrom" placeholder="Date From" (click)="dateFromPicker.open()">
+                                [(ngModel)]="filters.dateFrom"  i18n-placeholder="@@globals.dateFrom" placeholder="Date From" (click)="dateFromPicker.open()">
                         </div>
                     </li>
                     <li class="team-result-filter__item">
@@ -30,7 +33,7 @@
                                 </span>
                             </div>
                             <input matInput class="form-control input-xs" [matDatepicker]="dateToPicker"
-                                [(ngModel)]="filters.dateTo" placeholder="Date To" (click)="dateToPicker.open()">
+                                [(ngModel)]="filters.dateTo" i18n-placeholder="@@globals.dateTo" placeholder="Date To" (click)="dateToPicker.open()">
                         </div>
                     </li>
                     <li class="team-result-filter__item">
@@ -45,9 +48,9 @@
                     </li>
                     <li class="team-result-filter__item">
                         <select class="form-control" [(ngModel)]="filters.matchType">
-                            <option [ngValue]="undefined">All</option>
-                            <option [ngValue]="matchTypes.RankedFriendly">Friendlies</option>
-                            <option [ngValue]="matchTypes.Competition">Competitive</option>
+                            <option [ngValue]="undefined" i18n="@@globals.all">All</option>
+                            <option [ngValue]="matchTypes.RankedFriendly"  i18n="@@globals.friendlies">Friendlies</option>
+                            <option [ngValue]="matchTypes.Competition"  i18n="@@globals.competitive">Competitive</option>
                         </select>
                     </li>
                 </ng-container>
@@ -55,36 +58,36 @@
                     <li class="team-result-filter__item">
                         <select [(ngModel)]="filters.teamId" name="teamId" class="form-control" style="text-align-last: center;
                         text-align: center;" #teamSelect>
-                            <option [ngValue]="undefined">All Teams</option>
+                            <option [ngValue]="undefined"  i18n="@@globals.allTeams">All Teams</option>
                             <option *ngFor="let team of teams" [ngValue]="team.id">{{team.name}}</option>
                         </select>
                     </li>
                 </ng-container>
                 <li class="team-result-filter__item">
                     <button type="button" class="btn btn-secondary btn-xs card-header__button" (click)="setFilters()"
-                        title="Filter results">
+                        title="Filter results"  i18n="@@globals.filter">
                         Filter
                     </button>
                 </li>
             </ul>
         </div>
         <div class="card__content table-responsive">
-            <div *ngIf="matches && !matches.length" class="alert alert-info m-4">
+            <div *ngIf="matches && !matches.length" class="alert alert-info m-4"  i18n="@@recentMatches.noMatchesFoundCriteria">
                 No matches found meeting the given criteria. Sorry!
             </div>
             <table *ngIf="matches && matches.length" class="table table-striped table-hover table-clickable"
                 [class.widget__content--loading]="isLoadingPage">
                 <thead>
                     <tr>
-                        <th class="team-result__date">Date</th>
+                        <th class="team-result__date" i18n="@@globals.date">Date</th>
                         <th *ngIf="teamId"></th>
                         <th></th>
-                        <th class="team-result__vs text-left" colspan="2">Match</th>
-                        <th *ngIf="!filters.tournamentId" class="team-result__status">Match Type</th>
-                        <th class="team-result__status text-center">Match Format</th>
-                        <th class="team-result__ball-posession text-center">Location</th>
-                        <th *ngIf="filters.tournamentId">Venue</th>
-                        <th class="team-result__game-overview text-center">Match Overview</th>
+                        <th class="team-result__vs text-left" colspan="2" i18n="@@globals.match">Match</th>
+                        <th *ngIf="!filters.tournamentId" class="team-result__status"  i18n="@@globals.matchType">Match Type</th>
+                        <th class="team-result__status text-center"  i18n="@@globals.matchFormat">Match Format</th>
+                        <th class="team-result__ball-posession text-center"  i18n="@@globals.location">Location</th>
+                        <th *ngIf="filters.tournamentId"  i18n="@@globals.venue">Venue</th>
+                        <th class="team-result__game-overview text-center"  i18n="@@globals.matchOverview">Match Overview</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,7 +114,7 @@
                             <span class="team-result--score">{{match?.matchStatistics?.matchGoalsAway}}</span>
                             </span>
                             <ng-template #matchNotPlayed>
-                                <span class="team-result--score-tbc">
+                                <span class="team-result--score-tbc"  i18n="@@globals.tbc">
                                     TBC
                                 </span>
                             </ng-template>
@@ -122,8 +125,8 @@
                         </td>
                         <td *ngIf="!filters.tournamentId" class="team-result__status text-nowrap">
                             <ng-container [ngSwitch]="match.matchType">
-                                <span *ngSwitchCase="matchTypes.UnrankedFriendly">Unranked Friendly</span>
-                                <span *ngSwitchCase="matchTypes.RankedFriendly">Ranked Friendly</span>
+                                <span *ngSwitchCase="matchTypes.UnrankedFriendly"  i18n="@@matchTypes.unrankedFriendly">Unranked Friendly</span>
+                                <span *ngSwitchCase="matchTypes.RankedFriendly"i18n="@@matchTypes.rankedFriendly">Ranked Friendly</span>
                                 <span *ngSwitchCase="matchTypes.Competition">
                                     <a [routerLink]="['/tournament/', match.tournamentId]">{{match.tournament.name}}</a>
                                 </span>
@@ -137,13 +140,13 @@
                         </td>
                         <td *ngIf="filters.tournamentId" class="team-result__status text-nowrap">
                             <a *ngIf="match.server">{{match.server.name}}</a>
-                            <span *ngIf="!match.server" class="text-muted">TBC</span>
+                            <span *ngIf="!match.server" class="text-muted" i18n="@@globals.tbc">TBC</span>
                         </td>
                         <td class="team-result__game-overview text-center">
                             <a *ngIf="match.matchStatistics" [routerLink]="['/match-overview', match.id]"
-                                class="btn btn-xs btn-primary">Match
+                                class="btn btn-xs btn-primary" i18n="@@globals.matchOverview">Match
                                 Overview</a>
-                            <ng-container *ngIf="!match.matchStatistics">
+                            <ng-container *ngIf="!match.matchStatistics" i18n="@@globals.notAvailable">
                                 N/A
                             </ng-container>
                         </td>

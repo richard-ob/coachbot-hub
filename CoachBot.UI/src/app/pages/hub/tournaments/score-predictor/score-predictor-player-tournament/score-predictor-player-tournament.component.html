@@ -1,25 +1,25 @@
 <div class="container py-4">
     <ng-container *ngIf="!isLoading; else spinner">
         <div class="card card--has-table">
-            <div class="card__header">
+            <div class="card__header" i18n="@@scorePredictor.xPlayersTournamentPredictions">
                 <h4>{{player.name}}'s Predictions
                     <small>{{tournament.name}}</small>
                 </h4>
             </div>
             <div class="card__content">
                 <app-spinner *ngIf="!scorePredictions"></app-spinner>
-                <div *ngIf="scorePredictions && !scorePredictions.length" class="alert alert-info">
+                <div *ngIf="scorePredictions && !scorePredictions.length" class="alert alert-info" i18n="@@scorePredictor.playerNoPredictions">
                     This player hasn't made any predictions yet!
                 </div>
                 <ng-container *ngIf="scorePredictions && scorePredictions.length">
                     <table class="table table-striped">
                         <thead>
-                            <th>Prediction Date</th>
-                            <th>Match Date</th>
-                            <th>Match</th>
-                            <th>Prediction</th>
-                            <th>Actual</th>
-                            <th>Outcome</th>
+                            <th i18n="@@scorePredictor.predictionDate">Prediction Date</th>
+                            <th i18n="@@globals.matchDate">Match Date</th>
+                            <th i18n="@@globals.match">Match</th>
+                            <th i18n="@@scorePredictor.prediction">Prediction</th>
+                            <th i18n="@@scorePredictor.actual">Actual</th>
+                            <th i18n="@@scorePredictor.outcome">Outcome</th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let prediction of scorePredictions">
@@ -36,7 +36,7 @@
                                         {{prediction.match.matchStatistics.matchGoalsHome}} -
                                         {{prediction.match.matchStatistics.matchGoalsAway}}
                                     </ng-container>
-                                    <ng-template #tbc><span class="text-muted">TBC</span></ng-template>
+                                    <ng-template #tbc><span class="text-muted" i18n="@@globals.tbc">TBC</span></ng-template>
                                 </td>
                                 <td>
                                     <ng-container *ngIf="prediction.match.matchStatistics; else tbc">
@@ -44,10 +44,10 @@
                                             *ngIf="prediction.match.matchStatistics 
                                                 && prediction.homeGoalsPrediction === prediction.match.matchStatistics.matchGoalsHome
                                                 && prediction.awayGoalsPrediction === prediction.match.matchStatistics.matchGoalsAway; else incorrect">
-                                            <span class="badge badge-success">Exact Result</span>
+                                            <span class="badge badge-success"i18n="@@scorePredictor.exactResult">Exact Result</span>
                                         </ng-container>
                                         <ng-template #incorrect>
-                                            <span class="badge badge-danger">Incorrect</span>
+                                            <span class="badge badge-danger" i18n="@@scorePredictor.incorrect">Incorrect</span>
                                         </ng-template>
                                     </ng-container>
                                 </td>

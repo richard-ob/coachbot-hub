@@ -1,6 +1,6 @@
 <div class="card statistic-spotlight-card" (click)="spotlightPlayer && navigateToPlayerHistory()">
     <div class="card__content statistic-spotlight-card widget-player--soccer">
-        <h4 class="statistic-spotlight-title mb-2">Player of the Week</h4>
+        <h4 class="statistic-spotlight-title mb-2" i18n="@@globals.playerOfTheWeek">Player of the Week</h4>
         <ng-container *ngIf="!isLoading; else spinner">
             <div class="widget-player__ribbon">
                 <div class="fa fa-star"></div>
@@ -13,7 +13,7 @@
                     <div class="statistic-spotlight-stat-value">
                         {{spotlightPlayer.points}}
                     </div>
-                    <div class="statistic-spotlight-stat-measure">
+                    <div class="statistic-spotlight-stat-measure" i18n="@@globals.points">
                         Points
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <div class="statistic-spotlight-stat-value">
                         {{spotlightPlayer.predictions}}
                     </div>
-                    <div class="statistic-spotlight-stat-measure">
+                    <div class="statistic-spotlight-stat-measure" i18n="@@scorePredictor.predictions">
                         Predictions
                     </div>
                 </div>

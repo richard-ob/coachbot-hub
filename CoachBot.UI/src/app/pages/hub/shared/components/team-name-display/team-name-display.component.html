@@ -2,7 +2,7 @@
     <ng-container *ngIf="isHomeTeam">
         <strong *ngIf="team" class="clickable" [routerLink]="['/team-profile/', team.id]"
             [attr.title]="team.name">{{ useTeamCodes ? team.teamCode : team.name }}</strong>
-        <strong *ngIf="!team" title="To Be Confirmed">TBC</strong>
+        <strong *ngIf="!team" title="To Be Confirmed" i18n="@@globals.tbc">TBC</strong>
         <span class="pl-1">
             <img *ngIf="team && team.badgeImage"
                 [src]="team.badgeImage.extraSmallUrl" style="max-height: 20px">
@@ -19,6 +19,6 @@
         </span>
         <strong *ngIf="team" class="clickable" [routerLink]="['/team-profile/', team.id]"
             [attr.title]="team.name">{{ useTeamCodes ? team.teamCode : team.name }}</strong>
-        <strong *ngIf="!team" title="To Be Confirmed">TBC</strong>
+        <strong *ngIf="!team" title="To Be Confirmed" i18n="@@globals.tbc">TBC</strong>
     </ng-container>
 </ng-container>

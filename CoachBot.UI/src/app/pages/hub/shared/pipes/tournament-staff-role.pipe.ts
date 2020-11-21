@@ -6,13 +6,13 @@ export class TournamentStaffRolePipe implements PipeTransform {
     transform(tournamentStaffRole: TournamentStaffRole): string {
         switch (tournamentStaffRole) {
             case TournamentStaffRole.Organiser:
-                return 'Organiser';
+                return $localize`:@@globals.organiser:Organiser`;
             case TournamentStaffRole.MatchAdmin:
-                return 'Match Admin';
+                return $localize`:@@globals.matchAdmin:Match Admin`;
             case TournamentStaffRole.Streamer:
-                return 'Streamer';
+                return $localize`:@@globals.streamer:Streamer`;
             case TournamentStaffRole.Commentator:
-                return 'Commentator';
+                return $localize`:@@globals.commentator:Commentator`;
             default:
                 return '';
         }

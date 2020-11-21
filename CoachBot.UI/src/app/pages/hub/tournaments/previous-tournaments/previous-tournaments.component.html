@@ -2,11 +2,11 @@
     <!-- Team Latest Results -->
     <div class="card card--has-table">
         <div class="card__header card__header--has-btn">
-            <h4>Past Tournaments</h4>
+            <h4  i18n="@@tournaments.pastTournaments">Past Tournaments</h4>
         </div>
         <div class="card__content">
             <app-spinner *ngIf="!tournaments"></app-spinner>
-            <div *ngIf="tournaments && !tournaments.length" class="alert alert-info m-4">
+            <div *ngIf="tournaments && !tournaments.length" class="alert alert-info m-4"  i18n="@@tournaments.noTournaments">
                 No tournaments have taken place yet. Check back again soon!
             </div>
             <table *ngIf="tournaments && tournaments.length" class=" table table-striped table-clickable table-hover
@@ -14,14 +14,14 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Organisation</th>
-                        <th class="team-result__date">Tournament</th>
-                        <th class="team-result__status">Tournament Format</th>
-                        <th class="team-result__status">Team Type</th>
-                        <th class="team-result__status">Match Format</th>
-                        <th class="team-result__vs">Start Date</th>
-                        <th class="team-result__score">End Date</th>
-                        <th class="text-center">Winner</th>
+                        <th i18n="@@globals.organisation">Organisation</th>
+                        <th  i18n="@@globals.tournament" class="team-result__date">Tournament</th>
+                        <th class="team-result__status" i18n="@@globals.tournamentFormat">Tournament Format</th>
+                        <th class="team-result__status"  i18n="@@globals.teamType">Team Type</th>
+                        <th class="team-result__status"  i18n="@@globals.matchFormat">Match Format</th>
+                        <th class="team-result__vs" i18n="@@globals.startDate">Start Date</th>
+                        <th class="team-result__score"  i18n="@@globals.endDate">End Date</th>
+                        <th class="text-center" i18n="@@globals.winner">Winner</th>
                     </tr>
                 </thead>
                 <tbody>

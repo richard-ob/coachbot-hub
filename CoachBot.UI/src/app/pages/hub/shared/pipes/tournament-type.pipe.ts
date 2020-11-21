@@ -6,15 +6,15 @@ export class TournamentTypePipe implements PipeTransform {
     transform(tournamentType: TournamentType): string {
         switch (tournamentType) {
             case TournamentType.RoundRobinLadder:
-                return 'Ladder';
+                return $localize`:@@tournamentTypes.ladder:Ladder`;
             case TournamentType.Knockout:
-                return 'Knockout';
+                return $localize`:@@tournamentTypes.knockout:Knockout`;
             case TournamentType.RoundRobinAndKnockout:
-                return 'Group Knockout';
+                return $localize`:@@tournamentTypes.groupKnockout:Group Knockout`;
             case TournamentType.DoubleRoundRobin:
-                return 'League';
+                return $localize`:@@tournamentTypes.league:League`;
             case TournamentType.QuadrupleRoundRobin:
-                return 'League';
+                return $localize`:@@tournamentTypes.league:League`;
             default:
                 return '';
         }

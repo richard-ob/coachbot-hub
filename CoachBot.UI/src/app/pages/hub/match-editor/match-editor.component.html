@@ -1,32 +1,32 @@
 <div class="container py-4">
     <div class="card">
         <div class="card__header">
-            <h4>Match Editor</h4>
+            <h4 i18n="@@globals.matchEditor">Match Editor</h4>
         </div>
         <div class="card__content">
             <ng-container *ngIf="!isLoading; else spinner">
-                <small class="text-muted">Editing home & away teams does not currently change the underlying
+                <small class="text-muted" i18n="@@matchEditor.editingHomeAwayBlurb">Editing home & away teams does not currently change the underlying
                     statistics</small>
                 <div class="form-group">
-                    <label>Home Team</label>
+                    <label i18n="@@globals.homeTeam">Home Team</label>
                     <select [(ngModel)]="match.teamHomeId" name="teamHome" class="form-control">
                         <option *ngFor="let team of teams" [ngValue]="team.id">{{team.name}} ({{team.teamCode}})
                         </option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Away Team</label>
+                    <label i18n="@@globals.awayTeam">Away Team</label>
                     <select [(ngModel)]="match.teamAwayId" name="teamHome" class="form-control">
                         <option *ngFor="let team of teams" [ngValue]="team.id">{{team.name}} ({{team.teamCode}})
                         </option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Scheduled Kick Off</label>
+                    <label i18n="@@globals.scheduledKickOff">Scheduled Kick Off</label>
                     <div class="form-control-static mb-2">
                         {{match.kickOff | date:'full'}}
                         <button type="button" class="btn btn-primary btn-xs ml-2"
-                            (click)="showDatepicker = !showDatepicker">
+                            (click)="showDatepicker = !showDatepicker" i18n="@@globals.edit">
                             Edit
                         </button>
                     </div>
@@ -38,21 +38,21 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Server</label>
+                    <label i18n="@@globals.server">Server</label>
                     <select [(ngModel)]="match.serverId" name="server" class="form-control">
                         <option *ngFor="let server of servers" [ngValue]="server.id">{{server.name}}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label>Map</label>
+                    <label i18n="@@globals.map">Map</label>
                     <select [(ngModel)]="match.mapId" name="map" class="form-control">
                         <option *ngFor="let map of maps" [ngValue]="map.id">{{map.name}}</option>
                     </select>
                 </div>
 
                 <div *ngIf="matchToken" class="form-group">
-                    <label>Token</label>
+                    <label i18n="@@globals.token">Token</label>
                     <input type="text" readonly [(ngModel)]="matchToken" class="form-control">
                     <pre>
 sv_webserver_matchdata_url "http://www.iosoccer.com:8080/api/match-statistics"
@@ -61,7 +61,7 @@ sv_webserver_matchdata_accesstoken "{{matchToken}}"
                     </pre>
                 </div>
 
-                <button class="btn btn-primary" (click)="updateMatch()" type="button">Save</button>
+                <button class="btn btn-primary" (click)="updateMatch()" type="button" i18n="@@globals.save">Save</button>
             </ng-container>
             <ng-template #spinner>
                 <app-spinner></app-spinner>
@@ -73,23 +73,23 @@ sv_webserver_matchdata_accesstoken "{{matchToken}}"
 
     <div class="card">
         <div class="card__header">
-            <h4>Match Result Override</h4>
+            <h4 i18n="@@globals.matchResultOverride">Match Result Override</h4>
         </div>
         <div class="card__content">
             <ng-container *ngIf="!isLoading; else spinner">
-                <p class="text-muted">
+                <p class="text-muted" i18n="@@matchEditor.matchResultOverrideBlurb">
                     This will override any submitted result, as well as acting as a substitute for where match data is
                     not available
                 </p>
                 <div class="form-group">
-                    <label>Home Goals</label>
+                    <label i18n="@@globals.homeGoals">Home Goals</label>
                     <input class="form-control" type="number" name="homeGoalsOverride" [(ngModel)]="homeGoalsOverride">
                 </div>
                 <div class="form-group">
-                    <label>Away Goals</label>
+                    <label i18n="@@globals.awayGoals">Away Goals</label>
                     <input class="form-control" type="number" name="homeGoalsOverride" [(ngModel)]="awayGoalsOverride">
                 </div>
-                <button class="btn btn-primary" (click)="submitMatchResultOverride()" type="button">Save</button>
+                <button class="btn btn-primary" (click)="submitMatchResultOverride()" type="button" i18n="@@globals.save">Save</button>
             </ng-container>
             <ng-template #spinner>
                 <app-spinner></app-spinner>

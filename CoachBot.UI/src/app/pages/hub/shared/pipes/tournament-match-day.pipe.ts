@@ -6,19 +6,19 @@ export class TournamentMatchDayPipe implements PipeTransform {
     transform(tournamentMatchDay: TournamentMatchDay): string {
         switch (tournamentMatchDay) {
             case TournamentMatchDay.Monday:
-                return 'Monday';
+                return $localize`:@@globals.monday:Monday`;
             case TournamentMatchDay.Tuesday:
-                return 'Tuesday';
+                return $localize`:@@globals.tuesday:Tuesday`;
             case TournamentMatchDay.Wednesday:
-                return 'Wednesday';
+                return $localize`:@@globals.wednesday:Wednesday`;
             case TournamentMatchDay.Thursday:
-                return 'Thursday';
+                return $localize`:@@globals.thursday:Thursday`;
             case TournamentMatchDay.Friday:
-                return 'Friday';
+                return $localize`:@@globals.friday:Friday`;
             case TournamentMatchDay.Saturday:
-                return 'Saturday';
+                return $localize`:@@globals.saturday:Saturday`;
             case TournamentMatchDay.Sunday:
-                return 'Sunday';
+                return $localize`:@@globals.sunday:Sunday`;
             default:
                 return '';
         }

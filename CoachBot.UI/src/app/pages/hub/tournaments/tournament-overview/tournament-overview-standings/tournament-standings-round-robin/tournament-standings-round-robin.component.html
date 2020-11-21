@@ -1,6 +1,6 @@
 <div class="card card--has-table">
     <div class="card__header card__header--has-btn">
-        <h4>{{tournamentGroupName}} Standings</h4>
+        <h4>{{tournamentGroupName}} <ng-container  i18n="@@tournament.stadings">Standings</ng-container></h4>
     </div>
     <div class="card__content table-responsive">
         <app-spinner *ngIf="!tournamentGroupStandings"></app-spinner>
@@ -12,58 +12,58 @@
                         <th class="team-result__date" style="width: 10px;"></th>
                         <th class="team-result__date" style="width: 35px;"></th>
                         <th class="team-result__date">Team</th>
-                        <th class="team-result__status text-center" title="Matches Played">
+                        <th class="team-result__status text-center"  i18n-title="@@tournament.standings.matchesPlayed" title="Matches Played">
                             <ng-container *ngIf="showFullHeaders">
-                                <span class="d-none d-lg-block">Played</span>
+                                <span class="d-none d-lg-block" i18n="@@tournament.standings.played">Played</span>
                                 <span class="d-block d-lg-none">P</span>
                             </ng-container>
                             <ng-container *ngIf="!showFullHeaders">P</ng-container>
                         </th>
-                        <th class="team-result__game-overview text-center" title="Wins">
+                        <th class="team-result__game-overview text-center" i18n-title="@@globals.wins" title="Wins">
                             <ng-container *ngIf="showFullHeaders">
-                                <span class="d-none d-lg-block">Wins</span>
+                                <span class="d-none d-lg-block" i18n="@@globals.wins">Wins</span>
                                 <span class="d-block d-lg-none">W</span>
                             </ng-container>
                             <ng-container *ngIf="!showFullHeaders">W</ng-container>
                         </th>
-                        <th class="team-result__game-overview text-center" title="Draws">
+                        <th class="team-result__game-overview text-center"  i18n-title="@@globals.draws" title="Draws">
                             <ng-container *ngIf="showFullHeaders">
-                                <span class="d-none d-lg-block">Draws</span>
+                                <span class="d-none d-lg-block" i18n="@@globals.draws" >Draws</span>
                                 <span class="d-block d-lg-none">D</span>
                             </ng-container>
                             <ng-container *ngIf="!showFullHeaders">D</ng-container>
                         </th>
-                        <th class="team-result__game-overview text-center" title="Losses">
+                        <th class="team-result__game-overview text-center" i18n-title="@@globals.losses" title="Losses">
                             <ng-container *ngIf="showFullHeaders">
-                                <span class="d-none d-lg-block">Losses</span>
+                                <span class="d-none d-lg-block" i18n="@@globals.losses">Losses</span>
                                 <span class="d-block d-lg-none">L</span>
                             </ng-container>
                             <ng-container *ngIf="!showFullHeaders">L</ng-container>
                         </th>
-                        <th class="team-result__game-overview text-center" title="Goal Difference">
+                        <th class="team-result__game-overview text-center" i18n-title="@@globals.goalDifference" title="Goal Difference">
                             <ng-container *ngIf="showFullHeaders">
-                                <span class="d-none d-lg-block">Goal Difference</span>
+                                <span class="d-none d-lg-block" i18n="@@globals.goalDifference">Goal Difference</span>
                                 <span class="d-block d-lg-none">GD</span>
                             </ng-container>
                             <ng-container *ngIf="!showFullHeaders">GD</ng-container>
                         </th>
-                        <th class="team-result__game-overview text-center" title="Goals For">
+                        <th class="team-result__game-overview text-center" i18n-title="@@tournament.standings.goalsFor" title="Goals For">
                             <ng-container *ngIf="showFullHeaders">
-                                <span class="d-none d-lg-block">For</span>
+                                <span class="d-none d-lg-block"  i18n="@@tournament.standings.forShort">For</span>
                                 <span class="d-block d-lg-none">GF</span>
                             </ng-container>
                             <ng-container *ngIf="!showFullHeaders">GF</ng-container>
                         </th>
-                        <th class="team-result__game-overview text-center" title="Goals Against">
+                        <th class="team-result__game-overview text-center" i18n-title="@@tournament.standings.goalsAgainst" title="Goals Against">
                             <ng-container *ngIf="showFullHeaders">
-                                <span class="d-none d-lg-block">Against</span>
+                                <span class="d-none d-lg-block" i18n-title="@@tournament.standings.goalsAgainstShort">Against</span>
                                 <span class="d-block d-lg-none">GA</span>
                             </ng-container>
                             <ng-container *ngIf="!showFullHeaders">GA</ng-container>
                         </th>
-                        <th class="team-result__game-overview text-center" title="Points">Points</th>
+                        <th class="team-result__game-overview text-center" title="Points"  i18n="@@globals.points">Points</th>
                         <th *ngIf="showFullHeaders"
-                            class="team-result__game-overview text-center d-none d-xl-table-cell" title="Form">Form</th>
+                            class="team-result__game-overview text-center d-none d-xl-table-cell"  i18n-title="@@globals.form" i18n="@@globals.form" title="Form">Form</th>
                         <th *ngIf="showFullHeaders"
                             class="team-result__game-overview text-center d-none d-xl-table-cell">
                         </th>
@@ -97,7 +97,7 @@
                         </td>
                         <td *ngIf="showFullHeaders" class="team-result__status text-center d-none d-xl-table-cell">
                             <a class="btn btn-primary btn-xs" type="button"
-                                [routerLink]="['/team-profile/', tournamentGroupStanding.teamId]">View Profile</a>
+                                [routerLink]="['/team-profile/', tournamentGroupStanding.teamId]"  i18n="@@globals.viewProfile">View Profile</a>
                         </td>
                     </tr>
                 </tbody>

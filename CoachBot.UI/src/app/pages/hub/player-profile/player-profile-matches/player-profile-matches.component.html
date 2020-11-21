@@ -1,7 +1,7 @@
 <div class="container">
     <div *ngIf="isLoading || !matches.length">
         <app-spinner *ngIf="isLoading"></app-spinner>
-        <div *ngIf="!isLoading && !matches.length && !hasFiltered" class="alert alert-info">
+        <div *ngIf="!isLoading && !matches.length && !hasFiltered" class="alert alert-info"  i18n="@@playerProfile.noMatchesYet">
             Hold tight! This player has not played in matches yet</div>
     </div>
 </div>
@@ -10,28 +10,28 @@
         <div class="row">
             <div class="card card--has-table w-100">
                 <div class="card__header card__header--has-btn">
-                    <h4>Matches</h4>
+                    <h4 i18n="@@globals.matches">Matches</h4>
                     <!-- Filter -->
                     <ul class="team-result-filter d-none d-md-inline">
                         <li class="team-result-filter__item">
                             <label class="checkbox checkbox-inline mr-2">
                                 <input type="checkbox" name="includeSubstituteAppearances"
-                                    [(ngModel)]="filters.includeSubstituteAppearances"> Include Sub Appearances
+                                    [(ngModel)]="filters.includeSubstituteAppearances"> <ng-container i18n="@@globals.includeSubAppearances">Include Sub Appearances</ng-container>
                                 <span class="checkbox-indicator"></span>
                             </label>
                         </li>
                         <li class="team-result-filter__item">
                             <select [(ngModel)]="filters.timePeriod" name="timePeriod" class="form-control"
                                 style="font-size: 11px;" #timePeriodSelect>
-                                <option [ngValue]="0">All Time</option>
-                                <option [ngValue]="365">Year</option>
-                                <option [ngValue]="31">Month</option>
-                                <option [ngValue]="7">Week</option>
+                                <option [ngValue]="0"  i18n="@@globals.allTime">All Time</option>
+                                <option [ngValue]="365"  i18n="@@globals.year">Year</option>
+                                <option [ngValue]="31"  i18n="@@globals.month">Month</option>
+                                <option [ngValue]="7"  i18n="@@globals.week">Week</option>
                             </select>
                         </li>
                         <li class="team-result-filter__item">
                             <button type="button" class="btn btn-outline-secondary btn-xs card-header__button"
-                                (click)="setFilters()">
+                                (click)="setFilters()" i18n="@@globals.filter">
                                 Filter
                             </button>
                         </li>
@@ -43,62 +43,62 @@
                         class="table table--large table-striped table-hover table-clickable table-inner-border table-column-hover">
                         <thead>
                             <tr>
-                                <th sorter [sortByColumn]="'Match.KickOff'" [sortByColumnName]="'Date'"
+                                <th sorter [sortByColumn]="'Match.KickOff'" i18n-sortByColumnName="@@globals.date" sortByColumnName="Date"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder" title="Match Date"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'Position.Name'" [sortByColumnName]="'Pos'"
+                                <th sorter [sortByColumn]="'Position.Name'" i18n-sortByColumnName="@@globals.positionShort"  sortByColumnName="Pos"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder" title="Position"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'Team.Name'" [sortByColumnName]="'Team'"
+                                <th sorter [sortByColumn]="'Team.Name'" i18n-sortByColumnName="@@globals.team" sortByColumnName="Team"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)"></th>
-                                <th sorter [sortByColumn]="'MatchOutcome'" [sortByColumnName]="'Result'"
+                                <th sorter [sortByColumn]="'MatchOutcome'" i18n-sortByColumnName="@@globals.result" sortByColumnName="Result"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
                                 <th></th>
-                                <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                <th sorter [sortByColumn]="'Goals'" i18n-sortByColumnName="@@globals.goals" sortByColumnName="Goals" [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
 
-                                <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                                <th sorter [sortByColumn]="'Assists'" i18n-sortByColumnName="@@globals.assists" sortByColumnName="Assists" [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'Shots'" [sortByColumnName]="'Shots'" [currentSort]="sortBy"
+                                <th sorter [sortByColumn]="'Shots'"  i18n-sortByColumnName="@@globals.shots" sortByColumnName="Shots"  [currentSort]="sortBy"
                                     [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                                     class="text-center">
                                 </th>
-                                <th sorter [sortByColumn]="'ShotsOnGoal'" [sortByColumnName]="'“ On Target'"
+                                <th sorter [sortByColumn]="'ShotsOnGoal'"  i18n-sortByColumnName="@@playerProfile.matches.shotsOnTarget" sortByColumnName="“ On Target"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center">
                                 </th>
-                                <th sorter [sortByColumn]="'Passes'" [sortByColumnName]="'Passes'"
+                                <th sorter [sortByColumn]="'Passes'"  i18n-sortByColumnName="@@globals.passes" sortByColumnName="Passes"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center">
                                 </th>
-                                <th sorter [sortByColumn]="'PassesCompleted'" [sortByColumnName]="'“ Completed'"
+                                <th sorter [sortByColumn]="'PassesCompleted'"  i18n-sortByColumnName="@@playerProfile.matches.passesCompleted" sortByColumnName="“ Completed"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'Interceptions'" [sortByColumnName]="'Interceptions'"
+                                <th sorter [sortByColumn]="'Interceptions'" i18n-sortByColumnName="@@globals.interceptions"  sortByColumnName="Interceptions"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'PossessionPercentage'" [sortByColumnName]="'Possession'"
+                                <th sorter [sortByColumn]="'PossessionPercentage'"  i18n-sortByColumnName="@@globals.possession"  sortByColumnName="Possession"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'KeeperSaves'" [sortByColumnName]="'Saves'"
+                                <th sorter [sortByColumn]="'KeeperSaves'"   i18n-sortByColumnName="@@globals.saves" sortByColumnName="Saves"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'GoalsConceded'" [sortByColumnName]="'Conceded'"
+                                <th sorter [sortByColumn]="'GoalsConceded'" i18n-sortByColumnName="@@globals.conceded" sortByColumnName="Conceded"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'Offsides'" [sortByColumnName]="'Offsides'"
+                                <th sorter [sortByColumn]="'Offsides'" i18n-sortByColumnName="@@globals.offsides" sortByColumnName="Offsides"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'YellowCards'" [sortByColumnName]="'Yellows'"
+                                <th sorter [sortByColumn]="'YellowCards'" i18n-sortByColumnName="@@globals.yellows" sortByColumnName="Yellows"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Reds'"
+                                <th sorter [sortByColumn]="'RedCards'" i18n-sortByColumnName="@@globals.reds" [sortByColumnName]="'Reds'"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center">
                                 </th>
-                                <th sorter [sortByColumn]="'DistanceCoveredAverage'"
+                                <th sorter [sortByColumn]="'DistanceCoveredAverage'" i18n-sortByColumnName="@@playerProfile.matches.avgDistance" 
                                     [sortByColumnName]="'Avg. Distance'" [currentSort]="sortBy"
                                     [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                                     class="text-center">

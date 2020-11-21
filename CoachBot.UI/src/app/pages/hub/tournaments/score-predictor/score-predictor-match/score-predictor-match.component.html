@@ -64,7 +64,7 @@
         </div>
         <button type="button" class="btn btn-primary btn-block" [disabled]="isSubmitting" (click)="submitPrediction()">
             <i *ngIf="isSubmitting" class="fas fa-circle-notch fa-spin"></i>&nbsp;
-            Submit
+            <ng-container i18n="@@globals.submit">Submit</ng-container>
         </button>
     </div>
 </div>

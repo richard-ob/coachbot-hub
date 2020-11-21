@@ -6,7 +6,8 @@
                 <div class="fa fa-star"></div>
             </div>
             <h4 class="statistic-spotlight-name"><span class="statistic-spotlight-prefix text-muted">vs</span>
-                {{oppositionName ? oppositionName : 'TBC'}}
+                <ng-container *ngIf="oppositionName">{{oppositionName}}</ng-container>
+                <ng-container *ngIf="!oppositionName" i18n="@@globals.toBeConfirmed">TBC</ng-container>
             </h4>
             <i class="statistic-spotlight-icon icon-svg" [ngClass]="iconClass"></i>
             <div *ngIf="spotlight" class="d-flex">

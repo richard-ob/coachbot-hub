@@ -1,22 +1,22 @@
 <div [class.container]="!showMoreStats" [class.container-fluid]="showMoreStats" [class.px-5]="showMoreStats">
     <div class="card card--has-table" style="margin-left: -30px; margin-right: -30px;">
         <header class="card__header card__header--has-btn">
-            <h4>Player Statistics</h4>
+            <h4 i18n="@@globals.playerStatistics">Player Statistics</h4>
             <ul class="team-result-filter d-none d-md-inline float-right">
                 <li class="team-result-filter__item float-right">
                     <button type="button" class="btn btn-secondary btn-xs d-none d-lg-inline-block mr-2"
                         (click)="toggleStatAggregation()">
-                        Show
-                        <ng-container *ngIf="showAggregateStats">Position</ng-container>
-                        <ng-container *ngIf="!showAggregateStats">Aggregate</ng-container>
-                        Stats
+                        <ng-container i18n="@@globals.show">Show</ng-container>
+                        <ng-container *ngIf="showAggregateStats" i18n="@@globals.position">Position</ng-container>
+                        <ng-container *ngIf="!showAggregateStats" i18n="@@globals.aggregate">Aggregate</ng-container>
+                        <ng-container i18n="@@globals.stats">Stats</ng-container>
                     </button>
                     <button type="button" class="btn btn-secondary btn-xs d-none d-lg-inline-block"
                         (click)="showMoreStats = !showMoreStats">
-                        Show
-                        <ng-container *ngIf="!showMoreStats">More</ng-container>
-                        <ng-container *ngIf="showMoreStats">Fewer</ng-container>
-                        Stats
+                        <ng-container i18n="@@globals.show">Show</ng-container>
+                        <ng-container *ngIf="!showMoreStats" i18n="@@globals.more">More</ng-container>
+                        <ng-container *ngIf="showMoreStats" i18n="@@globals.fewer">Fewer</ng-container>
+                        <ng-container i18n="@@globals.stats">Stats</ng-container>
                     </button>
                 </li>
             </ul>
@@ -28,77 +28,88 @@
                 [class.widget__content--loading]="isSorting">
                 <thead>
                     <tr>
-                        <th sorter [sortByColumn]="'Team.TeamCode'" [sortByColumnName]="'Team'" [currentSort]="sortBy"
+                        <th sorter [sortByColumn]="'Team.TeamCode'" i18n-sortByColumnName="@@globals.team" sortByColumnName="Team" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="!showAggregateStats" sorter [sortByColumn]="'Position.Name'"
-                            [sortByColumnName]="'Pos'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        <th *ngIf="!showAggregateStats" sorter [sortByColumn]="'Position.Name'"  i18n-sortByColumnName="@@globals.positionShort" 
+                            sortByColumnName="Pos" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center" title="Position">
                         </th>
-                        <th sorter [sortByColumn]="'Player.Name'" [sortByColumnName]="'Player'" [currentSort]="sortBy"
+                        <th sorter [sortByColumn]="'Player.Name'" i18n-sortByColumnName="@@globals.player" 
+                        sortByColumnName="Player" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
                         <th class="text-center"></th>
-                        <th sorter [sortByColumn]="'Goals'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        <th sorter [sortByColumn]="'Goals'" i18n-sortByColumnName="@@globals.goals" 
+                            sortByColumnName="Goals" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'Shots'" [sortByColumnName]="'Shots'" [currentSort]="sortBy"
+                        <th sorter [sortByColumn]="'Shots'" i18n-sortByColumnName="@@globals.shots" 
+                            sortByColumnName="Shots" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center">
                         </th>
-                        <th sorter [sortByColumn]="'ShotsOnGoal'" [sortByColumnName]="'“ On Target'"
+                        <th sorter [sortByColumn]="'ShotsOnGoal'" i18n-sortByColumnName="@@matchOverview.stats.shotsOnTarget" 
+                            sortByColumnName="“ On Target"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                             class="text-center">
                         </th>
-                        <th sorter [sortByColumn]="'Assists'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        <th sorter [sortByColumn]="'Assists'"  i18n-sortByColumnName="@@globals.assists" 
+                            sortByColumnName="Assists" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
-                        <th sorter [sortByColumn]="'Passes'" [sortByColumnName]="'Passes'" [currentSort]="sortBy"
+                        <th sorter [sortByColumn]="'Passes'"  i18n-sortByColumnName="@@globals.passes" 
+                            sortByColumnName="Passes" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center">
                         </th>
-                        <th sorter [sortByColumn]="'PassesCompleted'" [sortByColumnName]="'“ Completed'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                        <th sorter [sortByColumn]="'PassesCompleted'" i18n-sortByColumnName="@@matchOverview.stats.passesCompleted" 
+                            sortByColumnName="“ Completed" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadResults($event)" class="text-center"></th>
+                        <th sorter [sortByColumn]="'PassCompletionPercentage'" i18n-sortByColumnName="@@matchOverview.stats.passesCompletedPercent" 
+                            sortByColumnName="“ %" [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                             class="text-center"></th>
-                        <th sorter [sortByColumn]="'PassCompletionPercentage'" [sortByColumnName]="'“ %'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
-                            class="text-center"></th>
-                        <th sorter [sortByColumn]="'Interceptions'" [sortByColumnName]="'Ints'" [currentSort]="sortBy"
+                        <th sorter [sortByColumn]="'Interceptions'" i18n-sortByColumnName="@@globals.interceptionsShort" 
+                            sortByColumnName="Ints"  [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"
                             title="Interceptions"></th>
-                        <th sorter [sortByColumn]="'PossessionPercentage'" [sortByColumnName]="'Poss'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                        <th sorter [sortByColumn]="'PossessionPercentage'" i18n-sortByColumnName="@@globals.possessionShort" 
+                            sortByColumnName="Poss" [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                             title="Possession %" class="text-center"></th>
-                        <th sorter [sortByColumn]="'KeeperSaves'" [sortByColumnName]="'Saves'" [currentSort]="sortBy"
+                        <th sorter [sortByColumn]="'KeeperSaves'" i18n-sortByColumnName="@@globals.saves" 
+                            sortByColumnName="Saves" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'Offsides'" [currentSort]="sortBy"
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'Offsides'" i18n-sortByColumnName="@@globals.offsides" 
+                            sortByColumnName="Offsides" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'DistanceCovered'"
-                            [sortByColumnName]="'Distance'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'DistanceCovered'" i18n-sortByColumnName="@@globals.distance" 
+                            sortByColumnName="Distance" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'Fouls'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'FoulsSuffered'"
-                            [sortByColumnName]="'“ Suffered'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'Fouls'" i18n-sortByColumnName="@@globals.fouls" 
+                            sortByColumnName="Fouls" [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'FoulsSuffered'" i18n-sortByColumnName="@@matchOverview.stats.foulsSuffered" 
+                            sortByColumnName="“ Suffered" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'OwnGoals'" [sortByColumnName]="'Own Goals'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'OwnGoals'"  i18n-sortByColumnName="@@globals.ownGoals" 
+                            sortByColumnName="Own Goals" [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                             class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'GoalsConceded'"
-                            [sortByColumnName]="'Goals Conceded'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'GoalsConceded'" i18n-sortByColumnName="@@globals.goalsConceded" 
+                            sortByColumnName="Goals Conceded" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'Corners'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'ThrowIns'" [sortByColumnName]="'Throw Ins'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
-                            class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'FreeKicks'" [sortByColumnName]="'Free Kicks'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
-                            class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'GoalKicks'" [sortByColumnName]="'Goal Kicks'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
-                            class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'Penalties'" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'YellowCards'"
-                            [sortByColumnName]="'Yellow Cards'" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'Corners'" i18n-sortByColumnName="@@globals.corners" 
+                            sortByColumnName="Corners" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadResults($event)" class="text-center"></th>
-                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'RedCards'" [sortByColumnName]="'Red Cards'"
-                            [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'ThrowIns'" i18n-sortByColumnName="@@globals.throwIns" 
+                            sortByColumnName="Throw Ins" [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                            class="text-center"></th>
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'FreeKicks'" i18n-sortByColumnName="@@globals.freeKicks" 
+                            sortByColumnName="Free Kicks" [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                            class="text-center"></th>
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'GoalKicks'" i18n-sortByColumnName="@@globals.goalKicks" 
+                            sortByColumnName="Goal Kicks" [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
+                            class="text-center"></th>
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'Penalties'" i18n-sortByColumnName="@@globals.penalties" 
+                            sortByColumnName="Penalties" [currentSort]="sortBy"
+                            [currentOrder]="sortOrder" (sort)="loadResults($event)" class="text-center"></th>
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'YellowCards'" i18n-sortByColumnName="@@globals.yellowCards" 
+                            sortByColumnName="Yellow Cards" [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadResults($event)" class="text-center"></th>
+                        <th *ngIf="showMoreStats" sorter [sortByColumn]="'RedCards'" i18n-sortByColumnName="@@globals.yellowCards" 
+                            sortByColumnName="Red Cards" [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadResults($event)"
                             class="text-center"></th>
 
                     </tr>

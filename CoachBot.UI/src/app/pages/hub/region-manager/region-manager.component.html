@@ -3,19 +3,19 @@
         <div class="col-sm-12">
             <div class="card card--has-table">
                 <div class="widget__title card__header card__header--has-btn">
-                    <h4>Regions</h4>
+                    <h4 i18n="@@globals.regions">Regions</h4>
                 </div>
                 <div class="card__content table-responsive">
                     <app-spinner *ngIf="!regions"></app-spinner>
                     <div *ngIf="regions">
                         <table class="table  table--lg">
                             <thead>
-                                <th>Region Name</th>
-                                <th>Region Code</th>
-                                <th>Server Count</th>
-                                <th>Team Count</th>
-                                <th>Match Count</th>
-                                <th *ngIf="currentPlayer && currentPlayer.hubRole === playerHubRoles.Owner">Actions</th>
+                                <th i18n="@@regionEditor.regionName">Region Name</th>
+                                <th i18n="@@regionEditor.regionCode">Region Code</th>
+                                <th i18n="@@regionEditor.serverCount">Server Count</th>
+                                <th i18n="@@regionEditor.teamCount">Team Count</th>
+                                <th i18n="@@regionEditor.matchCount">Match Count</th>
+                                <th *ngIf="currentPlayer && currentPlayer.hubRole === playerHubRoles.Owner" i18n="@@globals.actions">Actions</th>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let region of regions">
@@ -31,10 +31,10 @@
                                     <td *ngIf="currentPlayer && currentPlayer.hubRole === playerHubRoles.Owner">
                                         <button class="btn btn-outline-primary btn-xs mr-2"
                                             (click)="regenerateToken(region.regionId)">
-                                            <i class="fa fa-refresh"></i> Regenerate Token</button>
+                                            <i class="fa fa-refresh"></i> <ng-container i18n="@@regionEditor.regenerateToken">Regenerate Token</ng-container></button>
                                         <button class="btn btn-outline-danger btn-xs"
                                             (click)="removeRegion(region.regionId)" [disabled]="region.serverCount">
-                                            <i class="fa fa-times"></i> Remove</button>
+                                            <i class="fa fa-times"></i> <ng-container i18n="@@globals.remove">Remove</ng-container></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -46,24 +46,24 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="widget__title card__header card__header--has-btn">
-                    <h4>Add Region</h4>
+                    <h4 i18n="@@regionEditor.addRegion">Add Region</h4>
                 </div>
                 <div class="card__content">
                     <form class="d-flex" #addRegionForm="ngForm">
                         <div class="form-group flex-fill pr-2">
-                            <label for="regionName">Region Name</label>
+                            <label for="regionName" i18n="@@globals.regionName">Region Name</label>
                             <input type="text" class="form-control" id="regionName" name="regionName" required
                                 [(ngModel)]="newRegion.regionName">
                         </div>
                         <div class="form-group flex-fill">
-                            <label for="regionName">Region Code</label>
+                            <label for="regionName" i18n="@@globals.regionCode">Region Code</label>
                             <input type="text" maxlength="4" class="form-control" id="regionCode" name="regionCode"
                                 required [(ngModel)]="newRegion.regionCode">
                         </div>
                     </form>
                     <button type="submit" class="btn btn-primary btn-sm float-right" [disabled]="addRegionForm.invalid"
                         (click)="addRegion()">
-                        <i *ngIf="isAdding" class="fa fa-circle-notch fa-spin"></i>&nbsp;Add</button>
+                        <i *ngIf="isAdding" class="fa fa-circle-notch fa-spin"></i>&nbsp;<ng-container i18n="@@globals.add">Add</ng-container></button>
                 </div>
             </div>
         </div>

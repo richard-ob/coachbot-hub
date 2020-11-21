@@ -11,7 +11,7 @@ import { EventEmitter, Output, Input, Component } from '@angular/core';
             <i *ngIf="currentSort === sortByColumn && currentOrder === 'DESC'"
                 class="fas fa-sort-down"></i>
             <i *ngIf="currentSort !== sortByColumn" class="fas fa-sort"></i>
-            <sup *ngIf="average" style="float: left; text-align: center; width: 100%; top: 2px; left: -3px; color: #6c757d73;">
+            <sup *ngIf="average" style="float: left; text-align: center; width: 100%; top: 2px; left: -3px; color: #6c757d73;" i18n="@@globals.average">
                 Average
             </sup>
         </span>

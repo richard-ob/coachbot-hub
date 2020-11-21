@@ -12,7 +12,7 @@ import { DiscordGuildEditorComponent } from './discord-guild-editor/discord-guil
 })
 export class TeamEditorDiscordIntegrationComponent implements OnInit {
 
-    @ViewChild(DiscordGuildEditorComponent, { static: false }) guildEditor: DiscordGuildEditorComponent;
+    @ViewChild(DiscordGuildEditorComponent) guildEditor: DiscordGuildEditorComponent;
     @Input() teamId: number;
     team: Team;
     channels: Channel[];

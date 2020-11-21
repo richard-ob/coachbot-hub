@@ -14,8 +14,8 @@ import { NgForm } from '@angular/forms';
 })
 export class ServerCreatorComponent implements DoCheck {
 
-    @ViewChild('createServerModal', { static: false }) createServerModal: SwalComponent;
-    @ViewChild('createServerForm', { static: false }) createServerForm: NgForm;
+    @ViewChild('createServerModal') createServerModal: SwalComponent;
+    @ViewChild('createServerForm') createServerForm: NgForm;
     @Output() serverCreated = new EventEmitter<void>();
     serverToCreate: Server;
     servers: Server[];

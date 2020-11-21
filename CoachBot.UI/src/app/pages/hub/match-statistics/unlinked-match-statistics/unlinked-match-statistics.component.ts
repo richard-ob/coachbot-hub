@@ -10,7 +10,7 @@ import { SwalPortalTargets, SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 })
 export class UnlinkedMatchStatisticsComponent implements OnInit {
 
-    @ViewChild('matchDataModal', { static: false }) matchDataModal: SwalComponent;
+    @ViewChild('matchDataModal') matchDataModal: SwalComponent;
     matchStatistics: MatchStatistics[];
     currentMatchData: MatchData;
     isLoading = true;

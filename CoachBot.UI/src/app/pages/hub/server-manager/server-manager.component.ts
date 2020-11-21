@@ -15,8 +15,8 @@ import { SwalPortalTargets, SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 })
 export class ServerManagerComponent {
 
-  @ViewChild('editServerPasswordModal', { static: false }) editServerPasswordModal: SwalComponent;
-  @ViewChild('editServerNameModal', { static: false }) editServerNameModal: SwalComponent;
+  @ViewChild('editServerPasswordModal') editServerPasswordModal: SwalComponent;
+  @ViewChild('editServerNameModal') editServerNameModal: SwalComponent;
   newServer: Server = new Server();
   servers: Server[];
   regions: Region[];

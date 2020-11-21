@@ -26,7 +26,7 @@ import { MatchFormat } from '@pages/hub/shared/model/match-format.enum';
 })
 export class DiscordChannelEditorComponent implements OnInit {
 
-    @ViewChild('editPositionModal', { static: false }) editPositionModal: SwalComponent;
+    @ViewChild('editPositionModal') editPositionModal: SwalComponent;
     @Output() wizardClosed = new EventEmitter<void>();
     @Input() channels: Channel[];
     @Input() team: Team;

@@ -9,7 +9,7 @@ import { Server } from '@pages/hub/shared/model/server.model';
 })
 export class ServerRecoveryComponent {
 
-    @ViewChild('recoverServerModal', { static: false }) recoverServerModal: SwalComponent;
+    @ViewChild('recoverServerModal') recoverServerModal: SwalComponent;
     @Output() serverRecovered = new EventEmitter<void>();
     servers: Server[];
     isLoading = true;

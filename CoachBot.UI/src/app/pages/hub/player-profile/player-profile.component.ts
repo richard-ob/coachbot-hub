@@ -10,11 +10,6 @@ import { SwalPortalTargets, SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import * as humanizeDuration from 'humanize-duration';
 import { PlayerHubRole } from '../shared/model/player-hub-role.enum';
 
-/*
-    IDEAS:
-    - Use a better background for the player profile screen. Map doesn't really cut the mustard.
-    Copy https://www.premierleague.com/players/4852/Adri%C3%A1n/stats
-*/
 @Component({
     selector: 'app-player-profile',
     templateUrl: './player-profile.component.html',
@@ -22,7 +17,7 @@ import { PlayerHubRole } from '../shared/model/player-hub-role.enum';
 })
 export class PlayerProfileComponent implements OnInit {
 
-    @ViewChild('editRatingModal', { static: false }) editServerModal: SwalComponent;
+    @ViewChild('editRatingModal') editServerModal: SwalComponent;
     currentPlayer: Player;
     player: Player;
     playerProfile: PlayerProfile;

@@ -8,7 +8,7 @@
             [tournament]="tournament" [showFullHeaders]="true">
         </app-tournament-standings-round-robin>
         <app-tournament-standings-round-robin-knockout
-            *ngIf="tournament.tournamentType === tournamentTypes.RoundRobinAndKnockout" [tournament]="tournament">
+            *ngIf="tournament.tournamentType === tournamentTypes.RoundRobinAndKnockout || tournament.tournamentType === tournamentTypes.DoubleRoundRobinAndKnockout" [tournament]="tournament">
         </app-tournament-standings-round-robin-knockout>
     </ng-container>
     <ng-template #spinner>

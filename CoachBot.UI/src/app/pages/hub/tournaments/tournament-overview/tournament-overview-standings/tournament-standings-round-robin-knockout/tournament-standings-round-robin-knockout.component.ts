@@ -34,4 +34,8 @@ export class TournamentStandingsRoundRobinKnockoutComponent implements OnInit {
         }
         return -1;
     }
+
+    get isSingleGroup(): boolean{
+        return !!(this.tournament.tournamentStages[0].tournamentGroups.length === 1);
+    }
 }

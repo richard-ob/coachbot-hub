@@ -218,6 +218,10 @@ namespace CoachBot.Domain.Services
                     GenerateRoundRobinAndKnockoutTournament(tournament.Id);
                     break;
 
+                case TournamentType.DoubleRoundRobinAndKnockout:
+                    GenerateDoubleRoundRobinAndKnockoutTournament(tournament.Id);
+                    break;
+
                 default:
                     break;
             }
@@ -581,6 +585,10 @@ namespace CoachBot.Domain.Services
                     GenerateRoundRobinAndKnockoutSchedule(tournamentId);
                     break;
 
+                case TournamentType.DoubleRoundRobinAndKnockout:
+                    GenerateDoubleRoundRobinAndKnockoutSchedule(tournamentId);
+                    break;
+
                 default:
                     break;
             }
@@ -756,6 +764,61 @@ namespace CoachBot.Domain.Services
             GenerateKnockoutMatches(tournament, knockoutStage, teams, (DateTime)earliestMatchDate, false);
 
            
+        }
+
+        private void GenerateDoubleRoundRobinAndKnockoutTournament(int tournamentId)
+        {
+            var tournament = _coachBotContext.Tournaments.Include(t => t.TournamentSeries).First(t => t.Id == tournamentId);
+            var groupStage = new TournamentStage()
+            {
+                TournamentId = tournament.Id,
+                Name = "Group Stage"
+            };
+            _coachBotContext.TournamentStages.Add(groupStage);
+
+            var knockoutStage = new TournamentStage()
+            {
+                TournamentId = tournament.Id,
+                Name = "Knockout Stage"
+            };
+            _coachBotContext.TournamentStages.Add(knockoutStage);
+
+            _coachBotContext.SaveChanges();
+        }
+
+        private void GenerateDoubleRoundRobinAndKnockoutSchedule(int tournamentId)
+        {
+            var tournament = _coachBotContext.Tournaments
+                .Include(t => t.TournamentSeries)
+                .Include(t => t.TournamentStages)
+                    .ThenInclude(t => t.TournamentGroups)
+                    .ThenInclude(t => t.TournamentGroupTeams)
+                .Include(t => t.TournamentStages)
+                    .ThenInclude(t => t.TournamentGroups)
+                    .ThenInclude(t => t.TournamentGroupMatches)
+                    .ThenInclude(t => t.Match)
+                .Include(t => t.TournamentMatchDays)
+                .First(t => t.Id == tournamentId);
+
+            if (tournament.StartDate == null) throw new Exception("Start date must be set");
+
+            RemoveMatchesForTournament(tournamentId);
+
+            var groupStage = tournament.TournamentStages.First();
+            GenerateMultipleRoundRobinSchedule(tournamentId, 2);
+
+            var knockoutStage = tournament.TournamentStages.Last();
+            var earliestMatchDate = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentPhase.TournamentStage.TournamentId == tournamentId).Max(m => m.Match.KickOff).Value;
+            var numberOfGroups = _coachBotContext.TournamentGroups.Count(g => g.TournamentStageId == groupStage.Id);
+            var numberOfTeams = _coachBotContext.TournamentGroups.Where(g => g.TournamentStageId == groupStage.Id).Max(g => g.TournamentGroupTeams.Count());
+
+            var knockoutGroupSize = GetNumberOfQualifyingKnockoutTeams(numberOfTeams, numberOfGroups);
+            var teams = new List<Team>();
+            for (int i = 1; i <= knockoutGroupSize; i++)
+            {
+                teams.Add(new Team());
+            }
+            GenerateKnockoutMatches(tournament, knockoutStage, teams, (DateTime)earliestMatchDate, false);
         }
 
         private int GetNumberOfQualifyingKnockoutTeams(int groupSize, int groups = 1)

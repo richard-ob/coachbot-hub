@@ -1,8 +1,8 @@
 <h4  i18n="@@tournament.groupStage">Group Stage</h4>
 <div class="row">
-    <div *ngFor="let group of tournament.tournamentStages[0].tournamentGroups" class="col-12 col-lg-6">
+    <div *ngFor="let group of tournament.tournamentStages[0].tournamentGroups" class="col-12" [class.col-lg-6]="!isSingleGroup">
         <app-tournament-standings-round-robin [tournamentGroupId]="group.id" [tournamentGroupName]="group.name"
-            [lastQualificationSpot]="getLastQualificationSpot()">
+            [lastQualificationSpot]="getLastQualificationSpot()" [showFullHeaders]="isSingleGroup">
         </app-tournament-standings-round-robin>
     </div>
 </div>

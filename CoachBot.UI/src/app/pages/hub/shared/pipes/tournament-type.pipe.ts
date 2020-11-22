@@ -9,6 +9,8 @@ export class TournamentTypePipe implements PipeTransform {
                 return $localize`:@@tournamentTypes.ladder:Ladder`;
             case TournamentType.Knockout:
                 return $localize`:@@tournamentTypes.knockout:Knockout`;
+            case TournamentType.DoubleRoundRobinAndKnockout:
+                return $localize`:@@tournamentTypes.groupKnockout:Group Knockout`;
             case TournamentType.RoundRobinAndKnockout:
                 return $localize`:@@tournamentTypes.groupKnockout:Group Knockout`;
             case TournamentType.DoubleRoundRobin:

@@ -11,10 +11,10 @@ export class LocaleService {
     private readonly DEFAULT_LANGUAGE = 'en';
     private readonly LANGUAGES: Language[] = [
         { name: 'English', code: 'en', flag: 'gb' },
-        { name: 'Portuguese', code: 'pt', flag: 'pt' },
+        /*{ name: 'Portuguese', code: 'pt', flag: 'pt' },
+        { name: 'Spanish', code: 'es', flag: 'es' },*/
         { name: 'Korean', code: 'ko', flag: 'kr' },
-        { name: 'Spanish', code: 'es', flag: 'es' },
-        { name: 'French', code: 'fr', flag: 'fr' },
+        //{ name: 'French', code: 'fr', flag: 'fr' },
     ];
 
     public getLanguages(): Language[] {

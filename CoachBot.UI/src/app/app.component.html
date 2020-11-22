@@ -43,7 +43,10 @@
                                 </a>
                                 <ul class="main-nav__sub">
                                     <li *ngFor="let language of availableLanguages">
-                                        <a href="javascript:void(0);" (click)="setLanguage(language.code)">{{language.name}}</a>
+                                        <a href="javascript:void(0);" (click)="setLanguage(language.code)" style="white-space: pre;">
+                                            <span class="ml-1 flag-icon" [ngClass]="'flag-icon-' + language.flag"></span>
+                                            {{language.name}}
+                                        </a>
                                     </li>
                                 </ul>
                             </li>

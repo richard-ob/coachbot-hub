@@ -15,16 +15,16 @@
     <div class="row pt-2">
         <app-team-profile-statistics-leaderboard class="col-12 col-md-3" [teamId]="teamId"
             [statisticSortColumn]="'Appearances'" [statisticProperty]="'appearances'"
-            [statisticDisplayName]="'Appearances'">
+            i18n-statisticDisplayName="@@globals.appearances" statisticDisplayName="Appearances">
         </app-team-profile-statistics-leaderboard>
         <app-team-profile-statistics-leaderboard class="col-12 col-md-3" [teamId]="teamId"
-            [statisticSortColumn]="'Goals'" [statisticProperty]="'goals'" [statisticDisplayName]="'Goals'">
+            [statisticSortColumn]="'Goals'" [statisticProperty]="'goals'"  i18n-statisticDisplayName="@@globals.goals"  statisticDisplayName="'Goals'">
         </app-team-profile-statistics-leaderboard>
         <app-team-profile-statistics-leaderboard class="col-12 col-md-3" [teamId]="teamId"
-            [statisticSortColumn]="'Assists'" [statisticProperty]="'assists'" [statisticDisplayName]="'Assists'">
+            [statisticSortColumn]="'Assists'" [statisticProperty]="'assists'"  i18n-statisticDisplayName="@@globals.assists"  statisticDisplayName="Assists">
         </app-team-profile-statistics-leaderboard>
         <app-team-profile-statistics-leaderboard class="col-12 col-md-3" [teamId]="teamId"
-            [statisticSortColumn]="'Wins'" [statisticProperty]="'wins'" [statisticDisplayName]="'Wins'">
+            [statisticSortColumn]="'Wins'" [statisticProperty]="'wins'"  i18n-statisticDisplayName="@@globals.wins"  statisticDisplayName="Wins">
         </app-team-profile-statistics-leaderboard>
     </div>
 </div>

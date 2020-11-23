@@ -81,7 +81,7 @@ export class TeamSpotlightComponent implements OnInit {
                 this.modelProperty = 'passCompletionPercentageAverage';
                 this.apiModelProperty = 'PassCompletionPercentageAverage';
                 this.heading = $localize`:@@spotlight.passersOfWeek:Passers of the Week`;
-                this.measureName = 'Pass Completion';
+                this.measureName = $localize`:@@global.passCompletion:Pass Completion`;
                 this.ordering = 'DESC';
                 this.iconClass = 'icon-soccer-shots';
                 break;

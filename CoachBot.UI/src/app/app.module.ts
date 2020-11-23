@@ -28,14 +28,18 @@ import { registerLocaleData } from '@angular/common';
 
 import localeKo from '@angular/common/locales/ko';
 import localeEs from '@angular/common/locales/es';
-import localePt from '@angular/common/locales/pt';
+import localePt from '@angular/common/locales/pt-PT';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
+import localeCS from '@angular/common/locales/cs';
+import localePL from '@angular/common/locales/pl';
 registerLocaleData(localeKo);
 registerLocaleData(localeEs);
 registerLocaleData(localePt);
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
+registerLocaleData(localeCS);
+registerLocaleData(localePL);
 
 @NgModule({
   declarations: [

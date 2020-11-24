@@ -635,18 +635,18 @@
     "scorePredictor.correctResults": "Správné výsledky",
     "scorePredictor.viewPredictions": " Zobraz predikce ",
     "scorePredictor.noMatchesToPredict": "Zatím žádné dostupné zápasy pro predikci ",
-    "scorePredictor.globalPredictionLeaderboard": "Výsledková tabulka globálních predikcí",
+    "scorePredictor.globalPredictionLeaderboard": "Žebříček predikcí",
     "globals.noLeaderboard": " Zatím žádná výsledková tabulka ",
     "globals.correctResults": "Správné výsledky",
     "globals.playerOfTheWeek": "Hráč týdne",
     "scorePredictor.xPlayersPredictionHistory": "{$INTERPOLATION}'s historie predikcí ",
     "scorePredictor.playerNoPredictions": " Tento hráč zatím nedal žádné predikce ",
-    "scorePredictor.predictionDate": "Detum predikce",
+    "scorePredictor.predictionDate": "Datum predikce",
     "globals.matchDate": "Datum zápasu",
-    "scorePredictor.prediction": "Predikce",
-    "scorePredictor.actual": "Aktální",
-    "scorePredictor.outcome": "Výsledek",
-    "scorePredictor.exactResult": "Přesný výsledek",
+    "scorePredictor.prediction": "Tip",
+    "scorePredictor.actual": "Výsledek",
+    "scorePredictor.outcome": "Výsledek tipu",
+    "scorePredictor.exactResult": "Správný výsledek",
     "scorePredictor.incorrect": "Nesprávný",
     "scorePredictor.pending": "Čekající",
     "scorePredictor.currentScorePredictionTournaments": "Aktuální skóre \"Predikce turnajů\" ",
@@ -714,6 +714,7 @@
     "globals.friday": "Pátek",
     "globals.saturday": "Sobota",
     "globals.sunday": "Něděle",
-    "globals.tournamentManager": "Správce turnaje"
+    "globals.tournamentManager": "Správce turnaje",
+    "team.andManyMore": "..a více! Chtěli bychom poděkovat komunitě a všem, kteří se podíleli na hře".
   }
 }

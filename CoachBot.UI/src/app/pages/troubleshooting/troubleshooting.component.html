@@ -1,18 +1,22 @@
 <div class="py-4 container">
     <div class="card">
         <div class="card__header">
-            <h4>Troubleshooting</h4>
+            <h4 i18n="@@globals.troubleshooting">Troubleshooting</h4>
         </div>
         <div class="card__content">
             <section>
-                <h6 class="mb-1">My game isn't starting / is crashing / behaves strangely</h6>
-                <p class="mb-0">Try one or more of the following steps:</p>
+                <h6 class="mb-1" i18n="@@troubleshooting.gameNotStarting">My game isn't starting / is crashing / behaves
+                    strangely</h6>
+                <p class="mb-0" i18n="@@troubleshooting.gameNotStarting.tryThis">Try one or more of the following steps:
+                </p>
                 <ul>
-                    <li>Check that your sound output device is enabled (or plugged in). There are known issues with
+                    <li i18n="@@troubleshooting.gameNotStarting.soundDevice">Check that your sound output device is
+                        enabled (or plugged in). There are known issues with
                         the
                         the version of the Source engine we're on that may cause issues and a full game crash due to
                         this.</li>
-                    <li>Reset the game's resolution by adding <code>-h 768 -w 1024</code> to the command line params
+                    <li i18n="@@troubleshooting.gameNotStarting.resetRes">Reset the game's resolution by adding
+                        <code>-h 768 -w 1024</code> to the command line params
                         (Steam >
                         Library > Right click on IOSoccer > Properties > Set Launch Options (General tab) > add <code>-h
                         768
@@ -20,40 +24,45 @@
                         instead, as
                         this
                         will not need to fit to your supported resolutions, as it isn't full screen mode.</li>
-                    <li>Verify your local files through Steam.</li>
-                    <li>Open 'regedit' and delete <code>Computer\HKEYCURRENTUSER\Software\Valve\Source\iosoccer</code>.
+                    <li i18n="@@troubleshooting.gameNotStarting.verifyFiles">Verify your local files through Steam.</li>
+                    <li i18n="@@troubleshooting.gameNotStarting.regEdit">Open 'regedit' and delete
+                        <code>Computer\HKEYCURRENTUSER\Software\Valve\Source\iosoccer</code>.
                     </li>
-                    <li>Uninstall the game through Steam, delete the IOSoccer folder (e.g. <code>C:\Program Files
+                    <li i18n="@@troubleshooting.gameNotStarting.uninstall">Uninstall the game through Steam, delete the
+                        IOSoccer folder (e.g. <code>C:\Program Files
                         (x86)\Steam\steamapps\common\IOSoccer</code>), and re-install.</li>
-                    <li>Make sure your drivers are up-to-date and you have the latest Windows updates.</li>
+                    <li i18n="@@troubleshooting.gameNotStarting.drivers">Make sure your drivers are up-to-date and you
+                        have the latest Windows updates.</li>
                 </ul>
             </section>
             <section>
-                <h6 class="mb-1">I have problems with alt-tabbing</h6>
-                <p>If you use Windows 10 turn off the new focus assist (Windows key -> Configuration -> System ->
+                <h6 class="mb-1" i18n="@@troubleshooting.altTabbing">I have problems with alt-tabbing</h6>
+                <p i18n="@@troubleshooting.altTabbing.focusAssist">If you use Windows 10 turn off the new focus assist
+                    (Windows key -> Configuration -> System ->
                     Focus
                     Assist -> When I'm playing a game -> Off).
                 </p>
             </section>
             <section>
-                <h6 class="mb-1">How can I use borderless windowed mode (aka windowed fullscreen)?</h6>
-                <p>
+                <h6 class="mb-1" i18n="@@troubleshooting.borderlessWindow">How can I use borderless windowed mode (aka
+                    windowed fullscreen)?</h6>
+                <p i18n="@@troubleshooting.borderlessWindow.answer">
                     Add <code>-noborder -window</code> as <a
                         href="https://support.steampowered.com/kb_article.php?ref=1040-JWMT-2947" target="_blank">launch
                         parameters.</a>
                 </p>
             </section>
             <section>
-                <h6 class="mb-1">What other launch parameters are there?</h6>
-                <p>
+                <h6 class="mb-1" i18n="@@troubleshooting.launchParams">What other launch parameters are there?</h6>
+                <p i18n="@@troubleshooting.launchParams.answer">
                     Many (but not all) of the <a
                         href="https://steamcommunity.com/linkfilter/?url=https://developer.valvesoftware.com/wiki/Command%20Line%20Options"
                         target="_blank">parameters listed should work.</a>
                 </p>
             </section>
             <section>
-                <h6 class="mb-1">I have a low framerate</h6>
-                <p>
+                <h6 class="mb-1" i18n="@@troubleshooting.lowFrameRate">I have a low framerate</h6>
+                <p i18n="@@troubleshooting.lowFrameRate.answer">
                     Changing the console variable <code>matqueuemode</code> from <strong>-1</strong> to
                     <strong>2</strong> should give you an FPS boost.Warning:
                     Your game will most likely crash when using this setting and alt-tabbing while in fullscreen
@@ -64,16 +73,16 @@
                 </p>
             </section>
             <section>
-                <h6 class="mb-1">My resolution isn't in the drop-down list</h6>
-                <p>
+                <h6 class="mb-1" i18n="@@troubleshooting.resUnavailable">My resolution isn't in the drop-down list</h6>
+                <p i18n="@@troubleshooting.resUnavailable.answer">
                     Make sure you set the correct aspect ratio in the list below it.If it still doesn't show up you
                     can
                     use the launch parameters <code>-width x -height y</code>.
                 </p>
             </section>
             <section>
-                <h6 class="mb-1">My config keeps resetting</h6>
-                <p>
+                <h6 class="mb-1" i18n="@@troubleshooting.configReset">My config keeps resetting</h6>
+                <p i18n="@@troubleshooting.configReset.answer">
                     The game can't load non-ASCII player names from the config (SDK 2007 engine limitations), so
                     make
                     sure you are not using these in any of your names in-game.

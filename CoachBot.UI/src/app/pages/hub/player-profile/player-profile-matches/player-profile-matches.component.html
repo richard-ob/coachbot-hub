@@ -94,12 +94,12 @@
                                 <th sorter [sortByColumn]="'YellowCards'" i18n-sortByColumnName="@@globals.yellows" sortByColumnName="Yellows"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center"></th>
-                                <th sorter [sortByColumn]="'RedCards'" i18n-sortByColumnName="@@globals.reds" [sortByColumnName]="'Reds'"
+                                <th sorter [sortByColumn]="'RedCards'" i18n-sortByColumnName="@@globals.reds" sortByColumnName="Reds"
                                     [currentSort]="sortBy" [currentOrder]="sortOrder"
                                     (sort)="loadPage(currentPage, $event)" class="text-center">
                                 </th>
                                 <th sorter [sortByColumn]="'DistanceCoveredAverage'" i18n-sortByColumnName="@@playerProfile.matches.avgDistance" 
-                                    [sortByColumnName]="'Avg. Distance'" [currentSort]="sortBy"
+                                    sortByColumnName="Avg. Distance" [currentSort]="sortBy"
                                     [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                                     class="text-center">
                             </tr>

@@ -1,42 +1,42 @@
 <div class="py-4 container">
     <div class="card">
         <div class="card__header">
-            <h4>Server Manual</h4>
+            <h4  i18n="@@globals.serverManual">Server Manual</h4>
         </div>
         <div class="card__content">
-            <h6 class="mb-1">Introduction</h6>
-            <p>
+            <h6 class="mb-1" i18n="@@globals.introduction">Introduction</h6>
+            <p i18n="@@serverManual.introductionBlurb">
                 This manual is primary aimed at those wishing to host a dedicated IOSoccer server. If you have any
                 queries, or issues, please
                 feel free to ask in <code>#helpdesk</code> on <a href="https://discord.gg/FkT6Q3N">our Discord
                     Server</a>.
             </p>
-            <h6 class="mb-1">Server console commands and variables</h6>
-            <p class="mb-0"><em>Note: If you execute these commands from the client console you need to set
+            <h6 class="mb-1" i18n="@@serverManual.consoleCommands">Server console commands and variables</h6>
+            <p class="mb-0" i18n="@@serverManual.consoleCommands.blurb"><em>Note: If you execute these commands from the client console you need to set
                     <code>rcon_password x</code> in <code>cfg\server.cfg</code> and write <code>rcon</code> before
                     the actual command.</em></p>
             <ul>
-                <li>
+                <li i18n="@@serverManual.consoleCommands.execCfg">
                     <strong><code>exec x.cfg</code></strong>: Executes a config file in the <code>cfg</code> folder
                     named x.</li>
-                <li>
+                <li i18n="@@serverManual.consoleCommands.svRestart">
                     <strong><code>sv_restart x</code></strong>: Resets the match and goes into warm up mode with an
                     x minutes countdown. Use <code>-1</code> to stay in warm up mode forever.</li>
-                <li>
+                <li i18n="@@serverManual.consoleCommands.maxplayers">
                     <strong><code>mp_maxplayers x</code></strong>: Sets x number of players per side.</li>
-                <li>
+                <li i18n="@@serverManual.consoleCommands.benchall">
                     <strong><code>benchall 0</code></strong>: Move all players from field to bench.</li>
-                <li>
+                <li i18n="@@serverManual.consoleCommands.botkeepers">
                     <strong><code>mp_botkeepers x</code></strong>: 1 to enable AI keepers, 0 for human keepers.</li>
             </ul>
 
-            <h6 class="mb-1">Windows dedicated server installation example</h6>
+            <h6 class="mb-1" i18n="@@serverManual.windowsInstall">Windows dedicated server installation example</h6>
             <ol>
-                <li>
+                <li i18n="@@serverManual.windowsInstall.downloadSteamCmd">
                     <a href="https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
                         rel="nofollow noopener">Download SteamCMD</a> and extract
                     <code>steamcmd.exe</code> to a folder</li>
-                <li>Open the folder in Explorer, hold shift, right-click in an empty area and click
+                <li i18n="@@serverManual.windowsInstall.openFolder">Open the folder in Explorer, hold shift, right-click in an empty area and click
                     <code>Open command/PowerShell window here</code>. Enter the following commands in the terminal:
                 </li>
                 <li><code>.\steamcmd +login anonymous +force_install_dir iosoccer +app_update 673990 validate +quit</code>
@@ -44,15 +44,15 @@
                 <li><code>cd iosoccer</code></li>
                 <li>
                     <code>.\srcds.exe -console -game iosoccer -condebug -port 27015 +maxplayers 32 +fps_max 500 -tickrate 100 +map 8v8_vienna</code><br>
-                    <em>You may need to use <code>+ip xxx.xxx.xxx.xxx</code> if the server has multiple network
+                    <em i18n="@@serverManual.windowsInstall.mayNeedToUseIpBlurb">You may need to use <code>+ip xxx.xxx.xxx.xxx</code> if the server has multiple network
                         adapters, or is a more complex setup, otherwise this is not necessary.</em>
                 </li>
             </ol>
-            <p>The server should now be running. You can enter server commands in the console.</p>
+            <p i18n="@@serverManual.windowsInstall.serverNowRunning">The server should now be running. You can enter server commands in the console.</p>
 
-            <h6 class="mb-1">Linux dedicated server installation example</h6>
+            <h6 class="mb-1" i18n="@@serverManual.linuxInstall">Linux dedicated server installation example</h6>
             <ol>
-                <li>See <a href="https://developer.valvesoftware.com/wiki/SteamCMD" rel="nofollow noopener">here</a>
+                <li i18n="@@serverManual.linuxInstall.seeValveWiki">See <a href="https://developer.valvesoftware.com/wiki/SteamCMD" rel="nofollow noopener">here</a>
                     for
                     instructions on how to install SteamCMD on Linux.</li>
                 <li><code>steamcmd +login anonymous +force_install_dir iosoccer +app_update 673990 validate +quit</code>
@@ -60,21 +60,21 @@
                 <li><code>cd iosoccer</code></li>
                 <li>
                     <code>./srcds_run -console -game iosoccer -condebug -port 27015 +maxplayers 32 +fps_max 500 -tickrate 100 +map 8v8_vienna</code><br>
-                    <em>You may need to use <code>+ip xxx.xxx.xxx.xxx</code> if the server has multiple network
+                    <em i18n="@@serverManual.linuxInstall.mayNeedToUseIpBlurb">You may need to use <code>+ip xxx.xxx.xxx.xxx</code> if the server has multiple network
                         adapters, or is a more complex setup, otherwise this is not necessary.</em>
                 </li>
             </ol>
-            <p>The server should now be running. You can enter server commands in the console.</p>
+            <p i18n="@@serverManual.linuxInstall.serverNowRunning">The server should now be running. You can enter server commands in the console.</p>
 
-            <h6 class="mb-1">Enabling custom assets</h6>
-            <p>If you want to use custom assets on your dedicated server you need a <a
+            <h6 class="mb-1" i18n="@@serverManual.customAssets">Enabling custom assets</h6>
+            <p i18n="@@serverManual.customAssetsBlurb">If you want to use custom assets on your dedicated server you need a <a
                     href="https://developer.valvesoftware.com/wiki/Sv_downloadurl" rel="nofollow noopener">fastdl</a>
                 setup on a
                 webserver, because sending the files to players directly through the game server is extremely slow.
             </p>
-            <p>To enable custom assets open iosoccer\cfg\autoexec.cfg and change <code>sv_custom_assets 0</code> to
+            <p  i18n="@@serverManual.customAssets.enable">To enable custom assets open iosoccer\cfg\autoexec.cfg and change <code>sv_custom_assets 0</code> to
                 <code>sv_custom_assets 1</code>.</p>
-            <h6 class="mb-1">External resources</h6>
+            <h6 class="mb-1"  i18n="@@serverManual.externalResources">External resources</h6>
             <ul>
                 <li><a href="https://developer.valvesoftware.com/wiki/SteamCMD"
                         rel="nofollow noopener">https://developer.valvesoftware.com/wiki/SteamCMD</a></li>

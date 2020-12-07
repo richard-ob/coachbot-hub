@@ -21,6 +21,8 @@ export class PlayerListComponent implements OnInit {
 
     @Input() tournamentId: number;
     @Input() hideFilters = false;
+    @Input() includePartialAppearances = false;
+    @Input() includeSubstituteAppearances = false;
     playerStatistics: PlayerStatistics[];
     filters = new PlayerStatisticFilters();
     teams: Team[];
@@ -28,7 +30,6 @@ export class PlayerListComponent implements OnInit {
     playerSpotlightStatistic = PlayerSpotlightStatistic;
     playerStatType = PlayerStatType;
     currentPlayerStat = PlayerStatType.General;
-    includePartialAppearances = false;
     currentPage = 1;
     totalPages: number;
     totalItems: number;
@@ -53,7 +54,7 @@ export class PlayerListComponent implements OnInit {
         const regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.tournamentId = this.tournamentId;
         this.filters.regionId = regionId;
-        this.filters.includeSubstituteAppearances = false;
+        this.filters.includeSubstituteAppearances = this.includeSubstituteAppearances;
         this.setIncludePartialAppearances();
         this.regionService.getRegions().subscribe(regions => {
             const region = regions.find(r => r.regionId === regionId);

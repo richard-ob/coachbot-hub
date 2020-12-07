@@ -32,8 +32,8 @@
                         <td>{{playerTeamStatisticsTotal.position?.name}}</td>
                         <td class="text-center py-0 px-2" style="vertical-align: middle;">
                             <ng-container *ngIf="playerTeamStatisticsTotal.steamUserProfile; else flagSkeleton">
-                                <img *ngIf="playerTeamStatisticsTotal.steamUserProfile.loccountrycode; else unknownFlag"
-                                    src="https://www.countryflags.io/{{playerTeamStatisticsTotal.steamUserProfile.loccountrycode}}/flat/24.png">
+                                <i  *ngIf="playerTeamStatisticsTotal.steamUserProfile.loccountrycode; else unknownFlag" class="flag-icon" 
+                                    [ngClass]="'flag-icon-' + playerTeamStatisticsTotal.steamUserProfile.loccountrycode.toLowerCase()" [attr.title]="playerTeamStatisticsTotal.steamUserProfile.loccountrycode.toUpperCase()"></i>
                                 <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
                             </ng-container>
                             <ng-template #flagSkeleton>

@@ -52,7 +52,8 @@
                             {{match.server.name}}
                         </td>
                         <td class="text-center" title="{{match.server.country.name}}">
-                            <img src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png">
+                            <i class="flag-icon" 
+                            [ngClass]="'flag-icon-' + match.server.country.code.toLowerCase()"></i>
                         </td>
                     </tr>
                 </tbody>

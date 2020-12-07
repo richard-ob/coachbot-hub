@@ -273,8 +273,8 @@
                         <td class="team-result__ball-posession text-center text-center py-0 px-2"
                             style="vertical-align: middle;">
                             <ng-container *ngIf="statistics.steamUserProfile; else flagSkeleton">
-                                <img *ngIf="statistics.steamUserProfile.loccountrycode; else unknownFlag"
-                                    src="https://www.countryflags.io/{{statistics.steamUserProfile.loccountrycode}}/flat/24.png">
+                                <i  *ngIf="statistics.steamUserProfile.loccountrycode; else unknownFlag" class="flag-icon" 
+                                    [ngClass]="'flag-icon-' + statistics.steamUserProfile.loccountrycode.toLowerCase()" [attr.title]="statistics.steamUserProfile.loccountrycode.toUpperCase()"></i>
                                 <ng-template #unknownFlag><i class="fas fa-question"></i></ng-template>
                             </ng-container>
                             <ng-template #flagSkeleton>

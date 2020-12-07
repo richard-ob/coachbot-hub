@@ -133,10 +133,9 @@
                             </ng-container>
                         </td>
                         <td class="team-result__status text-center">{{match.format}}v{{match.format}}</td>
-                        <td class="team-result__ball-posession text-center">
-                            <img *ngIf="match.server && match.server.country"
-                                src="https://www.countryflags.io/{{match.server.country.code}}/flat/24.png"
-                                title="{{match.server.country.name}}">
+                        <td class="team-result__ball-posession text-center">            
+                            <i  *ngIf="match.server && match.server.country" class="flag-icon" 
+                                [ngClass]="'flag-icon-' + match.server.country.code.toLowerCase()" [attr.title]="match.server.country.name"></i>
                         </td>
                         <td *ngIf="filters.tournamentId" class="team-result__status text-nowrap">
                             <a *ngIf="match.server">{{match.server.name}}</a>

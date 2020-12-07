@@ -534,8 +534,11 @@ namespace CoachBot.Domain.Services
             currentScore += playerMatchStatistics.Assists * 3; // Assists
 
             // Clean sheets
-            if ((mainPosition == PositionGroup.Goalkeeper || mainPosition == PositionGroup.Defence) && playerMatchStatistics.GoalsConceded == 0) currentScore += 6;
-            if (mainPosition == PositionGroup.Midfield && playerMatchStatistics.GoalsConceded == 0) currentScore += 3;
+            if ((playerMatchStatistics.SecondsPlayed * 60) > 75)
+            {
+                if ((mainPosition == PositionGroup.Goalkeeper || mainPosition == PositionGroup.Defence) && playerMatchStatistics.GoalsConceded == 0) currentScore += 6;
+                if (mainPosition == PositionGroup.Midfield && playerMatchStatistics.GoalsConceded == 0) currentScore += 3;
+            }
 
             // Saves
             if (playerMatchStatistics.KeeperSaves > 0) currentScore += (int)playerMatchStatistics.KeeperSaves / 2;

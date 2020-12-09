@@ -1068,8 +1068,8 @@ namespace CoachBot.Domain.Services
             var group = stage.TournamentGroups.First();
             var numberOfMatchDays = tournament.TournamentMatchDays.Count();
             var numberOfTeams = group.TournamentGroupTeams.Count();
-            var totalSeasonMatches = (numberOfCycles * ((numberOfTeams * (numberOfTeams - 1)) / 2));
-            var totalMatchesPerRound = (totalSeasonMatches / numberOfTeams) / numberOfCycles;
+            var totalSeasonMatches = ((0.5 * numberOfTeams) * (numberOfTeams - 1)) * numberOfCycles;
+            var totalMatchesPerRound = numberOfTeams / 2;
             var totalRounds = totalSeasonMatches / totalMatchesPerRound;
 
             for (int i = 1; i <= totalRounds; i++)

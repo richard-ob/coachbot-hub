@@ -15,12 +15,19 @@ export class CalendarHeatmapComponent implements OnInit {
 
     @Input() calendarEntries: MatchDayTotals[];
     chartData: any;
-    colorScheme = {
-        domain: ['#dedede', '#b3e5fc', '#81d4fa', '#4fc3f7', '#29b6f6', '#03a9f4', '#039be5', '#0288d1', '#0277bd', '#01579b']
-    };
+    colorScheme: any;
 
     ngOnInit() {
         this.chartData = this.getCalendarData();
+        this.setColourScheme();
+    }
+
+    setColourScheme() {
+        if (this.calendarEntries && this.calendarEntries.some(entry => entry.matches)) {
+            this.colorScheme = { domain: ['#dedede', '#b3e5fc', '#81d4fa', '#4fc3f7', '#29b6f6', '#03a9f4', '#039be5', '#0288d1', '#0277bd', '#01579b'] };
+        } else {
+            this.colorScheme = { domain: ['#dedede'] };
+        }
     }
 
     calendarAxisTickFormatting(mondayString: string) {

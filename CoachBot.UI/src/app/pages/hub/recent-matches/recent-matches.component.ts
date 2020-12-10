@@ -24,6 +24,7 @@ export class RecentMatchesComponent implements OnInit {
     @Input() includePlaceholders = false;
     @Input() showFilters = true;
     @Input() verticalPadding = true;
+    @Input() allRegions = false;
     @Input() sortOrder = 'DESC';
     filters = new MatchFilters();
     matchTypes = MatchTypes;
@@ -46,25 +47,29 @@ export class RecentMatchesComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.playerId = this.playerId;
         this.filters.teamId = this.teamId;
         this.filters.tournamentId = this.tournamentId;
         this.filters.includePast = this.includePast;
         this.filters.includeUpcoming = this.includeUpcoming;
         this.filters.includePlaceholders = this.includePlaceholders;
-        this.regionService.getRegions().subscribe((regions) => {
-            const region = regions.find(r => r.regionId === this.filters.regionId);
-            this.filters.matchFormat = region.matchFormat;
-            if (this.filters.tournamentId) {
-                this.tournamentService.getTournamentTeams(this.tournamentId).subscribe(tournamentTeams => {
-                    this.teams = tournamentTeams;
+        if (!this.allRegions) {
+            this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
+            this.regionService.getRegions().subscribe((regions) => {
+                const region = regions.find(r => r.regionId === this.filters.regionId);
+                this.filters.matchFormat = region.matchFormat;
+                if (this.filters.tournamentId) {
+                    this.tournamentService.getTournamentTeams(this.tournamentId).subscribe(tournamentTeams => {
+                        this.teams = tournamentTeams;
+                        this.loadPage(1);
+                    });
+                } else {
                     this.loadPage(1);
-                });
-            } else {
-                this.loadPage(1);
-            }
-        });
+                }
+            });
+        } else {
+            this.loadPage(1);
+        }
     }
 
     loadPage(page: number) {

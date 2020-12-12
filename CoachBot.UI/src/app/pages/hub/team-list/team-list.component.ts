@@ -45,6 +45,7 @@ export class TeamListComponent implements OnInit {
         this.filters.tournamentId = this.tournamentId;
         this.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
         this.filters.regionId = this.regionId;
+        this.filters.includeInactive = false;
         this.regionService.getRegions().subscribe(regions => {
             const region = regions.find(r => r.regionId === this.regionId);
             this.filters.matchFormat = region.matchFormat;

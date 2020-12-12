@@ -853,7 +853,7 @@ namespace CoachBot.Domain.Services
 
         private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals(TeamStatisticsFilters filters)
         {
-            var tmp = _coachBotContext
+            return _coachBotContext
                  .TeamMatchStatistics
                  .Where(t => filters.TournamentId == null || t.Match.TournamentId == filters.TournamentId)
                  .Where(t => filters.TournamentGroupId == null || _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == t.MatchId && tg.TournamentGroupId == filters.TournamentGroupId))
@@ -868,8 +868,7 @@ namespace CoachBot.Domain.Services
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
                  .Where(p => filters.DateFrom == null || p.Match.KickOff > filters.DateFrom)
                  .Where(p => filters.DateTo == null || p.Match.KickOff < filters.DateTo)
-                 .AsNoTracking();
-            return tmp
+                 .AsNoTracking()
                  .Select(m => new
                  {
                      m.TeamId,

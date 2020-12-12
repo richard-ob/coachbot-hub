@@ -13,7 +13,8 @@ export class PagedTeamStatisticsRequestDto {
 
 export class TeamStatisticFilters {
     timePeriod: TimePeriod = TimePeriod.AllTime;
-    teamId: number;
+    teamId?: number;
+    oppositionTeamId?: number;
     teamType: TeamType;
     matchOutcome?: MatchOutcomeType;
     matchFormat?: MatchFormat = MatchFormat.EightVsEight;

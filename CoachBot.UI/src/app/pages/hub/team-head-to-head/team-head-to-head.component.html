@@ -1,0 +1,133 @@
+<div *ngIf="!isLoading" class="container head-to-head-container" style="background-color: #1e2024;">
+    <a class="btn btn-primary btn-xs btn-change-teams" [routerLink]="['/team-head-to-head']">
+        <i class="fas fa-sync mr-1"></i>
+        <ng-container i18n="@@teamHeadToHead.changeTeams">Change Teams</ng-container>
+    </a>
+    <div class="row">
+        <div class="team-container team-container--one col-6" [class.no-data]="!teamStatisticsOne" [ngStyle]="{ 'background-image': teamOneGradient }">
+            <div class="team-heading">
+                <ng-container *ngIf="teamOne.badgeImage; else blankCrest">
+                    <img [src]="teamOne.badgeImage.mediumUrl">
+                </ng-container>
+                <h5 class="team-name-heading">{{teamOne.name}}</h5>
+            </div>
+        </div>
+        <div class="team-container team-container--two col-6" [class.no-data]="!teamStatisticsOne"  [ngStyle]="{ 'background-image': teamTwoGradient }">            
+            <div class="team-heading">
+                <ng-container *ngIf="teamTwo.badgeImage; else blankCrest">
+                    <img [src]="teamTwo.badgeImage.mediumUrl">
+                </ng-container>
+                <h5 class="team-name-heading">{{teamTwo.name}}</h5>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="teamStatisticsOne">
+        <div class="head-to-head-statistics card">
+            <div class="card__header">
+                <h4 i18n="@@teamHeadToHead.headToHeadStatistics" class="text-center">Head To Head Statistics</h4>
+            </div>
+            <div class="card__content" style="max-height: 500px; overflow: auto;">
+                <app-three-way-horizontal-bar-graph
+                    [valueOne]="teamStatisticsOne.wins"
+                    [valueTwo]="teamStatisticsOne.draws"
+                    [valueThree]="teamStatisticsOne.losses"
+                    [colourOne]="teamOne.color"
+                    [colourTwo]="'#a7a7a7'"
+                    [colourThree]="teamTwo.color"
+                    i18n-title="@@globals.matchOutcomes" title="Match Outcomes"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-three-way-horizontal-bar-graph>
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.goals"
+                    [awayValue]="teamStatisticsTwo.goals"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.totalGoals" title="Total Goals"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.possessionPercentageAverage"
+                    [awayValue]="teamStatisticsTwo.possessionPercentageAverage"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averagePossession" title="Average Possession"
+                    [displayValueMode]="displayValueModes.Percentage">
+                </app-horizontal-bar-graph>
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.passesAverage | number:'1.0-0'"
+                    [awayValue]="teamStatisticsTwo.passesAverage | number:'1.0-0'"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averagePasses" title="Average Passes"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>  
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.passesCompletedAverage | number:'1.0-0'"
+                    [awayValue]="teamStatisticsTwo.passesCompletedAverage | number:'1.0-0'"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averagePassesCompleted" title="Average Passes Completed"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>         
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.shotsAverage | number:'1.0-0'"
+                    [awayValue]="teamStatisticsTwo.shotsAverage | number:'1.0-0'"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averageShots" title="Average Shots"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.shotsOnGoalAverage | number:'1.0-0'"
+                    [awayValue]="teamStatisticsTwo.shotsOnGoalAverage | number:'1.0-0'"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averageShotsOnTarget" title="Average Shots On Target"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.interceptionsAverage | number:'1.0-0'"
+                    [awayValue]="teamStatisticsTwo.interceptionsAverage | number:'1.0-0'"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averageInterceptions" title="Average Interceptions"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.distanceCoveredAverage | number:'1.0-0'"
+                    [awayValue]="teamStatisticsTwo.distanceCoveredAverage | number:'1.0-0'"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averageDistance" title="Average Distance"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.yellowCards"
+                    [awayValue]="teamStatisticsTwo.yellowCards"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.yellowCards" title="Yellow Cards"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.redCards"
+                    [awayValue]="teamStatisticsTwo.redCards"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.redCards" title="Red Cards"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>
+            </div>
+        </div>
+        <!--
+        <div class="head-to-head-player-records card">
+            <div class="card__header">
+                <h4 i18n="@@globals.playerRecords">Player Records</h4>
+            </div>
+            <div class="card__content">
+            </div>
+        </div>    -->
+        <app-team-head-to-head-results [teamId]="teamOne.id" [oppositionTeamId]="teamTwo.id"></app-team-head-to-head-results>
+    </ng-container>
+    <div *ngIf="!teamStatisticsOne" class="alert alert-info" i18n="@@teamHeadToHead.noMatchesPlayed">
+        There have been no matches between these two teams
+    </div>
+</div>
+<div *ngIf="isLoading"  class="py-5">
+    <app-spinner [verticalMargins]="false"></app-spinner>
+</div>
+
+<ng-template #blankCrest>
+    <img src="./assets/images/soccer/blank-crest.png"
+        class="game-result__team-badge">
+</ng-template>

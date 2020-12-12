@@ -1,0 +1,76 @@
+
+<div class="card card--has-table">
+    <div class="card__header card__header--has-btn">
+        <h4 i18n="@@globals.headToHeadResults" class="text-center w-100">Head To Head Results</h4>
+    </div>
+    <div class="card__content table-responsive">
+        <app-spinner *ngIf="!matches"></app-spinner>
+        <div *ngIf="matches && !matches.length" class="alert alert-info m-4"  i18n="@@recentMatches.noMatchesFoundCriteria">
+            No matches found meeting the given criteria. Sorry!
+        </div>
+        <table *ngIf="matches && matches.length" class="table table-striped table-hover table-clickable"
+            [class.widget__content--loading]="isLoadingPage">
+            <thead>
+                <tr>
+                    <th class="team-result__date" i18n="@@globals.date">Date</th>
+                    <th *ngIf="teamId"></th>
+                    <th></th>
+                    <th class="team-result__vs text-left" colspan="2" i18n="@@globals.match">Match</th>
+                    <th class="team-result__status"  i18n="@@globals.matchType">Match Type</th>
+                    <th class="team-result__status text-center"  i18n="@@globals.matchFormat">Match Format</th>
+                    <th class="team-result__ball-posession text-center"  i18n="@@globals.location">Location</th>
+                    <th class="team-result__game-overview text-center"  i18n="@@globals.matchOverview">Match Overview</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let match of matches | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }"
+                    (click)="navigateToMatchOverview(match.id)">
+                    <td class="team-result__date text-nowrap">
+                        <ng-container>
+                            {{match.kickOff | date:'EEE, MMM d y, h:mmaa'}}
+                        </ng-container>
+                    </td>
+                    <td *ngIf="teamId">
+
+                    </td>
+                    <td class="text-right text-nowrap">
+                        <app-team-name [team]="match.teamHome" [isHomeTeam]="true">
+                        </app-team-name>
+                    </td>
+                    <td class="text-center text-nowrap px-0">
+                        <app-dynamic-result-boxes [goalsHome]="match?.matchStatistics?.matchGoalsHome" [goalsAway]="match?.matchStatistics?.matchGoalsAway" [teamHome]="match.teamHome" [teamAway]="match.teamAway"></app-dynamic-result-boxes>
+                    </td>
+                    <td class="text-left text-nowrap">
+                        <app-team-name [team]="match.teamAway" [isHomeTeam]="false">
+                        </app-team-name>
+                    </td>
+                    <td class="team-result__status text-nowrap">
+                        <ng-container [ngSwitch]="match.matchType">
+                            <span *ngSwitchCase="matchTypes.UnrankedFriendly"  i18n="@@matchTypes.unrankedFriendly">Unranked Friendly</span>
+                            <span *ngSwitchCase="matchTypes.RankedFriendly"i18n="@@matchTypes.rankedFriendly">Ranked Friendly</span>
+                            <span *ngSwitchCase="matchTypes.Competition">
+                                <a [routerLink]="['/tournament/', match.tournamentId]">{{match.tournament.name}}</a>
+                            </span>
+                        </ng-container>
+                    </td>
+                    <td class="team-result__status text-center">{{match.format}}v{{match.format}}</td>
+                    <td class="team-result__ball-posession text-center">            
+                        <i  *ngIf="match.server && match.server.country" class="flag-icon" 
+                            [ngClass]="'flag-icon-' + match.server.country.code.toLowerCase()" [attr.title]="match.server.country.name"></i>
+                    </td>
+                    <td class="team-result__game-overview text-center">
+                        <a *ngIf="match.matchStatistics" [routerLink]="['/match-overview', match.id]"
+                            class="btn btn-xs btn-primary" i18n="@@globals.matchOverview">Match
+                            Overview</a>
+                        <ng-container *ngIf="!match.matchStatistics" i18n="@@globals.notAvailable">
+                            N/A
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </table>            
+        <div *ngIf="totalPages > 1" class="text-center mt-3">
+            <pagination-controls (pageChange)="loadPage($event)"></pagination-controls>
+        </div>
+    </div>
+</div>

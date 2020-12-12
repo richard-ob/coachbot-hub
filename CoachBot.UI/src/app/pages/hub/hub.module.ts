@@ -8,9 +8,6 @@ import { SecondsToMinutesPipe } from './match-overview/helpers/seconds-to-minute
 import { ArrayFilterPipe } from './match-overview/helpers/array-filter.pipe';
 import { MatchStatisticPercentageCalculatorPipe } from './match-overview/helpers/match-statistic-percentage-calculator.pipe';
 import { MatchStatisticTeamPercentageCalculatorPipe } from './match-overview/helpers/match-statistic-team-percentage-calculator.pipe';
-import { HorizontalBarGraphComponent } from './match-overview/components/horizontal-bar-graph/horizontal-bar-graph.component';
-import { PercentageSharePipe } from './match-overview/helpers/percentage-share.pipe';
-import { CircleGraphComponent } from './match-overview/components/circle-graph/circle-graph.component';
 import { ServerManagerComponent } from './server-manager/server-manager.component';
 import { RegionManagerComponent } from './region-manager/region-manager.component';
 import { SpinnerModule } from 'src/app/core/components/spinner/spinner.module';
@@ -66,6 +63,8 @@ import { MatchTeamGoalsPipe } from './match-overview/helpers/match-team-goals.pi
 import { PlayerOfTheMatchComponent } from './match-overview/components/player-of-the-match/player-of-the-match.component';
 import { ServerRecoveryComponent } from './server-manager/server-recovery/server-recovery.component';
 import { ServerCreatorComponent } from './server-manager/server-creator/server-creator.component';
+import { TeamHeadToHeadModule } from './team-head-to-head/team-head-to-head.module';
+import { GraphModule } from './shared/components/graphs/graph.module';
 
 @NgModule({
   declarations: [
@@ -76,9 +75,6 @@ import { ServerCreatorComponent } from './server-manager/server-creator/server-c
     ArrayFilterPipe,
     MatchStatisticPercentageCalculatorPipe,
     MatchStatisticTeamPercentageCalculatorPipe,
-    HorizontalBarGraphComponent,
-    CircleGraphComponent,
-    PercentageSharePipe,
     MatchTeamGoalsPipe,
     ServerManagerComponent,
     ServerCreatorComponent,
@@ -122,6 +118,7 @@ import { ServerCreatorComponent } from './server-manager/server-creator/server-c
     TeamEditorListModule,
     TeamEditorModule,
     TournamentManagerModule,
+    TeamHeadToHeadModule,
     BotManagerModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -134,6 +131,7 @@ import { ServerCreatorComponent } from './server-manager/server-creator/server-c
     ThSorterModule,
     TeamNameDisplayModule,
     MatchStatisticsModule,
+    GraphModule,
     TimepickerModule.forRoot()
   ],
   providers: [

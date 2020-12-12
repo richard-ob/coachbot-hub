@@ -1,0 +1,108 @@
+.btn-change-teams {
+    position: absolute;
+    right: 10px;
+    z-index: 5;
+    top: 10px;
+}
+
+.team-container {
+    height: 1650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1.5rem;
+    &.no-data {
+        height: 430px;;
+    }
+    .team-heading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        .team-name-heading {
+            color: white;
+            font-size: 26px;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px black;
+        }
+        img {
+            max-height: 9rem;
+            margin-bottom: 0.6rem;
+        }
+    }
+}
+
+.head-to-head-container {
+    position: relative;
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 0;
+        background-image: url('/page-heading-pattern.png');
+        background-size: auto;
+        background-position: 100% 0;
+        background-repeat: no-repeat;
+        opacity: 0.1;
+      }
+    .head-to-head-results, app-team-head-to-head-results {
+        position: absolute;
+        top: 880px;
+        width: calc(100% - 7.4rem);
+        margin: 0 2.8rem;
+        height: 390px;
+    }
+    .head-to-head-statistics {
+        position: absolute;
+        top: 250px;
+        width: calc(100% - 7.4rem);
+        margin: 0 2.8rem;
+    }
+    .alert-info {
+        position: absolute;
+        top: 270px;
+        width: calc(100% - 7.4rem);
+        margin: 0 2.8rem;
+    }
+}
+
+.team-selection-list {
+    max-height: 40vh;
+}
+
+.team-selection-title {
+    text-align: center;
+    padding-top: 1rem;
+    color: white;
+}
+
+.team-selection-option {
+    border-radius: 5px;
+    &:hover {
+        background: #2f2f2f;
+    }
+    &.selected {
+        background: #113e5d;
+    }
+    .team-selection-option-name {
+        text-transform: uppercase;
+        font-size: 0.95rem;
+        color: #e0e0e0 !important;
+        font-weight: 600;
+        font-family: "Montserrat", sans-serif;
+        letter-spacing: -0.02em;
+        margin: 0.2rem 0;
+    }
+}
+
+ng-scrollbar {
+    --scrollbar-size: 8px;
+    --scrollbar-thumb-color: rgba(255, 255, 255, 0.5);
+    --scrollbar-thumb-hover-color: rgb(219, 219, 219);
+    --scrollbar-border-radius: 4px;
+    border: 1px solid rgba(163, 163, 163, 0.4);
+  }

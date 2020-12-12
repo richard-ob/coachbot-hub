@@ -1,0 +1,41 @@
+<div *ngIf="!isLoading" class="container head-to-head-container team-selection-container" style="background-color: #1e2024;">
+    <div class="row">
+        <div class="col-6">
+            <h5 class="team-selection-title">Pick Team One</h5>
+            <ng-scrollbar class="w-100 mb-2">
+                <div class="team-selection-list w-100 p-3">
+                    <div class="team-selection-option clickable" *ngFor="let team of teams" (click)="setTeamOneCode(team.teamCode)" [class.selected]="teamOneCode == team.teamCode.toLowerCase()">
+                        <span class="text-center d-inline-block" style="width: 35px">
+                        <img *ngIf="team.badgeImage" [src]="team.badgeImage.mediumUrl" style="max-height: 25px">
+                        <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                            style="max-height: 25px"></span>
+                        <span class="team-selection-option-name text-white d-inline-block ml-2">{{team.name}}</span>
+                        <span *ngIf="team.inactive" class="badge badge-warning ml-2">Inactive</span>
+                    </div>
+                </div>
+            </ng-scrollbar>
+        </div>
+        <div class="col-6">
+            <h5 class="team-selection-title">Pick Team Two</h5>
+            <ng-scrollbar class="w-100 mb-2">
+                <div class="team-selection-list w-100 p-3">
+                    <div class="team-selection-option clickable" *ngFor="let team of teams"  (click)="setTeamTwoCode(team.teamCode)"  [class.selected]="teamTwoCode == team.teamCode.toLowerCase()">
+                        <span class="text-center d-inline-block" style="width: 35px">
+                        <img *ngIf="team.badgeImage" [src]="team.badgeImage.mediumUrl" style="max-height: 25px">
+                        <img *ngIf="!team.badgeImage" src="./assets/images/soccer/blank-crest.png"
+                            style="max-height: 25px"></span>
+                        <span class="team-selection-option-name text-white d-inline-block ml-2">{{team.name}}</span>
+                        <span *ngIf="team.inactive" class="badge badge-warning ml-2">Inactive</span>
+                    </div>
+                </div>
+            </ng-scrollbar>
+        </div>
+        <button class="btn btn-primary mx-auto my-3" style="z-index: 5" (click)="navigateIfBothTeamsSelected()">
+            <i class="fas fa-magic mr-1"></i>
+            <ng-container i18n="@@teamHeadToHead.compareTeams">Compare Teams</ng-container>
+        </button>
+    </div>
+</div>
+<div *ngIf="isLoading"  class="py-5">
+    <app-spinner [verticalMargins]="false"></app-spinner>
+</div>

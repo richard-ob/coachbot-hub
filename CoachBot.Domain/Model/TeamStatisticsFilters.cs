@@ -1,4 +1,5 @@
 ﻿using CoachBot.Model;
+using System;
 
 namespace CoachBot.Domain.Model
 {
@@ -7,6 +8,8 @@ namespace CoachBot.Domain.Model
         public StatisticsTimePeriod TimePeriod { get; set; }
 
         public int? TeamId { get; set; }
+
+        public int? OppositionTeamId { get; set; }
 
         public MatchTeamType? MatchTeamType { get; set; }
 
@@ -23,5 +26,9 @@ namespace CoachBot.Domain.Model
         public bool IncludeInactive { get; set; } = true;
 
         public TeamType? TeamType { get; set; }
+
+        public DateTime? DateFrom { get; set; }
+
+        public DateTime? DateTo { get; set; }
     }
 }

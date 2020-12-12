@@ -1,0 +1,44 @@
+<h5 class="game-result__subtitle">{{title}}</h5>
+<div class="game-result__content">
+
+    <div class="spacer-sm"></div>
+
+    <div class="progress-double-wrapper">
+        <div class="progress-inner-holder">
+            <!--<div class="progress__digit progress__digit--left progress__digit--highlight"
+                [style.color]="homeColourFont">
+                <ng-container [ngSwitch]="displayValueMode">
+                    <span *ngSwitchCase="displayValueModes.Value">
+                        {{ homeValue }}
+                    </span>
+                    <span *ngSwitchCase="displayValueModes.Percentage">
+                        {{ (homeValue | percentageSharePipe:[awayValue]) + '%' }}
+                    </span>
+                </ng-container>
+            </div>-->
+            <div class="progress progress--lg">
+                <div class="progress__bar" role="progressbar" [style.background-color]="colourOne"
+                    [style.width]="(valueOne | percentageSharePipe:[valueTwo, valueThree]) + '%'" aria-valuemin="0"
+                    aria-valuemax="100">{{valueOne}}</div>
+                <div class="progress__bar" role="progressbar" [style.background-color]="colourTwo"
+                    [style.width]="(valueTwo | percentageSharePipe:[valueOne, valueThree]) + '%'" aria-valuemin="0"
+                    aria-valuemax="100">{{valueTwo}}</div>            
+                <div class="progress__bar" role="progressbar" [style.background-color]="colourThree"
+                    [style.width]="(valueThree | percentageSharePipe:[valueOne, valueTwo]) + '%'" aria-valuemin="0"
+                    aria-valuemax="100">{{valueThree}}</div>
+            </div>
+            <!--<div class="progress__digit progress__digit--right progress__digit--highlight"
+                [style.color]="awayColourFont">
+                <ng-container [ngSwitch]="displayValueMode">
+                    <span *ngSwitchCase="displayValueModes.Value">
+                        {{ awayValue }}
+                    </span>
+                    <span *ngSwitchCase="displayValueModes.Percentage">
+                        {{ (awayValue | percentageSharePipe:[homeValue]) + '%' }}
+                    </span>
+                </ng-container>
+            </div>-->
+        </div>
+    </div>
+
+</div>

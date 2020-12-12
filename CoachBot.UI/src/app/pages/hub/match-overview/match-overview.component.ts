@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { EventType, TeamEnum } from './model/match-data.interface';
 import { StatisticType } from './model/statistic-type.enum';
 import { TeamType } from './model/team-type.enum.js';
-import { DisplayValueMode } from './components/horizontal-bar-graph/horizontal-bar-graph.component.js';
 import { MatchService } from '../shared/services/match.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Match } from '../shared/model/match.model';
@@ -11,6 +10,7 @@ import { PlayerService } from '../shared/services/player.service';
 import { Player } from '../shared/model/player.model';
 import { MatchStatisticsService } from '../shared/services/match-statistics.service';
 import { PlayerHubRole } from '../shared/model/player-hub-role.enum';
+import { DisplayValueMode } from '../shared/components/graphs/horizontal-bar-graph/horizontal-bar-graph.component';
 
 @Component({
   selector: 'app-match-overview',

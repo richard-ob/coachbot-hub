@@ -853,11 +853,12 @@ namespace CoachBot.Domain.Services
 
         private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals(TeamStatisticsFilters filters)
         {
-            return _coachBotContext
+            var tmp = _coachBotContext
                  .TeamMatchStatistics
                  .Where(t => filters.TournamentId == null || t.Match.TournamentId == filters.TournamentId)
                  .Where(t => filters.TournamentGroupId == null || _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == t.MatchId && tg.TournamentGroupId == filters.TournamentGroupId))
                  .Where(t => filters.TeamId == null || t.TeamId == filters.TeamId)
+                 .Where(t => filters.OppositionTeamId == null || t.Match.TeamAwayId == filters.OppositionTeamId || t.Match.TeamHomeId == filters.OppositionTeamId)
                  .Where(t => filters.RegionId == null || t.Team.RegionId == filters.RegionId)
                  .Where(t => filters.IncludeInactive || t.Team.Inactive == false)
                  .Where(t => filters.TeamType == null || t.Team.TeamType == filters.TeamType)
@@ -865,7 +866,10 @@ namespace CoachBot.Domain.Services
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
                  .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
-                 .AsNoTracking()
+                 .Where(p => filters.DateFrom == null || p.Match.KickOff > filters.DateFrom)
+                 .Where(p => filters.DateTo == null || p.Match.KickOff < filters.DateTo)
+                 .AsNoTracking();
+            return tmp
                  .Select(m => new
                  {
                      m.TeamId,

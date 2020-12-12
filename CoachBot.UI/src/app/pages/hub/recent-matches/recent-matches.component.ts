@@ -18,6 +18,7 @@ export class RecentMatchesComponent implements OnInit {
 
     @Input() playerId: number;
     @Input() teamId: number;
+    @Input() oppositionTeamId: number;
     @Input() tournamentId: number;
     @Input() includePast = true;
     @Input() includeUpcoming = false;
@@ -53,6 +54,7 @@ export class RecentMatchesComponent implements OnInit {
         this.filters.includePast = this.includePast;
         this.filters.includeUpcoming = this.includeUpcoming;
         this.filters.includePlaceholders = this.includePlaceholders;
+        this.filters.oppositionTeamId = this.oppositionTeamId;
         if (!this.allRegions) {
             this.filters.regionId = this.userPreferenceService.getUserPreference(UserPreferenceType.Region);
             this.regionService.getRegions().subscribe((regions) => {

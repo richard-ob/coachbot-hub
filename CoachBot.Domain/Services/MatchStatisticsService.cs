@@ -922,6 +922,7 @@ namespace CoachBot.Domain.Services
                      ShotsOnGoal = s.Sum(p => p.ShotsOnGoal),
                      ShotsOnGoalAverage = s.Average(p => p.ShotsOnGoal),
                      ShotAccuracyPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.ShotsOnGoal)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
+                     ShotConversionPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.Goals)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
                      Passes = s.Sum(p => p.Passes),
                      PassesAverage = s.Average(p => p.Passes),
                      PassesCompleted = s.Sum(p => p.PassesCompleted),

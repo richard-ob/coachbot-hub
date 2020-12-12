@@ -80,6 +80,13 @@
                     [displayValueMode]="displayValueModes.Value">
                 </app-horizontal-bar-graph>
                 <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.goalsAverage"
+                    [awayValue]="teamStatisticsTwo.goalsAverage"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averageGoals" title="Average Goals"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>
+                <app-horizontal-bar-graph
                     [homeValue]="teamStatisticsOne.interceptionsAverage | number:'1.0-0'"
                     [awayValue]="teamStatisticsTwo.interceptionsAverage | number:'1.0-0'"
                     [homeColour]="teamOne.color"
@@ -87,10 +94,17 @@
                     [displayValueMode]="displayValueModes.Value">
                 </app-horizontal-bar-graph>
                 <app-horizontal-bar-graph
-                    [homeValue]="teamStatisticsOne.distanceCoveredAverage | number:'1.0-0'"
-                    [awayValue]="teamStatisticsTwo.distanceCoveredAverage | number:'1.0-0'"
+                    [homeValue]="teamStatisticsOne.keeperSavesAverage"
+                    [awayValue]="teamStatisticsTwo.keeperSavesAverage"
                     [homeColour]="teamOne.color"
-                    [awayColour]="teamTwo.color" i18n-title="@@globals.averageDistance" title="Average Distance"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averageKeeperSaves" title="Average Keeper Saves"
+                    [displayValueMode]="displayValueModes.Value">
+                </app-horizontal-bar-graph>
+                <app-horizontal-bar-graph
+                    [homeValue]="teamStatisticsOne.offsidesAverage"
+                    [awayValue]="teamStatisticsTwo.offsidesAverage"
+                    [homeColour]="teamOne.color"
+                    [awayColour]="teamTwo.color" i18n-title="@@globals.averageOffsides" title="Average Offsides"
                     [displayValueMode]="displayValueModes.Value">
                 </app-horizontal-bar-graph>
                 <app-horizontal-bar-graph

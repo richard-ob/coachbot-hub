@@ -32,6 +32,7 @@ export interface TeamStatistics {
     shotsOnGoal: number;
     shotsOnGoalAverage: number;
     shotAccuracyPercentage: number;
+    shotConversionPercentage: number;
     passes: number;
     passesAverage: number;
     passesCompleted: number;

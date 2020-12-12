@@ -9,7 +9,7 @@
                 [style.color]="homeColourFont">
                 <ng-container [ngSwitch]="displayValueMode">
                     <span *ngSwitchCase="displayValueModes.Value">
-                        {{ homeValue }}
+                        {{ homeValue | number:'1.0-0'}}
                     </span>
                     <span *ngSwitchCase="displayValueModes.Percentage">
                         {{ (homeValue | percentageSharePipe:[awayValue]) + '%' }}
@@ -28,7 +28,7 @@
                 [style.color]="awayColourFont">
                 <ng-container [ngSwitch]="displayValueMode">
                     <span *ngSwitchCase="displayValueModes.Value">
-                        {{ awayValue }}
+                        {{ awayValue | number:'1.0-0'}}
                     </span>
                     <span *ngSwitchCase="displayValueModes.Percentage">
                         {{ (awayValue | percentageSharePipe:[homeValue]) + '%' }}

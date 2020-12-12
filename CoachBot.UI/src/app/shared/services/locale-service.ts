@@ -14,9 +14,10 @@ export class LocaleService {
         /*{ name: 'Portuguese', code: 'pt', flag: 'pt' },
         { name: 'Spanish', code: 'es', flag: 'es' },*/
         { name: 'Korean', code: 'ko', flag: 'kr' },
-        /*{ name: 'Portuguese (PT)', code: 'pt', flag: 'pt' },*/
+        { name: 'Portuguese (PT)', code: 'pt', flag: 'pt' },
         { name: 'Polish', code: 'pl', flag: 'pl' },
-        { name: 'Czech', code: 'cs', flag: 'cz' }
+        { name: 'Czech', code: 'cs', flag: 'cz' },
+        { name: 'Russian', code: 'ru', flag: 'ru' },
         //{ name: 'French', code: 'fr', flag: 'fr' },
     ];
 

@@ -25,6 +25,12 @@ namespace CoachBot.Controllers
             return _matchStatisticsService.GetPlayerStatistics(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
         }
 
+        [HttpPost("match-totals")]
+        public PagedResult<PlayerStatisticTotals> PagedPlayerMatchTotalStatistics([FromBody] PagedPlayerStatisticsRequestDto pagedRequest)
+        {
+            return _matchStatisticsService.GetPlayerMatchStatisticsTotals(pagedRequest.Page, pagedRequest.PageSize, pagedRequest.SortOrderFull, pagedRequest.Filters);
+        }
+
         [HttpPost("matches-by-position")]
         public PagedResult<PlayerPositionMatchStatistics> PagedPlayerPositionMatchStatistics([FromBody]PagedPlayerStatisticsRequestDto pagedRequest)
         {

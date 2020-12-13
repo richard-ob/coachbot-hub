@@ -41,6 +41,11 @@
         </div>
     </div>
     <ng-container *ngIf="teamStatisticsOne">
+        <div class="head-to-head-match-count-container">
+            <span class="head-to-head-match-count">
+                {{teamStatisticsOne.appearances}} {{ teamStatisticsOne.appearances > 1 ? 'Matches' : 'Match' }}
+            </span>
+        </div>
         <div class="head-to-head-spotlights row pt-2">
             <app-team-head-to-head-spotlight class="col-12 col-lg-4" [teamId]="teamOne.id" [oppositionTeamId]="teamTwo.id"
                 [statistic]="spotlightStatistic.BiggestWin" [matchType]="matchType">

@@ -39,7 +39,7 @@
             max-height: 9rem;
             margin-bottom: 0.6rem;
         }
-    }
+    }    
 }
 
 .head-to-head-container {
@@ -58,7 +58,27 @@
         background-position: 100% 0;
         background-repeat: no-repeat;
         opacity: 0.1;
-      }
+    }
+    .head-to-head-match-count-container {
+        position: absolute;
+        top: 180px;
+        z-index: 5;
+        margin: 0 auto;
+        width: calc(100% - 7.4rem);
+        margin: 0 2.8rem;
+        text-align: center;
+        .head-to-head-match-count {
+            font-weight: 600;
+            font-family: 'Montserrat';
+            background: #6b6b6b;
+            color: white;
+            padding: 6px 17px;
+            text-align: center;
+            border-radius: 22px;
+            font-size: 12px;
+            width: 106px;
+        }
+    }
     .head-to-head-results, app-team-head-to-head-results {
         position: absolute;
         top: 1600px;

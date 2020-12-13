@@ -28,7 +28,7 @@ export class StatisticsLeaderboardComponent implements OnInit {
         filters.oppositionTeamId = this.oppositionTeamId;
         filters.matchType = this.matchType;
         filters.matchFormat = null;
-        this.playerService.getPlayerStatistics(1, undefined, this.statisticSortColumn, 'DESC', filters).subscribe(response => {
+        this.playerService.getPlayerMatchStatisticsTotals(1, undefined, this.statisticSortColumn, 'DESC', filters).subscribe(response => {
             this.playerStatistics = response.items;
             this.isLoading = false;
         });

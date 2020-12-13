@@ -301,6 +301,11 @@ namespace CoachBot.Domain.Services
             return GetPlayerStatisticTotals(filters).GetPaged(page, pageSize, sortOrder);
         }
 
+        public Model.Dtos.PagedResult<PlayerStatisticTotals> GetPlayerMatchStatisticsTotals(int page, int pageSize, string sortOrder, PlayerStatisticFilters filters)
+        {
+            return GetPlayerMatchStatisticTotals(filters).GetPaged(page, pageSize, sortOrder);
+        }
+
         public Model.Dtos.PagedResult<PlayerPositionMatchStatistics> GetPlayerPositionMatchStatistics(int page, int pageSize, string sortOrder, PlayerStatisticFilters filters)
         {
             return GetPlayerPositionMatchStatisticsQueryable(filters).GetPaged(page, pageSize, sortOrder);
@@ -803,6 +808,123 @@ namespace CoachBot.Domain.Services
                      m.MatchId,
                      m.Player.Rating,
                      m.PositionId
+                 })
+                 .GroupBy(p => new { p.PlayerId, p.SteamID, p.Name, p.Rating }, (key, s) => new PlayerStatisticTotals()
+                 {
+                     Goals = s.Sum(p => p.Goals),
+                     GoalsAverage = s.Average(p => p.Goals),
+                     Assists = s.Sum(p => p.Assists),
+                     AssistsAverage = s.Average(p => p.Assists),
+                     Fouls = s.Sum(p => p.Fouls),
+                     FoulsAverage = s.Average(p => p.Fouls),
+                     FoulsSuffered = s.Sum(p => p.FoulsSuffered),
+                     FoulsSufferedAverage = s.Average(p => p.FoulsSuffered),
+                     SlidingTacklesAverage = s.Average(p => p.SlidingTackles),
+                     SlidingTacklesCompletedAverage = s.Average(p => p.SlidingTacklesCompleted),
+                     GoalsConceded = s.Sum(p => p.GoalsConceded),
+                     GoalsConcededAverage = s.Average(p => p.GoalsConceded),
+                     Shots = s.Sum(p => p.Shots),
+                     ShotsAverage = s.Average(p => p.Shots),
+                     ShotsOnGoal = s.Sum(p => p.ShotsOnGoal),
+                     ShotsOnGoalAverage = s.Average(p => p.ShotsOnGoal),
+                     ShotAccuracyPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.ShotsOnGoal)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
+                     Passes = s.Sum(p => p.Passes),
+                     PassesAverage = s.Average(p => p.Passes),
+                     PassesCompleted = s.Sum(p => p.PassesCompleted),
+                     PassesCompletedAverage = s.Average(p => p.PassesCompleted),
+                     PassCompletionPercentageAverage = s.Sum(p => Convert.ToDouble(p.Passes)) > 0 ? s.Sum(p => Convert.ToDouble(p.PassesCompleted)) / s.Sum(p => Convert.ToDouble(p.Passes)) : 0,
+                     Interceptions = s.Sum(p => p.Interceptions),
+                     InterceptionsAverage = s.Average(p => p.Interceptions),
+                     Offsides = s.Sum(p => p.Offsides),
+                     OffsidesAverage = s.Average(p => p.Offsides),
+                     GoalKicksAverage = s.Average(p => p.GoalKicks),
+                     OwnGoals = s.Sum(p => p.OwnGoals),
+                     OwnGoalsAverage = s.Average(p => p.OwnGoals),
+                     DistanceCoveredAverage = s.Average(p => p.DistanceCovered),
+                     FreeKicks = s.Sum(p => p.FreeKicks),
+                     FreeKicksAverage = s.Average(p => p.FreeKicks),
+                     KeeperSaves = s.Sum(p => p.KeeperSaves),
+                     KeeperSavesAverage = s.Average(p => p.KeeperSaves),
+                     KeeperSavesCaughtAverage = s.Average(p => p.KeeperSavesCaught),
+                     Penalties = s.Sum(p => p.Penalties),
+                     PenaltiesAverage = s.Average(p => p.Penalties),
+                     PossessionAverage = s.Average(p => p.Possession),
+                     PossessionPercentageAverage = s.Average(p => p.PossessionPercentage),
+                     RedCards = s.Sum(p => p.RedCards),
+                     RedCardsAverage = s.Average(p => p.RedCards),
+                     YellowCards = s.Sum(p => p.YellowCards),
+                     YellowCardsAverage = s.Average(p => p.YellowCards),
+                     ThrowIns = s.Sum(p => p.ThrowIns),
+                     Corners = s.Sum(p => p.Corners),
+                     PlayerId = key.PlayerId,
+                     Appearances = s.Count(),
+                     KeeperSavePercentage = s.Sum(p => Convert.ToDouble(p.KeeperSaves)) > 0 ? s.Sum(p => Convert.ToDouble(p.KeeperSaves)) / (s.Sum(p => Convert.ToDouble(p.KeeperSaves)) + s.Sum(p => Convert.ToDouble(p.GoalsConceded))) : 0,
+                     ShotConversionPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.Goals)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
+                     SubstituteAppearances = s.Sum(p => p.Substitute ? 1 : 0),
+                     Wins = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0),
+                     Losses = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0),
+                     Draws = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0),
+                     Name = key.Name,
+                     SteamID = key.SteamID,
+                     Rating = key.Rating
+                 });
+        }
+
+        private IQueryable<PlayerStatisticTotals> GetPlayerMatchStatisticTotals(PlayerStatisticFilters filters)
+        {
+            return _coachBotContext
+                 .PlayerMatchStatistics
+                 .AsNoTracking()
+                 .Where(p => filters.IncludeSubstituteAppearances || !p.Substitute)
+                 .Where(p => filters.MatchId == null || p.MatchId == filters.MatchId)
+                 .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId)
+                 .Where(p => filters.TeamId == null || filters.OppositionTeamId != null || p.TeamId == filters.TeamId && p.Player.Teams.Any(pt => pt.TeamId == filters.TeamId))
+                 .Where(p => filters.OppositionTeamId == null || (p.Match.TeamHomeId == filters.TeamId && p.Match.TeamAwayId == filters.OppositionTeamId) || (p.Match.TeamAwayId == filters.TeamId && p.Match.TeamHomeId == filters.OppositionTeamId))
+                 .Where(p => filters.MinimumSecondsPlayed == null || p.SecondsPlayed > filters.MinimumSecondsPlayed)
+                 .Where(p => filters.RegionId == null || p.Team.RegionId == filters.RegionId)
+                 .Where(p => filters.TournamentId == null || p.Match.TournamentId == filters.TournamentId)
+                 .Where(p => filters.MatchFormat == null || p.Match.Format == filters.MatchFormat)
+                 .Where(p => filters.MatchType == null || p.Match.MatchType == filters.MatchType)
+                 .Where(p => string.IsNullOrWhiteSpace(filters.PlayerName) || p.Player.Name.Contains(filters.PlayerName))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Week || p.Match.KickOff > DateTime.UtcNow.AddDays(-7))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Month || p.Match.KickOff > DateTime.UtcNow.AddMonths(-1))
+                 .Where(p => filters.TimePeriod != StatisticsTimePeriod.Year || p.Match.KickOff > DateTime.UtcNow.AddYears(-1))
+                 .Select(m => new
+                 {
+                     m.PlayerId,
+                     m.Player.DiscordUserId,
+                     m.Player.SteamID,
+                     m.Player.Name,
+                     m.RedCards,
+                     m.YellowCards,
+                     m.Fouls,
+                     m.FoulsSuffered,
+                     m.SlidingTackles,
+                     m.SlidingTacklesCompleted,
+                     m.GoalsConceded,
+                     m.Shots,
+                     m.ShotsOnGoal,
+                     m.Passes,
+                     m.PassesCompleted,
+                     m.Interceptions,
+                     m.Offsides,
+                     m.GoalKicks,
+                     m.OwnGoals,
+                     m.DistanceCovered,
+                     m.FreeKicks,
+                     m.KeeperSaves,
+                     m.KeeperSavesCaught,
+                     m.Penalties,
+                     m.Possession,
+                     m.PossessionPercentage,
+                     m.ThrowIns,
+                     m.Corners,
+                     m.Goals,
+                     m.Assists,
+                     m.MatchOutcome,
+                     m.Substitute,
+                     m.MatchId,
+                     m.Player.Rating
                  })
                  .GroupBy(p => new { p.PlayerId, p.SteamID, p.Name, p.Rating }, (key, s) => new PlayerStatisticTotals()
                  {

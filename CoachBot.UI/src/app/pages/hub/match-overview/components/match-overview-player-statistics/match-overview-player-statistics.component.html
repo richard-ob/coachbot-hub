@@ -6,16 +6,16 @@
                 <li class="team-result-filter__item float-right">
                     <button type="button" class="btn btn-secondary btn-xs d-none d-lg-inline-block mr-2"
                         (click)="toggleStatAggregation()">
-                        <ng-container i18n="@@globals.show">Show</ng-container>
+                        <ng-container i18n="@@globals.show">Show</ng-container>&nbsp;
                         <ng-container *ngIf="showAggregateStats" i18n="@@globals.position">Position</ng-container>
-                        <ng-container *ngIf="!showAggregateStats" i18n="@@globals.aggregate">Aggregate</ng-container>
+                        <ng-container *ngIf="!showAggregateStats" i18n="@@globals.aggregate">Aggregate</ng-container>&nbsp;
                         <ng-container i18n="@@globals.stats">Stats</ng-container>
                     </button>
                     <button type="button" class="btn btn-secondary btn-xs d-none d-lg-inline-block"
                         (click)="showMoreStats = !showMoreStats">
-                        <ng-container i18n="@@globals.show">Show</ng-container>
+                        <ng-container i18n="@@globals.show">Show</ng-container>&nbsp;
                         <ng-container *ngIf="!showMoreStats" i18n="@@globals.more">More</ng-container>
-                        <ng-container *ngIf="showMoreStats" i18n="@@globals.fewer">Fewer</ng-container>
+                        <ng-container *ngIf="showMoreStats" i18n="@@globals.fewer">Fewer</ng-container>&nbsp;
                         <ng-container i18n="@@globals.stats">Stats</ng-container>
                     </button>
                 </li>

@@ -1,0 +1,9 @@
+.widget-player__ribbon {
+    &::before, &::after {
+        display: none;
+    }
+}
+
+.statistic-spotlight-card {
+    border: none;
+}

@@ -1,18 +1,28 @@
 .btn-change-teams {
     position: absolute;
+    top: 44px;
+    right: 10px;
+    z-index: 4;
+}
+
+.btn-change-match-type {
+    position: absolute;
     right: 10px;
     z-index: 5;
     top: 10px;
 }
 
 .team-container {
-    height: 1650px;
+    height: 2360px;;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 1.5rem;
     &.no-data {
-        height: 430px;;
+        height: 430px;
+    }
+    @media (max-width: 768px) {
+        height: 1650px;
     }
     .team-heading {
         display: flex;
@@ -51,16 +61,40 @@
       }
     .head-to-head-results, app-team-head-to-head-results {
         position: absolute;
-        top: 880px;
+        top: 1600px;
         width: calc(100% - 7.4rem);
         margin: 0 2.8rem;
         height: 390px;
+        @media (max-width: 768px) {
+            top: 880px;
+        }
     }
     .head-to-head-statistics {
         position: absolute;
-        top: 250px;
+        top: 410px;
         width: calc(100% - 7.4rem);
         margin: 0 2.8rem;
+        @media (max-width: 768px) {
+            top: 260px;
+        }
+    }
+    .head-to-head-leaderboards {        
+        position: absolute;
+        top: 1020px;
+        width: calc(100% - 5.5rem);
+        margin: 0px 1.9rem;
+        @media (max-width: 768px) {
+            display: none;
+        }
+    }
+    .head-to-head-spotlights {        
+        position: absolute;
+        top: 230px;
+        width: calc(100% - 5.5rem);
+        margin: 0px 1.9rem;
+        @media (max-width: 768px) {
+            display: none;
+        }
     }
     .alert-info {
         position: absolute;

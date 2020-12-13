@@ -18,6 +18,7 @@ export class TeamHeadToHeadResultsComponent implements OnInit {
     @Input() showFilters = true;
     @Input() verticalPadding = true;
     @Input() allRegions = false;
+    @Input() matchType: MatchTypes;
     @Input() sortOrder = 'DESC';
     filters = new MatchFilters();
     matchTypes = MatchTypes;
@@ -32,10 +33,12 @@ export class TeamHeadToHeadResultsComponent implements OnInit {
     constructor(private matchService: MatchService, private router: Router) { }
 
     ngOnInit() {
+        this.filters.matchFormat = null;
         this.filters.teamId = this.teamId;
         this.filters.includePast = true;
         this.filters.includeUpcoming = false;
         this.filters.oppositionTeamId = this.oppositionTeamId;
+        this.filters.matchType = this.matchType;
         this.loadPage(1);
     }
 

@@ -12,11 +12,15 @@ namespace CoachBot.Domain.Model
 
         public int? TeamId { get; set; }
 
+        public int? OppositionTeamId { get; set; }
+
         public int? ChannelId { get; set; }
 
         public MatchTeamType? MatchTeamType { get; set; }
 
         public MatchFormat? MatchFormat { get; set; }
+
+        public MatchType? MatchType { get; set; }
 
         public int? PositionId { get; set; }
 

@@ -1,0 +1,23 @@
+<div class="card card--has-table">
+    <div class="card__header">
+        <h4 class="text-center">{{statisticDisplayName}}</h4>
+    </div>
+    <div class="card__content">
+        <div *ngIf="!isLoading; else spinner" class="player-profile-statistics__statistic-box">
+            <div *ngFor="let player of playerStatistics; let rank = index"
+                class="player-profile-statistics__statistic-box__item">
+                <div class="player-profile-statistics__statistic-box__item-statistic">{{rank + 1}}</div>
+                <div class="player-profile-statistics__statistic-box__item-statistic clickable"
+                    [routerLink]="['/player-profile/', player.playerId]">{{player.name}}</div>
+                <div class="player-profile-statistics__statistic-box__item-value">
+                    {{player[statisticProperty]}}</div>
+            </div>
+        </div>
+        <div *ngIf="!isLoading && !playerStatistics.length" class="player-profile-statistics__no-data m-4" i18n="@@globals.noMatchDataAvailable">
+            No match data available
+        </div>
+        <ng-template #spinner>
+            <app-spinner class="py-3"></app-spinner>
+        </ng-template>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="card statistic-spotlight-card" (click)="spotlightTeam && navigateToMatchOverview()">
+    <div class="card__content statistic-spotlight-card widget-player--soccer">
+        <h4 class="statistic-spotlight-title mb-2">{{heading}}</h4>
+        <ng-container *ngIf="!isLoading; else spinner">
+            <div class="widget-player__ribbon" [ngStyle]="{ 'background-color': ribbonColour }">
+                <div class="fa fa-trophy"></div>
+            </div>
+            <ng-container [ngSwitch]="statistic">
+                <ng-container *ngSwitchCase="teamSpotlightStatistic.BiggestWin">
+                    <h4 class="statistic-spotlight-name">
+                        {{spotlightTeam.match.teamHome.teamCode}} {{spotlightTeam.match.matchStatistics.matchGoalsHome}} - {{spotlightTeam.match.matchStatistics.matchGoalsAway}} {{spotlightTeam.match.teamAway.teamCode}}
+                    </h4>
+                    <i class="statistic-spotlight-icon icon-svg" [ngClass]="iconClass"></i>
+                    <div *ngIf="spotlightTeam" class="d-flex">
+                        <div class="statistic-spotlight-stat-container">
+                            <div class="statistic-spotlight-stat-value">
+                                <ng-container *ngIf="spotlightTeam.match.matchType === matchTypes.Competition; else friendly">
+                                    {{spotlightTeam.match.tournament.name}}
+                                </ng-container>
+                                <ng-template #friendly>
+                                    Friendly
+                                </ng-template>
+                            </div>
+                            <div class="statistic-spotlight-stat-measure">
+                                {{spotlightTeam.match.kickOff | date:'MMM d y h:mmaa' }}
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                
+                <ng-container *ngSwitchCase="teamSpotlightStatistic.BestPassing">               
+                    <h4 class="statistic-spotlight-name">
+                        {{spotlightTeam[modelProperty]}}
+                    </h4>
+                    <i class="statistic-spotlight-icon icon-svg" [ngClass]="iconClass"></i>
+                    <div class="d-flex">
+                        <div class="statistic-spotlight-stat-container">
+                            <div class="statistic-spotlight-stat-value">
+                                {{spotlightTeam.teamName}}
+                            </div>
+                            <div class="statistic-spotlight-stat-measure">
+                                {{spotlightTeam.match.kickOff | date:'MMM d y h:mmaa' }}
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                
+                <ng-container *ngSwitchCase="teamSpotlightStatistic.HighestPossession">                   
+                    <h4 class="statistic-spotlight-name">
+                        {{spotlightTeam[modelProperty]}}%
+                    </h4>
+                    <i class="statistic-spotlight-icon icon-svg" [ngClass]="iconClass"></i>
+                    <div class="d-flex">
+                        <div class="statistic-spotlight-stat-container">
+                            <div class="statistic-spotlight-stat-value">
+                                {{spotlightTeam.teamName}}
+                            </div>
+                            <div class="statistic-spotlight-stat-measure">
+                                {{spotlightTeam.match.kickOff | date:'MMM d y h:mmaa' }}
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+            
+        </ng-container>
+        <ng-template #spinner>
+            <div class="my-3">
+                <app-spinner [verticalMargins]="false" [light]="true"></app-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

@@ -39,4 +39,5 @@ export interface TeamMatchStatistics {
     keeperSavesCaught: number;
     possessionPercentage: number;
     matchOutcome: number;
+    teamName: string;
 }

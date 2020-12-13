@@ -3,6 +3,7 @@ import { MatchStatistics } from './match-statistics.model';
 import { Tournament } from './tournament.model';
 import { Map } from './map.model';
 import { Player } from '@pages/hub/match-overview/model/match-data.interface';
+import { MatchTypes } from './match-types.enum';
 
 export interface Match {
     id: number;
@@ -12,6 +13,7 @@ export interface Match {
     teamAwayId: number;
     serverId: number;
     server: Server;
+    matchType: MatchTypes;
     matchStatisticsId?: number;
     matchStatistics: MatchStatistics;
     playerOfTheMatchId: number;

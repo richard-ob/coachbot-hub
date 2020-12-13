@@ -18,13 +18,17 @@ import { GraphModule } from '../shared/components/graphs/graph.module';
 import { TeamHeadToHeadResultsComponent } from './team-head-to-head-results/team-head-to-head-results.component';
 import { TeamNameDisplayModule } from '../shared/components/team-name-display/team-name-display.module';
 import { DynamicResultBoxesComponent } from './team-head-to-head-results/dynamic-result-boxes/dynamic-result-boxes.component';
+import { StatisticsLeaderboardModule } from '../shared/components/statistics-leaderboard/statistics-leaderboard.module';
+import { TeamHeadToHeadSpotlightComponent } from './team-head-to-head-spotlight/team-head-to-head-spotlight.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
     declarations: [
         TeamHeadToHeadComponent,
         TeamHeadToHeadSelectorComponent,
         TeamHeadToHeadResultsComponent,
-        DynamicResultBoxesComponent
+        DynamicResultBoxesComponent,
+        TeamHeadToHeadSpotlightComponent
     ],
     exports: [
         TeamHeadToHeadComponent
@@ -45,7 +49,9 @@ import { DynamicResultBoxesComponent } from './team-head-to-head-results/dynamic
         RecentMatchesModule,
         GraphModule,
         TeamNameDisplayModule,
-        TeamHeadToHeadRoutingModule
+        StatisticsLeaderboardModule,
+        TeamHeadToHeadRoutingModule,
+        BsDropdownModule
     ]
 })
 export class TeamHeadToHeadModule { }

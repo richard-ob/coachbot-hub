@@ -2,6 +2,8 @@
     &::before, &::after {
         display: none;
     }
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
 }
 
 .statistic-spotlight-card {

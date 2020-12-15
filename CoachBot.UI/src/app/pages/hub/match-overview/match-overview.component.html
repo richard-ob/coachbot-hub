@@ -104,17 +104,20 @@
                         </div>
                         <div id="match-footer-items" class="d-flex align-items-start">
                             <div id="match-footer-items-home" class="match-footer-events  px-2 text-right">
-                                <span *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:teamEnum.Home" style="white-space: nowrap;">
-                                {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}                                
-                                <ng-container [ngSwitch]="goalEvents.event">
-                                    <ng-container *ngSwitchCase="eventType.Goal">
-                                        ({{goalEvents.second | secondsToMinutes}}’)
-                                    </ng-container>
-                                    <ng-container *ngSwitchCase="eventType.OwnGoal">
-                                        ({{goalEvents.second | secondsToMinutes}}’ OG)
-                                    </ng-container>
+                                <ng-container *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:teamEnum.Home">
+                                    <span style="white-space: nowrap; display: inline-block;">
+                                    {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}} 
+                                        <ng-container [ngSwitch]="goalEvents.event">
+                                            <ng-container *ngSwitchCase="eventType.Goal">
+                                                ({{goalEvents.second | secondsToMinutes}}’)
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="eventType.OwnGoal">
+                                                ({{goalEvents.second | secondsToMinutes}}’ OG)
+                                            </ng-container>
+                                        </ng-container>
+                                    </span>
+                                    <span>&nbsp;</span>
                                 </ng-container>
-                            </span>
                             </div>
                             <div id="match-score-footer" class="d-flex flex-column text-center" style="flex: 0 0 150px">
                                 <div id="match-score-final-period" class="game-result__score-label text-white">
@@ -129,17 +132,20 @@
                                 </div>
                             </div>
                             <div id="match-footer-items-away" class="match-footer-events px-2 text-left">
-                                <span *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:teamEnum.Away" style="white-space: nowrap;">
-                                {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
-                                <ng-container [ngSwitch]="goalEvents.event">
-                                    <ng-container *ngSwitchCase="eventType.Goal">
-                                        ({{goalEvents.second | secondsToMinutes}}’)
-                                    </ng-container>
-                                    <ng-container *ngSwitchCase="eventType.OwnGoal">
-                                        ({{goalEvents.second | secondsToMinutes}}’ OG)
-                                    </ng-container>
+                                <ng-container *ngFor="let goalEvents of matchData.matchEvents | matchTeamGoals:teamEnum.Away" >
+                                    <span style="white-space: nowrap; display: inline-block;">
+                                    {{goalEvents.player1SteamId | steamIdToPlayerName:matchData.players}}
+                                        <ng-container [ngSwitch]="goalEvents.event">
+                                            <ng-container *ngSwitchCase="eventType.Goal">
+                                                ({{goalEvents.second | secondsToMinutes}}’)
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="eventType.OwnGoal">
+                                                ({{goalEvents.second | secondsToMinutes}}’ OG)
+                                            </ng-container>
+                                        </ng-container>
+                                    </span>
+                                    <span>&nbsp;</span>
                                 </ng-container>
-                            </span>
                             </div>
                         </div>
                     </section>

@@ -33,6 +33,7 @@ import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeCS from '@angular/common/locales/cs';
 import localePL from '@angular/common/locales/pl';
+import localeRU from '@angular/common/locales/ru';
 registerLocaleData(localeKo);
 registerLocaleData(localeEs);
 registerLocaleData(localePt);
@@ -40,6 +41,7 @@ registerLocaleData(localeDe);
 registerLocaleData(localeFr);
 registerLocaleData(localeCS);
 registerLocaleData(localePL);
+registerLocaleData(localeRU);
 
 @NgModule({
   declarations: [

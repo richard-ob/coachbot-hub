@@ -1,5 +1,5 @@
 {
-  "locale": "рус",
+  "locale": "ru",
   "translations": {
     "home.availableFreeOnSteam": "Доступно бесплатно в Steam",
     "home.100PercentFree": "100% бесплатно",
@@ -500,7 +500,7 @@
     "globals.organisationEditor": "Редактор Организаций",
     "globals.login": "Вход",
     "container.installViaSteam": "Установка Через Steam",
-    "container.joinOurDiscord": "Присоединяйтесь к Нашему Discord Серверу",
+    "container.joinOurDiscord": "Сервер Discord",
     "menu.home": " Домой ",
     "menu.news": "Новости",
     "menu.download": "Скачать",

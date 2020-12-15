@@ -31,6 +31,7 @@ import { MediaComponent } from '@pages/media/media.component';
 import { TroubleshootingComponent } from '@pages/troubleshooting/troubleshooting.component';
 import { BotManualComponent } from '@pages/bot-manual/bot-manual.component';
 import { AuthGuard } from '@core/guards/auth.guard';
+import { TournamentMatchListComponent } from '@pages/hub/tournaments/tournament-match-list/tournament-match-list.component';
 
 const routes: Routes = [
   {
@@ -145,6 +146,11 @@ const routes: Routes = [
     path: 'tournament-editor/:id',
     component: TournamentSeriesEditorComponent,
     data: { title: $localize`:@@globals.tournament:Tournament` }
+  },
+  {
+    path: 'tournament-matches/:id',
+    component: TournamentMatchListComponent,
+    data: { title: $localize`:@@globals.tournamentMatchList:Tournament Match List` }
   },
   {
     path: 'tournaments',

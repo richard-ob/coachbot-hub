@@ -65,6 +65,7 @@ import { ServerRecoveryComponent } from './server-manager/server-recovery/server
 import { ServerCreatorComponent } from './server-manager/server-creator/server-creator.component';
 import { TeamHeadToHeadModule } from './team-head-to-head/team-head-to-head.module';
 import { GraphModule } from './shared/components/graphs/graph.module';
+import { TournamentMatchListComponent } from './tournaments/tournament-match-list/tournament-match-list.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { GraphModule } from './shared/components/graphs/graph.module';
     SteamIDValidatorComponent,
     TournamentCreatorComponent,
     TournamentSeriesEditorComponent,
+    TournamentMatchListComponent,
     OrganisationsComponent,
     OrganisationEditorComponent,
     MatchEditorComponent,

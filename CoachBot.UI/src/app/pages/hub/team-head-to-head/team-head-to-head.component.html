@@ -1,5 +1,5 @@
 <div *ngIf="!isLoading" class="container head-to-head-container" style="background-color: #1e2024;">
-    <div class="btn-group btn-change-match-type" dropdown>
+    <div class="btn-group btn-change-match-type d-none d-md-block" dropdown>
         <button id="button-basic" dropdownToggle type="button" class="btn btn-xs btn-primary dropdown-toggle"
             aria-controls="dropdown-basic">
             <ng-container [ngSwitch]="matchType">
@@ -18,7 +18,7 @@
             </li>
         </ul>
     </div>
-    <a class="btn btn-primary btn-xs btn-change-teams" [routerLink]="['/team-head-to-head']">
+    <a class="btn btn-primary btn-xs btn-change-teams d-none d-md-block" [routerLink]="['/team-head-to-head']">
         <i class="fas fa-sync mr-1"></i>
         <ng-container i18n="@@teamHeadToHead.repick">Re-pick</ng-container>
     </a>

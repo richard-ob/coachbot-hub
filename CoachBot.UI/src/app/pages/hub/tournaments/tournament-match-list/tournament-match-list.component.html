@@ -1,7 +1,7 @@
 <div class="py-4">
     <app-spinner *ngIf="isLoading" [verticalMargins]="false"></app-spinner>
 </div>
-<ng-container *ngIf="!isLoading">
+<ng-container *ngIf="!isLoading && !accessDenied">
     <div class="container pb-3">
         <ng-container *ngFor="let stage of tournament.tournamentStages; let i = index;">
             <div class="card">
@@ -54,3 +54,8 @@
         </ng-container>        
     </div>
 </ng-container>
+<div *ngIf="accessDenied" class="container">
+    <div class="alert alert-danger">
+        You must be a tournament organiser to view and edit the match list
+    </div>
+</div>

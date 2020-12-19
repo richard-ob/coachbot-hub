@@ -459,7 +459,7 @@ namespace CoachBot.Services
                     bool authenticated = await messenger.AuthenticateAsync(server.RconPassword);
                     if (authenticated)
                     {
-                        await messenger.ExecuteCommandAsync("exec 8v8.cfg");
+                        await messenger.ExecuteCommandAsync($"exec {server.Region.MatchFormat}v{server.Region.MatchFormat}.cfg");
                         await messenger.ExecuteCommandAsync("exec league.cfg");
                         await messenger.ExecuteCommandAsync("sv_singlekeeper 0");
                         await messenger.ExecuteCommandAsync("mp_matchinfo \"Tournament Match\"");

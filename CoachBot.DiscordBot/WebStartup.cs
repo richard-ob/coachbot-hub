@@ -33,9 +33,22 @@ namespace CoachBot
             Configuration = configuration;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
+                LogLevel = LogSeverity.Debug,
+                GatewayIntents = GatewayIntents.DirectMessageReactions |
+                    GatewayIntents.DirectMessages |
+                    GatewayIntents.DirectMessageTyping |
+                    GatewayIntents.GuildEmojis |
+                    GatewayIntents.GuildIntegrations |
+                    GatewayIntents.GuildMembers |
+                    GatewayIntents.GuildMessageReactions |
+                    GatewayIntents.GuildMessages |
+                    GatewayIntents.GuildMessageTyping |
+                    GatewayIntents.GuildPresences |
+                    GatewayIntents.Guilds
+            });
+            _restClient = new DiscordRestClient(new DiscordRestConfig() {
                 LogLevel = LogSeverity.Debug
             });
-            _restClient = new DiscordRestClient(new DiscordRestConfig() { LogLevel = LogSeverity.Debug });
         }
 
         public void ConfigureServices(IServiceCollection services)

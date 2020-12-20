@@ -270,7 +270,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .FantasyTeamRanks
-                 .FromSql($@"SELECT FantasyTeams.Id AS FantasyTeamId,
+                 .FromSqlInterpolated($@"SELECT FantasyTeams.Id AS FantasyTeamId,
                                     FantasyTeams.Name AS FantasyTeamName,
                                     Players.Id AS PlayerId,
                                     Players.Name AS PlayerName,
@@ -294,7 +294,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                     .FantasyTeamRanks
-                    .FromSql($@"SELECT FantasyTeams.Id AS FantasyTeamId,
+                    .FromSqlInterpolated($@"SELECT FantasyTeams.Id AS FantasyTeamId,
                                     FantasyTeams.Name AS FantasyTeamName,
                                     Players.Id AS PlayerId,
                                     Players.Name AS PlayerName,
@@ -318,7 +318,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                     .FantasyPlayerRanks
-                    .FromSql($@"SELECT  Players.Id AS PlayerId,
+                    .FromSqlInterpolated($@"SELECT  Players.Id AS PlayerId,
                                         Players.Name AS PlayerName,
                                         FantasyPlayers.Rating,
                                         ISNULL(SUM(FantasyPlayerPhases.Points), 0) AS Points,
@@ -350,7 +350,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                     .FantasyPlayerRanks
-                    .FromSql($@"SELECT  Players.Id AS PlayerId,
+                    .FromSqlInterpolated($@"SELECT  Players.Id AS PlayerId,
                                         Players.Name AS PlayerName,
                                         FantasyPlayers.Rating,
                                         SUM(FantasyPlayerPhases.Points) AS Points,

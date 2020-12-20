@@ -10,10 +10,10 @@ using Discord;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
 using System;
@@ -22,6 +22,8 @@ using CoachBot.Shared.Helpers;
 using CoachBot.Extensions;
 using Serilog;
 using Discord.Rest;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace CoachBot
 {
@@ -67,22 +69,21 @@ namespace CoachBot
                     builder =>
                     {
                         builder
-                        .AllowAnyOrigin()
+                        .SetIsOriginAllowed(_ => true)
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials();
                     });
             });
 
-            services.AddMvc()
-                .AddJsonOptions(options =>
-                {
+            services.AddControllers()
+                .AddNewtonsoftJson(options => {
                     options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
                     //options.SerializerSettings.DateFormatString = "yyyy'-'dd'-'MM'T'HH':'mm':'ssZ";
                     options.SerializerSettings.Converters.Add(new UlongToStringConverter());
                     options.SerializerSettings.Converters.Add(new UlongNullableToStringConverter());
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                });
+                }); ;
 
             services.AddSingleton(_client)
                 .AddSingleton(_restClient)
@@ -122,6 +123,7 @@ namespace CoachBot
                 {
                     options.ExpireTimeSpan = new TimeSpan(7, 0, 0, 0);
                     options.LoginPath = "/unauthorized";
+                    options.Cookie.SameSite = SameSiteMode.None;
                 })
                 .AddSteam()
                 .AddDiscord(x =>
@@ -129,6 +131,12 @@ namespace CoachBot
                     x.AppId = config.DiscordConfig.OAuth2Id;
                     x.AppSecret = config.DiscordConfig.OAuth2Secret;
                 });
+
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.Name = "testios";
+            });
 
             var provider = services.BuildServiceProvider();
 
@@ -139,17 +147,26 @@ namespace CoachBot
 
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+
         }
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRouting();
+
             app.UseCors("AllowAll");
+
             app.UseAuthentication();
-            app.UseMvc();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
 
             loggerFactory.AddProvider(_loggerProvider);
         }

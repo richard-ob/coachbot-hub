@@ -10,15 +10,16 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
 using CoachBot.Shared.Helpers;
 using CoachBot.Shared.Services;
 using Discord.Rest;
+using Microsoft.AspNetCore.Hosting;
 
 namespace CoachBot
 {
@@ -33,7 +34,7 @@ namespace CoachBot
             Configuration = configuration;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                LogLevel = LogSeverity.Debug,
+                LogLevel = LogSeverity.Debug/*,
                 GatewayIntents = GatewayIntents.DirectMessageReactions |
                     GatewayIntents.DirectMessages |
                     GatewayIntents.DirectMessageTyping |
@@ -44,7 +45,7 @@ namespace CoachBot
                     GatewayIntents.GuildMessages |
                     GatewayIntents.GuildMessageTyping |
                     GatewayIntents.GuildPresences |
-                    GatewayIntents.Guilds
+                    GatewayIntents.Guilds*/
             });
             _restClient = new DiscordRestClient(new DiscordRestConfig() {
                 LogLevel = LogSeverity.Debug
@@ -58,7 +59,7 @@ namespace CoachBot
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider(logger));
 
-            services.AddMvc().AddJsonOptions(options =>
+            services.AddMvc().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             });
@@ -98,15 +99,16 @@ namespace CoachBot
             bot.Startup();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRouting();
+
             app.UseAuthentication();
-            app.UseMvc();
         }
     }
 }

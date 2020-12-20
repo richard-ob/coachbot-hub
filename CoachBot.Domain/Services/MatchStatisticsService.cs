@@ -1106,7 +1106,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .PlayerPerformanceSnapshots
-                 .FromSql($@"SELECT PlayerMatchStatistics.PlayerId,
+                 .FromSqlInterpolated($@"SELECT PlayerMatchStatistics.PlayerId,
                                     NULL AS Day,
                                     NULL AS Week,
                                     DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
@@ -1132,7 +1132,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamPerformanceSnapshots
-                 .FromSql($@"SELECT {teamId} AS TeamId,
+                 .FromSqlInterpolated($@"SELECT {teamId} AS TeamId,
                             NULL AS Day,
                             NULL AS Week,
                             DATEPART(month, TeamMatchStatistics.CreatedDate) AS Month,
@@ -1159,7 +1159,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .PlayerPerformanceSnapshots
-                 .FromSql($@"SELECT PlayerMatchStatistics.PlayerId,
+                 .FromSqlInterpolated($@"SELECT PlayerMatchStatistics.PlayerId,
                                     NULL AS Day,
                                     DATEPART(week, PlayerMatchStatistics.CreatedDate) AS Week,
                                     DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
@@ -1186,7 +1186,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamPerformanceSnapshots
-                 .FromSql($@"SELECT {teamId} AS TeamId,
+                 .FromSqlInterpolated($@"SELECT {teamId} AS TeamId,
                             NULL AS Day,
                             DATEPART(week, TeamMatchStatistics.CreatedDate) AS Week,
                             DATEPART(month, TeamMatchStatistics.CreatedDate) AS Month,
@@ -1213,7 +1213,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .PlayerPerformanceSnapshots
-                 .FromSql($@"SELECT {playerId} AS PlayerId,
+                 .FromSqlInterpolated($@"SELECT {playerId} AS PlayerId,
                             DATEPART(day, DateRange.DateValue) AS Day,
                             DATEPART(week, DateRange.DateValue) AS Week,
                             DATEPART(month, DateRange.DateValue) AS Month,
@@ -1242,7 +1242,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamPerformanceSnapshots
-                 .FromSql($@"SELECT {teamId} AS TeamId,
+                 .FromSqlInterpolated($@"SELECT {teamId} AS TeamId,
                                     DATEPART(day, DateRange.DateValue) AS Day,
                                     DATEPART(week, DateRange.DateValue) AS Week,
                                     DATEPART(month, DateRange.DateValue) AS Month,
@@ -1271,7 +1271,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .PlayerPerformanceSnapshots
-                 .FromSql($@"SELECT TOP 30
+                 .FromSqlInterpolated($@"SELECT TOP 30
                                     PlayerMatchStatistics.PlayerId,
                                     DATEPART(day, PlayerMatchStatistics.CreatedDate) AS Day,
                                     DATEPART(week, PlayerMatchStatistics.CreatedDate) AS Week,
@@ -1300,7 +1300,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamPerformanceSnapshots
-                 .FromSql($@"SELECT TOP 30
+                 .FromSqlInterpolated($@"SELECT TOP 30
                                     {teamId} AS TeamId,
                                     DATEPART(day, TeamMatchStatistics.CreatedDate) AS Day,
                                     DATEPART(week, TeamMatchStatistics.CreatedDate) AS Week,

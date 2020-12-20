@@ -37,10 +37,13 @@ internal class TimedHostedService : IHostedService, IDisposable
             // INFO: Restart servers 20 minutes before game
             var kickOffTimeRestartBuffer = DateTime.UtcNow.AddMinutes(20).ToString("g");
             var restartMatches = coachBotContext.Matches
-                .Where(m => m.KickOff != null && ((DateTime)m.KickOff).ToString("g") == kickOffTimeRestartBuffer && m.ServerId != null && m.TournamentId != null)
+                .AsQueryable()
+                .Where(m => m.KickOff > DateTime.UtcNow)
                 .Include(m => m.TeamHome)
                 .Include(m => m.TeamAway)
-                .Include(m => m.Map);
+                .Include(m => m.Map)
+                .ToList()
+                .Where(m => m.KickOff != null && ((DateTime)m.KickOff).ToString("g") == kickOffTimeRestartBuffer && m.ServerId != null && m.TournamentId != null);
 
             foreach (var match in restartMatches)
             {
@@ -51,10 +54,13 @@ internal class TimedHostedService : IHostedService, IDisposable
             // INFO: Setup servers ~15 minutes for the game
             var kickOffTimeSetupBuffer = DateTime.UtcNow.AddMinutes(16).ToString("g");
             var kickOffMatches = coachBotContext.Matches
-                .Where(m => m.KickOff != null && ((DateTime)m.KickOff).ToString("g") == kickOffTimeSetupBuffer && m.ServerId != null && m.TournamentId != null)
+                .AsQueryable()
+                .Where(m => m.KickOff > DateTime.UtcNow)
                 .Include(m => m.TeamHome)
                 .Include(m => m.TeamAway)
-                .Include(m => m.Map);
+                .Include(m => m.Map)
+                .ToList()
+                .Where(m => m.KickOff != null && ((DateTime)m.KickOff).ToString("g") == kickOffTimeSetupBuffer && m.ServerId != null && m.TournamentId != null);
 
             foreach (var match in kickOffMatches)
             {

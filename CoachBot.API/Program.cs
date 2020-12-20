@@ -24,7 +24,7 @@ namespace CoachBot
                   options.Listen(IPAddress.Any, httpPort);
                   options.Listen(IPAddress.Any, httpsPort, listenOptions =>
                   {
-                      listenOptions.UseHttps(config.WebServerConfig.SecurityCertFile, config.WebServerConfig.SecurityCertPassword);
+                     // listenOptions.UseHttps(config.WebServerConfig.SecurityCertFile, config.WebServerConfig.SecurityCertPassword);
                   });
               })
               .UseStartup<WebStartup>()               

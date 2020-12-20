@@ -118,6 +118,13 @@ namespace CoachBot
 
             services.AddProxies();
 
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.Name = "X-XSRF-TOKEN";
+                options.Cookie.Expiration = TimeSpan.Zero;
+            });
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -125,18 +132,16 @@ namespace CoachBot
                     options.LoginPath = "/unauthorized";
                     options.Cookie.SameSite = SameSiteMode.None;
                 })
-                .AddSteam()
+                .AddSteam(options =>
+                {
+                    options.CorrelationCookie.SameSite = SameSiteMode.None;
+                    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+                })
                 .AddDiscord(x =>
                 {
                     x.AppId = config.DiscordConfig.OAuth2Id;
                     x.AppSecret = config.DiscordConfig.OAuth2Secret;
                 });
-
-            services.AddAntiforgery(options =>
-            {
-                options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.Name = "testios";
-            });
 
             var provider = services.BuildServiceProvider();
 

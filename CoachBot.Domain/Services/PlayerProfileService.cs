@@ -40,6 +40,7 @@ namespace CoachBot.Domain.Services
         private PlayerTeam GetTeam(int playerId, TeamType teamType)
         {
             return _coachBotContext.PlayerTeams
+                .AsQueryable()
                 .Where(pt => pt.PlayerId == playerId)
                 .Where(pt => pt.Team.TeamType == teamType)
                 .Where(pt => pt.LeaveDate == null)

@@ -4,7 +4,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -29,14 +29,14 @@
     <PackageReference Include="Effortless.Net.Encryption" Version="3.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Discord.Net.WebSocket" Version="2.3.0-dev-20201217.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Discord.Net.WebSocket" Version="2.3.0-dev-20201220.5" />
     <PackageReference Include="Discord.Net.Commands" Version="2.3.0-dev-20201217.2" />
     <PackageReference Include="RconSharp" Version="1.0.0" />
     <PackageReference Include="RconSharp.Socket" Version="1.0.0" />
@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoachBot.Domain\CoachBot.Domain.csproj" />
-    <ProjectReference Include="..\CoachBot.LegacyImporter\CoachBot.LegacyImporter.csproj" />
     <ProjectReference Include="..\CoachBot.Shared\CoachBot.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>

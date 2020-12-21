@@ -79,7 +79,6 @@ namespace CoachBot
             services.AddControllers()
                 .AddNewtonsoftJson(options => {
                     options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
-                    //options.SerializerSettings.DateFormatString = "yyyy'-'dd'-'MM'T'HH':'mm':'ssZ";
                     options.SerializerSettings.Converters.Add(new UlongToStringConverter());
                     options.SerializerSettings.Converters.Add(new UlongNullableToStringConverter());
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -118,13 +117,6 @@ namespace CoachBot
 
             services.AddProxies();
 
-            services.AddAntiforgery(options =>
-            {
-                options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.Name = "X-XSRF-TOKEN";
-                options.Cookie.Expiration = TimeSpan.Zero;
-            });
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -132,11 +124,7 @@ namespace CoachBot
                     options.LoginPath = "/unauthorized";
                     options.Cookie.SameSite = SameSiteMode.None;
                 })
-                .AddSteam(options =>
-                {
-                    options.CorrelationCookie.SameSite = SameSiteMode.None;
-                    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
-                })
+                .AddSteam()
                 .AddDiscord(x =>
                 {
                     x.AppId = config.DiscordConfig.OAuth2Id;

@@ -1,7 +1,6 @@
 ﻿using CoachBot.Bot;
 using CoachBot.Database;
 using CoachBot.Domain.Services;
-using CoachBot.LegacyImporter;
 using CoachBot.Model;
 using CoachBot.Services;
 using CoachBot.Shared.Services.Logging;
@@ -20,6 +19,7 @@ using CoachBot.Shared.Helpers;
 using CoachBot.Shared.Services;
 using Discord.Rest;
 using Microsoft.AspNetCore.Hosting;
+using System;
 
 namespace CoachBot
 {
@@ -31,22 +31,8 @@ namespace CoachBot
 
         public WebStartup(IConfiguration configuration)
         {
-            Configuration = configuration;
-            _client = new DiscordSocketClient(new DiscordSocketConfig
-            {
-                LogLevel = LogSeverity.Debug/*,
-                GatewayIntents = GatewayIntents.DirectMessageReactions |
-                    GatewayIntents.DirectMessages |
-                    GatewayIntents.DirectMessageTyping |
-                    GatewayIntents.GuildEmojis |
-                    GatewayIntents.GuildIntegrations |
-                    GatewayIntents.GuildMembers |
-                    GatewayIntents.GuildMessageReactions |
-                    GatewayIntents.GuildMessages |
-                    GatewayIntents.GuildMessageTyping |
-                    GatewayIntents.GuildPresences |
-                    GatewayIntents.Guilds*/
-            });
+            Configuration = configuration;                
+            _client = new DiscordSocketClient(GetDiscordSocketConfig());
             _restClient = new DiscordRestClient(new DiscordRestConfig() {
                 LogLevel = LogSeverity.Debug
             });
@@ -83,10 +69,10 @@ namespace CoachBot
                 .AddTransient<MatchupService>()
                 .AddTransient<DiscordNotificationService>()
                 .AddTransient<SteamService>()
+                .AddTransient<AssetImageService>()
                 .AddSingleton<BotService>()
                 .AddSingleton<CacheService>()
                 .AddSingleton<BotInstance>()
-                .AddSingleton<AssetImageService>()
                 .AddDbContext<CoachBotContext>(ServiceLifetime.Transient);
 
             services.AddHostedService<TimedHostedService>();
@@ -109,6 +95,31 @@ namespace CoachBot
             app.UseRouting();
 
             app.UseAuthentication();
+        }
+
+        private DiscordSocketConfig GetDiscordSocketConfig()
+        {
+            var discordSocketConfig = new DiscordSocketConfig
+            {
+                LogLevel = LogSeverity.Debug
+            };
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != Environments.Development)
+            {
+                discordSocketConfig.GatewayIntents = GatewayIntents.DirectMessageReactions |
+                    GatewayIntents.DirectMessages |
+                    GatewayIntents.DirectMessageTyping |
+                    GatewayIntents.GuildEmojis |
+                    GatewayIntents.GuildIntegrations |
+                    GatewayIntents.GuildMembers |
+                    GatewayIntents.GuildMessageReactions |
+                    GatewayIntents.GuildMessages |
+                    GatewayIntents.GuildMessageTyping |
+                    GatewayIntents.GuildPresences |
+                    GatewayIntents.Guilds;
+            }
+
+            return discordSocketConfig;
         }
     }
 }

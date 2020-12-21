@@ -100,6 +100,7 @@ namespace CoachBot.Domain.Services
         public List<PlayerTeam> GetForTeam(int teamId, bool includeInactive = false)
         {
             return _dbContext.PlayerTeams
+                .AsQueryable()
                 .Where(pt => pt.TeamId == teamId)
                 .Where(pt => pt.LeaveDate == null || includeInactive)
                 .Include(pt => pt.Player)

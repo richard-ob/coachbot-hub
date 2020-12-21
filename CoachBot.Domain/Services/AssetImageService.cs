@@ -36,7 +36,7 @@ namespace CoachBot.Domain.Services
 
         public List<AssetImage> GetAssetImages(List<int> ids)
         {
-            return _coachBotContext.AssetImages.Where(a => ids.Any(i => i == a.Id)).ToList();
+            return _coachBotContext.AssetImages.AsQueryable().Where(a => ids.Any(i => i == a.Id)).ToList();
         }
 
         public int CreateAssetImage(string base64encodedImage, string fileName, ulong steamUserId)

@@ -104,6 +104,7 @@ namespace CoachBot.Domain.Services
         public List<MatchOutcomeType> GetFormForChannel(ulong channelId, int limit = 5)
         {
             var recentMatches = _coachBotContext.Matchups
+                .AsQueryable()
                 .Where(m => m.LineupHome.Channel.DiscordChannelId == channelId || m.LineupAway.Channel.DiscordChannelId == channelId)                
                 .Where(m => m.IsMixMatch == false)
                 .OrderByDescending(m => m.ReadiedDate)
@@ -466,6 +467,7 @@ namespace CoachBot.Domain.Services
         public async void RemovePlayersFromOtherMatchups(Matchup readiedMatchup, bool respectDuplicityProtection = true)
         {
             var otherPlayerSignings = _coachBotContext.PlayerLineupPositions
+                .AsQueryable()
                 .Where(ptp => (ptp.Lineup.HomeMatchup != null && ptp.Lineup.HomeMatchup.ReadiedDate == null) || (ptp.Lineup.AwayMatchup != null && ptp.Lineup.AwayMatchup.ReadiedDate == null))
                 .Where(ptp => readiedMatchup.SignedPlayers.Any(sp => sp.Id == ptp.PlayerId))
                 .Include(ptp => ptp.Player)
@@ -504,6 +506,7 @@ namespace CoachBot.Domain.Services
         private IQueryable<Matchup> GetMatchupQueryable()
         {
             return _coachBotContext.Matchups
+                .AsSplitQuery()
                 .Include(m => m.LineupHome)
                     .ThenInclude(th => th.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Player)

@@ -18,7 +18,7 @@ namespace CoachBot.Domain.Services
 
         public List<RegionDto> GetRegions()
         {
-            return _coachBotContext.Regions.Select(r =>
+            return _coachBotContext.Regions.AsQueryable().Select(r =>
                new RegionDto()
                {
                    RegionId = r.RegionId,

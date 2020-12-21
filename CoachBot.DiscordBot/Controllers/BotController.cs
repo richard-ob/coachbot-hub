@@ -48,7 +48,7 @@ namespace CoachBot.Controllers
                 return Unauthorized();
             }
 
-            _botService.Reconnect();
+            await _botService.Reconnect();
 
             return NoContent();
         }

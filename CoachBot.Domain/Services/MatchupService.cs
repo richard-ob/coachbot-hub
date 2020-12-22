@@ -323,10 +323,11 @@ namespace CoachBot.Domain.Services
             matchId = -1;
 
             if (matchup.LineupAway == null || matchup.LineupHome == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There is no opposition set");
-            if (matchup.SignedPlayersAndSubs.Count < channel.ChannelPositions.Count) return new ServiceResponse(ServiceResponseStatus.Failure, $"All positions must be filled"); ;
+            if (matchup.SignedPlayersAndSubs.Count < channel.ChannelPositions.Count) return new ServiceResponse(ServiceResponseStatus.Failure, $"All positions must be filled");
             if (server == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"A valid server must be provided");
             if (server.RegionId != channel.Team.RegionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server is not in this channels region");
             if (matchup.SignedPlayers.GroupBy(p => p.Id).Where(p => p.Count() > 1).Any()) return new ServiceResponse(ServiceResponseStatus.Failure, $"One or more players is signed for both teams");
+            if (_coachBotContext.Matches.Any(m => m.ServerId == serverId && m.KickOff > DateTime.UtcNow && m.KickOff.Value.AddMinutes(-90) < DateTime.UtcNow)) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server has a scheduled match within the next 90 minutes");
 
             var match = new Match()
             {

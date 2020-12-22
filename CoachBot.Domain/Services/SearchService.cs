@@ -65,9 +65,10 @@ namespace CoachBot.Domain.Services
                 .AsQueryable()
                 .Where(c => c.Team.RegionId == challenger.Team.RegionId)
                 .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
-                .Where(c => c.SearchIgnoreList == null || !c.SearchIgnoreList.Any(i => i == challenger.TeamId))
                 .Where(c => c.ChannelPositions.Count == challenger.ChannelPositions.Count)
                 .Where(c => !c.Inactive)
+                .ToList()
+                .Where(c => c.SearchIgnoreList == null || !c.SearchIgnoreList.Any(i => i == challenger.TeamId)) // INFO: This will not translate via EF Core due to the way SearchIgnoreList is stored in DB
                 .Select(c => c.DiscordChannelId)
                 .ToList();
 

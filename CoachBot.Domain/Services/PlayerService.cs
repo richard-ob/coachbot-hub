@@ -54,7 +54,10 @@ namespace CoachBot.Domain.Services
 
         public Player GetPlayer(string playerName, bool createIfNotExists = false)
         {
-            var player = _coachBotContext.Players.Include(p => p.Positions).ThenInclude(p => p.Position).FirstOrDefault(p => string.Equals(p.Name, playerName, System.StringComparison.CurrentCultureIgnoreCase));
+            var player = _coachBotContext.Players
+                .Include(p => p.Positions)
+                .ThenInclude(p => p.Position)
+                .FirstOrDefault(p => p.Name.ToUpper() == playerName.ToUpper());
 
             if (createIfNotExists && player == null && !playerName.StartsWith('@'))
             {

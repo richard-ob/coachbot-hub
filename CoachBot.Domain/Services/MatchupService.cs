@@ -327,7 +327,7 @@ namespace CoachBot.Domain.Services
             if (server == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"A valid server must be provided");
             if (server.RegionId != channel.Team.RegionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server is not in this channels region");
             if (matchup.SignedPlayers.GroupBy(p => p.Id).Where(p => p.Count() > 1).Any()) return new ServiceResponse(ServiceResponseStatus.Failure, $"One or more players is signed for both teams");
-            if (_coachBotContext.Matches.Any(m => m.ServerId == serverId && m.KickOff > DateTime.UtcNow && m.KickOff.Value.AddMinutes(-90) < DateTime.UtcNow)) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server has a scheduled match within the next 90 minutes");
+            if (_coachBotContext.Matches.Any(m => m.ServerId == serverId && m.KickOff != null && m.KickOff > DateTime.UtcNow && m.KickOff.Value.AddMinutes(-90) < DateTime.UtcNow)) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server has a scheduled match within the next 90 minutes");
 
             var match = new Match()
             {
@@ -338,8 +338,9 @@ namespace CoachBot.Domain.Services
                 MatchType = server.HasRconPassword ? MatchType.RankedFriendly : MatchType.UnrankedFriendly
             };
             _coachBotContext.Matches.Add(match);
+            var savedMatchId = _coachBotContext.Entry(match).Property(m => m.Id).CurrentValue;
             matchup.ReadiedDate = DateTime.UtcNow;
-            matchup.MatchId = match.Id;
+            matchup.MatchId = savedMatchId;
             _coachBotContext.SaveChanges();
 
             CreateMatchup((int)matchup.LineupHome.ChannelId);
@@ -347,7 +348,7 @@ namespace CoachBot.Domain.Services
 
             RemovePlayersFromOtherMatchups(matchup);
 
-            matchId = match.Id;
+            matchId = savedMatchId;
 
             return new ServiceResponse(ServiceResponseStatus.Success, $"Match successfully readied");
         }
@@ -467,10 +468,11 @@ namespace CoachBot.Domain.Services
 
         public async void RemovePlayersFromOtherMatchups(Matchup readiedMatchup, bool respectDuplicityProtection = true)
         {
+            var signedPlayerIds = readiedMatchup.SignedPlayers.Select(p => p.Id).ToList();
             var otherPlayerSignings = _coachBotContext.PlayerLineupPositions
                 .AsQueryable()
                 .Where(ptp => (ptp.Lineup.HomeMatchup != null && ptp.Lineup.HomeMatchup.ReadiedDate == null) || (ptp.Lineup.AwayMatchup != null && ptp.Lineup.AwayMatchup.ReadiedDate == null))
-                .Where(ptp => readiedMatchup.SignedPlayers.Any(sp => sp.Id == ptp.PlayerId))
+                .Where(ptp => signedPlayerIds.Any(sp => sp == ptp.PlayerId))
                 .Include(ptp => ptp.Player)
                 .Include(ptp => ptp.Lineup)
                     .ThenInclude(l => l.Channel)

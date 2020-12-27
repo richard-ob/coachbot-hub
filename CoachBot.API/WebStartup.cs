@@ -82,7 +82,7 @@ namespace CoachBot
                     options.SerializerSettings.Converters.Add(new UlongToStringConverter());
                     options.SerializerSettings.Converters.Add(new UlongNullableToStringConverter());
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                }); ;
+                });
 
             services.AddSingleton(_client)
                 .AddSingleton(_restClient)

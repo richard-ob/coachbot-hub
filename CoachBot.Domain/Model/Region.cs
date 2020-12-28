@@ -31,6 +31,8 @@ namespace CoachBot.Model
                         return Domain.Model.MatchFormat.SixVsSix;
                     case "NA":
                         return Domain.Model.MatchFormat.SixVsSix;
+                    case "ASIA":
+                        return Domain.Model.MatchFormat.SixVsSix;
                     default:
                         return Domain.Model.MatchFormat.EightVsEight;
                 }

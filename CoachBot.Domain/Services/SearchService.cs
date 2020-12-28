@@ -67,12 +67,13 @@ namespace CoachBot.Domain.Services
                 .Where(c => !c.DisableSearchNotifications && c.Id != challenger.Id)
                 .Where(c => c.ChannelPositions.Count == challenger.ChannelPositions.Count)
                 .Where(c => !c.Inactive)
+                .Where(c => _coachBotContext.PlayerLineupPositions.Any(plp => plp.Lineup.ChannelId == c.Id && plp.CreatedDate > DateTime.UtcNow.AddDays(-1))) // Only where a signing has happened in the past day
                 .ToList()
                 .Where(c => c.SearchIgnoreList == null || !c.SearchIgnoreList.Any(i => i == challenger.TeamId)) // INFO: This will not translate via EF Core due to the way SearchIgnoreList is stored in DB
                 .Select(c => c.DiscordChannelId)
                 .ToList();
 
-            var discordSearchMessages = await _discordNotificationService.SendChannelMessage(regionChannels, embed);
+            var discordSearchMessages = await _discordNotificationService.SendChannelMessage(regionChannels, embed, 0);
             search.DiscordSearchMessages = discordSearchMessages;
             _coachBotContext.Searches.Update(search);
             _coachBotContext.SaveChanges();

@@ -62,6 +62,8 @@ namespace CoachBot
                     return; // INFO: This can be removed when precondition is re-enabled
                 }
 
+                _logger.Debug("Invoked {Command} in {Context}. Result pending.", message, context.Channel);
+
                 var result = await _commands.ExecuteAsync(context, argPos, _provider);
 
                 var logMsg = $"[{message.Channel.Name} ({context.Guild.Name})] {message.Timestamp.ToString()}: @{message.Author.Username} {message.Content}";

@@ -26,7 +26,17 @@ namespace CoachBot.Domain.Services
         {
             if (_discordSocketClient.GetChannel(discordChannelId) is ITextChannel channel)
             {
-                var result = await channel.SendMessageAsync("", embed: embed);
+                IUserMessage result = null;
+
+                try
+                {
+                    result = await channel.SendMessageAsync("", embed: embed);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Couldn't send message to {channel.Name} ({channel.Guild.Name}) - {e.Message} {e.InnerException}");
+                    return 0;
+                }
 
                 return result.Id;
             }
@@ -51,7 +61,7 @@ namespace CoachBot.Domain.Services
             return 0;
         }
 
-        public async Task<Dictionary<ulong, ulong>> SendChannelMessage(List<ulong> discordChannelIds, Embed embed)
+        public async Task<Dictionary<ulong, ulong>> SendChannelMessage(List<ulong> discordChannelIds, Embed embed, int batchDelaySeconds = 15)
         {
             var messageIds = new Dictionary<ulong, ulong>();
 
@@ -72,7 +82,7 @@ namespace CoachBot.Domain.Services
                 if (batchLimit == batchCount)
                 {
                     batchCount = 0;
-                    await Task.Delay(TimeSpan.FromSeconds(15));
+                    await Task.Delay(TimeSpan.FromSeconds(batchDelaySeconds));
                 }
             }
 

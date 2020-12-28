@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Database;
 using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
 using CoachBot.Model;
 using CoachBot.Shared.Extensions;
 using CoachBot.Shared.Helpers;
@@ -210,9 +211,14 @@ namespace CoachBot.Database
             modelBuilder.Entity<Channel>().Property(p => p.SearchIgnoreList).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<int>>(v));
             modelBuilder.Entity<Team>().Property(p => p.Form).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<MatchOutcomeType>>(v));
 
+            // User Defined Functions
+            modelBuilder.HasDbFunction(typeof(CoachBotContext).GetMethod(nameof(IsPlayerSigned), new[] { typeof(ulong) })).HasName("IsPlayerSigned");
+
             // Seed data - disabled after initial run, as the country culture approach is not supported by *nix
             //modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
         }
+
+        public bool IsPlayerSigned(ulong discordUserId) => throw new NotSupportedException();
     }
 
     internal interface ISystemEntity

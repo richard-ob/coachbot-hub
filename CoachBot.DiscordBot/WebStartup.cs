@@ -104,20 +104,17 @@ namespace CoachBot
                 LogLevel = LogSeverity.Debug
             };
 
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != Environments.Development)
-            {
-                discordSocketConfig.GatewayIntents = GatewayIntents.DirectMessageReactions |
-                    GatewayIntents.DirectMessages |
-                    GatewayIntents.DirectMessageTyping |
-                    GatewayIntents.GuildEmojis |
-                    GatewayIntents.GuildIntegrations |
-                    GatewayIntents.GuildMembers |
-                    GatewayIntents.GuildMessageReactions |
-                    GatewayIntents.GuildMessages |
-                    GatewayIntents.GuildMessageTyping |
-                    GatewayIntents.GuildPresences |
-                    GatewayIntents.Guilds;
-            }
+            discordSocketConfig.GatewayIntents = GatewayIntents.DirectMessageReactions |
+                GatewayIntents.DirectMessages |
+                GatewayIntents.DirectMessageTyping |
+                GatewayIntents.GuildEmojis |
+                GatewayIntents.GuildIntegrations |
+                GatewayIntents.GuildMembers |
+                GatewayIntents.GuildMessageReactions |
+                GatewayIntents.GuildMessages |
+                GatewayIntents.GuildMessageTyping |
+                GatewayIntents.GuildPresences |
+                GatewayIntents.Guilds;
 
             return discordSocketConfig;
         }

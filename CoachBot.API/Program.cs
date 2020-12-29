@@ -32,7 +32,7 @@ namespace CoachBot
                       {
                         options.ConfigureHttpsDefaults(listenOptions =>
                         {
-                            listenOptions.ServerCertificate = new X509Certificate2(Path.Combine(config.WebServerConfig.SecurityCertFile, config.WebServerConfig.SecurityCertPassword));
+                            listenOptions.ServerCertificate = new X509Certificate2(Path.Combine(config.WebServerConfig.SecurityCertFile), config.WebServerConfig.SecurityCertPassword);
                         });
                       }
                       

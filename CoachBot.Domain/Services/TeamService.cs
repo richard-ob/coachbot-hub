@@ -98,7 +98,7 @@ namespace CoachBot.Domain.Services
                 throw new Exception("A team code must be unique for a region");
             }
 
-            if (existingTeam.BadgeImageId != team.BadgeImageId && team.BadgeImageId.HasValue || existingTeam.RegionId != team.RegionId || existingTeam.TeamCode != team.TeamCode)
+            if ((existingTeam.BadgeImageId != team.BadgeImageId || existingTeam.RegionId != team.RegionId || existingTeam.TeamCode != team.TeamCode) && team.BadgeImageId.HasValue)
             {
                 var emoteName = $"{team.TeamCode}_{team.RegionId}";
                 var badgeImage = _dbContext.AssetImages.Single(i => i.Id == team.BadgeImageId);

@@ -27,12 +27,14 @@ import { TabNavMobileComponent } from '@core/components/tab-nav-mobile/tab-nav-m
 import { CoreModule } from '@core/core.module';
 import { TournamentStandingsRoundRobinKnockoutComponent } from './tournament-overview-standings/tournament-standings-round-robin-knockout/tournament-standings-round-robin-knockout.component';
 import { FormIndicatorModule } from '@pages/hub/shared/components/form-indictator/form-indicator.module';
+import { TournamentOverviewResultsComponent } from './tournament-overview-results/tournament-overview-results.component';
 
 @NgModule({
     declarations: [
         TournamentOverviewComponent,
         TournamentOverviewStandingsComponent,
         TournamentOverviewFixturesComponent,
+        TournamentOverviewResultsComponent,
         TournamentOverviewPlayersComponent,
         TournamentOverviewTeamsComponent,
         TournamentOverviewStaffComponent,

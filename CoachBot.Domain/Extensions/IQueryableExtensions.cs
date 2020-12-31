@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using CoachBot.Domain.Attributes;
+using System;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace CoachBot.Domain.Extensions
@@ -22,7 +24,16 @@ namespace CoachBot.Domain.Extensions
             }
             else
             {
-                result.Items = query.OrderBy(sorting).Skip(skip).Take(pageSize).ToList();
+                // INFO: After .EF Core 3.x+ prevented auto fall back to server-side evaluation, this slight dire workaround was needed
+                var sortProp = sorting.Split(' ').FirstOrDefault();
+                if (sortProp != null && !sortProp.Contains('.') && Attribute.IsDefined(typeof(T).GetProperty(sortProp), typeof(ServerSideSort)))
+                {
+                    result.Items = query.AsQueryable().ToList().AsQueryable().OrderBy(sorting).Skip(skip).Take(pageSize).ToList();
+                }
+                else
+                {
+                    result.Items = query.OrderBy(sorting).Skip(skip).Take(pageSize).ToList();
+                }
             }
 
             return result;

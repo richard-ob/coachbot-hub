@@ -88,6 +88,7 @@ namespace CoachBot.Domain.Model
 
         // Auto computed stats
 
+        [ServerSideSort]
         public double PassCompletionPercentage => Passes > 0 ? Convert.ToDouble(PassesCompleted) / Convert.ToDouble(Passes) : 0;
     }
 }

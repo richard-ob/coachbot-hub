@@ -244,6 +244,27 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
+        public void CreateTournamentMatch(int tournamentId, int tournamentPhaseId, int tournamentGroupId)
+        {
+            var tournamentGroupMatch = new TournamentGroupMatch()
+            {
+                TournamentPhaseId = tournamentPhaseId,
+                TournamentGroupId = tournamentGroupId,
+                Match = new Match()
+                {
+                    TournamentId = tournamentId
+                }
+            };
+
+            _coachBotContext.TournamentGroupMatches.Add(tournamentGroupMatch);
+            _coachBotContext.SaveChanges();
+        }
+
+        public void DeleteTournamentMatch(int tournamentMatchId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Team> GetTournamentTeams(int tournamentId)
         {
             return _coachBotContext.TournamentGroupTeams

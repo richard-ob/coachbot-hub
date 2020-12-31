@@ -40,14 +40,14 @@
                                         <button
                                             class="btn btn-outline-secondary btn-xs mr-2 mb-2 d-block d-lg-inline-block"
                                             (click)="editServerName(server)" [disabled]="isRemoving">
-                                            <i class="fa fa-pencil"></i> <ng-container i18n="@@serverEditor.editName">Edit Name</ng-container></button>
+                                            <i class="fa fa-pencil"></i>&nbsp;<ng-container i18n="@@serverEditor.editName">Edit Name</ng-container></button>
                                         <button
                                             class="btn btn-outline-secondary btn-xs mr-2 mb-2 d-block d-lg-inline-block"
                                             (click)="editServerPassword(server)" [disabled]="isRemoving">
-                                            <i class="fa fa-key"></i> <ng-container i18n="@@serverEditor.editRcon">Edit RCON</ng-container></button>
+                                            <i class="fa fa-key"></i>&nbsp;<ng-container i18n="@@serverEditor.editRcon">Edit RCON</ng-container></button>
                                         <button class="btn btn-outline-danger btn-xs mb-2 d-block d-lg-inline-block"
                                             (click)="removeServer(server.id)" [disabled]="isRemoving">
-                                            <i class="fa fa-times"></i> <ng-container i18n="@@globals.remove">Remove</ng-container></button>
+                                            <i class="fa fa-times"></i>&nbsp;<ng-container i18n="@@globals.remove">Remove</ng-container></button>
                                     </td>
                                 </tr>
                             </tbody>

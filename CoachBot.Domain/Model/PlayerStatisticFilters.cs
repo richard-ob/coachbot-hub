@@ -50,6 +50,8 @@ namespace CoachBot.Domain.Model
 
         public string PositionName { get; set; }
 
+        public int? MinimumAppearances { get; set; }
+
         public List<int> ExcludePlayers { get; set; } = new List<int>();
     }
 }

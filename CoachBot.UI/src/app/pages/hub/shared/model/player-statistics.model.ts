@@ -59,9 +59,12 @@ export interface PlayerStatistics {
     goalDifference: number;
     points: number;
     appearances: number;
-    substituteAppearances: number;
+    substituteAppearances: number;   
     wins: number;
+    winPercentage: number;
     draws: number;
+    drawPercentage: number;
     losses: number;
+    lossPercentage: number;
     form?: any;
 }

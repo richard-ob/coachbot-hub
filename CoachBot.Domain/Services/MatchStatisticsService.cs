@@ -284,7 +284,7 @@ namespace CoachBot.Domain.Services
                 switch(matchType)
                 {
                     case MatchType.Competition:
-                        return "Tournament";
+                        return "Competition";
                     default:
                         return "Friendly";
                 }
@@ -689,6 +689,7 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(p => p.TeamAway)
                     .ThenInclude(t => t.BadgeImage)
                 .Include(p => p.Team)
+                    .ThenInclude(p => p.BadgeImage)
                 .Include(p => p.Position)
                 .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId);
         }
@@ -863,12 +864,16 @@ namespace CoachBot.Domain.Services
                      ShotConversionPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.Goals)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
                      SubstituteAppearances = s.Sum(p => p.Substitute ? 1 : 0),
                      Wins = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0),
+                     WinPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Losses = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0),
+                     LossPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Draws = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0),
+                     DrawPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Name = key.Name,
                      SteamID = key.SteamID,
                      Rating = key.Rating
-                 });
+                 })
+                 .Where(p => filters.MinimumAppearances == null || p.Appearances >= filters.MinimumAppearances);
         }
 
         private IQueryable<PlayerStatisticTotals> GetPlayerMatchStatisticTotals(PlayerStatisticFilters filters)
@@ -980,12 +985,16 @@ namespace CoachBot.Domain.Services
                      ShotConversionPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.Goals)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
                      SubstituteAppearances = s.Sum(p => p.Substitute ? 1 : 0),
                      Wins = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0),
+                     WinPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Losses = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0),
+                     LossPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Draws = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0),
+                     DrawPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Name = key.Name,
                      SteamID = key.SteamID,
                      Rating = key.Rating
-                 });
+                 })
+                 .Where(p => filters.MinimumAppearances == null || p.Appearances >= filters.MinimumAppearances);
         }
 
         private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals(TeamStatisticsFilters filters)
@@ -1092,16 +1101,20 @@ namespace CoachBot.Domain.Services
                      ThrowIns = s.Sum(p => p.ThrowIns),
                      Corners = s.Sum(p => p.Corners),
                      Appearances = s.Count(),
-                     Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
-                     Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
-                     Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
+                     Wins = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0),
+                     WinPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
+                     Losses = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0),
+                     LossPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
+                     Draws = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0),
+                     DrawPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      TeamId = key.TeamId,
                      TeamName = key.Name,
                      BadgeImageUrl = key.Url,
                      Form = key.Form,
                      GoalDifference = s.Sum(p => p.Goals) - s.Sum(p => p.GoalsConceded),
                      Points = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 3 : p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)
-                 });
+                 })
+                 .Where(p => filters.MinimumMatches == null || p.Appearances >= filters.MinimumMatches);
         }
 
         public List<PlayerPerformanceSnapshot> GetMonthlyPlayerPerformance(int playerId)

@@ -42,6 +42,7 @@ export class PlayerSpotlightComponent implements OnInit {
         this.filters.regionId = this.userPreferencesService.getUserPreference(UserPreferenceType.Region);
         this.filters.includeSubstituteAppearances = false;
         this.filters.minimumSecondsPlayed = 60 * 80; // Only include matches where player played at least roughly 80 mins
+        this.filters.minimumAppearances = 10;
         if (this.tournamentId) {
             this.filters.tournamentId = this.tournamentId;
         } else {

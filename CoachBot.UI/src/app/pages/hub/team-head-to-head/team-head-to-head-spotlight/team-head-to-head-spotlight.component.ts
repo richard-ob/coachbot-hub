@@ -72,7 +72,7 @@ export class TeamHeadToHeadSpotlightComponent implements OnInit {
                 break;
             case TeamHeadToHeadSpotlightStatistic.BestPassing:
                 this.modelProperty = 'passesCompleted';
-                this.apiModelProperty = 'passesCompleted';
+                this.apiModelProperty = 'PassesCompleted';
                 this.heading = $localize`:@@spotlight.mostCompletedPasses:Most Completed Passes`;
                 this.measureName = $localize`:@@globals.passes:Passes`;
                 this.ordering = 'DESC';

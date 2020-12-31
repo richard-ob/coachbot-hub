@@ -37,6 +37,17 @@
                             [(ngModel)]="filters.includeInactive"> <ng-container i18n="@@teamStatistics.includeInactive">Include Inactive</ng-container>
                         <span class="checkbox-indicator"></span>
                     </label>
+                </li>             
+                <li class="team-result-filter__item d-none d-lg-inline">
+                    <select [(ngModel)]="filters.minimumMatches" name="minimumMatches" class="form-control" style="font-size: 11px;"
+                        #minimumMatchesSelect>
+                        <option [ngValue]="undefined" i18n="@@playerList.noMinimumApps">No minimum matches</option>
+                        <option [ngValue]="10" i18n="@@playerList.noMinimumApps">10+ matches</option>
+                        <option [ngValue]="25" i18n="@@playerList.noMinimumApps">25+ matches</option>
+                        <option [ngValue]="50" i18n="@@playerList.noMinimumApps">50+ matches</option>
+                        <option [ngValue]="100" i18n="@@playerList.noMinimumApps">100+ matches</option>
+                        <option [ngValue]="250" i18n="@@playerList.noMinimumApps">250+ matches</option>
+                    </select>
                 </li>
                 <li class="team-result-filter__item">
                     <select [(ngModel)]="filters.matchFormat" name="matchFormat" class="form-control"
@@ -90,6 +101,9 @@
                         <th sorter [sortByColumn]="'Appearances'" i18n-sortByColumnName="@@globals.matches"  sortByColumnName="Matches" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
                         </th>
+                        <th sorter [sortByColumn]="'WinPercentage'" i18n-sortByColumnName="@@globals.winPercentage" sortByColumnName="Win %"  [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center">
+                        </th>
                         <th sorter [sortByColumn]="'Wins'" i18n-sortByColumnName="@@globals.wins" sortByColumnName="Wins"  [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center">
                         </th>
@@ -99,15 +113,9 @@
                         <th sorter [sortByColumn]="'Draws'" i18n-sortByColumnName="@@globals.daws" sortByColumnName="Draws" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center">
                         </th>
-                        <th sorter [sortByColumn]="'Goals'" i18n-sortByColumnName="@@globals.goals" sortByColumnName="Goals" [currentSort]="sortBy" [currentOrder]="sortOrder"
-                            (sort)="loadPage(currentPage, $event)" class="text-center">
-                        </th>
                         <th sorter [sortByColumn]="'GoalsAverage'" i18n-sortByColumnName="@@globals.goals" sortByColumnName="Goals" [currentSort]="sortBy"
                             [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center"
                             [average]="true">
-                        </th>
-                        <th sorter [sortByColumn]="'Assists'" i18n-sortByColumnName="@@globals.assists" sortByColumnName="Assists" [currentSort]="sortBy"
-                            [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)" class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'AssistsAverage'" i18n-sortByColumnName="@@globals.assists" sortByColumnName="Assists"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
@@ -166,12 +174,11 @@
                         </td>
                         <td class="no-left-border" style="font-weight: 600;">{{statistics.teamName}}</td>
                         <td class="team-result__status text-center">{{statistics.appearances}}</td>
+                        <td class="team-result__status text-center">{{statistics.winPercentage | percent}}</td>
                         <td class="team-result__status text-center">{{statistics.wins}}</td>
                         <td class="team-result__status text-center">{{statistics.losses}}</td>
                         <td class="team-result__status text-center">{{statistics.draws}}</td>
-                        <td class="team-result__status text-center">{{statistics.goals}}</td>
                         <td class="team-result__status text-center">{{statistics.goalsAverage | number : '1.2-2'}}</td>
-                        <td class="team-result__status text-center">{{statistics.assists}}</td>
                         <td class="team-result__status text-center">{{statistics.assistsAverage | number : '1.2-2'}}
                         </td>
                         <td class="team-result__status text-center">{{statistics.shotsAverage | number : '1.2-2' }}

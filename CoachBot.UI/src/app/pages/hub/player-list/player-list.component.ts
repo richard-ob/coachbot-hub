@@ -55,6 +55,7 @@ export class PlayerListComponent implements OnInit {
         this.filters.tournamentId = this.tournamentId;
         this.filters.regionId = regionId;
         this.filters.includeSubstituteAppearances = this.includeSubstituteAppearances;
+        this.filters.minimumAppearances = 50;
         this.setIncludePartialAppearances();
         this.regionService.getRegions().subscribe(regions => {
             const region = regions.find(r => r.regionId === regionId);

@@ -37,6 +37,7 @@ export class TeamSpotlightComponent implements OnInit {
     ngOnInit() {
         this.setProperties(this.statistic);
         this.filters.regionId = this.userPreferencesService.getUserPreference(UserPreferenceType.Region);
+        this.filters.minimumMatches = 10;
         if (this.tournamentId) {
             this.filters.tournamentId = this.tournamentId;
         } else {

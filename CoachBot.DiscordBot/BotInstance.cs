@@ -1,6 +1,5 @@
 ﻿using CoachBot.Domain.Model;
 using CoachBot.Domain.Services;
-using CoachBot.LegacyImporter;
 using CoachBot.Services;
 using CoachBot.Shared.Model;
 using CoachBot.Shared.Services;
@@ -9,6 +8,7 @@ using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,20 +20,13 @@ namespace CoachBot.Bot
         private readonly IServiceProvider _serviceProvider;
         private readonly DiscordSocketClient _client;
         private readonly DiscordRestClient _discordRestClient;
-        private readonly MatchmakingService _matchmakingService;
-        private readonly ChannelService _channelService;
-        private readonly DiscordNotificationService _discordNotificationService;
         private readonly CacheService _cacheService;
-        private readonly Importer _importer;
         private readonly Config _config;
         private CommandHandler _handler;
 
         public BotInstance(
             IServiceProvider serviceProvider,
             DiscordSocketClient client,
-            MatchmakingService matchmakingService,
-            ChannelService channelService,
-            DiscordNotificationService discordNotificationService,
             CacheService cacheService,
             Config config,
             DiscordRestClient discordRestClient
@@ -41,9 +34,6 @@ namespace CoachBot.Bot
         {
             _serviceProvider = serviceProvider;
             _client = client;
-            _matchmakingService = matchmakingService;
-            _channelService = channelService;
-            _discordNotificationService = discordNotificationService;
             _cacheService = cacheService;
             _config = config;
             _discordRestClient = discordRestClient;
@@ -104,17 +94,21 @@ namespace CoachBot.Bot
 
         private Task BotReady()
         {
-            var channels = _channelService.GetChannels();
-            Console.WriteLine("Ready!");
-            Console.WriteLine("Matchmaking in:");
-
-            foreach (var server in _client.Guilds)
+            using (var scope = _serviceProvider.CreateScope())
             {
-                foreach (var channel in server.Channels)
+                var channelService = scope.ServiceProvider.GetService<ChannelService>();
+                var channels = channelService.GetChannels();
+                Console.WriteLine("Ready!");
+                Console.WriteLine("Matchmaking in:");
+
+                foreach (var server in _client.Guilds)
                 {
-                    if (channels.Any(c => c.DiscordChannelId == channel.Id))
+                    foreach (var channel in server.Channels)
                     {
-                        Console.WriteLine($"{channel.Name} on {server.Name}");
+                        if (channels.Any(c => c.DiscordChannelId == channel.Id))
+                        {
+                            Console.WriteLine($"{channel.Name} on {server.Name}");
+                        }
                     }
                 }
             }
@@ -200,6 +194,8 @@ namespace CoachBot.Bot
 
             using (var scope = _serviceProvider.CreateScope())
             {
+                var logger = scope.ServiceProvider.GetService<ILogger>();
+                Console.WriteLine("Removing {userPost.Nickname} ({userPost.Username}) from possible lineups as they've gone offline");
                 var matchupService = scope.ServiceProvider.GetService<MatchupService>();
                 matchupService.RemovePlayerGlobally(userPre.Id, true);
             }
@@ -213,20 +209,24 @@ namespace CoachBot.Bot
 
             using (var scope = _serviceProvider.CreateScope())
             {
-                foreach (var channel in scope.ServiceProvider.GetService<ChannelService>().GetChannels())
+                var logger = scope.ServiceProvider.GetService<ILogger>();
+                Console.WriteLine($"Flagging {userPost.Nickname} ({userPost.Username}) as away in channels were player may be signed");
+
+                var matchupService = scope.ServiceProvider.GetService<MatchupService>();
+                foreach (var channel in matchupService.GetSignedChannelsForPlayer(userPost.Id))
                 {
-                    var matchup = scope.ServiceProvider.GetService<MatchupService>().GetCurrentMatchupForChannel(channel.DiscordChannelId);
+                    var matchup = matchupService.GetCurrentMatchupForChannel(channel.DiscordChannelId);
                     if (_client.GetChannel(channel.DiscordChannelId) is ITextChannel discordChannel)
                     {
                         if ((matchup.LineupHome.PlayerLineupPositions.Any(plp => plp.Player.DiscordUserId == userPost.Id) && matchup.LineupHome.ChannelId == channel.Id) 
-                            || (matchup.LineupAway.PlayerLineupPositions.Any(plp => plp.Player.DiscordUserId == userPost.Id) && matchup.LineupAway.ChannelId == channel.Id))
+                            || (matchup.LineupAway != null && matchup.LineupAway.PlayerLineupPositions.Any(plp => plp.Player.DiscordUserId == userPost.Id) && matchup.LineupAway.ChannelId == channel.Id))
                         {
                             var player = matchup.SignedPlayers.FirstOrDefault(p => p.DiscordUserId == userPost.Id);
                             await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {player.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());
                         }
 
                         if ((matchup.LineupHome.PlayerSubstitutes.Any(ps => ps.Player.DiscordUserId == userPost.Id) && matchup.LineupHome.ChannelId == channel.Id) 
-                            || (matchup.LineupAway.PlayerSubstitutes.Any(ps => ps.Player.DiscordUserId == userPost.Id) && matchup.LineupAway.ChannelId == channel.Id))
+                            || (matchup.LineupAway != null && matchup.LineupAway.PlayerSubstitutes.Any(ps => ps.Player.DiscordUserId == userPost.Id) && matchup.LineupAway.ChannelId == channel.Id))
                         {
                             var sub = matchup.SignedSubstitutes.FirstOrDefault(s => s.DiscordUserId == userPost.Id);
                             await discordChannel.SendMessageAsync("", embed: new EmbedBuilder().WithDescription($":clock1: {sub.DisplayName} might be AFK. Keep your eyes peeled.").WithColor(new Color(254, 254, 254)).WithCurrentTimestamp().Build());

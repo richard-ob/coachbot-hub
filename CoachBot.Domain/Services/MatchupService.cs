@@ -5,6 +5,7 @@ using CoachBot.Model;
 using CoachBot.Tools;
 using Discord;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,14 @@ namespace CoachBot.Domain.Services
         private readonly SearchService _searchService;
         private readonly DiscordNotificationService _discordNotificationService;
 
-        public MatchupService(CoachBotContext coachBotContext, MatchService matchService, ChannelService channelService, ServerService serverService, SearchService searchService, DiscordNotificationService discordNotificationService)
+        public MatchupService(
+            CoachBotContext coachBotContext,
+            MatchService matchService,
+            ChannelService channelService,
+            ServerService serverService,
+            SearchService searchService,
+            DiscordNotificationService discordNotificationService
+        )
         {
             _coachBotContext = coachBotContext;
             _matchService = matchService;
@@ -104,6 +112,7 @@ namespace CoachBot.Domain.Services
         public List<MatchOutcomeType> GetFormForChannel(ulong channelId, int limit = 5)
         {
             var recentMatches = _coachBotContext.Matchups
+                .AsQueryable()
                 .Where(m => m.LineupHome.Channel.DiscordChannelId == channelId || m.LineupAway.Channel.DiscordChannelId == channelId)                
                 .Where(m => m.IsMixMatch == false)
                 .OrderByDescending(m => m.ReadiedDate)
@@ -188,7 +197,7 @@ namespace CoachBot.Domain.Services
         {
             var match = GetCurrentMatchForChannel(channelId);
             if (match.LineupHome.PlayerSubstitutes.Any(sp => sp.Player.DiscordUserId == player.DiscordUserId)
-                || match.LineupAway.PlayerSubstitutes.Any(sp => sp.Player.DiscordUserId == player.DiscordUserId))
+                || (match.LineupAway != null && match.LineupAway.PlayerSubstitutes.Any(sp => sp.Player.DiscordUserId == player.DiscordUserId)))
             {
                 RemovePlayerSubstituteFromTeam(match.LineupHome, player);
                 RemovePlayerSubstituteFromTeam(match.LineupAway, player);
@@ -207,10 +216,24 @@ namespace CoachBot.Domain.Services
             if (team == null) new ServiceResponse(ServiceResponseStatus.Failure, $"Cannot clear position for a team that does not exist");
             if (!team.Channel.ChannelPositions.Any(cp => cp.Position.Name.ToUpper() == position.ToUpper())) return new ServiceResponse(ServiceResponseStatus.Failure, $"**{position.ToUpper()}** is not a valid position");
 
-            var playerPosition = team.PlayerLineupPositions.FirstOrDefault(ptp => ptp.Position.Name.ToUpper() == position.ToUpper());
+            var playerPosition = team.PlayerLineupPositions
+                .AsQueryable()
+                .Include(p => p.Player)
+                .Include(p => p.Lineup)
+                    .ThenInclude(p => p.PlayerSubstitutes)
+                    .ThenInclude(p => p.Player)
+                .Include(p => p.Position)
+                .FirstOrDefault(ptp => ptp.Position.Name.ToUpper() == position.ToUpper());
+
             if (playerPosition != null) team.PlayerLineupPositions.Remove(playerPosition);
 
             _coachBotContext.SaveChanges();
+
+            if (playerPosition != null && playerPosition.Lineup != null && playerPosition.Lineup.PlayerSubstitutes.Any())
+            {
+                var substitute = ReplaceWithSubstitute(playerPosition.Position, playerPosition.Lineup);
+                return GenerateSubReplacementServiceResponse(substitute, playerPosition.Player);
+            }
 
             return new ServiceResponse(ServiceResponseStatus.NegativeSuccess, $"Cleared position **{position.ToUpper()}**");
         }
@@ -225,8 +248,7 @@ namespace CoachBot.Domain.Services
                 if (match.LineupHome.PlayerSubstitutes.Any())
                 {
                     var substitute = ReplaceWithSubstitute(removedPlayer.Position, match.LineupHome);
-
-                    return new ServiceResponse(ServiceResponseStatus.Success, $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {substitute.DisplayName} comes off the bench to replace **{player.DisplayName}**");
+                    return GenerateSubReplacementServiceResponse(substitute, player);
                 }
             }
             else if (match.LineupAway != null && match.LineupAway.PlayerLineupPositions.Any(ptp => ptp.Player.Id == player.Id && ptp.Lineup.Channel.DiscordChannelId == channelId))
@@ -235,7 +257,7 @@ namespace CoachBot.Domain.Services
                 if (match.LineupAway.PlayerSubstitutes.Any())
                 {
                     var substitute = ReplaceWithSubstitute(removedPlayer.Position, match.LineupAway);
-                    return new ServiceResponse(ServiceResponseStatus.Success, $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {substitute.DisplayName} comes off the bench to replace **{player.DisplayName}**");
+                    return GenerateSubReplacementServiceResponse(substitute, player);
                 }
             }
             else
@@ -251,14 +273,20 @@ namespace CoachBot.Domain.Services
             var player = _coachBotContext.Players.Single(p => p.DiscordUserId == discordUserId);
 
             var playerSignings = _coachBotContext.PlayerLineupPositions
+                .AsSplitQuery()
                 .Include(plp => plp.Lineup)
-                .ThenInclude(l => l.Channel)
+                    .ThenInclude(l => l.Channel)
                 .Include(plp => plp.Lineup)
-                .ThenInclude(l => l.HomeMatchup)
+                    .ThenInclude(plp => plp.PlayerSubstitutes)
+                    .ThenInclude(plp => plp.Player)
                 .Include(plp => plp.Lineup)
-                .ThenInclude(l => l.AwayMatchup)
+                    .ThenInclude(l => l.HomeMatchup)
+                .Include(plp => plp.Lineup)
+                    .ThenInclude(l => l.AwayMatchup)
+                .Include(plp => plp.Position)
+                .Include(plp => plp.Player)
                 .Where(plp => plp.Player != null && plp.Player.DiscordUserId != null && (ulong)plp.Player.DiscordUserId == discordUserId)
-                .Where(plp => plp.Lineup.AwayMatchup.ReadiedDate == null || plp.Lineup.HomeMatchup == null)
+                .Where(plp => (plp.Lineup.HomeMatchup != null && plp.Lineup.HomeMatchup.ReadiedDate == null) || (plp.Lineup.AwayMatchup != null && plp.Lineup.AwayMatchup.ReadiedDate == null))
                 .Where(plp => respectDuplicityProtection == false || plp.Lineup.Channel.DuplicityProtection == true);
 
             foreach (var signing in playerSignings)
@@ -269,9 +297,17 @@ namespace CoachBot.Domain.Services
                 {
                     _coachBotContext.PlayerLineupPositions.Remove(signing);
                     _coachBotContext.SaveChanges();
+
                     var embed = offlineMessage ? DiscordEmbedHelper.GenerateEmbed($"Removed {player.DisplayName} from the line-up as they have gone offline", ServiceResponseStatus.Warning)
                         : DiscordEmbedHelper.GenerateEmbed($"Removed **{player.DisplayName}**", ServiceResponseStatus.NegativeSuccess);
                     _discordNotificationService.SendChannelMessage(channelId, embed).Wait();
+
+                    if (signing.Lineup.PlayerSubstitutes.Any())
+                    {
+                        var sub = ReplaceWithSubstitute(signing.Position, signing.Lineup);
+                        _discordNotificationService.SendChannelMessage(channelId, DiscordEmbedHelper.GenerateEmbedFromServiceResponse(GenerateSubReplacementServiceResponse(sub, signing.Player))).Wait();
+                    }
+                    
                     foreach (var teamEmbed in GenerateTeamList(channelId))
                     {
                         _discordNotificationService.SendChannelMessage(channelId, teamEmbed).Wait();
@@ -280,6 +316,7 @@ namespace CoachBot.Domain.Services
             }
 
             var playerSubSignings = _coachBotContext.PlayerLineupSubstitutes
+                .AsSplitQuery()
                 .Include(plp => plp.Lineup)
                 .ThenInclude(l => l.Channel)
                 .Include(plp => plp.Lineup)
@@ -287,7 +324,7 @@ namespace CoachBot.Domain.Services
                 .Include(plp => plp.Lineup)
                 .ThenInclude(l => l.AwayMatchup)
                 .Where(plp => plp.Player != null && plp.Player.DiscordUserId != null && (ulong)plp.Player.DiscordUserId == discordUserId)
-                .Where(plp => plp.Lineup.AwayMatchup.ReadiedDate == null || plp.Lineup.HomeMatchup == null)
+                .Where(plp => (plp.Lineup.HomeMatchup != null && plp.Lineup.HomeMatchup.ReadiedDate == null) || (plp.Lineup.AwayMatchup != null && plp.Lineup.AwayMatchup.ReadiedDate == null))
                 .Where(plp => respectDuplicityProtection == false || plp.Lineup.Channel.DuplicityProtection == true);
 
             foreach (var signing in playerSubSignings)
@@ -322,10 +359,11 @@ namespace CoachBot.Domain.Services
             matchId = -1;
 
             if (matchup.LineupAway == null || matchup.LineupHome == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"There is no opposition set");
-            if (matchup.SignedPlayersAndSubs.Count < channel.ChannelPositions.Count) return new ServiceResponse(ServiceResponseStatus.Failure, $"All positions must be filled"); ;
+            if (matchup.SignedPlayersAndSubs.Count < channel.ChannelPositions.Count) return new ServiceResponse(ServiceResponseStatus.Failure, $"All positions must be filled");
             if (server == null) return new ServiceResponse(ServiceResponseStatus.Failure, $"A valid server must be provided");
             if (server.RegionId != channel.Team.RegionId) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server is not in this channels region");
             if (matchup.SignedPlayers.GroupBy(p => p.Id).Where(p => p.Count() > 1).Any()) return new ServiceResponse(ServiceResponseStatus.Failure, $"One or more players is signed for both teams");
+            if (_coachBotContext.Matches.Any(m => m.ServerId == serverId && m.KickOff != null && m.KickOff > DateTime.UtcNow && m.KickOff.Value.AddMinutes(-90) < DateTime.UtcNow)) return new ServiceResponse(ServiceResponseStatus.Failure, $"The selected server has a scheduled match within the next 90 minutes");
 
             var match = new Match()
             {
@@ -336,8 +374,9 @@ namespace CoachBot.Domain.Services
                 MatchType = server.HasRconPassword ? MatchType.RankedFriendly : MatchType.UnrankedFriendly
             };
             _coachBotContext.Matches.Add(match);
+            var savedMatchId = _coachBotContext.Entry(match).Property(m => m.Id).CurrentValue;
             matchup.ReadiedDate = DateTime.UtcNow;
-            matchup.MatchId = match.Id;
+            matchup.MatchId = savedMatchId;
             _coachBotContext.SaveChanges();
 
             CreateMatchup((int)matchup.LineupHome.ChannelId);
@@ -345,7 +384,7 @@ namespace CoachBot.Domain.Services
 
             RemovePlayersFromOtherMatchups(matchup);
 
-            matchId = match.Id;
+            matchId = savedMatchId;
 
             return new ServiceResponse(ServiceResponseStatus.Success, $"Match successfully readied");
         }
@@ -450,27 +489,41 @@ namespace CoachBot.Domain.Services
 
         public bool IsPlayerSigned(ulong discordUserId)
         {
-            if (!_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId) && !_coachBotContext.PlayerLineupSubstitutes.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId)) return false;
+            return _coachBotContext.Players.AsQueryable().Where(p => p.DiscordUserId == discordUserId && _coachBotContext.IsPlayerSigned((ulong)p.DiscordUserId)).Any();
+        }
 
-            if (_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup != null && p.Lineup.AwayMatchup != null && p.Lineup.AwayMatchup.ReadiedDate == null)) return true;
+        public List<Channel> GetSignedChannelsForPlayer(ulong discordUserId)
+        {
+            var recentSigningBuffer = DateTime.UtcNow.AddDays(-7);
 
-            if (_coachBotContext.PlayerLineupPositions.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup != null && p.Lineup.HomeMatchup != null && p.Lineup.HomeMatchup.ReadiedDate == null)) return true;
-
-            if (_coachBotContext.PlayerLineupSubstitutes.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup != null && p.Lineup.AwayMatchup != null && p.Lineup.AwayMatchup.ReadiedDate == null)) return true;
-
-            if (_coachBotContext.PlayerLineupSubstitutes.Any(p => p.Player != null && p.Player.DiscordUserId == discordUserId && p.Lineup != null && p.Lineup.HomeMatchup != null && p.Lineup.HomeMatchup.ReadiedDate == null)) return true;
-
-            return false;
+            return _coachBotContext.PlayerLineupPositions
+                .AsQueryable()
+                .Where(plp => plp.Player.DiscordUserId == discordUserId)
+                .Where(plp => (plp.Lineup.HomeMatchup != null && plp.Lineup.HomeMatchup.ReadiedDate == null) || (plp.Lineup.AwayMatchup != null && plp.Lineup.AwayMatchup.ReadiedDate == null))
+                .Where(plp => plp.CreatedDate > recentSigningBuffer)
+                .Select(plp => plp.Lineup.Channel)
+                .ToList();
         }
 
         public async void RemovePlayersFromOtherMatchups(Matchup readiedMatchup, bool respectDuplicityProtection = true)
         {
+            var signedPlayerIds = readiedMatchup.SignedPlayers.Select(p => p.Id).ToList();
             var otherPlayerSignings = _coachBotContext.PlayerLineupPositions
-                .Where(ptp => (ptp.Lineup.HomeMatchup != null && ptp.Lineup.HomeMatchup.ReadiedDate == null) || (ptp.Lineup.AwayMatchup != null && ptp.Lineup.AwayMatchup.ReadiedDate == null))
-                .Where(ptp => readiedMatchup.SignedPlayers.Any(sp => sp.Id == ptp.PlayerId))
-                .Include(ptp => ptp.Player)
-                .Include(ptp => ptp.Lineup)
+                .AsQueryable()
+                .AsSplitQuery()
+                .Include(plp => plp.Lineup)
                     .ThenInclude(l => l.Channel)
+                .Include(plp => plp.Lineup)
+                    .ThenInclude(plp => plp.PlayerSubstitutes)
+                    .ThenInclude(plp => plp.Player)
+                .Include(plp => plp.Lineup)
+                    .ThenInclude(l => l.HomeMatchup)
+                .Include(plp => plp.Lineup)
+                    .ThenInclude(l => l.AwayMatchup)
+                .Include(plp => plp.Position)
+                .Include(plp => plp.Player)
+                .Where(ptp => (ptp.Lineup.HomeMatchup != null && ptp.Lineup.HomeMatchup.ReadiedDate == null) || (ptp.Lineup.AwayMatchup != null && ptp.Lineup.AwayMatchup.ReadiedDate == null))
+                .Where(ptp => signedPlayerIds.Any(sp => sp == ptp.PlayerId))
                 .ToList();
 
             foreach (var otherPlayerSigning in otherPlayerSignings)
@@ -482,6 +535,13 @@ namespace CoachBot.Domain.Services
                     _coachBotContext.SaveChanges();
                     var message = $":stadium: **{otherPlayerSigning.Player.DisplayName}** has gone to play another match (**{readiedMatchup.LineupHome.Channel.Team.Name} {readiedMatchup.LineupHome.Channel.Team.BadgeEmote}** vs **{readiedMatchup.LineupAway.Channel.Team.BadgeEmote} {readiedMatchup.LineupAway.Channel.Team.Name}**) and has been removed from the lineup.";
                     await _discordNotificationService.SendChannelMessage(channelId, message);
+
+                    if (otherPlayerSigning.Lineup.PlayerSubstitutes.Any())
+                    {
+                        var sub = ReplaceWithSubstitute(otherPlayerSigning.Position, otherPlayerSigning.Lineup);
+                        _discordNotificationService.SendChannelMessage(channelId, DiscordEmbedHelper.GenerateEmbedFromServiceResponse(GenerateSubReplacementServiceResponse(sub, otherPlayerSigning.Player))).Wait();
+                    }
+
                     SendTeamListToChannel(channelId);
                 }
                 else
@@ -504,6 +564,7 @@ namespace CoachBot.Domain.Services
         private IQueryable<Matchup> GetMatchupQueryable()
         {
             return _coachBotContext.Matchups
+                .AsSplitQuery()
                 .Include(m => m.LineupHome)
                     .ThenInclude(th => th.PlayerLineupPositions)
                     .ThenInclude(ptp => ptp.Player)
@@ -582,6 +643,11 @@ namespace CoachBot.Domain.Services
             }
 
             return sub;
+        }
+
+        private ServiceResponse GenerateSubReplacementServiceResponse(Player substitute, Player player)
+        {
+            return new ServiceResponse(ServiceResponseStatus.Success, $":arrows_counterclockwise:  **Substitution** {Environment.NewLine} {substitute.DisplayName} comes off the bench to replace **{player.DisplayName}**");
         }
 
         private void CombineMixLineups(Matchup matchup, Channel channel)

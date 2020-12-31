@@ -66,6 +66,7 @@ namespace CoachBot.Domain.Services
         public Tournament GetTournament(int tournamentId)
         {
             return _coachBotContext.Tournaments
+                .AsSplitQuery()
                 .Include(t => t.TournamentSeries)
                     .ThenInclude(t => t.TournamentLogo)
                 .Include(t => t.TournamentSeries)
@@ -243,9 +244,31 @@ namespace CoachBot.Domain.Services
             _coachBotContext.SaveChanges();
         }
 
+        public void CreateTournamentMatch(int tournamentId, int tournamentPhaseId, int tournamentGroupId)
+        {
+            var tournamentGroupMatch = new TournamentGroupMatch()
+            {
+                TournamentPhaseId = tournamentPhaseId,
+                TournamentGroupId = tournamentGroupId,
+                Match = new Match()
+                {
+                    TournamentId = tournamentId
+                }
+            };
+
+            _coachBotContext.TournamentGroupMatches.Add(tournamentGroupMatch);
+            _coachBotContext.SaveChanges();
+        }
+
+        public void DeleteTournamentMatch(int tournamentMatchId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Team> GetTournamentTeams(int tournamentId)
         {
             return _coachBotContext.TournamentGroupTeams
+                .AsQueryable()
                 .Where(t => t.TournamentGroup.TournamentStage.TournamentId == tournamentId)
                 .Select(t => t.Team)
                 .Distinct()
@@ -267,6 +290,7 @@ namespace CoachBot.Domain.Services
         public List<Match> GetTournamentPhaseMatches(int tournamentPhaseId, bool futureOnly = false)
         {
             return _coachBotContext.Matches
+                .AsQueryable()
                 .Where(m => _coachBotContext.TournamentPhases.Any(p => p.TournamentGroupMatches.Any(gm => gm.TournamentPhaseId == tournamentPhaseId)))
                 .Where(m => !futureOnly || m.KickOff > DateTime.UtcNow)
                 .ToList();
@@ -275,21 +299,26 @@ namespace CoachBot.Domain.Services
         public TournamentPhase GetCurrentTournamentPhase(int tournamentId)
         {
             return _coachBotContext.TournamentGroupMatches
+                .AsQueryable()
                 .Where(tg => tg.TournamentGroup.TournamentStage.TournamentId == tournamentId)
                 .Where(m => m.Match.KickOff > DateTime.UtcNow)
                 .OrderBy(m => m.Match.KickOff)
-                .Select(m => m.TournamentPhase)
-                .Include(p => p.TournamentStage)
-                .Include(t => t.TournamentGroupMatches)
+                .Include(p => p.TournamentPhase)
+                    .ThenInclude(p => p.TournamentStage)
+                .Include(p => p.TournamentPhase)
+                    .ThenInclude(t => t.TournamentGroupMatches)
                     .ThenInclude(m => m.Match)
                     .ThenInclude(m => m.TeamHome)
                     .ThenInclude(m => m.BadgeImage)
-                .Include(t => t.TournamentGroupMatches)
+                .Include(p => p.TournamentPhase)
+                    .ThenInclude(t => t.TournamentGroupMatches)
                     .ThenInclude(m => m.Match)
                     .ThenInclude(m => m.TeamAway)
                     .ThenInclude(m => m.BadgeImage)
-                .Include(t => t.TournamentGroupMatches)
+                .Include(p => p.TournamentPhase)
+                    .ThenInclude(t => t.TournamentGroupMatches)
                     .ThenInclude(t => t.TournamentGroup)
+                .Select(m => m.TournamentPhase)
                 .FirstOrDefault();
         }
 
@@ -374,8 +403,8 @@ namespace CoachBot.Domain.Services
 
         public void AddTournamentTeam(int teamId, int tournamentGroupId)
         {
-            var tournamentStageId = _coachBotContext.TournamentGroups.Where(t => t.Id == tournamentGroupId).Select(t => t.TournamentStage.Id).Single();
-            var tournamentStageTeams = _coachBotContext.TournamentGroupTeams.Where(t => t.TournamentGroup.TournamentStageId == tournamentStageId).Select(t => t.TeamId);
+            var tournamentStageId = _coachBotContext.TournamentGroups.AsQueryable().Where(t => t.Id == tournamentGroupId).Select(t => t.TournamentStage.Id).Single();
+            var tournamentStageTeams = _coachBotContext.TournamentGroupTeams.AsQueryable().Where(t => t.TournamentGroup.TournamentStageId == tournamentStageId).Select(t => t.TeamId);
 
             if (tournamentStageTeams.Any(t => t == teamId))
             {
@@ -406,7 +435,7 @@ namespace CoachBot.Domain.Services
 
         public void AddTournamentMatch(Match match, int tournamentGroupId, int tournamentPhaseId)
         {
-            var tournamentId = _coachBotContext.TournamentPhases.Where(t => t.Id == tournamentPhaseId).Select(t => t.TournamentStage.TournamentId).First();
+            var tournamentId = _coachBotContext.TournamentPhases.AsQueryable().Where(t => t.Id == tournamentPhaseId).Select(t => t.TournamentStage.TournamentId).First();
             match.TournamentId = tournamentId;
             match.MatchType = MatchType.Competition;
             _coachBotContext.Add(match);
@@ -423,7 +452,7 @@ namespace CoachBot.Domain.Services
 
         public List<TournamentMatchDaySlot> GetTournamentMatchDaySlots(int tournamentId)
         {
-            return _coachBotContext.TournamentMatchDays.Where(t => t.TournamentId == tournamentId).ToList();
+            return _coachBotContext.TournamentMatchDays.AsQueryable().Where(t => t.TournamentId == tournamentId).ToList();
         }
 
         public void CreateTournamentMatchDaySlot(TournamentMatchDaySlot tournamentMatchDaySlot)
@@ -444,6 +473,7 @@ namespace CoachBot.Domain.Services
         {
             var statisticResults = _coachBotContext
                  .TeamMatchStatistics
+                 .AsQueryable()
                  .Where(t => _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == t.MatchId && tg.TournamentGroupId == tournamentGroupId))
                  .Where(t => t.Match.MatchStatistics != null)
                  .AsNoTracking()
@@ -458,6 +488,7 @@ namespace CoachBot.Domain.Services
                  }).ToList();
 
             var overrideResultsHome = _coachBotContext.Matches
+                   .AsQueryable()
                    .Where(m => _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == m.Id && tg.TournamentGroupId == tournamentGroupId))
                    .Where(m => m.MatchStatistics.MatchData == null && m.MatchStatistics.HomeGoals != null && m.MatchStatistics.AwayGoals != null)
                    .Select(m => new StandingGroupSubEntry()
@@ -471,6 +502,7 @@ namespace CoachBot.Domain.Services
                    }).ToList();
 
             var overrideResultsAway = _coachBotContext.Matches
+                   .AsQueryable()
                    .Where(m => _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == m.Id && tg.TournamentGroupId == tournamentGroupId))
                    .Where(m => m.MatchStatistics.MatchData == null && m.MatchStatistics.HomeGoals != null && m.MatchStatistics.AwayGoals != null)
                    .Select(m => new StandingGroupSubEntry()
@@ -506,8 +538,9 @@ namespace CoachBot.Domain.Services
 
             var unpositioned = _coachBotContext
                  .TournamentGroupTeams
+                 .AsQueryable()
                  .Where(t => t.TournamentGroupId == tournamentGroupId)
-                 .Where(t => !standings.Any(s => s.TeamId == t.TeamId))
+                 .Where(t => !standings.Select(s => s.TeamId).Any(s => s == t.TeamId))
                  .Select(t => new TournamentGroupStanding()
                  {
                      TeamId = t.TeamId, 
@@ -515,7 +548,7 @@ namespace CoachBot.Domain.Services
                      BadgeImageUrl = t.Team.BadgeImage.SmallUrl
                  }).ToList();
 
-            var tournamentId = _coachBotContext.TournamentGroups.Where(g => g.Id == tournamentGroupId).Select(tg => tg.TournamentStage.TournamentId).First();
+            var tournamentId = _coachBotContext.TournamentGroups.AsQueryable().Where(g => g.Id == tournamentGroupId).Select(tg => tg.TournamentStage.TournamentId).First();
 
             return standings.Concat(unpositioned)
                  .Select((s, i) => new TournamentGroupStanding()
@@ -538,6 +571,7 @@ namespace CoachBot.Domain.Services
             List<MatchOutcomeType> GenerateTeamTournamentForm(int teamId)
             {
                 var form = _coachBotContext.TeamMatchStatistics
+                    .AsQueryable()
                     .Where(t => t.TeamId == teamId && t.Match.TournamentId == tournamentId)
                     .OrderByDescending(t => t.CreatedDate)
                     .Take(5)
@@ -629,7 +663,7 @@ namespace CoachBot.Domain.Services
 
         private void RemoveMatchesForTournament(int tournamentId)
         {
-            var tournamentMatches = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentGroup.TournamentStage.TournamentId == tournamentId);
+            var tournamentMatches = _coachBotContext.TournamentGroupMatches.AsQueryable().Where(t => t.TournamentGroup.TournamentStage.TournamentId == tournamentId);
             if (tournamentMatches.Any(t => t.Match.MatchStatisticsId != null))
             {
                 throw new Exception("Cannot regenerate schedule as matches have already taken place");
@@ -638,13 +672,13 @@ namespace CoachBot.Domain.Services
             if (tournamentMatches != null & tournamentMatches.Any())
             {
                 _coachBotContext.TournamentGroupMatches.RemoveRange(tournamentMatches);
-                var matches = _coachBotContext.Matches.Where(t => t.TournamentId == tournamentId);
+                var matches = _coachBotContext.Matches.AsQueryable().Where(t => t.TournamentId == tournamentId);
                 if (matches.Count() < 200)
                 {
                     _coachBotContext.Matches.RemoveRange(matches);
                 }
             }
-            _coachBotContext.TournamentPhases.RemoveRange(_coachBotContext.TournamentPhases.Where(t => t.TournamentStage.TournamentId == tournamentId));
+            _coachBotContext.TournamentPhases.RemoveRange(_coachBotContext.TournamentPhases.AsQueryable().Where(t => t.TournamentStage.TournamentId == tournamentId));
             _coachBotContext.SaveChanges();
         }
 
@@ -664,12 +698,13 @@ namespace CoachBot.Domain.Services
                 var stage = stages.First();
                 var groups = stage.TournamentGroups.OrderBy(t => t.Id);
                 if (groups.Count() != 2) return; // INFO: We don't support knockout tournaments with more than two groups
-                var phases = _coachBotContext.TournamentPhases.Where(t => t.TournamentStageId == tournamentGroupMatch.TournamentPhase.TournamentStageId).OrderBy(t => t.Id);
+                var phases = _coachBotContext.TournamentPhases.AsQueryable().Where(t => t.TournamentStageId == tournamentGroupMatch.TournamentPhase.TournamentStageId).OrderBy(t => t.Id);
                 var knockoutGroup = _coachBotContext.TournamentGroups.First(t => t.TournamentStageId == stages.Last().Id);
                 if (tournamentGroupMatch.TournamentPhaseId != phases.Last().Id) return; // INFO: Unless its the last phase/round of matches, don't do anything
-                if (_coachBotContext.TournamentGroupMatches.Where(t => t.TournamentPhase.TournamentStageId == stage.Id && t.MatchId != tournamentGroupMatch.MatchId).Any(t => t.Match.MatchStatisticsId == null)) return; // Don't do anything unless all matches are complete
+                if (_coachBotContext.TournamentGroupMatches.AsQueryable().Where(t => t.TournamentPhase.TournamentStageId == stage.Id && t.MatchId != tournamentGroupMatch.MatchId).Any(t => t.Match.MatchStatisticsId == null)) return; // Don't do anything unless all matches are complete
 
                 var knockoutFixtures = _coachBotContext.TournamentGroupMatches
+                    .AsQueryable()
                     .Where(t => t.TournamentGroupId == knockoutGroup.Id)
                     .Where(t => t.TournamentPhaseId == phases.OrderBy(p => p.Id).First(p => p.TournamentStageId == stages.Last().Id).Id) // INFO: First phase of knockout fixtures only
                     .Include(t => t.Match)
@@ -751,9 +786,9 @@ namespace CoachBot.Domain.Services
             GenerateRoundRobinMatches(tournament, groupStage, tournament.StartDate.Value);
 
             var knockoutStage = tournament.TournamentStages.Last();
-            var earliestMatchDate = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentPhase.TournamentStage.TournamentId == tournamentId).Max(m => m.Match.KickOff).Value;
+            var earliestMatchDate = _coachBotContext.TournamentGroupMatches.AsQueryable().Where(t => t.TournamentPhase.TournamentStage.TournamentId == tournamentId).Max(m => m.Match.KickOff).Value;
             var numberOfGroups = _coachBotContext.TournamentGroups.Count(g => g.TournamentStageId == groupStage.Id);
-            var numberOfTeams = _coachBotContext.TournamentGroups.Where(g => g.TournamentStageId == groupStage.Id).Max(g => g.TournamentGroupTeams.Count());
+            var numberOfTeams = _coachBotContext.TournamentGroups.AsQueryable().Where(g => g.TournamentStageId == groupStage.Id).Max(g => g.TournamentGroupTeams.Count());
 
             var knockoutGroupSize = GetNumberOfQualifyingKnockoutTeams(numberOfTeams, numberOfGroups);
             var teams = new List<Team>();
@@ -808,9 +843,9 @@ namespace CoachBot.Domain.Services
             GenerateMultipleRoundRobinSchedule(tournamentId, 2);
 
             var knockoutStage = tournament.TournamentStages.Last();
-            var earliestMatchDate = _coachBotContext.TournamentGroupMatches.Where(t => t.TournamentPhase.TournamentStage.TournamentId == tournamentId).Max(m => m.Match.KickOff).Value;
+            var earliestMatchDate = _coachBotContext.TournamentGroupMatches.AsQueryable().Where(t => t.TournamentPhase.TournamentStage.TournamentId == tournamentId).Max(m => m.Match.KickOff).Value;
             var numberOfGroups = _coachBotContext.TournamentGroups.Count(g => g.TournamentStageId == groupStage.Id);
-            var numberOfTeams = _coachBotContext.TournamentGroups.Where(g => g.TournamentStageId == groupStage.Id).Max(g => g.TournamentGroupTeams.Count());
+            var numberOfTeams = _coachBotContext.TournamentGroups.AsQueryable().Where(g => g.TournamentStageId == groupStage.Id).Max(g => g.TournamentGroupTeams.Count());
 
             var knockoutGroupSize = GetNumberOfQualifyingKnockoutTeams(numberOfTeams, numberOfGroups);
             var teams = new List<Team>();
@@ -974,6 +1009,7 @@ namespace CoachBot.Domain.Services
             var stage = tournament.TournamentStages.First();
             var earliestMatchDate = (DateTime)tournament.StartDate;
             var teams = _coachBotContext.TournamentGroupTeams
+              .AsQueryable()
               .Where(t => t.TournamentGroup.TournamentStageId == stage.Id)
               .Select(t => t.Team)
               .Distinct()
@@ -1083,7 +1119,7 @@ namespace CoachBot.Domain.Services
                 _coachBotContext.SaveChanges();
             }
 
-            foreach (var phase in _coachBotContext.TournamentPhases.Where(t => t.TournamentStageId == stage.Id))
+            foreach (var phase in _coachBotContext.TournamentPhases.AsQueryable().Where(t => t.TournamentStageId == stage.Id))
             {
                 for (int i = 0; i < totalMatchesPerRound; i++)
                 {
@@ -1111,6 +1147,7 @@ namespace CoachBot.Domain.Services
         public void GenerateRoundRobinMatches(Tournament tournament, TournamentStage stage, DateTime startDate)
         {
             var maxNumberOfTeams = _coachBotContext.TournamentGroupTeams
+                    .AsQueryable()
                     .Where(t => t.TournamentGroup.TournamentStageId == stage.Id)
                     .GroupBy(t => t.TournamentGroupId)
                     .Max(t => t.Count());
@@ -1123,7 +1160,7 @@ namespace CoachBot.Domain.Services
             foreach (var group in stage.TournamentGroups)
             {
                 var earliestMatchDate = startDate;
-                var matchDaySlots = _coachBotContext.TournamentMatchDays.Where(t => t.TournamentId == tournament.Id).OrderBy(t => t.MatchDay).OrderBy(t => t.MatchTime).ToList();
+                var matchDaySlots = _coachBotContext.TournamentMatchDays.AsQueryable().Where(t => t.TournamentId == tournament.Id).OrderBy(t => t.MatchDay).OrderBy(t => t.MatchTime).ToList();
                 var currentSlotIndex = 0;
                 var currentPhaseNumber = 1;
                 foreach (var phase in stage.TournamentPhases)
@@ -1230,7 +1267,7 @@ namespace CoachBot.Domain.Services
                 var currentMatchNumberOfRound = 1;
                 var matchesInRound = brackets.Where(b => b.RoundNo == round && b.Bye == false).Count();
                 var matchesInLastRound = brackets.Where(b => b.RoundNo == round - 1 && b.Bye == false).Count();
-                var matchDaySlots = _coachBotContext.TournamentMatchDays.Where(t => t.TournamentId == tournament.Id).OrderBy(t => t.MatchDay).OrderBy(t => t.MatchTime).ToList();
+                var matchDaySlots = _coachBotContext.TournamentMatchDays.AsQueryable().Where(t => t.TournamentId == tournament.Id).OrderBy(t => t.MatchDay).OrderBy(t => t.MatchTime).ToList();
                 var currentSlotIndex = 0;
                 foreach (var matchup in brackets.Where(b => b.RoundNo == round && b.Bye == false))
                 {

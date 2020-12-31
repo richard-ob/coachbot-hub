@@ -16,7 +16,7 @@ namespace CoachBot.Domain.Services
 
         public List<Country> GetCountries()
         {
-            return _coachBotContext.Countries.OrderBy(c => c.Name).ToList();
+            return _coachBotContext.Countries.AsQueryable().OrderBy(c => c.Name).ToList();
         }
     }
 }

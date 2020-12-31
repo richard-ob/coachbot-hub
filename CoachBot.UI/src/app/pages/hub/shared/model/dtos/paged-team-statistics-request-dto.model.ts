@@ -25,5 +25,6 @@ export class TeamStatisticFilters {
     tournamentId?: number;
     tournamentGroupId?: number;
     regionId: number;
+    minimumMatches?: number;
     includeInactive = true;
 }

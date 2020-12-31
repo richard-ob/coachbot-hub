@@ -227,8 +227,9 @@ namespace CoachBot.Domain.Services
 
             // Remove deleted positions
             var deletedPositions = _dbContext.ChannelPositions
+                .AsQueryable()
                 .Where(c => c.ChannelId == channelId)
-                .Where(cp => !channelPositions.Any(cpt => cpt.PositionId == cp.PositionId));
+                .Where(cp => !channelPositions.Select(cpt => cpt.PositionId).Any(cpt => cpt == cp.PositionId));
             if (deletedPositions.Any())
             {
                 _dbContext.ChannelPositions.RemoveRange(deletedPositions);

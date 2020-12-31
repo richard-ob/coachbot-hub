@@ -60,7 +60,10 @@ export interface TeamStatistics {
     appearances: number;
     substituteAppearances: number;
     wins: number;
+    winPercentage: number;
     draws: number;
+    drawPercentage: number;
     losses: number;
+    lossPercentage: number;
     form: number[];
 }

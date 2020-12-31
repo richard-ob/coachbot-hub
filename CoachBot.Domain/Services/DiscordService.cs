@@ -101,7 +101,7 @@ namespace CoachBot.Domain.Services
                 });
 
                 // HACK: If we do this in the original projection, the context seems to have been disposed/not available in the calling scope..
-                var matchmakingChannels = coachBotContext.Channels.Where(cc => cc.Team.Guild.DiscordGuildId == guildId).ToList();
+                var matchmakingChannels = coachBotContext.Channels.AsQueryable().Where(cc => cc.Team.Guild.DiscordGuildId == guildId).ToList();
                 return channels.Select(c => new DiscordChannel()
                 {
                     Id = c.Id,
@@ -129,7 +129,8 @@ namespace CoachBot.Domain.Services
                     }).ToList();
 
                 // HACK: If we do this in the original projection, the context seems to have been disposed/not available in the calling scope..
-                var matchmakingGuilds = coachBotContext.Guilds.Where(g => guilds.Any(dg => dg.Id == g.DiscordGuildId)).ToList();
+                var guildDiscordIds = guilds.Select(dg => dg.Id).ToList();
+                var matchmakingGuilds = coachBotContext.Guilds.ToList().Where(g => guildDiscordIds.Any(dg => dg == g.DiscordGuildId));
                 return guilds.Select(dg => new DiscordGuild()
                 {
                     Id = dg.Id,

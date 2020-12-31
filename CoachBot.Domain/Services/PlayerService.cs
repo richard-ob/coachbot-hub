@@ -35,6 +35,7 @@ namespace CoachBot.Domain.Services
         public PagedResult<Player> GetPlayers(int page, int pageSize, string sortOrder)
         {
             return _coachBotContext.Players
+                .AsQueryable()
                 .Where(p => p.DiscordUserId != null)
                 .GetPaged(page, pageSize, sortOrder);
         }
@@ -53,7 +54,10 @@ namespace CoachBot.Domain.Services
 
         public Player GetPlayer(string playerName, bool createIfNotExists = false)
         {
-            var player = _coachBotContext.Players.Include(p => p.Positions).ThenInclude(p => p.Position).FirstOrDefault(p => string.Equals(p.Name, playerName, System.StringComparison.CurrentCultureIgnoreCase));
+            var player = _coachBotContext.Players
+                .Include(p => p.Positions)
+                .ThenInclude(p => p.Position)
+                .FirstOrDefault(p => p.Name.ToUpper() == playerName.ToUpper());
 
             if (createIfNotExists && player == null && !playerName.StartsWith('@'))
             {
@@ -108,6 +112,7 @@ namespace CoachBot.Domain.Services
         public List<Player> SearchPlayersByName(string playerName)
         {
             return _coachBotContext.Players
+                .AsQueryable()
                 .Where(p => p.Name.Contains(playerName) && p.SteamID != null)
                 .Take(10)
                 .ToList();
@@ -127,8 +132,8 @@ namespace CoachBot.Domain.Services
                 var existingDiscordPlayer = _coachBotContext.Players.Single(p => p.DiscordUserId == discordUserId);
 
                 // INFO: EF won't let us change the key of an object, so making the SQL call manually (yikes)
-                _coachBotContext.Database.ExecuteSqlCommand($"UPDATE dbo.PlayerLineupPositions SET PlayerId = {player.Id} WHERE PlayerId = {existingDiscordPlayer.Id}");
-                _coachBotContext.Database.ExecuteSqlCommand($"UPDATE dbo.PlayerLineupSubstitutes SET PlayerId = {player.Id} WHERE PlayerId = {existingDiscordPlayer.Id}");
+                _coachBotContext.Database.ExecuteSqlInterpolated($"UPDATE dbo.PlayerLineupPositions SET PlayerId = {player.Id} WHERE PlayerId = {existingDiscordPlayer.Id}");
+                _coachBotContext.Database.ExecuteSqlInterpolated($"UPDATE dbo.PlayerLineupSubstitutes SET PlayerId = {player.Id} WHERE PlayerId = {existingDiscordPlayer.Id}");
 
                 existingDiscordPlayer.DiscordUserId = null;
                 _coachBotContext.SaveChanges();

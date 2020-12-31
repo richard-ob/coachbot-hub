@@ -151,9 +151,15 @@ namespace CoachBot.Domain.Model
 
         public int Wins { get; set; }
 
+        public double? WinPercentage { get; set; }
+
         public int Draws { get; set; }
 
+        public double? DrawPercentage { get; set; }
+
         public int Losses { get; set; }
+
+        public double? LossPercentage { get; set; }
 
         public List<MatchOutcomeType> Form { get; set; }
     }

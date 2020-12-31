@@ -74,6 +74,17 @@
                         <ng-container i18n="@@globals.includePartialApps">Include Partial Apps</ng-container>
                         <span class="checkbox-indicator"></span>
                     </label>
+                </li>                
+                <li class="team-result-filter__item d-none d-xxl-inline">
+                    <select [(ngModel)]="filters.minimumAppearances" name="minimumAppearances" class="form-control"
+                        #minimumAppearancesSelect>
+                        <option [ngValue]="undefined" i18n="@@playerList.noMinimumApps">No minimum apps</option>
+                        <option [ngValue]="10" i18n="@@playerList.noMinimumApps">10+ appearances</option>
+                        <option [ngValue]="25" i18n="@@playerList.noMinimumApps">25+ appearances</option>
+                        <option [ngValue]="50" i18n="@@playerList.noMinimumApps">50+ appearances</option>
+                        <option [ngValue]="100" i18n="@@playerList.noMinimumApps">100+ appearances</option>
+                        <option [ngValue]="250" i18n="@@playerList.noMinimumApps">250+ appearances</option>
+                    </select>
                 </li>
                 <li class="team-result-filter__item">
                     <select [(ngModel)]="filters.matchFormat" name="matchFormat" class="form-control"
@@ -140,6 +151,9 @@
                         <th sorter [sortByColumn]="'SubstituteAppearances'" i18n-sortByColumnName="@@globals.asSubShort" sortByColumnName="As Sub"
                             [currentSort]="sortBy" [currentOrder]="sortOrder" (sort)="loadPage(currentPage, $event)"
                             title="Appearances As Substitute" class="text-center">
+                        </th>
+                        <th sorter [sortByColumn]="'WinPercentage'" i18n-sortByColumnName="@@globals.winPercentage" sortByColumnName="Win %"  [currentSort]="sortBy" [currentOrder]="sortOrder"
+                            (sort)="loadPage(currentPage, $event)" class="text-center">
                         </th>
                         <th sorter [sortByColumn]="'Wins'" i18n-sortByColumnName="@@globals.wins" sortByColumnName="Wins" [currentSort]="sortBy" [currentOrder]="sortOrder"
                             (sort)="loadPage(currentPage, $event)" class="text-center"></th>
@@ -294,6 +308,9 @@
                         </td>
                         <td class="team-result__status text-center">{{statistics.appearances}}</td>
                         <td class="team-result__status text-center">{{statistics.substituteAppearances}}</td>
+                        <td class="team-result__status text-center">
+                            {{statistics.winPercentage | percent }}
+                        </td>
                         <td class="team-result__status text-center">{{statistics.wins}}</td>
                         <td class="team-result__status text-center">{{statistics.losses}}</td>
                         <td class="team-result__status text-center">{{statistics.draws}}</td>

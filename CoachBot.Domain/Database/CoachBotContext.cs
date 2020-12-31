@@ -1,5 +1,6 @@
 ﻿using CoachBot.Domain.Database;
 using CoachBot.Domain.Model;
+using CoachBot.Domain.Services;
 using CoachBot.Model;
 using CoachBot.Shared.Extensions;
 using CoachBot.Shared.Helpers;
@@ -42,11 +43,11 @@ namespace CoachBot.Database
         public DbSet<Search> Searches { get; set; }
         public DbSet<MatchStatistics> MatchStatistics { get; set; }
         public DbSet<TeamMatchStatistics> TeamMatchStatistics { get; set; }
-        public DbQuery<TeamPerformanceSnapshot> TeamPerformanceSnapshots { get; set; }
+        public DbSet<TeamPerformanceSnapshot> TeamPerformanceSnapshots { get; set; } //
         public DbSet<PlayerPositionMatchStatistics> PlayerPositionMatchStatistics { get; set; }
         public DbSet<PlayerMatchStatistics> PlayerMatchStatistics { get; set; }
         public DbSet<PlayerRating> PlayerRatings { get; set; }
-        public DbQuery<PlayerPerformanceSnapshot> PlayerPerformanceSnapshots { get; set; }
+        public DbSet<PlayerPerformanceSnapshot> PlayerPerformanceSnapshots { get; set; } //
         public DbSet<Organisation> Organisations { get; set; }
         public DbSet<TournamentSeries> TournamentSeries { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
@@ -61,8 +62,8 @@ namespace CoachBot.Database
         public DbSet<FantasyPlayer> FantasyPlayers { get; set; }
         public DbSet<FantasyTeamSelection> FantasyTeamSelections { get; set; }
         public DbSet<FantasyPlayerPhase> FantasyPlayerPhases { get; set; }
-        public DbQuery<FantasyTeamRank> FantasyTeamRanks { get; set; }
-        public DbQuery<FantasyPlayerRank> FantasyPlayerRanks { get; set; }
+        public DbSet<FantasyTeamRank> FantasyTeamRanks { get; set; }
+        public DbSet<FantasyPlayerRank> FantasyPlayerRanks { get; set; }
         public DbSet<ScorePrediction> ScorePredictions { get; set; }
         public DbSet<AssetImage> AssetImages { get; set; }
 
@@ -133,6 +134,12 @@ namespace CoachBot.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Key-less views/queries
+            modelBuilder.Entity<TeamPerformanceSnapshot>().HasNoKey();
+            modelBuilder.Entity<PlayerPerformanceSnapshot>().HasNoKey();
+            modelBuilder.Entity<FantasyTeamRank>().HasNoKey();
+            modelBuilder.Entity<FantasyPlayerRank>().HasNoKey();
+
             // Many-to-many composite primary keys
             modelBuilder.Entity<PlayerPosition>().HasKey(pp => new { pp.PlayerId, pp.PositionId });
             modelBuilder.Entity<PlayerLineupPosition>().HasKey(ptp => new { ptp.PlayerId, ptp.PositionId, ptp.LineupId });
@@ -204,9 +211,14 @@ namespace CoachBot.Database
             modelBuilder.Entity<Channel>().Property(p => p.SearchIgnoreList).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<int>>(v));
             modelBuilder.Entity<Team>().Property(p => p.Form).HasConversion(v => JsonConvert.SerializeObject(v), v => JsonConvert.DeserializeObject<List<MatchOutcomeType>>(v));
 
+            // User Defined Functions
+            modelBuilder.HasDbFunction(typeof(CoachBotContext).GetMethod(nameof(IsPlayerSigned), new[] { typeof(ulong) })).HasName("IsPlayerSigned");
+
             // Seed data - disabled after initial run, as the country culture approach is not supported by *nix
             //modelBuilder.Entity<Country>().HasData(CountrySeedData.GetCountries());
         }
+
+        public bool IsPlayerSigned(ulong discordUserId) => throw new NotSupportedException();
     }
 
     internal interface ISystemEntity

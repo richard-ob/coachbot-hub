@@ -98,7 +98,7 @@ namespace CoachBot.Domain.Services
                 throw new Exception("A team code must be unique for a region");
             }
 
-            if (existingTeam.BadgeImageId != team.BadgeImageId && team.BadgeImageId.HasValue || existingTeam.RegionId != team.RegionId || existingTeam.TeamCode != team.TeamCode)
+            if ((existingTeam.BadgeImageId != team.BadgeImageId || existingTeam.RegionId != team.RegionId || existingTeam.TeamCode != team.TeamCode) && team.BadgeImageId.HasValue)
             {
                 var emoteName = $"{team.TeamCode}_{team.RegionId}";
                 var badgeImage = _dbContext.AssetImages.Single(i => i.Id == team.BadgeImageId);
@@ -111,7 +111,7 @@ namespace CoachBot.Domain.Services
 
             if (!existingTeam.Inactive && team.Inactive)
             {
-                var playerTeams = _dbContext.PlayerTeams.Where(pt => pt.LeaveDate == null && pt.TeamId == existingTeam.Id);
+                var playerTeams = _dbContext.PlayerTeams.AsQueryable().Where(pt => pt.LeaveDate == null && pt.TeamId == existingTeam.Id);
                 foreach(var playerTeam in playerTeams)
                 {
                     playerTeam.LeaveDate = DateTime.UtcNow;
@@ -140,10 +140,10 @@ namespace CoachBot.Domain.Services
                 throw new Exception("Cannot delete teams who have played matches. Please mark as inactive.");
             }
 
-            _dbContext.PlayerTeams.RemoveRange(_dbContext.PlayerTeams.Where(pt => pt.TeamId == teamId));
+            _dbContext.PlayerTeams.RemoveRange(_dbContext.PlayerTeams.AsQueryable().Where(pt => pt.TeamId == teamId));
             _dbContext.SaveChanges();
 
-            _dbContext.Channels.RemoveRange(_dbContext.Channels.Where(c => c.TeamId == teamId));
+            _dbContext.Channels.RemoveRange(_dbContext.Channels.AsQueryable().Where(c => c.TeamId == teamId));
             _dbContext.SaveChanges();
 
             _dbContext.Teams.Remove(_dbContext.Teams.Single(t => t.Id == teamId));

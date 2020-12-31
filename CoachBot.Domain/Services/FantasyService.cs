@@ -36,7 +36,7 @@ namespace CoachBot.Domain.Services
 
         public IEnumerable<FantasyTeam> GetFantasyTeams(int tournamentId)
         {
-            return _coachBotContext.FantasyTeams.Where(ft => ft.TournamentId == tournamentId).ToList();
+            return _coachBotContext.FantasyTeams.AsQueryable().Where(ft => ft.TournamentId == tournamentId).ToList();
         }
 
         public FantasyTeam GetFantasyTeam(int fantasyTeamId)
@@ -60,6 +60,7 @@ namespace CoachBot.Domain.Services
         public IEnumerable<FantasyTeamSummary> GetFantasyTeamSummaries(int tournamentId)
         {
             return _coachBotContext.FantasyTeams
+                .AsQueryable()
                 .Where(f => f.TournamentId == tournamentId)
                 .Select(s => new FantasyTeamSummary()
                 {
@@ -80,6 +81,7 @@ namespace CoachBot.Domain.Services
         public FantasyTeamSummary GetFantasyTeamSummary(int fantasyTeamId)
         {
             return _coachBotContext.FantasyTeams
+                .AsQueryable()
                 .Where(f => f.Id == fantasyTeamId)
                 .Select(s => new FantasyTeamSummary()
                 {
@@ -100,6 +102,7 @@ namespace CoachBot.Domain.Services
         public List<FantasyTeamSummary> GetFantasyTeamSummariesForPlayer(ulong steamUserId)
         {
             return _coachBotContext.FantasyTeams
+                .AsQueryable()
                 .Where(f => f.Player.SteamID == steamUserId)
                 .Select(s => new FantasyTeamSummary()
                 {
@@ -120,6 +123,7 @@ namespace CoachBot.Domain.Services
         public List<FantasyPlayerPerformance> GetFantasyTeamPlayerPerformances(int fantasyTeamId, int? fantasyPhaseId = null)
         {
             var fantasySelections = _coachBotContext.FantasyTeamSelections
+                .AsQueryable()
                 .Where(f => f.FantasyTeamId == fantasyTeamId)
                 .Include(f => f.FantasyPlayer)
                     .ThenInclude(f => f.Player)
@@ -130,8 +134,10 @@ namespace CoachBot.Domain.Services
             var fantasySelectionIds = fantasySelections.Select(f => f.FantasyPlayerId);
 
             var playerPerformances =_coachBotContext.FantasyPlayerPhases
+                .AsQueryable()
                 .Where(f => fantasySelectionIds.Any(s => s == f.FantasyPlayerId))
                 .Where(f => fantasyPhaseId == null || f.TournamentPhaseId == fantasyPhaseId)
+                .AsSplitQuery()
                 .Select(n => new
                 {
                     n.FantasyPlayerId,
@@ -165,7 +171,7 @@ namespace CoachBot.Domain.Services
                             }
                         }
                     },
-                    IsFlex = fantasySelections.First(f => f.FantasyPlayer.PlayerId == key.PlayerId.Value).IsFlex,
+                    IsFlex = _coachBotContext.FantasyTeamSelections.First(f => f.FantasyTeamId == fantasyTeamId && f.FantasyPlayer.PlayerId == key.PlayerId.Value).IsFlex,
                     Points = s.Sum(c => c.Points),
                 })
                 .ToList();
@@ -270,7 +276,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .FantasyTeamRanks
-                 .FromSql($@"SELECT FantasyTeams.Id AS FantasyTeamId,
+                 .FromSqlInterpolated($@"SELECT FantasyTeams.Id AS FantasyTeamId,
                                     FantasyTeams.Name AS FantasyTeamName,
                                     Players.Id AS PlayerId,
                                     Players.Name AS PlayerName,
@@ -294,7 +300,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                     .FantasyTeamRanks
-                    .FromSql($@"SELECT FantasyTeams.Id AS FantasyTeamId,
+                    .FromSqlInterpolated($@"SELECT FantasyTeams.Id AS FantasyTeamId,
                                     FantasyTeams.Name AS FantasyTeamName,
                                     Players.Id AS PlayerId,
                                     Players.Name AS PlayerName,
@@ -318,7 +324,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                     .FantasyPlayerRanks
-                    .FromSql($@"SELECT  Players.Id AS PlayerId,
+                    .FromSqlInterpolated($@"SELECT  Players.Id AS PlayerId,
                                         Players.Name AS PlayerName,
                                         FantasyPlayers.Rating,
                                         ISNULL(SUM(FantasyPlayerPhases.Points), 0) AS Points,
@@ -350,7 +356,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                     .FantasyPlayerRanks
-                    .FromSql($@"SELECT  Players.Id AS PlayerId,
+                    .FromSqlInterpolated($@"SELECT  Players.Id AS PlayerId,
                                         Players.Name AS PlayerName,
                                         FantasyPlayers.Rating,
                                         SUM(FantasyPlayerPhases.Points) AS Points,
@@ -386,6 +392,7 @@ namespace CoachBot.Domain.Services
             }
 
             var recentPhase = _coachBotContext.FantasyPlayerPhases
+                .AsQueryable()
                 .Where(f => f.TournamentPhase.TournamentStage.TournamentId == tournamentId && f.TournamentPhase.TournamentGroupMatches.Any(m => m.Match.MatchStatistics != null))
                 .OrderByDescending(f => f.Id).FirstOrDefault();
 
@@ -403,6 +410,7 @@ namespace CoachBot.Domain.Services
             }
 
             var recentPhase = _coachBotContext.FantasyPlayerPhases
+                .AsQueryable()
                 .Where(f => f.TournamentPhase.TournamentStage.TournamentId == tournamentId && f.TournamentPhase.TournamentGroupMatches.Any(m => m.Match.MatchStatistics != null))
                 .OrderByDescending(f => f.Id).FirstOrDefault();
 
@@ -476,8 +484,8 @@ namespace CoachBot.Domain.Services
                 using (var scope = this.serviceProvider.CreateScope())
                 {
                     var context = scope.ServiceProvider.GetService(typeof(CoachBotContext)) as CoachBotContext;
-                    var tournamentId = context.TournamentPhases.Where(p => p.Id == tournamentPhaseId).Select(t => t.TournamentStage.TournamentId).Single();
-                    context.FantasyPlayerPhases.RemoveRange(context.FantasyPlayerPhases.Where(f => f.TournamentPhaseId == tournamentPhaseId));
+                    var tournamentId = context.TournamentPhases.AsQueryable().Where(p => p.Id == tournamentPhaseId).Select(t => t.TournamentStage.TournamentId).Single();
+                    context.FantasyPlayerPhases.RemoveRange(context.FantasyPlayerPhases.AsQueryable().Where(f => f.TournamentPhaseId == tournamentPhaseId));
                     var matches = context.TournamentGroupMatches
                         .Include(m => m.Match)
                         .ThenInclude(m => m.PlayerMatchStatistics)

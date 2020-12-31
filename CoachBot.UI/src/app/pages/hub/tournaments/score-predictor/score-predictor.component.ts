@@ -32,11 +32,13 @@ export class ScorePredictorComponent implements OnInit {
             this.tournamentId = +params.get('id');
             this.tournamentService.getCurrentPhase(this.tournamentId).subscribe(phase => {
                 this.phase = phase;
-                this.phase.tournamentGroupMatches =
-                    this.phase.tournamentGroupMatches.filter(m =>
-                        new Date(m.match.kickOff) > new Date() && m.match.teamHome != null && m.match.teamAway != null
-                        && m.match.matchStatisticsId == null
-                    );
+                if (phase) {
+                    this.phase.tournamentGroupMatches =
+                        this.phase.tournamentGroupMatches.filter(m =>
+                            new Date(m.match.kickOff) > new Date() && m.match.teamHome != null && m.match.teamAway != null
+                            && m.match.matchStatisticsId == null
+                        );
+                }
                 this.scorePredictionService.getScorePredictions(this.tournamentId).subscribe(scorePredictions => {
                     this.scorePredictions = scorePredictions;
                     this.scorePredictionService.getScorePredictionLeaderboard(this.tournamentId).subscribe(leaderboard => {

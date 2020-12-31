@@ -77,7 +77,7 @@ export class TeamProfileSpotlightComponent implements OnInit {
                 break;
             case TeamProfileSpotlightStatistic.BestPassing:
                 this.modelProperty = 'passesCompleted';
-                this.apiModelProperty = 'passesCompleted';
+                this.apiModelProperty = 'PassesCompleted';
                 this.heading = $localize`:@@spotlight.mostCompletedPasses:Most Completed Passes`;
                 this.measureName = $localize`:@@globals.passes:Passes`;
                 this.ordering = 'DESC';

@@ -36,5 +36,6 @@ export class PlayerStatisticFilters {
     positionGroup?: PositionGroup;
     playerName?: string;
     positionName?: string;
+    minimumAppearances?: number;
     excludePlayers?: number[] = [];
 }

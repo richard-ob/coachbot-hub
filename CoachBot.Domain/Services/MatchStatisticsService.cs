@@ -73,7 +73,7 @@ namespace CoachBot.Domain.Services
 
         public List<MatchStatistics> GetUnlinkedMatchData()
         {
-            var unlinkedMatchStatistics = _coachBotContext.MatchStatistics.Where(ms => !_coachBotContext.Matches.Any(m => m.MatchStatisticsId == ms.Id)).ToList();
+            var unlinkedMatchStatistics = _coachBotContext.MatchStatistics.AsQueryable().Where(ms => !_coachBotContext.Matches.Any(m => m.MatchStatisticsId == ms.Id)).ToList();
 
             return unlinkedMatchStatistics.Where(ms => ms?.MatchData?.Players.Count > 5).ToList();
         }
@@ -85,10 +85,10 @@ namespace CoachBot.Domain.Services
             match.MatchStatisticsId = null;
             match.KickOff = null;
 
-            _coachBotContext.FantasyPlayerPhases.RemoveRange(_coachBotContext.FantasyPlayerPhases.Where(m => m.PlayerMatchStatistics.Match.Id == match.Id));
-            _coachBotContext.PlayerMatchStatistics.RemoveRange(_coachBotContext.PlayerMatchStatistics.Where(m => m.MatchId == match.Id));
-            _coachBotContext.PlayerPositionMatchStatistics.RemoveRange(_coachBotContext.PlayerPositionMatchStatistics.Where(m => m.MatchId == match.Id));
-            _coachBotContext.TeamMatchStatistics.RemoveRange(_coachBotContext.TeamMatchStatistics.Where(m => m.MatchId == match.Id));
+            _coachBotContext.FantasyPlayerPhases.RemoveRange(_coachBotContext.FantasyPlayerPhases.AsQueryable().Where(m => m.PlayerMatchStatistics.Match.Id == match.Id));
+            _coachBotContext.PlayerMatchStatistics.RemoveRange(_coachBotContext.PlayerMatchStatistics.AsQueryable().Where(m => m.MatchId == match.Id));
+            _coachBotContext.PlayerPositionMatchStatistics.RemoveRange(_coachBotContext.PlayerPositionMatchStatistics.AsQueryable().Where(m => m.MatchId == match.Id));
+            _coachBotContext.TeamMatchStatistics.RemoveRange(_coachBotContext.TeamMatchStatistics.AsQueryable().Where(m => m.MatchId == match.Id));
 
             _coachBotContext.SaveChanges();
         }
@@ -97,21 +97,21 @@ namespace CoachBot.Domain.Services
         {
             var match = _coachBotContext.Matches.Single(m => m.MatchStatisticsId == matchStatisticsId);
 
-            var playerPositionMatchStatistics = _coachBotContext.PlayerPositionMatchStatistics.Where(p => p.MatchId == match.Id);
+            var playerPositionMatchStatistics = _coachBotContext.PlayerPositionMatchStatistics.AsQueryable().Where(p => p.MatchId == match.Id);
             foreach(var playerPosition in playerPositionMatchStatistics)
             {
                 playerPosition.TeamId = playerPosition.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamHomeId;
                 playerPosition.MatchOutcome = playerPosition.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : playerPosition.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
             }
 
-            var playerMatchStatistics = _coachBotContext.PlayerMatchStatistics.Where(p => p.MatchId == match.Id);
+            var playerMatchStatistics = _coachBotContext.PlayerMatchStatistics.AsQueryable().Where(p => p.MatchId == match.Id);
             foreach (var player in playerMatchStatistics)
             {
                 player.TeamId = player.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamHomeId;
                 player.MatchOutcome = player.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : player.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
             }
 
-            var teamMatchStatistics = _coachBotContext.TeamMatchStatistics.Where(t => t.Match.Id == match.Id);
+            var teamMatchStatistics = _coachBotContext.TeamMatchStatistics.AsQueryable().Where(t => t.Match.Id == match.Id);
             foreach(var team in teamMatchStatistics)
             {
                 team.TeamId = team.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamAwayId;
@@ -284,7 +284,7 @@ namespace CoachBot.Domain.Services
                 switch(matchType)
                 {
                     case MatchType.Competition:
-                        return "Tournament";
+                        return "Competition";
                     default:
                         return "Friendly";
                 }
@@ -423,6 +423,7 @@ namespace CoachBot.Domain.Services
             var mainPositionGroup = PositionGroupHelper.DeterminePositionGroup(playerMatchPositionStatistics);
 
             return _coachBotContext.PlayerMatchStatistics
+                .AsQueryable()
                 .OrderByDescending(p => p.SecondsPlayed)
                 .Where(p => p.PlayerId == match.PlayerOfTheMatchId && p.MatchId == matchId)
                 .Select(p => new PlayerOfTheMatchStatistics()
@@ -441,7 +442,7 @@ namespace CoachBot.Domain.Services
 
         public void GenerateTeamForm()
         {
-            foreach (var teamId in _coachBotContext.TeamMatchStatistics.Select(t => t.TeamId).Distinct())
+            foreach (var teamId in _coachBotContext.TeamMatchStatistics.AsQueryable().Select(t => t.TeamId).Distinct())
             {
                 var team = _coachBotContext.Teams.Include(t => t.TeamMatchStatistics).Single(t => t.Id == teamId);
                 team.Form = team.TeamMatchStatistics.OrderByDescending(t => t.CreatedDate).Take(5).Select(m => m.MatchOutcome).ToList();
@@ -464,7 +465,7 @@ namespace CoachBot.Domain.Services
                     var team = isHomeTeam ? match.TeamHome : match.TeamAway;
                     foreach (var position in matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == teamType).Select(m => m.Info.Position).Distinct())
                     {
-                        var positionId = _coachBotContext.Positions.Where(p => p.Name == position).Select(p => p.Id).FirstOrDefault();
+                        var positionId = _coachBotContext.Positions.AsQueryable().Where(p => p.Name == position).Select(p => p.Id).FirstOrDefault();
                         var playerPositionMatchStatistics = new PlayerPositionMatchStatistics()
                         {
                             PlayerId = player.Id,
@@ -573,7 +574,7 @@ namespace CoachBot.Domain.Services
                     var team = isHomeTeam ? match.TeamHome : match.TeamAway;
                     foreach (var position in matchDataPlayer.MatchPeriodData.Where(m => m.Info.Team == teamType).Select(m => m.Info.Position).Distinct())
                     {
-                        var positionId = _coachBotContext.Positions.Where(p => p.Name == position).Select(p => p.Id).FirstOrDefault();
+                        var positionId = _coachBotContext.Positions.AsQueryable().Where(p => p.Name == position).Select(p => p.Id).FirstOrDefault();
                         var playerPositionMatchStatistics = new PlayerPositionMatchStatistics()
                         {
                             PlayerId = player.Id,
@@ -688,6 +689,7 @@ namespace CoachBot.Domain.Services
                     .ThenInclude(p => p.TeamAway)
                     .ThenInclude(t => t.BadgeImage)
                 .Include(p => p.Team)
+                    .ThenInclude(p => p.BadgeImage)
                 .Include(p => p.Position)
                 .Where(p => filters.PlayerId == null || p.PlayerId == filters.PlayerId);
         }
@@ -862,12 +864,16 @@ namespace CoachBot.Domain.Services
                      ShotConversionPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.Goals)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
                      SubstituteAppearances = s.Sum(p => p.Substitute ? 1 : 0),
                      Wins = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0),
+                     WinPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Losses = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0),
+                     LossPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Draws = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0),
+                     DrawPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Name = key.Name,
                      SteamID = key.SteamID,
                      Rating = key.Rating
-                 });
+                 })
+                 .Where(p => filters.MinimumAppearances == null || p.Appearances >= filters.MinimumAppearances);
         }
 
         private IQueryable<PlayerStatisticTotals> GetPlayerMatchStatisticTotals(PlayerStatisticFilters filters)
@@ -979,18 +985,23 @@ namespace CoachBot.Domain.Services
                      ShotConversionPercentage = s.Sum(p => Convert.ToDouble(p.Shots)) > 0 ? s.Sum(p => Convert.ToDouble(p.Goals)) / s.Sum(p => Convert.ToDouble(p.Shots)) : 0,
                      SubstituteAppearances = s.Sum(p => p.Substitute ? 1 : 0),
                      Wins = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0),
+                     WinPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Losses = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0),
+                     LossPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Draws = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0),
+                     DrawPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      Name = key.Name,
                      SteamID = key.SteamID,
                      Rating = key.Rating
-                 });
+                 })
+                 .Where(p => filters.MinimumAppearances == null || p.Appearances >= filters.MinimumAppearances);
         }
 
         private IQueryable<TeamStatisticTotals> GetTeamStatisticTotals(TeamStatisticsFilters filters)
         {
             return _coachBotContext
                  .TeamMatchStatistics
+                 .AsQueryable()
                  .Where(t => filters.TournamentId == null || t.Match.TournamentId == filters.TournamentId)
                  .Where(t => filters.TournamentGroupId == null || _coachBotContext.TournamentGroupMatches.Any(tg => tg.MatchId == t.MatchId && tg.TournamentGroupId == filters.TournamentGroupId))
                  .Where(t => filters.TeamId == null || filters.HeadToHead || t.TeamId == filters.TeamId)
@@ -1090,23 +1101,27 @@ namespace CoachBot.Domain.Services
                      ThrowIns = s.Sum(p => p.ThrowIns),
                      Corners = s.Sum(p => p.Corners),
                      Appearances = s.Count(),
-                     Wins = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Win ? 1 : 0),
-                     Losses = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Loss ? 1 : 0),
-                     Draws = s.Sum(p => (int)p.MatchOutcome == (int)MatchOutcomeType.Draw ? 1 : 0),
+                     Wins = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0),
+                     WinPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
+                     Losses = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0),
+                     LossPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Loss ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
+                     Draws = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0),
+                     DrawPercentage = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0) > 0 ? Convert.ToDouble(s.Sum(p => p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)) / Convert.ToDouble(s.Count()) : 0,
                      TeamId = key.TeamId,
                      TeamName = key.Name,
                      BadgeImageUrl = key.Url,
                      Form = key.Form,
                      GoalDifference = s.Sum(p => p.Goals) - s.Sum(p => p.GoalsConceded),
                      Points = s.Sum(p => p.MatchOutcome == MatchOutcomeType.Win ? 3 : p.MatchOutcome == MatchOutcomeType.Draw ? 1 : 0)
-                 });
+                 })
+                 .Where(p => filters.MinimumMatches == null || p.Appearances >= filters.MinimumMatches);
         }
 
         public List<PlayerPerformanceSnapshot> GetMonthlyPlayerPerformance(int playerId)
         {
             return _coachBotContext
                  .PlayerPerformanceSnapshots
-                 .FromSql($@"SELECT PlayerMatchStatistics.PlayerId,
+                 .FromSqlInterpolated($@"SELECT PlayerMatchStatistics.PlayerId,
                                     NULL AS Day,
                                     NULL AS Week,
                                     DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
@@ -1132,7 +1147,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamPerformanceSnapshots
-                 .FromSql($@"SELECT {teamId} AS TeamId,
+                 .FromSqlInterpolated($@"SELECT {teamId} AS TeamId,
                             NULL AS Day,
                             NULL AS Week,
                             DATEPART(month, TeamMatchStatistics.CreatedDate) AS Month,
@@ -1159,7 +1174,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .PlayerPerformanceSnapshots
-                 .FromSql($@"SELECT PlayerMatchStatistics.PlayerId,
+                 .FromSqlInterpolated($@"SELECT PlayerMatchStatistics.PlayerId,
                                     NULL AS Day,
                                     DATEPART(week, PlayerMatchStatistics.CreatedDate) AS Week,
                                     DATEPART(month, PlayerMatchStatistics.CreatedDate) AS Month,
@@ -1186,7 +1201,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamPerformanceSnapshots
-                 .FromSql($@"SELECT {teamId} AS TeamId,
+                 .FromSqlInterpolated($@"SELECT {teamId} AS TeamId,
                             NULL AS Day,
                             DATEPART(week, TeamMatchStatistics.CreatedDate) AS Week,
                             DATEPART(month, TeamMatchStatistics.CreatedDate) AS Month,
@@ -1213,7 +1228,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .PlayerPerformanceSnapshots
-                 .FromSql($@"SELECT {playerId} AS PlayerId,
+                 .FromSqlInterpolated($@"SELECT {playerId} AS PlayerId,
                             DATEPART(day, DateRange.DateValue) AS Day,
                             DATEPART(week, DateRange.DateValue) AS Week,
                             DATEPART(month, DateRange.DateValue) AS Month,
@@ -1242,7 +1257,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamPerformanceSnapshots
-                 .FromSql($@"SELECT {teamId} AS TeamId,
+                 .FromSqlInterpolated($@"SELECT {teamId} AS TeamId,
                                     DATEPART(day, DateRange.DateValue) AS Day,
                                     DATEPART(week, DateRange.DateValue) AS Week,
                                     DATEPART(month, DateRange.DateValue) AS Month,
@@ -1271,7 +1286,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .PlayerPerformanceSnapshots
-                 .FromSql($@"SELECT TOP 30
+                 .FromSqlInterpolated($@"SELECT TOP 30
                                     PlayerMatchStatistics.PlayerId,
                                     DATEPART(day, PlayerMatchStatistics.CreatedDate) AS Day,
                                     DATEPART(week, PlayerMatchStatistics.CreatedDate) AS Week,
@@ -1300,7 +1315,7 @@ namespace CoachBot.Domain.Services
         {
             return _coachBotContext
                  .TeamPerformanceSnapshots
-                 .FromSql($@"SELECT TOP 30
+                 .FromSqlInterpolated($@"SELECT TOP 30
                                     {teamId} AS TeamId,
                                     DATEPART(day, TeamMatchStatistics.CreatedDate) AS Day,
                                     DATEPART(week, TeamMatchStatistics.CreatedDate) AS Week,

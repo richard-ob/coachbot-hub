@@ -41,7 +41,7 @@ namespace CoachBot.Controllers
         public IActionResult UpdateMatch([FromBody]Match match, int id)
         {
             var matchToUpdate = _matchService.GetMatch(id);
-            var hasHubAccess = !_playerService.IsAdminOrOwner(User.GetSteamId());
+            var hasHubAccess = _playerService.IsAdminOrOwner(User.GetSteamId());
             if (matchToUpdate.TournamentId.HasValue)
             {
                 if (!_tournamentService.IsTournamentOrganiser((int)matchToUpdate.TournamentId, User.GetSteamId()) && !hasHubAccess)

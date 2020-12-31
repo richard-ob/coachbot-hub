@@ -17,7 +17,7 @@ namespace CoachBot.Domain.Services
 
         public List<Position> GetPositions()
         {
-            return _coachBotContext.Positions.Where(p => !Char.IsNumber(p.Name[0])).OrderBy(c => c.Name).ToList();
+            return _coachBotContext.Positions.AsQueryable().Where(p => !Char.IsNumber(p.Name[0])).OrderBy(c => c.Name).ToList();
         }
     }
 }

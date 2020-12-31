@@ -6,6 +6,7 @@ import { TournamentOverviewFixturesComponent } from './tournament-overview-fixtu
 import { TournamentOverviewPlayersComponent } from './tournament-overview-players/tournament-overview-players.component';
 import { TournamentOverviewStaffComponent } from './tournament-overview-staff/tournament-overview-staff.component';
 import { TournamentOverviewComponent } from './tournament-overview.component';
+import { TournamentOverviewResultsComponent } from './tournament-overview-results/tournament-overview-results.component';
 
 const routes: Routes = [
     {
@@ -15,6 +16,7 @@ const routes: Routes = [
             { path: '', redirectTo: 'standings', pathMatch: 'full' },
             { path: 'standings', component: TournamentOverviewStandingsComponent },
             { path: 'fixtures', component: TournamentOverviewFixturesComponent },
+            { path: 'results', component: TournamentOverviewResultsComponent },
             { path: 'players', component: TournamentOverviewPlayersComponent },
             { path: 'teams', component: TournamentOverviewTeamsComponent },
             { path: 'staff', component: TournamentOverviewStaffComponent }

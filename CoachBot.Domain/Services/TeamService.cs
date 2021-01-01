@@ -75,11 +75,12 @@ namespace CoachBot.Domain.Services
             team.FoundedDate = team.FoundedDate ?? DateTime.UtcNow;
             team.Inactive = false;
             _dbContext.Teams.Add(team);
+            var savedTeamId = _dbContext.Entry(team).Property(m => m.Id).CurrentValue;
 
             var playerTeam = new PlayerTeam()
             {
                 PlayerId = player.Id,
-                TeamId = team.Id,
+                TeamId = savedTeamId,
                 TeamRole = TeamRole.Captain,
                 IsPending = false,
                 JoinDate = DateTime.UtcNow

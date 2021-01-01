@@ -393,7 +393,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.PlayerMatchStatistics
                 .AsNoTracking()
                 .Where(p => p.PlayerId == playerId)
-                .Where(p => p.Match.KickOff != null && p.Match.KickOff.Value.Year == DateTime.UtcNow.Year)
+                .Where(p => p.Match.KickOff != null && p.Match.KickOff.Value > DateTime.UtcNow.AddYears(-1))
                 .GroupBy(p => p.Match.KickOff.Value.Date)
                 .Select(s => new MatchDayTotals()
                 {
@@ -407,7 +407,7 @@ namespace CoachBot.Domain.Services
             return _coachBotContext.TeamMatchStatistics
                 .AsNoTracking()
                 .Where(t => t.TeamId == teamId)
-                .Where(t => t.Match.KickOff != null && t.Match.KickOff.Value.Year == DateTime.UtcNow.Year)
+                .Where(t => t.Match.KickOff != null && t.Match.KickOff.Value > DateTime.UtcNow.AddYears(-1))
                 .GroupBy(t => t.Match.KickOff.Value.Date)
                 .Select(s => new MatchDayTotals()
                 {

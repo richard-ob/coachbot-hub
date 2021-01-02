@@ -127,10 +127,9 @@ namespace CoachBot.Domain.Services
             }
 
             // INFO: We need to merge any existing player record which was created by the bot for lineups
-            if (_coachBotContext.Players.Any(p => p.DiscordUserId == discordUserId))
+            var existingDiscordPlayer = _coachBotContext.Players.SingleOrDefault(p => p.DiscordUserId == discordUserId);
+            if (existingDiscordPlayer != null && player.Id != existingDiscordPlayer.Id)
             {
-                var existingDiscordPlayer = _coachBotContext.Players.Single(p => p.DiscordUserId == discordUserId);
-
                 // INFO: EF won't let us change the key of an object, so making the SQL call manually (yikes)
                 _coachBotContext.Database.ExecuteSqlInterpolated($"UPDATE dbo.PlayerLineupPositions SET PlayerId = {player.Id} WHERE PlayerId = {existingDiscordPlayer.Id}");
                 _coachBotContext.Database.ExecuteSqlInterpolated($"UPDATE dbo.PlayerLineupSubstitutes SET PlayerId = {player.Id} WHERE PlayerId = {existingDiscordPlayer.Id}");

@@ -37,7 +37,7 @@ namespace CoachBot.Controllers
             _cacheService.Set(CacheService.CacheItemType.DiscordVerificationSessionExpiry, steamId.ToString(), DateTime.UtcNow.AddMinutes(5));
             _cacheService.Set(CacheService.CacheItemType.DiscordVerificationSessionToken, steamId.ToString(), token);
 
-            return Challenge(new AuthenticationProperties { RedirectUri = "/verification-complete?steamId=" + steamId + "&token=" + token }, Discord.OAuth2.DiscordDefaults.AuthenticationScheme);
+            return Challenge(new AuthenticationProperties { RedirectUri = "/verification-complete?steamId=" + steamId + "&token=" + token }, AspNet.Security.OAuth.Discord.DiscordAuthenticationDefaults.AuthenticationScheme);
         }
 
         [HttpGet("/verification-complete")]

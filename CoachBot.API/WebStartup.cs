@@ -127,8 +127,8 @@ namespace CoachBot
                 .AddSteam()
                 .AddDiscord(x =>
                 {
-                    x.AppId = config.DiscordConfig.OAuth2Id;
-                    x.AppSecret = config.DiscordConfig.OAuth2Secret;
+                    x.ClientId = config.DiscordConfig.OAuth2Id;
+                    x.ClientSecret = config.DiscordConfig.OAuth2Secret;
                 });
 
             var provider = services.BuildServiceProvider();

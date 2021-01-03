@@ -568,6 +568,7 @@ namespace CoachBot.Domain.Services
                 if (matchDataPlayer.Info.SteamId == "BOT") continue;
 
                 var player = GetOrCreatePlayer(matchDataPlayer);
+                var playerId = _coachBotContext.Entry(player).Property(m => m.Id).CurrentValue;
                 foreach (var teamType in matchDataPlayer.MatchPeriodData.Select(m => m.Info.Team).Distinct())
                 {
                     var isHomeTeam = teamType == MatchDataSideConstants.Home;
@@ -577,7 +578,7 @@ namespace CoachBot.Domain.Services
                         var positionId = _coachBotContext.Positions.AsQueryable().Where(p => p.Name == position).Select(p => p.Id).FirstOrDefault();
                         var playerPositionMatchStatistics = new PlayerPositionMatchStatistics()
                         {
-                            PlayerId = player.Id,
+                            PlayerId = playerId,
                             MatchId = match.Id,
                             MatchTeamType = isHomeTeam ? MatchTeamType.Home : MatchTeamType.Away,
                             TeamId = team.Id,
@@ -600,7 +601,7 @@ namespace CoachBot.Domain.Services
                     }
                     var playerMatchStatistics = new PlayerMatchStatistics()
                     {
-                        PlayerId = player.Id,
+                        PlayerId = playerId,
                         MatchId = match.Id,
                         TeamId = team.Id,
                         MatchTeamType = isHomeTeam ? MatchTeamType.Home : MatchTeamType.Away,

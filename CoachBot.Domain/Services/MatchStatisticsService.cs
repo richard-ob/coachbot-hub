@@ -257,6 +257,21 @@ namespace CoachBot.Domain.Services
                 }
             }
         }
+        public void RegenerateStatsForMatch(int matchId)
+        {
+            var playerPositionMatchStatistics = _coachBotContext.PlayerPositionMatchStatistics.AsQueryable().Where(m => m.MatchId == matchId);
+            _coachBotContext.PlayerPositionMatchStatistics.RemoveRange(playerPositionMatchStatistics);
+
+            var playerMatchStatistics = _coachBotContext.PlayerMatchStatistics.AsQueryable().Where(m => m.MatchId == matchId);
+            _coachBotContext.PlayerMatchStatistics.RemoveRange(playerMatchStatistics);
+
+            var teamMatchStatistics = _coachBotContext.TeamMatchStatistics.AsQueryable().Where(m => m.MatchId == matchId);
+            _coachBotContext.TeamMatchStatistics.RemoveRange(teamMatchStatistics);
+
+            _coachBotContext.SaveChanges();
+
+            GenerateStatsForMatch(matchId);
+        }
 
         private Embed GetResultEmbed(Match match)
         {
@@ -371,21 +386,6 @@ namespace CoachBot.Domain.Services
             }
 
             return allPlayerTeamStatisticTotals;
-        }
-
-        public void GenerateStatistics()
-        {
-            var matches = _coachBotContext.Matches
-                .Include(m => m.MatchStatistics)
-                .Include(m => m.TeamHome)
-                .Include(m => m.TeamAway)
-                .Where(m => m.MatchStatistics != null && _coachBotContext.TeamMatchStatistics.Any(tm => tm.MatchId == m.Id && tm.PossessionPercentage == 0));
-
-            foreach (var match in matches)
-            {
-                GeneratePlayerMatchStatisticsGoalsConceded(match);
-                GenerateTeamMatchStatisticsPossession(match);
-            }
         }
 
         public List<MatchDayTotals> GetPlayerMatchDayTotals(int playerId)

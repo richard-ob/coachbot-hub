@@ -186,11 +186,11 @@ namespace CoachBot.Controllers
             return Ok();
         }
 
-        [HubRolePermission(HubRole = PlayerHubRole.Owner)]
-        [HttpGet("generate")]
-        public IActionResult Generate()
+        [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
+        [HttpPost("{matchId}/regenerate")]
+        public IActionResult Regenerate(int matchId)
         {
-            _matchStatisticsService.GenerateStatistics();
+            _matchStatisticsService.RegenerateStatsForMatch(matchId);
             return Ok();
         }
     }

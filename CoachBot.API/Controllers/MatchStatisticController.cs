@@ -2,6 +2,7 @@
 using CoachBot.Domain.Services;
 using CoachBot.Models;
 using CoachBot.Models.Dto;
+using CoachBot.Shared.Extensions;
 using CoachBot.Shared.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +23,14 @@ namespace CoachBot.Controllers
         private readonly MatchService _matchService;
         private readonly MatchStatisticsService _matchStatisticsService;
         private readonly PlayerService _playerService;
+        private readonly TournamentService _tournamentService;
 
-        public MatchStatisticController(MatchService matchService, MatchStatisticsService matchStatisticsService, PlayerService playerService)
+        public MatchStatisticController(MatchService matchService, MatchStatisticsService matchStatisticsService, PlayerService playerService, TournamentService tournamentService)
         {
             _matchService = matchService;
             _matchStatisticsService = matchStatisticsService;
             _playerService = playerService;
+            _tournamentService = tournamentService;
         }
 
         [AllowAnonymous]
@@ -106,7 +109,6 @@ namespace CoachBot.Controllers
         }
 
         [Authorize]
-        [HubRolePermission(HubRole = PlayerHubRole.Manager)]
         [HttpPost("{matchId}")]
         public IActionResult ManualSubmit([FromBody]MatchStatisticsDto matchStatisticsDto, int matchId)
         {
@@ -121,6 +123,19 @@ namespace CoachBot.Controllers
             if (match.MatchStatistics != null)
             {
                 return BadRequest();
+            }
+
+            var hasHubAccess = _playerService.IsAdminOrOwner(User.GetSteamId());
+            if (match.TournamentId.HasValue)
+            {
+                if (!_tournamentService.IsTournamentOrganiser((int)match.TournamentId, User.GetSteamId()) && !hasHubAccess)
+                {
+                    return Unauthorized();
+                }
+            }
+            else if (!hasHubAccess)
+            {
+                return Unauthorized();
             }
 
             _matchStatisticsService.SaveMatchData(matchStatisticsDto.MatchData, matchStatisticsDto.Access_Token, sourceAddress, matchId, true);

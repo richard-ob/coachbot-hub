@@ -114,7 +114,7 @@ namespace CoachBot.Domain.Services
             var teamMatchStatistics = _coachBotContext.TeamMatchStatistics.AsQueryable().Where(t => t.Match.Id == match.Id);
             foreach(var team in teamMatchStatistics)
             {
-                team.TeamId = team.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamAwayId;
+                team.TeamId = team.TeamId == match.TeamHomeId ? match.TeamAwayId : match.TeamHomeId;
                 team.MatchOutcome = team.MatchOutcome == MatchOutcomeType.Draw ? MatchOutcomeType.Draw : team.MatchOutcome == MatchOutcomeType.Loss ? MatchOutcomeType.Win : MatchOutcomeType.Loss;
             }
 

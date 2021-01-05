@@ -57,6 +57,11 @@ namespace CoachBot.Controllers
                 return BadRequest();
             }
 
+            if (matchStatisticsDto.MatchData.MatchInfo.Periods == 1)
+            {
+                return BadRequest();
+            }
+
             if (!string.IsNullOrWhiteSpace(map) && int.TryParse(map[0].ToString(), out int matchFormat) && matchFormat > matchStatisticsDto.MatchData.Players.Count)
             {
                 return BadRequest();

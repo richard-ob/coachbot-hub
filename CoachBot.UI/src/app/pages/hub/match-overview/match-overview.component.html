@@ -26,6 +26,9 @@
                 </li>
                 <li role="menuitem">
                     <a class="dropdown-item clickable" (click)="unlinkMatchStatistics()" i18n="@@matchOverview.unlinkData">Unlink Data</a>
+                </li>                
+                <li *ngIf="currentPlayer && currentPlayer.hubRole === hubRoles.Owner" role="menuitem">
+                    <a class="dropdown-item clickable" (click)="regenerateStatistics()" i18n="@@matchOverview.regenerateData">Regenerate Data</a>
                 </li>
             </ul>
         </div>

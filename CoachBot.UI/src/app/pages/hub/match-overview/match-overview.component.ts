@@ -75,4 +75,11 @@ export class MatchOverviewComponent implements OnInit {
       location.reload();
     });
   }
+
+  regenerateStatistics() {
+    this.isLoading = true;
+    this.matchStatisticsService.regenerateMatchStatistics(this.match.id).subscribe(() => {
+      location.reload();
+    });
+  }
 }

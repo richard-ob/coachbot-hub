@@ -36,4 +36,8 @@ export class MatchStatisticsService {
         return this.http.post<void>(`${environment.apiUrl}/api/match-statistics/${matchId}/override`, { homeGoals, awayGoals });
     }
 
+    regenerateMatchStatistics(matchId: number): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/api/match-statistics/${matchId}/regenerate`, null);
+    }
+
 }

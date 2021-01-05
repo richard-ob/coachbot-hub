@@ -264,6 +264,12 @@ namespace CoachBot.Services
             var channel = _channelService.GetChannelByDiscordId(channelId);
             var discordChannel = _discordClient.GetChannel(channelId) as SocketTextChannel;
 
+            if (_serverService.CheckServerHasNoTournamentGamesScheduled(server.Id))
+            {
+                await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed("The selected server has a scheduled match within the next 90 minutes", ServiceResponseStatus.Failure));
+                return;
+            }
+
             if (!string.IsNullOrEmpty(server.RconPassword) && ServerAddressHelper.IsValidAddress(server.Address))
             {
                 try
@@ -358,6 +364,12 @@ namespace CoachBot.Services
             if (DateTime.UtcNow.AddHours(-1) > matchup.ReadiedDate.Value)
             {
                 await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed("This match has already taken place, and so the server cannot be changed.", ServiceResponseStatus.Failure));
+                return;
+            }
+
+            if (_serverService.CheckServerHasNoTournamentGamesScheduled(server.Id))
+            {
+                await discordChannel.SendMessageAsync("", embed: DiscordEmbedHelper.GenerateEmbed("The selected server has a scheduled match within the next 90 minutes", ServiceResponseStatus.Failure));
                 return;
             }
 

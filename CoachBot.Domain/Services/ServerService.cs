@@ -98,5 +98,11 @@ namespace CoachBot.Domain.Services
             server.DeactivatedDate = DateTime.UtcNow;
             _coachBotContext.SaveChanges();
         }
+
+        public bool CheckServerHasNoTournamentGamesScheduled(int serverId)
+        {
+            const int TOURNAMENT_GAME_BUFFER = 90;
+            return _coachBotContext.Matches.Any(m => m.ServerId == serverId && m.KickOff != null && m.KickOff > DateTime.UtcNow && m.KickOff.Value.AddMinutes(-TOURNAMENT_GAME_BUFFER) < DateTime.UtcNow);
+        }
     }
 }

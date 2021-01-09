@@ -189,7 +189,7 @@ namespace CoachBot.Bot
         private async Task UserOffline(SocketGuildUser userPre, SocketGuildUser userPost)
         {
             await Task.Delay(TimeSpan.FromMinutes(5));
-            var currentState = _discordRestClient.GetUserAsync(userPre.Id).Result;
+            var currentState = _client.GetUser(userPre.Id);
             if (!currentState.Status.Equals(UserStatus.Offline)) return; // User is no longer offline
 
             using (var scope = _serviceProvider.CreateScope())
@@ -204,7 +204,7 @@ namespace CoachBot.Bot
         private async Task UserAway(SocketGuildUser userPre, SocketGuildUser userPost)
         {
             Task.Delay(TimeSpan.FromMinutes(15)).Wait(); // When user goes away, wait 15 minutes before notifying others
-            var currentState = _discordRestClient.GetUserAsync(userPre.Id).Result;
+            var currentState = _client.GetUserAsync(userPre.Id).Result;
             if (currentState.Status.Equals(UserStatus.Online)) return; // User is no longer AFK/Idle
 
             using (var scope = _serviceProvider.CreateScope())

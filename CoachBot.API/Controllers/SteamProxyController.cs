@@ -29,7 +29,7 @@ namespace CoachBot.Controllers
         {
             var url = STEAM_USER_URL + "/GetPlayerSummaries/v0002/?key=" + _config.SteamApiToken + "&steamids=" + steamIdsCsv;
 
-            return this.ProxyAsync(url);
+            return this.HttpProxyAsync(url);
         }
 
         [HttpGet("playing-time")]
@@ -37,7 +37,7 @@ namespace CoachBot.Controllers
         {
             var url = STEAM_PLAYER_URL + "/GetRecentlyPlayedGames/v0001/?key=" + _config.SteamApiToken + "&steamid=" + steamId;
 
-            return this.ProxyAsync(url);
+            return this.HttpProxyAsync(url);
         }
 
         [HttpGet("nicknames")]
@@ -45,7 +45,7 @@ namespace CoachBot.Controllers
         {
             var url = STEAM_PLAYER_URL + "/GetOwnedGames/v0001/?key=" + _config.SteamApiToken + "&steamid=" + steamId;
 
-            return this.ProxyAsync(url);
+            return this.HttpProxyAsync(url);
         }
 
         [HttpGet("news")]
@@ -53,7 +53,7 @@ namespace CoachBot.Controllers
         {
             var url = STEAM_NEWS_URL + "/GetNewsForApp/v2/?key=" + _config.SteamApiToken + "&appid=" + STEAM_IOSOCCER_APPID;
 
-            return this.ProxyAsync(url);
+            return this.HttpProxyAsync(url);
         }
     }
 }

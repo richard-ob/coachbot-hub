@@ -24,14 +24,14 @@ namespace CoachBot.Controllers
         [HttpGet("state")]
         public Task GetCurrentState()
         {
-            return this.ProxyAsync(GetBothApiUrl("bot/state"));
+            return this.HttpProxyAsync(GetBotApiUrl("bot/state"));
         }
 
         [HubRolePermission(HubRole = PlayerHubRole.Administrator)]
         [HttpPost("reconnect")]
         public async Task<IActionResult> Reconnect()
         {
-            await this.ProxyAsync(GetBothApiUrl("bot/reconnect"));
+            await this.HttpProxyAsync(GetBotApiUrl("bot/reconnect"));
 
             return NoContent();
         }
@@ -40,7 +40,7 @@ namespace CoachBot.Controllers
         [HttpPost("disconnect")]
         public async Task<IActionResult> Disconnect()
         {
-            await this.ProxyAsync(GetBothApiUrl("bot/disconnect"));
+            await this.HttpProxyAsync(GetBotApiUrl("bot/disconnect"));
 
             return NoContent();
         }
@@ -49,7 +49,7 @@ namespace CoachBot.Controllers
         [HttpPost("connect")]
         public async Task<IActionResult> Connect()
         {
-            await this.ProxyAsync(GetBothApiUrl("bot/connect"));
+            await this.HttpProxyAsync(GetBotApiUrl("bot/connect"));
 
             return NoContent();
         }
@@ -58,10 +58,10 @@ namespace CoachBot.Controllers
         [HttpGet("logs")]
         public Task GetLogs()
         {
-            return this.ProxyAsync(GetBothApiUrl("bot/logs"));
+            return this.HttpProxyAsync(GetBotApiUrl("bot/logs"));
         }
 
-        private string GetBothApiUrl(string path)
+        private string GetBotApiUrl(string path)
         {
             var port = this.Request.Scheme == "https" ? _config.WebServerConfig.SecureBotApiPort : _config.WebServerConfig.BotApiPort;
 

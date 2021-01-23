@@ -177,6 +177,20 @@ namespace CoachBot.Controllers
         [HttpPost("{matchId}/override")]
         public IActionResult CreateMatchResultOverride([FromBody]MatchResultOverrideDto matchResultOverrideDto, int matchId)
         {
+            var matchToUpdate = _matchService.GetMatch(matchId);
+            var hasHubAccess = _playerService.IsAdminOrOwner(User.GetSteamId());
+            if (matchToUpdate.TournamentId.HasValue)
+            {
+                if (!_tournamentService.IsTournamentOrganiser((int)matchToUpdate.TournamentId, User.GetSteamId()) && !hasHubAccess)
+                {
+                    return Unauthorized();
+                }
+            }
+            else if (!hasHubAccess)
+            {
+                return Unauthorized();
+            }
+
             _matchStatisticsService.CreateMatchResultOverride(matchId, matchResultOverrideDto.HomeGoals, matchResultOverrideDto.AwayGoals);
 
             return Ok();

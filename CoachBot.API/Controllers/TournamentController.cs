@@ -70,7 +70,7 @@ namespace CoachBot.Controllers
         [HttpPost]
         public IActionResult CreateTournament(Tournament tournament)
         {
-            if (!_tournamentService.IsTournamentOrganiser(tournament.Id, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
+            if (!_tournamentService.IsTournamentOrganiser(tournament.Id, User.GetSteamId()) && !_playerService.IsAdminOrOwner(User.GetSteamId()))
             {
                 return Unauthorized();
             }
@@ -83,7 +83,7 @@ namespace CoachBot.Controllers
         [HttpPut]
         public IActionResult UpdateTournament(Tournament tournament)
         {
-            if (!_tournamentService.IsTournamentOrganiser(tournament.Id, User.GetSteamId()) && !_playerService.IsOwner(User.GetSteamId()))
+            if (!_tournamentService.IsTournamentOrganiser(tournament.Id, User.GetSteamId()) && !_playerService.IsAdminOrOwner(User.GetSteamId()))
             {
                 return Unauthorized();
             }

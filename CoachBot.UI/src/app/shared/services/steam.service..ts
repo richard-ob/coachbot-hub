@@ -12,27 +12,47 @@ export class SteamService {
     constructor(private http: HttpClient) { }
 
     getUserProfiles(steamIds: string[]): Observable<SteamUserProfileResponse> {
-        const url = `${environment.apiUrl}/api/steam-proxy/user-profiles?steamIdsCsv=${steamIds.join(',')}`;
+        let url = `${environment.apiUrl}/api/steam-proxy/user-profiles?steamIdsCsv=${steamIds.join(',')}`;
+
+        if (this.isSafari) {
+            url = 'https://cors-anywhere.herokuapp.com/' + url;
+        }
 
         return this.http.get<SteamUserProfileResponse>(url);
     }
 
     getPlayingTime(steamId: string): Observable<any> {
-        const url = `${environment.apiUrl}/api/steam-proxy/playing-time?steamId=${steamId}`;
+        let url = `${environment.apiUrl}/api/steam-proxy/playing-time?steamId=${steamId}`;
+
+        if (this.isSafari) {
+            url = 'https://cors-anywhere.herokuapp.com/' + url;
+        }
 
         return this.http.get<any>(url);
     }
 
     getNicknames(steamId: string): Observable<string[]> {
-        const url = `${environment.apiUrl}/api/steam-proxy/nicknames?steamId=${steamId}`;
+        let url = `${environment.apiUrl}/api/steam-proxy/nicknames?steamId=${steamId}`;
+
+        if (this.isSafari) {
+            url = 'https://cors-anywhere.herokuapp.com/' + url;
+        }
 
         return this.http.get<string[]>(url);
     }
 
     getNews(): Observable<any> {
-        const url = `${environment.apiUrl}/api/steam-proxy/news`;
+        let url = `${environment.apiUrl}/api/steam-proxy/news`;
+
+        if (this.isSafari) {
+            url = 'https://cors-anywhere.herokuapp.com/' + url;
+        }
 
         return this.http.get<any>(url);
+    }
+
+    get isSafari() {
+        return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     }
 
 }
